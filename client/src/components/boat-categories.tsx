@@ -5,6 +5,7 @@ import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_175287570
 import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
 import catamaranoImage from "@assets/catamarano ludovica_1752876117442.jpg";
 import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg";
+import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";
 // import yachtImage from "@assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg";
 
 const categories = [
@@ -26,7 +27,7 @@ const categories = [
     id: "sailboat",
     name: "Barche a vela",
     description: "L'esperienza autentica della navigazione",
-    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: sailboatImage,
     count: 32
   },
   {

@@ -50,9 +50,14 @@ export function Header() {
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
+            {!user && (
+              <Button variant="outline" asChild className="hidden md:block bg-coral hover:bg-orange-600 text-white border-coral">
+                <Link href="/auth?type=owner">Diventa noleggiatore</Link>
+              </Button>
+            )}
             {user?.role === "customer" && (
               <Button variant="ghost" asChild className="hidden md:block">
-                <Link href="/auth">Diventa Host</Link>
+                <Link href="/auth?type=owner">Diventa Host</Link>
               </Button>
             )}
             

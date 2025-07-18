@@ -126,7 +126,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Cerca e filtra</h3>
               <p className="text-gray-600">
-                Trova l'imbarcazione perfetta usando la nostra mappa interattiva e i filtri avanzati
+                Trova l'imbarcazione perfetta usando la nostra mappa interattiva e i filtri avanzati per tipo, prezzo e ubicazione
               </p>
             </div>
 
@@ -136,7 +136,7 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Prenota in sicurezza</h3>
               <p className="text-gray-600">
-                Seleziona le date, paga online con Stripe e ricevi conferma istantanea
+                Seleziona le date, paga online in totale sicurezza e ricevi conferma istantanea della tua prenotazione
               </p>
             </div>
 
@@ -146,25 +146,81 @@ export default function HomePage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Naviga e divertiti</h3>
               <p className="text-gray-600">
-                Ritira la tua imbarcazione e vivi un'esperienza indimenticabile sul mare
+                Ritira la tua imbarcazione nel porto concordato e goditi un'esperienza indimenticabile in mare
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* CTA Section */}
-          <div className="mt-16 text-center">
-            <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Pronto per la tua avventura?</h3>
-              <p className="text-gray-600 mb-6">Migliaia di imbarcazioni ti aspettano in tutta Italia</p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button className="bg-ocean-blue hover:bg-blue-600">
-                  Inizia a esplorare
-                </Button>
-                <Button variant="outline" asChild>
-                  <Link href="/auth">Diventa host</Link>
-                </Button>
-              </div>
+      {/* Become a Host CTA */}
+      <section className="py-16 bg-gradient-to-r from-ocean-blue to-deep-navy text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold mb-4">Affitta la tua barca</h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Guadagna mettendo a disposizione la tua imbarcazione. Gestisci tutto facilmente dalla tua dashboard personale.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100" asChild>
+              <Link href="/auth?type=owner">Diventa noleggiatore</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-ocean-blue">
+              Scopri di più
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Help Section */}
+      <section id="help" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Hai bisogno di aiuto?</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Siamo qui per aiutarti. Trova le risposte alle domande più frequenti
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Prenotazioni</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Come prenotare un'imbarcazione</li>
+                <li>• Politiche di cancellazione</li>
+                <li>• Modificare una prenotazione</li>
+                <li>• Documenti necessari</li>
+              </ul>
             </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Pagamenti</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Metodi di pagamento accettati</li>
+                <li>• Sicurezza dei pagamenti</li>
+                <li>• Rimborsi e restituzioni</li>
+                <li>• Fatturazione</li>
+              </ul>
+            </div>
+
+            <div className="bg-gray-50 p-6 rounded-lg">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Per i noleggiatori</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Come inserire la tua barca</li>
+                <li>• Gestione delle prenotazioni</li>
+                <li>• Commissioni e guadagni</li>
+                <li>• Assistenza proprietari</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-600 mb-6">Non trovi quello che cerchi?</p>
+            <Button className="bg-ocean-blue hover:bg-blue-600 mr-4">
+              Contatta il supporto
+            </Button>
+            <Button variant="outline">
+              Centro assistenza
+            </Button>
           </div>
         </div>
       </section>

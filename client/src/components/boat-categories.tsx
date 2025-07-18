@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
+import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
 
 const categories = [
   {
     id: "gommone",
     name: "Gommoni",
     description: "Imbarcazioni pneumatiche versatili e sicure",
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: gommoneImage,
     count: 45
   },
   {

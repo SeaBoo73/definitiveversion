@@ -7,6 +7,7 @@ SeaGO is a comprehensive boat rental platform built as a full-stack web applicat
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Mobile app development: React Native for native mobile experience.
 
 ## System Architecture
 

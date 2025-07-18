@@ -61,6 +61,12 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        // SeaGO brand colors
+        "ocean-blue": "var(--ocean-blue)",
+        "deep-navy": "var(--deep-navy)",
+        "seafoam": "var(--seafoam)",
+        "coral": "var(--coral)",
+        "sea-gray": "var(--sea-gray)",
       },
       keyframes: {
         "accordion-down": {

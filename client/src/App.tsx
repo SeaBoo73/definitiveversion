@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 import HomePage from "@/pages/home-page";
+import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import BoatDetails from "@/pages/boat-details";
 import Checkout from "@/pages/checkout";
@@ -18,6 +19,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boat/:id" component={BoatDetails} />
       <ProtectedRoute path="/checkout" component={Checkout} />

@@ -234,19 +234,14 @@ export function InteractiveMap({ boats, onBoatSelect, onPortSelect }: Interactiv
               />
               {/* Isole Pontine - Ponza */}
               <ellipse cx="35" cy="85" rx="3" ry="1.5" fill="#f1f5f9" opacity="0.9" />
-              <text x="35" y="90" textAnchor="middle" fontSize="3" fill="#6b7280">Ponza</text>
               {/* Ventotene */}
               <ellipse cx="60" cy="95" rx="1.5" ry="1" fill="#f1f5f9" opacity="0.9" />
-              <text x="60" y="98" textAnchor="middle" fontSize="2.5" fill="#6b7280">Ventotene</text>
               {/* Ombreggiatura montuosa */}
               <path
                 d="M5,15 Q15,12 25,18 Q35,22 45,28 Q55,35 65,42 Q75,48 85,55 L85,65 Q75,58 65,52 Q55,45 45,38 Q35,32 25,28 Q15,22 5,25 Z"
                 fill="#e2e8f0"
                 opacity="0.4"
               />
-              {/* Dettagli geografici - Roma area */}
-              <circle cx="45" cy="50" r="1" fill="#dc2626" opacity="0.6" />
-              <text x="45" y="46" textAnchor="middle" fontSize="2.5" fill="#dc2626">Roma</text>
             </svg>
           </div>
 

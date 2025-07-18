@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
 import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
+import catamaranoImage from "@assets/catamarano ludovica_1752876117442.jpg";
 // import yachtImage from "@assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg";
 
 const categories = [
@@ -31,7 +32,7 @@ const categories = [
     id: "catamarano",
     name: "Catamarani",
     description: "Spazio e stabilità per gruppi numerosi",
-    image: "https://images.unsplash.com/photo-1548913950-b0a0c9c9d7c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: catamaranoImage,
     count: 15
   },
   {

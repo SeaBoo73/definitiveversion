@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
 import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
-import yachtImage from "@assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg";
+// import yachtImage from "@assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg";
 
 const categories = [
   {
@@ -17,7 +17,7 @@ const categories = [
     id: "yacht",
     name: "Yacht",
     description: "Lusso e comfort per esperienze indimenticabili",
-    image: yachtImage,
+    image: "/attached_assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg",
     count: 18
   },
   {

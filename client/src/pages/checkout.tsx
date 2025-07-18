@@ -25,42 +25,29 @@ import {
   UserCheck
 } from "lucide-react";
 
-if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-  throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
-}
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+// Stripe integration temporaneamente disabilitata
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
-  const stripe = useStripe();
-  const elements = useElements();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!stripe || !elements) {
-      return;
-    }
-
     setIsProcessing(true);
 
     try {
-      const { error } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/customer-dashboard?success=true`,
-        },
+      // Simulazione pagamento (senza Stripe per ora)
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      toast({
+        title: "Pagamento completato!",
+        description: "La tua prenotazione è stata confermata.",
       });
-
-      if (error) {
-        toast({
-          title: "Errore nel pagamento",
-          description: error.message,
-          variant: "destructive",
-        });
-      }
+      
+      // Redirect to customer dashboard
+      window.location.href = `/customer-dashboard?success=true`;
     } catch (error) {
       toast({
         title: "Errore nel pagamento",
@@ -191,7 +178,17 @@ function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <PaymentElement />
+                  <p className="text-sm text-gray-600 mb-4">
+                    Funzionalità di pagamento temporaneamente disabilitata per lo sviluppo.
+                  </p>
+                  <div className="space-y-4">
+                    <div className="bg-white p-4 rounded border-2 border-dashed border-gray-300">
+                      <div className="flex items-center justify-center text-gray-500">
+                        <CreditCard className="h-6 w-6 mr-2" />
+                        <span>Simulazione pagamento</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="text-xs text-gray-600">
@@ -209,7 +206,7 @@ function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
                 <Button
                   type="submit"
                   className="w-full bg-coral hover:bg-orange-600"
-                  disabled={!stripe || !elements || isProcessing}
+                  disabled={isProcessing}
                 >
                   {isProcessing ? (
                     <div className="flex items-center">
@@ -218,7 +215,7 @@ function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center">
-                      <span>Paga €{totalPrice} ora</span>
+                      <span>Simula pagamento €{totalPrice}</span>
                     </div>
                   )}
                 </Button>
@@ -234,7 +231,6 @@ function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
 export default function Checkout() {
   const searchParams = new URLSearchParams(window.location.search);
   const bookingId = searchParams.get("bookingId");
-  const [clientSecret, setClientSecret] = useState("");
 
   const { data: booking, isLoading: bookingLoading } = useQuery<Booking>({
     queryKey: ["/api/bookings", bookingId],
@@ -245,22 +241,6 @@ export default function Checkout() {
     queryKey: ["/api/boats", booking?.boatId],
     enabled: !!booking?.boatId,
   });
-
-  useEffect(() => {
-    if (booking) {
-      apiRequest("POST", "/api/create-payment-intent", { 
-        amount: Number(booking.totalPrice),
-        bookingId: booking.id 
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          setClientSecret(data.clientSecret);
-        })
-        .catch((error) => {
-          console.error("Error creating payment intent:", error);
-        });
-    }
-  }, [booking]);
 
   if (bookingLoading || boatLoading) {
     return (
@@ -290,21 +270,6 @@ export default function Checkout() {
     );
   }
 
-  if (!clientSecret) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <div className="flex items-center space-x-2">
-            <Loader2 className="h-8 w-8 animate-spin text-ocean-blue" />
-            <span className="text-lg">Preparazione pagamento...</span>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -315,9 +280,7 @@ export default function Checkout() {
           <p className="text-gray-600 mt-2">Sei a un passo dalla tua avventura in mare!</p>
         </div>
 
-        <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm booking={booking} boat={boat} />
-        </Elements>
+        <CheckoutForm booking={booking} boat={boat} />
       </div>
 
       <Footer />

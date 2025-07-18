@@ -193,12 +193,11 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(bookings.status, filters.status as any));
     }
 
-    let query = db.select().from(bookings);
     if (conditions.length > 0) {
-      query = query.where(and(...conditions));
+      return await db.select().from(bookings).where(and(...conditions)).orderBy(desc(bookings.createdAt));
     }
-
-    return await query.orderBy(desc(bookings.createdAt));
+    
+    return await db.select().from(bookings).orderBy(desc(bookings.createdAt));
   }
 
   async createBooking(booking: InsertBooking): Promise<Booking> {
@@ -237,12 +236,11 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(reviews.type, filters.type));
     }
 
-    let query = db.select().from(reviews);
     if (conditions.length > 0) {
-      query = query.where(and(...conditions));
+      return await db.select().from(reviews).where(and(...conditions)).orderBy(desc(reviews.createdAt));
     }
-
-    return await query.orderBy(desc(reviews.createdAt));
+    
+    return await db.select().from(reviews).orderBy(desc(reviews.createdAt));
   }
 
   async createReview(review: InsertReview): Promise<Review> {
@@ -278,12 +276,11 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(messages.bookingId, filters.bookingId));
     }
 
-    let query = db.select().from(messages);
     if (conditions.length > 0) {
-      query = query.where(and(...conditions));
+      return await db.select().from(messages).where(and(...conditions)).orderBy(asc(messages.createdAt));
     }
-
-    return await query.orderBy(asc(messages.createdAt));
+    
+    return await db.select().from(messages).orderBy(asc(messages.createdAt));
   }
 
   async createMessage(message: InsertMessage): Promise<Message> {

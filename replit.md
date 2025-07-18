@@ -154,7 +154,7 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
-### July 18, 2025
+### July 18, 2025 - Evening Session
 - **User Feedback:** "App is perfect, only missing payments and some other things"
 - **Completed Features:**
   - Full mobile responsiveness with excellent user experience
@@ -164,5 +164,18 @@ The application follows modern web development best practices with a focus on ty
   - Customer dashboard for booking management
   - Homepage sections: "Come funziona" and "Aiuto"
   - "Diventa noleggiatore" button restored to header
+- **Custom Images Integration (July 18, Evening):**
+  - ✅ Hero section background replaced with user's custom marina image
+  - ✅ Moto d'acqua category with authentic jetski photo
+  - ✅ Gommoni category with professional dinghy in crystal waters
+  - ✅ Yacht category with luxury yacht image
+  - ✅ Catamarani category with "Ludovica" catamaran in turquoise waters
+  - ✅ Charter category with professional charter boat image
+  - ✅ Barche a vela category with "Ludovica" sailboat under blue skies
+  - ✅ Static file serving configured for attached_assets folder
+- **Technical Improvements:**
+  - Express server configured to serve static assets from attached_assets
+  - Image imports using @assets alias for clean code structure
+  - All major boat categories now feature authentic, professional imagery
 - **Next Priority:** Stripe payment integration and additional features
 - **Mobile App:** React Native development started alongside web app

@@ -65,11 +65,11 @@ export interface IStorage {
   removeFavorite(userId: number, boatId: number): Promise<void>;
 
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: connectPg.PGStore;
 }
 
 export class DatabaseStorage implements IStorage {
-  sessionStore: session.SessionStore;
+  sessionStore: connectPg.PGStore;
 
   constructor() {
     this.sessionStore = new PostgresSessionStore({ 
@@ -127,25 +127,25 @@ export class DatabaseStorage implements IStorage {
     fuelIncluded?: boolean;
     ownerId?: number;
   }): Promise<Boat[]> {
-    let query = db.select().from(boats).where(eq(boats.active, true));
+    const conditions = [eq(boats.active, true)];
 
     if (filters?.type) {
-      query = query.where(eq(boats.type, filters.type as any));
+      conditions.push(eq(boats.type, filters.type as any));
     }
     if (filters?.location) {
-      query = query.where(ilike(boats.port, `%${filters.location}%`));
+      conditions.push(ilike(boats.port, `%${filters.location}%`));
     }
     if (filters?.maxPersons) {
-      query = query.where(gte(boats.maxPersons, filters.maxPersons));
+      conditions.push(gte(boats.maxPersons, filters.maxPersons));
     }
     if (filters?.skipperRequired !== undefined) {
-      query = query.where(eq(boats.skipperRequired, filters.skipperRequired));
+      conditions.push(eq(boats.skipperRequired, filters.skipperRequired));
     }
     if (filters?.ownerId) {
-      query = query.where(eq(boats.ownerId, filters.ownerId));
+      conditions.push(eq(boats.ownerId, filters.ownerId));
     }
 
-    return await query;
+    return await db.select().from(boats).where(and(...conditions));
   }
 
   async createBoat(boat: InsertBoat): Promise<Boat> {
@@ -181,16 +181,21 @@ export class DatabaseStorage implements IStorage {
     ownerId?: number;
     status?: string;
   }): Promise<Booking[]> {
-    let query = db.select().from(bookings);
+    const conditions = [];
 
     if (filters?.customerId) {
-      query = query.where(eq(bookings.customerId, filters.customerId));
+      conditions.push(eq(bookings.customerId, filters.customerId));
     }
     if (filters?.boatId) {
-      query = query.where(eq(bookings.boatId, filters.boatId));
+      conditions.push(eq(bookings.boatId, filters.boatId));
     }
     if (filters?.status) {
-      query = query.where(eq(bookings.status, filters.status as any));
+      conditions.push(eq(bookings.status, filters.status as any));
+    }
+
+    let query = db.select().from(bookings);
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
     }
 
     return await query.orderBy(desc(bookings.createdAt));
@@ -220,16 +225,21 @@ export class DatabaseStorage implements IStorage {
     revieweeId?: number;
     type?: string;
   }): Promise<Review[]> {
-    let query = db.select().from(reviews);
+    const conditions = [];
 
     if (filters?.bookingId) {
-      query = query.where(eq(reviews.bookingId, filters.bookingId));
+      conditions.push(eq(reviews.bookingId, filters.bookingId));
     }
     if (filters?.revieweeId) {
-      query = query.where(eq(reviews.revieweeId, filters.revieweeId));
+      conditions.push(eq(reviews.revieweeId, filters.revieweeId));
     }
     if (filters?.type) {
-      query = query.where(eq(reviews.type, filters.type));
+      conditions.push(eq(reviews.type, filters.type));
+    }
+
+    let query = db.select().from(reviews);
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
     }
 
     return await query.orderBy(desc(reviews.createdAt));
@@ -249,23 +259,28 @@ export class DatabaseStorage implements IStorage {
     receiverId?: number;
     bookingId?: number;
   }): Promise<Message[]> {
-    let query = db.select().from(messages);
+    const conditions = [];
 
     if (filters?.senderId && filters?.receiverId) {
-      query = query.where(
+      conditions.push(
         or(
           and(eq(messages.senderId, filters.senderId), eq(messages.receiverId, filters.receiverId)),
           and(eq(messages.senderId, filters.receiverId), eq(messages.receiverId, filters.senderId))
         )
       );
     } else if (filters?.senderId) {
-      query = query.where(eq(messages.senderId, filters.senderId));
+      conditions.push(eq(messages.senderId, filters.senderId));
     } else if (filters?.receiverId) {
-      query = query.where(eq(messages.receiverId, filters.receiverId));
+      conditions.push(eq(messages.receiverId, filters.receiverId));
     }
 
     if (filters?.bookingId) {
-      query = query.where(eq(messages.bookingId, filters.bookingId));
+      conditions.push(eq(messages.bookingId, filters.bookingId));
+    }
+
+    let query = db.select().from(messages);
+    if (conditions.length > 0) {
+      query = query.where(and(...conditions));
     }
 
     return await query.orderBy(asc(messages.createdAt));

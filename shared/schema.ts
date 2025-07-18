@@ -179,7 +179,6 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export const insertBoatSchema = createInsertSchema(boats).omit({
   id: true,
-  ownerId: true,
   createdAt: true,
 });
 

@@ -82,9 +82,16 @@ export default function HomeScreen({ navigation }: any) {
       <ScrollView>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.welcomeText}>
-            {user ? `Ciao, ${user.firstName}!` : 'Benvenuto su SeaGO'}
-          </Text>
+          <View style={styles.headerLeft}>
+            <Image
+              source={require('../../assets/logo.jpeg')}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+            <Text style={styles.welcomeText}>
+              {user ? `Ciao, ${user.firstName}!` : 'Benvenuto su SeaGO'}
+            </Text>
+          </View>
           {!user && (
             <TouchableOpacity
               style={styles.loginButton}
@@ -152,6 +159,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 16,
     backgroundColor: '#0ea5e9',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  logo: {
+    width: 40,
+    height: 40,
+    marginRight: 12,
+    borderRadius: 20,
   },
   welcomeText: {
     fontSize: 18,

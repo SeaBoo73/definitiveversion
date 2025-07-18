@@ -32,7 +32,10 @@ export default function App() {
             <Stack.Screen 
               name="Home" 
               component={HomeScreen} 
-              options={{ title: 'SeaGO' }}
+              options={{ 
+                title: 'SeaGO',
+                headerShown: false
+              }}
             />
             <Stack.Screen 
               name="Login" 

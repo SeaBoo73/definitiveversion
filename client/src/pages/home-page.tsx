@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link } from "wouter";
+import heroImage from "@assets/WhatsApp Image 2025-06-15 at 23.36.59_1752875633742.jpeg";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -37,9 +38,9 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-ocean-blue to-deep-navy text-white">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30"
+          className="absolute inset-0 bg-cover bg-center opacity-40"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1540946485063-a40da27545f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')"
+            backgroundImage: `url(${heroImage})`
           }}
         />
         

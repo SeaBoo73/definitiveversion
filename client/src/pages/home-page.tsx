@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SearchFilters } from "@/components/search-filters";
-import { CategoryGallery } from "@/components/category-gallery";
-import { MapView } from "@/components/map-view";
+import { AppDownloadBanner } from "@/components/app-download-banner";
+import { BoatCategories } from "@/components/boat-categories";
+import { LazioPorts } from "@/components/lazio-ports";
+import { InteractiveMap } from "@/components/interactive-map";
 import { BoatCard } from "@/components/boat-card";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -14,10 +17,21 @@ export default function HomePage() {
     queryKey: ["/api/boats"],
   });
 
-  const featuredBoats = boats.slice(0, 8);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedPort, setSelectedPort] = useState<string>("");
+
+  // Filtra barche per categoria e porto
+  const filteredBoats = boats.filter(boat => {
+    if (selectedCategory && boat.type !== selectedCategory) return false;
+    if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
+    return true;
+  });
+
+  const featuredBoats = filteredBoats.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <AppDownloadBanner />
       <Header />
       
       {/* Hero Section */}
@@ -44,18 +58,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Categories Gallery */}
-      <CategoryGallery />
+      {/* Boat Categories with Real Images */}
+      <BoatCategories 
+        onCategorySelect={setSelectedCategory} 
+        selectedCategory={selectedCategory}
+      />
 
-      {/* Map Section */}
+      {/* Lazio Ports */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LazioPorts 
+            onPortSelect={setSelectedPort}
+            selectedPort={selectedPort}
+          />
+        </div>
+      </section>
+
+      {/* Interactive Map Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Esplora sulla mappa</h2>
-            <p className="text-lg text-gray-600">Trova imbarcazioni disponibili vicino a te</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Mappa interattiva</h2>
+            <p className="text-lg text-gray-600">Esplora i porti del Lazio e trova imbarcazioni disponibili</p>
           </div>
 
-          <MapView boats={boats} />
+          <InteractiveMap 
+            boats={filteredBoats}
+            onPortSelect={setSelectedPort}
+          />
         </div>
       </section>
 
@@ -87,7 +117,7 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          ) : featuredBoats.length > 0 ? (
+          ) : filteredBoats.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {featuredBoats.map((boat) => (
                 <BoatCard key={boat.id} boat={boat} />

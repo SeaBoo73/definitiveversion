@@ -124,11 +124,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               <SelectValue placeholder={`${filters.guests} ospiti`} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1">1 ospite</SelectItem>
-              <SelectItem value="2">2 ospiti</SelectItem>
-              <SelectItem value="4">4 ospiti</SelectItem>
-              <SelectItem value="6">6 ospiti</SelectItem>
-              <SelectItem value="8">8+ ospiti</SelectItem>
+              {Array.from({ length: 29 }, (_, i) => i + 2).map((num) => (
+                <SelectItem key={num} value={num.toString()}>
+                  {num} ospiti
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

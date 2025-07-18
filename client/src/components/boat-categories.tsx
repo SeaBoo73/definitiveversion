@@ -1,0 +1,136 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+const categories = [
+  {
+    id: "gommone",
+    name: "Gommoni",
+    description: "Imbarcazioni pneumatiche versatili e sicure",
+    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 45
+  },
+  {
+    id: "yacht",
+    name: "Yacht",
+    description: "Lusso e comfort per esperienze indimenticabili",
+    image: "https://images.unsplash.com/photo-1540946485063-a40da27545f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 18
+  },
+  {
+    id: "sailboat",
+    name: "Barche a vela",
+    description: "L'esperienza autentica della navigazione",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 32
+  },
+  {
+    id: "catamarano",
+    name: "Catamarani",
+    description: "Spazio e stabilità per gruppi numerosi",
+    image: "https://images.unsplash.com/photo-1548913950-b0a0c9c9d7c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 15
+  },
+  {
+    id: "jetski",
+    name: "Moto d'acqua",
+    description: "Adrenalina e velocità sull'acqua",
+    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 28
+  },
+  {
+    id: "charter",
+    name: "Charter",
+    description: "Esperienza completa con skipper professionista",
+    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 12
+  },
+  {
+    id: "houseboat",
+    name: "Houseboat",
+    description: "La tua casa galleggiante per vacanze uniche",
+    image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 8
+  },
+  {
+    id: "kayak",
+    name: "Kayak",
+    description: "Esplora calette nascoste e natura incontaminata",
+    image: "https://images.unsplash.com/photo-1544427920-c49ccfb85579?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 22
+  }
+];
+
+interface BoatCategoriesProps {
+  onCategorySelect?: (category: string) => void;
+  selectedCategory?: string;
+}
+
+export function BoatCategories({ onCategorySelect, selectedCategory }: BoatCategoriesProps) {
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Esplora per categoria</h2>
+          <p className="text-lg text-gray-600">Trova l'imbarcazione perfetta per la tua avventura</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((category) => (
+            <Card
+              key={category.id}
+              className={`overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105 ${
+                selectedCategory === category.id ? "ring-2 ring-ocean-blue shadow-lg" : ""
+              }`}
+              onMouseEnter={() => setHoveredCategory(category.id)}
+              onMouseLeave={() => setHoveredCategory(null)}
+              onClick={() => onCategorySelect?.(category.id)}
+            >
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors duration-300" />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+                  <span className="text-sm font-medium text-gray-900">{category.count}</span>
+                </div>
+              </div>
+              
+              <CardContent className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">{category.name}</h3>
+                <p className="text-gray-600 text-sm mb-4">{category.description}</p>
+                
+                <Button
+                  variant={selectedCategory === category.id ? "default" : "ghost"}
+                  className={`w-full transition-all duration-300 ${
+                    hoveredCategory === category.id || selectedCategory === category.id
+                      ? "bg-ocean-blue hover:bg-blue-600 text-white"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  {selectedCategory === category.id ? "Selezionata" : "Esplora"}
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {selectedCategory && (
+          <div className="mt-8 text-center">
+            <Button
+              variant="outline"
+              onClick={() => onCategorySelect?.("")}
+              className="border-ocean-blue text-ocean-blue hover:bg-ocean-blue hover:text-white"
+            >
+              Mostra tutte le categorie
+            </Button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}

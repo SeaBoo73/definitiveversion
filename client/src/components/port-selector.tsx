@@ -6,21 +6,21 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin, Search, Check } from "lucide-react";
 
 const lazioPortsData = [
-  { name: "Gaeta", region: "Lazio", type: "Porto Principale" },
-  { name: "Terracina", region: "Lazio", type: "Porto Commerciale" },
-  { name: "San Felice Circeo", region: "Lazio", type: "Porto Turistico" },
-  { name: "Ponza", region: "Lazio", type: "Isola Pontina" },
-  { name: "Formia", region: "Lazio", type: "Porto Commerciale" },
-  { name: "Anzio", region: "Lazio", type: "Porto Storico" },
-  { name: "Ventotene", region: "Lazio", type: "Isola Pontina" },
-  { name: "Sperlonga", region: "Lazio", type: "Porto Turistico" },
-  { name: "Civitavecchia", region: "Lazio", type: "Porto Principale" },
-  { name: "Fiumicino", region: "Lazio", type: "Porto Commerciale" },
-  { name: "Nettuno", region: "Lazio", type: "Porto Storico" },
-  { name: "Ladispoli", region: "Lazio", type: "Porto Turistico" },
-  { name: "Santa Marinella", region: "Lazio", type: "Porto Turistico" },
-  { name: "Tarquinia", region: "Lazio", type: "Porto Storico" },
-  { name: "Montalto di Castro", region: "Lazio", type: "Porto Turistico" }
+  { name: "Civitavecchia", region: "Lazio", type: "Porto Principale", boats: 15 },
+  { name: "Ponza", region: "Lazio", type: "Isola Pontina", boats: 18 },
+  { name: "Gaeta", region: "Lazio", type: "Porto Storico", boats: 12 },
+  { name: "Anzio", region: "Lazio", type: "Porto Storico", boats: 10 },
+  { name: "Fiumicino", region: "Lazio", type: "Porto Aeroportuale", boats: 9 },
+  { name: "Terracina", region: "Lazio", type: "Porto Commerciale", boats: 8 },
+  { name: "Ostia", region: "Lazio", type: "Porto Romano", boats: 7 },
+  { name: "San Felice Circeo", region: "Lazio", type: "Porto Turistico", boats: 6 },
+  { name: "Formia", region: "Lazio", type: "Porto Commerciale", boats: 5 },
+  { name: "Nettuno", region: "Lazio", type: "Porto Storico", boats: 5 },
+  { name: "Santa Marinella", region: "Lazio", type: "Porto Turistico", boats: 4 },
+  { name: "Ventotene", region: "Lazio", type: "Isola Pontina", boats: 4 },
+  { name: "Ladispoli", region: "Lazio", type: "Porto Turistico", boats: 3 },
+  { name: "Sperlonga", region: "Lazio", type: "Porto Turistico", boats: 3 },
+  { name: "Montalto di Castro", region: "Lazio", type: "Porto del Nord", boats: 2 }
 ];
 
 interface PortSelectorProps {
@@ -88,7 +88,10 @@ export function PortSelector({ value, onChange, placeholder = "Seleziona porto..
                     <MapPin className="mr-2 h-4 w-4 text-ocean-blue" />
                     <div className="flex-1 text-left">
                       <div className="font-medium">{port.name}</div>
-                      <div className="text-sm text-gray-500">{port.type}</div>
+                      <div className="text-sm text-gray-500 flex items-center space-x-2">
+                        <span>{port.type}</span>
+                        <span className="text-ocean-blue font-medium">• {port.boats} barche</span>
+                      </div>
                     </div>
                     {value === port.name && (
                       <Check className="h-4 w-4 text-ocean-blue" />
@@ -107,9 +110,14 @@ export function PortSelector({ value, onChange, placeholder = "Seleziona porto..
         </ScrollArea>
         
         <div className="p-3 border-t bg-gray-50">
-          <div className="flex items-center text-sm text-gray-600">
-            <MapPin className="mr-2 h-4 w-4" />
-            <span>{filteredPorts.length} porti disponibili nel Lazio</span>
+          <div className="flex items-center justify-between text-sm text-gray-600">
+            <div className="flex items-center">
+              <MapPin className="mr-2 h-4 w-4" />
+              <span>{filteredPorts.length} porti disponibili</span>
+            </div>
+            <span className="font-medium text-ocean-blue">
+              {filteredPorts.reduce((total, port) => total + port.boats, 0)} barche totali
+            </span>
           </div>
         </div>
       </PopoverContent>

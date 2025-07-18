@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
+import { PortSelector } from "@/components/port-selector";
 import { MapPin, Calendar as CalendarIcon, Users, Search, Ship, UserCheck, Fuel, SlidersHorizontal } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -48,15 +49,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         {/* Location */}
         <div className="space-y-2">
           <Label className="block text-sm font-semibold text-gray-900">Dove</Label>
-          <div className="relative">
-            <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Ponza, Amalfi, Capri..."
-              className="pl-10"
-              value={filters.location}
-              onChange={(e) => updateFilter("location", e.target.value)}
-            />
-          </div>
+          <PortSelector
+            value={filters.location}
+            onChange={(port) => updateFilter("location", port)}
+            placeholder="Seleziona porto del Lazio..."
+          />
         </div>
 
         {/* Check-in */}

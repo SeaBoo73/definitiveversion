@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
 
 const categories = [
   {
@@ -35,7 +36,7 @@ const categories = [
     id: "jetski",
     name: "Moto d'acqua",
     description: "Adrenalina e velocità sull'acqua",
-    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: jetskiImage,
     count: 28
   },
   {

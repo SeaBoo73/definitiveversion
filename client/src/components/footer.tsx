@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { Anchor, Facebook, Instagram, Twitter, Youtube, Globe, DollarSign } from "lucide-react";
+import seagoLogo from "@assets/image_1752920705736.png";
 
 export function Footer() {
   return (
@@ -9,8 +10,12 @@ export function Footer() {
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
+              <img 
+                src={seagoLogo} 
+                alt="SeaGO" 
+                className="h-8 w-auto mr-3"
+              />
               <h3 className="text-2xl font-bold text-ocean-blue">
-                <Anchor className="inline mr-2" size={24} />
                 SeaGO
               </h3>
             </div>

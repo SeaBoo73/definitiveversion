@@ -9,6 +9,8 @@ import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";
 import CustomerDashboard from "@/pages/customer-dashboard";
+import BoatDetails from "@/pages/boat-details";
+import Checkout from "@/pages/checkout";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,8 +19,10 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/boats/:id" component={BoatDetails} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
+      <ProtectedRoute path="/checkout" component={Checkout} />
       <Route component={NotFound} />
     </Switch>
   );

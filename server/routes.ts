@@ -342,6 +342,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Stripe payment endpoints
+  app.post("/api/create-payment-intent", async (req, res) => {
+    try {
+      const { bookingId } = req.body;
+
+      if (!bookingId) {
+        return res.status(400).json({ message: "Booking ID required" });
+      }
+
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      // Get boat details
+      const boat = await storage.getBoat(booking.boatId);
+      if (!boat) {
+        return res.status(404).json({ message: "Boat not found" });
+      }
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(parseFloat(booking.totalPrice) * 100), // Convert to cents
+        currency: "eur",
+        metadata: {
+          bookingId: booking.id.toString(),
+          boatName: boat.name,
+        },
+      });
+
+      // Update booking with payment intent ID
+      await storage.updateBooking(booking.id, {
+        stripePaymentIntentId: paymentIntent.id,
+      });
+
+      res.json({
+        clientSecret: paymentIntent.client_secret,
+        booking: {
+          id: booking.id,
+          boatName: boat.name,
+          startDate: booking.startDate,
+          endDate: booking.endDate,
+          totalPrice: booking.totalPrice,
+        },
+      });
+    } catch (error: any) {
+      console.error("Payment intent creation error:", error);
+      res.status(500).json({ message: "Error creating payment intent: " + error.message });
+    }
+  });
+
+  // Webhook endpoint for Stripe events (payment confirmation)
+  app.post("/api/stripe/webhook", async (req, res) => {
+    try {
+      const sig = req.headers['stripe-signature'];
+      let event;
+
+      try {
+        event = stripe.webhooks.constructEvent(req.body, sig!, process.env.STRIPE_WEBHOOK_SECRET!);
+      } catch (err) {
+        console.error('Webhook signature verification failed:', err);
+        return res.status(400).send('Webhook signature verification failed');
+      }
+
+      if (event.type === 'payment_intent.succeeded') {
+        const paymentIntent = event.data.object;
+        const bookingId = paymentIntent.metadata.bookingId;
+
+        if (bookingId) {
+          // Update booking status to confirmed
+          await storage.updateBooking(parseInt(bookingId), {
+            status: 'confirmed',
+          });
+        }
+      }
+
+      res.json({ received: true });
+    } catch (error) {
+      console.error('Webhook error:', error);
+      res.status(500).json({ message: "Webhook error" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

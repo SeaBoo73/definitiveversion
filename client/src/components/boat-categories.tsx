@@ -66,6 +66,13 @@ const categories = [
     description: "Eleganza tradizionale per crociere di lusso",
     image: guletImage,
     count: 6
+  },
+  {
+    id: "kayak",
+    name: "Kayak",
+    description: "Esplora calette nascoste e natura incontaminata",
+    image: "https://images.unsplash.com/photo-1544427920-c49ccfb85579?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 22
   }
 ];
 

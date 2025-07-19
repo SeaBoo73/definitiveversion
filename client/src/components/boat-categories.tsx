@@ -41,6 +41,13 @@ const categories = [
     count: 15
   },
   {
+    id: "motorboat",
+    name: "Barche a motore",
+    description: "Velocità e comfort per esplorare la costa",
+    image: "https://images.unsplash.com/photo-1563772816-38bf7523a5ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    count: 38
+  },
+  {
     id: "jetski",
     name: "Moto d'acqua",
     description: "Adrenalina e velocità sull'acqua",

@@ -25,28 +25,28 @@ export function Header() {
               alt="SeaGO" 
               className="h-10 w-auto"
             />
-            <span className="ml-2 text-2xl font-bold text-ocean-blue">SeaGO</span>
+            <span className="ml-2 text-2xl font-bold text-deep-navy">SeaGO</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-ocean-blue transition-colors">
+            <Link href="/" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Esplora
             </Link>
-            <Link href="#how-it-works" className="text-gray-700 hover:text-ocean-blue transition-colors">
+            <Link href="#how-it-works" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Come funziona
             </Link>
             {user?.role === "owner" && (
-              <Link href="/owner-dashboard" className="text-gray-700 hover:text-ocean-blue transition-colors">
+              <Link href="/owner-dashboard" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
                 Dashboard Host
               </Link>
             )}
             {user?.role === "admin" && (
-              <Link href="/admin-dashboard" className="text-gray-700 hover:text-ocean-blue transition-colors">
+              <Link href="/admin-dashboard" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
                 Admin
               </Link>
             )}
-            <Link href="#help" className="text-gray-700 hover:text-ocean-blue transition-colors">
+            <Link href="#help" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Aiuto
             </Link>
           </nav>

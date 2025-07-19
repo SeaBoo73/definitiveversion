@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
 import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
-import barcheSenzaPatenteImage from "@assets/gommone senza patente_1752875806367.webp";
+import barcheSenzaPatenteImage from "@assets/OIP (1)_1752921317486.webp";
 import catamaranoImage from "@assets/catamarano ludovica_1752876117442.jpg";
 import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg";
 import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";

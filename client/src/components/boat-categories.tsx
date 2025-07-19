@@ -6,6 +6,8 @@ import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
 import catamaranoImage from "@assets/catamarano ludovica_1752876117442.jpg";
 import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg";
 import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";
+import houseboatImage from "@assets/OIP_1752919948843.webp";
+import guletImage from "@assets/gulet-romance-3-cabin-luxury-gulet-for-charter-3-1024x683_1752919948842.jpg";
 // import yachtImage from "@assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg";
 
 const categories = [
@@ -55,15 +57,15 @@ const categories = [
     id: "houseboat",
     name: "Houseboat",
     description: "La tua casa galleggiante per vacanze uniche",
-    image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: houseboatImage,
     count: 8
   },
   {
-    id: "kayak",
-    name: "Kayak",
-    description: "Esplora calette nascoste e natura incontaminata",
-    image: "https://images.unsplash.com/photo-1544427920-c49ccfb85579?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-    count: 22
+    id: "gulet",
+    name: "Gulet",
+    description: "Eleganza tradizionale per crociere di lusso",
+    image: guletImage,
+    count: 6
   }
 ];
 

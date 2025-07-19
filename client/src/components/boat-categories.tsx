@@ -70,7 +70,7 @@ const categories = [
   },
   {
     id: "kayak",
-    name: "Kayak",
+    name: "Caiacco",
     description: "Esplora calette nascoste e natura incontaminata",
     image: kayakImage,
     count: 22

@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User } from "lucide-react";
+import seagoLogo from "@assets/image_1752920705736.png";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -19,10 +20,12 @@ export function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
-            <h1 className="text-2xl font-bold text-ocean-blue">
-              <Anchor className="inline mr-2" size={24} />
-              SeaGO
-            </h1>
+            <img 
+              src={seagoLogo} 
+              alt="SeaGO" 
+              className="h-10 w-auto"
+            />
+            <span className="ml-2 text-2xl font-bold text-ocean-blue">SeaGO</span>
           </Link>
 
           {/* Desktop Navigation */}

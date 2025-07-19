@@ -23,7 +23,8 @@ export function Header() {
             <img 
               src={seagoLogo} 
               alt="SeaGO" 
-              className="h-10 w-auto"
+              className="h-10 w-auto rounded-full border border-white/20 p-1"
+              style={{ backgroundColor: 'transparent' }}
             />
             <span className="ml-2 text-2xl font-bold text-deep-navy">SeaGO</span>
           </Link>

@@ -13,7 +13,8 @@ export function Footer() {
               <img 
                 src={seagoLogo} 
                 alt="SeaGO" 
-                className="h-8 w-auto mr-3"
+                className="h-8 w-auto mr-3 rounded-full border border-white/30 p-1"
+                style={{ backgroundColor: 'transparent' }}
               />
               <h3 className="text-2xl font-bold text-ocean-blue">
                 SeaGO

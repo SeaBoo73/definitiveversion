@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
 import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
+import barcheSenzaPatenteImage from "@assets/gommone senza patente_1752875806367.webp";
 import catamaranoImage from "@assets/catamarano ludovica_1752876117442.jpg";
 import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg";
 import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";
@@ -19,6 +20,13 @@ const categories = [
     description: "Imbarcazioni pneumatiche versatili e sicure",
     image: gommoneImage,
     count: 45
+  },
+  {
+    id: "barche-senza-patente",
+    name: "Barche senza patente",
+    description: "Facili da guidare, perfette per principianti",
+    image: barcheSenzaPatenteImage,
+    count: 34
   },
   {
     id: "yacht",
@@ -101,7 +109,7 @@ export function BoatCategories({ onCategorySelect, selectedCategory }: BoatCateg
           <p className="text-lg text-gray-600">Trova l'imbarcazione perfetta per la tua avventura</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {categories.map((category) => (
             <Card
               key={category.id}

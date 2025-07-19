@@ -344,6 +344,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Stripe payment endpoints
   app.post("/api/create-payment-intent", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
     try {
       const { bookingId } = req.body;
 
@@ -354,6 +358,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const booking = await storage.getBooking(bookingId);
       if (!booking) {
         return res.status(404).json({ message: "Booking not found" });
+      }
+
+      // Verify booking belongs to the authenticated user
+      if (booking.customerId !== req.user.id) {
+        return res.status(403).json({ message: "Unauthorized to access this booking" });
       }
 
       // Get boat details

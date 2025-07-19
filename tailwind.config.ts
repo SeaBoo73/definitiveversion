@@ -67,6 +67,7 @@ export default {
         "seafoam": "var(--seafoam)",
         "coral": "var(--coral)",
         "sea-gray": "var(--sea-gray)",
+        "logo-light-blue": "var(--logo-light-blue)",
       },
       keyframes: {
         "accordion-down": {

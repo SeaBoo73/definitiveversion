@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User } from "lucide-react";
-import seagoLogo from "@assets/image_1752920705736.png";
+import seagoLogo from "../assets/seago-logo.svg";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -23,8 +23,7 @@ export function Header() {
             <img 
               src={seagoLogo} 
               alt="SeaGO" 
-              className="h-10 w-auto rounded-full border border-white/20 p-1"
-              style={{ backgroundColor: 'transparent' }}
+              className="h-10 w-10 rounded-lg"
             />
             <span className="ml-2 text-2xl font-bold text-deep-navy">SeaGO</span>
           </Link>

@@ -15,11 +15,18 @@ import motorboatImage from "@assets/R (1)_1752920495156.jpg";
 
 const categories = [
   {
-    id: "gommone",
-    name: "Gommoni",
-    description: "Imbarcazioni pneumatiche versatili e sicure",
-    image: gommoneImage,
-    count: 45
+    id: "kayak",
+    name: "Caiacco",
+    description: "Esplora calette nascoste e natura incontaminata",
+    image: kayakImage,
+    count: 22
+  },
+  {
+    id: "jetski",
+    name: "Moto d'acqua",
+    description: "Adrenalina e velocità sull'acqua",
+    image: jetskiImage,
+    count: 28
   },
   {
     id: "barche-senza-patente",
@@ -29,11 +36,18 @@ const categories = [
     count: 34
   },
   {
-    id: "yacht",
-    name: "Yacht",
-    description: "Lusso e comfort per esperienze indimenticabili",
-    image: "/attached_assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg",
-    count: 18
+    id: "gommone",
+    name: "Gommoni",
+    description: "Imbarcazioni pneumatiche versatili e sicure",
+    image: gommoneImage,
+    count: 45
+  },
+  {
+    id: "motorboat",
+    name: "Barche a motore",
+    description: "Velocità e comfort per esplorare la costa",
+    image: motorboatImage,
+    count: 38
   },
   {
     id: "sailboat",
@@ -48,20 +62,6 @@ const categories = [
     description: "Spazio e stabilità per gruppi numerosi",
     image: catamaranoImage,
     count: 15
-  },
-  {
-    id: "motorboat",
-    name: "Barche a motore",
-    description: "Velocità e comfort per esplorare la costa",
-    image: motorboatImage,
-    count: 38
-  },
-  {
-    id: "jetski",
-    name: "Moto d'acqua",
-    description: "Adrenalina e velocità sull'acqua",
-    image: jetskiImage,
-    count: 28
   },
   {
     id: "charter",
@@ -85,11 +85,11 @@ const categories = [
     count: 6
   },
   {
-    id: "kayak",
-    name: "Caiacco",
-    description: "Esplora calette nascoste e natura incontaminata",
-    image: kayakImage,
-    count: 22
+    id: "yacht",
+    name: "Yacht",
+    description: "Lusso e comfort per esperienze indimenticabili",
+    image: "/attached_assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg",
+    count: 18
   }
 ];
 

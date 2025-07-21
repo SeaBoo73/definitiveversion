@@ -70,7 +70,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-start text-left font-normal hover:bg-gray-50"
+                className="w-full justify-start text-left font-normal hover:bg-gray-50 text-gray-900"
                 onClick={() => {
                   console.log("Start date button clicked");
                   setStartDateOpen(true);
@@ -78,9 +78,9 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.startDate ? (
-                  <span>{format(new Date(filters.startDate), "dd/MM/yyyy")}</span>
+                  <span className="text-gray-900 font-medium">{format(new Date(filters.startDate), "dd/MM/yyyy")}</span>
                 ) : (
-                  <span>Seleziona data</span>
+                  <span className="text-gray-500">Seleziona data</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -111,7 +111,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-start text-left font-normal hover:bg-gray-50"
+                className="w-full justify-start text-left font-normal hover:bg-gray-50 text-gray-900"
                 onClick={() => {
                   console.log("End date button clicked");
                   setEndDateOpen(true);
@@ -119,9 +119,9 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.endDate ? (
-                  <span>{format(new Date(filters.endDate), "dd/MM/yyyy")}</span>
+                  <span className="text-gray-900 font-medium">{format(new Date(filters.endDate), "dd/MM/yyyy")}</span>
                 ) : (
-                  <span>Seleziona data</span>
+                  <span className="text-gray-500">Seleziona data</span>
                 )}
               </Button>
             </PopoverTrigger>

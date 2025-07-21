@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import Stripe from "stripe";
 import { registerOwnerRoutes } from "./routes/owner-registration";
 import { Server as SocketIOServer } from "socket.io";
+import { aiService } from "./ai-service";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { insertBoatSchema, insertBookingSchema, insertReviewSchema, insertMessageSchema } from "@shared/schema";
@@ -642,7 +643,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { input, context } = req.body;
       const advice = await aiService.getWeatherAdvice(
         context?.location || input,
-        context?.dates || { start: new Date().toISOString(), end: new Date().toISOString() }
+        context?.dates || [new Date().toISOString()]
       );
       
       res.json({ response: advice });
@@ -659,14 +660,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
     try {
       const { input, context } = req.body;
-      const itinerary = await aiService.planItinerary(
-        context?.startLocation || "Roma",
-        {
-          duration: context?.duration || 7,
-          interests: context?.interests || ["mare", "cultura"],
-          boatType: context?.boatType || "yacht"
-        }
-      );
+      const itinerary = await aiService.planItinerary({
+        startLocation: context?.startLocation || "Roma",
+        duration: context?.duration || 7,
+        interests: context?.interests || ["mare", "cultura"],
+        boatType: context?.boatType || "yacht",
+        ...context
+      });
       
       res.json({ response: itinerary });
     } catch (error) {
@@ -734,7 +734,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { code, totalAmount } = req.body;
       const promotion = await storage.applyPromotion(code, totalAmount);
       res.json(promotion);
-    } catch (error) {
+    } catch (error: any) {
       res.status(400).json({ message: error.message || "Invalid promotion code" });
     }
   });

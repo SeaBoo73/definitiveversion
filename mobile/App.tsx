@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import EsploraScreen from './src/screens/EsploraScreen';
 import EsperienzeScreen from './src/screens/EsperienzeScreen';
 import CharterScreen from './src/screens/CharterScreen';
-import AiutoScreen from './src/screens/AiutoScreen';
+import AreaNoleggiatori from './src/screens/AreaNoleggiatori';
 import ProfiloScreen from './src/screens/ProfiloScreen';
 import BoatDetailsScreen from './src/screens/BoatDetailsScreen';
 import BookingScreen from './src/screens/BookingScreen';
@@ -35,8 +35,8 @@ function TabNavigator() {
             case 'Charter':
               iconName = focused ? 'boat' : 'boat-outline';
               break;
-            case 'Aiuto':
-              iconName = focused ? 'help-circle' : 'help-circle-outline';
+            case 'Area Noleggiatori':
+              iconName = focused ? 'business' : 'business-outline';
               break;
             case 'Profilo':
               iconName = focused ? 'person' : 'person-outline';
@@ -67,7 +67,7 @@ function TabNavigator() {
       <Tab.Screen name="Esplora" component={EsploraScreen} />
       <Tab.Screen name="Esperienze" component={EsperienzeScreen} />
       <Tab.Screen name="Charter" component={CharterScreen} />
-      <Tab.Screen name="Aiuto" component={AiutoScreen} />
+      <Tab.Screen name="Area Noleggiatori" component={AreaNoleggiatori} />
       <Tab.Screen name="Profilo" component={ProfiloScreen} />
     </Tab.Navigator>
   );

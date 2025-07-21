@@ -274,3 +274,7 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Logo SeaGO integrato nel prompt di download app mobile
   - ✅ Manifest.json aggiornato con logo personalizzato dell'utente
   - ✅ InstallPrompt mostra ora il logo SeaGO autentico al posto dell'icona generica
+  - ✅ App mobile modificata: "Aiuto" sostituito con "Area Noleggiatori" in bottom tab
+  - ✅ Funzionalità aiuto spostate dentro sezione "Assistenza" del Profilo
+  - ✅ AreaNoleggiatori: screen dedicato per proprietari con CTA e funzionalità business
+  - ✅ ProfiloScreen aggiornato con FAQ e contatti integrati nella voce assistenza

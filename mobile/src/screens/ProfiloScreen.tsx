@@ -27,6 +27,26 @@ export default function ProfiloScreen({ navigation }: any) {
     navigation.navigate('Auth');
   };
 
+  const showFAQ = () => {
+    Alert.alert(
+      'Domande Frequenti',
+      'Come posso prenotare una barca?\n• Usa la ricerca per trovare la barca ideale e completa la prenotazione.\n\nServe la patente?\n• Dipende dal tipo di imbarcazione. Le barche senza patente non la richiedono.\n\nPosso cancellare?\n• Le cancellazioni sono possibili secondo i termini del proprietario.',
+      [{ text: 'OK' }]
+    );
+  };
+
+  const showContactOptions = () => {
+    Alert.alert(
+      'Contattaci',
+      'Scegli come preferisci contattarci:',
+      [
+        { text: 'Annulla', style: 'cancel' },
+        { text: 'Email', onPress: () => console.log('Email support') },
+        { text: 'WhatsApp', onPress: () => console.log('WhatsApp support') },
+      ]
+    );
+  };
+
   const handleMenuPress = (item: any) => {
     switch (item.id) {
       case 1:
@@ -46,7 +66,16 @@ export default function ProfiloScreen({ navigation }: any) {
         );
         break;
       case 8:
-        navigation.navigate('Aiuto');
+        // Show help inline or navigate to help section
+        Alert.alert(
+          'Centro Assistenza',
+          'Come possiamo aiutarti?',
+          [
+            { text: 'Annulla', style: 'cancel' },
+            { text: 'FAQ', onPress: () => showFAQ() },
+            { text: 'Contattaci', onPress: () => showContactOptions() },
+          ]
+        );
         break;
       default:
         Alert.alert('Funzionalità', `${item.title} sarà disponibile presto!`);

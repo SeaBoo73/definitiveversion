@@ -19,7 +19,7 @@ interface SearchParams {
   startDate?: string;
   endDate?: string;
   guests?: string;
-  boatType?: string;
+  boatTypes?: string;
   skipperRequired?: string;
   fuelIncluded?: string;
 }
@@ -37,7 +37,7 @@ export function SearchResults() {
     startDate: urlParams.get("startDate") || undefined,
     endDate: urlParams.get("endDate") || undefined,
     guests: urlParams.get("guests") || undefined,
-    boatType: urlParams.get("boatType") || undefined,
+    boatTypes: urlParams.get("boatTypes") || undefined,
     skipperRequired: urlParams.get("skipperRequired") || undefined,
     fuelIncluded: urlParams.get("fuelIncluded") || undefined,
   };
@@ -49,7 +49,10 @@ export function SearchResults() {
   // Filter boats based on search parameters
   const filteredBoats = boats.filter((boat: Boat) => {
     if (searchParams.location && boat.port !== searchParams.location) return false;
-    if (searchParams.boatType && boat.type !== searchParams.boatType) return false;
+    if (searchParams.boatTypes) {
+      const selectedTypes = searchParams.boatTypes.split(",");
+      if (!selectedTypes.includes(boat.type)) return false;
+    }
     if (searchParams.guests && boat.maxPersons && boat.maxPersons < parseInt(searchParams.guests)) return false;
     if (searchParams.skipperRequired === "true" && !boat.skipperRequired) return false;
     // Note: fuelIncluded is not in the current boat schema, we'll skip this filter for now
@@ -80,7 +83,9 @@ export function SearchResults() {
     if (filters.startDate) searchParams.set("startDate", filters.startDate);
     if (filters.endDate) searchParams.set("endDate", filters.endDate);
     if (filters.guests) searchParams.set("guests", filters.guests.toString());
-    if (filters.boatType) searchParams.set("boatType", filters.boatType);
+    if (filters.boatTypes && filters.boatTypes.length > 0) {
+      searchParams.set("boatTypes", filters.boatTypes.join(","));
+    }
     if (filters.skipperRequired) searchParams.set("skipperRequired", "true");
     if (filters.fuelIncluded) searchParams.set("fuelIncluded", "true");
     
@@ -136,8 +141,10 @@ export function SearchResults() {
                 {searchParams.location && (
                   <Badge variant="secondary">{searchParams.location}</Badge>
                 )}
-                {searchParams.boatType && (
-                  <Badge variant="secondary">{getBoatTypeName(searchParams.boatType)}</Badge>
+                {searchParams.boatTypes && (
+                  searchParams.boatTypes.split(",").map(type => (
+                    <Badge key={type} variant="secondary">{getBoatTypeName(type)}</Badge>
+                  ))
                 )}
                 {searchParams.startDate && searchParams.endDate && (
                   <Badge variant="secondary">

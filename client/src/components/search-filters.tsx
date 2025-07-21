@@ -20,7 +20,7 @@ export interface SearchFilters {
   startDate: Date | undefined;
   endDate: Date | undefined;
   guests: number;
-  boatType?: string;
+  boatTypes?: string[];
   skipperRequired?: boolean;
   fuelIncluded?: boolean;
 }
@@ -49,7 +49,9 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
       if (filters.startDate) searchParams.set("startDate", filters.startDate.toISOString());
       if (filters.endDate) searchParams.set("endDate", filters.endDate.toISOString());
       if (filters.guests) searchParams.set("guests", filters.guests.toString());
-      if (filters.boatType) searchParams.set("boatType", filters.boatType);
+      if (filters.boatTypes && filters.boatTypes.length > 0) {
+        searchParams.set("boatTypes", filters.boatTypes.join(","));
+      }
       if (filters.skipperRequired) searchParams.set("skipperRequired", "true");
       if (filters.fuelIncluded) searchParams.set("fuelIncluded", "true");
       
@@ -240,57 +242,95 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         {showAdvanced && (
           <div className="bg-gray-50 rounded-lg p-4 mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label>Tipo di imbarcazione</Label>
-                <Select onValueChange={(value) => updateFilter("boatType", value)}>
-                  <SelectTrigger className="text-gray-900">
-                    <SelectValue placeholder="Tutti i tipi" className="text-gray-900" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="kayak">Caiacco</SelectItem>
-                    <SelectItem value="jetski">Moto d'acqua</SelectItem>
-                    <SelectItem value="barche-senza-patente">Barche senza patente</SelectItem>
-                    <SelectItem value="gommone">Gommoni</SelectItem>
-                    <SelectItem value="motorboat">Barche a motore</SelectItem>
-                    <SelectItem value="sailboat">Barche a vela</SelectItem>
-                    <SelectItem value="catamarano">Catamarani</SelectItem>
-                    <SelectItem value="charter">Charter</SelectItem>
-                    <SelectItem value="houseboat">Houseboat</SelectItem>
-                    <SelectItem value="gulet">Gulet</SelectItem>
-                    <SelectItem value="yacht">Yacht</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="space-y-3">
+                <Label className="text-sm font-semibold text-gray-900">Tipo di imbarcazione</Label>
+                <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                  {[
+                    { value: "kayak", label: "Caiacco" },
+                    { value: "jetski", label: "Moto d'acqua" },
+                    { value: "barche-senza-patente", label: "Barche senza patente" },
+                    { value: "gommone", label: "Gommoni" },
+                    { value: "motorboat", label: "Barche a motore" },
+                    { value: "sailboat", label: "Barche a vela" },
+                    { value: "catamarano", label: "Catamarani" },
+                    { value: "charter", label: "Charter" },
+                    { value: "houseboat", label: "Houseboat" },
+                    { value: "gulet", label: "Gulet" },
+                    { value: "yacht", label: "Yacht" }
+                  ].map((type) => (
+                    <label
+                      key={type.value}
+                      className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={filters.boatTypes?.includes(type.value) || false}
+                        onChange={(e) => {
+                          const currentTypes = filters.boatTypes || [];
+                          if (e.target.checked) {
+                            updateFilter("boatTypes", [...currentTypes, type.value]);
+                            // Auto-close advanced filters when a type is selected
+                            setTimeout(() => setShowAdvanced(false), 300);
+                          } else {
+                            updateFilter("boatTypes", currentTypes.filter(t => t !== type.value));
+                          }
+                        }}
+                        className="rounded border-gray-300 text-coral focus:ring-coral"
+                      />
+                      <span className="text-sm text-gray-700">{type.label}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
             
-            {filters.boatType && (
-              <div className="mt-4">
-                <Badge variant="secondary" className="mr-2">
-                  {(() => {
-                    const typeNames = {
-                      "gommone": "Gommoni",
-                      "barche-senza-patente": "Barche senza patente", 
-                      "yacht": "Yacht",
-                      "sailboat": "Barche a vela",
-                      "catamarano": "Catamarani",
-                      "motorboat": "Barche a motore",
-                      "jetski": "Moto d'acqua",
-                      "charter": "Charter",
-                      "houseboat": "Houseboat",
-                      "gulet": "Gulet",
-                      "kayak": "Caiacco"
-                    };
-                    return typeNames[filters.boatType as keyof typeof typeNames] || filters.boatType;
-                  })()}
-                  <button
-                    onClick={() => updateFilter("boatType", undefined)}
-                    className="ml-2 text-gray-500 hover:text-gray-700"
-                  >
-                    ×
-                  </button>
-                </Badge>
-              </div>
-            )}
+          </div>
+        )}
+      
+        {/* Selected Boat Types Display - Outside of advanced filters */}
+        {filters.boatTypes && filters.boatTypes.length > 0 && (
+          <div className="mt-4">
+            <Label className="text-sm font-semibold text-gray-900 block mb-2">
+              Tipologie selezionate:
+            </Label>
+            <div className="flex flex-wrap gap-2">
+              {filters.boatTypes.map((type) => {
+                const typeNames = {
+                  "gommone": "Gommoni",
+                  "barche-senza-patente": "Barche senza patente", 
+                  "yacht": "Yacht",
+                  "sailboat": "Barche a vela",
+                  "catamarano": "Catamarani",
+                  "motorboat": "Barche a motore",
+                  "jetski": "Moto d'acqua",
+                  "charter": "Charter",
+                  "houseboat": "Houseboat",
+                  "gulet": "Gulet",
+                  "kayak": "Caiacco"
+                };
+                return (
+                  <Badge key={type} variant="secondary" className="mr-2">
+                    {typeNames[type as keyof typeof typeNames] || type}
+                    <button
+                      onClick={() => {
+                        const newTypes = filters.boatTypes?.filter(t => t !== type) || [];
+                        updateFilter("boatTypes", newTypes.length > 0 ? newTypes : undefined);
+                      }}
+                      className="ml-2 text-gray-500 hover:text-gray-700"
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                );
+              })}
+              <Badge 
+                variant="outline" 
+                className="cursor-pointer hover:bg-gray-100"
+                onClick={() => updateFilter("boatTypes", undefined)}
+              >
+                Cancella tutto
+              </Badge>
+            </div>
           </div>
         )}
       </div>

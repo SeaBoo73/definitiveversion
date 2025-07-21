@@ -52,7 +52,7 @@ export default function HomePage() {
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Naviga verso l'avventura
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto font-medium">
               Prenota barche, yacht e imbarcazioni uniche in tutta Italia. 
               Vivi il mare come mai prima d'ora.
             </p>

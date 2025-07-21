@@ -33,6 +33,9 @@ export function Header() {
             <Link href="/" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Esplora
             </Link>
+            <Link href="/esperienze" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+              Esperienze
+            </Link>
             <Link href="#how-it-works" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Come funziona
             </Link>

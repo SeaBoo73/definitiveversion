@@ -12,6 +12,7 @@ import CustomerDashboard from "@/pages/customer-dashboard";
 import BoatDetails from "@/pages/boat-details";
 import Checkout from "@/pages/checkout";
 import { SearchResults } from "@/pages/search-results";
+import { EsperienzePage } from "@/pages/esperienze";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
     <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/search" component={SearchResults} />
+      <Route path="/esperienze" component={EsperienzePage} />
       <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

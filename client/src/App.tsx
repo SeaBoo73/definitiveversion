@@ -25,6 +25,7 @@ import NotFound from "@/pages/not-found";
 import AiutoPage from "@/pages/aiuto";
 import ProfiloPage from "@/pages/profilo";
 import { AIAssistantPage } from "@/pages/ai-assistant-page";
+import { TestBookingPage } from "@/pages/test-booking-page";
 
 function Router() {
   return (
@@ -40,6 +41,9 @@ function Router() {
       <Route path="/ia" component={AIAssistantPage} />
       <Route path="/profilo" component={ProfiloPage} />
       <Route path="/test" component={TestPage} />
+      <Route path="/test-booking">
+        <TestBookingPage />
+      </Route>
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
       <Route path="/boats/:id/book" component={BoatBooking} />

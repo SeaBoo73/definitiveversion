@@ -52,16 +52,32 @@ export function CleanApp() {
             <p className="text-yellow-700">
               L'overlay di errore rosso è del plugin di debug di Vite in ambiente sviluppo.
               L'applicazione SeaGO funziona perfettamente per tutti i casi d'uso richiesti.
+              <br /><br />
+              <strong>Credenziali di test:</strong><br />
+              Owner: owner@test.com / password123<br />
+              Customer: customer@test.com / password123
             </p>
           </div>
         </div>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 text-center space-x-4">
           <a 
-            href="/" 
-            className="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            href="/home" 
+            className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Torna all'App Principale
+            App Completa SeaGO
+          </a>
+          <a 
+            href="/auth" 
+            className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            Test Login/Register
+          </a>
+          <a 
+            href="/search" 
+            className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Test Ricerca Barche
           </a>
         </div>
       </div>

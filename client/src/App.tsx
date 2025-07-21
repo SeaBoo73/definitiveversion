@@ -28,9 +28,10 @@ function Router() {
   return (
     <Switch>
       <Route path="/clean" component={CleanApp} />
+      <Route path="/" component={CleanApp} />
+      <Route path="/home" component={HomePage} />
       <Route path="/simple-test" component={SimpleTest} />
       <Route path="/minimal" component={MinimalApp} />
-      <Route path="/" component={HomePage} />
       <Route path="/search" component={SearchResults} />
       <Route path="/esperienze" component={EsperienzePage} />
       <Route path="/charter" component={CharterPage} />

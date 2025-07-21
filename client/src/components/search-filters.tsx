@@ -154,9 +154,9 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         <div className="space-y-2">
           <Label className="block text-sm font-semibold text-gray-900">Ospiti</Label>
           <Select onValueChange={(value) => updateFilter("guests", parseInt(value))}>
-            <SelectTrigger>
+            <SelectTrigger className="text-gray-900">
               <Users className="mr-2 h-4 w-4" />
-              <SelectValue placeholder={`${filters.guests} ospiti`} />
+              <SelectValue placeholder={`${filters.guests} ospiti`} className="text-gray-900" />
             </SelectTrigger>
             <SelectContent>
               {Array.from({ length: 29 }, (_, i) => i + 2).map((num) => (
@@ -187,36 +187,37 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={showAdvanced ? "bg-gray-100" : ""}
+            className={showAdvanced ? "bg-gray-100 text-gray-900" : "text-gray-900 hover:bg-gray-50"}
           >
             <Ship className="mr-2 h-4 w-4" />
-            Tipo imbarcazione
+            <span className="text-gray-900">Tipo imbarcazione</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => updateFilter("skipperRequired", !filters.skipperRequired)}
-            className={filters.skipperRequired ? "bg-blue-100 text-blue-700" : ""}
+            className={filters.skipperRequired ? "bg-blue-100 text-blue-700 border-blue-300" : "text-gray-900 hover:bg-gray-50"}
           >
             <UserCheck className="mr-2 h-4 w-4" />
-            Con Skipper
+            <span className={filters.skipperRequired ? "text-blue-700" : "text-gray-900"}>Con Skipper</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => updateFilter("fuelIncluded", !filters.fuelIncluded)}
-            className={filters.fuelIncluded ? "bg-green-100 text-green-700" : ""}
+            className={filters.fuelIncluded ? "bg-green-100 text-green-700 border-green-300" : "text-gray-900 hover:bg-gray-50"}
           >
             <Fuel className="mr-2 h-4 w-4" />
-            Carburante incluso
+            <span className={filters.fuelIncluded ? "text-green-700" : "text-gray-900"}>Carburante incluso</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
+            className={showAdvanced ? "bg-gray-100 text-gray-900" : "text-gray-900 hover:bg-gray-50"}
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
-            Altri filtri
+            <span className="text-gray-900">Altri filtri</span>
           </Button>
         </div>
 

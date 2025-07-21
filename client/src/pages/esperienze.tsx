@@ -21,7 +21,7 @@ import {
 export function EsperienzePage() {
   const experiences = [
     {
-      category: "🌅 Tour ed Escursioni Tematiche",
+      category: "Tour ed Escursioni Tematiche",
       icon: <Sunset className="h-6 w-6" />,
       items: [
         {

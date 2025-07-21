@@ -143,21 +143,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Charter CTA */}
-      <section id="charter" className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Servizi Charter Professionali</h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
-            Scopri le nostre soluzioni charter complete: dalla vela settimanale ai noleggi privati giornalieri. 
-            Ogni esperienza è personalizzata per offrirti il meglio del mare italiano.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-ocean-blue hover:bg-blue-600 text-white px-8 py-3" asChild>
-              <Link href="/charter">Esplora i servizi charter</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="border-ocean-blue text-ocean-blue hover:bg-ocean-blue hover:text-white px-8 py-3">
-              Richiedi preventivo personalizzato
-            </Button>
+      {/* How It Works */}
+      <section id="how-it-works" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Come funziona SeaGO</h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Prenota la tua imbarcazione ideale in 3 semplici passaggi
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-ocean-blue text-white rounded-full text-2xl font-bold mb-6">
+                1
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Cerca la tua imbarcazione</h3>
+              <p className="text-gray-600">
+                Trova l'imbarcazione perfetta usando la nostra mappa interattiva e i filtri avanzati per tipo, prezzo e ubicazione
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-seafoam text-white rounded-full text-2xl font-bold mb-6">
+                2
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Prenota</h3>
+              <p className="text-gray-600">
+                Seleziona le date, paga online in totale sicurezza e ricevi conferma istantanea della tua prenotazione
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-coral text-white rounded-full text-2xl font-bold mb-6">
+                3
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Naviga</h3>
+              <p className="text-gray-600">
+                Ritira la tua imbarcazione nel porto concordato e goditi un'esperienza indimenticabile in mare
+              </p>
+            </div>
           </div>
         </div>
       </section>

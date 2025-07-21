@@ -331,57 +331,29 @@ export default function DiventaNoleggiatorePage() {
                 />
 
                 {/* Terms */}
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="acceptCommission"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel className="text-sm font-medium">
-                            Accetto la commissione del 15% pagata dal cliente
-                          </FormLabel>
-                          <p className="text-xs text-gray-600">
-                            La commissione del 15% viene aggiunta al prezzo finale e pagata dal cliente. 
-                            Tu ricevi il 100% del prezzo che imposti.
-                          </p>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="acceptTerms"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value}
-                            onCheckedChange={field.onChange}
-                          />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                          <FormLabel className="text-sm font-medium">
-                            Accetto i termini e condizioni di SeaGO
-                          </FormLabel>
-                          <p className="text-xs text-gray-600">
-                            Inclusi: assicurazione, politiche di cancellazione, 
-                            standard di sicurezza e qualità del servizio.
-                          </p>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="acceptTerms"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm font-medium">
+                          Accetto i termini e condizioni di SeaGO
+                        </FormLabel>
+                        <p className="text-xs text-gray-600">
+                          Inclusi: assicurazione, politiche di cancellazione, standard di sicurezza e qualità del servizio
+                        </p>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="flex gap-4 pt-6">
                   <Button

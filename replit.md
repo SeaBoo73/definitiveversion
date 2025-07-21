@@ -263,3 +263,6 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Esperienza di checkout semplificata per migliore conversione
   - ✅ Mantenuta trasparenza commissioni nella sezione host/proprietari
   - ✅ Termini e Privacy Policy integrati nel flusso di pagamento
+  - ✅ Registrazione noleggiatori semplificata - rimossa dicitura commissione prominente
+  - ✅ Sostituita con accettazione generica termini di servizio
+  - ✅ Business model ottimizzato per migliore user experience

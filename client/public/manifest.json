@@ -8,15 +8,15 @@
   "theme_color": "#0ea5e9",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "/attached_assets/WhatsApp Image 2025-06-12 at 18.53.09_1753118391628.jpeg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/attached_assets/WhatsApp Image 2025-06-12 at 18.53.09_1753118391628.jpeg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ],

@@ -46,7 +46,13 @@ export function InstallPrompt() {
       <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="bg-ocean-blue text-white p-6 rounded-t-xl text-center">
-          <Smartphone className="h-12 w-12 mx-auto mb-3" />
+          <div className="mb-3">
+            <img 
+              src="/attached_assets/WhatsApp Image 2025-06-12 at 18.53.09_1753118391628.jpeg" 
+              alt="SeaGO Logo" 
+              className="h-16 w-16 mx-auto rounded-lg object-cover bg-white p-1"
+            />
+          </div>
           <h2 className="text-xl font-bold mb-2">Scarica l'App SeaGO</h2>
           <p className="text-sm opacity-90">
             La migliore esperienza di navigazione sempre con te

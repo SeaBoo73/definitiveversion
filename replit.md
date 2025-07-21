@@ -271,3 +271,6 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Skipper mantenuto con logica originale (obbligatorio/opzionale)
   - ✅ Form prenotazione aggiornato con logica specifica solo per carburante
   - ✅ UI ottimizzata per chiarire servizi carburante inclusi/esclusi per categoria
+  - ✅ Logo SeaGO integrato nel prompt di download app mobile
+  - ✅ Manifest.json aggiornato con logo personalizzato dell'utente
+  - ✅ InstallPrompt mostra ora il logo SeaGO autentico al posto dell'icona generica

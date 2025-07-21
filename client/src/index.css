@@ -107,3 +107,23 @@
     background-color: var(--sea-gray);
   }
 }
+
+/* Calendar fix - ensure calendar days are clickable */
+.calendar {
+  pointer-events: auto !important;
+}
+
+.calendar button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+.calendar [role="gridcell"] {
+  pointer-events: auto !important;
+}
+
+.calendar [role="gridcell"] button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 10 !important;
+}

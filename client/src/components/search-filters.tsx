@@ -65,7 +65,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-start text-left font-normal"
+                className="w-full justify-start text-left font-normal hover:bg-gray-50"
+                onClick={() => {
+                  console.log("Start date button clicked");
+                  setStartDateOpen(true);
+                }}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.startDate ? (
@@ -75,16 +79,20 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="w-auto p-0 z-50" align="start">
               <Calendar
                 mode="single"
                 selected={filters.startDate}
                 onSelect={(date) => {
-                  updateFilter("startDate", date);
-                  setStartDateOpen(false);
+                  console.log("Start date selected:", date);
+                  if (date) {
+                    updateFilter("startDate", date);
+                    setStartDateOpen(false);
+                  }
                 }}
                 disabled={(date) => date < new Date(Date.now() - 24 * 60 * 60 * 1000)}
                 initialFocus
+                className="rounded-md border calendar"
               />
             </PopoverContent>
           </Popover>
@@ -97,7 +105,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
-                className="w-full justify-start text-left font-normal"
+                className="w-full justify-start text-left font-normal hover:bg-gray-50"
+                onClick={() => {
+                  console.log("End date button clicked");
+                  setEndDateOpen(true);
+                }}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.endDate ? (
@@ -107,13 +119,16 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
+            <PopoverContent className="w-auto p-0 z-50" align="start">
               <Calendar
                 mode="single"
                 selected={filters.endDate}
                 onSelect={(date) => {
-                  updateFilter("endDate", date);
-                  setEndDateOpen(false);
+                  console.log("End date selected:", date);
+                  if (date) {
+                    updateFilter("endDate", date);
+                    setEndDateOpen(false);
+                  }
                 }}
                 disabled={(date) => {
                   const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -122,6 +137,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                   return false;
                 }}
                 initialFocus
+                className="rounded-md border calendar"
               />
             </PopoverContent>
           </Popover>

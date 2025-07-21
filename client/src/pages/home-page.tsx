@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link } from "wouter";
-import heroImage from "@assets/OIP (3)_1753081263840.webp";
+import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({

@@ -231,17 +231,17 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                     <SelectValue placeholder="Tutti i tipi" className="text-gray-900" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="gommone">Gommoni</SelectItem>
+                    <SelectItem value="kayak">Caiacco</SelectItem>
+                    <SelectItem value="jetski">Moto d'acqua</SelectItem>
                     <SelectItem value="barche-senza-patente">Barche senza patente</SelectItem>
-                    <SelectItem value="yacht">Yacht</SelectItem>
+                    <SelectItem value="gommone">Gommoni</SelectItem>
+                    <SelectItem value="motorboat">Barche a motore</SelectItem>
                     <SelectItem value="sailboat">Barche a vela</SelectItem>
                     <SelectItem value="catamarano">Catamarani</SelectItem>
-                    <SelectItem value="motorboat">Barche a motore</SelectItem>
-                    <SelectItem value="jetski">Moto d'acqua</SelectItem>
                     <SelectItem value="charter">Charter</SelectItem>
                     <SelectItem value="houseboat">Houseboat</SelectItem>
                     <SelectItem value="gulet">Gulet</SelectItem>
-                    <SelectItem value="kayak">Caiacco</SelectItem>
+                    <SelectItem value="yacht">Yacht</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 import HomePage from "@/pages/home-page";
+import { SimpleTest } from "./simple-test";
+import { MinimalApp } from "./minimal-app";
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";
@@ -23,6 +25,8 @@ import ProfiloPage from "@/pages/profilo";
 function Router() {
   return (
     <Switch>
+      <Route path="/simple-test" component={SimpleTest} />
+      <Route path="/minimal" component={MinimalApp} />
       <Route path="/" component={HomePage} />
       <Route path="/search" component={SearchResults} />
       <Route path="/esperienze" component={EsperienzePage} />

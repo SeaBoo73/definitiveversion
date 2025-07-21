@@ -15,18 +15,11 @@ import motorboatImage from "@assets/R (1)_1752920495156.jpg";
 
 const categories = [
   {
-    id: "kayak",
-    name: "Caiacco",
-    description: "Esplora calette nascoste e natura incontaminata",
-    image: kayakImage,
-    count: 22
-  },
-  {
-    id: "jetski",
-    name: "Moto d'acqua",
-    description: "Adrenalina e velocità sull'acqua",
-    image: jetskiImage,
-    count: 28
+    id: "gommone",
+    name: "Gommoni",
+    description: "Imbarcazioni pneumatiche versatili e sicure",
+    image: gommoneImage,
+    count: 45
   },
   {
     id: "barche-senza-patente",
@@ -36,11 +29,11 @@ const categories = [
     count: 34
   },
   {
-    id: "gommone",
-    name: "Gommoni",
-    description: "Imbarcazioni pneumatiche versatili e sicure",
-    image: gommoneImage,
-    count: 45
+    id: "jetski",
+    name: "Moto d'acqua",
+    description: "Adrenalina e velocità sull'acqua",
+    image: jetskiImage,
+    count: 28
   },
   {
     id: "motorboat",
@@ -90,6 +83,13 @@ const categories = [
     description: "Lusso e comfort per esperienze indimenticabili",
     image: "/attached_assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg",
     count: 18
+  },
+  {
+    id: "kayak",
+    name: "Caiacco",
+    description: "Esplora calette nascoste e natura incontaminata",
+    image: kayakImage,
+    count: 22
   }
 ];
 

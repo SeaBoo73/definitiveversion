@@ -264,7 +264,7 @@ export default function AuthPage() {
                           }
                           className="mt-1"
                         />
-                        <Label htmlFor="acceptTerms" className="text-sm leading-5">
+                        <label htmlFor="acceptTerms" className="text-sm leading-5">
                           Accetto i{" "}
                           <Link href="/condizioni-servizio">
                             <a className="text-ocean-blue hover:underline font-medium" target="_blank">
@@ -275,7 +275,7 @@ export default function AuthPage() {
                           <a href="/privacy-policy" className="text-ocean-blue hover:underline font-medium" target="_blank">
                             Privacy Policy
                           </a>
-                        </Label>
+                        </label>
                       </div>
                       {registerForm.formState.errors.acceptTerms && (
                         <p className="text-sm text-red-500 ml-6">

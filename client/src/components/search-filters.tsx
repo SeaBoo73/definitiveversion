@@ -171,7 +171,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         {/* Search Button */}
         <div className="flex items-end">
           <Button 
-            className="w-full bg-coral hover:bg-orange-600"
+            className="w-full bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
             onClick={handleSearch}
           >
             <Search className="mr-2 h-4 w-4" />

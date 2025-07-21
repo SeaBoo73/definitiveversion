@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link } from "wouter";
-import heroImage from "@assets/WhatsApp Image 2025-06-15 at 23.36.59_1752875633742.jpeg";
+import heroImage from "@assets/image_1753080925932.png";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({

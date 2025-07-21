@@ -78,17 +78,19 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.startDate ? (
-                  format(filters.startDate, "PPP", { locale: it })
+                  format(new Date(filters.startDate), "PPP", { locale: it })
                 ) : (
                   <span>Seleziona data</span>
                 )}
-                {/* Debug: {JSON.stringify(filters.startDate)} */}
+                <span className="text-xs text-gray-500 ml-2">
+                  {filters.startDate && JSON.stringify(filters.startDate).slice(1, 11)}
+                </span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-50" align="start">
               <Calendar
                 mode="single"
-                selected={filters.startDate}
+                selected={filters.startDate ? new Date(filters.startDate) : undefined}
                 onSelect={(date) => {
                   console.log("Start date selected:", date);
                   if (date) {
@@ -120,17 +122,19 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.endDate ? (
-                  format(filters.endDate, "PPP", { locale: it })
+                  format(new Date(filters.endDate), "PPP", { locale: it })
                 ) : (
                   <span>Seleziona data</span>
                 )}
-                {/* Debug: {JSON.stringify(filters.endDate)} */}
+                <span className="text-xs text-gray-500 ml-2">
+                  {filters.endDate && JSON.stringify(filters.endDate).slice(1, 11)}
+                </span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-50" align="start">
               <Calendar
                 mode="single"
-                selected={filters.endDate}
+                selected={filters.endDate ? new Date(filters.endDate) : undefined}
                 onSelect={(date) => {
                   console.log("End date selected:", date);
                   if (date) {

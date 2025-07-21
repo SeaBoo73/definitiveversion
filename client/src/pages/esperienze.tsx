@@ -149,7 +149,7 @@ export function EsperienzePage() {
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
               Esperienze Uniche in Mare
             </h1>
-            <p className="text-xl md:text-2xl text-ocean-light mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto opacity-90">
               Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni. 
               Ogni esperienza è pensata per creare ricordi indimenticabili.
             </p>

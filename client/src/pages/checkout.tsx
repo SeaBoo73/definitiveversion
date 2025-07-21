@@ -26,13 +26,13 @@ const CheckoutForm = ({ booking, clientSecret, user }: any) => {
   const { toast } = useToast();
 
   const calculateLoyaltyDiscount = (totalPrice: number, level: string) => {
-    const discounts = {
+    const discounts: { [key: string]: number } = {
       bronze: 0.05,   // 5%
       silver: 0.10,   // 10%
       gold: 0.15,     // 15%
       platinum: 0.20  // 20%
     };
-    return totalPrice * discounts[level] || 0;
+    return totalPrice * (discounts[level] || 0);
   };
 
   const loyaltyDiscount = calculateLoyaltyDiscount(parseFloat(booking.totalPrice), user.customerLevel);
@@ -182,10 +182,6 @@ const CheckoutForm = ({ booking, clientSecret, user }: any) => {
                   <span>Totale</span>
                   <span className="text-ocean-blue">€{finalPrice.toFixed(2)}</span>
                 </div>
-
-                <p className="text-sm text-gray-600">
-                  Commissione SeaGO (15%) e tasse incluse
-                </p>
               </div>
             </CardContent>
           </Card>
@@ -225,10 +221,18 @@ const CheckoutForm = ({ booking, clientSecret, user }: any) => {
                   </Button>
                 </div>
 
-                <p className="text-xs text-gray-600 text-center">
-                  Il pagamento è sicuro e protetto da Stripe. 
-                  Accettiamo tutte le principali carte di credito, Apple Pay e Google Pay.
-                </p>
+                <div className="text-xs text-gray-600 text-center space-y-2">
+                  <p>
+                    Il pagamento è sicuro e protetto da Stripe. 
+                    Accettiamo tutte le principali carte di credito, Apple Pay e Google Pay.
+                  </p>
+                  <p>
+                    Cliccando "Completa Pagamento" accetti i nostri{" "}
+                    <button className="underline hover:text-gray-800">Termini di Servizio</button> e{" "}
+                    <button className="underline hover:text-gray-800">Privacy Policy</button>.
+                    Il servizio include una commissione del 15% già inclusa nel totale.
+                  </p>
+                </div>
               </form>
             </CardContent>
           </Card>

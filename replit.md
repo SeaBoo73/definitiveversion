@@ -258,3 +258,8 @@ The application follows modern web development best practices with a focus on ty
   - ✅ API backend funzionante con 20+ barche di test
   - ✅ Sistema completo testato end-to-end su mobile e desktop
   - ✅ App SeaGO ottimizzata e pronta per utenti finali
+- **Ottimizzazione Business Model (July 21, 2025):**
+  - ✅ Commissione 15% spostata dalla vista prominente ai termini di accettazione
+  - ✅ Esperienza di checkout semplificata per migliore conversione
+  - ✅ Mantenuta trasparenza commissioni nella sezione host/proprietari
+  - ✅ Termini e Privacy Policy integrati nel flusso di pagamento

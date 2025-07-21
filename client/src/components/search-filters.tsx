@@ -208,47 +208,47 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
 
       {/* Advanced Filters */}
       <div className={onSearch ? "mt-0" : "mt-4"}>
-        <div className={onSearch ? "space-y-3 mb-4" : "flex flex-wrap gap-2 mb-4"}>
+        <div className="flex flex-wrap gap-2 mb-4">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={showAdvanced ? "bg-gray-100 text-gray-900 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
+            className={showAdvanced ? "bg-gray-100 text-gray-900" : "text-gray-900 hover:bg-gray-50"}
           >
-            <Ship className="mr-2 h-4 w-4 flex-shrink-0" />
+            <Ship className="mr-2 h-4 w-4" />
             <span className="text-gray-900">Tipo imbarcazione</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => updateFilter("skipperRequired", !filters.skipperRequired)}
-            className={filters.skipperRequired ? "bg-blue-100 text-blue-700 border-blue-300 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
+            className={filters.skipperRequired ? "bg-blue-100 text-blue-700 border-blue-300" : "text-gray-900 hover:bg-gray-50"}
           >
-            <UserCheck className="mr-2 h-4 w-4 flex-shrink-0" />
+            <UserCheck className="mr-2 h-4 w-4" />
             <span className={filters.skipperRequired ? "text-blue-700" : "text-gray-900"}>Con Skipper</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => updateFilter("fuelIncluded", !filters.fuelIncluded)}
-            className={filters.fuelIncluded ? "bg-green-100 text-green-700 border-green-300 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
+            className={filters.fuelIncluded ? "bg-green-100 text-green-700 border-green-300" : "text-gray-900 hover:bg-gray-50"}
           >
-            <Fuel className="mr-2 h-4 w-4 flex-shrink-0" />
+            <Fuel className="mr-2 h-4 w-4" />
             <span className={filters.fuelIncluded ? "text-green-700" : "text-gray-900"}>Carburante incluso</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={showAdvanced ? "bg-gray-100 text-gray-900 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
+            className={showAdvanced ? "bg-gray-100 text-gray-900" : "text-gray-900 hover:bg-gray-50"}
           >
-            <SlidersHorizontal className="mr-2 h-4 w-4 flex-shrink-0" />
+            <SlidersHorizontal className="mr-2 h-4 w-4" />
             <span className="text-gray-900">Altri filtri</span>
           </Button>
         </div>
 
         {showAdvanced && (
-          <div className={onSearch ? "bg-white border border-gray-200 rounded-lg p-4 mt-4" : "bg-gray-50 rounded-lg p-4 mt-4"}>
+          <div className="bg-gray-50 rounded-lg p-4 mt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-3">
                 <Label className="text-sm font-semibold text-gray-900">Tipo di imbarcazione</Label>

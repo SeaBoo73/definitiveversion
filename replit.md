@@ -266,3 +266,4 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Registrazione noleggiatori semplificata - rimossa dicitura commissione prominente
   - ✅ Sostituita con accettazione generica termini di servizio
   - ✅ Business model ottimizzato per migliore user experience
+  - ✅ Commissione 15% integrata discretamente nella descrizione termini di servizio

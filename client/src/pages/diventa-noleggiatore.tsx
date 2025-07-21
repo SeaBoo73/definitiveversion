@@ -347,7 +347,7 @@ export default function DiventaNoleggiatorePage() {
                           Accetto i termini e condizioni di SeaGO
                         </FormLabel>
                         <p className="text-xs text-gray-600">
-                          Inclusi: assicurazione, politiche di cancellazione, standard di sicurezza e qualità del servizio
+                          Inclusi: commissione 15% pagata dal cliente, assicurazione, politiche di cancellazione, standard di sicurezza e qualità del servizio
                         </p>
                       </div>
                       <FormMessage />

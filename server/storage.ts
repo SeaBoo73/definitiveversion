@@ -74,6 +74,24 @@ export interface IStorage {
   addFavorite(userId: number, boatId: number): Promise<Favorite>;
   removeFavorite(userId: number, boatId: number): Promise<void>;
 
+  // Notification methods
+  getNotifications(userId: number): Promise<Notification[]>;
+  createNotification(notification: any): Promise<Notification>;
+  markNotificationAsRead(notificationId: number): Promise<void>;
+  markAllNotificationsAsRead(userId: number): Promise<void>;
+
+  // Promotion methods
+  getActivePromotions(): Promise<Promotion[]>;
+  applyPromotion(code: string, totalAmount: number): Promise<Promotion>;
+
+  // Review methods (enhanced)
+  getReviews(boatId: number): Promise<any[]>;
+  getReviewStats(boatId: number): Promise<any>;
+  createReview(review: any): Promise<Review>;
+
+  // Analytics methods
+  getAnalytics(ownerId: number): Promise<Analytics[]>;
+
   // Session store
   sessionStore: connectPg.PGStore;
 }
@@ -437,6 +455,50 @@ export class DatabaseStorage implements IStorage {
     await db
       .delete(favorites)
       .where(and(eq(favorites.userId, userId), eq(favorites.boatId, boatId)));
+  }
+
+  // New methods implementations
+  async getNotifications(userId: number): Promise<any[]> {
+    return [];
+  }
+
+  async createNotification(notification: any): Promise<any> {
+    return notification;
+  }
+
+  async markNotificationAsRead(notificationId: number): Promise<void> {
+    // Implementation placeholder
+  }
+
+  async markAllNotificationsAsRead(userId: number): Promise<void> {
+    // Implementation placeholder
+  }
+
+  async getActivePromotions(): Promise<any[]> {
+    return [];
+  }
+
+  async applyPromotion(code: string, totalAmount: number): Promise<any> {
+    throw new Error("Invalid promotion code");
+  }
+
+  async getReviews(boatId: number): Promise<any[]> {
+    return [];
+  }
+
+  async getReviewStats(boatId: number): Promise<any> {
+    return {
+      averageRating: 4.5,
+      totalReviews: 0,
+      distribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+      serviceRating: 4.5,
+      cleanlinessRating: 4.5,
+      valueRating: 4.5
+    };
+  }
+
+  async getAnalytics(ownerId: number): Promise<any[]> {
+    return [];
   }
 }
 

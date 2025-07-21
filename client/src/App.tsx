@@ -24,6 +24,7 @@ import NotFound from "@/pages/not-found";
 // import { InstallPrompt } from "@/components/install-prompt";
 import AiutoPage from "@/pages/aiuto";
 import ProfiloPage from "@/pages/profilo";
+import { AIAssistantPage } from "@/pages/ai-assistant-page";
 
 function Router() {
   return (
@@ -36,6 +37,7 @@ function Router() {
       <Route path="/esperienze" component={EsperienzePage} />
       <Route path="/charter" component={CharterPage} />
       <Route path="/aiuto" component={AiutoPage} />
+      <Route path="/ia" component={AIAssistantPage} />
       <Route path="/profilo" component={ProfiloPage} />
       <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />

@@ -1,9 +1,10 @@
 import { useAuth } from "@/hooks/use-auth";
+import { NotificationsCenter } from "@/components/notifications-center";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Link, useLocation } from "wouter";
-import { Anchor, Menu, User } from "lucide-react";
+import { Anchor, Menu, User, Bot } from "lucide-react";
 import seagoLogo from "../assets/seago-logo.svg";
 
 export function Header() {
@@ -39,6 +40,10 @@ export function Header() {
             <Link href="/charter" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Charter
             </Link>
+            <Link href="/ia" className="text-sea-gray hover:text-deep-navy transition-colors font-medium flex items-center gap-1">
+              <Bot className="h-4 w-4" />
+              IA
+            </Link>
             {user?.role === "owner" && (
               <Link href="/owner-dashboard" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
                 Dashboard Host
@@ -56,6 +61,7 @@ export function Header() {
 
           {/* User Menu */}
           <div className="flex items-center space-x-4">
+            {user && <NotificationsCenter />}
             {!user && (
               <Button variant="outline" asChild className="hidden md:block bg-coral hover:bg-orange-600 text-white border-coral">
                 <Link href="/auth?type=owner">Diventa noleggiatore</Link>

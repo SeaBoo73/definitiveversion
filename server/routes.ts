@@ -580,5 +580,218 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // AI Assistant endpoints
+  app.post("/api/ai/recommendations", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { input, context } = req.body;
+      const boats = await storage.getBoats({});
+      
+      const result = await aiService.getBoatRecommendations(
+        req.user.id,
+        context || {},
+        boats
+      );
+      
+      res.json({ response: result.explanation });
+    } catch (error) {
+      console.error("AI recommendations error:", error);
+      res.status(500).json({ message: "Error getting AI recommendations" });
+    }
+  });
+
+  app.post("/api/ai/pricing", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { input, context } = req.body;
+      const boats = await storage.getBoats({});
+      const boat = boats.find(b => b.id === context?.boatId);
+      
+      if (!boat) {
+        return res.status(404).json({ message: "Boat not found" });
+      }
+
+      const similarBoats = boats.filter(b => 
+        b.type === boat.type && b.id !== boat.id
+      );
+      
+      const analysis = await aiService.analyzePricing(boat, similarBoats);
+      
+      res.json({ response: analysis });
+    } catch (error) {
+      console.error("AI pricing error:", error);
+      res.status(500).json({ message: "Error analyzing pricing" });
+    }
+  });
+
+  app.post("/api/ai/weather", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { input, context } = req.body;
+      const advice = await aiService.getWeatherAdvice(
+        context?.location || input,
+        context?.dates || { start: new Date().toISOString(), end: new Date().toISOString() }
+      );
+      
+      res.json({ response: advice });
+    } catch (error) {
+      console.error("AI weather error:", error);
+      res.status(500).json({ message: "Error getting weather advice" });
+    }
+  });
+
+  app.post("/api/ai/itinerary", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { input, context } = req.body;
+      const itinerary = await aiService.planItinerary(
+        context?.startLocation || "Roma",
+        {
+          duration: context?.duration || 7,
+          interests: context?.interests || ["mare", "cultura"],
+          boatType: context?.boatType || "yacht"
+        }
+      );
+      
+      res.json({ response: itinerary });
+    } catch (error) {
+      console.error("AI itinerary error:", error);
+      res.status(500).json({ message: "Error planning itinerary" });
+    }
+  });
+
+  // Notifications endpoints
+  app.get("/api/notifications", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const notifications = await storage.getNotifications(req.user.id);
+      res.json(notifications);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching notifications" });
+    }
+  });
+
+  app.patch("/api/notifications/:id/read", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      await storage.markNotificationAsRead(parseInt(req.params.id));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Error marking notification as read" });
+    }
+  });
+
+  app.patch("/api/notifications/mark-all-read", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      await storage.markAllNotificationsAsRead(req.user.id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Error marking all notifications as read" });
+    }
+  });
+
+  // Promotions endpoints
+  app.get("/api/promotions/active", async (req, res) => {
+    try {
+      const promotions = await storage.getActivePromotions();
+      res.json(promotions);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching promotions" });
+    }
+  });
+
+  app.post("/api/promotions/apply", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { code, totalAmount } = req.body;
+      const promotion = await storage.applyPromotion(code, totalAmount);
+      res.json(promotion);
+    } catch (error) {
+      res.status(400).json({ message: error.message || "Invalid promotion code" });
+    }
+  });
+
+  // Reviews endpoints  
+  app.get("/api/reviews", async (req, res) => {
+    try {
+      const { boatId } = req.query;
+      const reviews = await storage.getReviews(parseInt(boatId as string));
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching reviews" });
+    }
+  });
+
+  app.get("/api/reviews/stats", async (req, res) => {
+    try {
+      const { boatId } = req.query;
+      const stats = await storage.getReviewStats(parseInt(boatId as string));
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching review stats" });
+    }
+  });
+
+  app.post("/api/reviews", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const validation = insertReviewSchema.safeParse(req.body);
+      if (!validation.success) {
+        return res.status(400).json({ message: "Invalid review data" });
+      }
+
+      const review = await storage.createReview({
+        ...validation.data,
+        reviewerId: req.user.id,
+      });
+
+      res.status(201).json(review);
+    } catch (error) {
+      res.status(500).json({ message: "Error creating review" });
+    }
+  });
+
+  // Analytics endpoints
+  app.get("/api/analytics", async (req, res) => {
+    if (!req.isAuthenticated() || req.user.role !== "owner") {
+      return res.sendStatus(403);
+    }
+
+    try {
+      const analytics = await storage.getAnalytics(req.user.id);
+      res.json(analytics);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching analytics" });
+    }
+  });
+
   return httpServer;
 }

@@ -217,7 +217,7 @@ export default function CustomerDashboard() {
                             </div>
                             <div>
                               <p className="text-gray-600">Totale pagato</p>
-                              <p className="font-medium">€{booking.totalPrice}</p>
+                              <p className="font-medium">€{booking.totalPrice || '0'}</p>
                             </div>
                             <div>
                               <p className="text-gray-600">Creata il</p>

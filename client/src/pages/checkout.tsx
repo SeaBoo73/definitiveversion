@@ -80,8 +80,8 @@ function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
 
     try {
       // Create payment intent
-      const response = await createPaymentIntentMutation.mutateAsync();
-      const { clientSecret } = response;
+      const data = await createPaymentIntentMutation.mutateAsync();
+      const clientSecret = (data as any).clientSecret;
 
       const card = elements.getElement(CardElement);
       if (!card) {

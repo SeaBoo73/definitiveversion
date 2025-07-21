@@ -7,6 +7,8 @@ import { ProtectedRoute } from "./lib/protected-route";
 import HomePage from "@/pages/home-page";
 import { SimpleTest } from "./simple-test";
 import { MinimalApp } from "./minimal-app";
+import { ErrorBoundary } from "./error-boundary";
+import { CleanApp } from "./clean-app";
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";
@@ -25,6 +27,7 @@ import ProfiloPage from "@/pages/profilo";
 function Router() {
   return (
     <Switch>
+      <Route path="/clean" component={CleanApp} />
       <Route path="/simple-test" component={SimpleTest} />
       <Route path="/minimal" component={MinimalApp} />
       <Route path="/" component={HomePage} />
@@ -47,13 +50,15 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <Toaster />
-        <Router />
-        {/* <InstallPrompt /> */}
-      </AuthProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Toaster />
+          <Router />
+          {/* <InstallPrompt /> */}
+        </AuthProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

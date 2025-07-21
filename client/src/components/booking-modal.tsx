@@ -61,7 +61,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
       boatId: boat.id,
       startDate: new Date(),
       endDate: addDays(new Date(), 1),
-      skipperRequested: boat.skipperRequired,
+      skipperRequested: boat.skipperRequired || false,
       notes: "",
     },
   });

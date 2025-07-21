@@ -143,74 +143,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Charter Section */}
+      {/* Charter CTA */}
       <section id="charter" className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Servizi Charter</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Scopri le nostre soluzioni charter professionali per esperienze indimenticabili
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-ocean-blue text-white rounded-full text-2xl font-bold mb-6">
-                ⛵
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Vela settimanale con skipper</h3>
-              <p className="text-gray-600 mb-4">
-                Crociere di una settimana con skipper professionali per esplorare le coste più belle d'Italia
-              </p>
-              <Button className="w-full bg-ocean-blue hover:bg-blue-600 text-white" asChild>
-                <Link href="/search?boatTypes=sailboat&skipperRequired=true">Scopri</Link>
-              </Button>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-seafoam text-white rounded-full text-2xl font-bold mb-6">
-                🏖️
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Weekend in catamarano</h3>
-              <p className="text-gray-600 mb-4">
-                Fughe di fine settimana su catamarani spaziosi per gruppi e famiglie
-              </p>
-              <Button className="w-full bg-seafoam hover:bg-teal-600 text-white" asChild>
-                <Link href="/search?boatTypes=catamaran">Scopri</Link>
-              </Button>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-coral text-white rounded-full text-2xl font-bold mb-6">
-                🚤
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Noleggio giornaliero privato</h3>
-              <p className="text-gray-600 mb-4">
-                Imbarcazioni private per giornate esclusive con servizi personalizzati
-              </p>
-              <Button className="w-full bg-coral hover:bg-orange-600 text-white" asChild>
-                <Link href="/search">Scopri</Link>
-              </Button>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-deep-navy text-white rounded-full text-2xl font-bold mb-6">
-                🗺️
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Itinerari consigliati</h3>
-              <p className="text-gray-600 mb-4">
-                Percorsi studiati per scoprire le destinazioni più affascinanti del Mediterraneo
-              </p>
-              <Button className="w-full bg-deep-navy hover:bg-blue-900 text-white" asChild>
-                <Link href="/esperienze">Scopri</Link>
-              </Button>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">Hai bisogno di un servizio personalizzato?</p>
-            <Button size="lg" className="bg-ocean-blue hover:bg-blue-600 text-white px-8 py-3">
-              Contattaci per un preventivo
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Servizi Charter Professionali</h2>
+          <p className="text-lg text-gray-600 mb-8 max-w-3xl mx-auto">
+            Scopri le nostre soluzioni charter complete: dalla vela settimanale ai noleggi privati giornalieri. 
+            Ogni esperienza è personalizzata per offrirti il meglio del mare italiano.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" className="bg-ocean-blue hover:bg-blue-600 text-white px-8 py-3" asChild>
+              <Link href="/charter">Esplora i servizi charter</Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-ocean-blue text-ocean-blue hover:bg-ocean-blue hover:text-white px-8 py-3">
+              Richiedi preventivo personalizzato
             </Button>
           </div>
         </div>

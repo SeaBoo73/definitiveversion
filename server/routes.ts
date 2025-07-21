@@ -147,24 +147,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/bookings/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const id = parseInt(req.params.id);
+      const booking = await storage.getBooking(id);
+      
+      if (!booking) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.json(booking);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching booking" });
+    }
+  });
+
   app.post("/api/bookings", async (req, res) => {
     if (!req.isAuthenticated()) {
       return res.sendStatus(401);
     }
 
     try {
-      const validation = insertBookingSchema.safeParse(req.body);
-      if (!validation.success) {
-        return res.status(400).json({ message: "Invalid booking data" });
+      // Get boat information to find owner
+      const boat = await storage.getBoat(req.body.boatId);
+      if (!boat) {
+        return res.status(404).json({ error: "Boat not found" });
       }
 
-      const booking = await storage.createBooking({
-        ...validation.data,
+      const bookingData = {
+        ...req.body,
         customerId: req.user.id,
-      });
+        ownerId: boat.ownerId,
+        status: "pending" as const,
+        createdAt: new Date(),
+      };
 
+      const booking = await storage.createBooking(bookingData);
       res.status(201).json(booking);
     } catch (error) {
+      console.error("Error creating booking:", error);
       res.status(500).json({ message: "Error creating booking" });
     }
   });
@@ -200,10 +225,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const { amount, bookingId } = req.body;
-      
+      const { bookingId } = req.body;
+      const booking = await storage.getBooking(bookingId);
+
+      if (!booking) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+
+      if (booking.customerId !== req.user.id) {
+        return res.status(403).json({ error: "Unauthorized" });
+      }
+
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100), // Convert to cents
+        amount: Math.round(parseFloat(booking.totalPrice) * 100), // Convert to cents
         currency: "eur",
         metadata: {
           bookingId: bookingId.toString(),
@@ -213,6 +247,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json({ clientSecret: paymentIntent.client_secret });
     } catch (error) {
+      console.error("Error creating payment intent:", error);
       res.status(500).json({ message: "Error creating payment intent" });
     }
   });

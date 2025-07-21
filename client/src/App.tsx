@@ -10,6 +10,7 @@ import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";
 import CustomerDashboard from "@/pages/customer-dashboard";
 import BoatDetails from "@/pages/boat-details";
+import BoatBooking from "@/pages/boat-booking";
 import Checkout from "@/pages/checkout";
 import { SearchResults } from "@/pages/search-results";
 import { EsperienzePage } from "@/pages/esperienze";
@@ -31,9 +32,10 @@ function Router() {
       <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
+      <Route path="/boats/:id/book" component={BoatBooking} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
-      <ProtectedRoute path="/checkout" component={Checkout} />
+      <ProtectedRoute path="/checkout/:bookingId" component={Checkout} />
       <Route component={NotFound} />
     </Switch>
   );

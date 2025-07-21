@@ -1,4 +1,4 @@
-import { useParams } from "wouter";
+import { useRoute, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -24,8 +24,11 @@ import {
 import { Boat } from "@shared/schema";
 
 export default function BoatDetails() {
-  const { id } = useParams();
+  const [, params] = useRoute("/boats/:id");
+  const [, setLocation] = useLocation();
   const [showBookingModal, setShowBookingModal] = useState(false);
+  
+  const id = params?.id;
 
   const { data: boat, isLoading } = useQuery<Boat>({
     queryKey: ["/api/boats", id],
@@ -253,7 +256,7 @@ export default function BoatDetails() {
                 <div className="space-y-4 mb-6">
                   <Button
                     className="w-full bg-coral hover:bg-orange-600 text-white py-3"
-                    onClick={() => setShowBookingModal(true)}
+                    onClick={() => setLocation(`/boats/${boat.id}/book`)}
                   >
                     Prenota ora
                   </Button>

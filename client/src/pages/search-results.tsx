@@ -26,7 +26,7 @@ interface SearchParams {
 
 export function SearchResults() {
   const [location, setLocation] = useLocation();
-  const [match, params] = useRoute("/search");
+  const [, params] = useRoute("/search");
   const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   

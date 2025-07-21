@@ -69,7 +69,7 @@ export function BoatCard({ boat }: BoatCardProps) {
 
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-      <Link href={`/boat/${boat.id}`}>
+      <Link href={`/boats/${boat.id}`}>
         <div className="relative">
           <img
             src={boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"}
@@ -95,7 +95,6 @@ export function BoatCard({ boat }: BoatCardProps) {
       </Link>
       
       <CardContent className="p-4">
-        <Link href={`/boat/${boat.id}`}>
           <div className="flex justify-between items-start mb-2">
             <h3 className="font-semibold text-gray-900 truncate">{boat.name}</h3>
             <div className="flex items-center ml-2">
@@ -129,7 +128,14 @@ export function BoatCard({ boat }: BoatCardProps) {
               Disponibile
             </Badge>
           </div>
-        </Link>
+          
+          <div className="mt-4 space-y-2">
+            <Link href={`/boats/${boat.id}/book`}>
+              <Button className="w-full bg-ocean-blue hover:bg-blue-600">
+                Prenota ora
+              </Button>
+            </Link>
+          </div>
       </CardContent>
     </Card>
   );

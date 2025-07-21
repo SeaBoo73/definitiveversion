@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema } from "@shared/schema";
 import { z } from "zod";
-import { Redirect } from "wouter";
+import { Redirect, Link } from "wouter";
 import { Anchor, Waves } from "lucide-react";
 
 const loginSchema = z.object({
@@ -255,29 +255,34 @@ export default function AuthPage() {
                       )}
                     </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="acceptTerms"
-                        onCheckedChange={(checked) => 
-                          registerForm.setValue("acceptTerms", !!checked)
-                        }
-                      />
-                      <Label htmlFor="acceptTerms" className="text-sm">
-                        Accetto i{" "}
-                        <a href="#" className="text-ocean-blue hover:underline">
-                          Termini e Condizioni
-                        </a>{" "}
-                        e la{" "}
-                        <a href="#" className="text-ocean-blue hover:underline">
-                          Privacy Policy
-                        </a>
-                      </Label>
+                    <div className="space-y-2">
+                      <div className="flex items-start space-x-2">
+                        <Checkbox
+                          id="acceptTerms"
+                          onCheckedChange={(checked) => 
+                            registerForm.setValue("acceptTerms", !!checked)
+                          }
+                          className="mt-1"
+                        />
+                        <Label htmlFor="acceptTerms" className="text-sm leading-5">
+                          Accetto i{" "}
+                          <Link href="/condizioni-servizio">
+                            <a className="text-ocean-blue hover:underline font-medium" target="_blank">
+                              Termini e Condizioni d'uso
+                            </a>
+                          </Link>
+                          {" "}e confermo di aver letto la{" "}
+                          <a href="/privacy-policy" className="text-ocean-blue hover:underline font-medium" target="_blank">
+                            Privacy Policy
+                          </a>
+                        </Label>
+                      </div>
+                      {registerForm.formState.errors.acceptTerms && (
+                        <p className="text-sm text-red-500 ml-6">
+                          {registerForm.formState.errors.acceptTerms.message}
+                        </p>
+                      )}
                     </div>
-                    {registerForm.formState.errors.acceptTerms && (
-                      <p className="text-sm text-red-500">
-                        {registerForm.formState.errors.acceptTerms.message}
-                      </p>
-                    )}
 
                     <Button
                       type="submit"

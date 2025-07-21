@@ -31,6 +31,7 @@ import PoliticheCancellazionePage from "@/pages/politiche-cancellazione";
 import RimborsiPage from "@/pages/rimborsi";
 import CondizioniServizioPage from "@/pages/condizioni-servizio";
 import ContattiPage from "@/pages/contatti";
+import PrivacyPolicyPage from "@/pages/privacy-policy";
 
 function Router() {
   return (
@@ -53,6 +54,7 @@ function Router() {
       <Route path="/politiche-cancellazione" component={PoliticheCancellazionePage} />
       <Route path="/rimborsi" component={RimborsiPage} />
       <Route path="/condizioni-servizio" component={CondizioniServizioPage} />
+      <Route path="/privacy-policy" component={PrivacyPolicyPage} />
       <Route path="/contatti" component={ContattiPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

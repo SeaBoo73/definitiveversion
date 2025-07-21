@@ -79,6 +79,7 @@ export default function BoatDetails() {
   const getTypeLabel = () => {
     const labels = {
       gommone: "Gommone",
+      "barche-senza-patente": "Barche senza patente",
       yacht: "Yacht",
       catamarano: "Catamarano",
       jetski: "Moto d'acqua",
@@ -87,7 +88,7 @@ export default function BoatDetails() {
       charter: "Charter",
       houseboat: "Houseboat",
     };
-    return labels[boat.type] || boat.type;
+    return labels[boat.type as keyof typeof labels] || boat.type;
   };
 
   return (

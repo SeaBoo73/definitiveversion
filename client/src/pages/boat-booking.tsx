@@ -217,12 +217,10 @@ export default function BoatBooking() {
                     <span className="text-sm">{boat.type}</span>
                   </div>
                   
-                  {boat.wifiAvailable && (
-                    <div className="flex items-center gap-2">
-                      <Wifi className="h-4 w-4 text-gray-400" />
-                      <span className="text-sm">WiFi</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2">
+                    <Wifi className="h-4 w-4 text-gray-400" />
+                    <span className="text-sm">WiFi disponibile</span>
+                  </div>
 
                   <div className="flex items-center gap-2">
                     <Camera className="h-4 w-4 text-gray-400" />
@@ -231,12 +229,8 @@ export default function BoatBooking() {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {boat.skipperRequired && (
-                    <Badge variant="outline">Skipper richiesto</Badge>
-                  )}
-                  {boat.fuelIncluded && (
-                    <Badge variant="outline">Carburante incluso</Badge>
-                  )}
+                  <Badge variant="outline">Skipper disponibile</Badge>
+                  <Badge variant="outline">Carburante incluso</Badge>
                   <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                     Cancellazione gratuita
                   </Badge>
@@ -250,14 +244,23 @@ export default function BoatBooking() {
         {currentStep === 'calendar' && (
           <BookingCalendar
             boatId={boat.id}
-            pricePerDay={boat.pricePerDay}
+            pricePerDay={typeof boat.pricePerDay === 'string' ? parseInt(boat.pricePerDay) : boat.pricePerDay}
             onDateSelect={handleDateSelect}
           />
         )}
 
         {currentStep === 'form' && bookingData && (
           <BookingForm
-            boat={boat}
+            boat={{
+              id: boat.id,
+              name: boat.name,
+              port: boat.port || "",
+              pricePerDay: typeof boat.pricePerDay === 'string' ? parseInt(boat.pricePerDay) : boat.pricePerDay,
+              maxPersons: boat.maxPersons || 8,
+              images: boat.images || [],
+              skipperRequired: false,
+              fuelIncluded: true
+            }}
             booking={bookingData}
             onBookingComplete={handleBookingComplete}
           />

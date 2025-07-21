@@ -227,18 +227,21 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               <div className="space-y-2">
                 <Label>Tipo di imbarcazione</Label>
                 <Select onValueChange={(value) => updateFilter("boatType", value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Tutti i tipi" />
+                  <SelectTrigger className="text-gray-900">
+                    <SelectValue placeholder="Tutti i tipi" className="text-gray-900" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="gommone">Gommone</SelectItem>
+                    <SelectItem value="gommone">Gommoni</SelectItem>
+                    <SelectItem value="barche-senza-patente">Barche senza patente</SelectItem>
                     <SelectItem value="yacht">Yacht</SelectItem>
-                    <SelectItem value="catamarano">Catamarano</SelectItem>
+                    <SelectItem value="sailboat">Barche a vela</SelectItem>
+                    <SelectItem value="catamarano">Catamarani</SelectItem>
+                    <SelectItem value="motorboat">Barche a motore</SelectItem>
                     <SelectItem value="jetski">Moto d'acqua</SelectItem>
-                    <SelectItem value="sailboat">Barca a vela</SelectItem>
-                    <SelectItem value="kayak">Kayak</SelectItem>
                     <SelectItem value="charter">Charter</SelectItem>
                     <SelectItem value="houseboat">Houseboat</SelectItem>
+                    <SelectItem value="gulet">Gulet</SelectItem>
+                    <SelectItem value="kayak">Caiacco</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -247,7 +250,22 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             {filters.boatType && (
               <div className="mt-4">
                 <Badge variant="secondary" className="mr-2">
-                  {filters.boatType}
+                  {(() => {
+                    const typeNames = {
+                      "gommone": "Gommoni",
+                      "barche-senza-patente": "Barche senza patente", 
+                      "yacht": "Yacht",
+                      "sailboat": "Barche a vela",
+                      "catamarano": "Catamarani",
+                      "motorboat": "Barche a motore",
+                      "jetski": "Moto d'acqua",
+                      "charter": "Charter",
+                      "houseboat": "Houseboat",
+                      "gulet": "Gulet",
+                      "kayak": "Caiacco"
+                    };
+                    return typeNames[filters.boatType as keyof typeof typeNames] || filters.boatType;
+                  })()}
                   <button
                     onClick={() => updateFilter("boatType", undefined)}
                     className="ml-2 text-gray-500 hover:text-gray-700"

@@ -267,6 +267,7 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Sostituita con accettazione generica termini di servizio
   - ✅ Business model ottimizzato per migliore user experience
   - ✅ Commissione 15% integrata discretamente nella descrizione termini di servizio
-  - ✅ Skipper e carburante mostrati come "escluso" di default, "incluso" solo per charter
-  - ✅ Form prenotazione aggiornato con logica specifica per tipo barca
-  - ✅ UI ottimizzata per chiarire servizi inclusi/esclusi per categoria
+  - ✅ Carburante mostrato come "escluso" di default, "incluso" solo per charter
+  - ✅ Skipper mantenuto con logica originale (obbligatorio/opzionale)
+  - ✅ Form prenotazione aggiornato con logica specifica solo per carburante
+  - ✅ UI ottimizzata per chiarire servizi carburante inclusi/esclusi per categoria

@@ -250,9 +250,7 @@ export default function BoatDetails() {
                   <UserCheck className="h-5 w-5 text-ocean-blue mr-3" />
                   <div>
                     <p className="font-medium">Skipper</p>
-                    <p className="text-sm text-gray-600">
-                      {boat.type === "charter" ? "Incluso" : "Escluso"}
-                    </p>
+                    <p className="text-sm text-gray-600">{boat.skipperRequired ? "Obbligatorio" : "Opzionale"}</p>
                   </div>
                 </div>
 

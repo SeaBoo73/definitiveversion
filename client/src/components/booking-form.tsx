@@ -79,7 +79,7 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
       guestPhone: '',
       numberOfGuests: '1',
       notes: '',
-      skipperRequired: boat.type === "charter" ? true : false,
+      skipperRequired: boat.skipperRequired || false,
       fuelIncluded: boat.type === "charter" ? true : false,
       acceptTerms: false,
       acceptCancellation: false
@@ -277,8 +277,8 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                     onCheckedChange={(checked) => form.setValue("skipperRequired", checked as boolean)}
                   />
                   <Label htmlFor="skipperRequired" className="flex items-center gap-2">
-                    Skipper professionale {boat.type === "charter" ? "(incluso)" : "(escluso)"}
-                    {boat.type !== "charter" && <Badge variant="outline">+€120/giorno</Badge>}
+                    Skipper professionale
+                    <Badge variant="outline">+€120/giorno</Badge>
                   </Label>
                 </div>
                 

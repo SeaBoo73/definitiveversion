@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Heart, Star, Users, MapPin } from "lucide-react";
+import { Heart, Star, Users, MapPin, Clock, AlertCircle } from "lucide-react";
 import { Boat } from "@shared/schema";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
@@ -121,6 +121,25 @@ export function BoatCard({ boat }: BoatCardProps) {
               </>
             )}
           </div>
+
+          {/* Orari per barche senza patente e charter */}
+          {(boat.type === "barche-senza-patente" || boat.type === "charter" || boat.type === "gommone") && (
+            <div className="bg-blue-50 border border-blue-200 rounded-md p-2 mb-3">
+              <div className="flex items-center text-blue-800 text-xs mb-1">
+                <Clock className="h-3 w-3 mr-1" />
+                <span className="font-semibold">Orari di utilizzo</span>
+              </div>
+              <div className="text-blue-700 text-xs">
+                <div>Ritiro: {boat.pickupTime || "09:00"} - Riconsegna: {boat.returnTime || "18:00"}</div>
+                {boat.dailyReturnRequired && (
+                  <div className="flex items-center mt-1">
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    <span>Rientro serale obbligatorio ogni giorno</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           
           <div className="flex justify-between items-center">
             <div>

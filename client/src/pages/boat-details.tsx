@@ -19,7 +19,9 @@ import {
   UserCheck,
   MessageCircle,
   Heart,
-  Share2
+  Share2,
+  Clock,
+  AlertCircle
 } from "lucide-react";
 import { Boat } from "@shared/schema";
 
@@ -169,6 +171,50 @@ export default function BoatDetails() {
             </div>
 
             <Separator />
+
+            {/* Orari e regole per barche senza patente e charter */}
+            {(boat.type === "barche-senza-patente" || boat.type === "charter" || boat.type === "gommone") && (
+              <>
+                <div>
+                  <h2 className="text-xl font-semibold mb-4">⏰ Orari di utilizzo</h2>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="flex items-center">
+                        <Clock className="h-6 w-6 text-blue-600 mr-3" />
+                        <div>
+                          <p className="font-semibold text-blue-900">Orario di ritiro</p>
+                          <p className="text-blue-700">{boat.pickupTime || "09:00"}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center">
+                        <Clock className="h-6 w-6 text-blue-600 mr-3" />
+                        <div>
+                          <p className="font-semibold text-blue-900">Orario di riconsegna</p>
+                          <p className="text-blue-700">{boat.returnTime || "18:00"}</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {boat.dailyReturnRequired && (
+                      <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                        <div className="flex items-start">
+                          <AlertCircle className="h-5 w-5 text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="font-semibold text-yellow-800">Rientro serale obbligatorio</p>
+                            <p className="text-yellow-700 text-sm mt-1">
+                              Anche per prenotazioni di più giorni, la barca deve essere riportata al punto di partenza ogni sera entro l'orario indicato.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <Separator />
+              </>
+            )}
 
             {/* Features */}
             <div>

@@ -41,6 +41,9 @@ export const boats = pgTable("boats", {
   description: text("description"),
   images: text("images").array(),
   documentsRequired: text("documents_required"),
+  pickupTime: text("pickup_time").default("09:00"), // Orario ritiro (es. 09:00)
+  returnTime: text("return_time").default("18:00"), // Orario riconsegna (es. 18:00)
+  dailyReturnRequired: boolean("daily_return_required").default(true), // Ritorno serale obbligatorio
   active: boolean("active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
 });

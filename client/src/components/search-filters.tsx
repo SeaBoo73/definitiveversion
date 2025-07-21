@@ -34,6 +34,8 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   });
 
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [startDateOpen, setStartDateOpen] = useState(false);
+  const [endDateOpen, setEndDateOpen] = useState(false);
 
   const handleSearch = () => {
     onSearch?.(filters);
@@ -59,7 +61,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         {/* Check-in */}
         <div className="space-y-2">
           <Label className="block text-sm font-semibold text-gray-900">Dal</Label>
-          <Popover>
+          <Popover open={startDateOpen} onOpenChange={setStartDateOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
@@ -77,7 +79,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               <Calendar
                 mode="single"
                 selected={filters.startDate}
-                onSelect={(date) => updateFilter("startDate", date)}
+                onSelect={(date) => {
+                  updateFilter("startDate", date);
+                  setStartDateOpen(false);
+                }}
+                disabled={(date) => date < new Date(Date.now() - 24 * 60 * 60 * 1000)}
                 initialFocus
               />
             </PopoverContent>
@@ -87,7 +93,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         {/* Check-out */}
         <div className="space-y-2">
           <Label className="block text-sm font-semibold text-gray-900">Al</Label>
-          <Popover>
+          <Popover open={endDateOpen} onOpenChange={setEndDateOpen}>
             <PopoverTrigger asChild>
               <Button
                 variant="outline"
@@ -105,7 +111,16 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               <Calendar
                 mode="single"
                 selected={filters.endDate}
-                onSelect={(date) => updateFilter("endDate", date)}
+                onSelect={(date) => {
+                  updateFilter("endDate", date);
+                  setEndDateOpen(false);
+                }}
+                disabled={(date) => {
+                  const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+                  if (date < yesterday) return true;
+                  if (filters.startDate && date <= filters.startDate) return true;
+                  return false;
+                }}
                 initialFocus
               />
             </PopoverContent>

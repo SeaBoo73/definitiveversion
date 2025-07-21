@@ -54,10 +54,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Supporto</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Centro assistenza</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contattaci</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Termini e condizioni</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><Link href="/aiuto" className="hover:text-white transition-colors">Centro assistenza</Link></li>
+              <li><Link href="/contatti" className="hover:text-white transition-colors">Contattaci</Link></li>
+              <li><Link href="/condizioni-servizio" className="hover:text-white transition-colors">Termini e condizioni</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>

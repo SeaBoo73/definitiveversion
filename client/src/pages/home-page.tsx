@@ -199,8 +199,8 @@ export default function HomePage() {
             <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100" asChild>
               <Link href="/auth?type=owner">Diventa noleggiatore</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-ocean-blue">
-              Scopri di più
+            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-ocean-blue" asChild>
+              <Link href="/diventa-host">Scopri di più</Link>
             </Button>
           </div>
         </div>
@@ -220,41 +220,41 @@ export default function HomePage() {
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Prenotazioni</h3>
               <ul className="space-y-2 text-gray-600">
-                <li>• Come prenotare un'imbarcazione</li>
-                <li>• Politiche di cancellazione</li>
-                <li>• Modificare una prenotazione</li>
-                <li>• Documenti necessari</li>
+                <li><Link href="/come-prenotare" className="text-blue-600 hover:text-blue-800">• Come prenotare un'imbarcazione</Link></li>
+                <li><Link href="/politiche-cancellazione" className="text-blue-600 hover:text-blue-800">• Politiche di cancellazione</Link></li>
+                <li><Link href="/modifica-prenotazione" className="text-blue-600 hover:text-blue-800">• Modificare una prenotazione</Link></li>
+                <li><Link href="/documenti" className="text-blue-600 hover:text-blue-800">• Documenti necessari</Link></li>
               </ul>
             </div>
 
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Pagamenti</h3>
               <ul className="space-y-2 text-gray-600">
-                <li>• Metodi di pagamento accettati</li>
-                <li>• Sicurezza dei pagamenti</li>
-                <li>• Rimborsi e restituzioni</li>
-                <li>• Fatturazione</li>
+                <li><Link href="/pagamenti" className="text-blue-600 hover:text-blue-800">• Metodi di pagamento accettati</Link></li>
+                <li><Link href="/sicurezza-pagamenti" className="text-blue-600 hover:text-blue-800">• Sicurezza dei pagamenti</Link></li>
+                <li><Link href="/rimborsi" className="text-blue-600 hover:text-blue-800">• Rimborsi e restituzioni</Link></li>
+                <li><Link href="/fatturazione" className="text-blue-600 hover:text-blue-800">• Fatturazione</Link></li>
               </ul>
             </div>
 
             <div className="bg-gray-50 p-6 rounded-lg">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Per i noleggiatori</h3>
               <ul className="space-y-2 text-gray-600">
-                <li>• Come inserire la tua barca</li>
-                <li>• Gestione delle prenotazioni</li>
-                <li>• Commissioni e guadagni</li>
-                <li>• Assistenza proprietari</li>
+                <li><Link href="/inserisci-barca" className="text-blue-600 hover:text-blue-800">• Come inserire la tua barca</Link></li>
+                <li><Link href="/gestione-prenotazioni" className="text-blue-600 hover:text-blue-800">• Gestione delle prenotazioni</Link></li>
+                <li><Link href="/commissioni" className="text-blue-600 hover:text-blue-800">• Commissioni e guadagni</Link></li>
+                <li><Link href="/assistenza-proprietari" className="text-blue-600 hover:text-blue-800">• Assistenza proprietari</Link></li>
               </ul>
             </div>
           </div>
 
           <div className="text-center mt-12">
             <p className="text-gray-600 mb-6">Non trovi quello che cerchi?</p>
-            <Button className="bg-ocean-blue hover:bg-blue-600 mr-4">
-              Contatta il supporto
+            <Button className="bg-ocean-blue hover:bg-blue-600 mr-4" asChild>
+              <Link href="/contatti">Contatta il supporto</Link>
             </Button>
-            <Button variant="outline">
-              Centro assistenza
+            <Button variant="outline" asChild>
+              <Link href="/aiuto">Centro assistenza</Link>
             </Button>
           </div>
         </div>

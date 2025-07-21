@@ -26,6 +26,11 @@ import AiutoPage from "@/pages/aiuto";
 import ProfiloPage from "@/pages/profilo";
 import { AIAssistantPage } from "@/pages/ai-assistant-page";
 import { TestBookingPage } from "@/pages/test-booking-page";
+import ComePrenotarePage from "@/pages/come-prenotare";
+import PoliticheCancellazionePage from "@/pages/politiche-cancellazione";
+import RimborsiPage from "@/pages/rimborsi";
+import CondizioniServizioPage from "@/pages/condizioni-servizio";
+import ContattiPage from "@/pages/contatti";
 
 function Router() {
   return (
@@ -44,6 +49,11 @@ function Router() {
       <Route path="/test-booking">
         <TestBookingPage />
       </Route>
+      <Route path="/come-prenotare" component={ComePrenotarePage} />
+      <Route path="/politiche-cancellazione" component={PoliticheCancellazionePage} />
+      <Route path="/rimborsi" component={RimborsiPage} />
+      <Route path="/condizioni-servizio" component={CondizioniServizioPage} />
+      <Route path="/contatti" component={ContattiPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
       <Route path="/boats/:id/book" component={BoatBooking} />

@@ -14,6 +14,7 @@ import {
   Shield,
   CreditCard
 } from "lucide-react";
+import { Link } from "wouter";
 
 export default function AiutoPage() {
   const faqItems = [
@@ -101,10 +102,10 @@ export default function AiutoPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
-                <li>• Guida alla prenotazione</li>
-                <li>• Tipi di imbarcazioni</li>
-                <li>• Check-in e check-out</li>
-                <li>• Consigli per la navigazione</li>
+                <li><Link href="/come-prenotare" className="text-blue-600 hover:text-blue-800">• Guida alla prenotazione</Link></li>
+                <li><Link href="/tipi-imbarcazioni" className="text-blue-600 hover:text-blue-800">• Tipi di imbarcazioni</Link></li>
+                <li><Link href="/check-in-out" className="text-blue-600 hover:text-blue-800">• Check-in e check-out</Link></li>
+                <li><Link href="/consigli-navigazione" className="text-blue-600 hover:text-blue-800">• Consigli per la navigazione</Link></li>
               </ul>
             </CardContent>
           </Card>
@@ -118,10 +119,10 @@ export default function AiutoPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
-                <li>• Metodi di pagamento</li>
-                <li>• Politica di cancellazione</li>
-                <li>• Rimborsi</li>
-                <li>• Fatturazione</li>
+                <li><Link href="/pagamenti" className="text-blue-600 hover:text-blue-800">• Metodi di pagamento</Link></li>
+                <li><Link href="/politiche-cancellazione" className="text-blue-600 hover:text-blue-800">• Politica di cancellazione</Link></li>
+                <li><Link href="/rimborsi" className="text-blue-600 hover:text-blue-800">• Rimborsi</Link></li>
+                <li><Link href="/fatturazione" className="text-blue-600 hover:text-blue-800">• Fatturazione</Link></li>
               </ul>
             </CardContent>
           </Card>
@@ -135,10 +136,10 @@ export default function AiutoPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
-                <li>• Copertura assicurativa</li>
-                <li>• Norme di sicurezza</li>
-                <li>• Documenti richiesti</li>
-                <li>• Procedure di emergenza</li>
+                <li><Link href="/assicurazione" className="text-blue-600 hover:text-blue-800">• Copertura assicurativa</Link></li>
+                <li><Link href="/sicurezza" className="text-blue-600 hover:text-blue-800">• Norme di sicurezza</Link></li>
+                <li><Link href="/documenti" className="text-blue-600 hover:text-blue-800">• Documenti richiesti</Link></li>
+                <li><Link href="/emergenze" className="text-blue-600 hover:text-blue-800">• Procedure di emergenza</Link></li>
               </ul>
             </CardContent>
           </Card>
@@ -152,10 +153,10 @@ export default function AiutoPage() {
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-sm">
-                <li>• Termini di servizio</li>
-                <li>• Privacy policy</li>
-                <li>• Cookie policy</li>
-                <li>• Diritti del consumatore</li>
+                <li><Link href="/condizioni-servizio" className="text-blue-600 hover:text-blue-800">• Termini di servizio</Link></li>
+                <li><Link href="/privacy" className="text-blue-600 hover:text-blue-800">• Privacy policy</Link></li>
+                <li><Link href="/cookie-policy" className="text-blue-600 hover:text-blue-800">• Cookie policy</Link></li>
+                <li><Link href="/diritti-consumatore" className="text-blue-600 hover:text-blue-800">• Diritti del consumatore</Link></li>
               </ul>
             </CardContent>
           </Card>

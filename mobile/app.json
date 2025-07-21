@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "SeaGO",
+    "name": "SeaGO - Noleggio Barche",
     "slug": "seago-mobile",
     "version": "1.0.0",
+    "description": "La piattaforma leader per il noleggio barche in Italia. Scopri yacht, gommoni, barche a vela e charter con SeaGO.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,14 +17,25 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.seago.mobile"
+      "bundleIdentifier": "com.seago.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "SeaGO usa la posizione per mostrare barche vicine a te",
+        "NSCameraUsageDescription": "SeaGO usa la fotocamera per scansionare documenti"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0ea5e9"
       },
-      "package": "com.seago.mobile"
+      "package": "com.seago.mobile",
+      "versionCode": 1,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",

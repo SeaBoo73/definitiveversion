@@ -36,8 +36,8 @@ export function Header() {
             <Link href="/esperienze" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Esperienze
             </Link>
-            <Link href="#how-it-works" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
-              Come funziona
+            <Link href="#charter" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+              Charter
             </Link>
             {user?.role === "owner" && (
               <Link href="/owner-dashboard" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">

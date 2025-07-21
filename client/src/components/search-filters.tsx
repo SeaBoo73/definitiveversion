@@ -208,12 +208,12 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
 
       {/* Advanced Filters */}
       <div className={onSearch ? "mt-0" : "mt-4"}>
-        <div className={onSearch ? "flex flex-col gap-2 mb-4" : "flex flex-wrap gap-2 mb-4"}>
+        <div className={onSearch ? "space-y-3 mb-4" : "flex flex-wrap gap-2 mb-4"}>
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={showAdvanced ? "bg-gray-100 text-gray-900 whitespace-nowrap" : "text-gray-900 hover:bg-gray-50 whitespace-nowrap"}
+            className={showAdvanced ? "bg-gray-100 text-gray-900 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
           >
             <Ship className="mr-2 h-4 w-4 flex-shrink-0" />
             <span className="text-gray-900">Tipo imbarcazione</span>
@@ -222,7 +222,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             variant="outline"
             size="sm"
             onClick={() => updateFilter("skipperRequired", !filters.skipperRequired)}
-            className={filters.skipperRequired ? "bg-blue-100 text-blue-700 border-blue-300 whitespace-nowrap" : "text-gray-900 hover:bg-gray-50 whitespace-nowrap"}
+            className={filters.skipperRequired ? "bg-blue-100 text-blue-700 border-blue-300 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
           >
             <UserCheck className="mr-2 h-4 w-4 flex-shrink-0" />
             <span className={filters.skipperRequired ? "text-blue-700" : "text-gray-900"}>Con Skipper</span>
@@ -231,7 +231,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             variant="outline"
             size="sm"
             onClick={() => updateFilter("fuelIncluded", !filters.fuelIncluded)}
-            className={filters.fuelIncluded ? "bg-green-100 text-green-700 border-green-300 whitespace-nowrap" : "text-gray-900 hover:bg-gray-50 whitespace-nowrap"}
+            className={filters.fuelIncluded ? "bg-green-100 text-green-700 border-green-300 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
           >
             <Fuel className="mr-2 h-4 w-4 flex-shrink-0" />
             <span className={filters.fuelIncluded ? "text-green-700" : "text-gray-900"}>Carburante incluso</span>
@@ -240,7 +240,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             variant="outline"
             size="sm"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={showAdvanced ? "bg-gray-100 text-gray-900 whitespace-nowrap" : "text-gray-900 hover:bg-gray-50 whitespace-nowrap"}
+            className={showAdvanced ? "bg-gray-100 text-gray-900 w-full justify-start" : "text-gray-900 hover:bg-gray-50 w-full justify-start"}
           >
             <SlidersHorizontal className="mr-2 h-4 w-4 flex-shrink-0" />
             <span className="text-gray-900">Altri filtri</span>

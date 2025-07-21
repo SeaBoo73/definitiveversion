@@ -16,6 +16,8 @@ import { EsperienzePage } from "@/pages/esperienze";
 import { CharterPage } from "@/pages/charter";
 import NotFound from "@/pages/not-found";
 import { InstallPrompt } from "@/components/install-prompt";
+import AiutoPage from "@/pages/aiuto";
+import ProfiloPage from "@/pages/profilo";
 
 function Router() {
   return (
@@ -24,6 +26,8 @@ function Router() {
       <Route path="/search" component={SearchResults} />
       <Route path="/esperienze" component={EsperienzePage} />
       <Route path="/charter" component={CharterPage} />
+      <Route path="/aiuto" component={AiutoPage} />
+      <Route path="/profilo" component={ProfiloPage} />
       <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

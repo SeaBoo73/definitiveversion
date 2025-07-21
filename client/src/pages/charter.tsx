@@ -12,6 +12,9 @@ import {
   Anchor,
   Compass
 } from "lucide-react";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { MobileNavigation } from "@/components/mobile-navigation";
 
 export function CharterPage() {
   const charterServices = [
@@ -74,7 +77,8 @@ export function CharterPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white pb-20 md:pb-0">
+      <Header />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-deep-navy to-ocean-blue">
         <div className="absolute inset-0 bg-black opacity-20"></div>
@@ -243,6 +247,9 @@ export function CharterPage() {
           </div>
         </div>
       </section>
+      
+      <Footer />
+      <MobileNavigation />
     </div>
   );
 }

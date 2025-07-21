@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
+import { MobileNavigation } from "@/components/mobile-navigation";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -31,7 +32,7 @@ export default function HomePage() {
   const featuredBoats = filteredBoats.slice(0, 8);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
       <AppDownloadBanner />
       <Header />
       
@@ -260,6 +261,7 @@ export default function HomePage() {
       </section>
 
       <Footer />
+      <MobileNavigation />
     </div>
   );
 }

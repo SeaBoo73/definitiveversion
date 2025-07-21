@@ -205,7 +205,7 @@ export default function CustomerDashboard() {
                         <div className="flex-1">
                           <div className="flex items-center space-x-4 mb-2">
                             <h3 className="text-lg font-semibold">Prenotazione #{booking.id}</h3>
-                            {getBookingStatusBadge(booking.status)}
+                            {getBookingStatusBadge(booking.status || 'pending')}
                           </div>
                           
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

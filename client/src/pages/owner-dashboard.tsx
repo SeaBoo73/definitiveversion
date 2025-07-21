@@ -475,7 +475,7 @@ export default function OwnerDashboard() {
                         <div className="flex-1">
                           <div className="flex items-center space-x-4 mb-4">
                             <h3 className="text-lg font-semibold">{boat?.name}</h3>
-                            {getBookingStatusBadge(booking.status)}
+                            {getBookingStatusBadge(booking.status || 'pending')}
                           </div>
                           
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

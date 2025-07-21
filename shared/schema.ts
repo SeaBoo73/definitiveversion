@@ -229,3 +229,85 @@ export type InsertConversation = z.infer<typeof insertConversationSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
 export type Favorite = typeof favorites.$inferSelect;
+
+// New advanced tables
+export const notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  type: text("type").notNull(),
+  read: boolean("read").default(false),
+  data: text("data"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const promotions = pgTable("promotions", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  discountType: text("discount_type").notNull(),
+  discountValue: decimal("discount_value", { precision: 10, scale: 2 }).notNull(),
+  code: text("code").unique(),
+  minAmount: decimal("min_amount", { precision: 10, scale: 2 }),
+  maxUses: integer("max_uses"),
+  currentUses: integer("current_uses").default(0),
+  validFrom: timestamp("valid_from").notNull(),
+  validTo: timestamp("valid_to").notNull(),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const analytics = pgTable("analytics", {
+  id: serial("id").primaryKey(),
+  ownerId: integer("owner_id").references(() => users.id).notNull(),
+  date: text("date").notNull(),
+  views: integer("views").default(0),
+  bookings: integer("bookings").default(0),
+  revenue: decimal("revenue", { precision: 10, scale: 2 }).default("0"),
+  averageRating: decimal("average_rating", { precision: 3, scale: 2 }),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const aiInteractions = pgTable("ai_interactions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  prompt: text("prompt").notNull(),
+  response: text("response").notNull(),
+  interactionType: text("interaction_type").notNull(),
+  metadata: text("metadata"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// New types
+export type Notification = typeof notifications.$inferSelect;
+export type Promotion = typeof promotions.$inferSelect;
+export type Analytics = typeof analytics.$inferSelect;
+export type AiInteraction = typeof aiInteractions.$inferSelect;
+
+// New insert schemas
+export const insertNotificationSchema = createInsertSchema(notifications).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPromotionSchema = createInsertSchema(promotions).omit({
+  id: true,
+  createdAt: true,
+  currentUses: true,
+});
+
+export const insertAnalyticsSchema = createInsertSchema(analytics).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertAiInteractionSchema = createInsertSchema(aiInteractions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+export type InsertPromotion = z.infer<typeof insertPromotionSchema>;
+export type InsertAnalytics = z.infer<typeof insertAnalyticsSchema>;
+export type InsertAiInteraction = z.infer<typeof insertAiInteractionSchema>;

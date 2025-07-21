@@ -13,6 +13,7 @@ import { Boat } from "@shared/schema";
 import { Link } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
 import { MobileNavigation } from "@/components/mobile-navigation";
+import { LiveChatButton } from "@/components/live-chat-button";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -197,7 +198,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100" asChild>
-              <Link href="/auth?type=owner">Diventa noleggiatore</Link>
+              <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-ocean-blue" asChild>
               <Link href="/diventa-host">Scopri di più</Link>
@@ -262,6 +263,7 @@ export default function HomePage() {
 
       <Footer />
       <MobileNavigation />
+      <LiveChatButton />
     </div>
   );
 }

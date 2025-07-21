@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, X } from "lucide-react";
+import { Download, X, Smartphone } from "lucide-react";
 
 export function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -42,29 +42,61 @@ export function InstallPrompt() {
   if (!showPrompt || isDismissed) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 bg-ocean-blue text-white p-4 rounded-lg shadow-lg z-50 flex items-center justify-between">
-      <div className="flex-1">
-        <h4 className="font-semibold text-sm">Installa SeaGO</h4>
-        <p className="text-xs opacity-90">Aggiungi l'app alla schermata home per un accesso veloce</p>
-      </div>
-      <div className="flex gap-2 ml-4">
-        <Button 
-          size="sm" 
-          variant="secondary"
-          onClick={handleInstall}
-          className="bg-white text-ocean-blue hover:bg-gray-100"
-        >
-          <Download className="h-4 w-4 mr-1" />
-          Installa
-        </Button>
-        <Button 
-          size="sm" 
-          variant="ghost"
-          onClick={handleDismiss}
-          className="text-white hover:bg-white/20"
-        >
-          <X className="h-4 w-4" />
-        </Button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="bg-ocean-blue text-white p-6 rounded-t-xl text-center">
+          <Smartphone className="h-12 w-12 mx-auto mb-3" />
+          <h2 className="text-xl font-bold mb-2">Scarica l'App SeaGO</h2>
+          <p className="text-sm opacity-90">
+            La migliore esperienza di navigazione sempre con te
+          </p>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-center text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <span>Accesso più veloce</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <span>Notifiche in tempo reale</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <span>Funziona anche offline</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <span>Chat diretta con i proprietari</span>
+            </div>
+            <div className="flex items-center text-sm">
+              <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
+              <span>Gestione prenotazioni semplificata</span>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-3 pt-4">
+            <Button 
+              onClick={handleInstall}
+              className="w-full bg-ocean-blue hover:bg-blue-600 text-white h-12"
+            >
+              <Download className="h-5 w-5 mr-2" />
+              Installa App
+            </Button>
+            
+            <Button 
+              variant="outline"
+              onClick={handleDismiss}
+              className="w-full h-12"
+            >
+              Continua sul sito
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

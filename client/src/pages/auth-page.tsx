@@ -212,17 +212,69 @@ export default function AuthPage() {
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="role">Tipo di account</Label>
-                      <Select onValueChange={(value) => registerForm.setValue("role", value as any)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Seleziona il tipo di account" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="customer">Cliente</SelectItem>
-                          <SelectItem value="owner">Proprietario imbarcazione</SelectItem>
-                        </SelectContent>
-                      </Select>
+                    <div className="space-y-4">
+                      <Label className="text-base font-medium">Come vuoi usare SeaGO?</Label>
+                      <div className="grid grid-cols-1 gap-3">
+                        {/* Cliente Option */}
+                        <div 
+                          className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                            registerForm.watch("role") === "customer" 
+                              ? "border-ocean-blue bg-blue-50" 
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                          onClick={() => registerForm.setValue("role", "customer")}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-4 h-4 rounded-full border-2 ${
+                              registerForm.watch("role") === "customer" 
+                                ? "border-ocean-blue bg-ocean-blue" 
+                                : "border-gray-300"
+                            }`}>
+                              {registerForm.watch("role") === "customer" && (
+                                <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                              )}
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Mi registro come cliente</h3>
+                              <p className="text-sm text-gray-600">Prenota e noleggia barche</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Noleggiatore Option */}
+                        <div 
+                          className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                            registerForm.watch("role") === "owner" 
+                              ? "border-ocean-blue bg-blue-50" 
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                          onClick={() => registerForm.setValue("role", "owner")}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className={`w-4 h-4 rounded-full border-2 ${
+                              registerForm.watch("role") === "owner" 
+                                ? "border-ocean-blue bg-ocean-blue" 
+                                : "border-gray-300"
+                            }`}>
+                              {registerForm.watch("role") === "owner" && (
+                                <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                              )}
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Mi registro come noleggiatore</h3>
+                              <p className="text-sm text-gray-600">Affitta la tua barca e guadagna</p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {registerForm.watch("role") === "owner" && (
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                          <p className="text-sm text-green-800">
+                            💡 <strong>Come noleggiatore</strong> potrai anche prenotare altre barche come cliente!
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     <div className="space-y-2">

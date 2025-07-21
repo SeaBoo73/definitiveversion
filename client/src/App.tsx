@@ -33,6 +33,8 @@ import CondizioniServizioPage from "@/pages/condizioni-servizio";
 import ContattiPage from "@/pages/contatti";
 import PrivacyPolicyPage from "@/pages/privacy-policy";
 import PaymentSuccess from "@/pages/payment-success";
+import DiventaNoleggiatorePage from "@/pages/diventa-noleggiatore";
+import { InstallPrompt } from "@/components/install-prompt";
 
 function Router() {
   return (
@@ -57,6 +59,7 @@ function Router() {
       <Route path="/condizioni-servizio" component={CondizioniServizioPage} />
       <Route path="/privacy-policy" component={PrivacyPolicyPage} />
       <Route path="/contatti" component={ContattiPage} />
+      <Route path="/diventa-noleggiatore" component={DiventaNoleggiatorePage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
       <Route path="/boats/:id/book" component={BoatBooking} />
@@ -76,7 +79,7 @@ function App() {
         <AuthProvider>
           <Toaster />
           <Router />
-          {/* <InstallPrompt /> */}
+          <InstallPrompt />
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

@@ -74,7 +74,7 @@ export function Footer() {
             </div>
             <div className="flex items-center space-x-2">
               <DollarSign className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-400 text-sm">EUR</span>
+              <span className="text-gray-400 text-sm">€ EUR</span>
             </div>
           </div>
         </div>

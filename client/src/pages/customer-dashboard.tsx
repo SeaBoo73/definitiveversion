@@ -117,9 +117,14 @@ export default function CustomerDashboard() {
           </Alert>
         )}
 
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-900">Ciao, {user.firstName || user.username}!</h1>
           <p className="text-gray-600 mt-2">Gestisci le tue prenotazioni e scopri nuove avventure</p>
+          <div className="mt-4">
+            <Button variant="outline" className="border-coral text-coral hover:bg-coral hover:text-white" asChild>
+              <Link href="/diventa-noleggiatore">Vuoi diventare noleggiatore?</Link>
+            </Button>
+          </div>
         </div>
 
         {/* Statistics Cards */}

@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import Stripe from "stripe";
+import { registerOwnerRoutes } from "./routes/owner-registration";
 import { Server as SocketIOServer } from "socket.io";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
@@ -16,6 +17,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Register owner routes
+  registerOwnerRoutes(app);
   // Setup authentication
   setupAuth(app);
 

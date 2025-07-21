@@ -1,186 +1,84 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
-  Image,
+  StyleSheet,
   TouchableOpacity,
-  Alert,
+  Image,
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const { width } = Dimensions.get('window');
-const API_BASE_URL = 'https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev';
 
-type Boat = {
-  id: number;
-  name: string;
-  manufacturer: string;
-  type: string;
-  year: number;
-  maxPersons: number;
-  length: number;
-  motorization: string;
-  licenseRequired: boolean;
-  skipperRequired: boolean;
-  port: string;
-  pricePerDay: string;
-  description: string;
-  images: string[];
-  documentsRequired: string;
-};
-
-export default function BoatDetailsScreen({ route, navigation }: any) {
-  const { boatId } = route.params;
-  const [boat, setBoat] = useState<Boat | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    fetchBoatDetails();
-  }, [boatId]);
-
-  const fetchBoatDetails = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/boats/${boatId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setBoat(data);
-      } else {
-        Alert.alert('Errore', 'Impossibile caricare i dettagli della barca');
-      }
-    } catch (error) {
-      Alert.alert('Errore', 'Errore di connessione');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleBooking = () => {
-    Alert.alert(
-      'Prenotazione',
-      'Funzionalità di prenotazione in arrivo!',
-      [{ text: 'OK' }]
-    );
-  };
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <Text style={styles.loadingText}>Caricamento...</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-  if (!boat) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Barca non trovata</Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
+export default function BoatDetailsScreen({ navigation, route }: any) {
+  const { boat } = route.params;
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {/* Image Gallery */}
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: boat.images[currentImageIndex] || 'https://via.placeholder.com/400x300' }}
-            style={styles.image}
-          />
-          {boat.images.length > 1 && (
-            <View style={styles.imageIndicators}>
-              {boat.images.map((_, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={[
-                    styles.indicator,
-                    index === currentImageIndex && styles.activeIndicator,
-                  ]}
-                  onPress={() => setCurrentImageIndex(index)}
-                />
-              ))}
-            </View>
-          )}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="chevron-back" size={24} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.favoriteButton}>
+            <Icon name="heart-outline" size={24} color="white" />
+          </TouchableOpacity>
         </View>
 
-        {/* Boat Info */}
-        <View style={styles.infoContainer}>
-          <Text style={styles.boatName}>{boat.name}</Text>
-          <Text style={styles.manufacturer}>{boat.manufacturer} - {boat.year}</Text>
-          <Text style={styles.port}>📍 {boat.port}</Text>
-          
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>€{boat.pricePerDay}</Text>
-            <Text style={styles.priceLabel}>/ giorno</Text>
+        <Image source={{ uri: boat.image }} style={styles.heroImage} />
+
+        <View style={styles.content}>
+          <View style={styles.titleSection}>
+            <Text style={styles.boatName}>{boat.name}</Text>
+            <Text style={styles.boatType}>{boat.type} • {boat.port}</Text>
+            <View style={styles.ratingContainer}>
+              <Icon name="star" size={16} color="#f59e0b" />
+              <Text style={styles.rating}>{boat.rating}</Text>
+              <Text style={styles.reviewsCount}>(24 recensioni)</Text>
+            </View>
           </View>
 
-          {/* Specifications */}
-          <View style={styles.specsContainer}>
-            <Text style={styles.sectionTitle}>Caratteristiche</Text>
+          <View style={styles.priceSection}>
+            <Text style={styles.price}>€{boat.pricePerDay}</Text>
+            <Text style={styles.priceLabel}>/giorno</Text>
+          </View>
+
+          <View style={styles.specsSection}>
+            <Text style={styles.sectionTitle}>Specifiche</Text>
             <View style={styles.specsGrid}>
               <View style={styles.specItem}>
-                <Text style={styles.specLabel}>Tipo</Text>
-                <Text style={styles.specValue}>{boat.type}</Text>
+                <Icon name="people" size={20} color="#0ea5e9" />
+                <Text style={styles.specText}>Max {boat.maxPersons} persone</Text>
               </View>
               <View style={styles.specItem}>
-                <Text style={styles.specLabel}>Persone</Text>
-                <Text style={styles.specValue}>{boat.maxPersons}</Text>
+                <Icon name="resize" size={20} color="#0ea5e9" />
+                <Text style={styles.specText}>8.5m lunghezza</Text>
               </View>
               <View style={styles.specItem}>
-                <Text style={styles.specLabel}>Lunghezza</Text>
-                <Text style={styles.specValue}>{boat.length}m</Text>
+                <Icon name="checkmark-circle" size={20} color="#10b981" />
+                <Text style={styles.specText}>Patente non richiesta</Text>
               </View>
               <View style={styles.specItem}>
-                <Text style={styles.specLabel}>Motorizzazione</Text>
-                <Text style={styles.specValue}>{boat.motorization}</Text>
+                <Icon name="water" size={20} color="#0ea5e9" />
+                <Text style={styles.specText}>Carburante incluso</Text>
               </View>
             </View>
           </View>
 
-          {/* Requirements */}
-          <View style={styles.requirementsContainer}>
-            <Text style={styles.sectionTitle}>Requisiti</Text>
-            <View style={styles.requirementsList}>
-              <View style={styles.requirementItem}>
-                <Text style={styles.requirementIcon}>
-                  {boat.licenseRequired ? '✅' : '❌'}
-                </Text>
-                <Text style={styles.requirementText}>Patente nautica</Text>
-              </View>
-              <View style={styles.requirementItem}>
-                <Text style={styles.requirementIcon}>
-                  {boat.skipperRequired ? '✅' : '❌'}
-                </Text>
-                <Text style={styles.requirementText}>Skipper richiesto</Text>
-              </View>
-            </View>
-            <Text style={styles.documentsText}>
-              Documenti richiesti: {boat.documentsRequired}
-            </Text>
-          </View>
-
-          {/* Description */}
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.sectionTitle}>Descrizione</Text>
-            <Text style={styles.description}>{boat.description}</Text>
-          </View>
+          <TouchableOpacity 
+            style={styles.bookButton}
+            onPress={() => navigation.navigate('Booking', { boat })}
+          >
+            <Text style={styles.bookButtonText}>Prenota Ora</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-
-      {/* Booking Button */}
-      <View style={styles.bookingContainer}>
-        <TouchableOpacity style={styles.bookingButton} onPress={handleBooking}>
-          <Text style={styles.bookingButtonText}>Prenota ora</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 }
@@ -188,71 +86,71 @@ export default function BoatDetailsScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: 'white',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: 16,
-    color: '#64748b',
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  errorText: {
-    fontSize: 16,
-    color: '#ef4444',
-  },
-  imageContainer: {
-    position: 'relative',
-  },
-  image: {
-    width: width,
-    height: 300,
-  },
-  imageIndicators: {
+  header: {
     position: 'absolute',
-    bottom: 16,
+    top: 50,
     left: 0,
     right: 0,
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    zIndex: 1,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.3)',
     justifyContent: 'center',
+    alignItems: 'center',
   },
-  indicator: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    marginHorizontal: 4,
+  favoriteButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  activeIndicator: {
-    backgroundColor: '#fff',
+  heroImage: {
+    width: width,
+    height: 300,
   },
-  infoContainer: {
-    padding: 16,
+  content: {
+    padding: 20,
+  },
+  titleSection: {
+    marginBottom: 16,
   },
   boatName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#1e293b',
+    color: '#111827',
     marginBottom: 4,
   },
-  manufacturer: {
+  boatType: {
     fontSize: 16,
-    color: '#64748b',
+    color: '#6b7280',
     marginBottom: 8,
   },
-  port: {
-    fontSize: 16,
-    color: '#64748b',
-    marginBottom: 16,
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  priceContainer: {
+  rating: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginLeft: 4,
+    marginRight: 8,
+    color: '#111827',
+  },
+  reviewsCount: {
+    fontSize: 14,
+    color: '#6b7280',
+  },
+  priceSection: {
     flexDirection: 'row',
     alignItems: 'baseline',
     marginBottom: 24,
@@ -264,87 +162,47 @@ const styles = StyleSheet.create({
   },
   priceLabel: {
     fontSize: 16,
-    color: '#64748b',
+    color: '#6b7280',
     marginLeft: 4,
   },
-  specsContainer: {
-    marginBottom: 24,
+  specsSection: {
+    marginBottom: 32,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1e293b',
+    color: '#111827',
     marginBottom: 16,
   },
   specsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: 12,
   },
   specItem: {
-    width: '48%',
-    backgroundColor: '#fff',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  specLabel: {
-    fontSize: 14,
-    color: '#64748b',
-    marginBottom: 4,
-  },
-  specValue: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#1e293b',
-  },
-  requirementsContainer: {
-    marginBottom: 24,
-  },
-  requirementsList: {
-    marginBottom: 12,
-  },
-  requirementItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    backgroundColor: '#f9fafb',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    minWidth: '45%',
   },
-  requirementIcon: {
-    fontSize: 16,
-    marginRight: 12,
-  },
-  requirementText: {
-    fontSize: 16,
-    color: '#1e293b',
-  },
-  documentsText: {
+  specText: {
     fontSize: 14,
-    color: '#64748b',
-    fontStyle: 'italic',
+    fontWeight: '500',
+    marginLeft: 8,
+    color: '#374151',
   },
-  descriptionContainer: {
-    marginBottom: 24,
-  },
-  description: {
-    fontSize: 16,
-    color: '#1e293b',
-    lineHeight: 24,
-  },
-  bookingContainer: {
-    padding: 16,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-  },
-  bookingButton: {
+  bookButton: {
     backgroundColor: '#0ea5e9',
-    padding: 16,
+    paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
   },
-  bookingButtonText: {
-    color: '#fff',
+  bookButtonText: {
+    color: 'white',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 });

@@ -127,3 +127,28 @@
   cursor: pointer !important;
   z-index: 10 !important;
 }
+
+/* Hide Vite runtime error overlay */
+vite-error-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -1 !important;
+}
+
+#vite-plugin-runtime-error-modal {
+  display: none !important;
+}
+
+.vite-error-overlay {
+  display: none !important;
+}
+
+/* Hide any error overlay that might appear */
+[data-vite-dev-id] {
+  display: none !important;
+}
+
+div[style*="position: fixed"][style*="z-index: 99999"] {
+  display: none !important;
+}

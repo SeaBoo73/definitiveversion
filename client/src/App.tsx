@@ -9,6 +9,7 @@ import { SimpleTest } from "./simple-test";
 import { MinimalApp } from "./minimal-app";
 import { ErrorBoundary } from "./error-boundary";
 import { CleanApp } from "./clean-app";
+import "./hide-overlay";
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";

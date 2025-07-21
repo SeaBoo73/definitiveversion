@@ -1,4 +1,4 @@
-import { useRoute, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -24,11 +24,13 @@ import {
 import { Boat } from "@shared/schema";
 
 export default function BoatDetails() {
-  const [, params] = useRoute("/boats/:id");
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [showBookingModal, setShowBookingModal] = useState(false);
   
-  const id = params?.id;
+  // Extract boat ID from URL path
+  const pathParts = location.split('/');
+  const boatIndex = pathParts.indexOf('boats') + 1;
+  const id = boatIndex > 0 && pathParts[boatIndex] ? pathParts[boatIndex] : null;
 
   const { data: boat, isLoading } = useQuery<Boat>({
     queryKey: ["/api/boats", id],

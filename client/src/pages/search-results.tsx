@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useRoute } from "wouter";
+import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Button } from "@/components/ui/button";
@@ -26,12 +26,11 @@ interface SearchParams {
 
 export function SearchResults() {
   const [location, setLocation] = useLocation();
-  const [, params] = useRoute("/search");
   const [selectedBoat, setSelectedBoat] = useState<Boat | null>(null);
   const [showFilters, setShowFilters] = useState(false);
   
   // Parse URL search parameters
-  const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(location.split('?')[1] || '');
   const searchParams: SearchParams = {
     location: urlParams.get("location") || undefined,
     startDate: urlParams.get("startDate") || undefined,
@@ -319,7 +318,6 @@ export function SearchResults() {
       {selectedBoat && (
         <BookingModal
           boat={selectedBoat}
-          isOpen={!!selectedBoat}
           onClose={() => setSelectedBoat(null)}
         />
       )}

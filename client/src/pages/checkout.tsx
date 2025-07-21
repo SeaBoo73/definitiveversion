@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRoute, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -327,11 +327,13 @@ function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
 }
 
 export default function Checkout() {
-  const [, params] = useRoute("/checkout/:bookingId");
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { user } = useAuth();
 
-  const bookingId = params?.bookingId ? parseInt(params.bookingId) : null;
+  // Extract booking ID from URL path
+  const pathParts = location.split('/');
+  const checkoutIndex = pathParts.indexOf('checkout') + 1;
+  const bookingId = checkoutIndex > 0 && pathParts[checkoutIndex] ? parseInt(pathParts[checkoutIndex]) : null;
 
   const { data: booking, isLoading: bookingLoading } = useQuery<Booking>({
     queryKey: ["/api/bookings", bookingId],

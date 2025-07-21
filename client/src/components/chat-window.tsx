@@ -74,8 +74,8 @@ export function ChatWindow({ bookingId, onClose, isOpen }: ChatWindowProps) {
   useEffect(() => {
     if (!isOpen || !conversation?.id) return;
 
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    const protocol = typeof window !== 'undefined' && window.location.protocol === "https:" ? "wss:" : "ws:";
+    const wsUrl = typeof window !== 'undefined' ? `${protocol}//${window.location.host}/ws` : 'ws://localhost:5000/ws';
     const newSocket = io(wsUrl, { path: '/ws' });
 
     newSocket.on('connect', () => {

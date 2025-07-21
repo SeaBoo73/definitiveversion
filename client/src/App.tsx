@@ -16,7 +16,7 @@ import { SearchResults } from "@/pages/search-results";
 import { EsperienzePage } from "@/pages/esperienze";
 import { CharterPage } from "@/pages/charter";
 import NotFound from "@/pages/not-found";
-import { InstallPrompt } from "@/components/install-prompt";
+// import { InstallPrompt } from "@/components/install-prompt";
 import AiutoPage from "@/pages/aiuto";
 import ProfiloPage from "@/pages/profilo";
 
@@ -47,7 +47,7 @@ function App() {
       <AuthProvider>
         <Toaster />
         <Router />
-        <InstallPrompt />
+        {/* <InstallPrompt /> */}
       </AuthProvider>
     </QueryClientProvider>
   );

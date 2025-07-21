@@ -10,6 +10,7 @@ import { PortSelector } from "@/components/port-selector";
 import { MapPin, Calendar as CalendarIcon, Users, Search, Ship, UserCheck, Fuel, SlidersHorizontal } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
+import { useLocation } from "wouter";
 
 interface SearchFiltersProps {
   onSearch?: (filters: SearchFilters) => void;
@@ -26,6 +27,7 @@ export interface SearchFilters {
 }
 
 export function SearchFilters({ onSearch }: SearchFiltersProps) {
+  const [, setLocation] = useLocation();
   const [filters, setFilters] = useState<SearchFilters>({
     location: "",
     startDate: undefined,
@@ -55,7 +57,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
       if (filters.skipperRequired) searchParams.set("skipperRequired", "true");
       if (filters.fuelIncluded) searchParams.set("fuelIncluded", "true");
       
-      window.location.href = `/search?${searchParams.toString()}`;
+      setLocation(`/search?${searchParams.toString()}`);
     }
   };
 

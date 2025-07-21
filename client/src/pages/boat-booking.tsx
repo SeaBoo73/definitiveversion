@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useRoute } from "wouter";
+import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -24,8 +24,7 @@ import {
 } from "lucide-react";
 
 export default function BoatBooking() {
-  const [, params] = useRoute("/boats/:id/book");
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [currentStep, setCurrentStep] = useState<'calendar' | 'form' | 'payment'>('calendar');
   const [bookingData, setBookingData] = useState<{
     startDate: Date;
@@ -34,7 +33,10 @@ export default function BoatBooking() {
     days: number;
   } | null>(null);
 
-  const boatId = params?.id ? parseInt(params.id) : null;
+  // Extract boat ID from URL path
+  const pathParts = location.split('/');
+  const boatIdIndex = pathParts.indexOf('boats') + 1;
+  const boatId = boatIdIndex > 0 && pathParts[boatIdIndex] ? parseInt(pathParts[boatIdIndex]) : null;
 
   const { data: boat, isLoading, error } = useQuery<Boat>({
     queryKey: ["/api/boats", boatId],

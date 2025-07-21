@@ -54,7 +54,7 @@ export function BoatCard({ boat }: BoatCardProps) {
   };
 
   const getTypeLabel = () => {
-    const labels = {
+    const labels: { [key: string]: string } = {
       gommone: "Gommone",
       yacht: "Yacht",
       catamarano: "Catamarano",
@@ -63,6 +63,9 @@ export function BoatCard({ boat }: BoatCardProps) {
       kayak: "Kayak",
       charter: "Charter",
       houseboat: "Houseboat",
+      "barche-senza-patente": "Barche senza patente",
+      "motorboat": "Barche a motore",
+      "gulet": "Gulet"
     };
     return labels[boat.type] || boat.type;
   };

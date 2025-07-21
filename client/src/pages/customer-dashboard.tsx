@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -31,17 +32,18 @@ import {
 
 export default function CustomerDashboard() {
   const { user } = useAuth();
+  const [location, setLocation] = useLocation();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Check for success parameter
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(location.split('?')[1] || '');
     if (urlParams.get('success') === 'true') {
       setShowSuccessMessage(true);
       // Remove the parameter from URL
-      window.history.replaceState({}, document.title, window.location.pathname);
+      setLocation('/customer-dashboard');
     }
-  }, []);
+  }, [location, setLocation]);
 
   // Fetch user's bookings
   const { data: bookings = [], isLoading: bookingsLoading } = useQuery<Booking[]>({

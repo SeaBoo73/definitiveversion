@@ -51,6 +51,7 @@ interface BookingFormProps {
     port: string;
     pricePerDay: number;
     maxPersons: number;
+    type: string;
     images?: string[];
     skipperRequired?: boolean;
     fuelIncluded?: boolean;
@@ -78,8 +79,8 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
       guestPhone: '',
       numberOfGuests: '1',
       notes: '',
-      skipperRequired: boat.skipperRequired || false,
-      fuelIncluded: boat.fuelIncluded || false,
+      skipperRequired: boat.type === "charter" ? true : false,
+      fuelIncluded: boat.type === "charter" ? true : false,
       acceptTerms: false,
       acceptCancellation: false
     }
@@ -105,7 +106,8 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
         fuelIncluded: data.fuelIncluded
       });
     },
-    onSuccess: (newBooking) => {
+    onSuccess: (response) => {
+      const newBooking = response.data || response;
       toast({
         title: "Prenotazione creata",
         description: "La tua prenotazione è stata registrata. Procedi al pagamento."
@@ -275,8 +277,8 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                     onCheckedChange={(checked) => form.setValue("skipperRequired", checked as boolean)}
                   />
                   <Label htmlFor="skipperRequired" className="flex items-center gap-2">
-                    Skipper professionale
-                    <Badge variant="outline">+€120/giorno</Badge>
+                    Skipper professionale {boat.type === "charter" ? "(incluso)" : "(escluso)"}
+                    {boat.type !== "charter" && <Badge variant="outline">+€120/giorno</Badge>}
                   </Label>
                 </div>
                 
@@ -287,8 +289,8 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                     onCheckedChange={(checked) => form.setValue("fuelIncluded", checked as boolean)}
                   />
                   <Label htmlFor="fuelIncluded" className="flex items-center gap-2">
-                    Carburante incluso
-                    <Badge variant="outline">+€80/giorno</Badge>
+                    Carburante {boat.type === "charter" ? "(incluso)" : "(escluso)"}
+                    {boat.type !== "charter" && <Badge variant="outline">+€80/giorno</Badge>}
                   </Label>
                 </div>
               </div>

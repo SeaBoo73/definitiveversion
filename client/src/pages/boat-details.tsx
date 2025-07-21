@@ -250,7 +250,9 @@ export default function BoatDetails() {
                   <UserCheck className="h-5 w-5 text-ocean-blue mr-3" />
                   <div>
                     <p className="font-medium">Skipper</p>
-                    <p className="text-sm text-gray-600">{boat.skipperRequired ? "Obbligatorio" : "Opzionale"}</p>
+                    <p className="text-sm text-gray-600">
+                      {boat.type === "charter" ? "Incluso" : "Escluso"}
+                    </p>
                   </div>
                 </div>
 
@@ -258,7 +260,9 @@ export default function BoatDetails() {
                   <Fuel className="h-5 w-5 text-ocean-blue mr-3" />
                   <div>
                     <p className="font-medium">Carburante</p>
-                    <p className="text-sm text-gray-600">Escluso</p>
+                    <p className="text-sm text-gray-600">
+                      {boat.type === "charter" ? "Incluso" : "Escluso"}
+                    </p>
                   </div>
                 </div>
               </div>

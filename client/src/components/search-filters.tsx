@@ -112,6 +112,10 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                   console.log("Start date selected:", date);
                   if (date) {
                     updateFilter("startDate", date);
+                    // Auto-set end date to same date if not already set (for single day rental)
+                    if (!filters.endDate) {
+                      updateFilter("endDate", date);
+                    }
                     setStartDateOpen(false);
                     console.log("Start date popover closed");
                   }
@@ -141,7 +145,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 {filters.endDate ? (
                   <span className="text-gray-900 font-medium">{format(new Date(filters.endDate), "dd/MM/yyyy")}</span>
                 ) : (
-                  <span className="text-gray-500">Seleziona data</span>
+                  <span className="text-gray-500">{filters.startDate ? "Stessa data" : "Seleziona data"}</span>
                 )}
               </Button>
             </PopoverTrigger>
@@ -160,7 +164,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 disabled={(date) => {
                   const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
                   if (date < yesterday) return true;
-                  if (filters.startDate && date <= filters.startDate) return true;
+                  if (filters.startDate && date < filters.startDate) return true; // Allow same date
                   return false;
                 }}
                 initialFocus

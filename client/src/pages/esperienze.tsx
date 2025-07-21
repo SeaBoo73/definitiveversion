@@ -51,7 +51,7 @@ export function EsperienzePage() {
       ]
     },
     {
-      category: "🍽️ Esperienze Gourmet",
+      category: "Esperienze Gourmet",
       icon: <ChefHat className="h-6 w-6" />,
       items: [
         {
@@ -75,7 +75,7 @@ export function EsperienzePage() {
       ]
     },
     {
-      category: "🎣 Attività a Bordo",
+      category: "Attività a Bordo",
       icon: <Waves className="h-6 w-6" />,
       items: [
         {
@@ -99,7 +99,7 @@ export function EsperienzePage() {
       ]
     },
     {
-      category: "🎉 Eventi Speciali",
+      category: "Eventi Speciali",
       icon: <PartyPopper className="h-6 w-6" />,
       items: [
         {

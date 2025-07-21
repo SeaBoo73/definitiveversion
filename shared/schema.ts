@@ -71,14 +71,21 @@ export const reviews = pgTable("reviews", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Chat tables
+export const conversations = pgTable("conversations", {
+  id: serial("id").primaryKey(),
+  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  lastMessageAt: timestamp("last_message_at").defaultNow().notNull(),
+});
+
 export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
+  conversationId: integer("conversation_id").references(() => conversations.id).notNull(),
   senderId: integer("sender_id").references(() => users.id).notNull(),
-  receiverId: integer("receiver_id").references(() => users.id).notNull(),
-  bookingId: integer("booking_id").references(() => bookings.id),
   content: text("content").notNull(),
-  status: messageStatusEnum("status").default("sent"),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  readAt: timestamp("read_at"),
 });
 
 export const favorites = pgTable("favorites", {
@@ -92,8 +99,7 @@ export const favorites = pgTable("favorites", {
 export const usersRelations = relations(users, ({ many }) => ({
   ownedBoats: many(boats),
   bookings: many(bookings),
-  sentMessages: many(messages, { relationName: "sender" }),
-  receivedMessages: many(messages, { relationName: "receiver" }),
+  sentMessages: many(messages),
   givenReviews: many(reviews, { relationName: "reviewer" }),
   receivedReviews: many(reviews, { relationName: "reviewee" }),
   favorites: many(favorites),
@@ -118,7 +124,7 @@ export const bookingsRelations = relations(bookings, ({ one, many }) => ({
     references: [boats.id],
   }),
   reviews: many(reviews),
-  messages: many(messages),
+  conversations: many(conversations),
 }));
 
 export const reviewsRelations = relations(reviews, ({ one }) => ({
@@ -138,20 +144,22 @@ export const reviewsRelations = relations(reviews, ({ one }) => ({
   }),
 }));
 
+export const conversationsRelations = relations(conversations, ({ one, many }) => ({
+  booking: one(bookings, {
+    fields: [conversations.bookingId],
+    references: [bookings.id],
+  }),
+  messages: many(messages),
+}));
+
 export const messagesRelations = relations(messages, ({ one }) => ({
+  conversation: one(conversations, {
+    fields: [messages.conversationId],
+    references: [conversations.id],
+  }),
   sender: one(users, {
     fields: [messages.senderId],
     references: [users.id],
-    relationName: "sender",
-  }),
-  receiver: one(users, {
-    fields: [messages.receiverId],
-    references: [users.id],
-    relationName: "receiver",
-  }),
-  booking: one(bookings, {
-    fields: [messages.bookingId],
-    references: [bookings.id],
   }),
 }));
 
@@ -195,10 +203,16 @@ export const insertReviewSchema = createInsertSchema(reviews).omit({
   createdAt: true,
 });
 
+export const insertConversationSchema = createInsertSchema(conversations).omit({
+  id: true,
+  createdAt: true,
+  lastMessageAt: true,
+});
+
 export const insertMessageSchema = createInsertSchema(messages).omit({
   id: true,
-  status: true,
   createdAt: true,
+  readAt: true,
 });
 
 // Types
@@ -210,6 +224,8 @@ export type Booking = typeof bookings.$inferSelect;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type Review = typeof reviews.$inferSelect;
 export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type Conversation = typeof conversations.$inferSelect;
+export type InsertConversation = z.infer<typeof insertConversationSchema>;
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
 export type Favorite = typeof favorites.$inferSelect;

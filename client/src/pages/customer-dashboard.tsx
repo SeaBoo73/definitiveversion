@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Booking, Boat, Favorite } from "@shared/schema";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
+import { ChatButton } from "@/components/chat-button";
 import {
   Calendar,
   MapPin,
@@ -232,9 +233,7 @@ export default function CustomerDashboard() {
                         </div>
                         
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
+                          <ChatButton bookingId={booking.id} />
                           {booking.status === "completed" && (
                             <Button size="sm" variant="outline">
                               <Star className="h-4 w-4" />

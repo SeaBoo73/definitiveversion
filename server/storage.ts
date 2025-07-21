@@ -1,4 +1,4 @@
-import { users, boats, bookings, reviews, messages, favorites, type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, type Review, type InsertReview, type Message, type InsertMessage, type Favorite } from "@shared/schema";
+import { users, boats, bookings, reviews, conversations, messages, favorites, type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, type Review, type InsertReview, type Conversation, type InsertConversation, type Message, type InsertMessage, type Favorite } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc, asc, gte, lte, ilike, sql } from "drizzle-orm";
 import session from "express-session";
@@ -50,14 +50,24 @@ export interface IStorage {
   }): Promise<Review[]>;
   createReview(review: InsertReview): Promise<Review>;
 
+  // Conversation methods
+  getConversation(id: number): Promise<Conversation | undefined>;
+  getConversationByBooking(bookingId: number): Promise<Conversation | undefined>;
+  createConversation(conversation: InsertConversation): Promise<Conversation>;
+  updateConversation(id: number, updates: Partial<Conversation>): Promise<Conversation>;
+
   // Message methods
-  getMessages(filters?: {
+  getMessages(conversationId: number): Promise<Message[]>;
+  createMessage(message: InsertMessage): Promise<Message>;
+  markMessageAsRead(messageId: number): Promise<void>;
+  getUnreadMessagesCount(userId: number): Promise<number>;
+
+  // Legacy message methods (keeping for compatibility)
+  getLegacyMessages(filters?: {
     senderId?: number;
     receiverId?: number;
     bookingId?: number;
   }): Promise<Message[]>;
-  createMessage(message: InsertMessage): Promise<Message>;
-  markMessageAsRead(id: number): Promise<void>;
 
   // Favorite methods
   getFavorites(userId: number): Promise<Favorite[]>;
@@ -283,19 +293,131 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(messages).orderBy(asc(messages.createdAt));
   }
 
-  async createMessage(message: InsertMessage): Promise<Message> {
-    const [newMessage] = await db
-      .insert(messages)
-      .values(message)
-      .returning();
-    return newMessage;
+  // Conversation methods
+  async getConversation(id: number) {
+    const result = await db
+      .select()
+      .from(conversations)
+      .where(eq(conversations.id, id))
+      .limit(1);
+    return result[0];
   }
 
-  async markMessageAsRead(id: number): Promise<void> {
+  async getConversationByBooking(bookingId: number) {
+    const result = await db
+      .select()
+      .from(conversations)
+      .where(eq(conversations.bookingId, bookingId))
+      .limit(1);
+    return result[0];
+  }
+
+  async createConversation(conversation: InsertConversation) {
+    const result = await db.insert(conversations).values(conversation).returning();
+    return result[0];
+  }
+
+  async updateConversation(id: number, updates: Partial<Conversation>) {
+    const result = await db
+      .update(conversations)
+      .set(updates)
+      .where(eq(conversations.id, id))
+      .returning();
+    return result[0];
+  }
+
+  // Message methods with conversation support
+  async getMessages(conversationId: number) {
+    return await db
+      .select({
+        id: messages.id,
+        conversationId: messages.conversationId,
+        senderId: messages.senderId,
+        content: messages.content,
+        createdAt: messages.createdAt,
+        readAt: messages.readAt,
+        senderName: sql<string>`COALESCE(${users.firstName} || ' ' || ${users.lastName}, ${users.email})`,
+        senderEmail: users.email
+      })
+      .from(messages)
+      .innerJoin(users, eq(messages.senderId, users.id))
+      .where(eq(messages.conversationId, conversationId))
+      .orderBy(asc(messages.createdAt));
+  }
+
+  async createMessage(message: InsertMessage) {
+    const result = await db.insert(messages).values(message).returning();
+    
+    // Update conversation last message time
+    await db
+      .update(conversations)
+      .set({ lastMessageAt: new Date() })
+      .where(eq(conversations.id, message.conversationId));
+    
+    return result[0];
+  }
+
+  async markMessageAsRead(messageId: number) {
     await db
       .update(messages)
-      .set({ status: "read" })
-      .where(eq(messages.id, id));
+      .set({ readAt: new Date() })
+      .where(eq(messages.id, messageId));
+  }
+
+  async getUnreadMessagesCount(userId: number) {
+    // Get conversations where the user is involved
+    const userConversations = await db
+      .select({ conversationId: conversations.id })
+      .from(conversations)
+      .innerJoin(bookings, eq(conversations.bookingId, bookings.id))
+      .innerJoin(boats, eq(bookings.boatId, boats.id))
+      .where(or(
+        eq(bookings.customerId, userId),
+        eq(boats.ownerId, userId)
+      ));
+
+    if (userConversations.length === 0) return 0;
+
+    const conversationIds = userConversations.map(c => c.conversationId);
+    
+    const result = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(messages)
+      .where(
+        and(
+          sql`${messages.conversationId} = ANY(${conversationIds})`,
+          sql`${messages.senderId} != ${userId}`,
+          sql`${messages.readAt} IS NULL`
+        )
+      );
+
+    return result[0]?.count || 0;
+  }
+
+  // Legacy message methods
+  async getLegacyMessages(filters?: {
+    senderId?: number;
+    receiverId?: number;
+    bookingId?: number;
+  }) {
+    const conditions = [];
+    
+    if (filters?.senderId && filters?.receiverId) {
+      conditions.push(
+        or(
+          and(eq(messages.senderId, filters.senderId)),
+          and(eq(messages.senderId, filters.receiverId))
+        )
+      );
+    } else if (filters?.senderId) {
+      conditions.push(eq(messages.senderId, filters.senderId));
+    }
+
+    if (conditions.length > 0) {
+      return await db.select().from(messages).where(and(...conditions)).orderBy(asc(messages.createdAt));
+    }
+    
+    return [];
   }
 
   // Favorite methods

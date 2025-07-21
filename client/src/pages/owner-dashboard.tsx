@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
+import { ChatButton } from "@/components/chat-button";
 import {
   Plus,
   Ship,
@@ -498,9 +499,7 @@ export default function OwnerDashboard() {
                         </div>
                         
                         <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <MessageSquare className="h-4 w-4" />
-                          </Button>
+                          <ChatButton bookingId={booking.id} />
                           <Button size="sm" variant="outline">
                             <Eye className="h-4 w-4" />
                           </Button>

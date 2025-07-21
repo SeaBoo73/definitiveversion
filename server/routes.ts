@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import Stripe from "stripe";
+import { Server as SocketIOServer } from "socket.io";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import { insertBoatSchema, insertBookingSchema, insertReviewSchema, insertMessageSchema } from "@shared/schema";
@@ -433,7 +434,116 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Chat endpoints
+  app.get("/api/conversations/:bookingId", async (req, res) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      let conversation = await storage.getConversationByBooking(bookingId);
+      
+      // Create conversation if it doesn't exist
+      if (!conversation) {
+        conversation = await storage.createConversation({ bookingId });
+      }
+      
+      res.json(conversation);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching conversation" });
+    }
+  });
+
+  app.get("/api/conversations/:conversationId/messages", async (req, res) => {
+    try {
+      const conversationId = parseInt(req.params.conversationId);
+      const messages = await storage.getMessages(conversationId);
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching messages" });
+    }
+  });
+
+  app.post("/api/conversations/:conversationId/messages", async (req, res) => {
+    try {
+      if (!req.user?.id) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+
+      const conversationId = parseInt(req.params.conversationId);
+      const messageData = {
+        conversationId,
+        senderId: req.user.id,
+        content: req.body.content
+      };
+
+      const message = await storage.createMessage(messageData);
+      
+      // Broadcast message via WebSocket
+      const io = req.app.get('socketio');
+      if (io) {
+        io.to(`conversation-${conversationId}`).emit('new-message', {
+          ...message,
+          senderName: req.user.firstName ? `${req.user.firstName} ${req.user.lastName}` : req.user.email,
+          senderEmail: req.user.email
+        });
+      }
+      
+      res.status(201).json(message);
+    } catch (error) {
+      res.status(500).json({ message: "Error creating message" });
+    }
+  });
+
+  app.patch("/api/messages/:messageId/read", async (req, res) => {
+    try {
+      await storage.markMessageAsRead(parseInt(req.params.messageId));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Error marking message as read" });
+    }
+  });
+
+  app.get("/api/user/unread-messages", async (req, res) => {
+    try {
+      if (!req.user?.id) {
+        return res.status(401).json({ message: "Authentication required" });
+      }
+      
+      const count = await storage.getUnreadMessagesCount(req.user.id);
+      res.json({ count });
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching unread messages count" });
+    }
+  });
+
   const httpServer = createServer(app);
+  
+  // Setup WebSocket
+  const io = new SocketIOServer(httpServer, {
+    cors: {
+      origin: process.env.NODE_ENV === 'production' ? false : "*",
+      methods: ["GET", "POST"]
+    },
+    path: '/ws'
+  });
+
+  app.set('socketio', io);
+
+  io.on('connection', (socket: any) => {
+    console.log('User connected to chat:', socket.id);
+
+    socket.on('join-conversation', (conversationId: number) => {
+      socket.join(`conversation-${conversationId}`);
+      console.log(`User ${socket.id} joined conversation ${conversationId}`);
+    });
+
+    socket.on('leave-conversation', (conversationId: number) => {
+      socket.leave(`conversation-${conversationId}`);
+      console.log(`User ${socket.id} left conversation ${conversationId}`);
+    });
+
+    socket.on('disconnect', () => {
+      console.log('User disconnected from chat:', socket.id);
+    });
+  });
 
   return httpServer;
 }

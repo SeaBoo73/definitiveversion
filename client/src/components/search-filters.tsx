@@ -78,13 +78,10 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.startDate ? (
-                  format(new Date(filters.startDate), "PPP", { locale: it })
+                  <span>{format(new Date(filters.startDate), "dd/MM/yyyy")}</span>
                 ) : (
                   <span>Seleziona data</span>
                 )}
-                <span className="text-xs text-gray-500 ml-2">
-                  {filters.startDate && JSON.stringify(filters.startDate).slice(1, 11)}
-                </span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-50" align="start">
@@ -122,13 +119,10 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {filters.endDate ? (
-                  format(new Date(filters.endDate), "PPP", { locale: it })
+                  <span>{format(new Date(filters.endDate), "dd/MM/yyyy")}</span>
                 ) : (
                   <span>Seleziona data</span>
                 )}
-                <span className="text-xs text-gray-500 ml-2">
-                  {filters.endDate && JSON.stringify(filters.endDate).slice(1, 11)}
-                </span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-50" align="start">

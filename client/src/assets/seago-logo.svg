@@ -7,23 +7,20 @@
   </defs>
   
   <!-- Blue rounded square background -->
-  <rect x="10" y="10" width="80" height="80" rx="15" ry="15" fill="url(#blueGradient)"/>
+  <rect x="15" y="15" width="70" height="70" rx="12" ry="12" fill="url(#blueGradient)"/>
   
-  <!-- Sailboat icon -->
+  <!-- Sailboat icon centered and larger -->
   <g transform="translate(50, 50)">
     <!-- Boat hull -->
-    <path d="M-15 8 L15 8 L12 12 L-12 12 Z" fill="#4ade80" stroke="#22c55e" stroke-width="1"/>
+    <path d="M-18 5 L18 5 L15 12 L-15 12 Z" fill="#4ade80" stroke="#22c55e" stroke-width="1.2"/>
     
     <!-- Main sail -->
-    <path d="M0 8 L0 -15 L12 0 Z" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.5"/>
+    <path d="M0 5 L0 -20 L16 -2 Z" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.8"/>
     
     <!-- Jib sail -->
-    <path d="M0 8 L0 -10 L-8 -2 Z" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="0.5"/>
+    <path d="M0 5 L0 -15 L-12 -5 Z" fill="#f0f9ff" stroke="#e5e7eb" stroke-width="0.8"/>
     
     <!-- Mast -->
-    <line x1="0" y1="8" x2="0" y2="-15" stroke="#6b7280" stroke-width="1.5"/>
+    <line x1="0" y1="5" x2="0" y2="-20" stroke="#6b7280" stroke-width="2"/>
   </g>
-  
-  <!-- SeaGO text -->
-  <text x="50" y="75" text-anchor="middle" fill="white" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="600">SeaGO</text>
 </svg>

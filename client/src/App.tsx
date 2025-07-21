@@ -15,6 +15,7 @@ import { SearchResults } from "@/pages/search-results";
 import { EsperienzePage } from "@/pages/esperienze";
 import { CharterPage } from "@/pages/charter";
 import NotFound from "@/pages/not-found";
+import { InstallPrompt } from "@/components/install-prompt";
 
 function Router() {
   return (
@@ -40,6 +41,7 @@ function App() {
       <AuthProvider>
         <Toaster />
         <Router />
+        <InstallPrompt />
       </AuthProvider>
     </QueryClientProvider>
   );

@@ -42,7 +42,12 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   };
 
   const updateFilter = (key: keyof SearchFilters, value: any) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+    console.log(`Updating ${key} with value:`, value);
+    setFilters(prev => {
+      const newFilters = { ...prev, [key]: value };
+      console.log('New filters state:', newFilters);
+      return newFilters;
+    });
   };
 
   return (
@@ -77,6 +82,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 ) : (
                   <span>Seleziona data</span>
                 )}
+                {/* Debug: {JSON.stringify(filters.startDate)} */}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-50" align="start">
@@ -88,6 +94,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                   if (date) {
                     updateFilter("startDate", date);
                     setStartDateOpen(false);
+                    console.log("Start date popover closed");
                   }
                 }}
                 disabled={(date) => date < new Date(Date.now() - 24 * 60 * 60 * 1000)}
@@ -117,6 +124,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 ) : (
                   <span>Seleziona data</span>
                 )}
+                {/* Debug: {JSON.stringify(filters.endDate)} */}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0 z-50" align="start">
@@ -128,6 +136,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                   if (date) {
                     updateFilter("endDate", date);
                     setEndDateOpen(false);
+                    console.log("End date popover closed");
                   }
                 }}
                 disabled={(date) => {

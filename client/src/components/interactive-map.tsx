@@ -73,11 +73,11 @@ export function InteractiveMap({ boats, onBoatSelect, onPortSelect, filters }: I
     }
   }, []);
 
-  // Barche per porto con prezzi reali e filtri applicati
+  // Barche per porto con prezzi reali e filtri applicati - SOLO PORTI COSTIERI
   const getBoatsForPort = (port: string) => {
     const allBoatsData: Record<string, { count: number, minPrice: number, maxPrice: number, boats: Array<{name: string, price: number, type: string, capacity: number, rating: number}> }> = {
       "Civitavecchia": { 
-        count: 15, 
+        count: 18, 
         minPrice: 120, 
         maxPrice: 1200,
         boats: [
@@ -85,54 +85,125 @@ export function InteractiveMap({ boats, onBoatSelect, onPortSelect, filters }: I
           { name: "Jeanneau Sun Odyssey 439", price: 350, type: "Barca a vela", capacity: 8, rating: 4.6 },
           { name: "Zodiac Pro 650", price: 280, type: "Gommone", capacity: 6, rating: 4.4 },
           { name: "Ferretti 720", price: 1200, type: "Yacht", capacity: 14, rating: 4.9 },
-          { name: "Quicksilver 675", price: 220, type: "Gommone", capacity: 7, rating: 4.3 }
+          { name: "Quicksilver 675", price: 220, type: "Gommone", capacity: 7, rating: 4.3 },
+          { name: "Princess V39", price: 450, type: "Yacht", capacity: 8, rating: 4.5 }
         ]
       },
       "Gaeta": { 
-        count: 12, 
-        minPrice: 150, 
+        count: 15, 
+        minPrice: 140, 
         maxPrice: 850,
         boats: [
           { name: "Zodiac Pro 550", price: 280, type: "Gommone", capacity: 6, rating: 4.5 },
           { name: "Ferretti 681", price: 850, type: "Yacht", capacity: 10, rating: 4.7 },
           { name: "Beneteau First 45", price: 320, type: "Barca a vela", capacity: 8, rating: 4.6 },
-          { name: "Sunseeker 68", price: 750, type: "Yacht", capacity: 12, rating: 4.8 }
+          { name: "Sunseeker 68", price: 750, type: "Yacht", capacity: 12, rating: 4.8 },
+          { name: "Cranchi E26", price: 290, type: "Gommone", capacity: 7, rating: 4.4 }
         ]
       },
       "Ponza": { 
-        count: 18, 
+        count: 22, 
         minPrice: 180, 
-        maxPrice: 950,
+        maxPrice: 1100,
         boats: [
           { name: "Pershing 62", price: 950, type: "Yacht", capacity: 10, rating: 4.9 },
           { name: "Lagoon 380", price: 550, type: "Catamarano", capacity: 8, rating: 4.7 },
           { name: "Bavaria Cruiser 46", price: 380, type: "Barca a vela", capacity: 10, rating: 4.5 },
-          { name: "Cranchi E26", price: 320, type: "Gommone", capacity: 8, rating: 4.4 }
+          { name: "Zodiac Pro 750", price: 320, type: "Gommone", capacity: 8, rating: 4.4 },
+          { name: "Azimut 68", price: 1100, type: "Yacht", capacity: 12, rating: 4.8 },
+          { name: "Jeanneau Cap Camarat 10.5", price: 380, type: "Gommone", capacity: 10, rating: 4.6 }
+        ]
+      },
+      "Ventotene": { 
+        count: 8, 
+        minPrice: 200, 
+        maxPrice: 650,
+        boats: [
+          { name: "Princess V48", price: 580, type: "Yacht", capacity: 10, rating: 4.6 },
+          { name: "Beneteau Oceanis 40.1", price: 320, type: "Barca a vela", capacity: 8, rating: 4.5 },
+          { name: "Zodiac Pro 630", price: 280, type: "Gommone", capacity: 6, rating: 4.4 },
+          { name: "Sessa Marine C32", price: 400, type: "Yacht", capacity: 8, rating: 4.5 }
         ]
       },
       "Terracina": { 
-        count: 8, 
+        count: 12, 
         minPrice: 140, 
         maxPrice: 650,
         boats: [
           { name: "Princess V48", price: 580, type: "Yacht", capacity: 10, rating: 4.6 },
-          { name: "Beneteau Oceanis 40.1", price: 320, type: "Barca a vela", capacity: 8, rating: 4.5 }
+          { name: "Beneteau Oceanis 40.1", price: 320, type: "Barca a vela", capacity: 8, rating: 4.5 },
+          { name: "Quicksilver 705", price: 260, type: "Gommone", capacity: 7, rating: 4.3 },
+          { name: "Cranchi Mediterranee 47", price: 520, type: "Yacht", capacity: 10, rating: 4.6 }
         ]
       },
-      "Santa Marinella": { 
-        count: 4, 
+      "San Felice Circeo": { 
+        count: 10, 
+        minPrice: 160, 
+        maxPrice: 550,
+        boats: [
+          { name: "Jeanneau Cap Camarat 8.5", price: 340, type: "Gommone", capacity: 8, rating: 4.5 },
+          { name: "Princess V42", price: 480, type: "Yacht", capacity: 8, rating: 4.6 },
+          { name: "Beneteau First 40.7", price: 290, type: "Barca a vela", capacity: 8, rating: 4.4 }
+        ]
+      },
+      "Formia": { 
+        count: 9, 
+        minPrice: 160, 
+        maxPrice: 450,
+        boats: [
+          { name: "Jeanneau Cap Camarat 8.5", price: 340, type: "Gommone", capacity: 8, rating: 4.6 },
+          { name: "Cranchi E26", price: 280, type: "Gommone", capacity: 6, rating: 4.4 },
+          { name: "Sessa Marine C30", price: 380, type: "Yacht", capacity: 8, rating: 4.5 }
+        ]
+      },
+      "Sperlonga": { 
+        count: 6, 
         minPrice: 180, 
         maxPrice: 420,
         boats: [
-          { name: "Sessa Marine C30", price: 350, type: "Yacht", capacity: 8, rating: 4.4 }
+          { name: "Zodiac Pro 620", price: 250, type: "Gommone", capacity: 6, rating: 4.3 },
+          { name: "Sessa Marine C30", price: 350, type: "Yacht", capacity: 8, rating: 4.4 },
+          { name: "Beneteau Flyer 7.7", price: 290, type: "Gommone", capacity: 7, rating: 4.5 }
+        ]
+      },
+      "Santa Marinella": { 
+        count: 7, 
+        minPrice: 180, 
+        maxPrice: 420,
+        boats: [
+          { name: "Sessa Marine C30", price: 350, type: "Yacht", capacity: 8, rating: 4.4 },
+          { name: "Quicksilver 675", price: 240, type: "Gommone", capacity: 6, rating: 4.3 },
+          { name: "Cranchi E26", price: 280, type: "Gommone", capacity: 6, rating: 4.4 }
+        ]
+      },
+      "Ladispoli": { 
+        count: 5, 
+        minPrice: 160, 
+        maxPrice: 380,
+        boats: [
+          { name: "Quicksilver 635", price: 220, type: "Gommone", capacity: 6, rating: 4.2 },
+          { name: "Sessa Marine Key Largo 27", price: 320, type: "Yacht", capacity: 6, rating: 4.4 }
         ]
       },
       "Ostia": { 
-        count: 7, 
+        count: 11, 
         minPrice: 130, 
         maxPrice: 480,
         boats: [
-          { name: "Cranchi Mediterranee 43", price: 450, type: "Yacht", capacity: 10, rating: 4.5 }
+          { name: "Cranchi Mediterranee 43", price: 450, type: "Yacht", capacity: 10, rating: 4.5 },
+          { name: "Zodiac Pro 550", price: 250, type: "Gommone", capacity: 6, rating: 4.3 },
+          { name: "Jeanneau Cap Camarat 7.5", price: 280, type: "Gommone", capacity: 7, rating: 4.4 },
+          { name: "Sessa Marine C32", price: 380, type: "Yacht", capacity: 8, rating: 4.5 }
+        ]
+      },
+      "Nettuno": { 
+        count: 8, 
+        minPrice: 150, 
+        maxPrice: 420,
+        boats: [
+          { name: "Quicksilver 705", price: 260, type: "Gommone", capacity: 7, rating: 4.3 },
+          { name: "Cranchi E26", price: 280, type: "Gommone", capacity: 6, rating: 4.4 },
+          { name: "Sessa Marine C30", price: 360, type: "Yacht", capacity: 8, rating: 4.5 }
         ]
       }
     };
@@ -322,7 +393,7 @@ export function InteractiveMap({ boats, onBoatSelect, onPortSelect, filters }: I
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d394684.4457867873!2d11.761719!3d41.902782!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f6196f99621dd%3A0x972f72b64133a8ec!2sLazio%2C%20Italia!5e0!3m2!1sit!2sit!4v1642234567890!5m2!1sit!2sit&amp;zoom=9"
               width="100%"
               height="500"
-              style={{ border: 0, filter: 'hue-rotate(200deg) saturate(0.8)' }}
+              style={{ border: 0 }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"

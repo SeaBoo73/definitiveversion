@@ -36,7 +36,19 @@ export function Header() {
             <Link href="/esperienze" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Esperienze
             </Link>
-            <Link href="#charter" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+            <Link 
+              href="/#charter" 
+              className="text-sea-gray hover:text-deep-navy transition-colors font-medium"
+              onClick={(e) => {
+                if (location === "/") {
+                  e.preventDefault();
+                  const element = document.getElementById('charter');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }
+              }}
+            >
               Charter
             </Link>
             {user?.role === "owner" && (

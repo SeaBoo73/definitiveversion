@@ -1,4 +1,10 @@
-import { users, boats, bookings, reviews, conversations, messages, favorites, type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, type Review, type InsertReview, type Conversation, type InsertConversation, type Message, type InsertMessage, type Favorite } from "@shared/schema";
+import { 
+  users, boats, bookings, reviews, conversations, messages, favorites, discounts, userDiscounts, documents,
+  type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, 
+  type Review, type InsertReview, type Conversation, type InsertConversation, 
+  type Message, type InsertMessage, type Favorite, type Discount, type UserDiscount, 
+  type Document, type InsertDiscount, type InsertDocument 
+} from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc, asc, gte, lte, ilike, sql } from "drizzle-orm";
 import session from "express-session";
@@ -73,6 +79,16 @@ export interface IStorage {
   getFavorites(userId: number): Promise<Favorite[]>;
   addFavorite(userId: number, boatId: number): Promise<Favorite>;
   removeFavorite(userId: number, boatId: number): Promise<void>;
+
+  // Discount and loyalty methods
+  getAvailableDiscounts(customerLevel: string): Promise<Discount[]>;
+  applyDiscount(code: string, totalPrice: number, customerLevel: string, userId: number): Promise<any>;
+  updateUserLoyalty(userId: number, totalSpent: string, pointsEarned: number): Promise<User>;
+
+  // Document methods
+  getDocuments(bookingId: number): Promise<Document[]>;
+  createDocument(document: InsertDocument): Promise<Document>;
+  updateDocument(documentId: number, updates: Partial<Document>): Promise<Document>;
 
   // Notification methods
   getNotifications(userId: number): Promise<Notification[]>;
@@ -499,6 +515,147 @@ export class DatabaseStorage implements IStorage {
 
   async getAnalytics(ownerId: number): Promise<any[]> {
     return [];
+  }
+
+  // Discount and loyalty methods implementation
+  async getAvailableDiscounts(customerLevel: string): Promise<Discount[]> {
+    const discountsList = await db
+      .select()
+      .from(discounts)
+      .where(
+        and(
+          eq(discounts.active, true),
+          gte(discounts.validTo, new Date()),
+          lte(discounts.validFrom, new Date()),
+          or(
+            eq(discounts.requiredLevel, customerLevel),
+            eq(discounts.requiredLevel, 'bronze') // Bronze accessible to all
+          )
+        )
+      );
+    return discountsList;
+  }
+
+  async applyDiscount(code: string, totalPrice: number, customerLevel: string, userId: number): Promise<any> {
+    const [discount] = await db
+      .select()
+      .from(discounts)
+      .where(
+        and(
+          eq(discounts.code, code),
+          eq(discounts.active, true),
+          gte(discounts.validTo, new Date()),
+          lte(discounts.validFrom, new Date())
+        )
+      );
+
+    if (!discount) {
+      throw new Error("Codice sconto non valido o scaduto");
+    }
+
+    // Check if user can use this discount level
+    const levelOrder = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
+    if (levelOrder[discount.requiredLevel] > levelOrder[customerLevel]) {
+      throw new Error(`Questo sconto richiede il livello ${discount.requiredLevel}`);
+    }
+
+    // Check minimum spend
+    if (parseFloat(discount.minSpent) > totalPrice) {
+      throw new Error(`Spesa minima richiesta: €${discount.minSpent}`);
+    }
+
+    // Check usage limit
+    if (discount.usedCount >= discount.usageLimit) {
+      throw new Error("Codice sconto esaurito");
+    }
+
+    // Calculate discount amount
+    let discountAmount = 0;
+    if (discount.type === "percentage") {
+      discountAmount = (totalPrice * parseFloat(discount.value)) / 100;
+      if (discount.maxDiscount) {
+        discountAmount = Math.min(discountAmount, parseFloat(discount.maxDiscount));
+      }
+    } else {
+      discountAmount = parseFloat(discount.value);
+    }
+
+    // Update usage count
+    await db
+      .update(discounts)
+      .set({ usedCount: sql`${discounts.usedCount} + 1` })
+      .where(eq(discounts.id, discount.id));
+
+    // Record user discount usage
+    await db
+      .insert(userDiscounts)
+      .values({
+        userId,
+        discountId: discount.id,
+        bookingId: null
+      });
+
+    return {
+      code: discount.code,
+      discountAmount,
+      finalPrice: totalPrice - discountAmount
+    };
+  }
+
+  async updateUserLoyalty(userId: number, totalSpent: string, pointsEarned: number): Promise<User> {
+    const user = await this.getUser(userId);
+    if (!user) throw new Error("User not found");
+
+    const newTotalSpent = parseFloat(user.totalSpent) + parseFloat(totalSpent);
+    const newLoyaltyPoints = user.loyaltyPoints + pointsEarned;
+    const newTotalBookings = user.totalBookings + 1;
+
+    // Determine new customer level based on total bookings
+    let newLevel = user.customerLevel;
+    if (newTotalBookings >= 30) newLevel = "platinum";
+    else if (newTotalBookings >= 16) newLevel = "gold";
+    else if (newTotalBookings >= 6) newLevel = "silver";
+    else newLevel = "bronze";
+
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        totalSpent: newTotalSpent.toFixed(2),
+        loyaltyPoints: newLoyaltyPoints,
+        totalBookings: newTotalBookings,
+        customerLevel: newLevel
+      })
+      .where(eq(users.id, userId))
+      .returning();
+
+    return updatedUser;
+  }
+
+  // Document methods implementation
+  async getDocuments(bookingId: number): Promise<Document[]> {
+    const docs = await db
+      .select()
+      .from(documents)
+      .where(eq(documents.bookingId, bookingId))
+      .orderBy(desc(documents.createdAt));
+    return docs;
+  }
+
+  async createDocument(document: InsertDocument): Promise<Document> {
+    const [newDocument] = await db
+      .insert(documents)
+      .values(document)
+      .returning();
+    return newDocument;
+  }
+
+  async updateDocument(documentId: number, updates: Partial<Document>): Promise<Document> {
+    const [updatedDocument] = await db
+      .update(documents)
+      .set(updates)
+      .where(eq(documents.id, documentId))
+      .returning();
+    return updatedDocument;
   }
 }
 

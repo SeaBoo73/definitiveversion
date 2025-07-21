@@ -793,5 +793,104 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Discount system routes
+  app.get("/api/discounts/available/:customerLevel", async (req, res) => {
+    try {
+      const { customerLevel } = req.params;
+      const discounts = await storage.getAvailableDiscounts(customerLevel);
+      res.json(discounts);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/discounts/apply", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { code, totalPrice, customerLevel } = req.body;
+      const result = await storage.applyDiscount(code, totalPrice, customerLevel, req.user.id);
+      res.json(result);
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
+  // Document management routes
+  app.get("/api/bookings/:bookingId/documents", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { bookingId } = req.params;
+      const documents = await storage.getDocuments(parseInt(bookingId));
+      res.json(documents);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.post("/api/documents/upload", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      // File upload implementation would go here
+      // For now, simulate success
+      const { type, bookingId } = req.body;
+      const document = {
+        bookingId: parseInt(bookingId),
+        type,
+        fileName: "document.pdf",
+        filePath: "/uploads/document.pdf",
+        uploadedBy: req.user.id,
+        verified: false
+      };
+      
+      const newDocument = await storage.createDocument(document);
+      res.json(newDocument);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  app.patch("/api/documents/:documentId/verify", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { documentId } = req.params;
+      const { verified } = req.body;
+      const document = await storage.updateDocument(parseInt(documentId), {
+        verified,
+        verifiedBy: req.user.id
+      });
+      res.json(document);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Loyalty system routes
+  app.post("/api/users/:userId/update-loyalty", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const { userId } = req.params;
+      const { totalSpent, pointsEarned } = req.body;
+      const user = await storage.updateUserLoyalty(parseInt(userId), totalSpent, pointsEarned);
+      res.json(user);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
   return httpServer;
 }

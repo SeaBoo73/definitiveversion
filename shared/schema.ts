@@ -4,6 +4,8 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 export const userRoleEnum = pgEnum("user_role", ["customer", "owner", "admin"]);
+export const customerLevelEnum = pgEnum("customer_level", ["bronze", "silver", "gold", "platinum"]);
+export const discountTypeEnum = pgEnum("discount_type", ["percentage", "fixed", "loyalty", "early_bird", "last_minute"]);
 export const boatTypeEnum = pgEnum("boat_type", ["gommone", "barche-senza-patente", "yacht", "catamarano", "jetski", "sailboat", "kayak", "charter", "houseboat"]);
 export const bookingStatusEnum = pgEnum("booking_status", ["pending", "confirmed", "cancelled", "completed"]);
 export const messageStatusEnum = pgEnum("message_status", ["sent", "read"]);
@@ -19,6 +21,10 @@ export const users = pgTable("users", {
   phone: text("phone"),
   verified: boolean("verified").default(false),
   stripeCustomerId: text("stripe_customer_id"),
+  customerLevel: customerLevelEnum("customer_level").default("bronze"),
+  totalBookings: integer("total_bookings").default(0),
+  totalSpent: decimal("total_spent", { precision: 10, scale: 2 }).default("0.00"),
+  loyaltyPoints: integer("loyalty_points").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -55,7 +61,11 @@ export const bookings = pgTable("bookings", {
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
   totalPrice: decimal("total_price", { precision: 8, scale: 2 }).notNull(),
+  originalPrice: decimal("original_price", { precision: 8, scale: 2 }).notNull(),
+  discountCode: text("discount_code"),
+  discountAmount: decimal("discount_amount", { precision: 8, scale: 2 }).default("0.00"),
   commission: decimal("commission", { precision: 8, scale: 2 }).notNull(),
+  loyaltyPointsEarned: integer("loyalty_points_earned").default(0),
   status: bookingStatusEnum("status").default("pending"),
   stripePaymentIntentId: text("stripe_payment_intent_id"),
   skipperRequested: boolean("skipper_requested").default(false),
@@ -95,6 +105,46 @@ export const favorites = pgTable("favorites", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
   boatId: integer("boat_id").references(() => boats.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Loyalty and Discounts system
+export const discounts = pgTable("discounts", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(),
+  name: text("name").notNull(),
+  description: text("description"),
+  type: discountTypeEnum("type").notNull(),
+  value: decimal("value", { precision: 8, scale: 2 }).notNull(), // percentage or fixed amount
+  minSpent: decimal("min_spent", { precision: 8, scale: 2 }).default("0.00"),
+  maxDiscount: decimal("max_discount", { precision: 8, scale: 2 }),
+  requiredLevel: customerLevelEnum("required_level").default("bronze"),
+  validFrom: timestamp("valid_from").notNull(),
+  validTo: timestamp("valid_to").notNull(),
+  usageLimit: integer("usage_limit").default(1),
+  usedCount: integer("used_count").default(0),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const userDiscounts = pgTable("user_discounts", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  discountId: integer("discount_id").references(() => discounts.id).notNull(),
+  bookingId: integer("booking_id").references(() => bookings.id),
+  usedAt: timestamp("used_at").defaultNow(),
+});
+
+export const documents = pgTable("documents", {
+  id: serial("id").primaryKey(),
+  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  type: text("type").notNull(), // "contract", "identity", "license", "deposit_receipt"
+  fileName: text("file_name").notNull(),
+  filePath: text("file_path").notNull(),
+  uploadedBy: integer("uploaded_by").references(() => users.id).notNull(),
+  verified: boolean("verified").default(false),
+  verifiedBy: integer("verified_by").references(() => users.id),
+  notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -217,6 +267,40 @@ export const insertMessageSchema = createInsertSchema(messages).omit({
   createdAt: true,
   readAt: true,
 });
+
+export const insertDiscountSchema = createInsertSchema(discounts).omit({
+  id: true,
+  usedCount: true,
+  createdAt: true,
+});
+
+export const insertDocumentSchema = createInsertSchema(documents).omit({
+  id: true,
+  verified: true,
+  verifiedBy: true,
+  createdAt: true,
+});
+
+// Types
+export type User = typeof users.$inferSelect;
+export type Boat = typeof boats.$inferSelect;
+export type Booking = typeof bookings.$inferSelect;
+export type Review = typeof reviews.$inferSelect;
+export type Conversation = typeof conversations.$inferSelect;
+export type Message = typeof messages.$inferSelect;
+export type Favorite = typeof favorites.$inferSelect;
+export type Discount = typeof discounts.$inferSelect;
+export type UserDiscount = typeof userDiscounts.$inferSelect;
+export type Document = typeof documents.$inferSelect;
+
+export type InsertUser = z.infer<typeof insertUserSchema>;
+export type InsertBoat = z.infer<typeof insertBoatSchema>;
+export type InsertBooking = z.infer<typeof insertBookingSchema>;
+export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type InsertConversation = z.infer<typeof insertConversationSchema>;
+export type InsertMessage = z.infer<typeof insertMessageSchema>;
+export type InsertDiscount = z.infer<typeof insertDiscountSchema>;
+export type InsertDocument = z.infer<typeof insertDocumentSchema>;
 
 // Types
 export type User = typeof users.$inferSelect;

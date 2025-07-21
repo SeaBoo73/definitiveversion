@@ -32,6 +32,7 @@ import RimborsiPage from "@/pages/rimborsi";
 import CondizioniServizioPage from "@/pages/condizioni-servizio";
 import ContattiPage from "@/pages/contatti";
 import PrivacyPolicyPage from "@/pages/privacy-policy";
+import PaymentSuccess from "@/pages/payment-success";
 
 function Router() {
   return (
@@ -62,6 +63,7 @@ function Router() {
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
       <ProtectedRoute path="/checkout/:bookingId" component={Checkout} />
+      <ProtectedRoute path="/payment-success" component={PaymentSuccess} />
       <Route component={NotFound} />
     </Switch>
   );

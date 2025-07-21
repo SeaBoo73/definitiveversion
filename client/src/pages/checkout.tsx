@@ -1,452 +1,314 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { apiRequest } from "@/lib/queryClient";
-import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
-import { it } from "date-fns/locale";
-import {
-  CreditCard,
-  Shield,
-  MapPin,
-  Calendar,
-  Users,
-  Ship,
-  CheckCircle,
-  Lock,
-  ArrowLeft,
-  Loader2
-} from "lucide-react";
+import { apiRequest } from "@/lib/queryClient";
+import { DiscountSystem } from "@/components/discount-system";
+import { LoyaltySystem } from "@/components/loyalty-system";
+import { DocumentManager } from "@/components/document-manager";
+import { CreditCard, Calendar, MapPin, Users, Clock } from "lucide-react";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
+// Stripe setup
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-interface Booking {
-  id: number;
-  boatId: number;
-  startDate: string;
-  endDate: string;
-  totalPrice: string;
-  numberOfGuests: number;
-  guestName: string;
-  guestEmail: string;
-  guestPhone: string;
-  status: string;
-  skipperRequired: boolean;
-  fuelIncluded: boolean;
-  notes?: string;
-}
-
-interface Boat {
-  id: number;
-  name: string;
-  port: string;
-  images?: string[];
-}
-
-function CheckoutForm({ booking, boat }: { booking: Booking; boat: Boat }) {
+const CheckoutForm = ({ booking, clientSecret, user }: any) => {
   const stripe = useStripe();
   const elements = useElements();
-  const { toast } = useToast();
   const [, setLocation] = useLocation();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentSucceeded, setPaymentSucceeded] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [discountApplied, setDiscountApplied] = useState<any>(null);
+  const { toast } = useToast();
 
-  const createPaymentIntentMutation = useMutation({
-    mutationFn: async () => {
-      return apiRequest("POST", "/api/create-payment-intent", {
-        bookingId: booking.id
-      });
-    }
-  });
+  const calculateLoyaltyDiscount = (totalPrice: number, level: string) => {
+    const discounts = {
+      bronze: 0.05,   // 5%
+      silver: 0.10,   // 10%
+      gold: 0.15,     // 15%
+      platinum: 0.20  // 20%
+    };
+    return totalPrice * discounts[level] || 0;
+  };
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const loyaltyDiscount = calculateLoyaltyDiscount(parseFloat(booking.totalPrice), user.customerLevel);
+  const finalPrice = discountApplied 
+    ? discountApplied.finalPrice - loyaltyDiscount
+    : parseFloat(booking.totalPrice) - loyaltyDiscount;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     if (!stripe || !elements) {
       return;
     }
 
-    setIsProcessing(true);
+    setProcessing(true);
 
     try {
-      // Create payment intent
-      const data = await createPaymentIntentMutation.mutateAsync();
-      const clientSecret = (data as any).clientSecret;
-
-      const card = elements.getElement(CardElement);
-      if (!card) {
-        throw new Error("Card element not found");
-      }
-
-      // Confirm payment
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: card,
-          billing_details: {
-            name: booking.guestName,
-            email: booking.guestEmail,
-          },
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: `${window.location.origin}/payment-success?booking=${booking.id}`,
         },
       });
 
       if (error) {
-        throw new Error(error.message);
-      }
-
-      if (paymentIntent.status === "succeeded") {
-        setPaymentSucceeded(true);
         toast({
-          title: "Pagamento completato!",
-          description: "La tua prenotazione è confermata. Riceverai una email di conferma."
+          title: "Errore Pagamento",
+          description: error.message,
+          variant: "destructive",
         });
-
-        // Redirect to customer dashboard after 3 seconds
-        setTimeout(() => {
-          setLocation("/customer-dashboard?success=true");
-        }, 3000);
       }
-    } catch (error: any) {
+    } catch (error) {
       toast({
-        title: "Errore nel pagamento",
-        description: error.message || "Si è verificato un errore durante il pagamento",
-        variant: "destructive"
+        title: "Errore",
+        description: "Si è verificato un errore durante il pagamento",
+        variant: "destructive",
       });
     } finally {
-      setIsProcessing(false);
+      setProcessing(false);
     }
   };
 
-  const totalDays = Math.ceil(
-    (new Date(booking.endDate).getTime() - new Date(booking.startDate).getTime()) / (1000 * 60 * 60 * 24)
-  ) + 1;
-
-  if (paymentSucceeded) {
-    return (
-      <Card className="max-w-2xl mx-auto">
-        <CardContent className="p-8 text-center">
-          <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Pagamento completato!</h2>
-          <p className="text-gray-600 mb-4">
-            La tua prenotazione #{booking.id} è stata confermata.
-          </p>
-          <p className="text-sm text-gray-500">
-            Verrai reindirizzato alla tua dashboard in pochi secondi...
-          </p>
-          <Button
-            onClick={() => setLocation("/customer-dashboard?success=true")}
-            className="mt-4 bg-ocean-blue hover:bg-blue-600"
-          >
-            Vai alla dashboard
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Booking Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Ship className="h-5 w-5 text-ocean-blue" />
-            Riepilogo prenotazione #{booking.id}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4 mb-4">
-            <img
-              src={boat.images?.[0] || "/api/placeholder/100/80"}
-              alt={boat.name}
-              className="w-20 h-16 object-cover rounded-lg"
-            />
-            <div className="flex-1">
-              <h3 className="font-semibold">{boat.name}</h3>
-              <p className="text-sm text-gray-600 flex items-center gap-1">
-                <MapPin className="h-3 w-3" />
-                {boat.port}
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-gray-600">Date:</p>
-              <p className="font-medium">
-                {format(new Date(booking.startDate), "dd MMM", { locale: it })} - {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })}
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-600">Ospiti:</p>
-              <p className="font-medium">{booking.numberOfGuests} {booking.numberOfGuests === 1 ? 'ospite' : 'ospiti'}</p>
-            </div>
-            <div>
-              <p className="text-gray-600">Durata:</p>
-              <p className="font-medium">{totalDays} {totalDays === 1 ? 'giorno' : 'giorni'}</p>
-            </div>
-            <div>
-              <p className="text-gray-600">Ospite principale:</p>
-              <p className="font-medium">{booking.guestName}</p>
-            </div>
-          </div>
-
-          {(booking.skipperRequired || booking.fuelIncluded) && (
-            <div className="mt-4">
-              <p className="text-sm text-gray-600 mb-2">Servizi aggiuntivi:</p>
-              <div className="flex flex-wrap gap-2">
-                {booking.skipperRequired && (
-                  <Badge variant="outline">Skipper incluso</Badge>
-                )}
-                {booking.fuelIncluded && (
-                  <Badge variant="outline">Carburante incluso</Badge>
-                )}
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Payment Form */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="h-5 w-5 text-ocean-blue" />
-            Dettagli pagamento
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Payment Method */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Carta di credito o debito
-              </label>
-              <div className="border rounded-lg p-4 bg-white">
-                <CardElement
-                  options={{
-                    style: {
-                      base: {
-                        fontSize: "16px",
-                        color: "#424770",
-                        "::placeholder": {
-                          color: "#aab7c4",
-                        },
-                      },
-                    },
-                  }}
+    <div className="max-w-6xl mx-auto p-6 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column - Booking Summary & Loyalty */}
+        <div className="space-y-6">
+          {/* Booking Summary */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-ocean-blue" />
+                Riepilogo Prenotazione
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center gap-3">
+                <img 
+                  src={booking.boat?.images?.[0] || "/api/placeholder/boat"} 
+                  alt={booking.boatName}
+                  className="w-16 h-16 rounded-lg object-cover"
                 />
+                <div>
+                  <h3 className="font-semibold text-lg">{booking.boatName}</h3>
+                  <p className="text-gray-600 flex items-center gap-1">
+                    <MapPin className="h-4 w-4" />
+                    {booking.boat?.port || "Porto"}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Security Notice */}
-            <Alert>
-              <Shield className="h-4 w-4" />
-              <AlertDescription>
-                <div className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  <span>
-                    <strong>Pagamento sicuro:</strong> I tuoi dati sono protetti da crittografia SSL a 256-bit.
-                    Supportiamo Visa, Mastercard, American Express e carte prepagate.
+              <Separator />
+
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    Check-in
+                  </span>
+                  <span className="font-medium">
+                    {new Date(booking.startDate).toLocaleDateString('it-IT')}
                   </span>
                 </div>
-              </AlertDescription>
-            </Alert>
-
-            {/* Price Breakdown */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold mb-3">Riepilogo prezzi</h3>
-              <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span>Subtotale:</span>
-                  <span>€{booking.totalPrice}</span>
+                  <span className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4" />
+                    Check-out
+                  </span>
+                  <span className="font-medium">
+                    {new Date(booking.endDate).toLocaleDateString('it-IT')}
+                  </span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Commissioni di servizio:</span>
-                  <span>€0</span>
+                  <span className="flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Ospiti
+                  </span>
+                  <span className="font-medium">{booking.guests || booking.boat?.maxPersons} persone</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Tasse:</span>
-                  <span>Incluse</span>
-                </div>
-                <Separator className="my-2" />
-                <div className="flex justify-between font-semibold text-lg">
-                  <span>Totale:</span>
-                  <span className="text-ocean-blue">€{booking.totalPrice}</span>
-                </div>
+                {booking.boat?.pickupTime && (
+                  <div className="flex justify-between">
+                    <span className="flex items-center gap-2">
+                      <Clock className="h-4 w-4" />
+                      Orari
+                    </span>
+                    <span className="font-medium">
+                      {booking.boat.pickupTime} - {booking.boat.returnTime}
+                    </span>
+                  </div>
+                )}
               </div>
-            </div>
 
-            {/* Terms */}
-            <div className="text-xs text-gray-500 space-y-1">
-              <p>
-                Cliccando "Completa pagamento", accetti i nostri{" "}
-                <a href="/termini" className="text-ocean-blue hover:underline">
-                  Termini di servizio
-                </a>{" "}
-                e confermi di aver letto la nostra{" "}
-                <a href="/privacy" className="text-ocean-blue hover:underline">
-                  Informativa sulla privacy
-                </a>.
-              </p>
-              <p>
-                In caso di cancellazione entro 24 ore prima del check-in, riceverai un rimborso completo.
-              </p>
-            </div>
+              <Separator />
 
-            <Button
-              type="submit"
-              disabled={!stripe || isProcessing || createPaymentIntentMutation.isPending}
-              className="w-full bg-ocean-blue hover:bg-blue-600 h-12"
-            >
-              {isProcessing ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Elaborazione pagamento...
-                </>
-              ) : (
-                <>
-                  <Lock className="h-4 w-4 mr-2" />
-                  Completa pagamento - €{booking.totalPrice}
-                </>
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+              {/* Pricing Breakdown */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Prezzo base</span>
+                  <span>€{booking.originalPrice || booking.totalPrice}</span>
+                </div>
+                
+                {loyaltyDiscount > 0 && (
+                  <div className="flex justify-between text-green-600">
+                    <span className="flex items-center gap-2">
+                      Sconto livello {user.customerLevel}
+                      <Badge className="bg-green-100 text-green-800">
+                        {user.customerLevel === 'bronze' && '5%'}
+                        {user.customerLevel === 'silver' && '10%'}
+                        {user.customerLevel === 'gold' && '15%'}
+                        {user.customerLevel === 'platinum' && '20%'}
+                      </Badge>
+                    </span>
+                    <span>-€{loyaltyDiscount.toFixed(2)}</span>
+                  </div>
+                )}
+
+                {discountApplied && (
+                  <div className="flex justify-between text-green-600">
+                    <span>Sconto codice {discountApplied.code}</span>
+                    <span>-€{discountApplied.amount.toFixed(2)}</span>
+                  </div>
+                )}
+
+                <Separator />
+                
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Totale</span>
+                  <span className="text-ocean-blue">€{finalPrice.toFixed(2)}</span>
+                </div>
+
+                <p className="text-sm text-gray-600">
+                  Commissione SeaGO (15%) e tasse incluse
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Loyalty System */}
+          <LoyaltySystem user={user} />
+        </div>
+
+        {/* Right Column - Discount & Payment */}
+        <div className="space-y-6">
+          {/* Discount System */}
+          <DiscountSystem
+            totalPrice={parseFloat(booking.totalPrice)}
+            customerLevel={user.customerLevel}
+            onDiscountApplied={setDiscountApplied}
+          />
+
+          {/* Payment Form */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5 text-ocean-blue" />
+                Metodo di Pagamento
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <PaymentElement />
+                
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    disabled={!stripe || !elements || processing}
+                    className="w-full bg-ocean-blue hover:bg-blue-600 h-12 text-lg"
+                  >
+                    {processing ? "Elaborazione..." : `Paga €${finalPrice.toFixed(2)}`}
+                  </Button>
+                </div>
+
+                <p className="text-xs text-gray-600 text-center">
+                  Il pagamento è sicuro e protetto da Stripe. 
+                  Accettiamo tutte le principali carte di credito, Apple Pay e Google Pay.
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Document Manager */}
+          <DocumentManager 
+            bookingId={booking.id} 
+            userRole="customer" 
+          />
+        </div>
+      </div>
     </div>
   );
-}
+};
 
 export default function Checkout() {
-  const [location, setLocation] = useLocation();
-  const { user } = useAuth();
+  const [, setLocation] = useLocation();
+  const [clientSecret, setClientSecret] = useState("");
+  const searchParams = new URLSearchParams(window.location.search);
+  const bookingId = searchParams.get("booking");
 
-  // Extract booking ID from URL path
-  const pathParts = location.split('/');
-  const checkoutIndex = pathParts.indexOf('checkout') + 1;
-  const bookingId = checkoutIndex > 0 && pathParts[checkoutIndex] ? parseInt(pathParts[checkoutIndex]) : null;
+  const { data: user } = useQuery({
+    queryKey: ["/api/user"],
+  });
 
-  const { data: booking, isLoading: bookingLoading } = useQuery<Booking>({
+  const { data: booking, isLoading } = useQuery({
     queryKey: ["/api/bookings", bookingId],
     enabled: !!bookingId,
   });
 
-  const { data: boat, isLoading: boatLoading } = useQuery<Boat>({
-    queryKey: ["/api/boats", booking?.boatId],
-    enabled: !!booking?.boatId,
-  });
+  useEffect(() => {
+    if (!bookingId) {
+      setLocation("/");
+      return;
+    }
 
-  if (!user) {
+    // Create payment intent
+    apiRequest("POST", "/api/create-payment-intent", { bookingId: parseInt(bookingId) })
+      .then((res) => res.json())
+      .then((data) => {
+        setClientSecret(data.clientSecret);
+      })
+      .catch((error) => {
+        console.error("Payment intent error:", error);
+        setLocation("/");
+      });
+  }, [bookingId, setLocation]);
+
+  if (!user || !booking || !clientSecret || isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Accesso richiesto</h1>
-          <p className="text-gray-600 mt-2">Devi effettuare l'accesso per completare il pagamento.</p>
-          <Button 
-            onClick={() => setLocation("/auth")}
-            className="mt-4 bg-ocean-blue hover:bg-blue-600"
-          >
-            Accedi
-          </Button>
-        </div>
-        <Footer />
+      <div className="h-screen flex items-center justify-center">
+        <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" />
       </div>
     );
   }
 
-  if (!bookingId) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Prenotazione non trovata</h1>
-          <p className="text-gray-600 mt-2">La prenotazione che stai cercando non esiste.</p>
-          <Button 
-            onClick={() => setLocation("/customer-dashboard")}
-            className="mt-4 bg-ocean-blue hover:bg-blue-600"
-          >
-            Vai alle tue prenotazioni
-          </Button>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (bookingLoading || boatLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="animate-pulse space-y-6">
-            <div className="h-8 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
-            <div className="h-96 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
-
-  if (!booking || !boat) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Errore nel caricamento</h1>
-          <p className="text-gray-600 mt-2">Non riusciamo a caricare i dettagli della prenotazione.</p>
-          <Button 
-            onClick={() => setLocation("/customer-dashboard")}
-            className="mt-4 bg-ocean-blue hover:bg-blue-600"
-          >
-            Vai alle tue prenotazioni
-          </Button>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+  const options = {
+    clientSecret,
+    appearance: {
+      theme: 'stripe' as const,
+      variables: {
+        colorPrimary: '#0f766e',
+      },
+    },
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
-      
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Back Button */}
-        <Button
-          variant="ghost"
-          onClick={() => setLocation("/customer-dashboard")}
-          className="mb-6"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Torna alle prenotazioni
-        </Button>
-
-        {/* Page Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Completa il pagamento</h1>
-          <p className="text-gray-600">Ultimo passo per confermare la tua prenotazione</p>
+      <div className="bg-white border-b">
+        <div className="max-w-6xl mx-auto p-6">
+          <h1 className="text-3xl font-bold text-gray-900">Completa la Prenotazione</h1>
+          <p className="text-gray-600 mt-2">
+            Quasi fatto! Completa il pagamento per confermare la tua prenotazione.
+          </p>
         </div>
-
-        {/* Stripe Elements Provider */}
-        <Elements stripe={stripePromise}>
-          <CheckoutForm booking={booking} boat={boat} />
-        </Elements>
       </div>
 
-      <Footer />
+      <Elements options={options} stripe={stripePromise}>
+        <CheckoutForm booking={booking} clientSecret={clientSecret} user={user} />
+      </Elements>
     </div>
   );
 }

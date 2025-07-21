@@ -11,12 +11,14 @@ import OwnerDashboard from "@/pages/owner-dashboard";
 import CustomerDashboard from "@/pages/customer-dashboard";
 import BoatDetails from "@/pages/boat-details";
 import Checkout from "@/pages/checkout";
+import { SearchResults } from "@/pages/search-results";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/search" component={SearchResults} />
       <Route path="/test" component={TestPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

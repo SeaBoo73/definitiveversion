@@ -38,7 +38,23 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   const [endDateOpen, setEndDateOpen] = useState(false);
 
   const handleSearch = () => {
-    onSearch?.(filters);
+    console.log("Search with filters:", filters);
+    if (onSearch) {
+      onSearch(filters);
+    } else {
+      // Navigate to search results page
+      const searchParams = new URLSearchParams();
+      
+      if (filters.location) searchParams.set("location", filters.location);
+      if (filters.startDate) searchParams.set("startDate", filters.startDate.toISOString());
+      if (filters.endDate) searchParams.set("endDate", filters.endDate.toISOString());
+      if (filters.guests) searchParams.set("guests", filters.guests.toString());
+      if (filters.boatType) searchParams.set("boatType", filters.boatType);
+      if (filters.skipperRequired) searchParams.set("skipperRequired", "true");
+      if (filters.fuelIncluded) searchParams.set("fuelIncluded", "true");
+      
+      window.location.href = `/search?${searchParams.toString()}`;
+    }
   };
 
   const updateFilter = (key: keyof SearchFilters, value: any) => {

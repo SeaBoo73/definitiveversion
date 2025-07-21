@@ -69,15 +69,17 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-5xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div className={onSearch ? "space-y-4" : "bg-white rounded-2xl shadow-2xl p-6 max-w-5xl mx-auto"}>
+      <div className={onSearch ? "space-y-4" : "grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4"}>
         {/* Location */}
         <div className="space-y-2">
-          <Label className="block text-sm font-semibold text-gray-900">Dove</Label>
+          <Label className="block text-sm font-semibold text-gray-900">
+            {onSearch ? "Porto" : "Dove"}
+          </Label>
           <PortSelector
             value={filters.location}
             onChange={(port) => updateFilter("location", port)}
-            placeholder="Seleziona porto del Lazio..."
+            placeholder={onSearch ? "Tutti i porti" : "Seleziona porto del Lazio..."}
           />
         </div>
 
@@ -186,20 +188,22 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           </Select>
         </div>
 
-        {/* Search Button */}
-        <div className="flex items-end">
-          <Button 
-            className="w-full bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
-            onClick={handleSearch}
-          >
-            <Search className="mr-2 h-4 w-4" />
-            Cerca
-          </Button>
-        </div>
+        {/* Search Button - Only show on homepage */}
+        {!onSearch && (
+          <div className="flex items-end">
+            <Button 
+              className="w-full bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
+              onClick={handleSearch}
+            >
+              <Search className="mr-2 h-4 w-4" />
+              Cerca
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Advanced Filters */}
-      <div className="mt-4">
+      <div className={onSearch ? "mt-0" : "mt-4"}>
         <div className="flex flex-wrap gap-2 mb-4">
           <Button
             variant="outline"
@@ -240,7 +244,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         </div>
 
         {showAdvanced && (
-          <div className="bg-gray-50 rounded-lg p-4 mt-4">
+          <div className={onSearch ? "bg-white border border-gray-200 rounded-lg p-4 mt-4" : "bg-gray-50 rounded-lg p-4 mt-4"}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-3">
                 <Label className="text-sm font-semibold text-gray-900">Tipo di imbarcazione</Label>

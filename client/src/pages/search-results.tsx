@@ -80,8 +80,14 @@ export function SearchResults() {
     const searchParams = new URLSearchParams();
     
     if (filters.location) searchParams.set("location", filters.location);
-    if (filters.startDate) searchParams.set("startDate", filters.startDate);
-    if (filters.endDate) searchParams.set("endDate", filters.endDate);
+    if (filters.startDate) {
+      const dateStr = typeof filters.startDate === 'string' ? filters.startDate : filters.startDate.toISOString();
+      searchParams.set("startDate", dateStr);
+    }
+    if (filters.endDate) {
+      const dateStr = typeof filters.endDate === 'string' ? filters.endDate : filters.endDate.toISOString();
+      searchParams.set("endDate", dateStr);
+    }
     if (filters.guests) searchParams.set("guests", filters.guests.toString());
     if (filters.boatTypes && filters.boatTypes.length > 0) {
       searchParams.set("boatTypes", filters.boatTypes.join(","));
@@ -187,9 +193,34 @@ export function SearchResults() {
         <div className="lg:grid lg:grid-cols-4 lg:gap-8">
           {/* Desktop Filters Sidebar */}
           <div className="hidden lg:block">
-            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Affina la ricerca</h3>
-              <SearchFilters onSearch={handleNewSearch} />
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 sticky top-4">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-6 pb-3 border-b border-gray-200">
+                  Affina la ricerca
+                </h3>
+                <div className="space-y-6">
+                  <SearchFilters onSearch={handleNewSearch} />
+                  
+                  {/* Auto-apply button for sidebar */}
+                  <div className="pt-4 border-t border-gray-200">
+                    <Button 
+                      onClick={() => handleNewSearch({
+                        location: "", 
+                        startDate: undefined, 
+                        endDate: undefined, 
+                        guests: 2,
+                        boatTypes: undefined,
+                        skipperRequired: false,
+                        fuelIncluded: false
+                      })}
+                      variant="outline"
+                      className="w-full text-gray-600 hover:text-gray-900"
+                    >
+                      Pulisci tutti i filtri
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           

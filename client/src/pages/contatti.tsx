@@ -17,6 +17,10 @@ import {
 } from "lucide-react";
 
 export default function ContattiPage() {
+  const handleChatClick = () => {
+    window.location.href = '/ia';
+  };
+
   const contactMethods = [
     {
       icon: <MessageCircle className="h-8 w-8 text-blue-600" />,
@@ -24,6 +28,7 @@ export default function ContattiPage() {
       description: "Supporto immediato per domande urgenti",
       details: "Disponibile 24/7",
       action: "Avvia Chat",
+      onClick: handleChatClick,
       primary: true
     },
     {
@@ -106,6 +111,7 @@ export default function ContattiPage() {
                 <Button 
                   className={method.primary ? 'bg-blue-600 hover:bg-blue-700 w-full' : 'w-full'} 
                   variant={method.primary ? 'default' : 'outline'}
+                  onClick={method.onClick}
                 >
                   {method.action}
                 </Button>

@@ -34,7 +34,7 @@ export default function AssistenzaProprietariPage() {
             <p className="text-gray-600 mb-4">
               Assistenza immediata tramite chat integrata nella dashboard
             </p>
-            <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+            <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors" onClick={() => window.location.href = '/ia'}>
               Avvia Chat
             </button>
           </div>

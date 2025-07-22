@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
@@ -47,6 +47,28 @@ export function Footer() {
               <li><Link href="/auth" className="hover:text-white transition-colors">Diventa host</Link></li>
               <li><a href="#" className="hover:text-white transition-colors">Assicurazione</a></li>
               <li><a href="#" className="hover:text-white transition-colors">Recensioni</a></li>
+            </ul>
+          </div>
+
+          {/* Pagamenti */}
+          <div>
+            <h4 className="font-semibold mb-4">Pagamenti</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="#" className="hover:text-white transition-colors">Metodi di pagamento accettati</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Sicurezza dei pagamenti</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Rimborsi e restituzioni</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Fatturazione</a></li>
+            </ul>
+          </div>
+
+          {/* Per i noleggiatori */}
+          <div>
+            <h4 className="font-semibold mb-4">Per i noleggiatori</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="#" className="hover:text-white transition-colors">Come inserire la tua barca</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Gestione delle prenotazioni</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Commissioni e guadagni</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Assistenza proprietari</a></li>
             </ul>
           </div>
 

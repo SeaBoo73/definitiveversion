@@ -13,7 +13,7 @@ import { Link } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
-import { GoogleMapClean } from "@/components/google-map-clean";
+import { InteractiveMap } from "@/components/interactive-map";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -81,14 +81,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Google Maps Navigabile Mondiale */}
+          {/* Mappa Interattiva Navigabile */}
           <div className="mb-8">
-            <GoogleMapClean 
-              height="600px"
-              initialZoom={7}
-              centerLat={41.8}
-              centerLng={12.5}
-            />
+            <InteractiveMap />
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-8">

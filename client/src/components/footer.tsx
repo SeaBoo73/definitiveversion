@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
@@ -47,6 +47,17 @@ export function Footer() {
               <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa host</Link></li>
               <li><Link href="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
               <li><Link href="/recensioni" className="hover:text-white transition-colors">Recensioni</Link></li>
+            </ul>
+          </div>
+
+          {/* Prenotazioni */}
+          <div>
+            <h4 className="font-semibold mb-4">Prenotazioni</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><Link href="/come-prenotare" className="hover:text-white transition-colors">Come prenotare un'imbarcazione</Link></li>
+              <li><Link href="/politiche-cancellazione" className="hover:text-white transition-colors">Politiche di cancellazione</Link></li>
+              <li><Link href="/modifica-prenotazione" className="hover:text-white transition-colors">Modificare una prenotazione</Link></li>
+              <li><Link href="/documenti" className="hover:text-white transition-colors">Documenti necessari</Link></li>
             </ul>
           </div>
 

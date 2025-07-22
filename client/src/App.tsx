@@ -27,6 +27,8 @@ import ProfiloPage from "@/pages/profilo";
 import { AIAssistantPage } from "@/pages/ai-assistant-page";
 import { TestBookingPage } from "@/pages/test-booking-page";
 import { TestMapPage } from "./test-map-page";
+import MappaPage from "@/pages/mappa-page";
+import SimpleMappa from "@/pages/simple-mappa";
 import ComePrenotarePage from "@/pages/come-prenotare";
 import PoliticheCancellazionePage from "@/pages/politiche-cancellazione";
 import RimborsiPage from "@/pages/rimborsi";
@@ -57,6 +59,8 @@ function Router() {
         <TestBookingPage />
       </Route>
       <Route path="/test-map" component={TestMapPage} />
+      <Route path="/mappa" component={MappaPage} />
+      <Route path="/simple-mappa" component={SimpleMappa} />
       <Route path="/come-prenotare" component={ComePrenotarePage} />
       <Route path="/politiche-cancellazione" component={PoliticheCancellazionePage} />
       <Route path="/rimborsi" component={RimborsiPage} />

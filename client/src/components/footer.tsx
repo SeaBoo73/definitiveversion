@@ -44,7 +44,7 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Servizi</h4>
             <ul className="space-y-2 text-gray-400">
               <li><Link href="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
-              <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa host</Link></li>
+              <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa Sea Host</Link></li>
               <li><Link href="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
               <li><Link href="/recensioni" className="hover:text-white transition-colors">Recensioni</Link></li>
             </ul>

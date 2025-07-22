@@ -187,33 +187,66 @@ export function GoogleMapsLazio() {
   }, []);
 
   return (
-    <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-200">
-      <div ref={mapRef} className="w-full h-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
-        <div className="text-center text-gray-600 px-8">
-          <div className="mb-4">
-            <div className="text-4xl mb-2">🗺️</div>
-            <p className="text-lg font-semibold mb-2">Mappa Google Maps del Lazio</p>
-            <p className="text-sm mb-4">Configurazione API Google Maps in corso...</p>
-          </div>
-          <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="bg-white/50 p-2 rounded">
-              <div className="font-semibold">📍 Civitavecchia</div>
-              <div>42.0942°N, 11.7939°E</div>
-            </div>
-            <div className="bg-white/50 p-2 rounded">
-              <div className="font-semibold">📍 Gaeta</div>
-              <div>41.2058°N, 13.5696°E</div>
-            </div>
-            <div className="bg-white/50 p-2 rounded">
-              <div className="font-semibold">📍 Ponza</div>
-              <div>40.8992°N, 12.9619°E</div>
-            </div>
-            <div className="bg-white/50 p-2 rounded">
-              <div className="font-semibold">📍 Terracina</div>
-              <div>41.2857°N, 13.2443°E</div>
+    <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-200 bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100">
+      <div ref={mapRef} className="w-full h-full relative">
+        {/* Mappa Statica con Layout Mare */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 opacity-20"></div>
+        
+        {/* Contenuto Principale */}
+        <div className="relative z-10 h-full flex flex-col justify-center items-center px-8">
+          <div className="text-center mb-6">
+            <div className="text-5xl mb-3">🗺️</div>
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Mappa Interattiva Google del Lazio</h3>
+            <p className="text-sm text-gray-600 mb-4">6 Porti Principali con Coordinate GPS Precise</p>
+            <div className="inline-block bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full">
+              🔄 API Google Maps in attivazione
             </div>
           </div>
-          <p className="text-xs mt-4 text-blue-600">La mappa sarà attiva non appena l'API key sarà completamente configurata</p>
+
+          {/* Griglia Porti Principali */}
+          <div className="grid grid-cols-3 gap-3 max-w-4xl text-xs">
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+              <div className="text-blue-600 font-bold mb-1">⚓ Civitavecchia</div>
+              <div className="text-gray-600">42.0942°N, 11.7939°E</div>
+              <div className="text-green-600 font-semibold mt-1">4 barche</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+              <div className="text-green-600 font-bold mb-1">⚓ Gaeta</div>
+              <div className="text-gray-600">41.2058°N, 13.5696°E</div>
+              <div className="text-green-600 font-semibold mt-1">2 barche</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+              <div className="text-orange-600 font-bold mb-1">🏝️ Ponza</div>
+              <div className="text-gray-600">40.8992°N, 12.9619°E</div>
+              <div className="text-green-600 font-semibold mt-1">2 barche</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+              <div className="text-purple-600 font-bold mb-1">⚓ Terracina</div>
+              <div className="text-gray-600">41.2857°N, 13.2443°E</div>
+              <div className="text-green-600 font-semibold mt-1">2 barche</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+              <div className="text-indigo-600 font-bold mb-1">🏖️ Anzio</div>
+              <div className="text-gray-600">41.4471°N, 12.6221°E</div>
+              <div className="text-green-600 font-semibold mt-1">3 barche</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+              <div className="text-pink-600 font-bold mb-1">🌊 Formia</div>
+              <div className="text-gray-600">41.2565°N, 13.6058°E</div>
+              <div className="text-green-600 font-semibold mt-1">2 barche</div>
+            </div>
+          </div>
+
+          <div className="mt-4 text-center">
+            <p className="text-xs text-blue-700 bg-blue-100/70 px-3 py-1 rounded-full">
+              La mappa Google Maps si attiverà automaticamente appena l'API sarà configurata
+            </p>
+          </div>
         </div>
       </div>
     </div>

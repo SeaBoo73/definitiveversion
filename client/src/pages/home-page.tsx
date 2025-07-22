@@ -37,47 +37,6 @@ export default function HomePage() {
       <AppDownloadBanner />
       <Header />
       
-      {/* Mappa Interattiva - PROVA IN CIMA ALLA PAGINA */}
-      <section className="py-8 bg-gradient-to-br from-blue-50 to-sky-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">🗺️ Mappa Interattiva del Lazio</h2>
-            <p className="text-gray-600">Esplora i porti e trova le imbarcazioni disponibili</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-center">
-                <h3 className="font-bold text-gray-900">Porto di Civitavecchia</h3>
-                <p className="text-sm text-gray-600">📍 42.0942, 11.7939</p>
-                <p className="text-green-600 font-medium">4 barche disponibili</p>
-                <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                  Esplora
-                </button>
-              </div>
-              
-              <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4 text-center">
-                <h3 className="font-bold text-gray-900">Porto di Gaeta</h3>
-                <p className="text-sm text-gray-600">📍 41.2058, 13.5696</p>
-                <p className="text-green-600 font-medium">2 barche disponibili</p>
-                <button className="mt-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                  Esplora
-                </button>
-              </div>
-              
-              <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-4 text-center">
-                <h3 className="font-bold text-gray-900">Porto di Ponza</h3>
-                <p className="text-sm text-gray-600">📍 40.8992, 12.9619</p>
-                <p className="text-green-600 font-medium">2 barche disponibili</p>
-                <button className="mt-2 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
-                  Esplora
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-ocean-blue to-deep-navy text-white">
         <div 
@@ -101,20 +60,27 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* <SearchFilters /> */}
-          <div className="bg-white rounded-2xl shadow-2xl p-6 max-w-5xl mx-auto">
-            <div className="text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Cerca la tua imbarcazione ideale</h3>
-              <p className="text-gray-600 mb-6">Trova e prenota barche in tutto il Lazio</p>
-              <button className="bg-ocean-blue text-white px-8 py-3 rounded-lg hover:bg-blue-600 transition-colors">
-                Inizia la ricerca
-              </button>
-            </div>
-          </div>
+          <SearchFilters />
         </div>
       </section>
 
-      {/* Mappa Interattiva del Lazio - INTEGRATA DIRETTAMENTE */}
+      {/* Boat Categories with Real Images */}
+      <BoatCategories 
+        onCategorySelect={setSelectedCategory} 
+        selectedCategory={selectedCategory}
+      />
+
+      {/* Lazio Ports */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LazioPorts 
+            onPortSelect={setSelectedPort}
+            selectedPort={selectedPort}
+          />
+        </div>
+      </section>
+
+      {/* Interactive Map Section */}
       <section className="py-16 bg-gradient-to-br from-blue-50 to-sky-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">

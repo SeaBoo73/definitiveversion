@@ -187,12 +187,14 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
       window.initMap = initializeMap;
       
       // Only load Google Maps if API key is available
-      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "AIzaSyBsiEdXHR6KxjHvLVxSkKMu5LV3dkOBIT4";
       if (!apiKey) {
         console.log("Google Maps API key not available, showing fallback view");
         setIsMapLoaded(false);
         return;
       }
+      
+      console.log("Loading Google Maps with API key...");
 
       const script = document.createElement('script');
       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places`;
@@ -394,6 +396,71 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
       onPortSelect?.(portName);
     };
   }, [onPortSelect]);
+
+  // Fallback map if Google Maps fails to load
+  if (!isMapLoaded) {
+    return (
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
+          <h2 className="text-xl font-bold text-gray-900">Mappa Interattiva Porti del Lazio</h2>
+          <p className="text-sm text-gray-600 mt-1">Vista semplificata con tutti i porti disponibili</p>
+        </div>
+        
+        <div className="p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(lazioPortsDatabase).map(([portName, portData]) => (
+              <div key={portName} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                   onClick={() => {
+                     setSelectedPort(portName);
+                     onPortSelect?.(portName);
+                   }}>
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-semibold text-gray-900">{portName}</h3>
+                  <Badge variant="secondary">{portData.boats.length} barche</Badge>
+                </div>
+                
+                <div className="text-sm text-gray-600 mb-2">
+                  📍 {portData.lat.toFixed(4)}, {portData.lng.toFixed(4)}
+                </div>
+                
+                <div className="text-sm">
+                  <div className="text-green-600 font-medium">
+                    €{Math.min(...portData.boats.map(b => b.price))} - €{Math.max(...portData.boats.map(b => b.price))}/giorno
+                  </div>
+                  <div className="text-gray-500">
+                    Valutazione media: ⭐ {(portData.boats.reduce((sum, boat) => sum + boat.rating, 0) / portData.boats.length).toFixed(1)}
+                  </div>
+                </div>
+                
+                {selectedPort === portName && (
+                  <div className="mt-3 pt-3 border-t">
+                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                      {portData.boats.slice(0, 3).map((boat, idx) => (
+                        <div key={idx} className="flex justify-between text-xs">
+                          <span className="font-medium">{boat.name}</span>
+                          <span className="text-blue-600">€{boat.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="p-4 bg-yellow-50 border-t">
+          <div className="flex items-center text-yellow-800">
+            <span className="text-lg mr-2">⚠️</span>
+            <div>
+              <p className="font-medium">Google Maps temporaneamente non disponibile</p>
+              <p className="text-sm">Per attivare la mappa interattiva, abilita la fatturazione nell'API di Google Maps.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">

@@ -68,7 +68,7 @@ export function Header() {
               </Button>
             )}
             {user?.role === "customer" && (
-              <Button variant="ghost" asChild className="hidden md:block">
+              <Button variant="ghost" asChild className="hidden md:block text-blue-700 hover:text-blue-900 font-semibold">
                 <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
               </Button>
             )}

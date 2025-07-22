@@ -203,7 +203,7 @@ export function EsperienzePage() {
                         {item.description}
                       </CardDescription>
                       <div className="mt-4">
-                        <Button asChild variant="outline" className="w-full border-coral text-coral hover:bg-coral hover:text-white">
+                        <Button asChild variant="outline" className="w-full border-coral text-red-600 hover:bg-coral hover:text-white font-semibold">
                           <Link href="/search">Scopri di più</Link>
                         </Button>
                       </div>

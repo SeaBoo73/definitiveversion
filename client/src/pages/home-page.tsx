@@ -267,7 +267,7 @@ export default function HomePage() {
             <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100" asChild>
               <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
             </Button>
-            <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100 font-semibold shadow-lg border-2 border-white" asChild>
+            <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg border-2 border-white" asChild>
               <Link href="/diventa-noleggiatore">Scopri di più</Link>
             </Button>
           </div>

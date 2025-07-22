@@ -264,7 +264,7 @@ export default function HomePage() {
             Guadagna mettendo a disposizione la tua imbarcazione. Gestisci tutto facilmente dalla tua dashboard personale.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100" asChild>
+            <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg" asChild>
               <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
             </Button>
             <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg border-2 border-white" asChild>

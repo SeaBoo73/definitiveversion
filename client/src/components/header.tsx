@@ -63,7 +63,7 @@ export function Header() {
           <div className="flex items-center space-x-4">
             {user && <NotificationsCenter />}
             {!user && (
-              <Button asChild className="hidden md:block bg-coral hover:bg-orange-600 text-white">
+              <Button asChild className="hidden md:block bg-coral hover:bg-orange-600 text-white font-bold shadow-lg">
                 <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
               </Button>
             )}

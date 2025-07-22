@@ -59,6 +59,7 @@ const lazioPortsDatabase = {
 };
 
 export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps) {
+  console.log("GoogleMap component rendering...");
   const [selectedPort, setSelectedPort] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
@@ -82,7 +83,11 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden min-h-[700px] border-4 border-red-500">
+      <div className="p-4 bg-red-100 text-red-800 font-bold text-center">
+        COMPONENTE MAPPA CARICATO - Se vedi questo, il componente funziona!
+      </div>
+      
       {/* Header con controlli */}
       <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
         <div className="flex flex-col space-y-4">

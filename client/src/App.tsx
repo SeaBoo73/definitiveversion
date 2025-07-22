@@ -26,6 +26,7 @@ import AiutoPage from "@/pages/aiuto";
 import ProfiloPage from "@/pages/profilo";
 import { AIAssistantPage } from "@/pages/ai-assistant-page";
 import { TestBookingPage } from "@/pages/test-booking-page";
+import { TestMapPage } from "./test-map-page";
 import ComePrenotarePage from "@/pages/come-prenotare";
 import PoliticheCancellazionePage from "@/pages/politiche-cancellazione";
 import RimborsiPage from "@/pages/rimborsi";
@@ -55,6 +56,7 @@ function Router() {
       <Route path="/test-booking">
         <TestBookingPage />
       </Route>
+      <Route path="/test-map" component={TestMapPage} />
       <Route path="/come-prenotare" component={ComePrenotarePage} />
       <Route path="/politiche-cancellazione" component={PoliticheCancellazionePage} />
       <Route path="/rimborsi" component={RimborsiPage} />

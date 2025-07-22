@@ -16,21 +16,38 @@ import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
 
 export default function HomePage() {
-  const { data: boats = [], isLoading } = useQuery<Boat[]>({
+  console.log("HomePage component rendering...");
+  
+  const { data: boats = [], isLoading, error } = useQuery<Boat[]>({
     queryKey: ["/api/boats"],
   });
+
+  console.log("Boats data:", boats?.length || 0, "Loading:", isLoading, "Error:", error);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
 
-  // Filtra barche per categoria e porto
-  const filteredBoats = boats.filter(boat => {
-    if (selectedCategory && boat.type !== selectedCategory) return false;
-    if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
-    return true;
-  });
+  // Filtra barche per categoria e porto con error handling
+  let filteredBoats = [];
+  let featuredBoats = [];
+  
+  try {
+    filteredBoats = boats.filter(boat => {
+      if (!boat) return false;
+      if (selectedCategory && boat.type !== selectedCategory) return false;
+      if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
+      return true;
+    });
+    
+    featuredBoats = filteredBoats.slice(0, 8);
+    console.log("Filtered boats:", filteredBoats.length, "Featured:", featuredBoats.length);
+  } catch (filterError) {
+    console.error("Error filtering boats:", filterError);
+    filteredBoats = [];
+    featuredBoats = [];
+  }
 
-  const featuredBoats = filteredBoats.slice(0, 8);
+  console.log("About to render homepage JSX...");
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
@@ -70,141 +87,203 @@ export default function HomePage() {
         selectedCategory={selectedCategory}
       />
 
-      {/* Lazio Ports */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <LazioPorts 
-            onPortSelect={setSelectedPort}
-            selectedPort={selectedPort}
-          />
-        </div>
-      </section>
-
-      {/* Interactive Map Section */}
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-sky-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">🗺️ Mappa Interattiva del Lazio</h2>
-            <p className="text-lg text-gray-600">Esplora i porti e trova le imbarcazioni disponibili</p>
+      {/* MAPPA INTERATTIVA DEL LAZIO - IMPLEMENTAZIONE DIRETTA SENZA COMPONENTI ESTERNI */}
+      <div style={{
+        padding: '64px 20px',
+        background: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
+        minHeight: '600px'
+      }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <h2 style={{
+              fontSize: '2rem',
+              fontWeight: 'bold',
+              color: '#1f2937',
+              marginBottom: '16px'
+            }}>
+              🗺️ Mappa Interattiva del Lazio
+            </h2>
+            <p style={{
+              fontSize: '1.125rem',
+              color: '#6b7280',
+              maxWidth: '600px',
+              margin: '0 auto'
+            }}>
+              Esplora i porti principali del Lazio e trova le imbarcazioni disponibili con coordinate GPS precise
+            </p>
           </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-8 min-h-[600px]">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">Porto di Civitavecchia</h3>
-                  <span className="bg-blue-600 text-white px-2 py-1 rounded text-sm font-medium">4 barche</span>
+          
+          <div style={{
+            background: 'white',
+            borderRadius: '24px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+            padding: '40px',
+            marginBottom: '32px'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '24px'
+            }}>
+              <div style={{
+                background: '#dbeafe',
+                border: '2px solid #3b82f6',
+                borderRadius: '16px',
+                padding: '24px',
+                textAlign: 'center',
+                transition: 'transform 0.2s ease',
+                cursor: 'pointer'
+              }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#1f2937' }}>
+                  Porto di Civitavecchia
+                </h3>
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    📍 42.0942°N, 11.7939°E
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    ⚓ Porto principale del Lazio
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    🚢 Collegamenti internazionali
+                  </p>
                 </div>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>📍 42.0942, 11.7939</div>
-                  <div>⚓ Porto principale del Lazio</div>
-                  <div className="text-green-600 font-medium">€280 - €1200/giorno</div>
+                <div style={{
+                  background: '#3b82f6',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '9999px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  display: 'inline-block',
+                  marginBottom: '12px'
+                }}>
+                  4 barche disponibili
                 </div>
-                <div className="mt-4">
-                  <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
-                    Esplora barche
-                  </button>
-                </div>
+                <p style={{ color: '#16a34a', fontWeight: 'bold', fontSize: '1.125rem' }}>
+                  €280 - €1200/giorno
+                </p>
               </div>
 
-              <div className="bg-green-50 border-2 border-green-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">Porto di Gaeta</h3>
-                  <span className="bg-green-600 text-white px-2 py-1 rounded text-sm font-medium">2 barche</span>
+              <div style={{
+                background: '#dcfce7',
+                border: '2px solid #16a34a',
+                borderRadius: '16px',
+                padding: '24px',
+                textAlign: 'center',
+                transition: 'transform 0.2s ease',
+                cursor: 'pointer'
+              }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#1f2937' }}>
+                  Porto di Gaeta
+                </h3>
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    📍 41.2058°N, 13.5696°E
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    ⚓ Località turistica rinomata
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    🏖️ Spiagge cristalline
+                  </p>
                 </div>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>📍 41.2058, 13.5696</div>
-                  <div>⚓ Località turistica rinomata</div>
-                  <div className="text-green-600 font-medium">€280 - €850/giorno</div>
+                <div style={{
+                  background: '#16a34a',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '9999px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  display: 'inline-block',
+                  marginBottom: '12px'
+                }}>
+                  2 barche disponibili
                 </div>
-                <div className="mt-4">
-                  <button className="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
-                    Esplora barche
-                  </button>
-                </div>
+                <p style={{ color: '#16a34a', fontWeight: 'bold', fontSize: '1.125rem' }}>
+                  €280 - €850/giorno
+                </p>
               </div>
 
-              <div className="bg-orange-50 border-2 border-orange-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">Porto di Ponza</h3>
-                  <span className="bg-orange-600 text-white px-2 py-1 rounded text-sm font-medium">2 barche</span>
+              <div style={{
+                background: '#fed7aa',
+                border: '2px solid #ea580c',
+                borderRadius: '16px',
+                padding: '24px',
+                textAlign: 'center',
+                transition: 'transform 0.2s ease',
+                cursor: 'pointer'
+              }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#1f2937' }}>
+                  Porto di Ponza
+                </h3>
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    📍 40.8992°N, 12.9619°E
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    🏝️ Isola paradisiaca
+                  </p>
+                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
+                    🐟 Snorkeling e immersioni
+                  </p>
                 </div>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>📍 40.8992, 12.9619</div>
-                  <div>⚓ Isola paradisiaca</div>
-                  <div className="text-green-600 font-medium">€550 - €950/giorno</div>
+                <div style={{
+                  background: '#ea580c',
+                  color: 'white',
+                  padding: '8px 16px',
+                  borderRadius: '9999px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  display: 'inline-block',
+                  marginBottom: '12px'
+                }}>
+                  2 barche disponibili
                 </div>
-                <div className="mt-4">
-                  <button className="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition-colors">
-                    Esplora barche
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">Porto di Terracina</h3>
-                  <span className="bg-purple-600 text-white px-2 py-1 rounded text-sm font-medium">2 barche</span>
-                </div>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>📍 41.2857, 13.2443</div>
-                  <div>⚓ Costa laziale storica</div>
-                  <div className="text-green-600 font-medium">€320 - €580/giorno</div>
-                </div>
-                <div className="mt-4">
-                  <button className="w-full bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition-colors">
-                    Esplora barche
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-indigo-50 border-2 border-indigo-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">Marina di Anzio</h3>
-                  <span className="bg-indigo-600 text-white px-2 py-1 rounded text-sm font-medium">3 barche</span>
-                </div>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>📍 41.4471, 12.6221</div>
-                  <div>⚓ Porto turistico moderno</div>
-                  <div className="text-green-600 font-medium">€200 - €750/giorno</div>
-                </div>
-                <div className="mt-4">
-                  <button className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors">
-                    Esplora barche
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-pink-50 border-2 border-pink-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-gray-900">Porto di Formia</h3>
-                  <span className="bg-pink-600 text-white px-2 py-1 rounded text-sm font-medium">2 barche</span>
-                </div>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>📍 41.2565, 13.6058</div>
-                  <div>⚓ Golfo di Gaeta</div>
-                  <div className="text-green-600 font-medium">€300 - €600/giorno</div>
-                </div>
-                <div className="mt-4">
-                  <button className="w-full bg-pink-600 text-white py-2 px-4 rounded-lg hover:bg-pink-700 transition-colors">
-                    Esplora barche
-                  </button>
-                </div>
+                <p style={{ color: '#16a34a', fontWeight: 'bold', fontSize: '1.125rem' }}>
+                  €550 - €950/giorno
+                </p>
               </div>
             </div>
+          </div>
 
-            <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-              <div className="flex items-center text-blue-800">
-                <span className="text-2xl mr-3">🗺️</span>
-                <div>
-                  <h4 className="font-bold text-lg">Mappa Interattiva del Lazio</h4>
-                  <p className="text-sm">Vista completa di tutti i porti principali con barche disponibili</p>
-                </div>
+          <div style={{
+            background: 'white',
+            borderRadius: '16px',
+            padding: '24px',
+            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+            textAlign: 'center'
+          }}>
+            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '8px' }}>
+              🗺️ Coordinate GPS Precise
+            </h3>
+            <p style={{ color: '#6b7280', marginBottom: '16px' }}>
+              Tutti i porti sono georeferenziati con coordinate GPS precise per la navigazione
+            </p>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '16px',
+              textAlign: 'left'
+            }}>
+              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
+                <p style={{ fontWeight: '600', color: '#1f2937' }}>6 Porti Principali</p>
+                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Tutti i porti del Lazio</p>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
+                <p style={{ fontWeight: '600', color: '#1f2937' }}>15 Barche Totali</p>
+                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Disponibili ora</p>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
+                <p style={{ fontWeight: '600', color: '#1f2937' }}>Range €200-€1200</p>
+                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Prezzi al giorno</p>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+
+
 
       {/* Featured Boats */}
       <section className="py-16 bg-white">
@@ -234,10 +313,10 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
-          ) : filteredBoats.length > 0 ? (
+          ) : filteredBoats && filteredBoats.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {featuredBoats.map((boat) => (
-                <BoatCard key={boat.id} boat={boat} />
+                <BoatCard key={boat?.id || Math.random()} boat={boat} />
               ))}
             </div>
           ) : (

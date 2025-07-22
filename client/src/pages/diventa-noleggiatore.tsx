@@ -21,7 +21,7 @@ const ownerRegistrationSchema = z.object({
   lastName: z.string().min(2, "Cognome richiesto"),
   email: z.string().email("Email non valida"),
   phone: z.string().min(10, "Numero di telefono valido richiesto"),
-  city: z.string().min(2, "Città richiesta"),
+  serviceCategories: z.array(z.string()).optional(),
   
   // Boat Details
   boatName: z.string().min(2, "Nome dell'imbarcazione richiesto"),
@@ -74,7 +74,7 @@ export default function DiventaNoleggiatorePage() {
       lastName: "",
       email: "",
       phone: "",
-      city: "",
+      serviceCategories: [],
       boatName: "",
       boatType: "",
       boatBrand: "",
@@ -360,19 +360,77 @@ export default function DiventaNoleggiatorePage() {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="city"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Città (dove si trova la barca)</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Service Categories Selection */}
+                <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border border-purple-200">
+                  <h3 className="text-lg font-semibold text-purple-900 mb-4">🌟 Servizi Premium SeaGO</h3>
+                  <p className="text-sm text-purple-700 mb-4">
+                    Seleziona i servizi premium che vuoi offrire per aumentare le tue prenotazioni e guadagni
+                  </p>
+                  
+                  <FormField
+                    control={form.control}
+                    name="serviceCategories"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white p-4 rounded-lg border border-purple-200">
+                            <div className="flex items-center space-x-3">
+                              <Checkbox
+                                checked={field.value?.includes("experiences")}
+                                onCheckedChange={(checked) => {
+                                  const currentValues = field.value || [];
+                                  if (checked) {
+                                    field.onChange([...currentValues, "experiences"]);
+                                  } else {
+                                    field.onChange(currentValues.filter(v => v !== "experiences"));
+                                  }
+                                }}
+                              />
+                              <div>
+                                <h4 className="font-semibold text-purple-900">🎯 Esperienze Premium</h4>
+                                <p className="text-xs text-purple-600">
+                                  Tour guidati, escursioni speciali, eventi privati
+                                </p>
+                                <Badge variant="secondary" className="mt-1 text-xs">+30% guadagni</Badge>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-white p-4 rounded-lg border border-purple-200">
+                            <div className="flex items-center space-x-3">
+                              <Checkbox
+                                checked={field.value?.includes("charter")}
+                                onCheckedChange={(checked) => {
+                                  const currentValues = field.value || [];
+                                  if (checked) {
+                                    field.onChange([...currentValues, "charter"]);
+                                  } else {
+                                    field.onChange(currentValues.filter(v => v !== "charter"));
+                                  }
+                                }}
+                              />
+                              <div>
+                                <h4 className="font-semibold text-purple-900">⛵ Charter Premium</h4>
+                                <p className="text-xs text-purple-600">
+                                  Servizi con skipper professionale e equipaggio
+                                </p>
+                                <Badge variant="secondary" className="mt-1 text-xs">+50% guadagni</Badge>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <div className="mt-4 p-3 bg-white rounded-lg">
+                    <p className="text-xs text-gray-600">
+                      💡 <strong>Consiglio:</strong> I proprietari che offrono servizi premium guadagnano in media il 40% in più 
+                      e ricevono prenotazioni tutto l'anno, anche in bassa stagione.
+                    </p>
+                  </div>
+                </div>
 
                 {/* Boat Details Section */}
                 <div className="bg-blue-50 p-6 rounded-lg space-y-4">

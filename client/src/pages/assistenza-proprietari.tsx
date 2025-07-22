@@ -30,12 +30,12 @@ export default function AssistenzaProprietariPage() {
 
           <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
             <MessageCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-4">Chat Live</h3>
+            <h3 className="text-xl font-semibold mb-4">Assistente IA</h3>
             <p className="text-gray-600 mb-4">
-              Assistenza immediata tramite chat integrata nella dashboard
+              Consigli intelligenti e supporto automatizzato con IA
             </p>
             <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors" onClick={() => window.location.href = '/ia'}>
-              Avvia Chat
+              Avvia IA
             </button>
           </div>
 

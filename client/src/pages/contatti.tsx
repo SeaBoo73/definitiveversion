@@ -24,10 +24,10 @@ export default function ContattiPage() {
   const contactMethods = [
     {
       icon: <MessageCircle className="h-8 w-8 text-blue-600" />,
-      title: "Chat Live",
-      description: "Supporto immediato per domande urgenti",
+      title: "Assistente IA",
+      description: "Consigli intelligenti per barche e navigazione",
       details: "Disponibile 24/7",
-      action: "Avvia Chat",
+      action: "Avvia IA",
       onClick: handleChatClick,
       primary: true
     },

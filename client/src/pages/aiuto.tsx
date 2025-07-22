@@ -60,10 +60,10 @@ export default function AiutoPage() {
           <Card className="text-center">
             <CardContent className="pt-6">
               <MessageCircle className="h-8 w-8 text-ocean-blue mx-auto mb-3" />
-              <h3 className="font-semibold mb-2">Chat Live</h3>
-              <p className="text-sm text-gray-600 mb-4">Risposta immediata</p>
+              <h3 className="font-semibold mb-2">Assistente IA</h3>
+              <p className="text-sm text-gray-600 mb-4">Consigli intelligenti</p>
               <Button size="sm" className="bg-ocean-blue hover:bg-ocean-blue/90" asChild>
-                <Link href="/ia">Avvia Chat</Link>
+                <Link href="/ia">Avvia IA</Link>
               </Button>
             </CardContent>
           </Card>

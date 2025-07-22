@@ -200,6 +200,10 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
       script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places`;
       script.async = true;
       script.defer = true;
+      script.onerror = () => {
+        console.log("Failed to load Google Maps script");
+        setIsMapLoaded(false);
+      };
       document.head.appendChild(script);
     };
 
@@ -209,37 +213,43 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
   const initializeMap = () => {
     if (!mapRef.current) return;
 
-    // Inizializza la mappa centrata sul Lazio
-    map.current = new window.google.maps.Map(mapRef.current, {
-      center: { lat: 41.5, lng: 12.5 },
-      zoom: 8,
-      mapTypeId: 'roadmap',
-      styles: [
-        {
-          featureType: "water",
-          elementType: "geometry",
-          stylers: [
-            { color: "#4285f4" }
-          ]
-        }
-      ],
-      zoomControl: true,
-      mapTypeControl: true,
-      scaleControl: true,
-      streetViewControl: true,
-      rotateControl: true,
-      fullscreenControl: true
-    });
+    try {
+      // Inizializza la mappa centrata sul Lazio
+      map.current = new window.google.maps.Map(mapRef.current, {
+        center: { lat: 41.5, lng: 12.5 },
+        zoom: 8,
+        mapTypeId: 'roadmap',
+        styles: [
+          {
+            featureType: "water",
+            elementType: "geometry",
+            stylers: [
+              { color: "#4285f4" }
+            ]
+          }
+        ],
+        zoomControl: true,
+        mapTypeControl: true,
+        scaleControl: true,
+        streetViewControl: true,
+        rotateControl: true,
+        fullscreenControl: true
+      });
 
-    // Aggiungi marker per ogni porto
-    addPortMarkers();
-    
-    // Aggiungi marker utente se disponibile
-    if (userLocation) {
-      addUserLocationMarker();
+      // Aggiungi marker per ogni porto
+      addPortMarkers();
+      
+      // Aggiungi marker utente se disponibile
+      if (userLocation) {
+        addUserLocationMarker();
+      }
+
+      setIsMapLoaded(true);
+      console.log("Google Maps initialized successfully!");
+    } catch (error) {
+      console.log("Google Maps failed to initialize:", error);
+      setIsMapLoaded(false);
     }
-
-    setIsMapLoaded(true);
   };
 
   const addUserLocationMarker = () => {
@@ -397,70 +407,23 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
     };
   }, [onPortSelect]);
 
-  // Fallback map if Google Maps fails to load
-  if (!isMapLoaded) {
-    return (
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
-          <h2 className="text-xl font-bold text-gray-900">Mappa Interattiva Porti del Lazio</h2>
-          <p className="text-sm text-gray-600 mt-1">Vista semplificata con tutti i porti disponibili</p>
-        </div>
-        
-        <div className="p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Object.entries(lazioPortsDatabase).map(([portName, portData]) => (
-              <div key={portName} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
-                   onClick={() => {
-                     setSelectedPort(portName);
-                     onPortSelect?.(portName);
-                   }}>
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-semibold text-gray-900">{portName}</h3>
-                  <Badge variant="secondary">{portData.boats.length} barche</Badge>
-                </div>
-                
-                <div className="text-sm text-gray-600 mb-2">
-                  📍 {portData.lat.toFixed(4)}, {portData.lng.toFixed(4)}
-                </div>
-                
-                <div className="text-sm">
-                  <div className="text-green-600 font-medium">
-                    €{Math.min(...portData.boats.map(b => b.price))} - €{Math.max(...portData.boats.map(b => b.price))}/giorno
-                  </div>
-                  <div className="text-gray-500">
-                    Valutazione media: ⭐ {(portData.boats.reduce((sum, boat) => sum + boat.rating, 0) / portData.boats.length).toFixed(1)}
-                  </div>
-                </div>
-                
-                {selectedPort === portName && (
-                  <div className="mt-3 pt-3 border-t">
-                    <div className="space-y-2 max-h-40 overflow-y-auto">
-                      {portData.boats.slice(0, 3).map((boat, idx) => (
-                        <div key={idx} className="flex justify-between text-xs">
-                          <span className="font-medium">{boat.name}</span>
-                          <span className="text-blue-600">€{boat.price}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-        
-        <div className="p-4 bg-yellow-50 border-t">
-          <div className="flex items-center text-yellow-800">
-            <span className="text-lg mr-2">⚠️</span>
-            <div>
-              <p className="font-medium">Google Maps temporaneamente non disponibile</p>
-              <p className="text-sm">Per attivare la mappa interattiva, abilita la fatturazione nell'API di Google Maps.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Filtra porti in base ai criteri per la vista alternativa
+  const getFilteredPorts = () => {
+    return Object.entries(lazioPortsDatabase).filter(([portName, portData]) => {
+      if (searchTerm && !portName.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return false;
+      }
+
+      if (filterType !== "all") {
+        const hasMatchingBoats = portData.boats.some(boat => 
+          boat.type.toLowerCase().includes(filterType.toLowerCase())
+        );
+        if (!hasMatchingBoats) return false;
+      }
+
+      return true;
+    });
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -522,9 +485,75 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
         </div>
       </div>
 
-      {/* Mappa Google Maps */}
+      {/* Mappa Google Maps o Vista Alternativa */}
       <div className="relative">
-        <div ref={mapRef} className="w-full h-[600px]" />
+        {isMapLoaded ? (
+          <div ref={mapRef} className="w-full h-[600px]" />
+        ) : (
+          <div className="w-full min-h-[600px] bg-gradient-to-br from-blue-50 to-sky-100">
+            {/* Mappa alternativa dei porti */}
+            <div className="p-6">
+              <div className="text-center mb-6">
+                <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-3" />
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Porti e Marine del Lazio</h3>
+                <p className="text-gray-600">Esplora le nostre destinazioni nautiche più belle</p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[450px] overflow-y-auto">
+                {getFilteredPorts().map(([portName, portData]) => (
+                  <Card key={portName} className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-300" 
+                        onClick={() => {
+                          setSelectedPort(portName);
+                          onPortSelect?.(portName);
+                        }}>
+                    <CardHeader className="pb-3">
+                      <CardTitle className="flex items-center justify-between">
+                        <span className="text-sm font-semibold">{portName}</span>
+                        <Badge variant="secondary" className="text-xs">{portData.boats.length}</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-0">
+                      <div className="text-xs text-gray-600 mb-2">
+                        📍 {portData.lat.toFixed(4)}, {portData.lng.toFixed(4)}
+                      </div>
+                      
+                      <div className="text-sm mb-3">
+                        <div className="text-green-600 font-medium">
+                          €{Math.min(...portData.boats.map(b => b.price))} - €{Math.max(...portData.boats.map(b => b.price))}/giorno
+                        </div>
+                        <div className="text-gray-500 text-xs">
+                          ⭐ {(portData.boats.reduce((sum, boat) => sum + boat.rating, 0) / portData.boats.length).toFixed(1)} valutazione
+                        </div>
+                      </div>
+                      
+                      {selectedPort === portName && (
+                        <div className="border-t pt-3">
+                          <div className="space-y-1 max-h-24 overflow-y-auto">
+                            {portData.boats.slice(0, 3).map((boat, idx) => (
+                              <div key={idx} className="flex justify-between text-xs">
+                                <span className="font-medium">{boat.name}</span>
+                                <span className="text-blue-600">€{boat.price}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              
+              {getFilteredPorts().length === 0 && (
+                <div className="text-center py-8">
+                  <p className="text-gray-500">Nessun porto trovato con i filtri selezionati</p>
+                </div>
+              )}
+            </div>
+            
+            {/* Nasconde il div ref per Google Maps quando non è caricato */}
+            <div ref={mapRef} className="hidden" />
+          </div>
+        )}
         
         {!isMapLoaded && !import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
           <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-sky-100 p-8">

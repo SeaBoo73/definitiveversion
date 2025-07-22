@@ -54,7 +54,7 @@ export function Header() {
                 Admin
               </Link>
             )}
-            <Link href="#help" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+            <Link href="/aiuto" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Aiuto
             </Link>
           </nav>

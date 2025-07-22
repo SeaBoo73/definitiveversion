@@ -14,7 +14,7 @@ import { Link } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
-import { GoogleMapsLazio } from "@/components/google-maps-lazio";
+import { LazioInteractiveMap } from "@/components/lazio-interactive-map";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -82,15 +82,9 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mappa Interattiva del Lazio - Implementazione Ibrida */}
+          {/* Mappa Interattiva del Lazio */}
           <div className="mb-8">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-gray-900">🗺️ Mappa Google del Lazio</h3>
-                <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">API in configurazione</span>
-              </div>
-              <GoogleMapsLazio />
-            </div>
+            <LazioInteractiveMap />
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-8">

@@ -186,8 +186,16 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
 
       window.initMap = initializeMap;
       
+      // Only load Google Maps if API key is available
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+      if (!apiKey) {
+        console.log("Google Maps API key not available, showing fallback view");
+        setIsMapLoaded(false);
+        return;
+      }
+
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO8QMK-DnZPotw&callback=initMap&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap&libraries=places`;
       script.async = true;
       script.defer = true;
       document.head.appendChild(script);
@@ -451,7 +459,56 @@ export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps)
       <div className="relative">
         <div ref={mapRef} className="w-full h-[600px]" />
         
-        {!isMapLoaded && (
+        {!isMapLoaded && !import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-sky-100 p-8">
+            <div className="text-center mb-8">
+              <MapPin className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Porti e Marine del Lazio</h3>
+              <p className="text-gray-600">Esplora le nostre destinazioni nautiche più belle</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[400px] overflow-y-auto">
+              {Object.entries(lazioPortsDatabase).map(([portName, portData]) => (
+                <Card key={portName} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedPort(portName)}>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">{portName}</CardTitle>
+                      <Anchor className="h-5 w-5 text-blue-600" />
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Barche disponibili</span>
+                        <span className="font-semibold text-blue-600">{portData.boats.length}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Coordinate</span>
+                        <span className="text-xs font-mono">{portData.lat.toFixed(3)}, {portData.lng.toFixed(3)}</span>
+                      </div>
+                      <div className="pt-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPort(portName);
+                            onPortSelect?.(portName);
+                          }}
+                        >
+                          Vedi barche disponibili
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!isMapLoaded && import.meta.env.VITE_GOOGLE_MAPS_API_KEY && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
             <div className="text-center">
               <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-2"></div>

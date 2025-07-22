@@ -302,20 +302,7 @@ export type InsertMessage = z.infer<typeof insertMessageSchema>;
 export type InsertDiscount = z.infer<typeof insertDiscountSchema>;
 export type InsertDocument = z.infer<typeof insertDocumentSchema>;
 
-// Types
-export type User = typeof users.$inferSelect;
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type Boat = typeof boats.$inferSelect;
-export type InsertBoat = z.infer<typeof insertBoatSchema>;
-export type Booking = typeof bookings.$inferSelect;
-export type InsertBooking = z.infer<typeof insertBookingSchema>;
-export type Review = typeof reviews.$inferSelect;
-export type InsertReview = z.infer<typeof insertReviewSchema>;
-export type Conversation = typeof conversations.$inferSelect;
-export type InsertConversation = z.infer<typeof insertConversationSchema>;
-export type Message = typeof messages.$inferSelect;
-export type InsertMessage = z.infer<typeof insertMessageSchema>;
-export type Favorite = typeof favorites.$inferSelect;
+
 
 // New advanced tables
 export const notifications = pgTable("notifications", {

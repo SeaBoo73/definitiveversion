@@ -201,7 +201,7 @@ export default function HomePage() {
               <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
             </Button>
             <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100 font-semibold shadow-lg border-2 border-white" asChild>
-              <Link href="/diventa-host">Scopri di più</Link>
+              <Link href="/diventa-noleggiatore">Scopri di più</Link>
             </Button>
           </div>
         </div>

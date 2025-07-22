@@ -278,6 +278,19 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Funzionalità aiuto spostate dentro sezione "Assistenza" del Profilo
   - ✅ AreaNoleggiatori: screen dedicato per proprietari con CTA e funzionalità business
   - ✅ ProfiloScreen aggiornato con FAQ e contatti integrati nella voce assistenza
+- **Form Registrazione Proprietari Potenziato (July 22, 2025):**
+  - ✅ Form "Diventa noleggiatore" completamente ridisegnato per raccolta dati professionale
+  - ✅ 25+ campi dettagliati organizzati in 6 sezioni colorate: Dettagli Imbarcazione, Ubicazione Porto, Equipaggiamenti, Documentazione, Info Commerciali, Info Aggiuntive
+  - ✅ Campi tecnici specifici: nome barca, marca/cantiere, modello, anno, lunghezza, capacità, cabine, bagni
+  - ✅ Sezione porto con nome e indirizzo completo per geolocalizzazione
+  - ✅ Equipaggiamenti di sicurezza obbligatori e comfort opzionali
+  - ✅ Documentazione completa: matricola, assicurazione, scadenze
+  - ✅ Informazioni commerciali: prezzo, requisiti patente nautica
+  - ✅ Note speciali per regole barca e disponibilità stagionali
+  - ✅ Checklist documentazione richiesta post-registrazione
+  - ✅ Validazione Zod estesa per tutti i campi obbligatori
+  - ✅ UI organizzata con colori distintivi per ogni sezione
+  - ✅ Form professionale livello enterprise per qualità piattaforma
 - **Google Maps Integration (July 22, 2025):**
   - ✅ Google Maps API key configured for interactive map functionality
   - ✅ Real-time boat location markers with detailed port information

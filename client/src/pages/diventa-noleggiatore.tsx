@@ -16,14 +16,47 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
 const ownerRegistrationSchema = z.object({
+  // Personal Info
   firstName: z.string().min(2, "Nome richiesto"),
   lastName: z.string().min(2, "Cognome richiesto"),
   email: z.string().email("Email non valida"),
   phone: z.string().min(10, "Numero di telefono valido richiesto"),
   city: z.string().min(2, "Città richiesta"),
-  boatExperience: z.string().min(10, "Descrivi la tua esperienza"),
+  
+  // Boat Details
+  boatName: z.string().min(2, "Nome dell'imbarcazione richiesto"),
+  boatType: z.string().min(2, "Tipo di imbarcazione richiesto"),
+  boatBrand: z.string().min(2, "Marca/Cantiere richiesto"),
+  boatModel: z.string().min(1, "Modello richiesto"),
+  boatYear: z.string().min(4, "Anno di costruzione richiesto"),
+  boatLength: z.string().min(1, "Lunghezza richiesta"),
+  boatCapacity: z.string().min(1, "Capacità richiesta"),
+  boatCabins: z.string().optional(),
+  boatBathrooms: z.string().optional(),
+  
+  // Harbor Info
+  harborName: z.string().min(2, "Nome del porto richiesto"),
+  harborAddress: z.string().min(5, "Indirizzo del porto richiesto"),
+  
+  // Equipment
+  boatEquipment: z.string().min(20, "Elenca gli equipaggiamenti di sicurezza"),
+  boatAmenities: z.string().optional(),
+  
+  // Documentation
+  boatLicense: z.string().min(2, "Numero di matricola richiesto"),
+  insuranceCompany: z.string().min(2, "Compagnia assicurativa richiesta"),
+  insuranceExpiry: z.string().min(1, "Scadenza assicurazione richiesta"),
+  
+  // Commercial
+  dailyPrice: z.string().min(1, "Prezzo giornaliero richiesto"),
+  licenseRequired: z.string().min(1, "Seleziona requisiti patente"),
+  
+  // Additional Info
+  ownerExperience: z.string().min(20, "Descrivi la tua esperienza nautica"),
+  specialNotes: z.string().optional(),
+  availabilityNotes: z.string().optional(),
+  
   acceptTerms: z.boolean().refine(val => val === true, "Devi accettare i termini"),
-  acceptCommission: z.boolean().refine(val => val === true, "Devi accettare la commissione del 15%"),
 });
 
 type OwnerRegistrationForm = z.infer<typeof ownerRegistrationSchema>;
@@ -36,6 +69,35 @@ export default function DiventaNoleggiatorePage() {
 
   const form = useForm<OwnerRegistrationForm>({
     resolver: zodResolver(ownerRegistrationSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      city: "",
+      boatName: "",
+      boatType: "",
+      boatBrand: "",
+      boatModel: "",
+      boatYear: "",
+      boatLength: "",
+      boatCapacity: "",
+      boatCabins: "",
+      boatBathrooms: "",
+      harborName: "",
+      harborAddress: "",
+      boatEquipment: "",
+      boatAmenities: "",
+      boatLicense: "",
+      insuranceCompany: "",
+      insuranceExpiry: "",
+      dailyPrice: "",
+      licenseRequired: "",
+      ownerExperience: "",
+      specialNotes: "",
+      availabilityNotes: "",
+      acceptTerms: false,
+    }
   });
 
   const registrationMutation = useMutation({
@@ -312,16 +374,319 @@ export default function DiventaNoleggiatorePage() {
                   )}
                 />
 
+                {/* Boat Details Section */}
+                <div className="bg-blue-50 p-6 rounded-lg space-y-4">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-4">📋 Dettagli Imbarcazione</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="boatName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nome dell'imbarcazione *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="es. Luna del Mare" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="boatType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Tipo di imbarcazione *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="es. Barca a vela, Motoscafo, Yacht" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="boatBrand"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Marca/Cantiere *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="es. Beneteau, Azimut" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="boatModel"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Modello *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="es. Oceanis 46, Magellano 43" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="boatYear"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Anno di costruzione *</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="number" placeholder="2020" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="boatLength"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Lunghezza (m) *</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="number" step="0.1" placeholder="12.5" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="boatCapacity"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Capacità persone *</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="number" placeholder="8" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="boatCabins"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>N. Cabine</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="number" placeholder="3" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="boatBathrooms"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>N. Bagni</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="number" placeholder="2" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Harbor and Location */}
+                <div className="bg-green-50 p-6 rounded-lg space-y-4">
+                  <h3 className="text-lg font-semibold text-green-900 mb-4">⚓ Ubicazione e Porto Base</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="harborName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Nome del porto *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="es. Marina di Civitavecchia" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="harborAddress"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Indirizzo del porto *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="Via del Porto 123, 00053 Civitavecchia" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Equipment and Amenities */}
+                <div className="bg-orange-50 p-6 rounded-lg space-y-4">
+                  <h3 className="text-lg font-semibold text-orange-900 mb-4">🛠️ Equipaggiamenti e Accessori</h3>
+                  
+                  <FormField
+                    control={form.control}
+                    name="boatEquipment"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Equipaggiamenti di sicurezza *</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            placeholder="Elenca tutti gli equipaggiamenti di sicurezza: giubbotti salvagente, zattera, radio VHF, GPS, radar, ecoscandaglio, estintori, razzi, ecc."
+                            rows={3}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="boatAmenities"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Comfort e accessori aggiuntivi</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            placeholder="es. Aria condizionata, generatore, tender, attrezzatura pesca, snorkeling, WiFi, sistema audio, cucina completa, frigorifero, doccia esterna, ecc."
+                            rows={3}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Documentation */}
+                <div className="bg-purple-50 p-6 rounded-lg space-y-4">
+                  <h3 className="text-lg font-semibold text-purple-900 mb-4">📄 Documentazione e Certificazioni</h3>
+                  
+                  <FormField
+                    control={form.control}
+                    name="boatLicense"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Numero di matricola/immatricolazione *</FormLabel>
+                        <FormControl>
+                          <Input {...field} placeholder="es. IT123456789" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="insuranceCompany"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Compagnia assicurativa *</FormLabel>
+                          <FormControl>
+                            <Input {...field} placeholder="es. Generali, UnipolSai" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="insuranceExpiry"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Scadenza assicurazione *</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="date" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Commercial Details */}
+                <div className="bg-indigo-50 p-6 rounded-lg space-y-4">
+                  <h3 className="text-lg font-semibold text-indigo-900 mb-4">💰 Informazioni Commerciali</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="dailyPrice"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Prezzo giornaliero (€) *</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="number" placeholder="300" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="licenseRequired"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Patente nautica richiesta *</FormLabel>
+                          <FormControl>
+                            <select {...field} className="w-full p-2 border rounded-md">
+                              <option value="">Seleziona...</option>
+                              <option value="none">Nessuna patente</option>
+                              <option value="coastal">Patente entro le 12 miglia</option>
+                              <option value="unlimited">Patente senza limiti</option>
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Owner Experience */}
                 <FormField
                   control={form.control}
-                  name="boatExperience"
+                  name="ownerExperience"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Esperienza nautica e dettagli della barca</FormLabel>
+                      <FormLabel>La tua esperienza nautica *</FormLabel>
                       <FormControl>
                         <Textarea 
                           {...field} 
-                          placeholder="Descrivi la tua esperienza, tipo di barca, anno, caratteristiche..."
+                          placeholder="Descrivi la tua esperienza come marinaio/proprietario, anni di navigazione, zone che conosci meglio, eventuali certificazioni..."
                           rows={4}
                         />
                       </FormControl>
@@ -329,6 +694,66 @@ export default function DiventaNoleggiatorePage() {
                     </FormItem>
                   )}
                 />
+
+                {/* Additional Service Information */}
+                <div className="bg-gray-50 p-6 rounded-lg space-y-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">ℹ️ Informazioni Aggiuntive</h3>
+                  
+                  <FormField
+                    control={form.control}
+                    name="specialNotes"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Note speciali e regole della barca</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            placeholder="es. Non è permesso fumare, animali domestici benvenuti, ideale per famiglie, esperienza navigazione richiesta, ecc."
+                            rows={3}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="availabilityNotes"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Disponibilità e periodi preferiti</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            {...field} 
+                            placeholder="es. Disponibile tutto l'anno, preferisco noleggi di almeno 3 giorni, non disponibile ad agosto, ecc."
+                            rows={2}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                  <h4 className="font-semibold text-yellow-800 mb-3">📋 Documentazione Richiesta (da inviare dopo la registrazione)</h4>
+                  <ul className="text-sm text-yellow-800 space-y-1">
+                    <li>• Certificato di navigabilità</li>
+                    <li>• Polizza assicurativa RC e corpo</li>
+                    <li>• Patente nautica del proprietario</li>
+                    <li>• Documento di identità</li>
+                    <li>• Foto dell'imbarcazione (esterne e interne)</li>
+                  </ul>
+                  
+                  <div className="mt-4 p-4 bg-white rounded-lg">
+                    <p className="text-sm font-medium text-gray-900 mb-2">Commissione SeaGO: 15%</p>
+                    <p className="text-sm text-gray-700">
+                      <strong>Importante:</strong> Il 15% di commissione viene pagato direttamente dal cliente, 
+                      non viene detratto dai tuoi guadagni. Tu ricevi il 100% del prezzo che hai impostato.
+                    </p>
+                  </div>
+                </div>
 
                 {/* Terms */}
                 <FormField
@@ -369,9 +794,14 @@ export default function DiventaNoleggiatorePage() {
                     disabled={registrationMutation.isPending}
                     className="flex-1 bg-ocean-blue hover:bg-blue-600"
                   >
-                    {registrationMutation.isPending ? "Invio..." : "Invia richiesta"}
+                    {registrationMutation.isPending ? "Invio..." : "Completa Registrazione Dettagliata"}
                   </Button>
                 </div>
+                
+                <p className="text-xs text-gray-500 text-center mt-4">
+                  Cliccando "Completa Registrazione" accetti i nostri termini di servizio e la politica sulla privacy. 
+                  Un nostro specialista ti contatterà entro 24 ore per finalizzare la verifica.
+                </p>
               </form>
             </Form>
           </CardContent>

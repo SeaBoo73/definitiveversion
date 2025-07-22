@@ -13,9 +13,9 @@ export function Footer() {
               <img 
                 src={seagoLogo} 
                 alt="SeaGO" 
-                className="h-8 w-8 mr-3 rounded-lg"
+                className="h-8 w-8 mr-1"
               />
-              <h3 className="text-2xl font-bold text-ocean-blue">
+              <h3 className="text-2xl font-bold text-ocean-blue leading-none">
                 SeaGO
               </h3>
             </div>

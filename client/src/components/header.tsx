@@ -24,9 +24,9 @@ export function Header() {
             <img 
               src={seagoLogo} 
               alt="SeaGO" 
-              className="h-10 w-10 rounded-lg"
+              className="h-10 w-10"
             />
-            <span className="ml-2 text-2xl font-bold text-deep-navy">SeaGO</span>
+            <span className="ml-1 text-2xl font-bold text-deep-navy leading-none">SeaGO</span>
           </Link>
 
           {/* Desktop Navigation */}

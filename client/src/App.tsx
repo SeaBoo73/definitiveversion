@@ -39,6 +39,12 @@ import PaymentSuccess from "@/pages/payment-success";
 import DiventaNoleggiatorePage from "@/pages/diventa-noleggiatore";
 import ModificaPrenotazionePage from "@/pages/modifica-prenotazione";
 import DocumentiPage from "@/pages/documenti";
+import AssicurazionePage from "@/pages/assicurazione";
+import RecensioniPage from "@/pages/recensioni";
+import MetodiPagamentoPage from "@/pages/metodi-pagamento";
+import SicurezzaPagamentiPage from "@/pages/sicurezza-pagamenti";
+import FatturazionePage from "@/pages/fatturazione";
+import CommissioniGuadagniPage from "@/pages/commissioni-guadagni";
 import { InstallPrompt } from "@/components/install-prompt";
 
 function Router() {
@@ -70,6 +76,12 @@ function Router() {
       <Route path="/diventa-noleggiatore" component={DiventaNoleggiatorePage} />
       <Route path="/modifica-prenotazione" component={ModificaPrenotazionePage} />
       <Route path="/documenti" component={DocumentiPage} />
+      <Route path="/assicurazione" component={AssicurazionePage} />
+      <Route path="/recensioni" component={RecensioniPage} />
+      <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
+      <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
+      <Route path="/fatturazione" component={FatturazionePage} />
+      <Route path="/commissioni-guadagni" component={CommissioniGuadagniPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
       <Route path="/boats/:id/book" component={BoatBooking} />

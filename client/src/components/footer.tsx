@@ -44,9 +44,9 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Servizi</h4>
             <ul className="space-y-2 text-gray-400">
               <li><Link href="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
-              <li><Link href="/auth" className="hover:text-white transition-colors">Diventa host</Link></li>
-              <li><a href="#" className="hover:text-white transition-colors">Assicurazione</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Recensioni</a></li>
+              <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa host</Link></li>
+              <li><Link href="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
+              <li><Link href="/recensioni" className="hover:text-white transition-colors">Recensioni</Link></li>
             </ul>
           </div>
 
@@ -54,10 +54,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Metodi di pagamento accettati</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Sicurezza dei pagamenti</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Rimborsi e restituzioni</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Fatturazione</a></li>
+              <li><Link href="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento accettati</Link></li>
+              <li><Link href="/sicurezza-pagamenti" className="hover:text-white transition-colors">Sicurezza dei pagamenti</Link></li>
+              <li><Link href="/rimborsi" className="hover:text-white transition-colors">Rimborsi e restituzioni</Link></li>
+              <li><Link href="/fatturazione" className="hover:text-white transition-colors">Fatturazione</Link></li>
             </ul>
           </div>
 
@@ -65,10 +65,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Per i noleggiatori</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><a href="#" className="hover:text-white transition-colors">Come inserire la tua barca</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Gestione delle prenotazioni</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Commissioni e guadagni</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Assistenza proprietari</a></li>
+              <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Come inserire la tua barca</Link></li>
+              <li><Link href="/owner-dashboard" className="hover:text-white transition-colors">Gestione delle prenotazioni</Link></li>
+              <li><Link href="/commissioni-guadagni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
+              <li><Link href="/aiuto" className="hover:text-white transition-colors">Assistenza proprietari</Link></li>
             </ul>
           </div>
 
@@ -79,7 +79,7 @@ export function Footer() {
               <li><Link href="/aiuto" className="hover:text-white transition-colors">Centro assistenza</Link></li>
               <li><Link href="/contatti" className="hover:text-white transition-colors">Contattaci</Link></li>
               <li><Link href="/condizioni-servizio" className="hover:text-white transition-colors">Termini e condizioni</Link></li>
-              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>

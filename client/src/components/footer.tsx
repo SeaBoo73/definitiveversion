@@ -15,7 +15,7 @@ export function Footer() {
                 alt="SeaGO" 
                 className="h-8 w-8 mr-1"
               />
-              <h3 className="text-2xl font-bold text-ocean-blue leading-none">
+              <h3 className="text-2xl font-bold text-ocean-blue leading-none -mb-1">
                 SeaGO
               </h3>
             </div>

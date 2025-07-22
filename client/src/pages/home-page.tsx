@@ -200,7 +200,7 @@ export default function HomePage() {
             <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100" asChild>
               <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white border-2 text-white hover:bg-white hover:text-ocean-blue font-semibold shadow-lg" asChild>
+            <Button size="lg" className="bg-white text-ocean-blue hover:bg-gray-100 font-semibold shadow-lg border-2 border-white" asChild>
               <Link href="/diventa-host">Scopri di più</Link>
             </Button>
           </div>

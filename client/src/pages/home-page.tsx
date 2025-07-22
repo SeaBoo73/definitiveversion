@@ -16,38 +16,21 @@ import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
 
 export default function HomePage() {
-  console.log("HomePage component rendering...");
-  
-  const { data: boats = [], isLoading, error } = useQuery<Boat[]>({
+  const { data: boats = [], isLoading } = useQuery<Boat[]>({
     queryKey: ["/api/boats"],
   });
-
-  console.log("Boats data:", boats?.length || 0, "Loading:", isLoading, "Error:", error);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
 
-  // Filtra barche per categoria e porto con error handling
-  let filteredBoats = [];
-  let featuredBoats = [];
-  
-  try {
-    filteredBoats = boats.filter(boat => {
-      if (!boat) return false;
-      if (selectedCategory && boat.type !== selectedCategory) return false;
-      if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
-      return true;
-    });
-    
-    featuredBoats = filteredBoats.slice(0, 8);
-    console.log("Filtered boats:", filteredBoats.length, "Featured:", featuredBoats.length);
-  } catch (filterError) {
-    console.error("Error filtering boats:", filterError);
-    filteredBoats = [];
-    featuredBoats = [];
-  }
+  // Filtra barche per categoria e porto
+  const filteredBoats = boats.filter(boat => {
+    if (selectedCategory && boat.type !== selectedCategory) return false;
+    if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
+    return true;
+  });
 
-  console.log("About to render homepage JSX...");
+  const featuredBoats = filteredBoats.slice(0, 8);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
@@ -87,201 +70,90 @@ export default function HomePage() {
         selectedCategory={selectedCategory}
       />
 
-      {/* MAPPA INTERATTIVA DEL LAZIO - IMPLEMENTAZIONE DIRETTA SENZA COMPONENTI ESTERNI */}
-      <div style={{
-        padding: '64px 20px',
-        background: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
-        minHeight: '600px'
-      }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <h2 style={{
-              fontSize: '2rem',
-              fontWeight: 'bold',
-              color: '#1f2937',
-              marginBottom: '16px'
-            }}>
-              🗺️ Mappa Interattiva del Lazio
-            </h2>
-            <p style={{
-              fontSize: '1.125rem',
-              color: '#6b7280',
-              maxWidth: '600px',
-              margin: '0 auto'
-            }}>
-              Esplora i porti principali del Lazio e trova le imbarcazioni disponibili con coordinate GPS precise
-            </p>
-          </div>
-          
-          <div style={{
-            background: 'white',
-            borderRadius: '24px',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-            padding: '40px',
-            marginBottom: '32px'
-          }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '24px'
-            }}>
-              <div style={{
-                background: '#dbeafe',
-                border: '2px solid #3b82f6',
-                borderRadius: '16px',
-                padding: '24px',
-                textAlign: 'center',
-                transition: 'transform 0.2s ease',
-                cursor: 'pointer'
-              }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#1f2937' }}>
-                  Porto di Civitavecchia
-                </h3>
-                <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    📍 42.0942°N, 11.7939°E
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    ⚓ Porto principale del Lazio
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    🚢 Collegamenti internazionali
-                  </p>
-                </div>
-                <div style={{
-                  background: '#3b82f6',
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '9999px',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  display: 'inline-block',
-                  marginBottom: '12px'
-                }}>
-                  4 barche disponibili
-                </div>
-                <p style={{ color: '#16a34a', fontWeight: 'bold', fontSize: '1.125rem' }}>
-                  €280 - €1200/giorno
-                </p>
-              </div>
-
-              <div style={{
-                background: '#dcfce7',
-                border: '2px solid #16a34a',
-                borderRadius: '16px',
-                padding: '24px',
-                textAlign: 'center',
-                transition: 'transform 0.2s ease',
-                cursor: 'pointer'
-              }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#1f2937' }}>
-                  Porto di Gaeta
-                </h3>
-                <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    📍 41.2058°N, 13.5696°E
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    ⚓ Località turistica rinomata
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    🏖️ Spiagge cristalline
-                  </p>
-                </div>
-                <div style={{
-                  background: '#16a34a',
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '9999px',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  display: 'inline-block',
-                  marginBottom: '12px'
-                }}>
-                  2 barche disponibili
-                </div>
-                <p style={{ color: '#16a34a', fontWeight: 'bold', fontSize: '1.125rem' }}>
-                  €280 - €850/giorno
-                </p>
-              </div>
-
-              <div style={{
-                background: '#fed7aa',
-                border: '2px solid #ea580c',
-                borderRadius: '16px',
-                padding: '24px',
-                textAlign: 'center',
-                transition: 'transform 0.2s ease',
-                cursor: 'pointer'
-              }}>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '12px', color: '#1f2937' }}>
-                  Porto di Ponza
-                </h3>
-                <div style={{ marginBottom: '16px' }}>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    📍 40.8992°N, 12.9619°E
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    🏝️ Isola paradisiaca
-                  </p>
-                  <p style={{ fontSize: '0.875rem', color: '#6b7280', margin: '4px 0' }}>
-                    🐟 Snorkeling e immersioni
-                  </p>
-                </div>
-                <div style={{
-                  background: '#ea580c',
-                  color: 'white',
-                  padding: '8px 16px',
-                  borderRadius: '9999px',
-                  fontSize: '0.875rem',
-                  fontWeight: '600',
-                  display: 'inline-block',
-                  marginBottom: '12px'
-                }}>
-                  2 barche disponibili
-                </div>
-                <p style={{ color: '#16a34a', fontWeight: 'bold', fontSize: '1.125rem' }}>
-                  €550 - €950/giorno
-                </p>
-              </div>
+      {/* SEZIONE MAPPA INTERATTIVA INTEGRATA NELLA HOMEPAGE */}
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-sky-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">🗺️ Mappa Interattiva del Lazio</h2>
+            <p className="text-lg text-gray-600">Esplora i porti principali con coordinate GPS precise</p>
+            <div className="mt-4">
+              <p className="text-sm text-blue-600 font-medium">✨ Adesso visibile direttamente sulla homepage!</p>
             </div>
           </div>
 
-          <div style={{
-            background: 'white',
-            borderRadius: '16px',
-            padding: '24px',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-            textAlign: 'center'
-          }}>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '8px' }}>
-              🗺️ Coordinate GPS Precise
-            </h3>
-            <p style={{ color: '#6b7280', marginBottom: '16px' }}>
-              Tutti i porti sono georeferenziati con coordinate GPS precise per la navigazione
-            </p>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px',
-              textAlign: 'left'
-            }}>
-              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
-                <p style={{ fontWeight: '600', color: '#1f2937' }}>6 Porti Principali</p>
-                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Tutti i porti del Lazio</p>
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-2">Porto di Civitavecchia</h3>
+                <p className="text-sm text-gray-600 mb-1">📍 42.0942°N, 11.7939°E</p>
+                <p className="text-sm text-gray-600 mb-2">⚓ Porto principale del Lazio</p>
+                <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-sm mb-3">4 barche disponibili</span>
+                <p className="text-green-600 font-medium">€280 - €1200/giorno</p>
               </div>
-              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
-                <p style={{ fontWeight: '600', color: '#1f2937' }}>15 Barche Totali</p>
-                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Disponibili ora</p>
+              
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-2">Porto di Gaeta</h3>
+                <p className="text-sm text-gray-600 mb-1">📍 41.2058°N, 13.5696°E</p>
+                <p className="text-sm text-gray-600 mb-2">⚓ Località turistica rinomata</p>
+                <span className="inline-block bg-green-600 text-white px-3 py-1 rounded-full text-sm mb-3">2 barche disponibili</span>
+                <p className="text-green-600 font-medium">€280 - €850/giorno</p>
               </div>
-              <div style={{ background: '#f8fafc', padding: '12px', borderRadius: '8px' }}>
-                <p style={{ fontWeight: '600', color: '#1f2937' }}>Range €200-€1200</p>
-                <p style={{ fontSize: '0.875rem', color: '#6b7280' }}>Prezzi al giorno</p>
+              
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-2">Porto di Ponza</h3>
+                <p className="text-sm text-gray-600 mb-1">📍 40.8992°N, 12.9619°E</p>
+                <p className="text-sm text-gray-600 mb-2">🏝️ Isola paradisiaca</p>
+                <span className="inline-block bg-orange-600 text-white px-3 py-1 rounded-full text-sm mb-3">2 barche disponibili</span>
+                <p className="text-green-600 font-medium">€550 - €950/giorno</p>
+              </div>
+              
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-2">Porto di Terracina</h3>
+                <p className="text-sm text-gray-600 mb-1">📍 41.2857°N, 13.2443°E</p>
+                <p className="text-sm text-gray-600 mb-2">🏛️ Costa laziale storica</p>
+                <span className="inline-block bg-purple-600 text-white px-3 py-1 rounded-full text-sm mb-3">2 barche disponibili</span>
+                <p className="text-green-600 font-medium">€320 - €580/giorno</p>
+              </div>
+              
+              <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-2">Marina di Anzio</h3>
+                <p className="text-sm text-gray-600 mb-1">📍 41.4471°N, 12.6221°E</p>
+                <p className="text-sm text-gray-600 mb-2">🏖️ Porto turistico moderno</p>
+                <span className="inline-block bg-indigo-600 text-white px-3 py-1 rounded-full text-sm mb-3">3 barche disponibili</span>
+                <p className="text-green-600 font-medium">€200 - €750/giorno</p>
+              </div>
+              
+              <div className="bg-pink-50 border border-pink-200 rounded-lg p-6 text-center hover:shadow-md transition-shadow">
+                <h3 className="font-bold text-gray-900 mb-2">Porto di Formia</h3>
+                <p className="text-sm text-gray-600 mb-1">📍 41.2565°N, 13.6058°E</p>
+                <p className="text-sm text-gray-600 mb-2">🌊 Golfo di Gaeta</p>
+                <span className="inline-block bg-pink-600 text-white px-3 py-1 rounded-full text-sm mb-3">2 barche disponibili</span>
+                <p className="text-green-600 font-medium">€300 - €600/giorno</p>
+              </div>
+            </div>
+
+            <div className="mt-8 bg-gray-50 rounded-lg p-6">
+              <div className="text-center">
+                <h4 className="font-bold text-gray-900 mb-4">📊 Statistiche Mappa del Lazio</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white p-4 rounded-lg">
+                    <p className="text-2xl font-bold text-blue-600">6</p>
+                    <p className="text-sm text-gray-600">Porti Principali</p>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg">
+                    <p className="text-2xl font-bold text-green-600">15</p>
+                    <p className="text-sm text-gray-600">Barche Totali</p>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg">
+                    <p className="text-2xl font-bold text-orange-600">€200-€1200</p>
+                    <p className="text-sm text-gray-600">Range Prezzi/Giorno</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
 
 

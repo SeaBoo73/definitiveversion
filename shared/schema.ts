@@ -335,12 +335,85 @@ export const promotions = pgTable("promotions", {
 export const analytics = pgTable("analytics", {
   id: serial("id").primaryKey(),
   ownerId: integer("owner_id").references(() => users.id).notNull(),
+  boatId: integer("boat_id").references(() => boats.id),
   date: text("date").notNull(),
+  period: text("period").default("daily"), // "daily", "weekly", "monthly"
   views: integer("views").default(0),
   bookings: integer("bookings").default(0),
   revenue: decimal("revenue", { precision: 10, scale: 2 }).default("0"),
+  conversionRate: decimal("conversion_rate", { precision: 5, scale: 2 }).default("0.00"),
   averageRating: decimal("average_rating", { precision: 3, scale: 2 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Emergency System
+export const emergencies = pgTable("emergencies", {
+  id: serial("id").primaryKey(),
+  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  reportedBy: integer("reported_by").references(() => users.id).notNull(),
+  type: text("type").notNull(), // "mechanical", "medical", "weather", "accident"
+  severity: text("severity").notNull(), // "low", "medium", "high", "critical"
+  description: text("description").notNull(),
+  location: text("location"), // GPS coordinates or address
+  status: text("status").default("open"), // "open", "in_progress", "resolved", "closed"
+  assignedTo: integer("assigned_to").references(() => users.id),
+  resolution: text("resolution"),
+  resolvedAt: timestamp("resolved_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Weather Integration
+export const weatherData = pgTable("weather_data", {
+  id: serial("id").primaryKey(),
+  location: text("location").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  date: timestamp("date").notNull(),
+  temperature: decimal("temperature", { precision: 4, scale: 1 }),
+  windSpeed: decimal("wind_speed", { precision: 4, scale: 1 }),
+  windDirection: integer("wind_direction"),
+  waveHeight: decimal("wave_height", { precision: 4, scale: 2 }),
+  visibility: decimal("visibility", { precision: 4, scale: 1 }),
+  weatherCondition: text("weather_condition"),
+  seaCondition: text("sea_condition"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Dynamic Pricing
+export const dynamicPricing = pgTable("dynamic_pricing", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  seasonType: text("season_type").notNull(), // "high", "medium", "low"
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  priceMultiplier: decimal("price_multiplier", { precision: 4, scale: 2 }).default("1.00"),
+  minimumDays: integer("minimum_days").default(1),
+  discountPercentage: decimal("discount_percentage", { precision: 5, scale: 2 }).default("0.00"),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Boat Features
+export const boatFeatures = pgTable("boat_features", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  category: text("category").notNull(), // "safety", "comfort", "navigation", "entertainment"
+  feature: text("feature").notNull(),
+  description: text("description"),
+  available: boolean("available").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Availability Calendar
+export const availability = pgTable("availability", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  date: timestamp("date").notNull(),
+  available: boolean("available").default(true),
+  price: decimal("price", { precision: 8, scale: 2 }),
+  minimumDays: integer("minimum_days").default(1),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const aiInteractions = pgTable("ai_interactions", {
@@ -385,3 +458,40 @@ export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type InsertPromotion = z.infer<typeof insertPromotionSchema>;
 export type InsertAnalytics = z.infer<typeof insertAnalyticsSchema>;
 export type InsertAiInteraction = z.infer<typeof insertAiInteractionSchema>;
+
+// New insert schemas for advanced tables
+export const insertEmergencySchema = createInsertSchema(emergencies).omit({
+  id: true,
+  status: true,
+  assignedTo: true,
+  resolution: true,
+  resolvedAt: true,
+  createdAt: true,
+});
+
+export const insertDynamicPricingSchema = createInsertSchema(dynamicPricing).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertBoatFeatureSchema = createInsertSchema(boatFeatures).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertAvailabilitySchema = createInsertSchema(availability).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Additional types for new tables
+export type Emergency = typeof emergencies.$inferSelect;
+export type WeatherData = typeof weatherData.$inferSelect;
+export type DynamicPricing = typeof dynamicPricing.$inferSelect;
+export type BoatFeature = typeof boatFeatures.$inferSelect;
+export type Availability = typeof availability.$inferSelect;
+
+export type InsertEmergency = z.infer<typeof insertEmergencySchema>;
+export type InsertDynamicPricing = z.infer<typeof insertDynamicPricingSchema>;
+export type InsertBoatFeature = z.infer<typeof insertBoatFeatureSchema>;
+export type InsertAvailability = z.infer<typeof insertAvailabilitySchema>;

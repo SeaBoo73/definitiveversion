@@ -48,6 +48,9 @@ import CommissioniGuadagniPage from "@/pages/commissioni-guadagni";
 import GestionePrenotazioniPage from "@/pages/gestione-prenotazioni";
 import AssistenzaProprietariPage from "@/pages/assistenza-proprietari";
 import { InstallPrompt } from "@/components/install-prompt";
+import AnalyticsPage from "@/pages/analytics-page";
+import EmergencyPage from "@/pages/emergency-page";
+import AdvancedSearchPage from "@/pages/advanced-search-page";
 
 function Router() {
   return (
@@ -86,6 +89,9 @@ function Router() {
       <Route path="/commissioni-guadagni" component={CommissioniGuadagniPage} />
       <Route path="/gestione-prenotazioni" component={GestionePrenotazioniPage} />
       <Route path="/assistenza-proprietari" component={AssistenzaProprietariPage} />
+      <Route path="/analytics" component={AnalyticsPage} />
+      <Route path="/emergency" component={EmergencyPage} />
+      <Route path="/ricerca-avanzata" component={AdvancedSearchPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
       <Route path="/boats/:id/book" component={BoatBooking} />

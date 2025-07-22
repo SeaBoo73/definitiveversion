@@ -1,83 +1,70 @@
 import { useState } from "react";
-import { Search, Filter, MapPin, Calendar, Users, Star, DollarSign } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { MapIntegration } from "@/components/map-integration";
-import { useQuery } from "@tanstack/react-query";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { Boat } from "@shared/schema";
-
-interface SearchFilters {
-  location: string;
-  startDate: string;
-  endDate: string;
-  guests: number;
-  boatType: string;
-  priceRange: [number, number];
-  features: string[];
-  rating: number;
-  skipperRequired: boolean;
-  instantBook: boolean;
-}
+import { Search, Filter, MapPin, Calendar as CalendarIcon, Users, Anchor, Wifi, Shield, Music } from "lucide-react";
+import { format } from "date-fns";
 
 export function AdvancedSearch() {
-  const [showMap, setShowMap] = useState(false);
-  const [filters, setFilters] = useState<SearchFilters>({
+  const [searchParams, setSearchParams] = useState({
+    type: "",
     location: "",
-    startDate: "",
-    endDate: "",
-    guests: 2,
-    boatType: "",
-    priceRange: [50, 1000],
-    features: [],
-    rating: 0,
-    skipperRequired: false,
-    instantBook: false
+    startDate: undefined as Date | undefined,
+    endDate: undefined as Date | undefined,
+    maxPersons: "",
+    features: [] as string[],
+    priceRange: [0, 1000],
+    equipment: [] as string[]
   });
 
-  const { data: boats = [], isLoading } = useQuery({
-    queryKey: ['/api/boats', filters],
-    queryFn: async () => {
-      const params = new URLSearchParams();
-      if (filters.location) params.append('location', filters.location);
-      if (filters.startDate) params.append('startDate', filters.startDate);
-      if (filters.endDate) params.append('endDate', filters.endDate);
-      if (filters.boatType) params.append('type', filters.boatType);
-      if (filters.guests) params.append('maxPersons', filters.guests.toString());
-      if (filters.skipperRequired) params.append('skipperRequired', 'true');
-      
-      const response = await fetch(`/api/boats?${params}`);
-      return await response.json();
+  const [searchResults, setSearchResults] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
+  
+  const { toast } = useToast();
+
+  const searchMutation = useMutation({
+    mutationFn: async (params: any) => {
+      const res = await apiRequest('POST', '/api/boats/search/advanced', params);
+      return await res.json();
+    },
+    onSuccess: (data: any) => {
+      setSearchResults(data);
+      toast({
+        title: "Ricerca completata",
+        description: `Trovate ${data.boats.length} imbarcazioni corrispondenti ai tuoi criteri`,
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Errore nella ricerca",
+        description: "Impossibile completare la ricerca. Riprova.",
+        variant: "destructive",
+      });
     }
   });
 
-  const boatTypes = [
-    "yacht", "gommone", "barche-senza-patente", "catamarano", 
-    "jetski", "sailboat", "charter", "houseboat"
-  ];
-
-  const features = [
-    "WiFi", "Aria Condizionata", "Cucina", "Bagno", "Doccia",
-    "Frigorifero", "Stereo", "GPS", "Tender", "Snorkeling"
-  ];
-
-  const italianLocations = [
-    "Roma", "Napoli", "Palermo", "Venezia", "Genova", "Bari",
-    "La Spezia", "Olbia", "Cagliari", "Amalfi", "Cinque Terre",
-    "Portofino", "Capri", "Ischia", "Taormina", "Lipari"
-  ];
-
-  const updateFilters = (key: keyof SearchFilters, value: any) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const handleSearch = () => {
+    const params = {
+      ...searchParams,
+      startDate: searchParams.startDate?.toISOString(),
+      endDate: searchParams.endDate?.toISOString(),
+      maxPersons: searchParams.maxPersons ? parseInt(searchParams.maxPersons) : undefined
+    };
+    searchMutation.mutate(params);
   };
 
   const toggleFeature = (feature: string) => {
-    setFilters(prev => ({
+    setSearchParams(prev => ({
       ...prev,
       features: prev.features.includes(feature)
         ? prev.features.filter(f => f !== feature)
@@ -85,293 +72,341 @@ export function AdvancedSearch() {
     }));
   };
 
-  const clearFilters = () => {
-    setFilters({
-      location: "",
-      startDate: "",
-      endDate: "",
-      guests: 2,
-      boatType: "",
-      priceRange: [50, 1000],
-      features: [],
-      rating: 0,
-      skipperRequired: false,
-      instantBook: false
-    });
+  const toggleEquipment = (equipment: string) => {
+    setSearchParams(prev => ({
+      ...prev,
+      equipment: prev.equipment.includes(equipment)
+        ? prev.equipment.filter(e => e !== equipment)
+        : [...prev.equipment, equipment]
+    }));
   };
+
+  const availableFeatures = [
+    { id: "gps", label: "GPS Navigation", icon: MapPin },
+    { id: "wifi", label: "WiFi", icon: Wifi },
+    { id: "music", label: "Impianto Audio", icon: Music },
+    { id: "fridge", label: "Frigorifero", icon: Shield },
+    { id: "shower", label: "Doccia", icon: Shield },
+    { id: "toilet", label: "WC", icon: Shield },
+    { id: "awning", label: "Tendalino", icon: Shield },
+    { id: "snorkel", label: "Attrezzatura Snorkeling", icon: Shield }
+  ];
+
+  const safetyEquipment = [
+    "Giubbotti Salvagente",
+    "Estintore",
+    "Kit Primo Soccorso",
+    "Razzi di Segnalazione",
+    "Radio VHF",
+    "Ancora di Emergenza",
+    "Boetta Salvagente",
+    "Scaletta di Risalita"
+  ];
+
+  const boatTypes = [
+    { value: "gommone", label: "Gommone" },
+    { value: "barche-senza-patente", label: "Barche senza Patente" },
+    { value: "yacht", label: "Yacht" },
+    { value: "catamarano", label: "Catamarano" },
+    { value: "jetski", label: "Moto d'Acqua" },
+    { value: "sailboat", label: "Barca a Vela" },
+    { value: "charter", label: "Charter" },
+    { value: "houseboat", label: "Casa Galleggiante" }
+  ];
 
   return (
     <div className="space-y-6">
       {/* Search Header */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
-              Ricerca Avanzata Barche
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant={showMap ? "default" : "outline"}
-                size="sm"
-                onClick={() => setShowMap(!showMap)}
-                className="flex items-center gap-1"
-              >
-                <MapPin className="h-4 w-4" />
-                {showMap ? "Lista" : "Mappa"}
-              </Button>
-              <Button variant="outline" size="sm" onClick={clearFilters}>
-                Resetta Filtri
-              </Button>
-            </div>
+          <CardTitle className="flex items-center space-x-2">
+            <Search className="h-5 w-5" />
+            <span>Ricerca Avanzata Imbarcazioni</span>
           </CardTitle>
+          <CardDescription>
+            Trova l'imbarcazione perfetta con filtri dettagliati
+          </CardDescription>
         </CardHeader>
-
-        <CardContent className="space-y-6">
-          {/* Primary Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Boat Type */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Destinazione</label>
-              <Select value={filters.location} onValueChange={(value) => updateFilters('location', value)}>
+              <Label>Tipo di Imbarcazione</Label>
+              <Select value={searchParams.type} onValueChange={(value) => 
+                setSearchParams(prev => ({ ...prev, type: value }))
+              }>
                 <SelectTrigger>
-                  <SelectValue placeholder="Scegli destinazione" />
+                  <SelectValue placeholder="Seleziona tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  {italianLocations.map(location => (
-                    <SelectItem key={location} value={location}>{location}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Data Inizio</label>
-              <Input
-                type="date"
-                value={filters.startDate}
-                onChange={(e) => updateFilters('startDate', e.target.value)}
-                min={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Data Fine</label>
-              <Input
-                type="date"
-                value={filters.endDate}
-                onChange={(e) => updateFilters('endDate', e.target.value)}
-                min={filters.startDate || new Date().toISOString().split('T')[0]}
-              />
-            </div>
-
-            <div>
-              <label className="text-sm font-medium mb-2 block">Ospiti</label>
-              <Select value={filters.guests.toString()} onValueChange={(value) => updateFilters('guests', parseInt(value))}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {[1,2,3,4,5,6,7,8,9,10,12,15,20].map(num => (
-                    <SelectItem key={num} value={num.toString()}>{num} ospiti</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Secondary Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Tipo Barca</label>
-              <Select value={filters.boatType} onValueChange={(value) => updateFilters('boatType', value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Tutti i tipi" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">Tutti i tipi</SelectItem>
                   {boatTypes.map(type => (
-                    <SelectItem key={type} value={type}>
-                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
+            {/* Location */}
             <div>
-              <label className="text-sm font-medium mb-2 block">
-                Prezzo (€{filters.priceRange[0]} - €{filters.priceRange[1]}/giorno)
-              </label>
-              <Slider
-                value={filters.priceRange}
-                onValueChange={(value) => updateFilters('priceRange', value)}
-                max={2000}
-                min={50}
-                step={50}
-                className="mt-4"
+              <Label>Località</Label>
+              <Input
+                placeholder="Es. Civitavecchia, Gaeta..."
+                value={searchParams.location}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, location: e.target.value }))}
               />
             </div>
 
+            {/* Start Date */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Valutazione Minima</label>
-              <div className="flex gap-1 mt-2">
-                {[1,2,3,4,5].map(star => (
-                  <button
-                    key={star}
-                    onClick={() => updateFilters('rating', star)}
-                    className="p-1"
-                  >
-                    <Star 
-                      className={`h-5 w-5 ${
-                        star <= filters.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
-                      }`} 
-                    />
-                  </button>
-                ))}
-              </div>
+              <Label>Data Inizio</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start text-left">
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {searchParams.startDate ? format(searchParams.startDate, "dd/MM/yyyy") : "Seleziona data"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={searchParams.startDate}
+                    onSelect={(date) => setSearchParams(prev => ({ ...prev, startDate: date }))}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            {/* End Date */}
+            <div>
+              <Label>Data Fine</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="w-full justify-start text-left">
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {searchParams.endDate ? format(searchParams.endDate, "dd/MM/yyyy") : "Seleziona data"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={searchParams.endDate}
+                    onSelect={(date) => setSearchParams(prev => ({ ...prev, endDate: date }))}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
-          {/* Features */}
-          <div>
-            <label className="text-sm font-medium mb-3 block">Caratteristiche</label>
-            <div className="flex flex-wrap gap-2">
-              {features.map(feature => (
-                <Badge
-                  key={feature}
-                  variant={filters.features.includes(feature) ? "default" : "outline"}
-                  className="cursor-pointer hover:bg-blue-100"
-                  onClick={() => toggleFeature(feature)}
-                >
-                  {feature}
-                </Badge>
-              ))}
-            </div>
-          </div>
-
-          {/* Checkboxes */}
-          <div className="flex gap-6">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="skipper"
-                checked={filters.skipperRequired}
-                onCheckedChange={(checked) => updateFilters('skipperRequired', checked)}
+          <div className="mt-4 flex items-center space-x-4">
+            {/* Max Persons */}
+            <div className="flex-1">
+              <Label>Numero Persone</Label>
+              <Input
+                type="number"
+                placeholder="Es. 8"
+                value={searchParams.maxPersons}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, maxPersons: e.target.value }))}
               />
-              <label htmlFor="skipper" className="text-sm font-medium">
-                Skipper Richiesto
-              </label>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="instant"
-                checked={filters.instantBook}
-                onCheckedChange={(checked) => updateFilters('instantBook', checked)}
-              />
-              <label htmlFor="instant" className="text-sm font-medium">
-                Prenotazione Istantanea
-              </label>
-            </div>
+            {/* Toggle Advanced Filters */}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setShowFilters(!showFilters)}
+              className="mt-6"
+            >
+              <Filter className="mr-2 h-4 w-4" />
+              Filtri Avanzati
+            </Button>
+
+            {/* Search Button */}
+            <Button 
+              onClick={handleSearch}
+              disabled={searchMutation.isPending}
+              className="mt-6"
+            >
+              {searchMutation.isPending ? "Ricerca..." : "Cerca"}
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Results */}
-      {showMap ? (
-        <MapIntegration boats={boats} />
-      ) : (
-        <div className="space-y-4">
-          {/* Results Header */}
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-medium">
-              {boats.length} barche trovate
-            </h3>
-            <Select defaultValue="relevance">
-              <SelectTrigger className="w-48">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="relevance">Più Rilevanti</SelectItem>
-                <SelectItem value="price-low">Prezzo: Basso → Alto</SelectItem>
-                <SelectItem value="price-high">Prezzo: Alto → Basso</SelectItem>
-                <SelectItem value="rating">Valutazione</SelectItem>
-                <SelectItem value="newest">Più Recenti</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Boat Grid */}
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1,2,3,4,5,6].map(i => (
-                <Card key={i} className="animate-pulse">
-                  <div className="h-48 bg-gray-200 rounded-t-lg" />
-                  <CardContent className="p-4 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
-                    <div className="h-3 bg-gray-200 rounded w-1/2" />
-                    <div className="h-4 bg-gray-200 rounded w-1/4" />
-                  </CardContent>
-                </Card>
-              ))}
+      {/* Advanced Filters */}
+      {showFilters && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Filtri Avanzati</CardTitle>
+            <CardDescription>Personalizza la tua ricerca con criteri specifici</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Price Range */}
+            <div>
+              <Label>Fascia di Prezzo (€/giorno)</Label>
+              <div className="px-3 py-2">
+                <Slider
+                  value={searchParams.priceRange}
+                  onValueChange={(value) => setSearchParams(prev => ({ ...prev, priceRange: value }))}
+                  max={1000}
+                  min={0}
+                  step={10}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                  <span>€{searchParams.priceRange[0]}</span>
+                  <span>€{searchParams.priceRange[1]}</span>
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {boats.map((boat: Boat) => (
-                <Card key={boat.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-                  <div className="relative">
-                    <div className="h-48 bg-gradient-to-br from-blue-400 to-blue-600 rounded-t-lg" />
-                    <Badge className="absolute top-2 left-2 bg-white text-blue-600">
-                      {boat.type}
-                    </Badge>
-                    {boat.skipperRequired && (
-                      <Badge className="absolute top-2 right-2 bg-green-500">
-                        Con Skipper
-                      </Badge>
-                    )}
+
+            {/* Features */}
+            <div>
+              <Label>Comfort e Servizi</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+                {availableFeatures.map(feature => (
+                  <div key={feature.id} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={feature.id}
+                      checked={searchParams.features.includes(feature.id)}
+                      onCheckedChange={() => toggleFeature(feature.id)}
+                    />
+                    <Label htmlFor={feature.id} className="text-sm flex items-center">
+                      <feature.icon className="w-3 h-3 mr-1" />
+                      {feature.label}
+                    </Label>
                   </div>
-                  
-                  <CardContent className="p-4">
-                    <h4 className="font-medium text-lg mb-1">{boat.name}</h4>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <MapPin className="h-3 w-3" />
-                      <span>{boat.port}</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 mb-3">
-                      <Users className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">{boat.maxPersons} persone</span>
-                      <div className="flex items-center gap-1 ml-auto">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm">4.6</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-lg font-bold">€{boat.pricePerDay}</span>
-                        <span className="text-sm text-muted-foreground">/giorno</span>
-                      </div>
-                      <Button size="sm">Dettagli</Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Safety Equipment */}
+            <div>
+              <Label>Equipaggiamento di Sicurezza</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-2">
+                {safetyEquipment.map(equipment => (
+                  <div key={equipment} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={equipment}
+                      checked={searchParams.equipment.includes(equipment)}
+                      onCheckedChange={() => toggleEquipment(equipment)}
+                    />
+                    <Label htmlFor={equipment} className="text-sm">
+                      {equipment}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Active Filters Summary */}
+      {(searchParams.features.length > 0 || searchParams.equipment.length > 0 || searchParams.type) && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Filtri Attivi</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {searchParams.type && (
+                <Badge variant="secondary">
+                  Tipo: {boatTypes.find(t => t.value === searchParams.type)?.label}
+                </Badge>
+              )}
+              {searchParams.location && (
+                <Badge variant="secondary">
+                  <MapPin className="w-3 h-3 mr-1" />
+                  {searchParams.location}
+                </Badge>
+              )}
+              {searchParams.maxPersons && (
+                <Badge variant="secondary">
+                  <Users className="w-3 h-3 mr-1" />
+                  {searchParams.maxPersons} persone
+                </Badge>
+              )}
+              {searchParams.features.map(feature => (
+                <Badge key={feature} variant="outline">
+                  {availableFeatures.find(f => f.id === feature)?.label}
+                </Badge>
+              ))}
+              {searchParams.equipment.map(equipment => (
+                <Badge key={equipment} variant="outline">
+                  <Shield className="w-3 h-3 mr-1" />
+                  {equipment}
+                </Badge>
               ))}
             </div>
-          )}
+          </CardContent>
+        </Card>
+      )}
 
-          {boats.length === 0 && !isLoading && (
-            <Card className="text-center py-12">
-              <CardContent>
-                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">Nessuna barca trovata</h3>
-                <p className="text-muted-foreground mb-4">
-                  Prova a modificare i filtri di ricerca per trovare più opzioni
+      {/* Search Results */}
+      {searchResults && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Risultati della Ricerca</CardTitle>
+            <CardDescription>
+              {(searchResults as any).total} imbarcazioni trovate
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {(searchResults as any).boats.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {(searchResults as any).boats.map((boat: any) => (
+                  <Card key={boat.id} className="hover:shadow-lg transition-shadow">
+                    <CardHeader>
+                      <CardTitle className="text-lg">{boat.name}</CardTitle>
+                      <CardDescription>
+                        <div className="flex items-center space-x-2">
+                          <Anchor className="w-4 h-4" />
+                          <span>{boat.type}</span>
+                          <span>•</span>
+                          <MapPin className="w-4 h-4" />
+                          <span>{boat.port}</span>
+                        </div>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Capacità:</span>
+                          <span className="font-medium">{boat.maxPersons} persone</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm text-gray-600">Prezzo:</span>
+                          <span className="font-bold text-green-600">€{boat.pricePerDay}/giorno</span>
+                        </div>
+                        {boat.length && (
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600">Lunghezza:</span>
+                            <span className="font-medium">{boat.length}m</span>
+                          </div>
+                        )}
+                        <Button className="w-full mt-4">
+                          Visualizza Dettagli
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8">
+                <Anchor className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-500">Nessuna imbarcazione trovata con questi criteri</p>
+                <p className="text-sm text-gray-400 mt-2">
+                  Prova a modificare i filtri di ricerca
                 </p>
-                <Button onClick={clearFilters}>Resetta Filtri</Button>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       )}
     </div>
   );

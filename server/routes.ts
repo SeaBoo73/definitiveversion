@@ -2,6 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import Stripe from "stripe";
 import { registerOwnerRoutes } from "./routes/owner-registration";
+import { registerAnalyticsRoutes } from "./routes/analytics";
+import { registerEmergencyRoutes } from "./routes/emergencies";
+import { registerFeatureRoutes } from "./routes/features";
 import { Server as SocketIOServer } from "socket.io";
 import { aiService } from "./ai-service";
 import { storage } from "./storage";
@@ -20,6 +23,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Register owner routes
   registerOwnerRoutes(app);
+  
+  // Register advanced feature routes
+  registerAnalyticsRoutes(app);
+  registerEmergencyRoutes(app);
+  registerFeatureRoutes(app);
+  
   // Setup authentication
   setupAuth(app);
 

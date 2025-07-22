@@ -1,9 +1,14 @@
 import { 
   users, boats, bookings, reviews, conversations, messages, favorites, discounts, userDiscounts, documents,
+  notifications, promotions, analytics, emergencies, dynamicPricing, boatFeatures, availability, weatherData,
   type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, 
   type Review, type InsertReview, type Conversation, type InsertConversation, 
   type Message, type InsertMessage, type Favorite, type Discount, type UserDiscount, 
-  type Document, type InsertDiscount, type InsertDocument 
+  type Document, type InsertDiscount, type InsertDocument,
+  type Notification, type InsertNotification, type Promotion, type InsertPromotion,
+  type Analytics, type InsertAnalytics, type Emergency, type InsertEmergency,
+  type DynamicPricing, type InsertDynamicPricing, type BoatFeature, type InsertBoatFeature,
+  type Availability, type InsertAvailability, type WeatherData
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc, asc, gte, lte, ilike, sql } from "drizzle-orm";
@@ -656,6 +661,121 @@ export class DatabaseStorage implements IStorage {
       .where(eq(documents.id, documentId))
       .returning();
     return updatedDocument;
+  }
+
+  // Advanced feature implementations
+
+  async createAnalyticsEntry(analyticsData: InsertAnalytics): Promise<Analytics> {
+    const [newAnalytics] = await db
+      .insert(analytics)
+      .values(analyticsData)
+      .returning();
+    return newAnalytics;
+  }
+
+  async createEmergency(emergency: InsertEmergency): Promise<Emergency> {
+    const [newEmergency] = await db
+      .insert(emergencies)
+      .values(emergency)
+      .returning();
+    return newEmergency;
+  }
+
+  async getEmergencies(bookingId?: number): Promise<Emergency[]> {
+    let query = db.select().from(emergencies);
+    if (bookingId) {
+      query = query.where(eq(emergencies.bookingId, bookingId));
+    }
+    return await query.orderBy(desc(emergencies.createdAt));
+  }
+
+  async updateEmergencyStatus(emergencyId: number, status: string, resolution?: string): Promise<Emergency> {
+    const updates: any = { status };
+    if (resolution) {
+      updates.resolution = resolution;
+      updates.resolvedAt = new Date();
+    }
+    
+    const [emergency] = await db
+      .update(emergencies)
+      .set(updates)
+      .where(eq(emergencies.id, emergencyId))
+      .returning();
+    return emergency;
+  }
+
+  async getDynamicPricing(boatId: number, date: Date): Promise<DynamicPricing | undefined> {
+    const [pricing] = await db
+      .select()
+      .from(dynamicPricing)
+      .where(
+        and(
+          eq(dynamicPricing.boatId, boatId),
+          lte(dynamicPricing.startDate, date),
+          gte(dynamicPricing.endDate, date),
+          eq(dynamicPricing.active, true)
+        )
+      );
+    return pricing;
+  }
+
+  async createDynamicPricing(pricing: InsertDynamicPricing): Promise<DynamicPricing> {
+    const [newPricing] = await db
+      .insert(dynamicPricing)
+      .values(pricing)
+      .returning();
+    return newPricing;
+  }
+
+  async getBoatFeatures(boatId: number): Promise<BoatFeature[]> {
+    return await db
+      .select()
+      .from(boatFeatures)
+      .where(eq(boatFeatures.boatId, boatId))
+      .orderBy(asc(boatFeatures.category));
+  }
+
+  async createBoatFeature(feature: InsertBoatFeature): Promise<BoatFeature> {
+    const [newFeature] = await db
+      .insert(boatFeatures)
+      .values(feature)
+      .returning();
+    return newFeature;
+  }
+
+  async getAvailability(boatId: number, startDate: Date, endDate: Date): Promise<Availability[]> {
+    return await db
+      .select()
+      .from(availability)
+      .where(
+        and(
+          eq(availability.boatId, boatId),
+          gte(availability.date, startDate),
+          lte(availability.date, endDate)
+        )
+      )
+      .orderBy(asc(availability.date));
+  }
+
+  async setAvailability(availabilityData: InsertAvailability): Promise<Availability> {
+    const [newAvailability] = await db
+      .insert(availability)
+      .values(availabilityData)
+      .returning();
+    return newAvailability;
+  }
+
+  async getWeatherData(location: string, date: Date): Promise<WeatherData | undefined> {
+    const [weather] = await db
+      .select()
+      .from(weatherData)
+      .where(
+        and(
+          eq(weatherData.location, location),
+          eq(weatherData.date, date)
+        )
+      );
+    return weather;
   }
 }
 

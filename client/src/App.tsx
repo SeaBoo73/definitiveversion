@@ -35,6 +35,7 @@ import PrivacyPolicyPage from "@/pages/privacy-policy";
 import PaymentSuccess from "@/pages/payment-success";
 import DiventaNoleggiatorePage from "@/pages/diventa-noleggiatore";
 import ModificaPrenotazionePage from "@/pages/modifica-prenotazione";
+import DocumentiPage from "@/pages/documenti";
 import { InstallPrompt } from "@/components/install-prompt";
 
 function Router() {
@@ -62,6 +63,7 @@ function Router() {
       <Route path="/contatti" component={ContattiPage} />
       <Route path="/diventa-noleggiatore" component={DiventaNoleggiatorePage} />
       <Route path="/modifica-prenotazione" component={ModificaPrenotazionePage} />
+      <Route path="/documenti" component={DocumentiPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />
       <Route path="/boats/:id/book" component={BoatBooking} />

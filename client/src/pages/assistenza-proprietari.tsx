@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Phone, MessageCircle, FileText, Clock, Users, Star } from "lucide-react";
+import { MessageCircle, FileText, Clock, Users, Star } from "lucide-react";
 
 export default function AssistenzaProprietariPage() {
   return (
@@ -17,22 +17,12 @@ export default function AssistenzaProprietariPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
-            <Phone className="h-12 w-12 text-ocean-blue mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-4">Hotline Dedicata</h3>
-            <p className="text-gray-600 mb-4">
-              Linea telefonica dedicata esclusivamente ai proprietari di imbarcazioni
-            </p>
-            <p className="text-2xl font-bold text-ocean-blue">+39 800 123 456</p>
-            <p className="text-sm text-gray-500 mt-2">24/7 - Sempre disponibile</p>
-          </div>
-
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
             <MessageCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-4">Assistente IA</h3>
             <p className="text-gray-600 mb-4">
-              Consigli intelligenti e supporto automatizzato con IA
+              Consigli intelligenti e supporto automatizzato con IA disponibile 24/7
             </p>
             <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors" onClick={() => window.location.href = '/ia'}>
               Avvia IA
@@ -96,7 +86,7 @@ export default function AssistenzaProprietariPage() {
               </div>
               
               <div className="text-center">
-                <Phone className="h-8 w-8 text-orange-500 mx-auto mb-2" />
+                <MessageCircle className="h-8 w-8 text-orange-500 mx-auto mb-2" />
                 <h3 className="font-semibold text-orange-600">URGENTE</h3>
                 <p className="text-2xl font-bold">&lt; 30 min</p>
                 <p className="text-sm text-gray-600">Problemi durante noleggi</p>
@@ -166,15 +156,10 @@ export default function AssistenzaProprietariPage() {
             <p className="text-lg mb-8">
               Non esitare a contattarci. Il nostro team di esperti è sempre pronto ad aiutarti.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <Phone className="h-8 w-8 mx-auto mb-2" />
-                <h3 className="font-semibold mb-2">Chiama Ora</h3>
-                <p>+39 800 123 456</p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                <h3 className="font-semibold mb-2">Chat Live</h3>
+                <h3 className="font-semibold mb-2">Assistente IA</h3>
                 <p>Disponibile 24/7</p>
               </div>
               <div>

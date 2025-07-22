@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { 
-  Phone, 
   Mail, 
   MapPin, 
   Clock, 
@@ -30,13 +29,6 @@ export default function ContattiPage() {
       action: "Avvia IA",
       onClick: handleChatClick,
       primary: true
-    },
-    {
-      icon: <Phone className="h-8 w-8 text-green-600" />,
-      title: "Telefono",
-      description: "Chiamaci per assistenza diretta",
-      details: "+39 02 1234 5678",
-      action: "Chiama Ora"
     },
     {
       icon: <Mail className="h-8 w-8 text-purple-600" />,
@@ -98,7 +90,7 @@ export default function ContattiPage() {
         </div>
 
         {/* Contact Methods */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {contactMethods.map((method, index) => (
             <Card key={index} className={`text-center hover:shadow-lg transition-shadow ${method.primary ? 'border-blue-500 bg-blue-50' : ''}`}>
               <CardContent className="pt-6">

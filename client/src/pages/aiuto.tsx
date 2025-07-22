@@ -6,7 +6,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { 
   MessageCircle, 
-  Phone, 
   Mail, 
   Clock,
   HelpCircle,
@@ -56,7 +55,7 @@ export default function AiutoPage() {
         </div>
 
         {/* Contatti Rapidi */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <Card className="text-center">
             <CardContent className="pt-6">
               <MessageCircle className="h-8 w-8 text-ocean-blue mx-auto mb-3" />
@@ -64,17 +63,6 @@ export default function AiutoPage() {
               <p className="text-sm text-gray-600 mb-4">Consigli intelligenti</p>
               <Button size="sm" className="bg-ocean-blue hover:bg-ocean-blue/90" asChild>
                 <Link href="/ia">Avvia IA</Link>
-              </Button>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardContent className="pt-6">
-              <Phone className="h-8 w-8 text-ocean-blue mx-auto mb-3" />
-              <h3 className="font-semibold mb-2">Telefono</h3>
-              <p className="text-sm text-gray-600 mb-4">Lun-Ven 9:00-18:00</p>
-              <Button size="sm" variant="outline">
-                +39 02 1234 5678
               </Button>
             </CardContent>
           </Card>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MessageCircle, Phone, ExternalLink } from "lucide-react";
+import { MessageCircle, ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function LiveChatButton() {
@@ -15,10 +15,7 @@ export function LiveChatButton() {
     setIsOpen(false);
   };
 
-  const handleCall = () => {
-    window.open('tel:+393512345678', '_self');
-    setIsOpen(false);
-  };
+
 
   const handleEmailSupport = () => {
     window.open('mailto:assistenza@seago.it?subject=Richiesta Assistenza SeaGO', '_self');
@@ -61,16 +58,7 @@ export function LiveChatButton() {
                 <ExternalLink className="h-3 w-3 ml-auto" />
               </Button>
 
-              {/* Chiamata */}
-              <Button
-                onClick={handleCall}
-                variant="outline"
-                className="w-full justify-start border-blue-500 text-blue-500 hover:bg-blue-50"
-              >
-                <Phone className="h-4 w-4 mr-2" />
-                Chiama ora
-                <ExternalLink className="h-3 w-3 ml-auto" />
-              </Button>
+
 
               {/* Email */}
               <Button

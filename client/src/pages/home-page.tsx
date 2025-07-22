@@ -5,7 +5,7 @@ import { SearchFilters } from "@/components/search-filters";
 import { AppDownloadBanner } from "@/components/app-download-banner";
 import { BoatCategories } from "@/components/boat-categories";
 import { LazioPorts } from "@/components/lazio-ports";
-import { GoogleMap } from "@/components/google-map";
+import { GoogleMap } from "@/components/google-map-clean";
 import { BoatCard } from "@/components/boat-card";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";

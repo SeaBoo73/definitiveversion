@@ -55,7 +55,7 @@ export default function HomePage() {
               Naviga verso l'avventura
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto font-medium">
-              Prenota barche, yacht e imbarcazioni uniche in tutta Italia. 
+              Prenota barche, yacht e imbarcazioni uniche in tutta Italia.<br/>
               Vivi il mare come mai prima d'ora.
             </p>
           </div>

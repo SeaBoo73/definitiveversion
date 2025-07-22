@@ -5,7 +5,6 @@ import { SearchFilters } from "@/components/search-filters";
 import { AppDownloadBanner } from "@/components/app-download-banner";
 import { BoatCategories } from "@/components/boat-categories";
 import { LazioPorts } from "@/components/lazio-ports";
-import { GoogleMap } from "@/components/google-map-clean";
 import { BoatCard } from "@/components/boat-card";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
@@ -14,7 +13,7 @@ import { Link } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
-import { LazioInteractiveMap } from "@/components/lazio-interactive-map";
+import { GoogleMapClean } from "@/components/google-map-clean";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -82,9 +81,14 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Mappa Interattiva del Lazio */}
+          {/* Google Maps Navigabile Mondiale */}
           <div className="mb-8">
-            <LazioInteractiveMap />
+            <GoogleMapClean 
+              height="600px"
+              initialZoom={7}
+              centerLat={41.8}
+              centerLng={12.5}
+            />
           </div>
 
           <div className="bg-white rounded-xl shadow-lg p-8">

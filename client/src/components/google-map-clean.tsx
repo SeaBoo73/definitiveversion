@@ -1,211 +1,275 @@
-import { useState, useEffect, useRef } from "react";
-import { Anchor, Star, Euro, Navigation, Filter, Search, MapPin } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useRef, useState } from 'react';
+
+// Porti reali del Lazio con coordinate GPS precise
+const realPorts = [
+  {
+    id: 'porto-badino',
+    name: 'Porto Badino',
+    lat: 41.27454,
+    lng: 13.05234,
+    boats: 3,
+    address: 'Via del Porto, Terracina LT',
+    description: 'Porto turistico moderno'
+  },
+  {
+    id: 'porto-ponza',
+    name: 'Porto di Ponza',
+    lat: 40.89919,
+    lng: 12.96194,
+    boats: 4,
+    address: 'Via Roma, Ponza LT',
+    description: 'Porto principale isola di Ponza'
+  },
+  {
+    id: 'porto-ercole',
+    name: 'Porto Ercole',
+    lat: 42.39236,
+    lng: 11.21139,
+    boats: 2,
+    address: 'Porto Ercole, Monte Argentario GR',
+    description: 'Porto storico toscano'
+  },
+  {
+    id: 'civitavecchia',
+    name: 'Porto di Civitavecchia',
+    lat: 42.09422,
+    lng: 11.79391,
+    boats: 5,
+    address: 'Molo Vespucci, Civitavecchia RM',
+    description: 'Porto principale del Lazio'
+  },
+  {
+    id: 'gaeta',
+    name: 'Porto di Gaeta',
+    lat: 41.20581,
+    lng: 13.56963,
+    boats: 3,
+    address: 'Via del Porto, Gaeta LT',
+    description: 'Porto turistico del golfo'
+  },
+  {
+    id: 'anzio',
+    name: 'Marina di Anzio',
+    lat: 41.44711,
+    lng: 12.62208,
+    boats: 4,
+    address: 'Porto Innocenziano, Anzio RM',
+    description: 'Marina moderna vicino Roma'
+  },
+  {
+    id: 'formia',
+    name: 'Porto di Formia',
+    lat: 41.25651,
+    lng: 13.60578,
+    boats: 2,
+    address: 'Molo Turistico, Formia LT',
+    description: 'Porto del golfo di Gaeta'
+  },
+  {
+    id: 'terracina',
+    name: 'Porto di Terracina',
+    lat: 41.28572,
+    lng: 13.24431,
+    boats: 3,
+    address: 'Via del Porto Canale, Terracina LT',
+    description: 'Porto storico del Lazio'
+  }
+];
+
+interface GoogleMapCleanProps {
+  height?: string;
+  initialZoom?: number;
+  centerLat?: number;
+  centerLng?: number;
+}
 
 declare global {
   interface Window {
     google: any;
-    initMap: () => void;
-    viewAllBoats: (portName: string) => void;
+    initGoogleMap: () => void;
   }
 }
 
-interface GoogleMapProps {
-  boats: any[];
-  onBoatSelect?: (boat: any) => void;
-  onPortSelect?: (port: string) => void;
-}
+export function GoogleMapClean({ 
+  height = "500px", 
+  initialZoom = 7,
+  centerLat = 41.8,
+  centerLng = 12.5
+}: GoogleMapCleanProps) {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [mapInstance, setMapInstance] = useState<any>(null);
+  const [selectedPort, setSelectedPort] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-// Database completo dei porti del Lazio con coordinate GPS precise
-const lazioPortsDatabase = {
-  "Porto di Civitavecchia": { 
-    lat: 42.0942, 
-    lng: 11.7939,
-    boats: [
-      { id: 1, name: "Azimut 55", price: 980, type: "Yacht", capacity: 12, rating: 4.8 },
-      { id: 2, name: "Jeanneau Sun Odyssey 439", price: 350, type: "Barca a vela", capacity: 8, rating: 4.6 },
-      { id: 3, name: "Zodiac Pro 650", price: 280, type: "Gommone", capacity: 6, rating: 4.4 },
-      { id: 4, name: "Ferretti 720", price: 1200, type: "Yacht", capacity: 14, rating: 4.9 },
-    ]
-  },
-  "Porto di Gaeta": { 
-    lat: 41.2058, 
-    lng: 13.5696,
-    boats: [
-      { id: 7, name: "Zodiac Pro 550", price: 280, type: "Gommone", capacity: 6, rating: 4.5 },
-      { id: 8, name: "Ferretti 681", price: 850, type: "Yacht", capacity: 10, rating: 4.7 },
-    ]
-  },
-  "Porto di Ponza": { 
-    lat: 40.8992, 
-    lng: 12.9619,
-    boats: [
-      { id: 12, name: "Pershing 62", price: 950, type: "Yacht", capacity: 10, rating: 4.9 },
-      { id: 13, name: "Lagoon 380", price: 550, type: "Catamarano", capacity: 8, rating: 4.7 },
-    ]
-  },
-  "Porto di Terracina": { 
-    lat: 41.2857, 
-    lng: 13.2443,
-    boats: [
-      { id: 22, name: "Princess V48", price: 580, type: "Yacht", capacity: 10, rating: 4.6 },
-      { id: 23, name: "Beneteau Oceanis 40.1", price: 320, type: "Barca a vela", capacity: 8, rating: 4.5 },
-    ]
-  },
-};
+  useEffect(() => {
+    const initMap = () => {
+      if (!mapRef.current || !window.google) return;
 
-export function GoogleMap({ boats, onBoatSelect, onPortSelect }: GoogleMapProps) {
-  console.log("GoogleMap component rendering...");
-  const [selectedPort, setSelectedPort] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterType, setFilterType] = useState("all");
+      try {
+        // Configura mappa con controlli completi come Google Maps
+        const map = new window.google.maps.Map(mapRef.current, {
+          zoom: initialZoom,
+          center: { lat: centerLat, lng: centerLng },
+          mapTypeId: window.google.maps.MapTypeId.ROADMAP,
+          gestureHandling: 'greedy', // Permette zoom e drag liberi
+          zoomControl: true,
+          mapTypeControl: true,
+          scaleControl: true,
+          streetViewControl: true,
+          rotateControl: true,
+          fullscreenControl: true,
+          restriction: undefined, // Nessuna restrizione = mondo intero navigabile
+        });
 
-  // Filtra porti in base ai criteri per la vista alternativa
-  const getFilteredPorts = () => {
-    return Object.entries(lazioPortsDatabase).filter(([portName, portData]) => {
-      if (searchTerm && !portName.toLowerCase().includes(searchTerm.toLowerCase())) {
-        return false;
+        setMapInstance(map);
+        setIsLoading(false);
+
+        // Crea InfoWindow riutilizzabile
+        const infoWindow = new window.google.maps.InfoWindow();
+
+        // Aggiungi marker per ogni porto reale
+        realPorts.forEach(port => {
+          const marker = new window.google.maps.Marker({
+            position: { lat: port.lat, lng: port.lng },
+            map: map,
+            title: port.name,
+            icon: {
+              url: "data:image/svg+xml;charset=UTF-8,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' fill='%232563eb'/%3e%3c/svg%3e",
+              scaledSize: new window.google.maps.Size(32, 32),
+              anchor: new window.google.maps.Point(16, 32)
+            }
+          });
+
+          // Click sul marker apre dettagli porto
+          marker.addListener('click', () => {
+            const content = `
+              <div style="max-width: 300px; padding: 12px;">
+                <h3 style="margin: 0 0 8px 0; color: #1f2937; font-size: 18px; font-weight: bold;">
+                  ⚓ ${port.name}
+                </h3>
+                <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">
+                  📍 ${port.address}
+                </p>
+                <p style="margin: 0 0 12px 0; color: #6b7280; font-size: 14px;">
+                  ${port.description}
+                </p>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="background: #3b82f6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold;">
+                    🚢 ${port.boats} barche disponibili
+                  </span>
+                  <button onclick="alert('Apertura lista barche per ${port.name}')" style="background: #059669; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                    Vedi barche
+                  </button>
+                </div>
+              </div>
+            `;
+            
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker);
+            setSelectedPort(port);
+          });
+        });
+
+        console.log('Google Maps caricata con successo!', realPorts.length, 'porti aggiunti');
+
+      } catch (error) {
+        console.error('Errore inizializzazione mappa:', error);
+        setIsLoading(false);
       }
+    };
 
-      if (filterType !== "all") {
-        const hasMatchingBoats = portData.boats.some(boat => 
-          boat.type.toLowerCase().includes(filterType.toLowerCase())
-        );
-        if (!hasMatchingBoats) return false;
-      }
+    // Carica Google Maps API se non è già caricata
+    if (!window.google) {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&callback=initGoogleMap&libraries=marker`;
+      script.async = true;
+      script.defer = true;
+      
+      window.initGoogleMap = initMap;
+      
+      script.addEventListener('load', () => {
+        console.log('Script Google Maps caricato');
+      });
+      
+      script.addEventListener('error', (e) => {
+        console.error('Errore caricamento script Google Maps:', e);
+        setIsLoading(false);
+      });
+      
+      document.head.appendChild(script);
+    } else {
+      initMap();
+    }
 
-      return true;
-    });
-  };
+    return () => {
+      // Cleanup se necessario
+    };
+  }, [initialZoom, centerLat, centerLng]);
+
+  if (isLoading) {
+    return (
+      <div 
+        style={{ height }}
+        className="bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center border-2 border-blue-300"
+      >
+        <div className="text-center">
+          <div className="text-4xl mb-4">🗺️</div>
+          <p className="text-blue-800 font-medium">Caricamento Google Maps...</p>
+          <p className="text-blue-600 text-sm mt-2">Preparando {realPorts.length} porti del Lazio</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden min-h-[700px] border-4 border-red-500">
-      <div className="p-4 bg-red-100 text-red-800 font-bold text-center">
-        COMPONENTE MAPPA CARICATO - Se vedi questo, il componente funziona!
-      </div>
+    <div className="relative">
+      <div 
+        ref={mapRef}
+        style={{ height }}
+        className="w-full rounded-lg border-2 border-gray-200 shadow-lg"
+      />
       
-      {/* Header con controlli */}
-      <div className="p-4 border-b bg-gradient-to-r from-blue-50 to-blue-100">
-        <div className="flex flex-col space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900">Mappa Interattiva Porti del Lazio</h2>
+      {/* Pannello informazioni in overlay */}
+      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-4 max-w-xs">
+        <h4 className="font-bold text-gray-900 text-sm mb-2">🧭 Mappa Navigabile SeaGO</h4>
+        <p className="text-xs text-gray-600 mb-2">
+          Esplora liberamente il mondo come Google Maps
+        </p>
+        <div className="space-y-1 text-xs">
+          <div className="flex items-center">
+            <span className="inline-block w-3 h-3 bg-blue-500 rounded-full mr-2"></span>
+            <span>{realPorts.length} porti reali del Lazio</span>
           </div>
-
-          {/* Barra di ricerca */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Cerca porti..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          <div className="flex items-center">
+            <span className="inline-block w-3 h-3 bg-green-500 rounded-full mr-2"></span>
+            <span>Zoom mondiale abilitato</span>
           </div>
+        </div>
+      </div>
 
-          {/* Filtri */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger>
-                <SelectValue placeholder="Tipo imbarcazione" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Tutti i tipi</SelectItem>
-                <SelectItem value="yacht">Yacht</SelectItem>
-                <SelectItem value="gommone">Gommone</SelectItem>
-                <SelectItem value="barca a vela">Barca a vela</SelectItem>
-                <SelectItem value="catamarano">Catamarano</SelectItem>
-              </SelectContent>
-            </Select>
-
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setSearchTerm("");
-                setFilterType("all");
-              }}
-              className="text-xs"
+      {/* Pannello dettagli porto selezionato */}
+      {selectedPort && (
+        <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-xl p-4">
+          <div className="flex justify-between items-start mb-2">
+            <h4 className="font-bold text-gray-900">{selectedPort.name}</h4>
+            <button 
+              onClick={() => setSelectedPort(null)}
+              className="text-gray-400 hover:text-gray-600 text-lg"
             >
-              Cancella filtri
-            </Button>
+              ×
+            </button>
+          </div>
+          <p className="text-sm text-gray-600 mb-2">{selectedPort.description}</p>
+          <div className="flex justify-between items-center">
+            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+              📍 {selectedPort.address}
+            </span>
+            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+              🚢 {selectedPort.boats} barche
+            </span>
           </div>
         </div>
-      </div>
-
-      {/* Vista Porti */}
-      <div className="w-full min-h-[600px] bg-gradient-to-br from-blue-50 to-sky-100">
-        <div className="p-6">
-          <div className="text-center mb-6">
-            <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Porti e Marine del Lazio</h3>
-            <p className="text-gray-600">Esplora le nostre destinazioni nautiche più belle</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[450px] overflow-y-auto">
-            {getFilteredPorts().map(([portName, portData]) => (
-              <Card key={portName} className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-300" 
-                    onClick={() => {
-                      setSelectedPort(portName);
-                      onPortSelect?.(portName);
-                    }}>
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center justify-between">
-                    <span className="text-sm font-semibold">{portName}</span>
-                    <Badge variant="secondary" className="text-xs">{portData.boats.length}</Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="text-xs text-gray-600 mb-2">
-                    📍 {portData.lat.toFixed(4)}, {portData.lng.toFixed(4)}
-                  </div>
-                  
-                  <div className="text-sm mb-3">
-                    <div className="text-green-600 font-medium">
-                      €{Math.min(...portData.boats.map(b => b.price))} - €{Math.max(...portData.boats.map(b => b.price))}/giorno
-                    </div>
-                    <div className="text-gray-500 text-xs">
-                      ⭐ {(portData.boats.reduce((sum, boat) => sum + boat.rating, 0) / portData.boats.length).toFixed(1)} valutazione
-                    </div>
-                  </div>
-                  
-                  {selectedPort === portName && (
-                    <div className="border-t pt-3">
-                      <div className="space-y-1 max-h-24 overflow-y-auto">
-                        {portData.boats.slice(0, 3).map((boat, idx) => (
-                          <div key={idx} className="flex justify-between text-xs">
-                            <span className="font-medium">{boat.name}</span>
-                            <span className="text-blue-600">€{boat.price}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          {getFilteredPorts().length === 0 && (
-            <div className="text-center py-8">
-              <p className="text-gray-500">Nessun porto trovato con i filtri selezionati</p>
-            </div>
-          )}
-        </div>
-        
-        {/* Status */}
-        <div className="p-4 bg-blue-50 border-t">
-          <div className="flex items-center text-blue-800">
-            <span className="text-lg mr-2">🗺️</span>
-            <div>
-              <p className="font-medium">Mappa Interattiva Attiva</p>
-              <p className="text-sm">Vista con tutti i porti del Lazio e relative imbarcazioni</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

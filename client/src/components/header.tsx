@@ -26,7 +26,7 @@ export function Header() {
               alt="SeaGO" 
               className="h-10 w-10"
             />
-            <span className="ml-1 text-2xl font-bold text-deep-navy leading-none -mt-1">SeaGO</span>
+            <span className="text-2xl font-bold text-deep-navy leading-none -mt-1">SeaGO</span>
           </Link>
 
           {/* Desktop Navigation */}

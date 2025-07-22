@@ -13,7 +13,7 @@ export function Footer() {
               <img 
                 src={seagoLogo} 
                 alt="SeaGO" 
-                className="h-8 w-8 mr-1"
+                className="h-8 w-8"
               />
               <h3 className="text-2xl font-bold text-ocean-blue leading-none -mt-1">
                 SeaGO

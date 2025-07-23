@@ -14,7 +14,6 @@ import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
 import { TrendingDestinations } from "@/components/trending-destinations";
-import { InteractiveMap } from "@/components/interactive-map";
 import { AIRecommendations } from "@/components/ai-recommendations";
 import { WeatherWidget } from "@/components/weather-widget";
 import { PerformanceMetrics } from "@/components/performance-metrics";
@@ -100,7 +99,14 @@ export default function HomePage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Esplora con la Mappa Interattiva</h2>
             <p className="text-lg text-gray-600">Trova le imbarcazioni perfette vicino a te</p>
           </div>
-          <InteractiveMap />
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-8 text-center">
+            <div className="text-6xl mb-4">🗺️</div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Mappa Interattiva</h3>
+            <p className="text-gray-600 mb-4">Esplora tutte le imbarcazioni disponibili nei porti del Lazio</p>
+            <Button asChild>
+              <Link href="/mappa">Apri Mappa Completa</Link>
+            </Button>
+          </div>
         </div>
       </section>
 

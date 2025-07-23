@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot } from "lucide-react";
-import seagoLogo from "../assets/seago-logo.svg";
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -24,8 +24,8 @@ export function Header() {
           <Link href="/" className="flex-shrink-0 flex items-center">
             <img 
               src={seagoLogo} 
-              alt="SeaGO" 
-              className="h-10 w-10"
+              alt="SeaGO Logo" 
+              className="h-10 w-10 rounded-lg object-cover bg-white p-1"
             />
             <span className="text-2xl font-bold text-deep-navy leading-none -mt-1">SeaGO</span>
           </Link>

@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Anchor, Facebook, Instagram, Twitter, Youtube, Globe, DollarSign } from "lucide-react";
-import seagoLogo from "../assets/seago-logo.svg";
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Footer() {
   return (
@@ -12,8 +12,8 @@ export function Footer() {
             <div className="flex items-center mb-6">
               <img 
                 src={seagoLogo} 
-                alt="SeaGO" 
-                className="h-8 w-8"
+                alt="SeaGO Logo" 
+                className="h-8 w-8 rounded object-cover bg-white p-1"
               />
               <h3 className="text-2xl font-bold text-ocean-blue leading-none -mt-1">
                 SeaGO

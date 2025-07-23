@@ -1,0 +1,108 @@
+{
+  "name": "SeaGO - Piattaforma Marittima per Noleggio Barche",
+  "short_name": "SeaGO",
+  "description": "La piattaforma leader per noleggio barche, charter nautici e servizi marittimi in Italia. Oltre 1000 imbarcazioni disponibili per le tue avventure sul mare.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0ea5e9",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "it",
+  "dir": "ltr",
+  "categories": ["travel", "lifestyle", "business"],
+  "icons": [
+    {
+      "src": "/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg",
+      "sizes": "512x512", 
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Esplora Barche",
+      "short_name": "Esplora",
+      "description": "Trova e prenota barche per la tua prossima avventura",
+      "url": "/?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "/attached_assets/yacht_1752919948842.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Esperienze",
+      "short_name": "Esperienze",
+      "description": "Scopri esperienze maritime uniche",
+      "url": "/esperienze?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "/attached_assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Charter",
+      "short_name": "Charter",
+      "description": "Servizi charter professionali con skipper",
+      "url": "/charter?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "/attached_assets/catamarano ludovica_1752876117442.jpg",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Ormeggi",
+      "short_name": "Ormeggi",
+      "description": "Trova ormeggi sicuri nei porti italiani",
+      "url": "/ormeggio?utm_source=pwa_shortcut",
+      "icons": [
+        {
+          "src": "/attached_assets/WhatsApp Image 2025-07-21 at 12.54.16_1753095763473.jpeg",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/attached_assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Homepage SeaGO con ricerca barche"
+    },
+    {
+      "src": "/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg",
+      "sizes": "750x1334",
+      "type": "image/jpeg",
+      "platform": "narrow",
+      "label": "App mobile SeaGO"
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred"
+}

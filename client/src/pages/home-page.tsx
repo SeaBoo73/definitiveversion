@@ -16,6 +16,8 @@ import { TrendingDestinations } from "@/components/trending-destinations";
 import { WeatherWidget } from "@/components/weather-widget";
 import { GoogleMapsLazio } from "@/components/google-maps-lazio";
 import { CategoryGallery } from "@/components/category-gallery";
+import { SEOHead, seoConfigs } from "@/components/seo-head";
+import { StructuredData } from "@/components/structured-data";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -68,6 +70,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+      <SEOHead {...seoConfigs.home} />
+      <StructuredData type="homepage" />
       <AppDownloadBanner />
       <Header />
       

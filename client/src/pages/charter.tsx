@@ -15,6 +15,9 @@ import {
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
+import { SEOHead, seoConfigs } from "@/components/seo-head";
+import { StructuredData } from "@/components/structured-data";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export function CharterPage() {
   const charterServices = [
@@ -78,7 +81,10 @@ export function CharterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white pb-20 md:pb-0">
+      <SEOHead {...seoConfigs.charter} />
+      <StructuredData type="charter" />
       <Header />
+      <Breadcrumbs />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-deep-navy to-ocean-blue">
         <div className="absolute inset-0 bg-black opacity-20"></div>

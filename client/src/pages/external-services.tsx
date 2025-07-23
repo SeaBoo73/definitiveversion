@@ -29,6 +29,9 @@ import {
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
+import { SEOHead } from '@/components/seo-head';
+import { StructuredData } from '@/components/structured-data';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 interface WeatherData {
   location: string;
@@ -178,8 +181,18 @@ export default function ExternalServices() {
     );
   };
 
+  const servicesPageSEO = {
+    title: "Servizi Nautici Esterni - Meteo, Carburante, Porti | SeaGO",
+    description: "Servizi marittimi completi: meteo marino in tempo reale, prezzi carburante nautico, disponibilità porti e condizioni marine per la tua navigazione sicura.",
+    keywords: "meteo marino, carburante nautico, servizi portuali, condizioni marine, assistenza marittima, porti Italia"
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead {...servicesPageSEO} />
+      <StructuredData type="service-page" />
+      <Breadcrumbs />
+      
       {/* Navigation Header */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

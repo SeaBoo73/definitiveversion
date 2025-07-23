@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it" itemscope itemtype="https://schema.org/WebSite">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>SeaGO - Noleggio Barche</title>
-    <meta name="description" content="Prenota barche, yacht e imbarcazioni in tutta Italia. La piattaforma leader per il noleggio nautico." />
+    <title>SeaGO - Piattaforma Marittima per Noleggio Barche e Charter Nautici in Italia</title>
+    <meta name="description" content="Scopri SeaGO, la piattaforma leader per noleggio barche, charter nautici e servizi marittimi in Italia. Oltre 1000 imbarcazioni disponibili, esperienze uniche sul mare." />
+    <meta name="keywords" content="noleggio barche Italia, charter nautico, boat rental, yacht charter Italia, barche a noleggio, servizi nautici, ormeggi marittimi, esperienze maritime" />
+    <meta name="author" content="SeaGO - Piattaforma Marittima" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    
+    <!-- Geographic and Business Info -->
+    <meta name="geo.region" content="IT" />
+    <meta name="geo.placename" content="Italia" />
+    <meta name="business.contact_data.country_name" content="Italy" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SeaGO" />
+    <meta property="og:locale" content="it_IT" />
+    <meta property="og:title" content="SeaGO - Piattaforma Marittima per Noleggio Barche in Italia" />
+    <meta property="og:description" content="La migliore piattaforma per noleggio barche, charter nautici e servizi marittimi in Italia. Esperienze maritime uniche e imbarcazioni di qualità." />
+    <meta property="og:image" content="/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SeaGO - Noleggio Barche e Charter Nautici Italia" />
+    <meta name="twitter:description" content="Piattaforma leader per noleggio barche, yacht charter e servizi nautici in Italia. Scopri le migliori esperienze maritime." />
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "SeaGO",
+      "url": "https://seago.replit.app",
+      "logo": "/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg",
+      "description": "Piattaforma marittima leader per noleggio barche, charter nautici e servizi marittimi in Italia",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IT"
+      },
+      "sameAs": [],
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://seago.replit.app/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    
+    <!-- Maritime Service Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Noleggio Barche e Charter Nautici",
+      "provider": {
+        "@type": "Organization",
+        "name": "SeaGO"
+      },
+      "serviceType": "Maritime Services",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Italy"
+      },
+      "description": "Servizi completi di noleggio barche, charter nautici, ormeggi e esperienze maritime lungo le coste italiane"
+    }
+    </script>
+    
+    <!-- PWA and Mobile -->
     <meta name="theme-color" content="#0ea5e9" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -12,6 +77,9 @@
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://seago.replit.app/" />
   </head>
   <body>
     <div id="root"></div>

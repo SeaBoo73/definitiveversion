@@ -1,0 +1,44 @@
+# SeaGO - Piattaforma Marittima Robots.txt
+
+User-agent: *
+Allow: /
+
+# Priority pages for maritime services
+Allow: /esperienze
+Allow: /charter
+Allow: /ormeggio
+Allow: /external-services
+
+# Boat categories
+Allow: /?type=yacht
+Allow: /?type=gommoni
+Allow: /?type=barche-a-vela
+Allow: /?type=catamarani
+Allow: /?type=moto-dacqua
+Allow: /?type=houseboat
+Allow: /?type=caiacco
+Allow: /?type=barche-a-motore
+Allow: /?type=gulet
+Allow: /?type=barche-senza-patente
+
+# Disallow admin and sensitive areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /owner-dashboard/
+Disallow: /customer-dashboard/
+Disallow: /booking/
+Disallow: /checkout/
+Disallow: /payment-success/
+
+# Allow important assets
+Allow: /attached_assets/
+Allow: /manifest.json
+Allow: /favicon.ico
+Allow: /apple-touch-icon.png
+
+# Sitemap location
+Sitemap: https://seago.replit.app/sitemap.xml
+
+# Crawl delay for respectful indexing
+Crawl-delay: 1

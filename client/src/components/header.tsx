@@ -32,16 +32,54 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+            <Link 
+              href="/" 
+              className={`transition-colors font-medium ${
+                location === "/" 
+                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
+                  : "text-sea-gray hover:text-deep-navy"
+              }`}
+            >
               Esplora
             </Link>
-            <Link href="/esperienze" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+            <Link 
+              href="/esperienze" 
+              className={`transition-colors font-medium ${
+                location === "/esperienze"
+                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
+                  : "text-sea-gray hover:text-deep-navy"
+              }`}
+            >
               Esperienze
             </Link>
-            <Link href="/ormeggio" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+            <Link 
+              href="/charter" 
+              className={`transition-colors font-medium ${
+                location === "/charter"
+                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
+                  : "text-sea-gray hover:text-deep-navy"
+              }`}
+            >
+              Charter
+            </Link>
+            <Link 
+              href="/ormeggio" 
+              className={`transition-colors font-medium ${
+                location === "/ormeggio" 
+                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
+                  : "text-sea-gray hover:text-deep-navy"
+              }`}
+            >
               Ormeggio
             </Link>
-            <Link href="/ia" className="text-sea-gray hover:text-deep-navy transition-colors font-medium flex items-center gap-1">
+            <Link 
+              href="/ia" 
+              className={`transition-colors font-medium flex items-center gap-1 ${
+                location === "/ia" 
+                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
+                  : "text-sea-gray hover:text-deep-navy"
+              }`}
+            >
               <Bot className="h-4 w-4" />
               IA
             </Link>
@@ -71,7 +109,14 @@ export function Header() {
               </DropdownMenu>
             )}
             <ServicesNavButton />
-            <Link href="/aiuto" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+            <Link 
+              href="/aiuto" 
+              className={`transition-colors font-medium ${
+                location === "/aiuto" 
+                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
+                  : "text-sea-gray hover:text-deep-navy"
+              }`}
+            >
               Aiuto
             </Link>
           </nav>

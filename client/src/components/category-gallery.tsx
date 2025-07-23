@@ -26,6 +26,12 @@ const categoryMapping = [
     image: barcheSenzaPatenteImage,
   },
   {
+    id: "yacht",
+    name: "Yacht",
+    description: "Lusso e comfort per una navigazione esclusiva",
+    image: motorboatImage,
+  },
+  {
     id: "jetski",
     name: "Moto d'acqua", 
     description: "Adrenalina e velocità sull'acqua",
@@ -77,7 +83,7 @@ export function CategoryGallery() {
   const categories = categoryMapping.map(cat => ({
     ...cat,
     count: getCategoryCount(cat.id)
-  })).filter(cat => cat.count > 0); // Mostra solo categorie con barche disponibili
+  })); // Mostra tutte le categorie, anche quelle senza barche
 
   return (
     <section className="py-16 bg-white">

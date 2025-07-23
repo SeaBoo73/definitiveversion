@@ -117,8 +117,8 @@ function Router() {
       <ProtectedRoute path="/document-management" component={DocumentManagement} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
-      <ProtectedRoute path="/checkout/:bookingId" component={Checkout} />
-      <ProtectedRoute path="/payment-success" component={PaymentSuccess} />
+      <Route path="/checkout" component={Checkout} />
+      <Route path="/payment-success" component={PaymentSuccess} />
       <Route component={NotFound} />
     </Switch>
   );

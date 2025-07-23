@@ -1,4 +1,4 @@
-import { useLocation } from "wouter";
+import { Link } from "wouter";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -71,19 +71,11 @@ const categoryMapping = [
 ];
 
 export function CategoryGallery() {
-  const [location, setLocation] = useLocation();
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
     queryKey: ["/api/boats"],
   });
 
-  const handleCategoryClick = (categoryId: string) => {
-    // Usa l'API History per evitare reload completo
-    const newUrl = `/?type=${categoryId}`;
-    window.history.pushState({}, '', newUrl);
-    
-    // Invia custom event per notificare il cambio
-    window.dispatchEvent(new CustomEvent('categoryChanged'));
-  };
+
 
   // Calcola i contatori reali per ogni categoria
   const getCategoryCount = (categoryId: string) => {
@@ -102,6 +94,13 @@ export function CategoryGallery() {
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Esplora per categoria</h2>
           <p className="text-lg text-gray-600">Trova l'imbarcazione perfetta per la tua avventura</p>
+          <div className="mt-6">
+            <Button asChild size="lg" className="bg-gradient-to-r from-ocean-blue to-deep-navy">
+              <Link href="/categories">
+                Vedi Tutte le Categorie
+              </Link>
+            </Button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -131,9 +130,11 @@ export function CategoryGallery() {
                 variant="outline" 
                 size="sm" 
                 className="w-full bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100 hover:border-sky-300"
-                onClick={() => handleCategoryClick(category.id)}
+                asChild
               >
-                Esplora
+                <Link href={`/search?boatTypes=${category.id}`}>
+                  Esplora
+                </Link>
               </Button>
             </div>
           ))}

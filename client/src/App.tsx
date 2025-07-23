@@ -62,6 +62,7 @@ import OrmeggioPage from "@/pages/ormeggio-page";
 import OrmeggioBookingPage from "@/pages/ormeggio-booking";
 import AdminPerformancePage from "@/pages/admin-performance";
 import AltreEsperienzePage from "@/pages/altre-esperienze";
+import CategoriesPage from "@/pages/categories-page";
 
 function Router() {
   return (
@@ -70,6 +71,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/simple-test" component={SimpleTest} />
       <Route path="/minimal" component={MinimalApp} />
+      <Route path="/categories" component={CategoriesPage} />
       <Route path="/search" component={SearchResults} />
       <Route path="/esperienze" component={EsperienzePage} />
       <Route path="/charter" component={CharterPage} />

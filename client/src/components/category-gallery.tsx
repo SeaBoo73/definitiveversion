@@ -1,58 +1,84 @@
 import { Link } from "wouter";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Boat } from "@shared/schema";
+import gommoneImage from "@assets/gommone senza patente_1752875806367.webp";
+import jetskiImage from "@assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg";
+import barcheSenzaPatenteImage from "@assets/OIP (1)_1752921317486.webp";
+import catamaranoImage from "@assets/catamarano ludovica_1752876117442.jpg";
+import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg";
+import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";
+import houseboatImage from "@assets/OIP_1752919948843.webp";
+import motorboatImage from "@assets/R (1)_1752920495156.jpg";
 
-const categories = [
+const categoryMapping = [
   {
     id: "gommone",
-    name: "Gommone",
-    description: "Perfetto per escursioni giornaliere",
-    image: "https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    name: "Gommoni",
+    description: "Imbarcazioni pneumatiche versatili e sicure",
+    image: gommoneImage,
   },
   {
-    id: "yacht",
-    name: "Yacht",
-    description: "Lusso e comfort per gruppi",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
-  },
-  {
-    id: "catamarano",
-    name: "Catamarano",
-    description: "Stabilità e spazio per famiglie",
-    image: "https://images.unsplash.com/photo-1551918120-9739cb430c6d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    id: "barche-senza-patente",
+    name: "Barche senza patente",
+    description: "Facili da guidare, perfette per principianti",
+    image: barcheSenzaPatenteImage,
   },
   {
     id: "jetski",
-    name: "Moto d'acqua",
-    description: "Adrenalina pura",
-    image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    name: "Moto d'acqua", 
+    description: "Adrenalina e velocità sull'acqua",
+    image: jetskiImage,
+  },
+  {
+    id: "motorboat",
+    name: "Barche a motore",
+    description: "Velocità e comfort per esplorare la costa", 
+    image: motorboatImage,
   },
   {
     id: "sailboat",
-    name: "Barca a vela",
-    description: "Navigazione tradizionale",
-    image: "https://images.unsplash.com/photo-1568605117036-cfb79e7ad4f5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    name: "Barche a vela",
+    description: "L'esperienza autentica della navigazione",
+    image: sailboatImage,
   },
   {
-    id: "kayak",
-    name: "Kayak",
-    description: "Esplorazione silenziosa",
-    image: "https://images.unsplash.com/photo-1571068316344-75bc76f77890?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    id: "catamarano",
+    name: "Catamarani",
+    description: "Spazio e stabilità per gruppi numerosi",
+    image: catamaranoImage,
   },
   {
     id: "charter",
     name: "Charter",
-    description: "Servizio completo con equipaggio",
-    image: "https://images.unsplash.com/photo-1567095751004-aa51a2690368?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    description: "Esperienza completa con skipper professionista",
+    image: charterImage,
   },
   {
     id: "houseboat",
     name: "Houseboat",
-    description: "Casa galleggiante per soggiorni",
-    image: "https://images.unsplash.com/photo-1504893524553-b855bce32c67?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&h=600",
+    description: "La tua casa galleggiante per vacanze uniche",
+    image: houseboatImage,
   },
 ];
 
 export function CategoryGallery() {
+  const { data: boats = [], isLoading } = useQuery<Boat[]>({
+    queryKey: ["/api/boats"],
+  });
+
+  // Calcola i contatori reali per ogni categoria
+  const getCategoryCount = (categoryId: string) => {
+    return boats.filter(boat => boat.type === categoryId).length;
+  };
+
+  // Crea le categorie con i contatori dinamici
+  const categories = categoryMapping.map(cat => ({
+    ...cat,
+    count: getCategoryCount(cat.id)
+  })).filter(cat => cat.count > 0); // Mostra solo categorie con barche disponibili
+
   return (
     <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -63,11 +89,7 @@ export function CategoryGallery() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {categories.map((category) => (
-            <Link
-              key={category.id}
-              href={`/?type=${category.id}`}
-              className="group cursor-pointer"
-            >
+            <div key={category.id} className="group cursor-pointer">
               <div className="relative overflow-hidden rounded-xl aspect-square mb-3">
                 <img
                   src={category.image}
@@ -75,12 +97,29 @@ export function CategoryGallery() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-opacity"></div>
+                
+                {/* Contatore barche */}
+                <div className="absolute top-3 right-3 bg-white bg-opacity-90 rounded-full w-10 h-10 flex items-center justify-center">
+                  <span className="font-bold text-sm text-gray-800">{category.count}</span>
+                </div>
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-ocean-blue transition-colors">
+              
+              <h3 className="font-semibold text-gray-900 group-hover:text-ocean-blue transition-colors mb-1">
                 {category.name}
               </h3>
-              <p className="text-sm text-gray-600">{category.description}</p>
-            </Link>
+              <p className="text-sm text-gray-600 mb-3">{category.description}</p>
+              
+              {/* Pulsante Esplora */}
+              <Link href={`/?type=${category.id}`}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100 hover:border-sky-300"
+                >
+                  Esplora
+                </Button>
+              </Link>
+            </div>
           ))}
         </div>
       </div>

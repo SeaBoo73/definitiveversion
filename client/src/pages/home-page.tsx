@@ -117,17 +117,24 @@ export default function HomePage() {
                 Risultati per: {selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1).replace('-', ' ')}
               </h2>
               <p className="text-lg text-gray-600">
-                {filteredBoats.length} imbarcazioni trovate
+                {isLoading ? 'Caricamento...' : `${filteredBoats.length} imbarcazioni trovate`}
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredBoats.map((boat) => (
-                <BoatCard key={boat.id} boat={boat} />
-              ))}
-            </div>
+            {isLoading ? (
+              <div className="text-center py-12">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-ocean-blue"></div>
+                <p className="text-gray-500 text-lg mt-4">Caricamento barche...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {filteredBoats.map((boat) => (
+                  <BoatCard key={boat.id} boat={boat} />
+                ))}
+              </div>
+            )}
             
-            {filteredBoats.length === 0 && (
+            {!isLoading && selectedCategory && filteredBoats.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-gray-500 text-lg">Nessuna imbarcazione trovata per questa categoria.</p>
                 <Button 

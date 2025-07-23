@@ -406,6 +406,9 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Sistema filtri per prezzo, lunghezza barca e ordinamento risultati
   - ✅ Card ormeggi con rating, recensioni, servizi e prenotazione diretta
   - ✅ Calendario integrato per check-in/check-out come piattaforme hotel
+  - ✅ Opzioni diversificate per noleggiatori: Pontile (€350-700/giorno) e Boa (€120-200/giorno)
+  - ✅ 6 porti Lazio con tariffe realistiche e badge tipo ormeggio
+  - ✅ Filtri prezzo specifici per categorie pontile/boa
 - **Servizi Ormeggio Completi (July 23, 2025 - Sera):**
   - ✅ Sezione dedicata servizi ormeggio per evitare barche in rada
   - ✅ 3 porti partner principali con tariffe dettagliate per ogni lunghezza barca

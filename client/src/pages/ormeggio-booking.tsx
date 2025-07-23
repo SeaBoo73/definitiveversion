@@ -82,60 +82,114 @@ export default function OrmeggioBookingPage() {
   const [sortBy, setSortBy] = useState<string>('price');
   const [priceRange, setPriceRange] = useState<string>('all');
 
-  // Mock data per ormeggi stile Booking.com
+  // Mock data per ormeggi stile Booking.com con opzioni noleggiatori
   const mooringSpots: MooringSpot[] = [
     {
       id: '1',
-      title: 'Porto di Civitavecchia - Posto Barca Premium',
+      title: 'Porto di Civitavecchia - Pontile Premium',
       port: 'Civitavecchia',
       location: 'Porto Commerciale, Civitavecchia',
-      pricing: { daily: 45, weekly: 280, monthly: 1100 },
-      specs: { maxLength: 18, maxBeam: 5.5, depth: 4.2 },
+      pricing: { daily: 700, weekly: 4200, monthly: 16800 },
+      specs: { maxLength: 25, maxBeam: 6.5, depth: 5.0 },
       services: {
         security: true, fuel: true, water: true, electricity: true,
         wifi: true, parking: true, restaurant: true, shower: true
       },
       images: ['/attached_assets/civitavecchia-porto.jpg'],
-      rating: 4.8,
-      reviews: 124,
-      description: 'Posto barca nel cuore del porto di Civitavecchia con tutti i servizi.',
-      contact: { name: 'Marina Civitavecchia', phone: '+39 0766 123456', vhf: 'Canale 09' },
+      rating: 4.9,
+      reviews: 87,
+      description: 'Pontile esclusivo per yacht e imbarcazioni di lusso. Servizi premium inclusi.',
+      contact: { name: 'Marina Premium Civitavecchia', phone: '+39 0766 123456', vhf: 'Canale 09' },
       availability: ['2025-07-24', '2025-07-25', '2025-07-26']
     },
     {
       id: '2',
-      title: 'Marina di Gaeta - Ormeggio Sicuro',
+      title: 'Marina di Gaeta - Boa Campo Boe',
       port: 'Gaeta',
-      location: 'Marina di Gaeta, Lungomare Caboto',
-      pricing: { daily: 38, weekly: 245, monthly: 950 },
-      specs: { maxLength: 15, maxBeam: 4.8, depth: 3.5 },
+      location: 'Campo Boe Gaeta, Baia del Sole',
+      pricing: { daily: 150, weekly: 900, monthly: 3600 },
+      specs: { maxLength: 18, maxBeam: 5.0, depth: 8.0 },
       services: {
-        security: true, fuel: true, water: true, electricity: true,
-        wifi: true, parking: false, restaurant: true, shower: true
+        security: false, fuel: false, water: false, electricity: false,
+        wifi: false, parking: false, restaurant: false, shower: false
       },
       images: ['/attached_assets/gaeta-marina.jpg'],
-      rating: 4.6,
-      reviews: 89,
-      description: 'Ormeggio protetto nella splendida baia di Gaeta.',
-      contact: { name: 'Marina Gaeta', phone: '+39 0771 987654', vhf: 'Canale 12' },
+      rating: 4.2,
+      reviews: 156,
+      description: 'Boa sicura nel campo boe di Gaeta. Ideale per soste brevi e medie.',
+      contact: { name: 'Ormeggi Gaeta', phone: '+39 0771 987654', vhf: 'Canale 12' },
       availability: ['2025-07-24', '2025-07-25', '2025-07-26']
     },
     {
       id: '3',
-      title: 'Porto di Anzio - Ormeggio Centrale',
+      title: 'Porto di Anzio - Pontile Standard',
       port: 'Anzio',
-      location: 'Porto di Anzio, Via del Porto',
-      pricing: { daily: 32, weekly: 210, monthly: 820 },
-      specs: { maxLength: 12, maxBeam: 4.2, depth: 2.8 },
+      location: 'Porto di Anzio, Molo Commerciale',
+      pricing: { daily: 450, weekly: 2700, monthly: 10800 },
+      specs: { maxLength: 20, maxBeam: 5.5, depth: 4.0 },
       services: {
-        security: true, fuel: false, water: true, electricity: true,
-        wifi: false, parking: true, restaurant: false, shower: true
+        security: true, fuel: true, water: true, electricity: true,
+        wifi: true, parking: true, restaurant: false, shower: true
       },
       images: ['/attached_assets/anzio-porto.jpg'],
-      rating: 4.3,
+      rating: 4.5,
+      reviews: 93,
+      description: 'Pontile standard con servizi essenziali nel centro di Anzio.',
+      contact: { name: 'Porto Anzio', phone: '+39 06 123789', vhf: 'Canale 16' },
+      availability: ['2025-07-24', '2025-07-25', '2025-07-26']
+    },
+    {
+      id: '4',
+      title: 'Terracina - Boa Economica',
+      port: 'Terracina',
+      location: 'Campo Boe Terracina, Riviera di Ponente',
+      pricing: { daily: 120, weekly: 720, monthly: 2880 },
+      specs: { maxLength: 15, maxBeam: 4.5, depth: 6.0 },
+      services: {
+        security: false, fuel: false, water: false, electricity: false,
+        wifi: false, parking: false, restaurant: false, shower: false
+      },
+      images: ['/attached_assets/terracina-porto.jpg'],
+      rating: 3.9,
+      reviews: 201,
+      description: 'Boa economica per ormeggi di breve durata. Solo ancoraggio sicuro.',
+      contact: { name: 'Boe Terracina', phone: '+39 0773 456789', vhf: 'Canale 14' },
+      availability: ['2025-07-24', '2025-07-25', '2025-07-26']
+    },
+    {
+      id: '5',
+      title: 'Formia - Pontile Medio',
+      port: 'Formia',
+      location: 'Marina di Formia, Via del Porto',
+      pricing: { daily: 350, weekly: 2100, monthly: 8400 },
+      specs: { maxLength: 16, maxBeam: 4.8, depth: 3.5 },
+      services: {
+        security: true, fuel: false, water: true, electricity: true,
+        wifi: false, parking: true, restaurant: true, shower: true
+      },
+      images: ['/attached_assets/formia-marina.jpg'],
+      rating: 4.4,
       reviews: 67,
-      description: 'Comodo ormeggio nel centro storico di Anzio.',
-      contact: { name: 'Circolo Nautico Anzio', phone: '+39 06 123789', vhf: 'Canale 16' },
+      description: 'Pontile con servizi base in posizione strategica tra Gaeta e Sperlonga.',
+      contact: { name: 'Marina Formia', phone: '+39 0771 234567', vhf: 'Canale 11' },
+      availability: ['2025-07-24', '2025-07-25', '2025-07-26']
+    },
+    {
+      id: '6',
+      title: 'Nettuno - Boa Premium',
+      port: 'Nettuno',
+      location: 'Campo Boe Nettuno, Costa Sud',
+      pricing: { daily: 200, weekly: 1200, monthly: 4800 },
+      specs: { maxLength: 22, maxBeam: 5.8, depth: 10.0 },
+      services: {
+        security: false, fuel: false, water: false, electricity: false,
+        wifi: false, parking: false, restaurant: false, shower: false
+      },
+      images: ['/attached_assets/nettuno-porto.jpg'],
+      rating: 4.1,
+      reviews: 134,
+      description: 'Boa premium in acque profonde, ideale per imbarcazioni di grandi dimensioni.',
+      contact: { name: 'Ormeggi Nettuno', phone: '+39 06 987654', vhf: 'Canale 13' },
       availability: ['2025-07-24', '2025-07-25', '2025-07-26']
     }
   ];
@@ -161,6 +215,11 @@ export default function OrmeggioBookingPage() {
       case 'price': return a.pricing.daily - b.pricing.daily;
       case 'rating': return b.rating - a.rating;
       case 'reviews': return b.reviews - a.reviews;
+      case 'services': {
+        const aServices = Object.values(a.services).filter(Boolean).length;
+        const bServices = Object.values(b.services).filter(Boolean).length;
+        return bServices - aServices;
+      }
       default: return 0;
     }
   });
@@ -292,10 +351,10 @@ export default function OrmeggioBookingPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">Tutti i prezzi</SelectItem>
-                      <SelectItem value="0-30">€0 - €30</SelectItem>
-                      <SelectItem value="30-40">€30 - €40</SelectItem>
-                      <SelectItem value="40-50">€40 - €50</SelectItem>
-                      <SelectItem value="50-100">€50+</SelectItem>
+                      <SelectItem value="100-200">€100 - €200 (Boa)</SelectItem>
+                      <SelectItem value="200-400">€200 - €400 (Pontile Base)</SelectItem>
+                      <SelectItem value="400-600">€400 - €600 (Pontile Standard)</SelectItem>
+                      <SelectItem value="600-800">€600+ (Pontile Premium)</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -311,6 +370,7 @@ export default function OrmeggioBookingPage() {
                       <SelectItem value="price">Prezzo più basso</SelectItem>
                       <SelectItem value="rating">Miglior valutazione</SelectItem>
                       <SelectItem value="reviews">Più recensioni</SelectItem>
+                      <SelectItem value="services">Più servizi</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -336,8 +396,11 @@ export default function OrmeggioBookingPage() {
                 <div className="flex flex-col md:flex-row">
                   {/* Image */}
                   <div className="md:w-80 h-64 md:h-auto bg-gray-200 relative">
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-4 flex flex-col gap-2">
                       <Badge className="bg-green-600">Disponibile</Badge>
+                      <Badge className={`${spot.title.includes('Pontile') ? 'bg-blue-600' : 'bg-orange-600'}`}>
+                        {spot.title.includes('Pontile') ? 'Pontile' : 'Boa'}
+                      </Badge>
                     </div>
                     <div className="absolute top-4 right-4 flex gap-2">
                       <Button size="sm" variant="ghost" className="bg-white/80 hover:bg-white">

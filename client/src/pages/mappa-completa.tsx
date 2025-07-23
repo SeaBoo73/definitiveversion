@@ -1,7 +1,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
-import { InteractiveMap } from "@/components/interactive-map";
+import { GoogleMapsEmbed } from "@/components/google-maps-embed";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -93,7 +93,7 @@ export default function MappaCompletaPage() {
             <Card>
               <CardContent className="p-0">
                 <div className="h-96 lg:h-[600px] rounded-lg overflow-hidden">
-                  <InteractiveMap />
+                  <GoogleMapsEmbed />
                 </div>
               </CardContent>
             </Card>

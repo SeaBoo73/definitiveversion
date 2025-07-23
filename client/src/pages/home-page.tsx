@@ -14,11 +14,8 @@ import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
 import { TrendingDestinations } from "@/components/trending-destinations";
-import { AIRecommendations } from "@/components/ai-recommendations";
 import { WeatherWidget } from "@/components/weather-widget";
-import { PerformanceMetrics } from "@/components/performance-metrics";
-import { ReviewSystem } from "@/components/review-system";
-import { InteractiveMap } from "@/components/interactive-map";
+import { GoogleMapsEmbed } from "@/components/google-maps-embed";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -104,7 +101,7 @@ export default function HomePage() {
             </p>
           </div>
           
-          <InteractiveMap />
+          <GoogleMapsEmbed />
           
           <div className="text-center mt-8">
             <Button size="lg" variant="outline" asChild className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
@@ -150,14 +147,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* AI Recommendations */}
+      {/* Weather & Services */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Raccomandazioni Personalizzate</h2>
-            <p className="text-lg text-gray-600">La nostra IA seleziona le migliori opzioni per te</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Condizioni Meteo e Servizi</h2>
+            <p className="text-lg text-gray-600">Informazioni utili per la tua navigazione</p>
           </div>
-          <AIRecommendations />
+          <WeatherWidget />
         </div>
       </section>
 
@@ -222,25 +219,45 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Review System */}
+      {/* Customer Reviews */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Cosa dicono i nostri clienti</h2>
             <p className="text-lg text-gray-600">Recensioni verificate dai navigatori SeaGO</p>
           </div>
-          <ReviewSystem />
-        </div>
-      </section>
-
-      {/* Performance Metrics */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Le nostre Performance</h2>
-            <p className="text-lg text-gray-600">Numeri che testimoniano la qualità del servizio</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="flex items-center mb-4">
+                <div className="flex text-yellow-400">
+                  ⭐⭐⭐⭐⭐
+                </div>
+                <span className="ml-2 text-sm text-gray-600">5.0</span>
+              </div>
+              <p className="text-gray-600 mb-4">"Esperienza fantastica! Barca perfetta e servizio impeccabile. Tornerò sicuramente!"</p>
+              <div className="text-sm text-gray-500">- Marco R., Roma</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="flex items-center mb-4">
+                <div className="flex text-yellow-400">
+                  ⭐⭐⭐⭐⭐
+                </div>
+                <span className="ml-2 text-sm text-gray-600">5.0</span>
+              </div>
+              <p className="text-gray-600 mb-4">"Prenotazione semplice e veloce. La barca era esattamente come descritta. Consigliatissimo!"</p>
+              <div className="text-sm text-gray-500">- Sofia M., Milano</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow-sm">
+              <div className="flex items-center mb-4">
+                <div className="flex text-yellow-400">
+                  ⭐⭐⭐⭐⭐
+                </div>
+                <span className="ml-2 text-sm text-gray-600">5.0</span>
+              </div>
+              <p className="text-gray-600 mb-4">"Ottimo rapporto qualità-prezzo. Staff disponibile e professionale. Vacanza perfetta!"</p>
+              <div className="text-sm text-gray-500">- Andrea L., Napoli</div>
+            </div>
           </div>
-          <PerformanceMetrics />
         </div>
       </section>
 

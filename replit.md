@@ -400,6 +400,8 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Sezione business proprietari trasformata in servizi ormeggio generali
   - ✅ Rimossi riferimenti a guadagni/business, focus solo su servizi ormeggio
   - ✅ CTA modificati per esplorare ormeggi e servizi portuali
+  - ✅ Parola chiave "ormeggio" aggiunta nel prompt download app
+  - ✅ Manifest PWA aggiornato con riferimenti ai servizi ormeggio
 - **Servizi Ormeggio Completi (July 23, 2025 - Sera):**
   - ✅ Sezione dedicata servizi ormeggio per evitare barche in rada
   - ✅ 3 porti partner principali con tariffe dettagliate per ogni lunghezza barca

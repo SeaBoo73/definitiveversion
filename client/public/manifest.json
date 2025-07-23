@@ -1,7 +1,7 @@
 {
   "name": "SeaGO - Noleggio Barche",
   "short_name": "SeaGO",
-  "description": "Prenota barche, yacht e imbarcazioni in tutta Italia",
+  "description": "Prenota barche, yacht, ormeggi e servizi marittimi in Italia",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0ea5e9",

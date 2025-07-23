@@ -55,7 +55,7 @@ export function InstallPrompt() {
           </div>
           <h2 className="text-xl font-bold mb-2">Scarica l'App SeaGO</h2>
           <p className="text-sm opacity-90">
-            La migliore esperienza di navigazione sempre con te
+            Barche, ormeggi e servizi marittimi sempre con te
           </p>
         </div>
 
@@ -64,7 +64,7 @@ export function InstallPrompt() {
           <div className="space-y-3">
             <div className="flex items-center text-sm">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-              <span>Accesso più veloce</span>
+              <span>Prenota barche e ormeggi ovunque</span>
             </div>
             <div className="flex items-center text-sm">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>

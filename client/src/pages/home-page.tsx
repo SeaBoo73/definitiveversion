@@ -12,6 +12,13 @@ import { Link } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
+import { QuickStatsCard } from "@/components/quick-stats-card";
+import { TrendingDestinations } from "@/components/trending-destinations";
+import { InteractiveMap } from "@/components/interactive-map";
+import { AIRecommendations } from "@/components/ai-recommendations";
+import { WeatherWidget } from "@/components/weather-widget";
+import { PerformanceMetrics } from "@/components/performance-metrics";
+import { ReviewSystem } from "@/components/review-system";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -62,14 +69,43 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Quick Stats Section */}
+      <section className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <QuickStatsCard />
+        </div>
+      </section>
+
       {/* Boat Categories with Real Images - SEZIONE ESPLORA */}
       <BoatCategories 
         onCategorySelect={setSelectedCategory} 
         selectedCategory={selectedCategory}
       />
 
-      {/* Trova il tuo ormeggio ideale */}
+      {/* Trending Destinations */}
+      <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Destinazioni di Tendenza</h2>
+            <p className="text-lg text-gray-600">Le località più richieste dai nostri navigatori</p>
+          </div>
+          <TrendingDestinations />
+        </div>
+      </section>
+
+      {/* Interactive Map */}
       <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Esplora con la Mappa Interattiva</h2>
+            <p className="text-lg text-gray-600">Trova le imbarcazioni perfette vicino a te</p>
+          </div>
+          <InteractiveMap />
+        </div>
+      </section>
+
+      {/* Trova il tuo ormeggio ideale */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Trova il tuo ormeggio ideale</h2>
@@ -104,8 +140,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* AI Recommendations */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Raccomandazioni Personalizzate</h2>
+            <p className="text-lg text-gray-600">La nostra IA seleziona le migliori opzioni per te</p>
+          </div>
+          <AIRecommendations />
+        </div>
+      </section>
+
+      {/* Weather Widget */}
+      <section className="py-16 bg-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Condizioni Meteo Marine</h2>
+            <p className="text-lg text-gray-600">Pianifica la tua navigazione con dati meteo precisi</p>
+          </div>
+          <WeatherWidget />
+        </div>
+      </section>
+
       {/* Imbarcazioni in evidenza */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
             <div>
@@ -154,8 +212,30 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Review System */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Cosa dicono i nostri clienti</h2>
+            <p className="text-lg text-gray-600">Recensioni verificate dai navigatori SeaGO</p>
+          </div>
+          <ReviewSystem />
+        </div>
+      </section>
+
+      {/* Performance Metrics */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Le nostre Performance</h2>
+            <p className="text-lg text-gray-600">Numeri che testimoniano la qualità del servizio</p>
+          </div>
+          <PerformanceMetrics />
+        </div>
+      </section>
+
       {/* Come funziona SeaGO */}
-      <section id="how-it-works" className="py-16 bg-gray-50">
+      <section id="how-it-works" className="py-16 bg-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Come funziona SeaGO</h2>
@@ -169,7 +249,7 @@ export default function HomePage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-ocean-blue text-white rounded-full text-2xl font-bold mb-6">
                 1
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Cerca la tua imbarcazione</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Crea</h3>
               <p className="text-gray-600">
                 Trova l'imbarcazione perfetta usando la nostra mappa interattiva e i filtri avanzati per tipo, prezzo e ubicazione
               </p>

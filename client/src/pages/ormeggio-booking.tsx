@@ -509,3 +509,5 @@ export default function OrmeggioBookingPage() {
     </div>
   );
 }
+
+export default OrmeggioBookingPage;

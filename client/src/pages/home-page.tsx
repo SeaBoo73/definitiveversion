@@ -160,10 +160,10 @@ export default function HomePage() {
           <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Esplora il Mare del Lazio</h2>
+                <h2 className="text-4xl font-bold text-gray-900 mb-4">Esplora il Mare di Lazio e Campania</h2>
                 <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Scopri le imbarcazioni disponibili nei porti più belli del Lazio. 
-                  Clicca sui marker per vedere dettagli e prezzi in tempo reale.
+                  Scopri le imbarcazioni disponibili nei porti più belli di Lazio e Campania. 
+                  14 porti principali da Civitavecchia a Capri con prezzi in tempo reale.
                 </p>
               </div>
               

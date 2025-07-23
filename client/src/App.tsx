@@ -61,6 +61,7 @@ import DocumentManagement from "@/pages/document-management";
 import OrmeggioPage from "@/pages/ormeggio-page";
 import OrmeggioBookingPage from "@/pages/ormeggio-booking";
 import AdminPerformancePage from "@/pages/admin-performance";
+import AltreEsperienzePage from "@/pages/altre-esperienze";
 
 function Router() {
   return (
@@ -102,6 +103,7 @@ function Router() {
       <Route path="/analytics" component={AnalyticsPage} />
       <Route path="/analytics-dashboard" component={lazy(() => import('./pages/analytics-dashboard'))} />
       <Route path="/admin-performance" component={AdminPerformancePage} />
+      <Route path="/altre-esperienze" component={AltreEsperienzePage} />
       <Route path="/emergency" component={EmergencyPage} />
       <Route path="/emergency-system" component={EmergencySystem} />
       <Route path="/external-services" component={ExternalServices} />

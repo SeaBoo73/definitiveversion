@@ -14,11 +14,7 @@ import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
 import { GoogleMapsFinal } from "@/components/google-maps-final";
-import { WeatherWidget } from "@/components/weather-widget";
-import { ExternalServicesQuickAccess } from "@/components/external-services-quick-access";
 import { OwnerBusinessSection } from "@/components/owner-business-section";
-import { QuickStatsCard } from "@/components/quick-stats-card";
-import { TrendingDestinations } from "@/components/trending-destinations";
 
 
 
@@ -71,30 +67,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quick Stats Dashboard */}
-      <section className="py-8 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <QuickStatsCard />
-        </div>
-      </section>
-
-      {/* Boat Categories with Real Images */}
+      {/* Boat Categories with Real Images - SEZIONE ESPLORA */}
       <BoatCategories 
         onCategorySelect={setSelectedCategory} 
         selectedCategory={selectedCategory}
       />
 
-      {/* Trending Destinations */}
-      <TrendingDestinations />
-
-      {/* SEZIONE METEO E CONDIZIONI MARINE */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <WeatherWidget />
-        </div>
-      </section>
-
-      {/* SEZIONE MAPPA INTERATTIVA INTEGRATA NELLA HOMEPAGE */}
+      {/* SEZIONE MAPPA INTERATTIVA - PARTE DI ESPLORA */}
       <section className="py-16 bg-gradient-to-br from-blue-50 to-sky-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -187,18 +166,43 @@ export default function HomePage() {
 
 
       {/* Owner Business Section - Ormeggio, Pagamenti e Guadagni */}
-      <OwnerBusinessSection />
 
 
 
-      {/* External Services Quick Access */}
+
+      {/* Trova il tuo ormeggio ideale */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Servizi per la Navigazione</h2>
-            <p className="text-lg text-gray-600">Tutto quello che ti serve per navigare in sicurezza</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Trova il tuo ormeggio ideale</h2>
+            <p className="text-lg text-gray-600">Ormeggi sicuri e servizi completi per la tua imbarcazione</p>
           </div>
-          <ExternalServicesQuickAccess />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">⚓</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Pontili attrezzati</h3>
+              <p className="text-gray-600 mb-4">Servizi completi con acqua, elettricità e assistenza</p>
+              <Button asChild>
+                <Link href="/ormeggio">Esplora pontili</Link>
+              </Button>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">🛟</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Boe di ormeggio</h3>
+              <p className="text-gray-600 mb-4">Soluzioni economiche per soste brevi</p>
+              <Button asChild>
+                <Link href="/ormeggio">Trova boe</Link>
+              </Button>
+            </div>
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">🔐</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Ormeggi sicuri</h3>
+              <p className="text-gray-600 mb-4">Videosorveglianza e assistenza 24/7</p>
+              <Button asChild>
+                <Link href="/ormeggio">Sicurezza H24</Link>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 

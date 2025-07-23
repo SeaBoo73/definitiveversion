@@ -27,8 +27,8 @@ export function MobileNavigation() {
     {
       icon: Calendar,
       label: "Esperienze", 
-      path: "/altre-esperienze",
-      active: location === "/altre-esperienze" || location === "/esperienze" || location === "/charter"
+      path: "/esperienze",
+      active: location === "/esperienze" || location === "/charter"
     },
     {
       icon: Compass,

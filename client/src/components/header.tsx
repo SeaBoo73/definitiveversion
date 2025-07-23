@@ -21,13 +21,15 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 flex items-center">
-            <img 
-              src={seagoLogo} 
-              alt="SeaGO Logo" 
-              className="h-10 w-10 rounded-lg object-cover"
-            />
-            <span className="text-2xl font-bold leading-none ml-3" style={{ color: '#022237' }}>SeaGO</span>
+          <Link href="/" className="flex-shrink-0">
+            <div className="flex items-center gap-3">
+              <img 
+                src={seagoLogo} 
+                alt="SeaGO Logo" 
+                className="h-10 w-10 rounded-lg object-cover flex-shrink-0"
+              />
+              <span className="text-2xl font-bold whitespace-nowrap" style={{ color: '#022237' }}>SeaGO</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}

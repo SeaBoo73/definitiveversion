@@ -54,6 +54,7 @@ import AdvancedSearchPage from "@/pages/advanced-search-page";
 import { ReviewsPage } from "@/pages/reviews-page";
 import AvailabilityManagement from "@/pages/availability-management";
 import MessagingPage from "@/pages/messaging";
+import DocumentManagement from "@/pages/document-management";
 
 function Router() {
   return (
@@ -100,6 +101,7 @@ function Router() {
       <Route path="/boats/:id/book" component={BoatBooking} />
       <Route path="/boats/:boatId/availability" component={AvailabilityManagement} />
       <ProtectedRoute path="/messaging" component={MessagingPage} />
+      <ProtectedRoute path="/document-management" component={DocumentManagement} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
       <ProtectedRoute path="/checkout/:bookingId" component={Checkout} />

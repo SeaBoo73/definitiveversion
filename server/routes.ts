@@ -39,6 +39,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const { registerMessagingRoutes } = await import("./routes/messaging");
   registerMessagingRoutes(app);
   
+  // Document management routes
+  const { registerDocumentRoutes } = await import("./routes/document-management");
+  registerDocumentRoutes(app);
+  
   // Setup authentication
   setupAuth(app);
 

@@ -1337,6 +1337,210 @@ export class DatabaseStorage implements IStorage {
     
     return 0; // Return count would require additional query
   }
+  // Document management methods
+  async createDocument(document: InsertDocument): Promise<Document> {
+    const [newDocument] = await db.insert(documents).values({
+      ...document,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
+    
+    // Log action
+    await this.createDocumentAuditLog({
+      documentId: newDocument.id,
+      userId: document.userId,
+      action: 'uploaded',
+      newStatus: document.status || 'pending',
+      details: { fileName: document.fileName, type: document.type },
+      ipAddress: '127.0.0.1',
+      userAgent: 'SeaGO-App'
+    });
+    
+    return newDocument;
+  }
+
+  async getDocument(id: number): Promise<Document | undefined> {
+    const [document] = await db.select().from(documents).where(eq(documents.id, id));
+    return document;
+  }
+
+  async getUserDocuments(userId: number, type?: string): Promise<Document[]> {
+    let query = db.select().from(documents).where(eq(documents.userId, userId));
+    
+    if (type) {
+      query = query.where(eq(documents.type, type));
+    }
+    
+    return await query.orderBy(desc(documents.createdAt));
+  }
+
+  async getBoatDocuments(boatId: number): Promise<Document[]> {
+    return await db.select().from(documents)
+      .where(eq(documents.boatId, boatId))
+      .orderBy(desc(documents.createdAt));
+  }
+
+  async updateDocument(id: number, updates: Partial<Document>): Promise<Document | undefined> {
+    const [updatedDocument] = await db
+      .update(documents)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(documents.id, id))
+      .returning();
+
+    return updatedDocument;
+  }
+
+  async deleteDocument(id: number): Promise<boolean> {
+    const [document] = await db.select().from(documents).where(eq(documents.id, id));
+    if (!document) return false;
+
+    await db.delete(documents).where(eq(documents.id, id));
+
+    // Log action
+    await this.createDocumentAuditLog({
+      documentId: id,
+      userId: document.userId,
+      action: 'deleted',
+      previousStatus: document.status,
+      details: { fileName: document.fileName },
+      ipAddress: '127.0.0.1',
+      userAgent: 'SeaGO-App'
+    });
+
+    return true;
+  }
+
+  async verifyDocument(documentId: number, verifierId: number, verification: Omit<InsertDocumentVerification, 'documentId' | 'verifierId'>): Promise<DocumentVerification> {
+    const [newVerification] = await db.insert(documentVerifications).values({
+      documentId,
+      verifierId,
+      ...verification,
+      verificationDate: new Date()
+    }).returning();
+
+    // Update document status
+    await this.updateDocument(documentId, {
+      status: verification.status,
+      verificationStatus: verification.status === 'approved' ? 'verified' : 'failed',
+      verifiedAt: verification.status === 'approved' ? new Date() : undefined,
+      verifiedBy: verification.status === 'approved' ? verifierId : undefined,
+      rejectionReason: verification.status === 'rejected' ? verification.notes : undefined
+    });
+
+    return newVerification;
+  }
+
+  async getDocumentVerifications(documentId: number): Promise<DocumentVerification[]> {
+    return await db.select().from(documentVerifications)
+      .where(eq(documentVerifications.documentId, documentId))
+      .orderBy(desc(documentVerifications.verificationDate));
+  }
+
+  async getPendingDocuments(): Promise<Document[]> {
+    return await db.select().from(documents)
+      .where(eq(documents.status, 'pending'))
+      .orderBy(asc(documents.createdAt));
+  }
+
+  async getExpiringDocuments(days: number = 30): Promise<Document[]> {
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + days);
+    
+    return await db.select().from(documents)
+      .where(
+        and(
+          isNotNull(documents.expiryDate),
+          lte(documents.expiryDate, futureDate.toISOString().split('T')[0]),
+          gt(documents.expiryDate, new Date().toISOString().split('T')[0])
+        )
+      )
+      .orderBy(asc(documents.expiryDate));
+  }
+
+  async createDocumentTemplate(template: InsertDocumentTemplate): Promise<DocumentTemplate> {
+    const [newTemplate] = await db.insert(documentTemplates).values({
+      ...template,
+      createdAt: new Date()
+    }).returning();
+    return newTemplate;
+  }
+
+  async getDocumentTemplates(type?: string): Promise<DocumentTemplate[]> {
+    let query = db.select().from(documentTemplates).where(eq(documentTemplates.isActive, true));
+    
+    if (type) {
+      query = query.where(eq(documentTemplates.type, type));
+    }
+    
+    return await query.orderBy(asc(documentTemplates.name));
+  }
+
+  async createUserDocumentRequirement(requirement: InsertUserDocumentRequirement): Promise<UserDocumentRequirement> {
+    const [newRequirement] = await db.insert(userDocumentRequirements).values({
+      ...requirement,
+      createdAt: new Date()
+    }).returning();
+    return newRequirement;
+  }
+
+  async getUserDocumentRequirements(userId: number): Promise<UserDocumentRequirement[]> {
+    return await db.select().from(userDocumentRequirements)
+      .where(eq(userDocumentRequirements.userId, userId))
+      .orderBy(asc(userDocumentRequirements.createdAt));
+  }
+
+  async updateUserDocumentRequirement(userId: number, documentType: string, status: string): Promise<void> {
+    await db
+      .update(userDocumentRequirements)
+      .set({ status })
+      .where(
+        and(
+          eq(userDocumentRequirements.userId, userId),
+          eq(userDocumentRequirements.documentType, documentType)
+        )
+      );
+  }
+
+  async createDocumentAuditLog(log: InsertDocumentAuditLog): Promise<DocumentAuditLog> {
+    const [newLog] = await db.insert(documentAuditLog).values({
+      ...log,
+      createdAt: new Date()
+    }).returning();
+    return newLog;
+  }
+
+  async getDocumentAuditLogs(documentId: number): Promise<DocumentAuditLog[]> {
+    return await db.select().from(documentAuditLog)
+      .where(eq(documentAuditLog.documentId, documentId))
+      .orderBy(desc(documentAuditLog.createdAt));
+  }
+
+  async runAutomatedDocumentChecks(documentId: number): Promise<any> {
+    const document = await this.getDocument(documentId);
+    if (!document) return null;
+
+    // Controlli automatici simulati con AI/OCR
+    const checks = {
+      fileIntegrity: true,
+      formatValid: document.mimeType.includes('pdf') || document.mimeType.includes('image'),
+      sizeValid: document.fileSize < 10 * 1024 * 1024, // 10MB limit
+      expiryValid: document.expiryDate ? new Date(document.expiryDate) > new Date() : true,
+      textExtraction: true, // Simula OCR
+      documentNumberFound: !!document.documentNumber,
+      timestamp: new Date()
+    };
+
+    const passedChecks = Object.values(checks).filter(check => typeof check === 'boolean' && check).length;
+    const totalChecks = Object.values(checks).filter(check => typeof check === 'boolean').length;
+    const confidence = (passedChecks / totalChecks) * 100;
+
+    return {
+      documentId,
+      checks,
+      confidence,
+      passed: confidence >= 80
+    };
+  }
 }
 
 export const storage = new DatabaseStorage();

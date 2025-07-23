@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, decimal, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, date, decimal, pgEnum, json } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -298,15 +298,78 @@ export const userDiscounts = pgTable("user_discounts", {
 
 export const documents = pgTable("documents", {
   id: serial("id").primaryKey(),
-  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
-  type: text("type").notNull(), // "contract", "identity", "license", "deposit_receipt"
+  userId: integer("user_id").notNull().references(() => users.id),
+  boatId: integer("boat_id").references(() => boats.id),
+  bookingId: integer("booking_id").references(() => bookings.id),
+  type: text("type").notNull(), // 'nautical_license', 'boat_registration', 'insurance', 'safety_certificate', 'contract', 'identity'
   fileName: text("file_name").notNull(),
   filePath: text("file_path").notNull(),
+  fileSize: integer("file_size").notNull(),
+  mimeType: text("mime_type").notNull(),
+  status: text("status").notNull().default("pending"), // 'pending', 'approved', 'rejected', 'expired'
+  verificationStatus: text("verification_status").default("unverified"), // 'unverified', 'verified', 'failed'
+  expiryDate: date("expiry_date"),
+  issueDate: date("issue_date"),
+  issuingAuthority: text("issuing_authority"),
+  documentNumber: text("document_number"),
   uploadedBy: integer("uploaded_by").references(() => users.id).notNull(),
   verified: boolean("verified").default(false),
+  verifiedAt: timestamp("verified_at"),
   verifiedBy: integer("verified_by").references(() => users.id),
+  rejectionReason: text("rejection_reason"),
   notes: text("notes"),
+  metadata: json("metadata"), // Dati specifici del documento (numero patente, categoria, etc.)
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+export const documentVerifications = pgTable("document_verifications", {
+  id: serial("id").primaryKey(),
+  documentId: integer("document_id").notNull().references(() => documents.id),
+  verifierId: integer("verifier_id").references(() => users.id),
+  status: text("status").notNull(), // 'approved', 'rejected', 'needs_review'
+  notes: text("notes"),
+  automatedChecks: json("automated_checks"), // Risultati controlli automatici
+  manualReview: boolean("manual_review").default(false),
+  verificationDate: timestamp("verification_date").notNull().defaultNow(),
+  confidence: decimal("confidence", { precision: 5, scale: 2 }), // Score di fiducia 0-100
+  checkResults: json("check_results") // Dettagli specifici delle verifiche
+});
+
+export const documentTemplates = pgTable("document_templates", {
+  id: serial("id").primaryKey(),
+  type: text("type").notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  requiredFields: json("required_fields"), // Campi richiesti per questo tipo documento
+  validationRules: json("validation_rules"), // Regole di validazione automatica
+  isActive: boolean("is_active").notNull().default(true),
+  country: text("country").default("IT"),
+  createdAt: timestamp("created_at").notNull().defaultNow()
+});
+
+export const userDocumentRequirements = pgTable("user_document_requirements", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  documentType: text("document_type").notNull(),
+  isRequired: boolean("is_required").notNull().default(true),
+  dueDate: date("due_date"),
+  reminderSent: boolean("reminder_sent").default(false),
+  status: text("status").default("missing"), // 'missing', 'uploaded', 'verified', 'expired'
+  createdAt: timestamp("created_at").notNull().defaultNow()
+});
+
+export const documentAuditLog = pgTable("document_audit_log", {
+  id: serial("id").primaryKey(),
+  documentId: integer("document_id").notNull().references(() => documents.id),
+  userId: integer("user_id").notNull().references(() => users.id),
+  action: text("action").notNull(), // 'uploaded', 'verified', 'rejected', 'updated', 'deleted'
+  previousStatus: text("previous_status"),
+  newStatus: text("new_status"),
+  details: json("details"),
+  ipAddress: text("ip_address"),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").notNull().defaultNow()
 });
 
 // Relations
@@ -417,6 +480,63 @@ export const insertReviewSchema = createInsertSchema(reviews).omit({
   createdAt: true,
 });
 
+// Relazioni per documenti
+export const documentsRelations = relations(documents, ({ one, many }) => ({
+  user: one(users, {
+    fields: [documents.userId],
+    references: [users.id],
+  }),
+  boat: one(boats, {
+    fields: [documents.boatId],
+    references: [boats.id],
+  }),
+  booking: one(bookings, {
+    fields: [documents.bookingId],
+    references: [bookings.id],
+  }),
+  uploader: one(users, {
+    fields: [documents.uploadedBy],
+    references: [users.id],
+    relationName: "uploader",
+  }),
+  verifier: one(users, {
+    fields: [documents.verifiedBy],
+    references: [users.id],
+    relationName: "verifier",
+  }),
+  verifications: many(documentVerifications),
+  auditLogs: many(documentAuditLog),
+}));
+
+export const documentVerificationsRelations = relations(documentVerifications, ({ one }) => ({
+  document: one(documents, {
+    fields: [documentVerifications.documentId],
+    references: [documents.id],
+  }),
+  verifier: one(users, {
+    fields: [documentVerifications.verifierId],
+    references: [users.id],
+  }),
+}));
+
+export const userDocumentRequirementsRelations = relations(userDocumentRequirements, ({ one }) => ({
+  user: one(users, {
+    fields: [userDocumentRequirements.userId],
+    references: [users.id],
+  }),
+}));
+
+export const documentAuditLogRelations = relations(documentAuditLog, ({ one }) => ({
+  document: one(documents, {
+    fields: [documentAuditLog.documentId],
+    references: [documents.id],
+  }),
+  user: one(users, {
+    fields: [documentAuditLog.userId],
+    references: [users.id],
+  }),
+}));
+
 export const insertConversationSchema = createInsertSchema(conversations).omit({
   id: true,
   createdAt: true,
@@ -439,6 +559,27 @@ export const insertDocumentSchema = createInsertSchema(documents).omit({
   id: true,
   verified: true,
   verifiedBy: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertDocumentVerificationSchema = createInsertSchema(documentVerifications).omit({
+  id: true,
+  verificationDate: true,
+});
+
+export const insertDocumentTemplateSchema = createInsertSchema(documentTemplates).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserDocumentRequirementSchema = createInsertSchema(userDocumentRequirements).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertDocumentAuditLogSchema = createInsertSchema(documentAuditLog).omit({
+  id: true,
   createdAt: true,
 });
 
@@ -475,6 +616,17 @@ export type InsertMessageReaction = typeof messageReactions.$inferInsert;
 export type InsertMessageRead = typeof messageReads.$inferInsert;
 export type InsertChatNotification = typeof chatNotifications.$inferInsert;
 export type InsertChatAttachment = typeof chatAttachments.$inferInsert;
+
+// Document management types
+export type DocumentVerification = typeof documentVerifications.$inferSelect;
+export type DocumentTemplate = typeof documentTemplates.$inferSelect;
+export type UserDocumentRequirement = typeof userDocumentRequirements.$inferSelect;
+export type DocumentAuditLog = typeof documentAuditLog.$inferSelect;
+
+export type InsertDocumentVerification = z.infer<typeof insertDocumentVerificationSchema>;
+export type InsertDocumentTemplate = z.infer<typeof insertDocumentTemplateSchema>;
+export type InsertUserDocumentRequirement = z.infer<typeof insertUserDocumentRequirementSchema>;
+export type InsertDocumentAuditLog = z.infer<typeof insertDocumentAuditLogSchema>;
 
 
 

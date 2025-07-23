@@ -49,18 +49,8 @@ export function TrendingDestinations() {
   ];
 
   return (
-    <section className="py-12 bg-gradient-to-r from-blue-50 to-cyan-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <TrendingUp className="h-8 w-8 text-blue-600" />
-            <h2 className="text-3xl font-bold text-gray-900">Destinazioni in Tendenza</h2>
-          </div>
-          <p className="text-lg text-gray-600">Scopri le mete più amate dai nostri utenti nel Lazio</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {destinations.map((dest, index) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {destinations.map((dest, index) => (
             <Card key={index} className="group hover:shadow-xl transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="text-center mb-4">
@@ -103,9 +93,7 @@ export function TrendingDestinations() {
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      </div>
-    </section>
+      ))}
+    </div>
   );
 }

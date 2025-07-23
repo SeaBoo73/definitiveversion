@@ -41,6 +41,9 @@ export function Header() {
             <Link href="/charter" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Charter
             </Link>
+            <Link href="/ormeggio" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+              Ormeggio
+            </Link>
             <Link href="/ia" className="text-sea-gray hover:text-deep-navy transition-colors font-medium flex items-center gap-1">
               <Bot className="h-4 w-4" />
               IA

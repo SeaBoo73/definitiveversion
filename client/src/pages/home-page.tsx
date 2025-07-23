@@ -18,7 +18,7 @@ import { WeatherWidget } from "@/components/weather-widget";
 import { ExternalServicesQuickAccess } from "@/components/external-services-quick-access";
 import { OwnerBusinessSection } from "@/components/owner-business-section";
 import { OwnerCTAFloatingButton } from "@/components/owner-cta-floating-button";
-import { MooringServicesSection } from "@/components/mooring-services-section";
+
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -177,8 +177,7 @@ export default function HomePage() {
       {/* Owner Business Section - Ormeggio, Pagamenti e Guadagni */}
       <OwnerBusinessSection />
 
-      {/* Mooring Services - Servizi Ormeggio per Noleggiatori */}
-      <MooringServicesSection />
+
 
       {/* External Services Quick Access */}
       <section className="py-16 bg-white">

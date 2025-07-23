@@ -58,6 +58,7 @@ import { ReviewsPage } from "@/pages/reviews-page";
 import AvailabilityManagement from "@/pages/availability-management";
 import MessagingPage from "@/pages/messaging";
 import DocumentManagement from "@/pages/document-management";
+import OrmeggioPage from "@/pages/ormeggio-page";
 
 function Router() {
   return (
@@ -101,6 +102,7 @@ function Router() {
       <Route path="/emergency" component={EmergencyPage} />
       <Route path="/emergency-system" component={EmergencySystem} />
       <Route path="/external-services" component={ExternalServices} />
+      <Route path="/ormeggio" component={OrmeggioPage} />
       <Route path="/ricerca-avanzata" component={AdvancedSearchPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

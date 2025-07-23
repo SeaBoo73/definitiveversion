@@ -4,7 +4,8 @@ import {
   Calendar, 
   Ship, 
   HelpCircle, 
-  User 
+  User,
+  MapPin 
 } from "lucide-react";
 
 export function MobileNavigation() {
@@ -28,6 +29,12 @@ export function MobileNavigation() {
       label: "Charter",
       path: "/charter", 
       active: location === "/charter"
+    },
+    {
+      icon: MapPin,
+      label: "Ormeggio",
+      path: "/ormeggio", 
+      active: location === "/ormeggio"
     },
     {
       icon: HelpCircle,

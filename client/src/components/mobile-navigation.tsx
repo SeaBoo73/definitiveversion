@@ -2,10 +2,10 @@ import { Link, useLocation } from "wouter";
 import { 
   Search, 
   Calendar, 
-  Ship, 
-  HelpCircle, 
+  Settings, 
   User,
-  MapPin 
+  MapPin,
+  Compass
 } from "lucide-react";
 
 export function MobileNavigation() {
@@ -19,28 +19,28 @@ export function MobileNavigation() {
       active: location === "/"
     },
     {
-      icon: Calendar,
-      label: "Esperienze", 
-      path: "/esperienze",
-      active: location === "/esperienze" || location === "/charter"
-    },
-    {
       icon: MapPin,
       label: "Ormeggio",
       path: "/ormeggio", 
       active: location === "/ormeggio"
     },
     {
-      icon: HelpCircle,
-      label: "Aiuto",
-      path: "/aiuto",
-      active: location === "/aiuto"
+      icon: Calendar,
+      label: "Esperienze", 
+      path: "/altre-esperienze",
+      active: location === "/altre-esperienze" || location === "/esperienze" || location === "/charter"
+    },
+    {
+      icon: Compass,
+      label: "Servizi",
+      path: "/external-services",
+      active: location === "/external-services" || location === "/emergency-system"
     },
     {
       icon: User,
       label: "Profilo",
       path: "/profilo",
-      active: location === "/profilo" || location === "/auth" || location === "/customer-dashboard" || location === "/owner-dashboard"
+      active: location === "/profilo" || location === "/auth" || location === "/customer-dashboard" || location === "/owner-dashboard" || location === "/ia" || location === "/aiuto"
     }
   ];
 

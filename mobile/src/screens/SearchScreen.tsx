@@ -1,422 +1,309 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
+  ScrollView,
+  TouchableOpacity,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
-  ScrollView,
-  FlatList,
-  Alert
+  Image,
 } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
-import { OfflineService } from '../services/OfflineService';
-import { useLocation } from '../services/LocationService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-export default function SearchScreen({ navigation, route }: any) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    type: '',
-    location: route?.params?.location || '',
-    priceRange: [0, 1000],
-    capacity: '',
-    skipperRequired: false
-  });
-  const { getNearbyBoats } = useLocation();
+const SearchScreen = () => {
+  const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
-  const { data: boats = [], isLoading, refetch } = useQuery({
-    queryKey: ['boats', 'search', searchQuery, filters],
-    queryFn: async () => {
-      if (OfflineService.isOfflineMode()) {
-        return await OfflineService.searchBoatsOffline(searchQuery);
-      }
-      
-      const params = new URLSearchParams({
-        q: searchQuery,
-        type: filters.type,
-        location: filters.location,
-        minPrice: filters.priceRange[0].toString(),
-        maxPrice: filters.priceRange[1].toString(),
-        capacity: filters.capacity,
-        skipperRequired: filters.skipperRequired.toString()
-      });
-      
-      const response = await fetch(`/api/boats/search?${params}`);
-      if (!response.ok) throw new Error('Network error');
-      return await response.json();
+  const categories = [
+    { id: 'all', name: 'Tutte', icon: '🚢' },
+    { id: 'yacht', name: 'Yacht', icon: '🛥️' },
+    { id: 'sailing', name: 'Vela', icon: '⛵' },
+    { id: 'dinghy', name: 'Gommoni', icon: '🚤' },
+  ];
+
+  const boats = [
+    {
+      id: 1,
+      name: 'Azimut 55 Luxury',
+      location: 'Civitavecchia',
+      price: '€850',
+      rating: 4.9,
+      category: 'yacht',
+      image: 'https://via.placeholder.com/300x200?text=Yacht'
     },
-    enabled: searchQuery.length > 0 || Object.values(filters).some(v => v !== '' && v !== false)
+    {
+      id: 2,
+      name: 'Bavaria 46 Cruiser',
+      location: 'Gaeta',
+      price: '€320',
+      rating: 4.8,
+      category: 'sailing',
+      image: 'https://via.placeholder.com/300x200?text=Sailboat'
+    },
+    {
+      id: 3,
+      name: 'Zodiac Pro 650',
+      location: 'Anzio',
+      price: '€180',
+      rating: 4.7,
+      category: 'dinghy',
+      image: 'https://via.placeholder.com/300x200?text=Dinghy'
+    },
+    {
+      id: 4,
+      name: 'Princess V58',
+      location: 'Formia',
+      price: '€950',
+      rating: 4.9,
+      category: 'yacht',
+      image: 'https://via.placeholder.com/300x200?text=Princess'
+    },
+  ];
+
+  const filteredBoats = boats.filter(boat => {
+    const matchesSearch = boat.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                         boat.location.toLowerCase().includes(searchText.toLowerCase());
+    const matchesCategory = selectedCategory === '' || selectedCategory === 'all' || boat.category === selectedCategory;
+    return matchesSearch && matchesCategory;
   });
-
-  const boatTypes = [
-    'Yacht', 'Gommone', 'Catamarano', 'Moto d\'acqua', 
-    'Barca a vela', 'Charter', 'Houseboat'
-  ];
-
-  const locations = [
-    'Fiumicino', 'Anzio', 'Gaeta', 'Sperlonga', 
-    'Terracina', 'Civitavecchia', 'Ponza', 'Formia'
-  ];
-
-  const FilterButton = ({ title, isActive, onPress }: any) => (
-    <TouchableOpacity
-      style={[styles.filterButton, isActive && styles.filterButtonActive]}
-      onPress={onPress}
-    >
-      <Text style={[styles.filterButtonText, isActive && styles.filterButtonTextActive]}>
-        {title}
-      </Text>
-    </TouchableOpacity>
-  );
-
-  const BoatItem = ({ boat }: any) => (
-    <TouchableOpacity
-      style={styles.boatItem}
-      onPress={() => navigation.navigate('BoatDetails', { boatId: boat.id, boat })}
-    >
-      <View style={styles.boatInfo}>
-        <Text style={styles.boatName}>{boat.name}</Text>
-        <Text style={styles.boatType}>{boat.type}</Text>
-        <Text style={styles.boatLocation}>📍 {boat.location}</Text>
-        <Text style={styles.boatPrice}>€{boat.pricePerDay}/giorno</Text>
-      </View>
-      <Icon name="chevron-right" size={24} color="#ccc" />
-    </TouchableOpacity>
-  );
 
   return (
     <View style={styles.container}>
-      {/* Search Header */}
-      <View style={styles.searchHeader}>
-        <View style={styles.searchBox}>
-          <Icon name="search" size={20} color="#666" style={styles.searchIcon} />
+      {/* Search Bar */}
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <Icon name="search" size={20} color="#6b7280" />
           <TextInput
             style={styles.searchInput}
             placeholder="Cerca barche, località..."
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            returnKeyType="search"
+            value={searchText}
+            onChangeText={setSearchText}
           />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={() => setSearchQuery('')}>
-              <Icon name="clear" size={20} color="#666" />
+          {searchText ? (
+            <TouchableOpacity onPress={() => setSearchText('')}>
+              <Icon name="clear" size={20} color="#6b7280" />
             </TouchableOpacity>
-          )}
+          ) : null}
         </View>
       </View>
 
-      {/* Filters */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filtersContainer}>
-        <View style={styles.filters}>
+      {/* Categories Filter */}
+      <ScrollView 
+        horizontal 
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoriesContainer}
+      >
+        {categories.map((category) => (
           <TouchableOpacity
-            style={styles.filterToggle}
-            onPress={() => navigation.navigate('Map')}
+            key={category.id}
+            style={[
+              styles.categoryButton,
+              selectedCategory === category.id && styles.categoryButtonActive
+            ]}
+            onPress={() => setSelectedCategory(selectedCategory === category.id ? '' : category.id)}
           >
-            <Icon name="map" size={16} color="#0066CC" />
-            <Text style={styles.filterToggleText}>Mappa</Text>
+            <Text style={styles.categoryIcon}>{category.icon}</Text>
+            <Text style={[
+              styles.categoryText,
+              selectedCategory === category.id && styles.categoryTextActive
+            ]}>
+              {category.name}
+            </Text>
           </TouchableOpacity>
-
-          <Text style={styles.filterLabel}>Tipo:</Text>
-          {boatTypes.map(type => (
-            <FilterButton
-              key={type}
-              title={type}
-              isActive={filters.type === type}
-              onPress={() => setFilters(prev => ({ 
-                ...prev, 
-                type: prev.type === type ? '' : type 
-              }))}
-            />
-          ))}
-        </View>
-      </ScrollView>
-
-      {/* Location Filters */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.locationContainer}>
-        <View style={styles.locations}>
-          <Text style={styles.filterLabel}>Zona:</Text>
-          {locations.map(location => (
-            <FilterButton
-              key={location}
-              title={location}
-              isActive={filters.location === location}
-              onPress={() => setFilters(prev => ({ 
-                ...prev, 
-                location: prev.location === location ? '' : location 
-              }))}
-            />
-          ))}
-        </View>
+        ))}
       </ScrollView>
 
       {/* Results */}
-      <View style={styles.resultsContainer}>
-        {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <Text>Caricamento...</Text>
-          </View>
-        ) : boats.length > 0 ? (
-          <>
-            <Text style={styles.resultsCount}>
-              {boats.length} barche trovate
-            </Text>
-            <FlatList
-              data={boats}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => <BoatItem boat={item} />}
-              showsVerticalScrollIndicator={false}
-            />
-          </>
-        ) : searchQuery.length > 0 || Object.values(filters).some(v => v !== '' && v !== false) ? (
-          <View style={styles.emptyContainer}>
-            <Icon name="search-off" size={48} color="#ccc" />
+      <ScrollView style={styles.resultsContainer} showsVerticalScrollIndicator={false}>
+        <Text style={styles.resultsTitle}>
+          {filteredBoats.length} barche trovate
+        </Text>
+
+        {filteredBoats.map((boat) => (
+          <TouchableOpacity key={boat.id} style={styles.boatCard}>
+            <Image source={{ uri: boat.image }} style={styles.boatImage} />
+            <View style={styles.boatInfo}>
+              <View style={styles.boatHeader}>
+                <Text style={styles.boatName}>{boat.name}</Text>
+                <View style={styles.rating}>
+                  <Icon name="star" size={16} color="#FFD700" />
+                  <Text style={styles.ratingText}>{boat.rating}</Text>
+                </View>
+              </View>
+              <Text style={styles.boatLocation}>📍 {boat.location}</Text>
+              <View style={styles.boatFooter}>
+                <Text style={styles.boatPrice}>{boat.price}/giorno</Text>
+                <TouchableOpacity style={styles.bookButton}>
+                  <Text style={styles.bookButtonText}>Prenota</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ))}
+
+        {filteredBoats.length === 0 && (
+          <View style={styles.emptyState}>
+            <Icon name="search-off" size={64} color="#d1d5db" />
             <Text style={styles.emptyTitle}>Nessuna barca trovata</Text>
             <Text style={styles.emptySubtitle}>
-              Prova a modificare i filtri di ricerca
+              Prova a modificare i filtri o la ricerca
             </Text>
           </View>
-        ) : (
-          <View style={styles.suggestionsContainer}>
-            <Text style={styles.suggestionsTitle}>Suggerimenti</Text>
-            
-            <TouchableOpacity
-              style={styles.suggestionCard}
-              onPress={async () => {
-                const nearby = await getNearbyBoats(25);
-                if (nearby.length > 0) {
-                  // Navigate to nearby boats
-                  Alert.alert('Barche Vicine', `Trovate ${nearby.length} barche nei dintorni`);
-                }
-              }}
-            >
-              <Icon name="near-me" size={24} color="#4CAF50" />
-              <View style={styles.suggestionText}>
-                <Text style={styles.suggestionTitle}>Barche Vicine</Text>
-                <Text style={styles.suggestionSubtitle}>Trova barche nella tua zona</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.suggestionCard}
-              onPress={() => setFilters(prev => ({ ...prev, type: 'Gommone' }))}
-            >
-              <Icon name="directions-boat" size={24} color="#2196F3" />
-              <View style={styles.suggestionText}>
-                <Text style={styles.suggestionTitle}>Gommoni</Text>
-                <Text style={styles.suggestionSubtitle}>Ideali per esplorare la costa</Text>
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.suggestionCard}
-              onPress={() => setFilters(prev => ({ ...prev, location: 'Anzio' }))}
-            >
-              <Icon name="place" size={24} color="#FF9800" />
-              <View style={styles.suggestionText}>
-                <Text style={styles.suggestionTitle}>Anzio</Text>
-                <Text style={styles.suggestionSubtitle}>Destinazione popolare</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8fafc',
   },
-  searchHeader: {
-    backgroundColor: '#FFF',
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  searchContainer: {
+    padding: 16,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  searchBox: {
+  searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-  },
-  searchIcon: {
-    marginRight: 10,
+    backgroundColor: '#f3f4f6',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   searchInput: {
     flex: 1,
+    marginLeft: 8,
     fontSize: 16,
-    color: '#333',
+    color: '#1f2937',
   },
-  filtersContainer: {
-    backgroundColor: '#FFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  categoriesContainer: {
+    backgroundColor: 'white',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
-  filters: {
+  categoryButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 15,
-    gap: 10,
+    backgroundColor: '#f3f4f6',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 12,
   },
-  locationContainer: {
-    backgroundColor: '#FFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  categoryButtonActive: {
+    backgroundColor: '#0ea5e9',
   },
-  locations: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    gap: 10,
+  categoryIcon: {
+    fontSize: 16,
+    marginRight: 6,
   },
-  filterToggle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E3F2FD',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-    gap: 5,
-  },
-  filterToggleText: {
-    color: '#0066CC',
-    fontWeight: '600',
-  },
-  filterLabel: {
+  categoryText: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-    marginRight: 5,
+    color: '#6b7280',
+    fontWeight: '500',
   },
-  filterButton: {
-    backgroundColor: '#f5f5f5',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  filterButtonActive: {
-    backgroundColor: '#0066CC',
-    borderColor: '#0066CC',
-  },
-  filterButtonText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  filterButtonTextActive: {
-    color: '#FFF',
-    fontWeight: '600',
+  categoryTextActive: {
+    color: 'white',
   },
   resultsContainer: {
     flex: 1,
-    padding: 15,
+    padding: 16,
   },
-  resultsCount: {
-    fontSize: 16,
+  resultsTitle: {
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#333',
+    color: '#1f2937',
+    marginBottom: 16,
   },
-  boatItem: {
-    backgroundColor: '#FFF',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+  boatCard: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
+  boatImage: {
+    width: '100%',
+    height: 200,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
   boatInfo: {
-    flex: 1,
+    padding: 16,
+  },
+  boatHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   boatName: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
+    color: '#1f2937',
+    flex: 1,
   },
-  boatType: {
+  rating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  ratingText: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
+    color: '#6b7280',
+    marginLeft: 4,
   },
   boatLocation: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 4,
+    color: '#6b7280',
+    marginBottom: 12,
+  },
+  boatFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   boatPrice: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#0066CC',
+    color: '#0ea5e9',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  bookButton: {
+    backgroundColor: '#0ea5e9',
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 8,
   },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  bookButtonText: {
+    color: 'white',
+    fontWeight: '600',
+  },
+  emptyState: {
     alignItems: 'center',
-    paddingHorizontal: 40,
+    justifyContent: 'center',
+    paddingVertical: 64,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginTop: 20,
-    marginBottom: 10,
+    color: '#6b7280',
+    marginTop: 16,
   },
   emptySubtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#9ca3af',
     textAlign: 'center',
-  },
-  suggestionsContainer: {
-    flex: 1,
-  },
-  suggestionsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 20,
-  },
-  suggestionCard: {
-    backgroundColor: '#FFF',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  suggestionText: {
-    marginLeft: 15,
-    flex: 1,
-  },
-  suggestionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 4,
-  },
-  suggestionSubtitle: {
-    fontSize: 14,
-    color: '#666',
+    marginTop: 8,
   },
 });
+
+export default SearchScreen;

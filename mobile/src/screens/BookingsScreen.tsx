@@ -2,216 +2,92 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  FlatList,
+  ScrollView,
   TouchableOpacity,
-  Alert,
-  RefreshControl
+  StyleSheet,
+  Image,
 } from 'react-native';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '../services/AuthService';
-import { OfflineService } from '../services/OfflineService';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-interface Booking {
-  id: number;
-  boatId: number;
-  boatName: string;
-  startDate: string;
-  endDate: string;
-  totalPrice: number;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-  location: string;
-  ownerName: string;
-}
+const BookingsScreen = () => {
+  const [activeTab, setActiveTab] = useState('current');
 
-export default function BookingsScreen({ navigation }: any) {
-  const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'active' | 'past'>('active');
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
-
-  const { data: bookings = [], isLoading, refetch } = useQuery({
-    queryKey: ['bookings', user?.id, activeTab],
-    queryFn: async () => {
-      if (OfflineService.isOfflineMode()) {
-        return await OfflineService.getCachedBookings();
-      }
-      
-      const baseUrl = __DEV__ ? 'http://localhost:5000' : 'https://your-production-url.com';
-      const response = await fetch(`${baseUrl}/api/bookings/user/${user?.id}?status=${activeTab}`);
-      if (!response.ok) throw new Error('Network error');
-      const data = await response.json();
-      
-      // Cache per uso offline
-      await OfflineService.cacheBookings(data);
-      return data;
+  const currentBookings = [
+    {
+      id: 1,
+      boatName: 'Azimut 55 Luxury',
+      location: 'Civitavecchia',
+      startDate: '15 Jul 2025',
+      endDate: '17 Jul 2025',
+      price: '€1,700',
+      status: 'confirmed',
+      image: 'https://via.placeholder.com/100x80?text=Yacht'
     },
-    enabled: !!user
-  });
-
-  const cancelBookingMutation = useMutation({
-    mutationFn: async (bookingId: number) => {
-      if (OfflineService.isOfflineMode()) {
-        await OfflineService.addPendingAction('booking', {
-          action: 'cancel',
-          bookingId,
-          userId: user?.id
-        });
-        return;
-      }
-      
-      const baseUrl = __DEV__ ? 'http://localhost:5000' : 'https://your-production-url.com';
-      const response = await fetch(`${baseUrl}/api/bookings/${bookingId}/cancel`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' }
-      });
-      if (!response.ok) throw new Error('Errore cancellazione');
-      return response.json();
+    {
+      id: 2,
+      boatName: 'Bavaria 46 Cruiser',
+      location: 'Gaeta',
+      startDate: '25 Jul 2025',
+      endDate: '27 Jul 2025',
+      price: '€640',
+      status: 'pending',
+      image: 'https://via.placeholder.com/100x80?text=Sailboat'
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookings'] });
-      Alert.alert('Successo', 'Prenotazione cancellata con successo');
-    },
-    onError: (error) => {
-      Alert.alert('Errore', 'Impossibile cancellare la prenotazione');
-    }
-  });
+  ];
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    try {
-      await refetch();
-      if (!OfflineService.isOfflineMode()) {
-        await OfflineService.syncOfflineData();
-      }
-    } finally {
-      setRefreshing(false);
-    }
-  };
+  const pastBookings = [
+    {
+      id: 3,
+      boatName: 'Zodiac Pro 650',
+      location: 'Anzio',
+      startDate: '5 Jun 2025',
+      endDate: '6 Jun 2025',
+      price: '€180',
+      status: 'completed',
+      image: 'https://via.placeholder.com/100x80?text=Dinghy'
+    },
+    {
+      id: 4,
+      boatName: 'Princess V58',
+      location: 'Formia',
+      startDate: '20 May 2025',
+      endDate: '22 May 2025',
+      price: '€1,900',
+      status: 'completed',
+      image: 'https://via.placeholder.com/100x80?text=Princess'
+    },
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'confirmed': return '#4CAF50';
-      case 'pending': return '#FF9800';
-      case 'cancelled': return '#F44336';
-      case 'completed': return '#2196F3';
-      default: return '#666';
+      case 'confirmed': return '#10b981';
+      case 'pending': return '#f59e0b';
+      case 'completed': return '#6b7280';
+      default: return '#ef4444';
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'confirmed': return 'Confermata';
+      case 'confirmed': return 'Confermato';
       case 'pending': return 'In attesa';
-      case 'cancelled': return 'Cancellata';
-      case 'completed': return 'Completata';
-      default: return status;
+      case 'completed': return 'Completato';
+      default: return 'Annullato';
     }
   };
 
-  const canCancelBooking = (booking: Booking) => {
-    const startDate = new Date(booking.startDate);
-    const now = new Date();
-    const hoursDiff = (startDate.getTime() - now.getTime()) / (1000 * 3600);
-    
-    return booking.status === 'confirmed' && hoursDiff > 24;
-  };
-
-  const handleCancelBooking = (booking: Booking) => {
-    Alert.alert(
-      'Conferma Cancellazione',
-      `Sei sicuro di voler cancellare la prenotazione per ${booking.boatName}?`,
-      [
-        { text: 'Annulla', style: 'cancel' },
-        { 
-          text: 'Conferma', 
-          style: 'destructive',
-          onPress: () => cancelBookingMutation.mutate(booking.id)
-        }
-      ]
-    );
-  };
-
-  const BookingCard = ({ booking }: { booking: Booking }) => (
-    <TouchableOpacity
-      style={styles.bookingCard}
-      onPress={() => navigation.navigate('BookingDetails', { bookingId: booking.id })}
-    >
-      <View style={styles.bookingHeader}>
-        <Text style={styles.boatName}>{booking.boatName}</Text>
-        <View style={[styles.statusBadge, { backgroundColor: getStatusColor(booking.status) }]}>
-          <Text style={styles.statusText}>{getStatusText(booking.status)}</Text>
-        </View>
-      </View>
-      
-      <Text style={styles.location}>📍 {booking.location}</Text>
-      <Text style={styles.owner}>Proprietario: {booking.ownerName}</Text>
-      
-      <View style={styles.dateContainer}>
-        <Text style={styles.dates}>
-          📅 {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
-        </Text>
-      </View>
-      
-      <View style={styles.bookingFooter}>
-        <Text style={styles.price}>€{booking.totalPrice}</Text>
-        <View style={styles.actions}>
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => navigation.navigate('Messages', { bookingId: booking.id })}
-          >
-            <Icon name="message" size={16} color="#0066CC" />
-            <Text style={styles.actionText}>Messaggi</Text>
-          </TouchableOpacity>
-          
-          {canCancelBooking(booking) && (
-            <TouchableOpacity
-              style={[styles.actionButton, styles.cancelButton]}
-              onPress={() => handleCancelBooking(booking)}
-            >
-              <Icon name="cancel" size={16} color="#F44336" />
-              <Text style={[styles.actionText, styles.cancelText]}>Cancella</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
-  const EmptyState = () => (
-    <View style={styles.emptyContainer}>
-      <Icon name="event-busy" size={64} color="#ccc" />
-      <Text style={styles.emptyTitle}>
-        {activeTab === 'active' ? 'Nessuna prenotazione attiva' : 'Nessuna prenotazione passata'}
-      </Text>
-      <Text style={styles.emptySubtitle}>
-        {activeTab === 'active' 
-          ? 'Inizia a esplorare le barche disponibili'
-          : 'Le tue prenotazioni completate appariranno qui'
-        }
-      </Text>
-      {activeTab === 'active' && (
-        <TouchableOpacity
-          style={styles.exploreButton}
-          onPress={() => navigation.navigate('Search')}
-        >
-          <Text style={styles.exploreButtonText}>Esplora Barche</Text>
-        </TouchableOpacity>
-      )}
-    </View>
-  );
+  const bookings = activeTab === 'current' ? currentBookings : pastBookings;
 
   return (
     <View style={styles.container}>
-      {/* Tab Navigator */}
+      {/* Tab Navigation */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
-          style={[styles.tab, activeTab === 'active' && styles.activeTab]}
-          onPress={() => setActiveTab('active')}
+          style={[styles.tab, activeTab === 'current' && styles.activeTab]}
+          onPress={() => setActiveTab('current')}
         >
-          <Text style={[styles.tabText, activeTab === 'active' && styles.activeTabText]}>
-            Attive
+          <Text style={[styles.tabText, activeTab === 'current' && styles.activeTabText]}>
+            Attuali
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -224,134 +100,176 @@ export default function BookingsScreen({ navigation }: any) {
         </TouchableOpacity>
       </View>
 
-      {/* Offline Indicator */}
-      {OfflineService.isOfflineMode() && (
-        <View style={styles.offlineIndicator}>
-          <Icon name="cloud-off" size={16} color="#FFF" />
-          <Text style={styles.offlineText}>Dati offline - potrebbero non essere aggiornati</Text>
-        </View>
-      )}
-
       {/* Bookings List */}
-      {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <Text>Caricamento prenotazioni...</Text>
+      <ScrollView style={styles.bookingsList} showsVerticalScrollIndicator={false}>
+        {bookings.length > 0 ? (
+          bookings.map((booking) => (
+            <View key={booking.id} style={styles.bookingCard}>
+              <Image source={{ uri: booking.image }} style={styles.bookingImage} />
+              <View style={styles.bookingInfo}>
+                <View style={styles.bookingHeader}>
+                  <Text style={styles.boatName}>{booking.boatName}</Text>
+                  <View style={[styles.statusBadge, { backgroundColor: getStatusColor(booking.status) }]}>
+                    <Text style={styles.statusText}>{getStatusText(booking.status)}</Text>
+                  </View>
+                </View>
+                
+                <Text style={styles.location}>📍 {booking.location}</Text>
+                
+                <View style={styles.dateContainer}>
+                  <Text style={styles.dateText}>
+                    📅 {booking.startDate} - {booking.endDate}
+                  </Text>
+                </View>
+
+                <View style={styles.bookingFooter}>
+                  <Text style={styles.price}>{booking.price}</Text>
+                  <View style={styles.actionButtons}>
+                    {booking.status === 'confirmed' && (
+                      <TouchableOpacity style={styles.contactButton}>
+                        <Icon name="message" size={16} color="#0ea5e9" />
+                        <Text style={styles.contactButtonText}>Contatta</Text>
+                      </TouchableOpacity>
+                    )}
+                    <TouchableOpacity style={styles.detailsButton}>
+                      <Text style={styles.detailsButtonText}>Dettagli</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </View>
+          ))
+        ) : (
+          <View style={styles.emptyState}>
+            <Icon name="event-note" size={64} color="#d1d5db" />
+            <Text style={styles.emptyTitle}>
+              {activeTab === 'current' ? 'Nessuna prenotazione attuale' : 'Nessuna prenotazione passata'}
+            </Text>
+            <Text style={styles.emptySubtitle}>
+              {activeTab === 'current' 
+                ? 'Inizia a esplorare e prenota la tua prima barca!'
+                : 'Le tue prenotazioni completate appariranno qui'
+              }
+            </Text>
+            {activeTab === 'current' && (
+              <TouchableOpacity style={styles.exploreButton}>
+                <Text style={styles.exploreButtonText}>Esplora Barche</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+      </ScrollView>
+
+      {/* Quick Stats */}
+      {bookings.length > 0 && (
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{currentBookings.length}</Text>
+            <Text style={styles.statLabel}>Prenotazioni Attive</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{pastBookings.length}</Text>
+            <Text style={styles.statLabel}>Viaggi Completati</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>€4,420</Text>
+            <Text style={styles.statLabel}>Totale Speso</Text>
+          </View>
         </View>
-      ) : bookings.length > 0 ? (
-        <FlatList
-          data={bookings}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <BookingCard booking={item} />}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          contentContainerStyle={styles.listContainer}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <EmptyState />
       )}
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8fafc',
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: '#FFF',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    backgroundColor: 'white',
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   tab: {
     flex: 1,
-    paddingVertical: 15,
+    paddingVertical: 12,
     alignItems: 'center',
+    borderBottomWidth: 2,
+    borderBottomColor: 'transparent',
   },
   activeTab: {
-    borderBottomWidth: 2,
-    borderBottomColor: '#0066CC',
+    borderBottomColor: '#0ea5e9',
   },
   tabText: {
     fontSize: 16,
-    color: '#666',
+    fontWeight: '500',
+    color: '#6b7280',
   },
   activeTabText: {
-    color: '#0066CC',
+    color: '#0ea5e9',
     fontWeight: 'bold',
   },
-  offlineIndicator: {
-    backgroundColor: '#FF6B35',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 8,
-    gap: 8,
-  },
-  offlineText: {
-    color: '#FFF',
-    fontSize: 12,
-  },
-  loadingContainer: {
+  bookingsList: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  listContainer: {
-    padding: 15,
+    padding: 16,
   },
   bookingCard: {
-    backgroundColor: '#FFF',
+    backgroundColor: 'white',
     borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
+    marginBottom: 16,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    flexDirection: 'row',
+    padding: 16,
+  },
+  bookingImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 16,
+  },
+  bookingInfo: {
+    flex: 1,
   },
   bookingHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 10,
+    alignItems: 'flex-start',
+    marginBottom: 8,
   },
   boatName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#1f2937',
     flex: 1,
+    marginRight: 8,
   },
   statusBadge: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 15,
+    borderRadius: 12,
   },
   statusText: {
-    color: '#FFF',
     fontSize: 12,
-    fontWeight: 'bold',
+    color: 'white',
+    fontWeight: '600',
   },
   location: {
     fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
-  owner: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 10,
+    color: '#6b7280',
+    marginBottom: 8,
   },
   dateContainer: {
-    marginBottom: 15,
+    marginBottom: 12,
   },
-  dates: {
+  dateText: {
     fontSize: 14,
-    color: '#333',
+    color: '#6b7280',
   },
   bookingFooter: {
     flexDirection: 'row',
@@ -359,63 +277,97 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   price: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#0066CC',
+    color: '#0ea5e9',
   },
-  actions: {
+  actionButtons: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 8,
   },
-  actionButton: {
+  contactButton: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 15,
-    backgroundColor: '#E3F2FD',
-    gap: 4,
+    backgroundColor: '#e0f2fe',
+    borderRadius: 6,
   },
-  cancelButton: {
-    backgroundColor: '#FFEBEE',
-  },
-  actionText: {
+  contactButtonText: {
     fontSize: 12,
-    color: '#0066CC',
-    fontWeight: '600',
+    color: '#0ea5e9',
+    marginLeft: 4,
+    fontWeight: '500',
   },
-  cancelText: {
-    color: '#F44336',
+  detailsButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: '#f3f4f6',
+    borderRadius: 6,
   },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  detailsButtonText: {
+    fontSize: 12,
+    color: '#6b7280',
+    fontWeight: '500',
+  },
+  emptyState: {
     alignItems: 'center',
-    paddingHorizontal: 40,
+    justifyContent: 'center',
+    paddingVertical: 64,
+    paddingHorizontal: 32,
   },
   emptyTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginTop: 20,
-    marginBottom: 10,
+    color: '#6b7280',
+    marginTop: 16,
     textAlign: 'center',
   },
   emptySubtitle: {
     fontSize: 14,
-    color: '#666',
+    color: '#9ca3af',
     textAlign: 'center',
-    marginBottom: 30,
+    marginTop: 8,
+    lineHeight: 20,
   },
   exploreButton: {
-    backgroundColor: '#0066CC',
-    paddingHorizontal: 30,
+    backgroundColor: '#0ea5e9',
+    paddingHorizontal: 24,
     paddingVertical: 12,
-    borderRadius: 25,
+    borderRadius: 8,
+    marginTop: 16,
   },
   exploreButtonText: {
-    color: '#FFF',
-    fontSize: 16,
+    color: 'white',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingVertical: 20,
+    marginTop: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: -1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 3,
+  },
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 18,
     fontWeight: 'bold',
+    color: '#0ea5e9',
+  },
+  statLabel: {
+    fontSize: 12,
+    color: '#6b7280',
+    marginTop: 4,
+    textAlign: 'center',
   },
 });
+
+export default BookingsScreen;

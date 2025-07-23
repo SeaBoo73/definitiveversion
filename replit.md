@@ -7,13 +7,14 @@ SeaGO is a comprehensive boat rental platform built as a full-stack web applicat
 **Current Status (July 2025):**
 - ✅ Core platform fully functional with responsive mobile design
 - ✅ User authentication system with multi-role support (customer, owner, admin)
-- ✅ Boat search and filtering with interactive map
+- ✅ Boat search and filtering with Google Maps integration
 - ✅ Owner dashboard for boat management
 - ✅ Customer dashboard for booking management
 - ✅ Complete homepage with "Come funziona" and "Aiuto" sections
 - ✅ Mobile-optimized web app accessible via browser
 - ✅ Stripe payment integration completed with checkout flow
-- 🔄 React Native mobile app (in development)
+- ✅ React Native mobile app (simplified and different from web)
+- ✅ Google Maps integration with API key: AIzaSyDTjTGKA-CO281BTK3-WEx5vyfQ-_ah4Bo
 
 ## User Preferences
 

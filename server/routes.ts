@@ -20,7 +20,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-06-20",
+  apiVersion: "2025-06-30.basil",
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -38,6 +38,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // External services routes
   app.use('/api/external', externalRoutes);
+  
+  // AI Chat routes
+  const aiChatRoutes = await import("./routes/ai-chat");
+  app.use('/api/ai', aiChatRoutes.default);
   
   // Review routes
   const { registerReviewRoutes } = await import("./routes/reviews");

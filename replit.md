@@ -155,6 +155,19 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 23, 2025 - Chat AI Intelligenza Artificiale Implementata
+- **Sistema Chat AI Completo:**
+  - ✅ Chat AI integrata con OpenAI GPT-4o per assistenza marittima intelligente
+  - ✅ Assistente specializzato in servizi SeaGO: barche, porti, meteo, prezzi, prenotazioni
+  - ✅ Interfaccia chat moderna con avatar bot e messaggi in tempo reale
+  - ✅ Azioni rapide per domande comuni (trova barche, meteo, condizioni marine, carburante)
+  - ✅ Fallback elegante per WhatsApp/Email quando AI non disponibile
+  - ✅ Sistema di gestione errori robusto con messaggi informativi
+  - ✅ Pulsante chat floating con design gradient blu SeaGO
+  - ✅ API backend /api/ai/chat con context marittimo specializzato
+  - ✅ Integrazione completa nel LiveChatButton esistente
+  - ✅ Chat AI come opzione principale con badge "Consigliato"
+
 ### July 23, 2025 - Homepage Web Completamente Ripristinata
 - **Homepage Web Ripristinata alla Versione Completa:**
   - ✅ Homepage web ripristinata con TUTTE le funzionalità avanzate originali

@@ -21,175 +21,181 @@ export function Header() {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            <div className="flex items-center gap-3">
+          <div className="flex-shrink-0 mr-10">
+            <Link href="/" className="flex items-center gap-3">
               <img 
                 src={seagoLogo} 
                 alt="SeaGO Logo" 
-                className="h-10 w-10 rounded-lg object-cover flex-shrink-0"
+                className="h-10 w-10 rounded-lg object-cover"
               />
-              <span className="text-xl lg:text-2xl font-bold whitespace-nowrap" style={{ color: '#022237' }}>SeaGO</span>
-            </div>
-          </Link>
+              <span className="text-2xl font-bold whitespace-nowrap" style={{ color: '#022237' }}>SeaGO</span>
+            </Link>
+          </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center flex-1 justify-center max-w-4xl mx-8">
-            <div className="flex items-center space-x-6 xl:space-x-8">
-            <Link 
-              href="/" 
-              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
-                location === "/" 
-                  ? "text-deep-navy bg-gray-100 font-semibold" 
-                  : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-              }`}
-            >
-              Esplora
-            </Link>
-            <Link 
-              href="/esperienze" 
-              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
-                location === "/esperienze"
-                  ? "text-deep-navy bg-gray-100 font-semibold" 
-                  : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-              }`}
-            >
-              Esperienze
-            </Link>
-            <Link 
-              href="/charter" 
-              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
-                location === "/charter"
-                  ? "text-deep-navy bg-gray-100 font-semibold" 
-                  : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-              }`}
-            >
-              Charter
-            </Link>
-            <Link 
-              href="/ormeggio" 
-              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
-                location === "/ormeggio" 
-                  ? "text-deep-navy bg-gray-100 font-semibold" 
-                  : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-              }`}
-            >
-              Ormeggio
-            </Link>
-            <Link 
-              href="/ia" 
-              className={`transition-colors font-medium px-3 py-2 rounded-lg flex items-center gap-1 whitespace-nowrap ${
-                location === "/ia" 
-                  ? "text-deep-navy bg-gray-100 font-semibold" 
-                  : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-              }`}
-            >
-              <Bot className="h-4 w-4" />
-              IA
-            </Link>
-            <ServicesNavButton />
-            <Link 
-              href="/aiuto" 
-              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
-                location === "/aiuto" 
-                  ? "text-deep-navy bg-gray-100 font-semibold" 
-                  : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-              }`}
-            >
-              Aiuto
-            </Link>
-            {user?.role === "owner" && (
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden lg:flex items-center justify-center flex-1">
+            <div className="flex items-center space-x-8">
               <Link 
-                href="/owner-dashboard" 
-                className="text-sea-gray hover:text-deep-navy transition-colors font-medium px-2 py-1 rounded-md hover:bg-gray-50"
+                href="/" 
+                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                  location === "/" 
+                    ? "text-deep-navy bg-blue-50 font-semibold" 
+                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                }`}
               >
-                Dashboard Host
+                Esplora
               </Link>
-            )}
-            {user?.role === "admin" && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="text-sea-gray hover:text-deep-navy transition-colors font-medium px-2 py-1 rounded-md hover:bg-gray-50">
-                    Admin
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/admin-dashboard" className="w-full cursor-pointer">Dashboard</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/admin-performance" className="w-full cursor-pointer">Performance Center</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/analytics" className="w-full cursor-pointer">Analytics</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+              <Link 
+                href="/esperienze" 
+                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                  location === "/esperienze"
+                    ? "text-deep-navy bg-blue-50 font-semibold" 
+                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                }`}
+              >
+                Esperienze
+              </Link>
+              <Link 
+                href="/charter" 
+                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                  location === "/charter"
+                    ? "text-deep-navy bg-blue-50 font-semibold" 
+                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                }`}
+              >
+                Charter
+              </Link>
+              <Link 
+                href="/ormeggio" 
+                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                  location === "/ormeggio" 
+                    ? "text-deep-navy bg-blue-50 font-semibold" 
+                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                }`}
+              >
+                Ormeggio
+              </Link>
+              <Link 
+                href="/ia" 
+                className={`transition-colors font-medium px-4 py-2 rounded-md flex items-center gap-2 text-sm ${
+                  location === "/ia" 
+                    ? "text-deep-navy bg-blue-50 font-semibold" 
+                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                }`}
+              >
+                <Bot className="h-4 w-4" />
+                IA
+              </Link>
+              <div className="flex items-center">
+                <ServicesNavButton />
+              </div>
+              <Link 
+                href="/aiuto" 
+                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                  location === "/aiuto" 
+                    ? "text-deep-navy bg-blue-50 font-semibold" 
+                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                }`}
+              >
+                Aiuto
+              </Link>
+              {user?.role === "owner" && (
+                <Link 
+                  href="/owner-dashboard" 
+                  className="text-gray-700 hover:text-deep-navy transition-colors font-medium px-4 py-2 rounded-md hover:bg-gray-50 text-sm"
+                >
+                  Dashboard Host
+                </Link>
+              )}
+              {user?.role === "admin" && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="text-gray-700 hover:text-deep-navy transition-colors font-medium px-4 py-2 rounded-md hover:bg-gray-50 text-sm">
+                      Admin
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin-dashboard" className="w-full cursor-pointer">Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin-performance" className="w-full cursor-pointer">Performance Center</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/analytics" className="w-full cursor-pointer">Analytics</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
             </div>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            className="lg:hidden flex items-center justify-center h-10 w-10 p-0"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-
-          {/* User Menu */}
-          <div className="hidden lg:flex items-center space-x-4 flex-shrink-0 ml-8">
-            {user && <NotificationsCenter />}
-            {!user && (
-              <Button asChild className="bg-coral hover:bg-orange-600 text-white font-bold shadow-lg text-sm px-4 py-2 whitespace-nowrap">
-                <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
-              </Button>
-            )}
-            {user?.role === "customer" && (
-              <Button variant="ghost" asChild className="text-blue-700 hover:text-blue-900 font-semibold text-sm px-3 py-2 whitespace-nowrap">
-                <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
-              </Button>
-            )}
-            
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="flex items-center space-x-2 border border-gray-300 rounded-full py-1 px-3 hover:shadow-md transition-shadow cursor-pointer">
-                    <Menu className="h-4 w-4 text-gray-600" />
-                    <Avatar className="h-6 w-6">
-                      <AvatarFallback className="text-xs">
-                        {user.firstName?.[0] || user.username[0].toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem asChild>
-                    <Link href="/customer-dashboard">Il mio profilo</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/customer-dashboard">Le mie prenotazioni</Link>
-                  </DropdownMenuItem>
-                  {user.role === "owner" && (
+          {/* Right Side - User Menu & Mobile Button */}
+          <div className="flex items-center space-x-4 flex-shrink-0">
+            {/* Desktop User Menu */}
+            <div className="hidden lg:flex items-center space-x-4">
+              {user && <NotificationsCenter />}
+              {!user && (
+                <Button asChild className="bg-coral hover:bg-orange-600 text-white font-semibold shadow-lg text-sm px-6 py-2">
+                  <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
+                </Button>
+              )}
+              {user?.role === "customer" && (
+                <Button variant="ghost" asChild className="text-blue-700 hover:text-blue-900 font-semibold text-sm px-4 py-2">
+                  <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
+                </Button>
+              )}
+              
+              {/* Desktop User Avatar/Login */}
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <div className="flex items-center space-x-2 border border-gray-300 rounded-full py-1 px-3 hover:shadow-md transition-shadow cursor-pointer">
+                      <Menu className="h-4 w-4 text-gray-600" />
+                      <Avatar className="h-6 w-6">
+                        <AvatarFallback className="text-xs">
+                          {user.firstName?.[0] || user.username[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href="/owner-dashboard">Dashboard Host</Link>
+                      <Link href="/customer-dashboard">Il mio profilo</Link>
                     </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={handleLogout}>
-                    Disconnetti
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <div className="flex items-center space-x-2 border border-gray-300 rounded-full py-1 px-3 hover:shadow-md transition-shadow cursor-pointer">
-                <Link href="/auth" className="flex items-center space-x-2">
-                  <Menu className="h-4 w-4 text-gray-600" />
-                  <User className="h-4 w-4 text-gray-600" />
-                </Link>
-              </div>
-            )}
+                    <DropdownMenuItem asChild>
+                      <Link href="/customer-dashboard">Le mie prenotazioni</Link>
+                    </DropdownMenuItem>
+                    {user.role === "owner" && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/owner-dashboard">Dashboard Host</Link>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Disconnetti
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center space-x-2 border border-gray-300 rounded-full py-1 px-3 hover:shadow-md transition-shadow cursor-pointer">
+                  <Link href="/auth" className="flex items-center space-x-2">
+                    <Menu className="h-4 w-4 text-gray-600" />
+                    <User className="h-4 w-4 text-gray-600" />
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              className="lg:hidden flex items-center justify-center h-10 w-10 p-0"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
           </div>
         </div>
 

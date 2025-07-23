@@ -397,6 +397,9 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Menu principale semplificato: Esplora, Esperienze, Ormeggio
   - ✅ Pulsante floating mobile rimosso su richiesta utente
   - ✅ Marketplace Ormeggi come pagina dedicata nella navigazione principale
+  - ✅ Sezione business proprietari trasformata in servizi ormeggio generali
+  - ✅ Rimossi riferimenti a guadagni/business, focus solo su servizi ormeggio
+  - ✅ CTA modificati per esplorare ormeggi e servizi portuali
 - **Servizi Ormeggio Completi (July 23, 2025 - Sera):**
   - ✅ Sezione dedicata servizi ormeggio per evitare barche in rada
   - ✅ 3 porti partner principali con tariffe dettagliate per ogni lunghezza barca

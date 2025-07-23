@@ -31,7 +31,7 @@ router.post("/chat", async (req, res) => {
     if (!openai) {
       return res.status(503).json({
         error: "AI service temporarily unavailable",
-        fallbackMessage: "Mi dispiace, il servizio di assistenza AI non è al momento disponibile. Puoi contattarci tramite WhatsApp o email per ricevere supporto immediato."
+        fallbackMessage: "Mi dispiace, il servizio di assistenza AI non è al momento disponibile. Puoi contattarci tramite email per ricevere supporto immediato."
       });
     }
 
@@ -103,7 +103,7 @@ router.post("/chat", async (req, res) => {
 
     res.status(500).json({
       error: "Internal server error",
-      fallbackMessage: "Mi dispiace, c'è stato un errore tecnico. Il nostro team è stato avvisato. Puoi contattarci direttamente per assistenza immediata."
+      fallbackMessage: "Mi dispiace, c'è stato un errore tecnico. Il nostro team è stato avvisato. Puoi contattarci via email per assistenza immediata."
     });
   }
 });

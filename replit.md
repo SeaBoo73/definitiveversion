@@ -161,12 +161,13 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Assistente specializzato in servizi SeaGO: barche, porti, meteo, prezzi, prenotazioni
   - ✅ Interfaccia chat moderna con avatar bot e messaggi in tempo reale
   - ✅ Azioni rapide per domande comuni (trova barche, meteo, condizioni marine, carburante)
-  - ✅ Fallback elegante per WhatsApp/Email quando AI non disponibile
+  - ✅ Fallback elegante per Email quando AI non disponibile
   - ✅ Sistema di gestione errori robusto con messaggi informativi
   - ✅ Pulsante chat floating con design gradient blu SeaGO
   - ✅ API backend /api/ai/chat con context marittimo specializzato
   - ✅ Integrazione completa nel LiveChatButton esistente
   - ✅ Chat AI come opzione principale con badge "Consigliato"
+  - ✅ Opzione WhatsApp rimossa su richiesta utente - rimangono solo Chat AI ed Email
 
 ### July 23, 2025 - Homepage Web Completamente Ripristinata
 - **Homepage Web Ripristinata alla Versione Completa:**

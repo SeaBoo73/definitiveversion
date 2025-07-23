@@ -8,14 +8,7 @@ export function LiveChatButton() {
   const [showOptions, setShowOptions] = useState(false);
   const [showAiChat, setShowAiChat] = useState(false);
 
-  const handleWhatsApp = () => {
-    // Numero WhatsApp SeaGO (sostituire con numero reale)
-    const phoneNumber = "393512345678"; 
-    const message = "Ciao! Ho bisogno di assistenza per SeaGO.";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-    setShowOptions(false);
-  };
+
 
   const handleEmailSupport = () => {
     window.open('mailto:assistenza@seago.it?subject=Richiesta Assistenza SeaGO', '_self');
@@ -63,16 +56,7 @@ export function LiveChatButton() {
                 <span className="ml-auto text-xs bg-white/20 px-2 py-1 rounded-full">Consigliato</span>
               </Button>
 
-              {/* WhatsApp */}
-              <Button
-                onClick={handleWhatsApp}
-                variant="outline"
-                className="w-full justify-start"
-              >
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Chat WhatsApp
-                <ExternalLink className="h-3 w-3 ml-auto" />
-              </Button>
+
 
               {/* Email */}
               <Button

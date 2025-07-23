@@ -64,7 +64,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
       const errorMessage: ChatMessage = {
         id: Date.now().toString() + '_error',
         role: 'assistant',
-        content: 'Mi dispiace, al momento non riesco a rispondere. Il servizio di assistenza AI potrebbe essere temporaneamente non disponibile. Puoi contattarci via WhatsApp o email per assistenza immediata.',
+        content: 'Mi dispiace, al momento non riesco a rispondere. Il servizio di assistenza AI potrebbe essere temporaneamente non disponibile. Puoi contattarci via email per assistenza immediata.',
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -105,11 +105,8 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
     sendMessageMutation.mutate(action);
   };
 
-  const handleFallbackSupport = () => {
-    const phoneNumber = "393512345678"; 
-    const message = "Ciao! Ho bisogno di assistenza per SeaGO.";
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+  const handleEmailSupport = () => {
+    window.open('mailto:assistenza@seago.it?subject=Richiesta Assistenza SeaGO', '_self');
   };
 
   if (!isOpen) return null;
@@ -225,18 +222,10 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  onClick={handleFallbackSupport}
+                  onClick={handleEmailSupport}
                   className="text-xs h-7"
                 >
-                  WhatsApp
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => window.open('mailto:assistenza@seago.it', '_self')}
-                  className="text-xs h-7"
-                >
-                  Email
+                  Email Assistenza
                 </Button>
               </div>
             </div>

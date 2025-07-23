@@ -31,6 +31,7 @@
   --coral: hsl(22, 93%, 54%);
   --sea-gray: hsl(215, 16%, 47%);
   --logo-light-blue: hsl(205, 85%, 65%);
+  --seago-teal: #3DBEC4;
 }
 
 .dark {
@@ -73,6 +74,14 @@
   
   .bg-ocean-blue {
     background-color: var(--ocean-blue);
+  }
+  
+  .seago-teal {
+    color: var(--seago-teal);
+  }
+  
+  .bg-seago-teal {
+    background-color: var(--seago-teal);
   }
   
   .deep-navy {

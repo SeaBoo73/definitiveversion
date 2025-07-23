@@ -23,7 +23,6 @@ export interface SearchFilters {
   guests: number;
   boatTypes?: string[];
   skipperRequired?: boolean;
-  fuelIncluded?: boolean;
 }
 
 export function SearchFilters({ onSearch }: SearchFiltersProps) {
@@ -55,7 +54,6 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         searchParams.set("boatTypes", filters.boatTypes.join(","));
       }
       if (filters.skipperRequired) searchParams.set("skipperRequired", "true");
-      if (filters.fuelIncluded) searchParams.set("fuelIncluded", "true");
       
       setLocation(`/search?${searchParams.toString()}`);
     }
@@ -229,15 +227,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             <UserCheck className="mr-2 h-4 w-4" />
             <span className={filters.skipperRequired ? "text-blue-700" : "text-gray-900"}>Con Skipper</span>
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => updateFilter("fuelIncluded", !filters.fuelIncluded)}
-            className={filters.fuelIncluded ? "bg-red-100 text-red-700 border-red-300" : "text-gray-900 hover:bg-gray-50"}
-          >
-            <Fuel className="mr-2 h-4 w-4" />
-            <span className={filters.fuelIncluded ? "text-red-700" : "text-gray-900"}>Carburante escluso</span>
-          </Button>
+
           <Button
             variant="outline"
             size="sm"
@@ -343,6 +333,93 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             </div>
           </div>
         )}
+      </div>
+
+      {/* Fuel Policy Information Section */}
+      <div className="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
+        <div className="flex items-center mb-3">
+          <Fuel className="h-5 w-5 text-blue-600 mr-2" />
+          <h3 className="text-lg font-semibold text-blue-900">Politiche Carburante</h3>
+        </div>
+        
+        <div className="space-y-4 text-sm">
+          {/* Pieno a Pieno */}
+          <div className="bg-white rounded-md p-3 border border-blue-100">
+            <div className="flex items-center mb-2">
+              <span className="text-lg mr-2">⛽</span>
+              <h4 className="font-semibold text-gray-900">1. "Pieno a pieno" (come per le auto a noleggio)</h4>
+            </div>
+            <div className="ml-6 space-y-2">
+              <div>
+                <span className="text-blue-600 font-medium">🔹 Come funziona:</span>
+                <ul className="ml-4 mt-1 space-y-1 text-gray-700">
+                  <li>• Il noleggiatore riceve la barca con il serbatoio pieno</li>
+                  <li>• Deve riconsegnarla piena</li>
+                  <li>• Il rifornimento può farlo di persona presso un distributore marino</li>
+                  <li>• Oppure chiedere al noleggiatore di farlo al rientro (a pagamento)</li>
+                </ul>
+              </div>
+              <div>
+                <span className="text-green-600 font-medium">💵 Spese extra:</span>
+                <p className="ml-4 mt-1 text-gray-700">
+                  Se la barca non viene riportata piena: benzina mancante + penale di servizio (20-50 €)
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Consumo a Parte */}
+          <div className="bg-white rounded-md p-3 border border-blue-100">
+            <div className="flex items-center mb-2">
+              <span className="text-lg mr-2">⛽</span>
+              <h4 className="font-semibold text-gray-900">2. "Consumo a parte" (fatturazione a litri o a ore motore)</h4>
+            </div>
+            <div className="ml-6 space-y-2">
+              <div>
+                <span className="text-blue-600 font-medium">🔹 Come funziona:</span>
+                <ul className="ml-4 mt-1 space-y-1 text-gray-700">
+                  <li>• Il carburante si paga separatamente a fine giornata</li>
+                  <li>• Misurazione tramite litri consumati (sensori/contalitri)</li>
+                  <li>• Oppure ore di navigazione (contatore motore)</li>
+                </ul>
+              </div>
+              <div>
+                <span className="text-green-600 font-medium">💵 Tariffe tipiche:</span>
+                <ul className="ml-4 mt-1 space-y-1 text-gray-700">
+                  <li>• <strong>Litri:</strong> circa 1,80 – 2,20 €/litro per benzina marina</li>
+                  <li>• <strong>Ore motore:</strong> 15-20 €/ora (varia per potenza motore)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Flat Fee */}
+          <div className="bg-white rounded-md p-3 border border-blue-100">
+            <div className="flex items-center mb-2">
+              <span className="text-lg mr-2">⛽</span>
+              <h4 className="font-semibold text-gray-900">3. "Flat fee carburante" (meno comune)</h4>
+            </div>
+            <div className="ml-6 space-y-2">
+              <div>
+                <span className="text-blue-600 font-medium">🔹 Come funziona:</span>
+                <ul className="ml-4 mt-1 space-y-1 text-gray-700">
+                  <li>• Pacchetto carburante incluso per brevi tour standard (2h/4h)</li>
+                  <li>• Tariffa fissa (+50€/giorno) che copre consumo medio</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Suggerimenti */}
+          <div className="bg-yellow-50 rounded-md p-3 border border-yellow-200 mt-4">
+            <h4 className="font-semibold text-amber-800 mb-2">💡 Suggerimenti per il noleggio:</h4>
+            <ul className="space-y-1 text-amber-700 text-sm">
+              <li>• Scegli "Carburante escluso – paghi a fine noleggio" con stima consumo</li>
+              <li>• Verifica se disponibile opzione "carburante incluso" a tariffa maggiorata</li>
+              <li>• Per una gita media consumerai circa 30 € di carburante</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   );

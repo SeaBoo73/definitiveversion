@@ -21,7 +21,6 @@ interface SearchParams {
   guests?: string;
   boatTypes?: string;
   skipperRequired?: string;
-  fuelIncluded?: string;
 }
 
 export function SearchResults() {
@@ -38,7 +37,6 @@ export function SearchResults() {
     guests: urlParams.get("guests") || undefined,
     boatTypes: urlParams.get("boatTypes") || undefined,
     skipperRequired: urlParams.get("skipperRequired") || undefined,
-    fuelIncluded: urlParams.get("fuelIncluded") || undefined,
   };
 
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -165,9 +163,6 @@ export function SearchResults() {
                 )}
                 {searchParams.skipperRequired === "true" && (
                   <Badge variant="secondary">Con Skipper</Badge>
-                )}
-                {searchParams.fuelIncluded === "true" && (
-                  <Badge variant="secondary">Carburante incluso</Badge>
                 )}
               </div>
             </div>

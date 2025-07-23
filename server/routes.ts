@@ -35,6 +35,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const { registerReviewRoutes } = await import("./routes/reviews");
   registerReviewRoutes(app);
   
+  // Messaging routes
+  const { registerMessagingRoutes } = await import("./routes/messaging");
+  registerMessagingRoutes(app);
+  
   // Setup authentication
   setupAuth(app);
 
@@ -577,13 +581,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   const httpServer = createServer(app);
   
-  // Setup WebSocket
+  // Setup WebSocket server for real-time messaging
+  const { setupWebSocketServer } = await import("./routes/messaging");
+  setupWebSocketServer(httpServer);
+  
+  // Keep legacy Socket.IO for compatibility
   const io = new SocketIOServer(httpServer, {
     cors: {
       origin: process.env.NODE_ENV === 'production' ? false : "*",
       methods: ["GET", "POST"]
     },
-    path: '/ws'
+    path: '/socket.io'
   });
 
   app.set('socketio', io);

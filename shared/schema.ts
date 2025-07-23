@@ -8,7 +8,10 @@ export const customerLevelEnum = pgEnum("customer_level", ["bronze", "silver", "
 export const discountTypeEnum = pgEnum("discount_type", ["percentage", "fixed", "loyalty", "early_bird", "last_minute"]);
 export const boatTypeEnum = pgEnum("boat_type", ["gommone", "barche-senza-patente", "yacht", "catamarano", "jetski", "sailboat", "kayak", "charter", "houseboat"]);
 export const bookingStatusEnum = pgEnum("booking_status", ["pending", "confirmed", "cancelled", "completed"]);
-export const messageStatusEnum = pgEnum("message_status", ["sent", "read"]);
+export const messageStatusEnum = pgEnum("message_status", ["sent", "delivered", "read"]);
+export const messageTypeEnum = pgEnum("message_type", ["text", "image", "document", "system"]);
+export const conversationTypeEnum = pgEnum("conversation_type", ["direct", "group", "support"]);
+export const notificationTypeEnum = pgEnum("notification_type", ["message", "booking", "system"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -100,19 +103,164 @@ export const reviews = pgTable("reviews", {
 // Chat tables
 export const conversations = pgTable("conversations", {
   id: serial("id").primaryKey(),
-  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  bookingId: integer("booking_id").references(() => bookings.id),
+  type: conversationTypeEnum("type").default("direct"),
+  title: text("title"),
+  description: text("description"),
+  isGroup: boolean("is_group").default(false),
+  createdBy: integer("created_by").references(() => users.id),
+  active: boolean("active").default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   lastMessageAt: timestamp("last_message_at").defaultNow().notNull(),
+});
+
+export const conversationParticipants = pgTable("conversation_participants", {
+  id: serial("id").primaryKey(),
+  conversationId: integer("conversation_id").references(() => conversations.id).notNull(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  role: text("role").default("member"), // member, admin, owner
+  joinedAt: timestamp("joined_at").defaultNow().notNull(),
+  leftAt: timestamp("left_at"),
+  isActive: boolean("is_active").default(true),
+  lastReadAt: timestamp("last_read_at").defaultNow(),
 });
 
 export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversation_id").references(() => conversations.id).notNull(),
   senderId: integer("sender_id").references(() => users.id).notNull(),
+  replyToId: integer("reply_to_id").references(() => messages.id),
+  type: messageTypeEnum("type").default("text"),
   content: text("content").notNull(),
+  attachments: text("attachments").array(),
+  metadata: text("metadata"), // JSON string for additional data
+  status: messageStatusEnum("status").default("sent"),
+  editedAt: timestamp("edited_at"),
+  deletedAt: timestamp("deleted_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  readAt: timestamp("read_at"),
 });
+
+export const messageReactions = pgTable("message_reactions", {
+  id: serial("id").primaryKey(),
+  messageId: integer("message_id").references(() => messages.id).notNull(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  emoji: text("emoji").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const messageReads = pgTable("message_reads", {
+  id: serial("id").primaryKey(),
+  messageId: integer("message_id").references(() => messages.id).notNull(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  readAt: timestamp("read_at").defaultNow().notNull(),
+});
+
+export const chatNotifications = pgTable("chat_notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  type: notificationTypeEnum("type").notNull(),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  data: text("data"), // JSON string for additional data
+  read: boolean("read").default(false),
+  actionUrl: text("action_url"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const chatAttachments = pgTable("chat_attachments", {
+  id: serial("id").primaryKey(),
+  messageId: integer("message_id").references(() => messages.id).notNull(),
+  filename: text("filename").notNull(),
+  originalName: text("original_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  size: integer("size").notNull(),
+  url: text("url").notNull(),
+  uploadedBy: integer("uploaded_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Chat Relations
+export const conversationRelations = relations(conversations, ({ one, many }) => ({
+  booking: one(bookings, {
+    fields: [conversations.bookingId],
+    references: [bookings.id],
+  }),
+  createdByUser: one(users, {
+    fields: [conversations.createdBy],
+    references: [users.id],
+  }),
+  participants: many(conversationParticipants),
+  messages: many(messages),
+}));
+
+export const conversationParticipantRelations = relations(conversationParticipants, ({ one }) => ({
+  conversation: one(conversations, {
+    fields: [conversationParticipants.conversationId],
+    references: [conversations.id],
+  }),
+  user: one(users, {
+    fields: [conversationParticipants.userId],
+    references: [users.id],
+  }),
+}));
+
+export const messageRelations = relations(messages, ({ one, many }) => ({
+  conversation: one(conversations, {
+    fields: [messages.conversationId],
+    references: [conversations.id],
+  }),
+  sender: one(users, {
+    fields: [messages.senderId],
+    references: [users.id],
+  }),
+  replyTo: one(messages, {
+    fields: [messages.replyToId],
+    references: [messages.id],
+  }),
+  attachments: many(chatAttachments),
+  reactions: many(messageReactions),
+  reads: many(messageReads),
+}));
+
+export const messageReactionRelations = relations(messageReactions, ({ one }) => ({
+  message: one(messages, {
+    fields: [messageReactions.messageId],
+    references: [messages.id],
+  }),
+  user: one(users, {
+    fields: [messageReactions.userId],
+    references: [users.id],
+  }),
+}));
+
+export const messageReadRelations = relations(messageReads, ({ one }) => ({
+  message: one(messages, {
+    fields: [messageReads.messageId],
+    references: [messages.id],
+  }),
+  user: one(users, {
+    fields: [messageReads.userId],
+    references: [users.id],
+  }),
+}));
+
+export const chatNotificationRelations = relations(chatNotifications, ({ one }) => ({
+  user: one(users, {
+    fields: [chatNotifications.userId],
+    references: [users.id],
+  }),
+}));
+
+export const chatAttachmentRelations = relations(chatAttachments, ({ one }) => ({
+  message: one(messages, {
+    fields: [chatAttachments.messageId],
+    references: [messages.id],
+  }),
+  uploadedByUser: one(users, {
+    fields: [chatAttachments.uploadedBy],
+    references: [users.id],
+  }),
+}));
 
 export const favorites = pgTable("favorites", {
   id: serial("id").primaryKey(),
@@ -314,6 +462,19 @@ export type InsertConversation = z.infer<typeof insertConversationSchema>;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
 export type InsertDiscount = z.infer<typeof insertDiscountSchema>;
 export type InsertDocument = z.infer<typeof insertDocumentSchema>;
+
+// Chat types
+export type ConversationParticipant = typeof conversationParticipants.$inferSelect;
+export type MessageReaction = typeof messageReactions.$inferSelect;
+export type MessageRead = typeof messageReads.$inferSelect;
+export type ChatNotification = typeof chatNotifications.$inferSelect;
+export type ChatAttachment = typeof chatAttachments.$inferSelect;
+
+export type InsertConversationParticipant = typeof conversationParticipants.$inferInsert;
+export type InsertMessageReaction = typeof messageReactions.$inferInsert;
+export type InsertMessageRead = typeof messageReads.$inferInsert;
+export type InsertChatNotification = typeof chatNotifications.$inferInsert;
+export type InsertChatAttachment = typeof chatAttachments.$inferInsert;
 
 
 

@@ -1,7 +1,8 @@
 import { 
   users, boats, bookings, reviews, conversations, messages, favorites, discounts, userDiscounts, documents,
   notifications, promotions, analytics, emergencies, dynamicPricing, boatFeatures, availability, weatherData,
-  bookingRules, bookingLocks, priceHistory,
+  bookingRules, bookingLocks, priceHistory, conversationParticipants, messageReactions, messageReads, 
+  chatNotifications, chatAttachments,
   type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, 
   type Review, type InsertReview, type Conversation, type InsertConversation, 
   type Message, type InsertMessage, type Favorite, type Discount, type UserDiscount, 
@@ -11,7 +12,9 @@ import {
   type DynamicPricing, type InsertDynamicPricing, type BoatFeature, type InsertBoatFeature,
   type Availability, type InsertAvailability, type WeatherData,
   type BookingRule, type InsertBookingRule, type BookingLock, type InsertBookingLock,
-  type PriceHistory, type InsertPriceHistory
+  type PriceHistory, type InsertPriceHistory, type ConversationParticipant, type InsertConversationParticipant,
+  type MessageReaction, type InsertMessageReaction, type MessageRead, type InsertMessageRead,
+  type ChatNotification, type InsertChatNotification, type ChatAttachment, type InsertChatAttachment
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc, asc, gte, lte, ilike, sql } from "drizzle-orm";
@@ -72,8 +75,30 @@ export interface IStorage {
 
   // Message methods
   getMessages(conversationId: number): Promise<Message[]>;
+  getMessage(id: number): Promise<Message | undefined>;
   createMessage(message: InsertMessage): Promise<Message>;
-  markMessageAsRead(messageId: number): Promise<void>;
+  getMessageWithDetails(id: number): Promise<any>;
+  markMessageAsRead(messageId: number, userId: number): Promise<void>;
+  
+  // Enhanced Conversation methods
+  getUserConversations(userId: number): Promise<any[]>;
+  getConversationParticipants(conversationId: number): Promise<ConversationParticipant[]>;
+  addConversationParticipant(participant: InsertConversationParticipant): Promise<ConversationParticipant>;
+  isUserInConversation(conversationId: number, userId: number): Promise<boolean>;
+  getUserRoleInConversation(conversationId: number, userId: number): Promise<string | null>;
+  updateConversationLastMessage(conversationId: number): Promise<void>;
+  getConversationMessages(conversationId: number, page: number, limit: number): Promise<Message[]>;
+  
+  // Message Reactions
+  addMessageReaction(reaction: InsertMessageReaction): Promise<MessageReaction>;
+  
+  // Chat Notifications
+  createChatNotification(notification: InsertChatNotification): Promise<ChatNotification>;
+  getUnreadNotifications(userId: number): Promise<ChatNotification[]>;
+  markNotificationAsRead(notificationId: number, userId: number): Promise<void>;
+  
+  // Chat Attachments
+  createChatAttachment(attachment: InsertChatAttachment): Promise<ChatAttachment>;
   getUnreadMessagesCount(userId: number): Promise<number>;
 
   // Legacy message methods (keeping for compatibility)
@@ -421,7 +446,7 @@ export class DatabaseStorage implements IStorage {
       .orderBy(asc(messages.createdAt));
   }
 
-  async createMessage(message: InsertMessage) {
+  async createMessage(message: InsertMessage): Promise<Message> {
     const result = await db.insert(messages).values(message).returning();
     
     // Update conversation last message time
@@ -433,11 +458,211 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  async markMessageAsRead(messageId: number) {
+  async getMessage(id: number): Promise<Message | undefined> {
+    const [message] = await db.select().from(messages).where(eq(messages.id, id));
+    return message || undefined;
+  }
+
+  async getMessageWithDetails(id: number): Promise<any> {
+    const result = await db
+      .select({
+        id: messages.id,
+        conversationId: messages.conversationId,
+        senderId: messages.senderId,
+        content: messages.content,
+        type: messages.type,
+        attachments: messages.attachments,
+        status: messages.status,
+        createdAt: messages.createdAt,
+        sender: {
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          username: users.username
+        }
+      })
+      .from(messages)
+      .leftJoin(users, eq(messages.senderId, users.id))
+      .where(eq(messages.id, id));
+    
+    return result[0] || null;
+  }
+
+  async markMessageAsRead(messageId: number, userId: number): Promise<void> {
     await db
-      .update(messages)
-      .set({ readAt: new Date() })
-      .where(eq(messages.id, messageId));
+      .insert(messageReads)
+      .values({ messageId, userId })
+      .onConflictDoNothing();
+  }
+
+  // Enhanced Conversation methods
+  async getUserConversations(userId: number): Promise<any[]> {
+    const result = await db
+      .select({
+        id: conversations.id,
+        type: conversations.type,
+        title: conversations.title,
+        isGroup: conversations.isGroup,
+        lastMessageAt: conversations.lastMessageAt,
+        booking: {
+          id: bookings.id,
+          boatId: bookings.boatId,
+          startDate: bookings.startDate,
+          endDate: bookings.endDate
+        }
+      })
+      .from(conversations)
+      .leftJoin(conversationParticipants, eq(conversations.id, conversationParticipants.conversationId))
+      .leftJoin(bookings, eq(conversations.bookingId, bookings.id))
+      .where(and(
+        eq(conversationParticipants.userId, userId),
+        eq(conversationParticipants.isActive, true),
+        eq(conversations.active, true)
+      ))
+      .orderBy(desc(conversations.lastMessageAt));
+    
+    return result;
+  }
+
+  async getConversationParticipants(conversationId: number): Promise<ConversationParticipant[]> {
+    const participants = await db
+      .select()
+      .from(conversationParticipants)
+      .where(and(
+        eq(conversationParticipants.conversationId, conversationId),
+        eq(conversationParticipants.isActive, true)
+      ));
+    
+    return participants;
+  }
+
+  async addConversationParticipant(participant: InsertConversationParticipant): Promise<ConversationParticipant> {
+    const [newParticipant] = await db
+      .insert(conversationParticipants)
+      .values(participant)
+      .returning();
+    
+    return newParticipant;
+  }
+
+  async isUserInConversation(conversationId: number, userId: number): Promise<boolean> {
+    const [participant] = await db
+      .select()
+      .from(conversationParticipants)
+      .where(and(
+        eq(conversationParticipants.conversationId, conversationId),
+        eq(conversationParticipants.userId, userId),
+        eq(conversationParticipants.isActive, true)
+      ));
+    
+    return !!participant;
+  }
+
+  async getUserRoleInConversation(conversationId: number, userId: number): Promise<string | null> {
+    const [participant] = await db
+      .select({ role: conversationParticipants.role })
+      .from(conversationParticipants)
+      .where(and(
+        eq(conversationParticipants.conversationId, conversationId),
+        eq(conversationParticipants.userId, userId),
+        eq(conversationParticipants.isActive, true)
+      ));
+    
+    return participant?.role || null;
+  }
+
+  async updateConversationLastMessage(conversationId: number): Promise<void> {
+    await db
+      .update(conversations)
+      .set({ lastMessageAt: new Date() })
+      .where(eq(conversations.id, conversationId));
+  }
+
+  async getConversationMessages(conversationId: number, page: number, limit: number): Promise<Message[]> {
+    const offset = (page - 1) * limit;
+    
+    const result = await db
+      .select({
+        id: messages.id,
+        conversationId: messages.conversationId,
+        senderId: messages.senderId,
+        content: messages.content,
+        type: messages.type,
+        attachments: messages.attachments,
+        status: messages.status,
+        createdAt: messages.createdAt,
+        sender: {
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          username: users.username
+        }
+      })
+      .from(messages)
+      .leftJoin(users, eq(messages.senderId, users.id))
+      .where(eq(messages.conversationId, conversationId))
+      .orderBy(desc(messages.createdAt))
+      .limit(limit)
+      .offset(offset);
+    
+    return result as any[];
+  }
+
+  // Message Reactions
+  async addMessageReaction(reaction: InsertMessageReaction): Promise<MessageReaction> {
+    const [newReaction] = await db
+      .insert(messageReactions)
+      .values(reaction)
+      .onConflictDoUpdate({
+        target: [messageReactions.messageId, messageReactions.userId],
+        set: { emoji: reaction.emoji }
+      })
+      .returning();
+    
+    return newReaction;
+  }
+
+  // Chat Notifications
+  async createChatNotification(notification: InsertChatNotification): Promise<ChatNotification> {
+    const [newNotification] = await db
+      .insert(chatNotifications)
+      .values(notification)
+      .returning();
+    
+    return newNotification;
+  }
+
+  async getUnreadNotifications(userId: number): Promise<ChatNotification[]> {
+    const notifs = await db
+      .select()
+      .from(chatNotifications)
+      .where(and(
+        eq(chatNotifications.userId, userId),
+        eq(chatNotifications.read, false)
+      ))
+      .orderBy(desc(chatNotifications.createdAt));
+    
+    return notifs;
+  }
+
+  async markNotificationAsRead(notificationId: number, userId: number): Promise<void> {
+    await db
+      .update(chatNotifications)
+      .set({ read: true })
+      .where(and(
+        eq(chatNotifications.id, notificationId),
+        eq(chatNotifications.userId, userId)
+      ));
+  }
+
+  // Chat Attachments
+  async createChatAttachment(attachment: InsertChatAttachment): Promise<ChatAttachment> {
+    const [newAttachment] = await db
+      .insert(chatAttachments)
+      .values(attachment)
+      .returning();
+    
+    return newAttachment;
   }
 
   async getUnreadMessagesCount(userId: number) {

@@ -104,9 +104,7 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="h-96 rounded-xl overflow-hidden shadow-lg">
-            <InteractiveMap />
-          </div>
+          <InteractiveMap />
           
           <div className="text-center mt-8">
             <Button size="lg" variant="outline" asChild className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">

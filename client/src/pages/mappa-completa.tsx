@@ -88,21 +88,12 @@ export default function MappaCompletaPage() {
             </Card>
           </div>
 
-          {/* Mappa Google Maps */}
+          {/* Mappa */}
           <div className="lg:col-span-3">
             <Card>
               <CardContent className="p-0">
                 <div className="h-96 lg:h-[600px] rounded-lg overflow-hidden">
-                  <iframe
-                    src="https://www.google.com/maps/embed/v1/view?key=AIzaSyDTjTGKA-CO281BTK3-WEx5vyfQ-_ah4Bo&center=41.5,12.8&zoom=9&maptype=satellite"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Mappa Porti del Lazio"
-                  ></iframe>
+                  <InteractiveMap />
                 </div>
               </CardContent>
             </Card>

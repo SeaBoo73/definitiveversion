@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-// Screens semplificati per mobile
-import HomeScreen from './src/screens/HomeScreen';
-import SearchScreen from './src/screens/SearchScreen'; 
-import BookingsScreen from './src/screens/BookingsScreen';
+// Screens per le 5 sezioni richieste
+import EsploraScreen from './src/screens/EsploraScreen';
+import OrmeggioScreen from './src/screens/OrmeggioScreen';
+import EsperienzeScreen from './src/screens/EsperienzeScreen';
+import ServiziScreen from './src/screens/ServiziScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
@@ -20,14 +21,17 @@ function MainTabs() {
           let iconName;
 
           switch (route.name) {
-            case 'Home':
-              iconName = 'home';
+            case 'Esplora':
+              iconName = 'explore';
               break;
-            case 'Cerca':
-              iconName = 'search';
+            case 'Ormeggio':
+              iconName = 'anchor';
               break;
-            case 'Prenotazioni':
-              iconName = 'event';
+            case 'Esperienze':
+              iconName = 'sailing';
+              break;
+            case 'Servizi':
+              iconName = 'room-service';
               break;
             case 'Profilo':
               iconName = 'person';
@@ -57,24 +61,29 @@ function MainTabs() {
       })}
     >
       <Tab.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{ title: 'SeaGO' }}
+        name="Esplora" 
+        component={EsploraScreen} 
+        options={{ title: 'Esplora' }}
       />
       <Tab.Screen 
-        name="Cerca" 
-        component={SearchScreen} 
-        options={{ title: 'Cerca Barche' }}
+        name="Ormeggio" 
+        component={OrmeggioScreen} 
+        options={{ title: 'Ormeggio' }}
       />
       <Tab.Screen 
-        name="Prenotazioni" 
-        component={BookingsScreen} 
-        options={{ title: 'Le mie Prenotazioni' }}
+        name="Esperienze" 
+        component={EsperienzeScreen} 
+        options={{ title: 'Esperienze' }}
+      />
+      <Tab.Screen 
+        name="Servizi" 
+        component={ServiziScreen} 
+        options={{ title: 'Servizi' }}
       />
       <Tab.Screen 
         name="Profilo" 
         component={ProfileScreen} 
-        options={{ title: 'Il mio Profilo' }}
+        options={{ title: 'Profilo' }}
       />
     </Tab.Navigator>
   );

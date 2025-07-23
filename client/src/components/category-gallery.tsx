@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -32,22 +32,17 @@ const categoryMapping = [
     image: motorboatImage,
   },
   {
-    id: "jetski",
-    name: "Moto d'acqua", 
-    description: "Adrenalina e velocità sull'acqua",
-    image: jetskiImage,
-  },
-  {
-    id: "motorboat",
-    name: "Barche a motore",
-    description: "Velocità e comfort per esplorare la costa", 
-    image: motorboatImage,
-  },
-  {
     id: "sailboat",
     name: "Barche a vela",
     description: "L'esperienza autentica della navigazione",
     image: sailboatImage,
+  },
+  // Categorie senza corrispondenza nel DB - mantenute per completezza UI
+  {
+    id: "jetski",
+    name: "Moto d'acqua", 
+    description: "Adrenalina e velocità sull'acqua",
+    image: jetskiImage,
   },
   {
     id: "catamarano",
@@ -67,12 +62,23 @@ const categoryMapping = [
     description: "La tua casa galleggiante per vacanze uniche",
     image: houseboatImage,
   },
+  {
+    id: "motorboat",
+    name: "Barche a motore",
+    description: "Velocità e comfort per esplorare la costa", 
+    image: motorboatImage,
+  },
 ];
 
 export function CategoryGallery() {
+  const [location, setLocation] = useLocation();
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
     queryKey: ["/api/boats"],
   });
+
+  const handleCategoryClick = (categoryId: string) => {
+    setLocation(`/?type=${categoryId}`);
+  };
 
   // Calcola i contatori reali per ogni categoria
   const getCategoryCount = (categoryId: string) => {
@@ -116,15 +122,14 @@ export function CategoryGallery() {
               <p className="text-sm text-gray-600 mb-3">{category.description}</p>
               
               {/* Pulsante Esplora */}
-              <Link href={`/?type=${category.id}`}>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100 hover:border-sky-300"
-                >
-                  Esplora
-                </Button>
-              </Link>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100 hover:border-sky-300"
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                Esplora
+              </Button>
             </div>
           ))}
         </div>

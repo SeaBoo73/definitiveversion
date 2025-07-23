@@ -49,7 +49,6 @@ export default function HomePage() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const typeParam = urlParams.get('type');
-    console.log('Location changed:', location, 'Type param:', typeParam);
     setSelectedCategory(typeParam || "");
   }, [location]);
 
@@ -61,10 +60,9 @@ export default function HomePage() {
   });
 
   // Debug per verificare i filtri
-  console.log('Selected category:', selectedCategory);
-  console.log('Total boats:', boats.length);
-  console.log('Filtered boats:', filteredBoats.length);
-  console.log('Boat types in DB:', boats.map(b => b.type));
+  if (selectedCategory) {
+    console.log('Filtering by category:', selectedCategory, 'Found boats:', filteredBoats.length);
+  }
 
   const featuredBoats = filteredBoats.slice(0, 8);
 

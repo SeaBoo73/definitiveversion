@@ -103,6 +103,7 @@ export default function ExternalServices() {
   const [selectedLocation, setSelectedLocation] = useState('Roma');
   const [fuelFilter, setFuelFilter] = useState('all');
   const [portFilter, setPortFilter] = useState('all');
+  const [activeTab, setActiveTab] = useState('weather');
 
   // Weather data query
   const { data: weatherData, isLoading: weatherLoading, refetch: refetchWeather } = useQuery<WeatherData>({
@@ -213,6 +214,28 @@ export default function ExternalServices() {
                 <span>Profilo</span>
               </Link>
             </nav>
+
+            {/* Quick Service Links - Mobile */}
+            <div className="md:hidden flex items-center gap-2">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setActiveTab('fuel')}
+                className="text-xs"
+              >
+                <Fuel className="h-3 w-3 mr-1" />
+                Carburante
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => setActiveTab('ports')}
+                className="text-xs"
+              >
+                <Anchor className="h-3 w-3 mr-1" />
+                Porti
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -227,6 +250,77 @@ export default function ExternalServices() {
           <p className="text-gray-600">
             Informazioni in tempo reale per una navigazione sicura e conveniente
           </p>
+        </div>
+
+        {/* Quick Access Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
+              activeTab === 'weather' 
+                ? 'border-blue-500 bg-blue-50 shadow-lg' 
+                : 'hover:border-blue-200'
+            }`}
+            onClick={() => setActiveTab('weather')}
+          >
+            <CardContent className="p-4 text-center">
+              <Cloud className={`h-8 w-8 mx-auto mb-2 ${
+                activeTab === 'weather' ? 'text-blue-600' : 'text-blue-500'
+              }`} />
+              <h3 className="font-medium text-sm">Meteo Marine</h3>
+              <p className="text-xs text-gray-500 mt-1">Condizioni attuali</p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
+              activeTab === 'fuel' 
+                ? 'border-green-500 bg-green-50 shadow-lg' 
+                : 'hover:border-green-200'
+            }`}
+            onClick={() => setActiveTab('fuel')}
+          >
+            <CardContent className="p-4 text-center">
+              <Fuel className={`h-8 w-8 mx-auto mb-2 ${
+                activeTab === 'fuel' ? 'text-green-600' : 'text-green-500'
+              }`} />
+              <h3 className="font-medium text-sm">Prezzi Carburante</h3>
+              <p className="text-xs text-gray-500 mt-1">Stazioni vicine</p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
+              activeTab === 'ports' 
+                ? 'border-orange-500 bg-orange-50 shadow-lg' 
+                : 'hover:border-orange-200'
+            }`}
+            onClick={() => setActiveTab('ports')}
+          >
+            <CardContent className="p-4 text-center">
+              <Anchor className={`h-8 w-8 mx-auto mb-2 ${
+                activeTab === 'ports' ? 'text-orange-600' : 'text-orange-500'
+              }`} />
+              <h3 className="font-medium text-sm">Servizi Portuali</h3>
+              <p className="text-xs text-gray-500 mt-1">Porti e marine</p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
+              activeTab === 'marine' 
+                ? 'border-teal-500 bg-teal-50 shadow-lg' 
+                : 'hover:border-teal-200'
+            }`}
+            onClick={() => setActiveTab('marine')}
+          >
+            <CardContent className="p-4 text-center">
+              <Waves className={`h-8 w-8 mx-auto mb-2 ${
+                activeTab === 'marine' ? 'text-teal-600' : 'text-teal-500'
+              }`} />
+              <h3 className="font-medium text-sm">Condizioni Marine</h3>
+              <p className="text-xs text-gray-500 mt-1">Onde e sicurezza</p>
+            </CardContent>
+          </Card>
         </div>
 
       {/* Location Selector */}
@@ -265,7 +359,7 @@ export default function ExternalServices() {
         </CardContent>
       </Card>
 
-      <Tabs defaultValue="weather" className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="weather">Meteo</TabsTrigger>
           <TabsTrigger value="fuel">Carburante</TabsTrigger>

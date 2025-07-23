@@ -21,82 +21,80 @@ export function Header() {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-16">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0 mr-10">
-            <Link href="/" className="flex items-center gap-3">
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center gap-2">
               <img 
                 src={seagoLogo} 
                 alt="SeaGO Logo" 
-                className="h-10 w-10 rounded-lg object-cover"
+                className="h-8 w-8 rounded-lg object-cover"
               />
-              <span className="text-2xl font-bold whitespace-nowrap" style={{ color: '#022237' }}>SeaGO</span>
+              <span className="text-xl font-bold" style={{ color: '#022237' }}>SeaGO</span>
             </Link>
           </div>
 
-          {/* Desktop Navigation - Centered */}
-          <nav className="hidden lg:flex items-center justify-center flex-1">
-            <div className="flex items-center space-x-8">
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center">
+            <div className="flex items-center space-x-1">
               <Link 
                 href="/" 
-                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/" 
-                    ? "text-deep-navy bg-blue-50 font-semibold" 
-                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 Esplora
               </Link>
               <Link 
                 href="/esperienze" 
-                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/esperienze"
-                    ? "text-deep-navy bg-blue-50 font-semibold" 
-                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 Esperienze
               </Link>
               <Link 
                 href="/charter" 
-                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/charter"
-                    ? "text-deep-navy bg-blue-50 font-semibold" 
-                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 Charter
               </Link>
               <Link 
                 href="/ormeggio" 
-                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/ormeggio" 
-                    ? "text-deep-navy bg-blue-50 font-semibold" 
-                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 Ormeggio
               </Link>
               <Link 
                 href="/ia" 
-                className={`transition-colors font-medium px-4 py-2 rounded-md flex items-center gap-2 text-sm ${
+                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/ia" 
-                    ? "text-deep-navy bg-blue-50 font-semibold" 
-                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 <Bot className="h-4 w-4" />
                 IA
               </Link>
-              <div className="flex items-center">
-                <ServicesNavButton />
-              </div>
+              <ServicesNavButton />
               <Link 
                 href="/aiuto" 
-                className={`transition-colors font-medium px-4 py-2 rounded-md text-sm ${
+                className={`px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/aiuto" 
-                    ? "text-deep-navy bg-blue-50 font-semibold" 
-                    : "text-gray-700 hover:text-deep-navy hover:bg-gray-50"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 Aiuto
@@ -133,33 +131,28 @@ export function Header() {
           </nav>
 
           {/* Right Side - User Menu & Mobile Button */}
-          <div className="flex items-center space-x-4 flex-shrink-0">
-            {/* Desktop User Menu */}
-            <div className="hidden lg:flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            {/* Desktop Actions */}
+            <div className="hidden md:flex items-center space-x-3">
               {user && <NotificationsCenter />}
               {!user && (
-                <Button asChild className="bg-coral hover:bg-orange-600 text-white font-semibold shadow-lg text-sm px-6 py-2">
-                  <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
-                </Button>
-              )}
-              {user?.role === "customer" && (
-                <Button variant="ghost" asChild className="text-blue-700 hover:text-blue-900 font-semibold text-sm px-4 py-2">
+                <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2">
                   <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
                 </Button>
               )}
               
-              {/* Desktop User Avatar/Login */}
+              {/* User Menu */}
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <div className="flex items-center space-x-2 border border-gray-300 rounded-full py-1 px-3 hover:shadow-md transition-shadow cursor-pointer">
-                      <Menu className="h-4 w-4 text-gray-600" />
-                      <Avatar className="h-6 w-6">
+                    <Button variant="ghost" size="sm" className="border border-gray-300 rounded-full">
+                      <Menu className="h-4 w-4 mr-1" />
+                      <Avatar className="h-5 w-5">
                         <AvatarFallback className="text-xs">
                           {user.firstName?.[0] || user.username[0].toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                    </div>
+                    </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
@@ -179,19 +172,20 @@ export function Header() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <div className="flex items-center space-x-2 border border-gray-300 rounded-full py-1 px-3 hover:shadow-md transition-shadow cursor-pointer">
-                  <Link href="/auth" className="flex items-center space-x-2">
-                    <Menu className="h-4 w-4 text-gray-600" />
-                    <User className="h-4 w-4 text-gray-600" />
+                <Button variant="ghost" size="sm" asChild className="border border-gray-300 rounded-full">
+                  <Link href="/auth" className="flex items-center space-x-1">
+                    <Menu className="h-4 w-4" />
+                    <User className="h-4 w-4" />
                   </Link>
-                </div>
+                </Button>
               )}
             </div>
 
             {/* Mobile Menu Button */}
             <Button
               variant="ghost"
-              className="lg:hidden flex items-center justify-center h-10 w-10 p-0"
+              size="sm"
+              className="md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

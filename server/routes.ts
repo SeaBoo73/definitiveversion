@@ -29,6 +29,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerEmergencyRoutes(app);
   registerFeatureRoutes(app);
   
+  // Review routes
+  const { registerReviewRoutes } = await import("./routes/reviews");
+  registerReviewRoutes(app);
+  
   // Setup authentication
   setupAuth(app);
 

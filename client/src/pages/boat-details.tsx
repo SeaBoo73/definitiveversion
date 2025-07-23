@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BookingModal } from "@/components/booking-modal";
+import { ReviewSystem } from "@/components/review-system";
 import { useState } from "react";
 import { 
   MapPin, 
@@ -268,28 +269,12 @@ export default function BoatDetails() {
 
             <Separator />
 
-            {/* Reviews */}
+            {/* Reviews System Integration */}
             <div>
-              <h2 className="text-xl font-semibold mb-4">Recensioni</h2>
-              <div className="space-y-4">
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-center mb-2">
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                    </div>
-                    <span className="ml-2 font-medium">Marco</span>
-                    <span className="ml-2 text-sm text-gray-600">• 2 settimane fa</span>
-                  </div>
-                  <p className="text-gray-600">
-                    Esperienza fantastica! L'imbarcazione era perfetta e il proprietario molto disponibile. 
-                    Consiglio assolutamente!
-                  </p>
-                </div>
-              </div>
+              <ReviewSystem 
+                boatId={boat.id} 
+                canReview={false} // This would be true if user has completed booking
+              />
             </div>
           </div>
 

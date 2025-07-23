@@ -76,11 +76,24 @@ export const bookings = pgTable("bookings", {
 export const reviews = pgTable("reviews", {
   id: serial("id").primaryKey(),
   bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
   reviewerId: integer("reviewer_id").references(() => users.id).notNull(),
   revieweeId: integer("reviewee_id").references(() => users.id).notNull(),
-  rating: integer("rating").notNull(), // 1-5 stars
+  rating: integer("rating").notNull(), // 1-5 stars overall
+  cleanlinessRating: integer("cleanliness_rating"),
+  communicationRating: integer("communication_rating"),
+  locationRating: integer("location_rating"),
+  valueRating: integer("value_rating"),
+  title: text("title"),
   comment: text("comment"),
+  pros: text("pros").array(),
+  cons: text("cons").array(),
+  photos: text("photos").array(), // URLs to review photos
+  verified: boolean("verified").default(false),
+  helpful: integer("helpful").default(0),
   type: text("type").notNull(), // "boat" or "customer"
+  response: text("response"), // Owner response
+  responseDate: timestamp("response_date"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

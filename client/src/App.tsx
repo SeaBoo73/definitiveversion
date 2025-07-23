@@ -51,6 +51,7 @@ import { InstallPrompt } from "@/components/install-prompt";
 import AnalyticsPage from "@/pages/analytics-page";
 import EmergencyPage from "@/pages/emergency-page";
 import AdvancedSearchPage from "@/pages/advanced-search-page";
+import { ReviewsPage } from "@/pages/reviews-page";
 
 function Router() {
   return (
@@ -82,7 +83,7 @@ function Router() {
       <Route path="/modifica-prenotazione" component={ModificaPrenotazionePage} />
       <Route path="/documenti" component={DocumentiPage} />
       <Route path="/assicurazione" component={AssicurazionePage} />
-      <Route path="/recensioni" component={RecensioniPage} />
+      <Route path="/recensioni-user" component={ReviewsPage} />
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
       <Route path="/fatturazione" component={FatturazionePage} />

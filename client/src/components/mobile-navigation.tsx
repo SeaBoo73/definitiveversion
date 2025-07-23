@@ -22,13 +22,7 @@ export function MobileNavigation() {
       icon: Calendar,
       label: "Esperienze", 
       path: "/esperienze",
-      active: location === "/esperienze"
-    },
-    {
-      icon: Ship,
-      label: "Charter",
-      path: "/charter", 
-      active: location === "/charter"
+      active: location === "/esperienze" || location === "/charter"
     },
     {
       icon: MapPin,

@@ -15,7 +15,10 @@ import {
   GraduationCap, 
   PartyPopper, 
   Heart, 
-  Users 
+  Users,
+  Ship,
+  Crown,
+  Calendar
 } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -98,6 +101,36 @@ export function EsperienzePage() {
           description: "Navigazione per principianti con istruttore qualificato",
           icon: <GraduationCap className="h-5 w-5" />,
           badge: "Formativo"
+        }
+      ]
+    },
+    {
+      category: "Charter e Noleggi Premium",
+      icon: <Ship className="h-6 w-6" />,
+      items: [
+        {
+          title: "Charter con skipper",
+          description: "Noleggi con skipper professionale per navigare in sicurezza",
+          icon: <Users className="h-5 w-5" />,
+          badge: "Skipper"
+        },
+        {
+          title: "Charter bareboat",
+          description: "Noleggio senza equipaggio per marinai esperti",
+          icon: <Ship className="h-5 w-5" />,
+          badge: "Indipendente"
+        },
+        {
+          title: "Charter di lusso",
+          description: "Yacht premium con equipaggio e servizi esclusivi",
+          icon: <Crown className="h-5 w-5" />,
+          badge: "Lusso"
+        },
+        {
+          title: "Charter multi-giorno",
+          description: "Crociere da 3-7 giorni nelle isole del Lazio",
+          icon: <Calendar className="h-5 w-5" />,
+          badge: "Crociera"
         }
       ]
     },

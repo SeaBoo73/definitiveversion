@@ -51,6 +51,7 @@ import AssistenzaProprietariPage from "@/pages/assistenza-proprietari";
 import { InstallPrompt } from "@/components/install-prompt";
 import AnalyticsPage from "@/pages/analytics-page";
 import EmergencyPage from "@/pages/emergency-page";
+import EmergencySystem from "@/pages/emergency-system";
 import AdvancedSearchPage from "@/pages/advanced-search-page";
 import { ReviewsPage } from "@/pages/reviews-page";
 import AvailabilityManagement from "@/pages/availability-management";
@@ -97,6 +98,7 @@ function Router() {
       <Route path="/analytics" component={AnalyticsPage} />
       <Route path="/analytics-dashboard" component={lazy(() => import('./pages/analytics-dashboard'))} />
       <Route path="/emergency" component={EmergencyPage} />
+      <Route path="/emergency-system" component={EmergencySystem} />
       <Route path="/ricerca-avanzata" component={AdvancedSearchPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

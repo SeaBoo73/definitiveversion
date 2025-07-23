@@ -12,6 +12,9 @@ export const messageStatusEnum = pgEnum("message_status", ["sent", "delivered", 
 export const messageTypeEnum = pgEnum("message_type", ["text", "image", "document", "system"]);
 export const conversationTypeEnum = pgEnum("conversation_type", ["direct", "group", "support"]);
 export const notificationTypeEnum = pgEnum("notification_type", ["message", "booking", "system"]);
+export const emergencyTypeEnum = pgEnum("emergency_type", ["medical", "mechanical", "weather", "collision", "fire", "grounding", "other"]);
+export const emergencySeverityEnum = pgEnum("emergency_severity", ["low", "medium", "high", "critical"]);
+export const emergencyStatusEnum = pgEnum("emergency_status", ["active", "resolved", "in_progress"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -153,6 +156,67 @@ export const messageReads = pgTable("message_reads", {
   messageId: integer("message_id").references(() => messages.id).notNull(),
   userId: integer("user_id").references(() => users.id).notNull(),
   readAt: timestamp("read_at").defaultNow().notNull(),
+});
+
+// Emergency System Tables
+export const emergencyAlerts = pgTable("emergency_alerts", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  type: emergencyTypeEnum("type").notNull(),
+  severity: emergencySeverityEnum("severity").notNull(),
+  status: emergencyStatusEnum("status").default("active"),
+  title: text("title"),
+  description: text("description").notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  contactInfo: text("contact_info"),
+  personsOnBoard: integer("persons_on_board").default(1),
+  resolvedBy: integer("resolved_by").references(() => users.id),
+  resolvedAt: timestamp("resolved_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const emergencyContacts = pgTable("emergency_contacts", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  phone: text("phone").notNull(),
+  type: text("type").notNull(), // coast_guard, medical, technical, towing
+  region: text("region"),
+  available24h: boolean("available_24h").default(false),
+  email: text("email"),
+  website: text("website"),
+  description: text("description"),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const boatTracking = pgTable("boat_tracking", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }).notNull(),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }).notNull(),
+  speed: decimal("speed", { precision: 5, scale: 2 }).default("0.00"), // knots
+  heading: integer("heading").default(0), // degrees 0-359
+  altitude: decimal("altitude", { precision: 8, scale: 2 }), // meters
+  accuracy: decimal("accuracy", { precision: 6, scale: 2 }), // meters
+  status: text("status").default("normal"), // normal, alert, emergency
+  batteryLevel: integer("battery_level"), // percentage 0-100
+  deviceId: text("device_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const safetyProtocols = pgTable("safety_protocols", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  category: text("category").notNull(), // emergency, maintenance, weather, navigation
+  description: text("description").notNull(),
+  steps: text("steps").array().notNull(),
+  equipmentRequired: text("equipment_required").array(),
+  severity: text("severity"), // low, medium, high, critical
+  applicableBoatTypes: text("applicable_boat_types").array(),
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+  active: boolean("active").default(true),
 });
 
 export const chatNotifications = pgTable("chat_notifications", {

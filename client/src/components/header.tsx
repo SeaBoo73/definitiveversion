@@ -3,6 +3,7 @@ import { NotificationsCenter } from "@/components/notifications-center";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot } from "lucide-react";
 import seagoLogo from "../assets/seago-logo.svg";
@@ -54,9 +55,7 @@ export function Header() {
                 Admin
               </Link>
             )}
-            <Link href="/external-services" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
-              Servizi
-            </Link>
+            <ServicesNavButton />
             <Link href="/aiuto" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Aiuto
             </Link>

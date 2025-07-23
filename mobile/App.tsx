@@ -16,6 +16,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import BookingsScreen from './src/screens/BookingsScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
+import ServicesScreen from './src/screens/ServicesScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import BoatDetailsScreen from './src/screens/BoatDetailsScreen';
 import BookingScreen from './src/screens/BookingScreen';
@@ -61,6 +62,9 @@ function MainTabs() {
             case 'Messages':
               iconName = 'message';
               break;
+            case 'Services':
+              iconName = 'cloud';
+              break;
             case 'Profile':
               iconName = 'person';
               break;
@@ -100,6 +104,11 @@ function MainTabs() {
         name="Messages" 
         component={MessagesScreen} 
         options={{ title: 'Messaggi' }}
+      />
+      <Tab.Screen 
+        name="Services" 
+        component={ServicesScreen} 
+        options={{ title: 'Servizi' }}
       />
       <Tab.Screen 
         name="Profile" 

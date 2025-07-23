@@ -14,6 +14,8 @@ import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { LiveChatButton } from "@/components/live-chat-button";
 import { GoogleMapsFinal } from "@/components/google-maps-final";
+import { WeatherWidget } from "@/components/weather-widget";
+import { ExternalServicesQuickAccess } from "@/components/external-services-quick-access";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -69,6 +71,13 @@ export default function HomePage() {
         onCategorySelect={setSelectedCategory} 
         selectedCategory={selectedCategory}
       />
+
+      {/* SEZIONE METEO E CONDIZIONI MARINE */}
+      <section className="py-12 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <WeatherWidget />
+        </div>
+      </section>
 
       {/* SEZIONE MAPPA INTERATTIVA INTEGRATA NELLA HOMEPAGE */}
       <section className="py-16 bg-gradient-to-br from-blue-50 to-sky-100">
@@ -162,8 +171,19 @@ export default function HomePage() {
 
 
 
-      {/* Featured Boats */}
+      {/* External Services Quick Access */}
       <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Servizi per la Navigazione</h2>
+            <p className="text-lg text-gray-600">Tutto quello che ti serve per navigare in sicurezza</p>
+          </div>
+          <ExternalServicesQuickAccess />
+        </div>
+      </section>
+
+      {/* Featured Boats */}
+      <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-12">
             <div>

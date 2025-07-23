@@ -16,6 +16,8 @@ import { LiveChatButton } from "@/components/live-chat-button";
 import { GoogleMapsFinal } from "@/components/google-maps-final";
 import { WeatherWidget } from "@/components/weather-widget";
 import { ExternalServicesQuickAccess } from "@/components/external-services-quick-access";
+import { OwnerBusinessSection } from "@/components/owner-business-section";
+import { OwnerCTAFloatingButton } from "@/components/owner-cta-floating-button";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -170,6 +172,9 @@ export default function HomePage() {
       </section>
 
 
+
+      {/* Owner Business Section - Ormeggio, Pagamenti e Guadagni */}
+      <OwnerBusinessSection />
 
       {/* External Services Quick Access */}
       <section className="py-16 bg-white">
@@ -351,6 +356,7 @@ export default function HomePage() {
       <Footer />
       <MobileNavigation />
       <LiveChatButton />
+      <OwnerCTAFloatingButton />
     </div>
   );
 }

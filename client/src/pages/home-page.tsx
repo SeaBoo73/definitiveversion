@@ -104,7 +104,7 @@ export default function HomePage() {
             <h3 className="text-xl font-semibold text-gray-900 mb-2">Mappa Interattiva</h3>
             <p className="text-gray-600 mb-4">Esplora tutte le imbarcazioni disponibili nei porti del Lazio</p>
             <Button asChild>
-              <Link href="/mappa">Apri Mappa Completa</Link>
+              <Link href="/mappa-completa">Apri Mappa Completa</Link>
             </Button>
           </div>
         </div>

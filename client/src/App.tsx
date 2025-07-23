@@ -82,6 +82,7 @@ function Router() {
       </Route>
       <Route path="/test-map" component={TestMapPage} />
       <Route path="/mappa" component={MappaPage} />
+      <Route path="/mappa-completa" component={lazy(() => import('./pages/mappa-completa'))} />
       <Route path="/simple-mappa" component={SimpleMappa} />
       <Route path="/come-prenotare" component={ComePrenotarePage} />
       <Route path="/politiche-cancellazione" component={PoliticheCancellazionePage} />
@@ -97,11 +98,14 @@ function Router() {
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
       <Route path="/fatturazione" component={FatturazionePage} />
-      <Route path="/commissioni-guadagni" component={CommissioniGuadagniPage} />
+      <Route path="/commissioni" component={CommissioniGuadagniPage} />
       <Route path="/gestione-prenotazioni" component={GestionePrenotazioniPage} />
       <Route path="/assistenza-proprietari" component={AssistenzaProprietariPage} />
+      <Route path="/inserisci-barca" component={DiventaNoleggiatorePage} />
+      <Route path="/pagamenti" component={MetodiPagamentoPage} />
       <Route path="/analytics" component={AnalyticsPage} />
       <Route path="/analytics-dashboard" component={lazy(() => import('./pages/analytics-dashboard'))} />
+      <Route path="/admin-dashboard" component={lazy(() => import('./pages/admin-dashboard'))} />
       <Route path="/admin-performance" component={AdminPerformancePage} />
       <Route path="/altre-esperienze" component={AltreEsperienzePage} />
       <Route path="/emergency" component={EmergencyPage} />

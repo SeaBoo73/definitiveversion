@@ -297,6 +297,15 @@ export default function BoatDetails() {
                     Prenota ora
                   </Button>
                   
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => setLocation(`/boats/${boat.id}/availability`)}
+                  >
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Calendario Avanzato
+                  </Button>
+                  
                   <Button variant="outline" className="w-full">
                     <MessageCircle className="h-4 w-4 mr-2" />
                     Contatta il proprietario

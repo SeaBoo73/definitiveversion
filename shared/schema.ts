@@ -417,15 +417,63 @@ export const boatFeatures = pgTable("boat_features", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-// Availability Calendar
+// Availability Calendar - Enhanced for advanced management
 export const availability = pgTable("availability", {
   id: serial("id").primaryKey(),
   boatId: integer("boat_id").references(() => boats.id).notNull(),
   date: timestamp("date").notNull(),
   available: boolean("available").default(true),
   price: decimal("price", { precision: 8, scale: 2 }),
+  seasonType: text("season_type").default("medium"), // "high", "medium", "low"
+  priceMultiplier: decimal("price_multiplier", { precision: 4, scale: 2 }).default("1.00"),
   minimumDays: integer("minimum_days").default(1),
+  blockReason: text("block_reason"), // "booked", "maintenance", "owner_block", "weather"
+  lastUpdated: timestamp("last_updated").defaultNow(),
   notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Booking Rules and Discounts
+export const bookingRules = pgTable("booking_rules", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  ruleType: text("rule_type").notNull(), // "multiple_days", "last_minute", "early_bird", "seasonal"
+  name: text("name").notNull(),
+  description: text("description"),
+  discountPercentage: decimal("discount_percentage", { precision: 5, scale: 2 }).default("0.00"),
+  minimumDays: integer("minimum_days"),
+  maximumDays: integer("maximum_days"),
+  advanceBookingDays: integer("advance_booking_days"), // For early bird/last minute
+  validFrom: timestamp("valid_from"),
+  validTo: timestamp("valid_to"),
+  active: boolean("active").default(true),
+  priority: integer("priority").default(1), // Higher priority rules apply first
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Real-time booking locks to prevent double bookings
+export const bookingLocks = pgTable("booking_locks", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  sessionId: text("session_id").notNull(),
+  locked: boolean("locked").default(true),
+  expiresAt: timestamp("expires_at").notNull(), // Lock expires after 15 minutes
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Advanced pricing history for analytics
+export const priceHistory = pgTable("price_history", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
+  date: timestamp("date").notNull(),
+  basePrice: decimal("base_price", { precision: 8, scale: 2 }).notNull(),
+  finalPrice: decimal("final_price", { precision: 8, scale: 2 }).notNull(),
+  seasonMultiplier: decimal("season_multiplier", { precision: 4, scale: 2 }).default("1.00"),
+  demandMultiplier: decimal("demand_multiplier", { precision: 4, scale: 2 }).default("1.00"),
+  appliedRules: text("applied_rules").array(), // JSON array of applied discount rules
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -472,7 +520,40 @@ export type InsertPromotion = z.infer<typeof insertPromotionSchema>;
 export type InsertAnalytics = z.infer<typeof insertAnalyticsSchema>;
 export type InsertAiInteraction = z.infer<typeof insertAiInteractionSchema>;
 
-// New insert schemas for advanced tables
+// Advanced availability management schemas
+export const insertAvailabilitySchema = createInsertSchema(availability).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+});
+
+export const insertBookingRuleSchema = createInsertSchema(bookingRules).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertBookingLockSchema = createInsertSchema(bookingLocks).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertPriceHistorySchema = createInsertSchema(priceHistory).omit({
+  id: true,
+  createdAt: true,
+});
+
+// New types for advanced availability
+export type Availability = typeof availability.$inferSelect;
+export type BookingRule = typeof bookingRules.$inferSelect;
+export type BookingLock = typeof bookingLocks.$inferSelect;
+export type PriceHistory = typeof priceHistory.$inferSelect;
+
+export type InsertAvailability = z.infer<typeof insertAvailabilitySchema>;
+export type InsertBookingRule = z.infer<typeof insertBookingRuleSchema>;
+export type InsertBookingLock = z.infer<typeof insertBookingLockSchema>;
+export type InsertPriceHistory = z.infer<typeof insertPriceHistorySchema>;
+
+// Additional schemas for other advanced tables
 export const insertEmergencySchema = createInsertSchema(emergencies).omit({
   id: true,
   status: true,
@@ -492,19 +573,12 @@ export const insertBoatFeatureSchema = createInsertSchema(boatFeatures).omit({
   createdAt: true,
 });
 
-export const insertAvailabilitySchema = createInsertSchema(availability).omit({
-  id: true,
-  createdAt: true,
-});
-
 // Additional types for new tables
 export type Emergency = typeof emergencies.$inferSelect;
 export type WeatherData = typeof weatherData.$inferSelect;
 export type DynamicPricing = typeof dynamicPricing.$inferSelect;
 export type BoatFeature = typeof boatFeatures.$inferSelect;
-export type Availability = typeof availability.$inferSelect;
 
 export type InsertEmergency = z.infer<typeof insertEmergencySchema>;
 export type InsertDynamicPricing = z.infer<typeof insertDynamicPricingSchema>;
 export type InsertBoatFeature = z.infer<typeof insertBoatFeatureSchema>;
-export type InsertAvailability = z.infer<typeof insertAvailabilitySchema>;

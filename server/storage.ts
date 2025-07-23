@@ -1,6 +1,7 @@
 import { 
   users, boats, bookings, reviews, conversations, messages, favorites, discounts, userDiscounts, documents,
   notifications, promotions, analytics, emergencies, dynamicPricing, boatFeatures, availability, weatherData,
+  bookingRules, bookingLocks, priceHistory,
   type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, 
   type Review, type InsertReview, type Conversation, type InsertConversation, 
   type Message, type InsertMessage, type Favorite, type Discount, type UserDiscount, 
@@ -8,7 +9,9 @@ import {
   type Notification, type InsertNotification, type Promotion, type InsertPromotion,
   type Analytics, type InsertAnalytics, type Emergency, type InsertEmergency,
   type DynamicPricing, type InsertDynamicPricing, type BoatFeature, type InsertBoatFeature,
-  type Availability, type InsertAvailability, type WeatherData
+  type Availability, type InsertAvailability, type WeatherData,
+  type BookingRule, type InsertBookingRule, type BookingLock, type InsertBookingLock,
+  type PriceHistory, type InsertPriceHistory
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc, asc, gte, lte, ilike, sql } from "drizzle-orm";
@@ -112,6 +115,40 @@ export interface IStorage {
 
   // Analytics methods
   getAnalytics(ownerId: number): Promise<Analytics[]>;
+
+  // Advanced Availability Management methods
+  getBoatAvailability(boatId: number, startDate: Date, endDate: Date): Promise<Availability[]>;
+  createAvailability(availability: InsertAvailability): Promise<Availability>;
+  updateAvailability(id: number, updates: Partial<Availability>): Promise<Availability>;
+  bulkUpdateAvailability(boatId: number, dateRanges: { startDate: Date; endDate: Date }[], updates: Partial<Availability>): Promise<{ updated: number }>;
+  
+  // Dynamic Pricing methods
+  calculateDynamicPricing(boatId: number, startDate: Date, endDate: Date, days: number): Promise<{
+    basePrice: number;
+    finalPrice: number;
+    seasonMultiplier: number;
+    demandMultiplier: number;
+    appliedDiscounts: any[];
+    savings: number;
+  }>;
+  createPriceHistory(priceHistory: InsertPriceHistory): Promise<PriceHistory>;
+  getPricingHistory(boatId: number, startDate?: Date, endDate?: Date): Promise<PriceHistory[]>;
+  
+  // Booking Rules methods
+  getBookingRules(boatId: number): Promise<BookingRule[]>;
+  createBookingRule(rule: InsertBookingRule): Promise<BookingRule>;
+  updateBookingRule(id: number, updates: Partial<BookingRule>): Promise<BookingRule>;
+  calculateApplicableDiscounts(boatId: number, startDate: Date, endDate: Date, userId?: number): Promise<{
+    rules: BookingRule[];
+    totalDiscount: number;
+    savings: number;
+  }>;
+  
+  // Booking Lock methods (real-time availability)
+  createBookingLock(lock: InsertBookingLock): Promise<BookingLock>;
+  releaseBookingLock(lockId: number, userId: number): Promise<void>;
+  checkDateAvailability(boatId: number, startDate: Date, endDate: Date): Promise<boolean>;
+  cleanupExpiredLocks(): Promise<number>;
 
   // Session store
   sessionStore: connectPg.PGStore;
@@ -776,6 +813,304 @@ export class DatabaseStorage implements IStorage {
         )
       );
     return weather;
+  }
+
+  // Advanced Availability Management Methods
+  async getBoatAvailability(boatId: number, startDate: Date, endDate: Date): Promise<Availability[]> {
+    return await db
+      .select()
+      .from(availability)
+      .where(
+        and(
+          eq(availability.boatId, boatId),
+          gte(availability.date, startDate),
+          lte(availability.date, endDate)
+        )
+      )
+      .orderBy(asc(availability.date));
+  }
+
+  async createAvailability(availabilityData: InsertAvailability): Promise<Availability> {
+    const [newAvailability] = await db
+      .insert(availability)
+      .values(availabilityData)
+      .returning();
+    return newAvailability;
+  }
+
+  async updateAvailability(id: number, updates: Partial<Availability>): Promise<Availability> {
+    const [updatedAvailability] = await db
+      .update(availability)
+      .set({ ...updates, lastUpdated: new Date() })
+      .where(eq(availability.id, id))
+      .returning();
+    return updatedAvailability;
+  }
+
+  async bulkUpdateAvailability(
+    boatId: number, 
+    dateRanges: { startDate: Date; endDate: Date }[], 
+    updates: Partial<Availability>
+  ): Promise<{ updated: number }> {
+    let totalUpdated = 0;
+    
+    for (const range of dateRanges) {
+      const result = await db
+        .update(availability)
+        .set({ ...updates, lastUpdated: new Date() })
+        .where(
+          and(
+            eq(availability.boatId, boatId),
+            gte(availability.date, range.startDate),
+            lte(availability.date, range.endDate)
+          )
+        );
+      totalUpdated++;
+    }
+    
+    return { updated: totalUpdated };
+  }
+
+  // Dynamic Pricing Methods
+  async calculateDynamicPricing(boatId: number, startDate: Date, endDate: Date, days: number) {
+    const boat = await this.getBoat(boatId);
+    if (!boat) throw new Error("Boat not found");
+
+    const basePrice = parseFloat(boat.pricePerDay);
+    let seasonMultiplier = 1.0;
+    let demandMultiplier = 1.0;
+    const appliedDiscounts: any[] = [];
+
+    // Get seasonal pricing
+    const month = startDate.getMonth() + 1;
+    if (month >= 6 && month <= 8) {
+      seasonMultiplier = 1.5; // High season (summer)
+    } else if (month >= 4 && month <= 5 || month >= 9 && month <= 10) {
+      seasonMultiplier = 1.2; // Medium season (spring/fall)
+    } else {
+      seasonMultiplier = 0.8; // Low season (winter)
+    }
+
+    // Calculate demand multiplier based on existing bookings
+    const existingBookings = await db
+      .select()
+      .from(bookings)
+      .where(
+        and(
+          eq(bookings.boatId, boatId),
+          gte(bookings.startDate, startDate),
+          lte(bookings.endDate, endDate)
+        )
+      );
+
+    if (existingBookings.length > 2) {
+      demandMultiplier = 1.3; // High demand
+    } else if (existingBookings.length > 0) {
+      demandMultiplier = 1.1; // Medium demand
+    }
+
+    // Get applicable booking rules/discounts
+    const rules = await this.getBookingRules(boatId);
+    const applicableRules = rules.filter(rule => {
+      if (!rule.active) return false;
+      
+      const now = new Date();
+      const daysFromNow = Math.ceil((startDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+      
+      switch (rule.ruleType) {
+        case 'multiple_days':
+          return days >= (rule.minimumDays || 0);
+        case 'last_minute':
+          return daysFromNow <= (rule.advanceBookingDays || 7);
+        case 'early_bird':
+          return daysFromNow >= (rule.advanceBookingDays || 30);
+        default:
+          return true;
+      }
+    });
+
+    let totalDiscountPercentage = 0;
+    for (const rule of applicableRules) {
+      totalDiscountPercentage += parseFloat(rule.discountPercentage);
+      appliedDiscounts.push({
+        name: rule.name,
+        percentage: parseFloat(rule.discountPercentage),
+        description: rule.description
+      });
+    }
+
+    const finalPrice = basePrice * days * seasonMultiplier * demandMultiplier * (1 - totalDiscountPercentage / 100);
+    const savings = (basePrice * days * seasonMultiplier * demandMultiplier) - finalPrice;
+
+    return {
+      basePrice,
+      finalPrice: Math.round(finalPrice * 100) / 100,
+      seasonMultiplier,
+      demandMultiplier,
+      appliedDiscounts,
+      savings: Math.round(savings * 100) / 100
+    };
+  }
+
+  async createPriceHistory(priceHistoryData: InsertPriceHistory): Promise<PriceHistory> {
+    const [newPriceHistory] = await db
+      .insert(priceHistory)
+      .values(priceHistoryData)
+      .returning();
+    return newPriceHistory;
+  }
+
+  async getPricingHistory(boatId: number, startDate?: Date, endDate?: Date): Promise<PriceHistory[]> {
+    const conditions = [eq(priceHistory.boatId, boatId)];
+    
+    if (startDate) {
+      conditions.push(gte(priceHistory.date, startDate));
+    }
+    if (endDate) {
+      conditions.push(lte(priceHistory.date, endDate));
+    }
+
+    return await db
+      .select()
+      .from(priceHistory)
+      .where(and(...conditions))
+      .orderBy(desc(priceHistory.date));
+  }
+
+  // Booking Rules Methods
+  async getBookingRules(boatId: number): Promise<BookingRule[]> {
+    return await db
+      .select()
+      .from(bookingRules)
+      .where(eq(bookingRules.boatId, boatId))
+      .orderBy(desc(bookingRules.priority), asc(bookingRules.createdAt));
+  }
+
+  async createBookingRule(ruleData: InsertBookingRule): Promise<BookingRule> {
+    const [newRule] = await db
+      .insert(bookingRules)
+      .values(ruleData)
+      .returning();
+    return newRule;
+  }
+
+  async updateBookingRule(id: number, updates: Partial<BookingRule>): Promise<BookingRule> {
+    const [updatedRule] = await db
+      .update(bookingRules)
+      .set(updates)
+      .where(eq(bookingRules.id, id))
+      .returning();
+    return updatedRule;
+  }
+
+  async calculateApplicableDiscounts(boatId: number, startDate: Date, endDate: Date, userId?: number) {
+    const rules = await this.getBookingRules(boatId);
+    const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysFromNow = Math.ceil((startDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+    
+    const applicableRules = rules.filter(rule => {
+      if (!rule.active) return false;
+      
+      switch (rule.ruleType) {
+        case 'multiple_days':
+          return days >= (rule.minimumDays || 0) && days <= (rule.maximumDays || 999);
+        case 'last_minute':
+          return daysFromNow <= (rule.advanceBookingDays || 7);
+        case 'early_bird':
+          return daysFromNow >= (rule.advanceBookingDays || 30);
+        case 'seasonal':
+          const now = new Date();
+          return (!rule.validFrom || now >= rule.validFrom) && (!rule.validTo || now <= rule.validTo);
+        default:
+          return true;
+      }
+    });
+
+    const totalDiscount = applicableRules.reduce((sum, rule) => sum + parseFloat(rule.discountPercentage), 0);
+    const boat = await this.getBoat(boatId);
+    const basePrice = parseFloat(boat?.pricePerDay || "0") * days;
+    const savings = (basePrice * totalDiscount) / 100;
+
+    return {
+      rules: applicableRules,
+      totalDiscount,
+      savings: Math.round(savings * 100) / 100
+    };
+  }
+
+  // Booking Lock Methods (Real-time availability)
+  async createBookingLock(lockData: InsertBookingLock): Promise<BookingLock> {
+    // First cleanup expired locks
+    await this.cleanupExpiredLocks();
+    
+    const [newLock] = await db
+      .insert(bookingLocks)
+      .values(lockData)
+      .returning();
+    return newLock;
+  }
+
+  async releaseBookingLock(lockId: number, userId: number): Promise<void> {
+    await db
+      .update(bookingLocks)
+      .set({ locked: false })
+      .where(
+        and(
+          eq(bookingLocks.id, lockId),
+          eq(bookingLocks.userId, userId)
+        )
+      );
+  }
+
+  async checkDateAvailability(boatId: number, startDate: Date, endDate: Date): Promise<boolean> {
+    // Check for existing bookings
+    const existingBookings = await db
+      .select()
+      .from(bookings)
+      .where(
+        and(
+          eq(bookings.boatId, boatId),
+          or(
+            and(gte(bookings.startDate, startDate), lte(bookings.startDate, endDate)),
+            and(gte(bookings.endDate, startDate), lte(bookings.endDate, endDate)),
+            and(lte(bookings.startDate, startDate), gte(bookings.endDate, endDate))
+          ),
+          or(
+            eq(bookings.status, "confirmed"),
+            eq(bookings.status, "pending")
+          )
+        )
+      );
+
+    if (existingBookings.length > 0) return false;
+
+    // Check for active locks from other users
+    const activeLocks = await db
+      .select()
+      .from(bookingLocks)
+      .where(
+        and(
+          eq(bookingLocks.boatId, boatId),
+          eq(bookingLocks.locked, true),
+          gte(bookingLocks.expiresAt, new Date()),
+          or(
+            and(gte(bookingLocks.startDate, startDate), lte(bookingLocks.startDate, endDate)),
+            and(gte(bookingLocks.endDate, startDate), lte(bookingLocks.endDate, endDate)),
+            and(lte(bookingLocks.startDate, startDate), gte(bookingLocks.endDate, endDate))
+          )
+        )
+      );
+
+    return activeLocks.length === 0;
+  }
+
+  async cleanupExpiredLocks(): Promise<number> {
+    const result = await db
+      .update(bookingLocks)
+      .set({ locked: false })
+      .where(lte(bookingLocks.expiresAt, new Date()));
+    
+    return 0; // Return count would require additional query
   }
 }
 

@@ -27,7 +27,7 @@ export function Header() {
               alt="SeaGO Logo" 
               className="h-10 w-10 rounded-lg object-cover bg-white p-1"
             />
-            <span className="text-2xl font-bold leading-none -mt-1" style={{ color: '#3DBEC4' }}>SeaGO</span>
+            <span className="text-2xl font-bold leading-none -mt-1" style={{ color: '#022237' }}>SeaGO</span>
           </Link>
 
           {/* Desktop Navigation */}

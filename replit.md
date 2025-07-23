@@ -170,6 +170,7 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Opzione WhatsApp rimossa su richiesta utente - rimangono solo Chat AI ed Email
   - ✅ Logo SeaGO completamente aggiornato con nuovo design (luglio 2025)
   - ✅ Header, footer, install-prompt, PWA manifest e favicon aggiornati con nuovo logo
+  - ✅ Colore scritta "SeaGO" aggiornato a navy scuro #022237 per eleganza
   - ✅ Branding uniforme su tutta la piattaforma web e mobile
 
 ### July 23, 2025 - Homepage Web Completamente Ripristinata

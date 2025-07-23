@@ -15,7 +15,7 @@ export function Footer() {
                 alt="SeaGO Logo" 
                 className="h-8 w-8 rounded object-cover bg-white p-1"
               />
-              <h3 className="text-2xl font-bold leading-none -mt-1" style={{ color: '#3DBEC4' }}>
+              <h3 className="text-2xl font-bold leading-none -mt-1" style={{ color: '#022237' }}>
                 SeaGO
               </h3>
             </div>

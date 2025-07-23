@@ -360,7 +360,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 </ul>
               </div>
               <div>
-                <span className="text-green-600 font-medium">💵 Spese extra:</span>
+                <span className="text-green-600 font-medium">Spese extra:</span>
                 <p className="ml-4 mt-1 text-gray-700">
                   Se la barca non viene riportata piena: benzina mancante + penale di servizio (20-50 €)
                 </p>
@@ -384,7 +384,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 </ul>
               </div>
               <div>
-                <span className="text-green-600 font-medium">💵 Tariffe tipiche:</span>
+                <span className="text-green-600 font-medium">Tariffe tipiche:</span>
                 <ul className="ml-4 mt-1 space-y-1 text-gray-700">
                   <li>• <strong>Litri:</strong> circa 1,80 – 2,20 €/litro per benzina marina</li>
                   <li>• <strong>Ore motore:</strong> 15-20 €/ora (varia per potenza motore)</li>

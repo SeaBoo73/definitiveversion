@@ -264,7 +264,7 @@ export function EsperienzePage() {
               <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3">
                 <Link href="/search">Esplora le imbarcazioni</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-deep-navy px-8 py-3">
+              <Button asChild size="lg" variant="outline" className="border-white bg-white text-deep-navy hover:bg-gray-100 hover:text-deep-navy px-8 py-3">
                 <Link href="#help">Contattaci</Link>
               </Button>
             </div>

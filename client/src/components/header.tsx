@@ -17,7 +17,7 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-deep-navy shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -25,9 +25,9 @@ export function Header() {
             <img 
               src={seagoLogo} 
               alt="SeaGO Logo" 
-              className="h-10 w-10 rounded-lg object-cover bg-white p-1"
+              className="h-10 w-10 rounded-lg object-cover"
             />
-            <span className="text-2xl font-bold leading-none -mt-1" style={{ color: '#022237' }}>SeaGO</span>
+            <span className="text-2xl font-bold leading-none -mt-1 text-white">SeaGO</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -36,8 +36,8 @@ export function Header() {
               href="/" 
               className={`transition-colors font-medium ${
                 location === "/" 
-                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
-                  : "text-sea-gray hover:text-deep-navy"
+                  ? "text-white border-b-2 border-white pb-1" 
+                  : "text-gray-300 hover:text-white"
               }`}
             >
               Esplora
@@ -46,8 +46,8 @@ export function Header() {
               href="/esperienze" 
               className={`transition-colors font-medium ${
                 location === "/esperienze"
-                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
-                  : "text-sea-gray hover:text-deep-navy"
+                  ? "text-white border-b-2 border-white pb-1" 
+                  : "text-gray-300 hover:text-white"
               }`}
             >
               Esperienze
@@ -56,8 +56,8 @@ export function Header() {
               href="/charter" 
               className={`transition-colors font-medium ${
                 location === "/charter"
-                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
-                  : "text-sea-gray hover:text-deep-navy"
+                  ? "text-white border-b-2 border-white pb-1" 
+                  : "text-gray-300 hover:text-white"
               }`}
             >
               Charter
@@ -66,8 +66,8 @@ export function Header() {
               href="/ormeggio" 
               className={`transition-colors font-medium ${
                 location === "/ormeggio" 
-                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
-                  : "text-sea-gray hover:text-deep-navy"
+                  ? "text-white border-b-2 border-white pb-1" 
+                  : "text-gray-300 hover:text-white"
               }`}
             >
               Ormeggio
@@ -76,8 +76,8 @@ export function Header() {
               href="/ia" 
               className={`transition-colors font-medium flex items-center gap-1 ${
                 location === "/ia" 
-                  ? "text-deep-navy border-b-2 border-deep-navy pb-1" 
-                  : "text-sea-gray hover:text-deep-navy"
+                  ? "text-white border-b-2 border-white pb-1" 
+                  : "text-gray-300 hover:text-white"
               }`}
             >
               <Bot className="h-4 w-4" />

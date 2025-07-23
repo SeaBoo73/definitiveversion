@@ -204,12 +204,11 @@ The application follows modern web development best practices with a focus on ty
 - **PWA Implementation (July 21, 2025):**
   - ✅ Progressive Web App (PWA) configuration completed
   - ✅ App manifest.json created with SeaGO branding
-  - ✅ Install prompt component added to encourage app installation
   - ✅ Service Worker configured for offline functionality
   - ✅ Apple iOS and Android installation support
-  - ✅ Native app experience with install prompt
   - ✅ Complete guide created for users (download-app-guide.md)
   - ✅ App installabile directly from browser on mobile devices
+  - ✅ Install prompt component rimosso su richiesta utente (July 23, 2025)
 - **Complete Booking and Payment System (July 21, 2025):**
   - ✅ Sistema di prenotazione completo implementato come Booking.com
   - ✅ Calendario interattivo con selezione date e disponibilità in tempo reale

@@ -111,7 +111,7 @@ function App() {
         <AuthProvider>
           <Toaster />
           <Router />
-          <InstallPrompt />
+
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

@@ -21,9 +21,9 @@ export function Header() {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 min-w-fit">
+          <Link href="/" className="flex-shrink-0">
             <div className="flex items-center gap-3">
               <img 
                 src={seagoLogo} 
@@ -35,10 +35,11 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8 flex-1 justify-center max-w-4xl">
+          <nav className="hidden lg:flex items-center flex-1 justify-center max-w-4xl mx-8">
+            <div className="flex items-center space-x-6 xl:space-x-8">
             <Link 
               href="/" 
-              className={`transition-colors font-medium px-2 py-1 rounded-md ${
+              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
                 location === "/" 
                   ? "text-deep-navy bg-gray-100 font-semibold" 
                   : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
@@ -48,7 +49,7 @@ export function Header() {
             </Link>
             <Link 
               href="/esperienze" 
-              className={`transition-colors font-medium px-2 py-1 rounded-md ${
+              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
                 location === "/esperienze"
                   ? "text-deep-navy bg-gray-100 font-semibold" 
                   : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
@@ -58,7 +59,7 @@ export function Header() {
             </Link>
             <Link 
               href="/charter" 
-              className={`transition-colors font-medium px-2 py-1 rounded-md ${
+              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
                 location === "/charter"
                   ? "text-deep-navy bg-gray-100 font-semibold" 
                   : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
@@ -68,7 +69,7 @@ export function Header() {
             </Link>
             <Link 
               href="/ormeggio" 
-              className={`transition-colors font-medium px-2 py-1 rounded-md ${
+              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
                 location === "/ormeggio" 
                   ? "text-deep-navy bg-gray-100 font-semibold" 
                   : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
@@ -78,7 +79,7 @@ export function Header() {
             </Link>
             <Link 
               href="/ia" 
-              className={`transition-colors font-medium px-2 py-1 rounded-md flex items-center gap-1 ${
+              className={`transition-colors font-medium px-3 py-2 rounded-lg flex items-center gap-1 whitespace-nowrap ${
                 location === "/ia" 
                   ? "text-deep-navy bg-gray-100 font-semibold" 
                   : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
@@ -90,7 +91,7 @@ export function Header() {
             <ServicesNavButton />
             <Link 
               href="/aiuto" 
-              className={`transition-colors font-medium px-2 py-1 rounded-md ${
+              className={`transition-colors font-medium px-3 py-2 rounded-lg whitespace-nowrap ${
                 location === "/aiuto" 
                   ? "text-deep-navy bg-gray-100 font-semibold" 
                   : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
@@ -126,6 +127,7 @@ export function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
+            </div>
           </nav>
 
           {/* Mobile Menu Button */}
@@ -138,15 +140,15 @@ export function Header() {
           </Button>
 
           {/* User Menu */}
-          <div className="hidden lg:flex items-center space-x-3 lg:space-x-4 flex-shrink-0">
+          <div className="hidden lg:flex items-center space-x-4 flex-shrink-0 ml-8">
             {user && <NotificationsCenter />}
             {!user && (
-              <Button asChild className="bg-coral hover:bg-orange-600 text-white font-bold shadow-lg text-sm px-4 py-2">
+              <Button asChild className="bg-coral hover:bg-orange-600 text-white font-bold shadow-lg text-sm px-4 py-2 whitespace-nowrap">
                 <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
               </Button>
             )}
             {user?.role === "customer" && (
-              <Button variant="ghost" asChild className="text-blue-700 hover:text-blue-900 font-semibold text-sm px-3 py-2">
+              <Button variant="ghost" asChild className="text-blue-700 hover:text-blue-900 font-semibold text-sm px-3 py-2 whitespace-nowrap">
                 <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
               </Button>
             )}

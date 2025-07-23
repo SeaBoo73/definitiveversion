@@ -46,7 +46,7 @@ export function Footer() {
               <li><Link href="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
               <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa Sea Host</Link></li>
               <li><Link href="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
-              <li><Link href="/recensioni" className="hover:text-white transition-colors">Recensioni</Link></li>
+              <li><Link href="/recensioni-user" className="hover:text-white transition-colors">Recensioni</Link></li>
             </ul>
           </div>
 

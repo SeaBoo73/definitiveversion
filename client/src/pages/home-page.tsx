@@ -14,7 +14,7 @@ import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
 import { TrendingDestinations } from "@/components/trending-destinations";
 import { WeatherWidget } from "@/components/weather-widget";
-import { GoogleMapsEmbed } from "@/components/google-maps-embed";
+import { GoogleMapsLazio } from "@/components/google-maps-lazio";
 import { CategoryGallery } from "@/components/category-gallery";
 
 export default function HomePage() {
@@ -167,7 +167,7 @@ export default function HomePage() {
                 </p>
               </div>
               
-              <GoogleMapsEmbed />
+              <GoogleMapsLazio />
               
               <div className="text-center mt-8">
                 <Button size="lg" variant="outline" asChild className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">

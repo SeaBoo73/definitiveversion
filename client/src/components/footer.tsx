@@ -13,9 +13,9 @@ export function Footer() {
               <img 
                 src={seagoLogo} 
                 alt="SeaGO Logo" 
-                className="h-8 w-8 rounded object-cover bg-white p-1"
+                className="h-8 w-8 rounded object-cover"
               />
-              <h3 className="text-2xl font-bold leading-none -mt-1" style={{ color: '#022237' }}>
+              <h3 className="text-2xl font-bold leading-none -mt-1 text-white">
                 SeaGO
               </h3>
             </div>

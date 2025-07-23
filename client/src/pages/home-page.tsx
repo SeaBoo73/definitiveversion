@@ -18,6 +18,7 @@ import { AIRecommendations } from "@/components/ai-recommendations";
 import { WeatherWidget } from "@/components/weather-widget";
 import { PerformanceMetrics } from "@/components/performance-metrics";
 import { ReviewSystem } from "@/components/review-system";
+import { InteractiveMap } from "@/components/interactive-map";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -92,19 +93,24 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Interactive Map */}
-      <section className="py-16 bg-white">
+      {/* Interactive Map - Sezione Esplora Migliorata */}
+      <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Esplora con la Mappa Interattiva</h2>
-            <p className="text-lg text-gray-600">Trova le imbarcazioni perfette vicino a te</p>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">Esplora il Mare del Lazio</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Scopri le imbarcazioni disponibili nei porti più belli del Lazio. 
+              Clicca sui marker per vedere dettagli e prezzi in tempo reale.
+            </p>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-8 text-center">
-            <div className="text-6xl mb-4">🗺️</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Mappa Interattiva</h3>
-            <p className="text-gray-600 mb-4">Esplora tutte le imbarcazioni disponibili nei porti del Lazio</p>
-            <Button asChild>
-              <Link href="/mappa-completa">Apri Mappa Completa</Link>
+          
+          <div className="h-96 rounded-xl overflow-hidden shadow-lg">
+            <InteractiveMap />
+          </div>
+          
+          <div className="text-center mt-8">
+            <Button size="lg" variant="outline" asChild className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
+              <Link href="/mappa-completa">Visualizza Mappa Completa</Link>
             </Button>
           </div>
         </div>

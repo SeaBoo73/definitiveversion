@@ -1,0 +1,661 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  Cloud, 
+  Waves, 
+  Fuel, 
+  Anchor, 
+  Wind, 
+  Thermometer, 
+  Eye, 
+  Compass, 
+  MapPin, 
+  Phone,
+  Clock,
+  Euro,
+  Info,
+  RefreshCw,
+  Zap
+} from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+
+interface WeatherData {
+  location: string;
+  temperature: number;
+  description: string;
+  windSpeed: number;
+  windDirection: number;
+  humidity: number;
+  pressure: number;
+  visibility: number;
+  waves: {
+    height: number;
+    direction: number;
+    period: number;
+  };
+  forecast: Array<{
+    time: string;
+    temperature: number;
+    description: string;
+    windSpeed: number;
+    waves: number;
+  }>;
+}
+
+interface FuelPrice {
+  station: string;
+  location: string;
+  gasoline: number;
+  diesel: number;
+  lastUpdated: string;
+  distance: number;
+  services: string[];
+}
+
+interface PortService {
+  id: string;
+  name: string;
+  location: string;
+  coordinates: { lat: number; lng: number };
+  services: {
+    mooring: boolean;
+    fuel: boolean;
+    water: boolean;
+    electricity: boolean;
+    wifi: boolean;
+    restaurant: boolean;
+    repair: boolean;
+    security: boolean;
+  };
+  pricing: {
+    mooring: number; // per meter per day
+    fuel: number;
+    water: number;
+    electricity: number;
+  };
+  contact: {
+    phone: string;
+    email: string;
+    website?: string;
+    vhf?: string;
+  };
+  availability: {
+    total: number;
+    available: number;
+    reserved: number;
+  };
+  rating: number;
+  reviews: number;
+}
+
+export default function ExternalServices() {
+  const [selectedLocation, setSelectedLocation] = useState('Roma');
+  const [fuelFilter, setFuelFilter] = useState('all');
+  const [portFilter, setPortFilter] = useState('all');
+
+  // Weather data query
+  const { data: weatherData, isLoading: weatherLoading, refetch: refetchWeather } = useQuery<WeatherData>({
+    queryKey: ['weather', selectedLocation],
+    queryFn: async () => {
+      const response = await fetch(`/api/external/weather?location=${selectedLocation}`);
+      if (!response.ok) throw new Error('Failed to fetch weather data');
+      return response.json();
+    },
+    refetchInterval: 300000 // Refresh every 5 minutes
+  });
+
+  // Fuel prices query
+  const { data: fuelPrices, isLoading: fuelLoading, refetch: refetchFuel } = useQuery<FuelPrice[]>({
+    queryKey: ['fuel-prices', selectedLocation, fuelFilter],
+    queryFn: async () => {
+      const response = await fetch(`/api/external/fuel-prices?location=${selectedLocation}&filter=${fuelFilter}`);
+      if (!response.ok) throw new Error('Failed to fetch fuel prices');
+      return response.json();
+    },
+    refetchInterval: 3600000 // Refresh every hour
+  });
+
+  // Port services query
+  const { data: portServices, isLoading: portsLoading, refetch: refetchPorts } = useQuery<PortService[]>({
+    queryKey: ['port-services', selectedLocation, portFilter],
+    queryFn: async () => {
+      const response = await fetch(`/api/external/port-services?location=${selectedLocation}&filter=${portFilter}`);
+      if (!response.ok) throw new Error('Failed to fetch port services');
+      return response.json();
+    },
+    refetchInterval: 1800000 // Refresh every 30 minutes
+  });
+
+  const formatTime = (timeString: string) => {
+    return new Date(timeString).toLocaleString('it-IT', {
+      hour: '2-digit',
+      minute: '2-digit',
+      day: '2-digit',
+      month: '2-digit'
+    });
+  };
+
+  const getWindDirection = (degrees: number) => {
+    const directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+    return directions[Math.round(degrees / 22.5) % 16];
+  };
+
+  const getWaveCondition = (height: number) => {
+    if (height <= 0.5) return { text: 'Calmo', color: 'bg-green-500' };
+    if (height <= 1.0) return { text: 'Leggero', color: 'bg-yellow-500' };
+    if (height <= 2.0) return { text: 'Moderato', color: 'bg-orange-500' };
+    return { text: 'Mosso', color: 'bg-red-500' };
+  };
+
+  const renderServiceIcon = (service: keyof PortService['services'], available: boolean) => {
+    const icons = {
+      mooring: <Anchor className="h-4 w-4" />,
+      fuel: <Fuel className="h-4 w-4" />,
+      water: <Cloud className="h-4 w-4" />,
+      electricity: <Zap className="h-4 w-4" />,
+      wifi: <RefreshCw className="h-4 w-4" />,
+      restaurant: <Euro className="h-4 w-4" />,
+      repair: <Compass className="h-4 w-4" />,
+      security: <Eye className="h-4 w-4" />
+    };
+
+    return (
+      <div className={`p-2 rounded-lg ${available ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-400'}`}>
+        {icons[service]}
+      </div>
+    );
+  };
+
+  return (
+    <div className="container mx-auto p-6 space-y-6">
+      {/* Header */}
+      <div className="text-center space-y-4">
+        <div className="flex items-center justify-center gap-3">
+          <Cloud className="h-8 w-8 text-blue-600" />
+          <h1 className="text-3xl font-bold">Servizi Esterni</h1>
+        </div>
+        <p className="text-gray-600">
+          Informazioni in tempo reale per una navigazione sicura e conveniente
+        </p>
+      </div>
+
+      {/* Location Selector */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-4">
+            <MapPin className="h-5 w-5 text-blue-600" />
+            <span className="font-medium">Località:</span>
+            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Seleziona località" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Roma">Roma / Fiumicino</SelectItem>
+                <SelectItem value="Civitavecchia">Civitavecchia</SelectItem>
+                <SelectItem value="Gaeta">Gaeta</SelectItem>
+                <SelectItem value="Anzio">Anzio</SelectItem>
+                <SelectItem value="Terracina">Terracina</SelectItem>
+                <SelectItem value="Ponza">Ponza</SelectItem>
+                <SelectItem value="Formia">Formia</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                refetchWeather();
+                refetchFuel();
+                refetchPorts();
+              }}
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Aggiorna Tutto
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Tabs defaultValue="weather" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="weather">Meteo</TabsTrigger>
+          <TabsTrigger value="fuel">Carburante</TabsTrigger>
+          <TabsTrigger value="ports">Porti</TabsTrigger>
+          <TabsTrigger value="marine">Condizioni Marine</TabsTrigger>
+        </TabsList>
+
+        {/* Weather Tab */}
+        <TabsContent value="weather" className="space-y-6">
+          {weatherLoading ? (
+            <Card>
+              <CardContent className="flex items-center justify-center py-8">
+                <RefreshCw className="h-6 w-6 animate-spin mr-2" />
+                Caricamento dati meteo...
+              </CardContent>
+            </Card>
+          ) : weatherData ? (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Cloud className="h-5 w-5" />
+                    Condizioni Attuali - {weatherData.location}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="text-center">
+                      <Thermometer className="h-8 w-8 mx-auto mb-2 text-orange-500" />
+                      <div className="text-2xl font-bold">{weatherData.temperature}°C</div>
+                      <div className="text-sm text-gray-600 capitalize">{weatherData.description}</div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Wind className="h-8 w-8 mx-auto mb-2 text-blue-500" />
+                      <div className="text-2xl font-bold">{weatherData.windSpeed} kn</div>
+                      <div className="text-sm text-gray-600">
+                        {getWindDirection(weatherData.windDirection)} ({weatherData.windDirection}°)
+                      </div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Eye className="h-8 w-8 mx-auto mb-2 text-purple-500" />
+                      <div className="text-2xl font-bold">{weatherData.visibility} km</div>
+                      <div className="text-sm text-gray-600">Visibilità</div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Waves className="h-8 w-8 mx-auto mb-2 text-teal-500" />
+                      <div className="text-2xl font-bold">{weatherData.waves.height} m</div>
+                      <div className="text-sm text-gray-600">
+                        {getWaveCondition(weatherData.waves.height).text}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 grid grid-cols-2 gap-4">
+                    <div>
+                      <span className="text-sm text-gray-600">Pressione:</span>
+                      <div className="font-medium">{weatherData.pressure} hPa</div>
+                    </div>
+                    <div>
+                      <span className="text-sm text-gray-600">Umidità:</span>
+                      <div className="font-medium">{weatherData.humidity}%</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Previsioni 24h</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {weatherData.forecast.map((forecast, index) => (
+                      <div key={index} className="text-center p-3 border rounded-lg">
+                        <div className="text-sm text-gray-600 mb-2">
+                          {formatTime(forecast.time)}
+                        </div>
+                        <div className="font-medium">{forecast.temperature}°C</div>
+                        <div className="text-xs text-gray-500 capitalize">{forecast.description}</div>
+                        <div className="text-xs mt-1">
+                          <span className="text-blue-600">{forecast.windSpeed} kn</span>
+                          <span className="mx-1">•</span>
+                          <span className="text-teal-600">{forecast.waves} m</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          ) : (
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Impossibile caricare i dati meteo. Verificare la connessione internet.
+              </AlertDescription>
+            </Alert>
+          )}
+        </TabsContent>
+
+        {/* Fuel Prices Tab */}
+        <TabsContent value="fuel" className="space-y-6">
+          <div className="flex items-center gap-4">
+            <Select value={fuelFilter} onValueChange={setFuelFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filtra carburante" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tutti i servizi</SelectItem>
+                <SelectItem value="cheapest">Più economici</SelectItem>
+                <SelectItem value="nearest">Più vicini</SelectItem>
+                <SelectItem value="premium">Servizi premium</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {fuelLoading ? (
+            <Card>
+              <CardContent className="flex items-center justify-center py-8">
+                <RefreshCw className="h-6 w-6 animate-spin mr-2" />
+                Caricamento prezzi carburante...
+              </CardContent>
+            </Card>
+          ) : fuelPrices ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {fuelPrices.map((station, index) => (
+                <Card key={index}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">{station.station}</CardTitle>
+                      <Badge variant="outline">{station.distance} km</Badge>
+                    </div>
+                    <div className="text-sm text-gray-600">{station.location}</div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <span className="text-sm text-gray-600">Benzina:</span>
+                        <div className="text-xl font-bold text-green-600">€{station.gasoline.toFixed(2)}</div>
+                      </div>
+                      <div>
+                        <span className="text-sm text-gray-600">Gasolio:</span>
+                        <div className="text-xl font-bold text-blue-600">€{station.diesel.toFixed(2)}</div>
+                      </div>
+                    </div>
+                    
+                    <div className="mb-3">
+                      <span className="text-sm text-gray-600">Servizi:</span>
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {station.services.map((service, i) => (
+                          <Badge key={i} variant="secondary" className="text-xs">
+                            {service}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="text-xs text-gray-500">
+                      Aggiornato: {formatTime(station.lastUpdated)}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Impossibile caricare i prezzi del carburante. Riprovare più tardi.
+              </AlertDescription>
+            </Alert>
+          )}
+        </TabsContent>
+
+        {/* Port Services Tab */}
+        <TabsContent value="ports" className="space-y-6">
+          <div className="flex items-center gap-4">
+            <Select value={portFilter} onValueChange={setPortFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filtra porti" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tutti i porti</SelectItem>
+                <SelectItem value="available">Posti disponibili</SelectItem>
+                <SelectItem value="fuel">Con rifornimento</SelectItem>
+                <SelectItem value="services">Servizi completi</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {portsLoading ? (
+            <Card>
+              <CardContent className="flex items-center justify-center py-8">
+                <RefreshCw className="h-6 w-6 animate-spin mr-2" />
+                Caricamento servizi portuali...
+              </CardContent>
+            </Card>
+          ) : portServices ? (
+            <div className="space-y-4">
+              {portServices.map((port) => (
+                <Card key={port.id}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">{port.name}</CardTitle>
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center">
+                          {[...Array(5)].map((_, i) => (
+                            <span
+                              key={i}
+                              className={`text-sm ${i < Math.floor(port.rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                        <span className="text-sm text-gray-600">({port.reviews})</span>
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600">{port.location}</div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {/* Services */}
+                      <div>
+                        <h4 className="font-medium mb-3">Servizi Disponibili</h4>
+                        <div className="grid grid-cols-4 gap-2">
+                          {Object.entries(port.services).map(([service, available]) => (
+                            <div key={service} title={service}>
+                              {renderServiceIcon(service as keyof PortService['services'], available)}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Pricing */}
+                      <div>
+                        <h4 className="font-medium mb-3">Tariffe</h4>
+                        <div className="space-y-1 text-sm">
+                          <div className="flex justify-between">
+                            <span>Ormeggio:</span>
+                            <span>€{port.pricing.mooring}/m/giorno</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Carburante:</span>
+                            <span>€{port.pricing.fuel}/L</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Acqua:</span>
+                            <span>€{port.pricing.water}/L</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Elettricità:</span>
+                            <span>€{port.pricing.electricity}/kWh</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Availability & Contact */}
+                      <div>
+                        <h4 className="font-medium mb-3">Disponibilità</h4>
+                        <div className="space-y-2 text-sm mb-4">
+                          <div className="flex justify-between">
+                            <span>Totale posti:</span>
+                            <span>{port.availability.total}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Disponibili:</span>
+                            <span className="text-green-600 font-medium">{port.availability.available}</span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Prenotati:</span>
+                            <span className="text-orange-600">{port.availability.reserved}</span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-1 text-sm">
+                          <div className="flex items-center gap-2">
+                            <Phone className="h-3 w-3" />
+                            <span>{port.contact.phone}</span>
+                          </div>
+                          {port.contact.vhf && (
+                            <div className="flex items-center gap-2">
+                              <RefreshCw className="h-3 w-3" />
+                              <span>VHF {port.contact.vhf}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <Button variant="outline" size="sm" className="w-full mt-3">
+                          <Phone className="h-4 w-4 mr-2" />
+                          Contatta Porto
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Alert>
+              <Info className="h-4 w-4" />
+              <AlertDescription>
+                Impossibile caricare i servizi portuali. Verificare la connessione.
+              </AlertDescription>
+            </Alert>
+          )}
+        </TabsContent>
+
+        {/* Marine Conditions Tab */}
+        <TabsContent value="marine" className="space-y-6">
+          {weatherData && (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Waves className="h-5 w-5" />
+                    Condizioni Marine Attuali
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center">
+                      <Waves className="h-12 w-12 mx-auto mb-3 text-teal-500" />
+                      <div className="text-3xl font-bold">{weatherData.waves.height} m</div>
+                      <div className="text-sm text-gray-600">Altezza Onde</div>
+                      <Badge 
+                        className={`mt-2 ${getWaveCondition(weatherData.waves.height).color} text-white`}
+                      >
+                        {getWaveCondition(weatherData.waves.height).text}
+                      </Badge>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Compass className="h-12 w-12 mx-auto mb-3 text-blue-500" />
+                      <div className="text-3xl font-bold">{weatherData.waves.direction}°</div>
+                      <div className="text-sm text-gray-600">Direzione Onde</div>
+                      <div className="text-sm mt-2 text-blue-600">
+                        {getWindDirection(weatherData.waves.direction)}
+                      </div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Clock className="h-12 w-12 mx-auto mb-3 text-purple-500" />
+                      <div className="text-3xl font-bold">{weatherData.waves.period}s</div>
+                      <div className="text-sm text-gray-600">Periodo Onde</div>
+                      <div className="text-sm mt-2 text-purple-600">
+                        {weatherData.waves.period < 6 ? 'Frequenti' : 
+                         weatherData.waves.period < 10 ? 'Moderate' : 'Lunghe'}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Raccomandazioni di Navigazione</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {weatherData.waves.height <= 0.5 && weatherData.windSpeed <= 10 && (
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription className="text-green-800">
+                          <strong>Condizioni Ottime:</strong> Mare calmo, ideale per tutte le imbarcazioni. 
+                          Navigazione sicura per principianti.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {((weatherData.waves.height > 0.5 && weatherData.waves.height <= 1.5) || 
+                      (weatherData.windSpeed > 10 && weatherData.windSpeed <= 20)) && (
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription className="text-yellow-800">
+                          <strong>Condizioni Moderate:</strong> Prestare attenzione. Consigliata esperienza di navigazione. 
+                          Verificare stabilità dell'imbarcazione.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {(weatherData.waves.height > 1.5 || weatherData.windSpeed > 20) && (
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription className="text-red-800">
+                          <strong>Condizioni Difficili:</strong> Sconsigliata la navigazione per imbarcazioni piccole. 
+                          Solo navigatori esperti con imbarcazioni adeguate.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">Equipaggiamento Consigliato</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <ul className="space-y-1 text-sm">
+                            <li>• Giubbotti salvagente</li>
+                            <li>• Radio VHF</li>
+                            <li>• Kit di primo soccorso</li>
+                            <li>• Razzi di segnalazione</li>
+                            {weatherData.waves.height > 1.0 && <li>• Ancora galleggiante</li>}
+                            {weatherData.windSpeed > 15 && <li>• Equipaggiamento antipioggia</li>}
+                          </ul>
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">Previsioni Brevi</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm">
+                            {weatherData.forecast.slice(0, 3).map((forecast, index) => (
+                              <div key={index} className="flex justify-between">
+                                <span>{formatTime(forecast.time)}</span>
+                                <span>{forecast.waves}m • {forecast.windSpeed}kn</span>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
+          )}
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}

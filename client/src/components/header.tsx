@@ -54,6 +54,9 @@ export function Header() {
                 Admin
               </Link>
             )}
+            <Link href="/external-services" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+              Servizi
+            </Link>
             <Link href="/aiuto" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Aiuto
             </Link>

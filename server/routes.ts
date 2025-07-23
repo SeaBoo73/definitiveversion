@@ -7,6 +7,7 @@ import { registerEmergencyRoutes } from "./routes/emergencies";
 import { registerFeatureRoutes } from "./routes/features";
 import { registerAvailabilityRoutes } from "./routes/availability-management";
 import emergencyRoutes from "./routes/emergency";
+import externalRoutes from "./routes/external";
 import { Server as SocketIOServer } from "socket.io";
 import { aiService } from "./ai-service";
 import { storage } from "./storage";
@@ -34,6 +35,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Emergency system routes
   app.use('/api/emergency', emergencyRoutes);
+  
+  // External services routes
+  app.use('/api/external', externalRoutes);
   
   // Review routes
   const { registerReviewRoutes } = await import("./routes/reviews");

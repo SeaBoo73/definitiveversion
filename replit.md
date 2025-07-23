@@ -392,3 +392,12 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Sicurezza H24, check-in assistito, tracciamento GPS inclusi
   - ✅ CTA prominenti per registrazione proprietari e calcolo guadagni
   - ✅ Integrazione completa con dashboard analytics e commissioni
+- **Servizi Ormeggio Completi (July 23, 2025 - Sera):**
+  - ✅ Sezione dedicata servizi ormeggio per evitare barche in rada
+  - ✅ 3 porti partner principali con tariffe dettagliate per ogni lunghezza barca
+  - ✅ Calcolatore automatico costi ormeggio da 8m a 20m di lunghezza
+  - ✅ Tariffe scontate 20% per noleggiatori SeaGO registrati
+  - ✅ Servizi inclusi: sicurezza H24, check-in assistito, tutti i servizi portuali
+  - ✅ Database completo con disponibilità posti, contatti VHF, rating
+  - ✅ Sistema prenotazione ormeggi integrato con external services
+  - ✅ Vantaggi esclusivi: posto garantito, assistenza dedicata, videosorveglianza

@@ -6,8 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { PortSelector } from "@/components/port-selector";
-import { MapPin, Calendar as CalendarIcon, Users, Search, Ship, UserCheck, Fuel, SlidersHorizontal } from "lucide-react";
+import { MapPin, Calendar as CalendarIcon, Users, Search, Ship, UserCheck, Fuel, SlidersHorizontal, ChevronDown, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { useLocation } from "wouter";
@@ -37,6 +38,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [startDateOpen, setStartDateOpen] = useState(false);
   const [endDateOpen, setEndDateOpen] = useState(false);
+  const [fuelPolicyOpen, setFuelPolicyOpen] = useState(false);
 
   const handleSearch = () => {
     console.log("Search with filters:", filters);
@@ -336,11 +338,25 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
       </div>
 
       {/* Fuel Policy Information Section */}
-      <div className="mt-6 bg-blue-50 rounded-lg p-4 border border-blue-200">
-        <div className="flex items-center mb-3">
-          <Fuel className="h-5 w-5 text-blue-600 mr-2" />
-          <h3 className="text-lg font-semibold text-blue-900">Politiche Carburante</h3>
-        </div>
+      <div className="mt-6 bg-blue-50 rounded-lg border border-blue-200">
+        <Collapsible open={fuelPolicyOpen} onOpenChange={setFuelPolicyOpen}>
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              className="w-full flex items-center justify-between p-4 hover:bg-blue-100/50 text-left"
+            >
+              <div className="flex items-center">
+                <Fuel className="h-5 w-5 text-blue-600 mr-2" />
+                <h3 className="text-lg font-semibold text-blue-900">Politiche Carburante</h3>
+              </div>
+              {fuelPolicyOpen ? (
+                <ChevronDown className="h-4 w-4 text-blue-600" />
+              ) : (
+                <ChevronRight className="h-4 w-4 text-blue-600" />
+              )}
+            </Button>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="px-4 pb-4">
         
         <div className="space-y-4 text-sm">
           {/* Pieno a Pieno */}
@@ -420,6 +436,8 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             </ul>
           </div>
         </div>
+          </CollapsibleContent>
+        </Collapsible>
       </div>
     </div>
   );

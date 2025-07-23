@@ -1,247 +1,354 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  TextInput,
   ScrollView,
+  TouchableOpacity,
+  Image,
+  RefreshControl,
   Alert,
+  Dimensions
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '../services/AuthContext';
+import { useQuery } from '@tanstack/react-query';
+import { useLocation } from '../services/LocationService';
+import { OfflineService } from '../services/OfflineService';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const API_BASE_URL = 'https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev';
+const { width } = Dimensions.get('window');
 
-type Boat = {
+interface Boat {
   id: number;
   name: string;
   type: string;
-  port: string;
-  pricePerDay: string;
+  pricePerDay: number;
+  location: string;
   images: string[];
-  maxPersons: number;
-  length: number;
-};
+  rating: number;
+  distance?: number;
+}
 
 export default function HomeScreen({ navigation }: any) {
-  const { user } = useAuth();
-  const [boats, setBoats] = useState<Boat[]>([]);
-  const [searchText, setSearchText] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [isOffline, setIsOffline] = useState(false);
+  const { currentLocation, getNearbyBoats } = useLocation();
+
+  // Query per barche featured
+  const { data: featuredBoats = [], isLoading, refetch } = useQuery({
+    queryKey: ['boats', 'featured'],
+    queryFn: async () => {
+      if (OfflineService.isOfflineMode()) {
+        return await OfflineService.getCachedBoats();
+      }
+      
+      const response = await fetch('/api/boats?featured=true');
+      if (!response.ok) throw new Error('Network error');
+      const boats = await response.json();
+      
+      // Cache per uso offline
+      await OfflineService.cacheBoats(boats);
+      return boats;
+    },
+    staleTime: 10 * 60 * 1000, // 10 minuti
+  });
+
+  // Query per barche vicine
+  const { data: nearbyBoats = [] } = useQuery({
+    queryKey: ['boats', 'nearby', currentLocation],
+    queryFn: () => getNearbyBoats(50), // 50km raggio
+    enabled: !!currentLocation,
+    staleTime: 5 * 60 * 1000, // 5 minuti
+  });
 
   useEffect(() => {
-    fetchBoats();
+    setIsOffline(OfflineService.isOfflineMode());
   }, []);
 
-  const fetchBoats = async () => {
+  const onRefresh = async () => {
+    setRefreshing(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/boats`);
-      if (response.ok) {
-        const data = await response.json();
-        setBoats(data);
+      if (!OfflineService.isOfflineMode()) {
+        await refetch();
+        await OfflineService.syncOfflineData();
+      } else {
+        Alert.alert(
+          'Modalità Offline',
+          'Impossibile aggiornare i dati in modalità offline. I dati mostrati potrebbero non essere aggiornati.'
+        );
       }
     } catch (error) {
-      Alert.alert('Errore', 'Impossibile caricare le barche');
+      console.error('Errore refresh:', error);
     } finally {
-      setLoading(false);
+      setRefreshing(false);
     }
   };
 
-  const filteredBoats = boats.filter(boat =>
-    boat.name.toLowerCase().includes(searchText.toLowerCase()) ||
-    boat.port.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const navigateToBoatDetails = (boat: Boat) => {
+    navigation.navigate('BoatDetails', { boatId: boat.id, boat });
+  };
 
-  const renderBoatCard = ({ item }: { item: Boat }) => (
+  const navigateToMap = () => {
+    if (!currentLocation) {
+      Alert.alert(
+        'Geolocalizzazione non disponibile',
+        'Abilita la geolocalizzazione per vedere le barche sulla mappa.'
+      );
+      return;
+    }
+    navigation.navigate('Map');
+  };
+
+  const navigateToSearch = () => {
+    navigation.navigate('Search');
+  };
+
+  const BoatCard = ({ boat }: { boat: Boat }) => (
     <TouchableOpacity
       style={styles.boatCard}
-      onPress={() => navigation.navigate('BoatDetails', { boatId: item.id })}
+      onPress={() => navigateToBoatDetails(boat)}
     >
       <Image
-        source={{ uri: item.images[0] || 'https://via.placeholder.com/300x200' }}
+        source={{ uri: boat.images?.[0] || 'https://via.placeholder.com/300x200' }}
         style={styles.boatImage}
+        resizeMode="cover"
       />
       <View style={styles.boatInfo}>
-        <Text style={styles.boatName}>{item.name}</Text>
-        <Text style={styles.boatType}>{item.type}</Text>
-        <Text style={styles.boatPort}>{item.port}</Text>
+        <Text style={styles.boatName}>{boat.name}</Text>
+        <Text style={styles.boatType}>{boat.type}</Text>
+        <Text style={styles.boatLocation}>📍 {boat.location}</Text>
         <View style={styles.boatDetails}>
-          <Text style={styles.boatCapacity}>👥 {item.maxPersons}</Text>
-          <Text style={styles.boatLength}>📏 {item.length}m</Text>
+          <Text style={styles.boatPrice}>€{boat.pricePerDay}/giorno</Text>
+          <View style={styles.ratingContainer}>
+            <Icon name="star" size={16} color="#FFD700" />
+            <Text style={styles.rating}>{boat.rating?.toFixed(1) || 'N/A'}</Text>
+          </View>
         </View>
-        <Text style={styles.boatPrice}>€{item.pricePerDay}/giorno</Text>
+        {boat.distance && (
+          <Text style={styles.distance}>🚗 {boat.distance.toFixed(1)} km</Text>
+        )}
       </View>
     </TouchableOpacity>
   );
 
+  const QuickActionCard = ({ icon, title, subtitle, onPress, color = '#0066CC' }: any) => (
+    <TouchableOpacity style={[styles.quickAction, { borderLeftColor: color }]} onPress={onPress}>
+      <Icon name={icon} size={24} color={color} style={styles.quickActionIcon} />
+      <View style={styles.quickActionText}>
+        <Text style={styles.quickActionTitle}>{title}</Text>
+        <Text style={styles.quickActionSubtitle}>{subtitle}</Text>
+      </View>
+      <Icon name="chevron-right" size={20} color="#ccc" />
+    </TouchableOpacity>
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <Image
-              source={require('../../assets/logo.jpeg')}
-              style={styles.logo}
-              resizeMode="contain"
-            />
-            <Text style={styles.welcomeText}>
-              {user ? `Ciao, ${user.firstName}!` : 'Benvenuto su SeaGO'}
-            </Text>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      {/* Header offline */}
+      {isOffline && (
+        <View style={styles.offlineHeader}>
+          <Icon name="cloud-off" size={20} color="#FFF" />
+          <Text style={styles.offlineText}>Modalità Offline</Text>
+        </View>
+      )}
+
+      {/* Hero Section */}
+      <View style={styles.hero}>
+        <Text style={styles.heroTitle}>Scopri il Mare del Lazio</Text>
+        <Text style={styles.heroSubtitle}>
+          Trova e prenota la barca perfetta per la tua avventura
+        </Text>
+        
+        <TouchableOpacity style={styles.searchButton} onPress={navigateToSearch}>
+          <Icon name="search" size={20} color="#FFF" style={styles.searchIcon} />
+          <Text style={styles.searchButtonText}>Cerca barche disponibili</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Quick Actions */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Azioni Rapide</Text>
+        
+        <QuickActionCard
+          icon="map"
+          title="Barche Vicine"
+          subtitle={currentLocation ? `${nearbyBoats.length} barche nei dintorni` : 'Abilita geolocalizzazione'}
+          onPress={navigateToMap}
+          color="#4CAF50"
+        />
+        
+        <QuickActionCard
+          icon="event"
+          title="Le Mie Prenotazioni"
+          subtitle="Gestisci le tue prenotazioni"
+          onPress={() => navigation.navigate('Bookings')}
+          color="#FF9800"
+        />
+        
+        <QuickActionCard
+          icon="message"
+          title="Messaggi"
+          subtitle="Comunica con i proprietari"
+          onPress={() => navigation.navigate('Messages')}
+          color="#9C27B0"
+        />
+      </View>
+
+      {/* Barche nelle vicinanze */}
+      {nearbyBoats.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Barche Vicine a Te</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {nearbyBoats.slice(0, 5).map((boat) => (
+              <BoatCard key={boat.id} boat={boat} />
+            ))}
+          </ScrollView>
+        </View>
+      )}
+
+      {/* Barche in evidenza */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Barche in Evidenza</Text>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <Text>Caricamento...</Text>
           </View>
-          {!user && (
+        ) : (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {featuredBoats.slice(0, 10).map((boat) => (
+              <BoatCard key={boat.id} boat={boat} />
+            ))}
+          </ScrollView>
+        )}
+      </View>
+
+      {/* Info zone migliori */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Zone Popolari</Text>
+        <View style={styles.popularZones}>
+          {[
+            { name: 'Fiumicino', count: 15 },
+            { name: 'Anzio', count: 12 },
+            { name: 'Gaeta', count: 8 },
+            { name: 'Sperlonga', count: 6 }
+          ].map((zone, index) => (
             <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => navigation.navigate('Login')}
+              key={index}
+              style={styles.zoneCard}
+              onPress={() => navigation.navigate('Search', { location: zone.name })}
             >
-              <Text style={styles.loginButtonText}>Accedi</Text>
+              <Text style={styles.zoneName}>{zone.name}</Text>
+              <Text style={styles.zoneCount}>{zone.count} barche</Text>
             </TouchableOpacity>
-          )}
-          {user?.role === 'owner' && (
-            <TouchableOpacity
-              style={styles.dashboardButton}
-              onPress={() => navigation.navigate('OwnerDashboard')}
-            >
-              <Text style={styles.dashboardButtonText}>Dashboard</Text>
-            </TouchableOpacity>
-          )}
+          ))}
         </View>
+      </View>
 
-        {/* Search */}
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Cerca barche per nome o porto..."
-            value={searchText}
-            onChangeText={setSearchText}
-          />
-        </View>
-
-        {/* Hero Section */}
-        <View style={styles.heroSection}>
-          <Text style={styles.heroTitle}>Naviga verso l'avventura</Text>
-          <Text style={styles.heroSubtitle}>
-            Prenota barche, yacht e imbarcazioni uniche in tutta Italia
-          </Text>
-        </View>
-
-        {/* Boats List */}
-        <View style={styles.boatsSection}>
-          <Text style={styles.sectionTitle}>Imbarcazioni disponibili</Text>
-          {loading ? (
-            <Text style={styles.loadingText}>Caricamento...</Text>
-          ) : (
-            <FlatList
-              data={filteredBoats}
-              renderItem={renderBoatCard}
-              keyExtractor={(item) => item.id.toString()}
-              numColumns={1}
-              scrollEnabled={false}
-            />
-          )}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      {/* Footer spacer */}
+      <View style={styles.footer} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#f5f5f5',
   },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#0ea5e9',
-  },
-  headerLeft: {
+  offlineHeader: {
+    backgroundColor: '#FF6B35',
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-  },
-  logo: {
-    width: 40,
-    height: 40,
-    marginRight: 12,
-    borderRadius: 20,
-  },
-  welcomeText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  loginButton: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
+    justifyContent: 'center',
     paddingVertical: 8,
-    borderRadius: 8,
+    gap: 8,
   },
-  loginButtonText: {
-    color: '#0ea5e9',
+  offlineText: {
+    color: '#FFF',
     fontWeight: 'bold',
   },
-  dashboardButton: {
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  dashboardButtonText: {
-    color: '#0ea5e9',
-    fontWeight: 'bold',
-  },
-  searchContainer: {
-    padding: 16,
-  },
-  searchInput: {
-    backgroundColor: '#fff',
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    fontSize: 16,
-  },
-  heroSection: {
-    padding: 16,
-    backgroundColor: '#0ea5e9',
+  hero: {
+    backgroundColor: '#0066CC',
+    padding: 20,
     alignItems: 'center',
   },
   heroTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#FFF',
     textAlign: 'center',
     marginBottom: 8,
   },
   heroSubtitle: {
     fontSize: 16,
-    color: '#bfdbfe',
+    color: '#E3F2FD',
     textAlign: 'center',
+    marginBottom: 20,
   },
-  boatsSection: {
-    padding: 16,
+  searchButton: {
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.3)',
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchButtonText: {
+    color: '#FFF',
+    fontWeight: '600',
+  },
+  section: {
+    padding: 20,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#1e293b',
-    marginBottom: 16,
+    marginBottom: 15,
+    color: '#333',
   },
-  loadingText: {
-    textAlign: 'center',
-    color: '#64748b',
+  quickAction: {
+    backgroundColor: '#FFF',
+    padding: 15,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    borderLeftWidth: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  quickActionIcon: {
+    marginRight: 15,
+  },
+  quickActionText: {
+    flex: 1,
+  },
+  quickActionTitle: {
     fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+  },
+  quickActionSubtitle: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 2,
   },
   boatCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     borderRadius: 12,
-    marginBottom: 16,
+    marginRight: 15,
+    width: width * 0.7,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -250,45 +357,85 @@ const styles = StyleSheet.create({
   },
   boatImage: {
     width: '100%',
-    height: 200,
+    height: 150,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
   boatInfo: {
-    padding: 16,
+    padding: 15,
   },
   boatName: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#1e293b',
+    color: '#333',
     marginBottom: 4,
   },
   boatType: {
     fontSize: 14,
-    color: '#64748b',
-    marginBottom: 4,
+    color: '#666',
+    marginBottom: 8,
   },
-  boatPort: {
+  boatLocation: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#666',
     marginBottom: 8,
   },
   boatDetails: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  boatCapacity: {
-    fontSize: 14,
-    color: '#64748b',
-  },
-  boatLength: {
-    fontSize: 14,
-    color: '#64748b',
+    alignItems: 'center',
   },
   boatPrice: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#0ea5e9',
+    color: '#0066CC',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  rating: {
+    fontSize: 14,
+    color: '#666',
+  },
+  distance: {
+    fontSize: 12,
+    color: '#4CAF50',
+    marginTop: 4,
+  },
+  popularZones: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+  },
+  zoneCard: {
+    backgroundColor: '#FFF',
+    padding: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    width: (width - 60) / 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  zoneName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  zoneCount: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4,
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  footer: {
+    height: 20,
   },
 });

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyDTjTGKA-CO281BTK3-WEx5vyfQ-_ah4Bo";
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 interface BoatMarker {
   id: number;

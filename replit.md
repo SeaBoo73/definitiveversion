@@ -402,6 +402,10 @@ The application follows modern web development best practices with a focus on ty
   - ✅ CTA modificati per esplorare ormeggi e servizi portuali
   - ✅ Parola chiave "ormeggio" aggiunta nel prompt download app
   - ✅ Manifest PWA aggiornato con riferimenti ai servizi ormeggio
+  - ✅ Pagina ormeggio trasformata stile Booking.com con ricerca avanzata
+  - ✅ Sistema filtri per prezzo, lunghezza barca e ordinamento risultati
+  - ✅ Card ormeggi con rating, recensioni, servizi e prenotazione diretta
+  - ✅ Calendario integrato per check-in/check-out come piattaforme hotel
 - **Servizi Ormeggio Completi (July 23, 2025 - Sera):**
   - ✅ Sezione dedicata servizi ormeggio per evitare barche in rada
   - ✅ 3 porti partner principali con tariffe dettagliate per ogni lunghezza barca

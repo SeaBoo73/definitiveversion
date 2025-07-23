@@ -81,7 +81,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <PortSelector
             value={filters.location}
             onChange={(port) => updateFilter("location", port)}
-            placeholder={onSearch ? "Tutti i porti" : "Seleziona porto del Lazio..."}
+            placeholder={onSearch ? "Tutti i porti" : "Seleziona porto..."}
           />
         </div>
 

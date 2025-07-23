@@ -21,9 +21,14 @@ import {
   Euro,
   Info,
   RefreshCw,
-  Zap
+  Zap,
+  ArrowLeft,
+  Search,
+  Calendar,
+  User
 } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'wouter';
 
 interface WeatherData {
   location: string;
@@ -173,17 +178,56 @@ export default function ExternalServices() {
   };
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="flex items-center justify-center gap-3">
-          <Cloud className="h-8 w-8 text-blue-600" />
-          <h1 className="text-3xl font-bold">Servizi Esterni</h1>
+    <div className="min-h-screen bg-gray-50">
+      {/* Navigation Header */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo e Titolo */}
+            <div className="flex items-center gap-4">
+              <Link href="/" className="flex items-center gap-2">
+                <ArrowLeft className="h-5 w-5 text-gray-600 hover:text-ocean-blue" />
+              </Link>
+              <div className="flex items-center gap-3">
+                <Compass className="h-6 w-6 text-ocean-blue" />
+                <h1 className="text-xl font-bold text-gray-900">Servizi</h1>
+              </div>
+            </div>
+
+            {/* Navigation Links - Desktop */}
+            <nav className="hidden md:flex items-center space-x-6">
+              <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-ocean-blue transition-colors">
+                <Search className="h-4 w-4" />
+                <span>Esplora</span>
+              </Link>
+              <Link href="/ormeggio" className="flex items-center gap-2 text-gray-600 hover:text-ocean-blue transition-colors">
+                <MapPin className="h-4 w-4" />
+                <span>Ormeggio</span>
+              </Link>
+              <Link href="/esperienze" className="flex items-center gap-2 text-gray-600 hover:text-ocean-blue transition-colors">
+                <Calendar className="h-4 w-4" />
+                <span>Esperienze</span>
+              </Link>
+              <Link href="/profilo" className="flex items-center gap-2 text-gray-600 hover:text-ocean-blue transition-colors">
+                <User className="h-4 w-4" />
+                <span>Profilo</span>
+              </Link>
+            </nav>
+          </div>
         </div>
-        <p className="text-gray-600">
-          Informazioni in tempo reale per una navigazione sicura e conveniente
-        </p>
-      </div>
+      </header>
+
+      <div className="container mx-auto p-6 space-y-6">
+        {/* Page Header */}
+        <div className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <Cloud className="h-8 w-8 text-blue-600" />
+            <h2 className="text-3xl font-bold">Servizi Esterni</h2>
+          </div>
+          <p className="text-gray-600">
+            Informazioni in tempo reale per una navigazione sicura e conveniente
+          </p>
+        </div>
 
       {/* Location Selector */}
       <Card>
@@ -656,6 +700,7 @@ export default function ExternalServices() {
           )}
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 }

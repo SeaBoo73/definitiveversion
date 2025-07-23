@@ -77,8 +77,12 @@ export function CategoryGallery() {
   });
 
   const handleCategoryClick = (categoryId: string) => {
-    // Forza il reload della pagina con il nuovo parametro
-    window.location.href = `/?type=${categoryId}`;
+    // Usa l'API History per evitare reload completo
+    const newUrl = `/?type=${categoryId}`;
+    window.history.pushState({}, '', newUrl);
+    
+    // Invia custom event per notificare il cambio
+    window.dispatchEvent(new CustomEvent('categoryChanged'));
   };
 
   // Calcola i contatori reali per ogni categoria

@@ -28,29 +28,28 @@ export default function HomePage() {
 
   // Gestisci parametri URL per il filtro categorie
   useEffect(() => {
-    const handleLocationChange = () => {
+    const handleUrlChange = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const typeParam = urlParams.get('type');
       setSelectedCategory(typeParam || "");
     };
 
-    // Controlla immediatamente al mount
-    handleLocationChange();
+    // Controlla al mount
+    handleUrlChange();
 
-    // Ascolta i cambi di URL
-    window.addEventListener('popstate', handleLocationChange);
-    
+    // Ascolta custom event per cambio categoria
+    const handleCategoryChange = () => {
+      handleUrlChange();
+    };
+
+    window.addEventListener('categoryChanged', handleCategoryChange);
+    window.addEventListener('popstate', handleUrlChange);
+
     return () => {
-      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('categoryChanged', handleCategoryChange);
+      window.removeEventListener('popstate', handleUrlChange);
     };
   }, []);
-
-  // Controlla anche quando cambia location di wouter
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const typeParam = urlParams.get('type');
-    setSelectedCategory(typeParam || "");
-  }, [location]);
 
   // Filtra barche per categoria e porto
   const filteredBoats = boats.filter(boat => {
@@ -60,6 +59,7 @@ export default function HomePage() {
   });
 
   // Debug per verificare i filtri
+  console.log('Current state - selectedCategory:', selectedCategory, 'URL:', window.location.search);
   if (selectedCategory) {
     console.log('Filtering by category:', selectedCategory, 'Found boats:', filteredBoats.length);
   }

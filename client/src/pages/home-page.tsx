@@ -17,6 +17,8 @@ import { GoogleMapsFinal } from "@/components/google-maps-final";
 import { WeatherWidget } from "@/components/weather-widget";
 import { ExternalServicesQuickAccess } from "@/components/external-services-quick-access";
 import { OwnerBusinessSection } from "@/components/owner-business-section";
+import { QuickStatsCard } from "@/components/quick-stats-card";
+import { TrendingDestinations } from "@/components/trending-destinations";
 
 
 
@@ -69,11 +71,21 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Quick Stats Dashboard */}
+      <section className="py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <QuickStatsCard />
+        </div>
+      </section>
+
       {/* Boat Categories with Real Images */}
       <BoatCategories 
         onCategorySelect={setSelectedCategory} 
         selectedCategory={selectedCategory}
       />
+
+      {/* Trending Destinations */}
+      <TrendingDestinations />
 
       {/* SEZIONE METEO E CONDIZIONI MARINE */}
       <section className="py-12 bg-gray-50">

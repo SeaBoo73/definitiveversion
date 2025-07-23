@@ -60,6 +60,7 @@ import MessagingPage from "@/pages/messaging";
 import DocumentManagement from "@/pages/document-management";
 import OrmeggioPage from "@/pages/ormeggio-page";
 import OrmeggioBookingPage from "@/pages/ormeggio-booking";
+import AdminPerformancePage from "@/pages/admin-performance";
 
 function Router() {
   return (
@@ -100,6 +101,7 @@ function Router() {
       <Route path="/assistenza-proprietari" component={AssistenzaProprietariPage} />
       <Route path="/analytics" component={AnalyticsPage} />
       <Route path="/analytics-dashboard" component={lazy(() => import('./pages/analytics-dashboard'))} />
+      <Route path="/admin-performance" component={AdminPerformancePage} />
       <Route path="/emergency" component={EmergencyPage} />
       <Route path="/emergency-system" component={EmergencySystem} />
       <Route path="/external-services" component={ExternalServices} />

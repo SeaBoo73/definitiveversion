@@ -51,9 +51,24 @@ export function Header() {
               </Link>
             )}
             {user?.role === "admin" && (
-              <Link href="/admin-dashboard" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
-                Admin
-              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
+                    Admin
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin-dashboard" className="w-full cursor-pointer">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admin-performance" className="w-full cursor-pointer">Performance Center</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/analytics" className="w-full cursor-pointer">Analytics</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
             <ServicesNavButton />
             <Link href="/aiuto" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">

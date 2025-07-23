@@ -32,7 +32,7 @@ export default function AltreEsperienzePage() {
               <Sparkles className="h-6 w-6 text-purple-600" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Altre Esperienze</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Esperienze</h1>
               <p className="text-gray-600">Funzionalità avanzate e servizi aggiuntivi per una navigazione completa</p>
             </div>
           </div>

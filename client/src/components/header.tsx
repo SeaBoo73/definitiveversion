@@ -36,7 +36,7 @@ export function Header() {
               Esplora
             </Link>
             <Link href="/altre-esperienze" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
-              Altre Esperienze
+              Esperienze
             </Link>
             <Link href="/ormeggio" className="text-sea-gray hover:text-deep-navy transition-colors font-medium">
               Ormeggio

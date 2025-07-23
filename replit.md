@@ -154,6 +154,14 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 23, 2025 - Riorganizzazione App e Ottimizzazioni Avanzate
+- **Riorganizzazione Homepage Completata:**
+  - ✅ Homepage semplificata mantenendo solo sezioni core: "Naviga verso l'avventura", "Esplora" con categorie e mappa, "Trova il tuo ormeggio ideale", "Imbarcazioni in evidenza"
+  - ✅ Sezioni "Come funziona" (Crea, Prenota, Naviga) e "Affitta la tua barca" mantenute invariate
+  - ✅ Tutte le funzionalità avanzate (stats, recensioni, IA, meteo) spostate in pagina "Esperienze"
+  - ✅ Menu navigazione aggiornato: Esplora | Esperienze | Ormeggio
+  - ✅ Pagina "Esperienze" creata con 5 tab organizzati per funzionalità avanzate
+
 ### July 23, 2025 - Completo Check-up e Ottimizzazioni Avanzate
 - **App SeaGO Completamente Ottimizzata e Migliorata:**
   - ✅ Sistema di ormeggi completamente funzionante (errore lazy loading risolto)

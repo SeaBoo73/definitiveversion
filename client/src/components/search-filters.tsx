@@ -233,10 +233,10 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             variant="outline"
             size="sm"
             onClick={() => updateFilter("fuelIncluded", !filters.fuelIncluded)}
-            className={filters.fuelIncluded ? "bg-green-100 text-green-700 border-green-300" : "text-gray-900 hover:bg-gray-50"}
+            className={filters.fuelIncluded ? "bg-red-100 text-red-700 border-red-300" : "text-gray-900 hover:bg-gray-50"}
           >
             <Fuel className="mr-2 h-4 w-4" />
-            <span className={filters.fuelIncluded ? "text-green-700" : "text-gray-900"}>Carburante incluso</span>
+            <span className={filters.fuelIncluded ? "text-red-700" : "text-gray-900"}>Carburante escluso</span>
           </Button>
           <Button
             variant="outline"
@@ -245,7 +245,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             className={showAdvanced ? "bg-gray-100 text-gray-900" : "text-gray-900 hover:bg-gray-50"}
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
-            <span className="text-gray-900">Altri filtri</span>
+            <span className="text-gray-900">Esperienze o charter</span>
           </Button>
         </div>
 

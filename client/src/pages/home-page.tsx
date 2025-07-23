@@ -28,11 +28,29 @@ export default function HomePage() {
 
   // Gestisci parametri URL per il filtro categorie
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.split('?')[1] || '');
+    const handleLocationChange = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const typeParam = urlParams.get('type');
+      setSelectedCategory(typeParam || "");
+    };
+
+    // Controlla immediatamente al mount
+    handleLocationChange();
+
+    // Ascolta i cambi di URL
+    window.addEventListener('popstate', handleLocationChange);
+    
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+    };
+  }, []);
+
+  // Controlla anche quando cambia location di wouter
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
     const typeParam = urlParams.get('type');
-    if (typeParam) {
-      setSelectedCategory(typeParam);
-    }
+    console.log('Location changed:', location, 'Type param:', typeParam);
+    setSelectedCategory(typeParam || "");
   }, [location]);
 
   // Filtra barche per categoria e porto
@@ -41,6 +59,12 @@ export default function HomePage() {
     if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
     return true;
   });
+
+  // Debug per verificare i filtri
+  console.log('Selected category:', selectedCategory);
+  console.log('Total boats:', boats.length);
+  console.log('Filtered boats:', filteredBoats.length);
+  console.log('Boat types in DB:', boats.map(b => b.type));
 
   const featuredBoats = filteredBoats.slice(0, 8);
 
@@ -111,7 +135,10 @@ export default function HomePage() {
                 <Button 
                   variant="outline" 
                   className="mt-4"
-                  onClick={() => setSelectedCategory("")}
+                  onClick={() => {
+                    setSelectedCategory("");
+                    window.history.pushState({}, '', '/');
+                  }}
                 >
                   Mostra tutte le categorie
                 </Button>

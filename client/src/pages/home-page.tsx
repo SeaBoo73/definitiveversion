@@ -17,7 +17,7 @@ import { GoogleMapsFinal } from "@/components/google-maps-final";
 import { WeatherWidget } from "@/components/weather-widget";
 import { ExternalServicesQuickAccess } from "@/components/external-services-quick-access";
 import { OwnerBusinessSection } from "@/components/owner-business-section";
-import { OwnerCTAFloatingButton } from "@/components/owner-cta-floating-button";
+
 
 
 export default function HomePage() {
@@ -359,7 +359,6 @@ export default function HomePage() {
       <Footer />
       <MobileNavigation />
       <LiveChatButton />
-      <OwnerCTAFloatingButton />
     </div>
   );
 }

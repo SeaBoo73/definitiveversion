@@ -392,6 +392,11 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Sicurezza H24, check-in assistito, tracciamento GPS inclusi
   - ✅ CTA prominenti per registrazione proprietari e calcolo guadagni
   - ✅ Integrazione completa con dashboard analytics e commissioni
+- **Navigazione Ottimizzata (July 23, 2025 - Sera):**
+  - ✅ Charter integrato nella sezione Esperienze come sottocategoria
+  - ✅ Menu principale semplificato: Esplora, Esperienze, Ormeggio
+  - ✅ Pulsante floating mobile rimosso su richiesta utente
+  - ✅ Marketplace Ormeggi come pagina dedicata nella navigazione principale
 - **Servizi Ormeggio Completi (July 23, 2025 - Sera):**
   - ✅ Sezione dedicata servizi ormeggio per evitare barche in rada
   - ✅ 3 porti partner principali con tariffe dettagliate per ogni lunghezza barca

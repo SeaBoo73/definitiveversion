@@ -363,7 +363,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <div className="bg-white rounded-md p-3 border border-blue-100">
             <div className="flex items-center mb-2">
               <span className="text-lg mr-2">⛽</span>
-              <h4 className="font-semibold text-gray-900">1. "Pieno a pieno"</h4>
+              <h4 className="font-semibold text-gray-900">1. Pieno a pieno</h4>
             </div>
             <div className="ml-6 space-y-2">
               <div>
@@ -388,7 +388,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <div className="bg-white rounded-md p-3 border border-blue-100">
             <div className="flex items-center mb-2">
               <span className="text-lg mr-2">⛽</span>
-              <h4 className="font-semibold text-gray-900">2. "Consumo a parte" (fatturazione a litri o a ore motore)</h4>
+              <h4 className="font-semibold text-gray-900">2. Consumo a parte (fatturazione a litri o a ore motore)</h4>
             </div>
             <div className="ml-6 space-y-2">
               <div>
@@ -413,7 +413,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <div className="bg-white rounded-md p-3 border border-blue-100">
             <div className="flex items-center mb-2">
               <span className="text-lg mr-2">⛽</span>
-              <h4 className="font-semibold text-gray-900">3. "Flat fee carburante"</h4>
+              <h4 className="font-semibold text-gray-900">3. Flat fee carburante</h4>
             </div>
             <div className="ml-6 space-y-2">
               <div>

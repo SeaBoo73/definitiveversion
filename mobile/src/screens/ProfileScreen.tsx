@@ -44,31 +44,17 @@ const ProfileScreen = () => {
     },
     {
       id: 4,
-      title: 'Recensioni',
-      icon: 'star',
-      subtitle: 'Le tue recensioni e valutazioni',
-      action: () => Alert.alert('Info', 'Funzionalità in sviluppo')
-    },
-    {
-      id: 5,
       title: 'Notifiche',
       icon: 'notifications',
       subtitle: 'Gestisci le tue preferenze di notifica',
       action: () => Alert.alert('Info', 'Funzionalità in sviluppo')
     },
     {
-      id: 6,
-      title: 'Aiuto e Supporto',
+      id: 5,
+      title: 'Supporto',
       icon: 'help',
-      subtitle: 'FAQ, contatti e assistenza',
-      action: () => Alert.alert('Aiuto', 'Per assistenza contatta:\n📧 support@seago.it\n📞 +39 06 1234 5678')
-    },
-    {
-      id: 7,
-      title: 'Termini e Privacy',
-      icon: 'description',
-      subtitle: 'Termini di servizio e informativa privacy',
-      action: () => Alert.alert('Info', 'Funzionalità in sviluppo')
+      subtitle: 'Contatti e assistenza',
+      action: () => Alert.alert('Supporto', 'Per assistenza contatta:\n📧 support@seago.it\n📞 +39 06 1234 5678')
     },
   ];
 

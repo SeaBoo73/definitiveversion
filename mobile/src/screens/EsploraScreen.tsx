@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,22 +8,50 @@ import {
   TextInput,
   Image,
   Dimensions,
+  FlatList,
+  Modal,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width } = Dimensions.get('window');
 
 const EsploraScreen = () => {
-  const [searchText, setSearchText] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [showFilters, setShowFilters] = useState(false);
+  const [searchFilters, setSearchFilters] = useState({
+    dove: '',
+    dal: '',
+    al: '',
+    ospiti: '',
+    tipo: '',
+    skipper: false,
+    carburante: false
+  });
 
   const categories = [
-    { id: 'yacht', name: 'Yacht', icon: '🛥️', count: '85+' },
-    { id: 'sailing', name: 'Barche a vela', icon: '⛵', count: '120+' },
-    { id: 'dinghy', name: 'Gommoni', icon: '🚤', count: '200+' },
-    { id: 'catamaran', name: 'Catamarani', icon: '⛵', count: '45+' },
-    { id: 'jetski', name: 'Moto d\'acqua', icon: '🏄', count: '30+' },
-    { id: 'charter', name: 'Charter', icon: '🚢', count: '25+' },
+    { 
+      id: 'gommoni', 
+      name: 'Gommoni', 
+      image: 'https://via.placeholder.com/300x200?text=Gommoni',
+      count: '200+'
+    },
+    { 
+      id: 'yacht', 
+      name: 'Yacht', 
+      image: 'https://via.placeholder.com/300x200?text=Yacht',
+      count: '85+'
+    },
+    { 
+      id: 'catamarani', 
+      name: 'Catamarani', 
+      image: 'https://via.placeholder.com/300x200?text=Catamarani',
+      count: '45+'
+    },
+    { 
+      id: 'jetski', 
+      name: 'Moto d\'acqua', 
+      image: 'https://via.placeholder.com/300x200?text=Jetski',
+      count: '30+'
+    },
   ];
 
   const featuredBoats = [
@@ -34,246 +62,267 @@ const EsploraScreen = () => {
       price: '€850',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://via.placeholder.com/300x200?text=Yacht'
+      image: 'https://via.placeholder.com/280x180?text=Azimut+55',
+      isPopular: true
     },
     {
       id: 2,
-      name: 'Bavaria 46 Cruiser',
-      location: 'Gaeta',
-      price: '€320',
-      rating: 4.8,
-      category: 'sailing',
-      image: 'https://via.placeholder.com/300x200?text=Sailboat'
-    },
-    {
-      id: 3,
       name: 'Zodiac Pro 650',
       location: 'Anzio',
       price: '€180',
-      rating: 4.7,
-      category: 'dinghy',
-      image: 'https://via.placeholder.com/300x200?text=Dinghy'
+      rating: 4.8,
+      category: 'gommoni',
+      image: 'https://via.placeholder.com/280x180?text=Zodiac+Pro',
+      isPopular: true
     },
     {
-      id: 4,
+      id: 3,
       name: 'Princess V58',
       location: 'Formia',
       price: '€950',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://via.placeholder.com/300x200?text=Princess'
+      image: 'https://via.placeholder.com/280x180?text=Princess+V58',
+      isPopular: false
+    },
+    {
+      id: 4,
+      name: 'Lagoon 42',
+      location: 'Gaeta',
+      price: '€420',
+      rating: 4.7,
+      category: 'catamarani',
+      image: 'https://via.placeholder.com/280x180?text=Lagoon+42',
+      isPopular: true
     },
   ];
 
-  const filteredBoats = featuredBoats.filter(boat => {
-    const matchesSearch = boat.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                         boat.location.toLowerCase().includes(searchText.toLowerCase());
-    const matchesCategory = selectedCategory === '' || boat.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const ports = [
+    { id: 1, name: 'Civitavecchia', lat: 42.0942, lng: 11.7998, boats: 45 },
+    { id: 2, name: 'Gaeta', lat: 41.2071, lng: 13.5722, boats: 32 },
+    { id: 3, name: 'Anzio', lat: 41.4489, lng: 12.6219, boats: 28 },
+    { id: 4, name: 'Formia', lat: 41.2567, lng: 13.6058, boats: 21 },
+  ];
+
+  const renderBoatCard = ({ item }) => (
+    <TouchableOpacity style={styles.featuredCard}>
+      <Image source={{ uri: item.image }} style={styles.featuredImage} />
+      {item.isPopular && (
+        <View style={styles.popularBadge}>
+          <Text style={styles.popularText}>Popolare</Text>
+        </View>
+      )}
+      <View style={styles.featuredInfo}>
+        <Text style={styles.featuredName}>{item.name}</Text>
+        <Text style={styles.featuredLocation}>📍 {item.location}</Text>
+        <View style={styles.featuredFooter}>
+          <Text style={styles.featuredPrice}>{item.price}/giorno</Text>
+          <View style={styles.featuredRating}>
+            <Icon name="star" size={14} color="#FFD700" />
+            <Text style={styles.featuredRatingText}>{item.rating}</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Hero Section */}
-      <View style={styles.hero}>
-        <Text style={styles.heroTitle}>Esplora il Mare del Lazio</Text>
-        <Text style={styles.heroSubtitle}>
-          Trova la barca perfetta per la tua avventura
-        </Text>
-        
-        {/* Search Bar */}
-        <View style={styles.searchBar}>
+      {/* Search Bar */}
+      <View style={styles.searchContainer}>
+        <TouchableOpacity 
+          style={styles.searchBar}
+          onPress={() => setShowFilters(true)}
+        >
           <Icon name="search" size={20} color="#6b7280" />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Cerca barche, località..."
-            placeholderTextColor="#9ca3af"
-            value={searchText}
-            onChangeText={setSearchText}
-          />
-          {searchText ? (
-            <TouchableOpacity onPress={() => setSearchText('')}>
-              <Icon name="clear" size={20} color="#6b7280" />
-            </TouchableOpacity>
-          ) : null}
-        </View>
-      </View>
-
-      {/* Quick Stats */}
-      <View style={styles.statsContainer}>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>500+</Text>
-          <Text style={styles.statLabel}>Barche</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>6</Text>
-          <Text style={styles.statLabel}>Porti</Text>
-        </View>
-        <View style={styles.statCard}>
-          <Text style={styles.statNumber}>4.9</Text>
-          <Text style={styles.statLabel}>Rating</Text>
-        </View>
+          <Text style={styles.searchPlaceholder}>Dove vuoi andare?</Text>
+          <Icon name="tune" size={20} color="#0ea5e9" />
+        </TouchableOpacity>
       </View>
 
       {/* Categories */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Categorie</Text>
+      <View style={styles.categoriesSection}>
         <View style={styles.categoriesGrid}>
           {categories.map((category) => (
             <TouchableOpacity 
               key={category.id} 
-              style={[
-                styles.categoryCard,
-                selectedCategory === category.id && styles.categoryCardActive
-              ]}
-              onPress={() => setSelectedCategory(selectedCategory === category.id ? '' : category.id)}
+              style={styles.categoryCard}
             >
-              <Text style={styles.categoryIcon}>{category.icon}</Text>
-              <Text style={styles.categoryName}>{category.name}</Text>
-              <Text style={styles.categoryCount}>{category.count}</Text>
+              <Image source={{ uri: category.image }} style={styles.categoryImage} />
+              <View style={styles.categoryOverlay}>
+                <Text style={styles.categoryName}>{category.name}</Text>
+                <Text style={styles.categoryCount}>{category.count} barche</Text>
+              </View>
             </TouchableOpacity>
           ))}
         </View>
       </View>
 
-      {/* Featured Boats */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>
-          {filteredBoats.length > 0 ? `${filteredBoats.length} Barche Trovate` : 'Barche in Evidenza'}
-        </Text>
-        
-        {filteredBoats.length > 0 ? (
-          filteredBoats.map((boat) => (
-            <TouchableOpacity key={boat.id} style={styles.boatCard}>
-              <Image source={{ uri: boat.image }} style={styles.boatImage} />
-              <View style={styles.boatInfo}>
-                <View style={styles.boatHeader}>
-                  <Text style={styles.boatName}>{boat.name}</Text>
-                  <View style={styles.rating}>
-                    <Icon name="star" size={16} color="#FFD700" />
-                    <Text style={styles.ratingText}>{boat.rating}</Text>
-                  </View>
-                </View>
-                <Text style={styles.boatLocation}>📍 {boat.location}</Text>
-                <View style={styles.boatFooter}>
-                  <Text style={styles.boatPrice}>{boat.price}/giorno</Text>
-                  <TouchableOpacity style={styles.bookButton}>
-                    <Text style={styles.bookButtonText}>Prenota</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))
-        ) : (
-          <View style={styles.emptyState}>
-            <Icon name="search-off" size={64} color="#d1d5db" />
-            <Text style={styles.emptyTitle}>Nessuna barca trovata</Text>
-            <Text style={styles.emptySubtitle}>
-              Prova a modificare i filtri o la ricerca
-            </Text>
+      {/* Interactive Map */}
+      <View style={styles.mapSection}>
+        <Text style={styles.sectionTitle}>Esplora la Mappa</Text>
+        <View style={styles.mapContainer}>
+          <View style={styles.mapPlaceholder}>
+            <Icon name="map" size={48} color="#0ea5e9" />
+            <Text style={styles.mapText}>Mappa Interattiva</Text>
+            <Text style={styles.mapSubtext}>Visualizza porti e barche in tempo reale</Text>
           </View>
-        )}
-      </View>
-
-      {/* Quick Actions */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Azioni Rapide</Text>
-        <View style={styles.quickActions}>
-          <TouchableOpacity style={styles.actionButton}>
-            <Icon name="map" size={24} color="#0ea5e9" />
-            <Text style={styles.actionText}>Mappa</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
-            <Icon name="filter-list" size={24} color="#0ea5e9" />
-            <Text style={styles.actionText}>Filtri</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
-            <Icon name="favorite" size={24} color="#0ea5e9" />
-            <Text style={styles.actionText}>Preferiti</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
-            <Icon name="help" size={24} color="#0ea5e9" />
-            <Text style={styles.actionText}>Aiuto</Text>
-          </TouchableOpacity>
+          {ports.map((port) => (
+            <TouchableOpacity key={port.id} style={styles.mapPin}>
+              <Icon name="place" size={20} color="#ef4444" />
+              <Text style={styles.pinText}>{port.boats}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
+
+      {/* Featured Boats Carousel */}
+      <View style={styles.featuredSection}>
+        <Text style={styles.sectionTitle}>Barche in Evidenza</Text>
+        <FlatList
+          data={featuredBoats}
+          renderItem={renderBoatCard}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.featuredList}
+        />
+      </View>
+
+      {/* Search Filters Modal */}
+      <Modal
+        visible={showFilters}
+        animationType="slide"
+        presentationStyle="pageSheet"
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={() => setShowFilters(false)}>
+              <Icon name="close" size={24} color="#1f2937" />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>Ricerca e Affitta</Text>
+            <TouchableOpacity>
+              <Text style={styles.resetText}>Reset</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={styles.modalContent}>
+            {/* Search Fields */}
+            <View style={styles.filterGroup}>
+              <Text style={styles.filterLabel}>Dove</Text>
+              <TextInput
+                style={styles.filterInput}
+                placeholder="Destinazione o porto"
+                value={searchFilters.dove}
+                onChangeText={(text) => setSearchFilters({...searchFilters, dove: text})}
+              />
+            </View>
+
+            <View style={styles.filterRow}>
+              <View style={styles.filterHalf}>
+                <Text style={styles.filterLabel}>Dal</Text>
+                <TextInput
+                  style={styles.filterInput}
+                  placeholder="Data inizio"
+                  value={searchFilters.dal}
+                  onChangeText={(text) => setSearchFilters({...searchFilters, dal: text})}
+                />
+              </View>
+              <View style={styles.filterHalf}>
+                <Text style={styles.filterLabel}>Al</Text>
+                <TextInput
+                  style={styles.filterInput}
+                  placeholder="Data fine"
+                  value={searchFilters.al}
+                  onChangeText={(text) => setSearchFilters({...searchFilters, al: text})}
+                />
+              </View>
+            </View>
+
+            <View style={styles.filterGroup}>
+              <Text style={styles.filterLabel}>Ospiti</Text>
+              <TextInput
+                style={styles.filterInput}
+                placeholder="Numero ospiti"
+                keyboardType="numeric"
+                value={searchFilters.ospiti}
+                onChangeText={(text) => setSearchFilters({...searchFilters, ospiti: text})}
+              />
+            </View>
+
+            <View style={styles.filterGroup}>
+              <Text style={styles.filterLabel}>Tipo di imbarcazione</Text>
+              <TextInput
+                style={styles.filterInput}
+                placeholder="Gommone, Yacht, Catamarano..."
+                value={searchFilters.tipo}
+                onChangeText={(text) => setSearchFilters({...searchFilters, tipo: text})}
+              />
+            </View>
+
+            <View style={styles.toggleGroup}>
+              <TouchableOpacity 
+                style={[styles.toggleOption, searchFilters.skipper && styles.toggleActive]}
+                onPress={() => setSearchFilters({...searchFilters, skipper: !searchFilters.skipper})}
+              >
+                <Text style={[styles.toggleText, searchFilters.skipper && styles.toggleTextActive]}>
+                  Con skipper
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[styles.toggleOption, searchFilters.carburante && styles.toggleActive]}
+                onPress={() => setSearchFilters({...searchFilters, carburante: !searchFilters.carburante})}
+              >
+                <Text style={[styles.toggleText, searchFilters.carburante && styles.toggleTextActive]}>
+                  Carburante incluso
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={styles.searchButton}>
+              <Text style={styles.searchButtonText}>Cerca Barche</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: '#ffffff',
   },
-  hero: {
-    backgroundColor: '#0ea5e9',
-    padding: 24,
-    alignItems: 'center',
-  },
-  heroTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: 'white',
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  heroSubtitle: {
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.9)',
-    textAlign: 'center',
-    marginBottom: 20,
+  searchContainer: {
+    padding: 20,
+    paddingTop: 10,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: '#f8fafc',
     borderRadius: 12,
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    width: '100%',
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 16,
-    color: '#1f2937',
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 20,
-    backgroundColor: 'white',
-    marginTop: -15,
-    marginHorizontal: 20,
-    borderRadius: 12,
+    paddingVertical: 14,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
-  statCard: {
-    alignItems: 'center',
-  },
-  statNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#0ea5e9',
-  },
-  statLabel: {
-    fontSize: 14,
+  searchPlaceholder: {
+    flex: 1,
+    marginLeft: 12,
+    fontSize: 16,
     color: '#6b7280',
-    marginTop: 4,
   },
-  section: {
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1f2937',
-    marginBottom: 16,
+  categoriesSection: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
   categoriesGrid: {
     flexDirection: 'row',
@@ -281,136 +330,243 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   categoryCard: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
     width: (width - 60) / 2,
-    marginBottom: 12,
+    height: 140,
+    borderRadius: 16,
+    marginBottom: 16,
+    overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 6,
   },
-  categoryCardActive: {
-    backgroundColor: '#e0f2fe',
-    borderWidth: 2,
-    borderColor: '#0ea5e9',
+  categoryImage: {
+    width: '100%',
+    height: '100%',
   },
-  categoryIcon: {
-    fontSize: 32,
-    marginBottom: 8,
+  categoryOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    padding: 12,
   },
   categoryName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#1f2937',
-    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 2,
   },
   categoryCount: {
     fontSize: 12,
+    color: 'rgba(255,255,255,0.9)',
+  },
+  mapSection: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: 16,
+  },
+  mapContainer: {
+    height: 200,
+    borderRadius: 16,
+    backgroundColor: '#e0f2fe',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  mapPlaceholder: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  mapText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0ea5e9',
+    marginTop: 8,
+  },
+  mapSubtext: {
+    fontSize: 14,
     color: '#6b7280',
     marginTop: 4,
   },
-  boatCard: {
+  mapPin: {
+    position: 'absolute',
+    alignItems: 'center',
+    top: 60,
+    left: 100,
+  },
+  pinText: {
+    fontSize: 10,
+    color: '#ef4444',
+    fontWeight: 'bold',
+    marginTop: 2,
+  },
+  featuredSection: {
+    paddingLeft: 20,
+    marginBottom: 30,
+  },
+  featuredList: {
+    paddingRight: 20,
+  },
+  featuredCard: {
+    width: 280,
+    marginRight: 16,
     backgroundColor: 'white',
-    borderRadius: 12,
-    marginBottom: 16,
+    borderRadius: 16,
+    overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-    flexDirection: 'row',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  featuredImage: {
+    width: '100%',
+    height: 180,
+  },
+  popularBadge: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    backgroundColor: '#ef4444',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  popularText: {
+    fontSize: 10,
+    color: 'white',
+    fontWeight: '600',
+  },
+  featuredInfo: {
     padding: 16,
   },
-  boatImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    marginRight: 16,
-  },
-  boatInfo: {
-    flex: 1,
-  },
-  boatHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-  boatName: {
+  featuredName: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#1f2937',
-    flex: 1,
-    marginRight: 8,
+    marginBottom: 4,
   },
-  rating: {
+  featuredLocation: {
+    fontSize: 14,
+    color: '#6b7280',
+    marginBottom: 12,
+  },
+  featuredFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  featuredPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#0ea5e9',
+  },
+  featuredRating: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  ratingText: {
+  featuredRatingText: {
     fontSize: 14,
     color: '#6b7280',
     marginLeft: 4,
   },
-  boatLocation: {
-    fontSize: 14,
-    color: '#6b7280',
-    marginBottom: 12,
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'white',
   },
-  boatFooter: {
+  modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
   },
-  boatPrice: {
-    fontSize: 16,
+  modalTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#1f2937',
+  },
+  resetText: {
+    fontSize: 16,
     color: '#0ea5e9',
   },
-  bookButton: {
-    backgroundColor: '#0ea5e9',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+  modalContent: {
+    flex: 1,
+    padding: 20,
   },
-  bookButtonText: {
-    color: 'white',
+  filterGroup: {
+    marginBottom: 20,
+  },
+  filterLabel: {
+    fontSize: 16,
     fontWeight: '600',
-    fontSize: 14,
+    color: '#1f2937',
+    marginBottom: 8,
   },
-  emptyState: {
+  filterInput: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 16,
+    backgroundColor: '#f9fafb',
+  },
+  filterRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  filterHalf: {
+    width: '48%',
+  },
+  toggleGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 30,
+  },
+  toggleOption: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    marginHorizontal: 4,
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 64,
   },
-  emptyTitle: {
+  toggleActive: {
+    backgroundColor: '#0ea5e9',
+    borderColor: '#0ea5e9',
+  },
+  toggleText: {
+    fontSize: 14,
+    color: '#6b7280',
+    fontWeight: '500',
+  },
+  toggleTextActive: {
+    color: 'white',
+  },
+  searchButton: {
+    backgroundColor: '#0ea5e9',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  searchButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#6b7280',
-    marginTop: 16,
-  },
-  emptySubtitle: {
-    fontSize: 14,
-    color: '#9ca3af',
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  quickActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  actionButton: {
-    alignItems: 'center',
-    padding: 16,
-  },
-  actionText: {
-    fontSize: 12,
-    color: '#6b7280',
-    marginTop: 8,
+    color: 'white',
   },
 });
 

@@ -77,7 +77,8 @@ export function CategoryGallery() {
   });
 
   const handleCategoryClick = (categoryId: string) => {
-    setLocation(`/?type=${categoryId}`);
+    // Forza il reload della pagina con il nuovo parametro
+    window.location.href = `/?type=${categoryId}`;
   };
 
   // Calcola i contatori reali per ogni categoria

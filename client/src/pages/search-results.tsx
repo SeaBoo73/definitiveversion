@@ -47,16 +47,35 @@ export function SearchResults() {
 
   // Filter boats based on search parameters
   const filteredBoats = boats.filter((boat: Boat) => {
-    if (searchParams.location && boat.port !== searchParams.location) return false;
+    // Debug logging
+    console.log('Filtering boat:', boat.name, 'Type:', boat.type, 'Search params:', searchParams);
+    
+    if (searchParams.location && boat.port !== searchParams.location) {
+      console.log('Filtered out by location:', boat.name);
+      return false;
+    }
     if (searchParams.boatTypes) {
       const selectedTypes = searchParams.boatTypes.split(",");
-      if (!selectedTypes.includes(boat.type)) return false;
+      console.log('Selected types:', selectedTypes, 'Boat type:', boat.type);
+      if (!selectedTypes.includes(boat.type)) {
+        console.log('Filtered out by type:', boat.name);
+        return false;
+      }
     }
-    if (searchParams.guests && boat.maxPersons && boat.maxPersons < parseInt(searchParams.guests)) return false;
-    if (searchParams.skipperRequired === "true" && !boat.skipperRequired) return false;
+    if (searchParams.guests && boat.maxPersons && boat.maxPersons < parseInt(searchParams.guests)) {
+      console.log('Filtered out by capacity:', boat.name);
+      return false;
+    }
+    if (searchParams.skipperRequired === "true" && !boat.skipperRequired) {
+      console.log('Filtered out by skipper requirement:', boat.name);
+      return false;
+    }
     // Note: fuelIncluded is not in the current boat schema, we'll skip this filter for now
+    console.log('Boat passed filters:', boat.name);
     return true;
   });
+
+  console.log('Total boats:', boats.length, 'Filtered boats:', filteredBoats.length);
 
   const getBoatTypeName = (type: string) => {
     const typeNames: { [key: string]: string } = {

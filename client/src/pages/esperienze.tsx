@@ -10,7 +10,7 @@ import {
   ChefHat, 
   Wine, 
   UtensilsCrossed, 
-  Waves, 
+
   Camera, 
   GraduationCap, 
   PartyPopper, 
@@ -20,6 +20,7 @@ import {
   Crown,
   Calendar
 } from "lucide-react";
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
@@ -85,7 +86,7 @@ export function EsperienzePage() {
     },
     {
       category: "Attività a Bordo",
-      icon: <Waves className="h-6 w-6" />,
+      icon: <img src={seagoLogo} alt="SeaGO" className="h-6 w-6 object-contain" />,
       items: [
         {
           title: "Snorkeling e immersioni",

@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Cloud, 
-  Waves, 
   Fuel, 
   Anchor, 
   Wind, 
@@ -27,6 +26,7 @@ import {
   Calendar,
   User
 } from 'lucide-react';
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { SEOHead } from '@/components/seo-head';
@@ -327,9 +327,7 @@ export default function ExternalServices() {
             onClick={() => setActiveTab('marine')}
           >
             <CardContent className="p-4 text-center">
-              <Waves className={`h-8 w-8 mx-auto mb-2 ${
-                activeTab === 'marine' ? 'text-teal-600' : 'text-teal-500'
-              }`} />
+              <img src={seagoLogo} alt="SeaGO" className="h-8 w-8 mx-auto mb-2 object-contain" />
               <h3 className="font-medium text-sm">Condizioni Marine</h3>
               <p className="text-xs text-gray-500 mt-1">Onde e sicurezza</p>
             </CardContent>
@@ -421,7 +419,7 @@ export default function ExternalServices() {
                     </div>
                     
                     <div className="text-center">
-                      <Waves className="h-8 w-8 mx-auto mb-2 text-teal-500" />
+                      <img src={seagoLogo} alt="SeaGO" className="h-8 w-8 mx-auto mb-2 object-contain" />
                       <div className="text-2xl font-bold">{weatherData.waves.height} m</div>
                       <div className="text-sm text-gray-600">
                         {getWaveCondition(weatherData.waves.height).text}
@@ -691,14 +689,14 @@ export default function ExternalServices() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Waves className="h-5 w-5" />
+                    <img src={seagoLogo} alt="SeaGO" className="h-5 w-5 object-contain" />
                     Condizioni Marine Attuali
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="text-center">
-                      <Waves className="h-12 w-12 mx-auto mb-3 text-teal-500" />
+                      <img src={seagoLogo} alt="SeaGO" className="h-12 w-12 mx-auto mb-3 object-contain" />
                       <div className="text-3xl font-bold">{weatherData.waves.height} m</div>
                       <div className="text-sm text-gray-600">Altezza Onde</div>
                       <Badge 

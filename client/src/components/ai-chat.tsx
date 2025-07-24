@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Send, MessageCircle, X, Bot, User, Anchor, Waves, Cloud, Fuel } from "lucide-react";
+import { Send, MessageCircle, X, Bot, User, Anchor, Cloud, Fuel } from "lucide-react";
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { apiRequest } from "@/lib/queryClient";
 import { formatDistanceToNow } from "date-fns";
 import { it } from "date-fns/locale";
@@ -39,7 +40,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
   const quickActions = [
     { icon: Anchor, text: "Trova barche vicine", action: "Mostrami le barche disponibili nella zona di Roma" },
     { icon: Cloud, text: "Meteo oggi", action: "Come sono le condizioni meteo marine oggi?" },
-    { icon: Waves, text: "Condizioni marine", action: "Le condizioni del mare sono buone per navigare?" },
+    { icon: () => <img src={seagoLogo} alt="SeaGO" className="h-4 w-4 object-contain" />, text: "Condizioni marine", action: "Le condizioni del mare sono buone per navigare?" },
     { icon: Fuel, text: "Prezzi carburante", action: "Dove posso trovare carburante nautico a buon prezzo?" }
   ];
 

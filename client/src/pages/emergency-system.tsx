@@ -7,7 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Phone, MapPin, AlertTriangle, Shield, Waves, Anchor, Navigation, Radio, Clock, Users } from 'lucide-react';
+import { Phone, MapPin, AlertTriangle, Shield, Anchor, Navigation, Radio, Clock, Users } from 'lucide-react';
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface EmergencyContact {
@@ -206,7 +207,7 @@ export default function EmergencySystem() {
                 onClick={() => handleQuickEmergency('weather', 'high')}
                 className="flex items-center gap-2"
               >
-                <Waves className="h-4 w-4" />
+                <img src={seagoLogo} alt="SeaGO" className="h-4 w-4 object-contain" />
                 Meteo Avverso
               </Button>
             </div>

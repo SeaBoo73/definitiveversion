@@ -94,7 +94,7 @@ export function Header() {
                   href="/owner-dashboard" 
                   className="text-gray-700 hover:text-deep-navy transition-colors font-medium px-4 py-2 rounded-md hover:bg-gray-50 text-sm"
                 >
-                  Dashboard Host
+                  Dashboard Sea Host
                 </Link>
               )}
               {user?.role === "admin" && (
@@ -285,7 +285,7 @@ export function Header() {
                         className="block px-3 py-2 rounded-md font-medium text-sea-gray hover:text-deep-navy hover:bg-gray-50 transition-colors"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Dashboard Host
+                        Dashboard Sea Host
                       </Link>
                     )}
                     {user.role === "customer" && (

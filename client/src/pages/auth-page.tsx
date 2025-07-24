@@ -12,7 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 import { Redirect, Link } from "wouter";
-import { Anchor, Waves } from "lucide-react";
+import { Anchor } from "lucide-react";
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),
@@ -383,7 +384,7 @@ export default function AuthPage() {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-ocean-blue/80 to-deep-navy/80"></div>
           <div className="relative text-center text-white p-8">
-            <Waves className="h-16 w-16 mx-auto mb-6 text-white" />
+            <img src={seagoLogo} alt="SeaGO" className="h-16 w-16 mx-auto mb-6 object-contain" />
             <h2 className="text-4xl font-bold mb-4">
               Benvenuto in SeaGO
             </h2>

@@ -4,13 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Cloud, 
-  Waves, 
   Wind, 
   Thermometer, 
   Eye,
   ArrowRight,
   MapPin
 } from 'lucide-react';
+import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 
@@ -102,7 +102,7 @@ export function WeatherWidget() {
           </div>
           
           <div className="text-center">
-            <Waves className="h-6 w-6 mx-auto mb-1 text-teal-500" />
+            <img src={seagoLogo} alt="SeaGO" className="h-6 w-6 mx-auto mb-1 object-contain" />
             <div className="text-xl font-bold text-gray-900">{weatherData.waves.height} m</div>
             <Badge className={`${waveCondition.color} text-white text-xs`}>
               {waveCondition.text}

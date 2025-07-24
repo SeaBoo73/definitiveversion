@@ -359,42 +359,18 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <CollapsibleContent className="px-4 pb-4">
         
         <div className="space-y-4 text-sm">
-          {/* Pieno a Pieno */}
+          {/* Consumo a Parte - Unica opzione */}
           <div className="bg-white rounded-md p-3 border border-blue-100">
             <div className="flex items-center mb-2">
               <span className="text-lg mr-2">⛽</span>
-              <h4 className="font-semibold text-gray-900">1. Pieno a pieno</h4>
+              <h4 className="font-semibold text-gray-900">Consumo a parte (fatturazione a litri o a ore motore)</h4>
             </div>
             <div className="ml-6 space-y-2">
               <div>
                 <span className="text-blue-600 font-medium">🔹 Come funziona:</span>
                 <ul className="ml-4 mt-1 space-y-1 text-gray-700">
-                  <li>• Il noleggiatore riceve la barca con il serbatoio pieno</li>
-                  <li>• Deve riconsegnarla piena</li>
-                  <li>• Il rifornimento può farlo di persona presso un distributore marino</li>
-                  <li>• Oppure chiedere al noleggiatore di farlo al rientro (a pagamento)</li>
-                </ul>
-              </div>
-              <div>
-                <span className="text-green-600 font-medium">Spese extra:</span>
-                <p className="ml-4 mt-1 text-gray-700">
-                  Se la barca non viene riportata piena: benzina mancante + penale di servizio (20-50 €)
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Consumo a Parte */}
-          <div className="bg-white rounded-md p-3 border border-blue-100">
-            <div className="flex items-center mb-2">
-              <span className="text-lg mr-2">⛽</span>
-              <h4 className="font-semibold text-gray-900">2. Consumo a parte (fatturazione a litri o a ore motore)</h4>
-            </div>
-            <div className="ml-6 space-y-2">
-              <div>
-                <span className="text-blue-600 font-medium">🔹 Come funziona:</span>
-                <ul className="ml-4 mt-1 space-y-1 text-gray-700">
-                  <li>• Il carburante si paga separatamente a fine giornata</li>
+                  <li>• Il carburante è escluso dal prezzo del noleggio</li>
+                  <li>• Si paga separatamente a fine giornata</li>
                   <li>• Misurazione tramite litri consumati (sensori/contalitri)</li>
                   <li>• Oppure ore di navigazione (contatore motore)</li>
                 </ul>
@@ -409,30 +385,13 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             </div>
           </div>
 
-          {/* Flat Fee */}
-          <div className="bg-white rounded-md p-3 border border-blue-100">
-            <div className="flex items-center mb-2">
-              <span className="text-lg mr-2">⛽</span>
-              <h4 className="font-semibold text-gray-900">3. Flat fee carburante</h4>
-            </div>
-            <div className="ml-6 space-y-2">
-              <div>
-                <span className="text-blue-600 font-medium">🔹 Come funziona:</span>
-                <ul className="ml-4 mt-1 space-y-1 text-gray-700">
-                  <li>• Pacchetto carburante incluso per brevi tour standard (2h/4h)</li>
-                  <li>• Tariffa fissa (+50€/giorno) che copre consumo medio</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
           {/* Suggerimenti */}
           <div className="bg-yellow-50 rounded-md p-3 border border-yellow-200 mt-4">
             <h4 className="font-semibold text-amber-800 mb-2">💡 Suggerimenti per il noleggio:</h4>
             <ul className="space-y-1 text-amber-700 text-sm">
-              <li>• Scegli "Carburante escluso – paghi a fine noleggio" con stima consumo</li>
-              <li>• Verifica se disponibile opzione "carburante incluso" a tariffa maggiorata</li>
-              <li>• Per una gita media consumerai circa 30 € di carburante</li>
+              <li>• Il carburante è sempre escluso dal prezzo del noleggio</li>
+              <li>• Pagamento separato a fine giornata in base al consumo effettivo</li>
+              <li>• Per una gita media stimare circa 30-50 € di carburante</li>
             </ul>
           </div>
         </div>

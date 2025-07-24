@@ -113,9 +113,9 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl h-[700px] flex flex-col">
-        <CardHeader className="flex flex-row items-center justify-between pb-4 bg-gradient-to-r from-blue-500 to-ocean-blue text-white rounded-t-lg">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 pb-24 md:pb-4">
+      <Card className="w-full max-w-2xl h-[600px] md:h-[700px] flex flex-col">
+        <CardHeader className="flex flex-row items-center justify-between pb-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
           <div className="flex items-center space-x-2">
             <Bot className="h-6 w-6" />
             <div>
@@ -165,7 +165,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
                     <Avatar className="h-8 w-8">
                       <AvatarFallback className={`text-xs ${
                         message.role === 'user' 
-                          ? 'bg-ocean-blue text-white' 
+                          ? 'bg-blue-500 text-white' 
                           : 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
                       }`}>
                         {message.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -174,7 +174,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
                     
                     <div className={`rounded-lg p-3 ${
                       message.role === 'user'
-                        ? 'bg-ocean-blue text-white'
+                        ? 'bg-blue-500 text-white'
                         : 'bg-gray-100 text-gray-900 border'
                     }`}>
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
@@ -245,7 +245,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
               <Button 
                 type="submit" 
                 disabled={!newMessage.trim() || sendMessageMutation.isPending}
-                className="bg-ocean-blue hover:bg-blue-600"
+                className="bg-blue-500 hover:bg-blue-600"
               >
                 <Send className="h-4 w-4" />
               </Button>

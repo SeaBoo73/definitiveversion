@@ -1,6 +1,7 @@
 {
   "name": "SeaGO - Piattaforma Marittima per Noleggio Barche",
   "short_name": "SeaGO",
+  "version": "2.1.0",
   "description": "La piattaforma leader per noleggio barche, charter nautici e servizi marittimi in Italia. Oltre 1000 imbarcazioni disponibili per le tue avventure sul mare.",
   "start_url": "/",
   "display": "standalone",

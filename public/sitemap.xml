@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <!-- Homepage -->
   <url>
-    <loc>https://seago.replit.app/</loc>
+    <loc>https://seagorentalboat.com/</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -16,7 +16,7 @@
   
   <!-- Esperienze Page -->
   <url>
-    <loc>https://seago.replit.app/esperienze</loc>
+    <loc>https://seagorentalboat.com/esperienze</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -24,7 +24,7 @@
   
   <!-- Charter Page -->
   <url>
-    <loc>https://seago.replit.app/charter</loc>
+    <loc>https://seagorentalboat.com/charter</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -32,7 +32,7 @@
   
   <!-- Ormeggio Page -->
   <url>
-    <loc>https://seago.replit.app/ormeggio</loc>
+    <loc>https://seagorentalboat.com/ormeggio</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -40,7 +40,7 @@
   
   <!-- External Services -->
   <url>
-    <loc>https://seago.replit.app/external-services</loc>
+    <loc>https://seagorentalboat.com/external-services</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -48,56 +48,56 @@
   
   <!-- Boat Categories -->
   <url>
-    <loc>https://seago.replit.app/?type=yacht</loc>
+    <loc>https://seagorentalboat.com/?type=yacht</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=gommoni</loc>
+    <loc>https://seagorentalboat.com/?type=gommoni</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=barche-a-vela</loc>
+    <loc>https://seagorentalboat.com/?type=barche-a-vela</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=catamarani</loc>
+    <loc>https://seagorentalboat.com/?type=catamarani</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=moto-dacqua</loc>
+    <loc>https://seagorentalboat.com/?type=moto-dacqua</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=houseboat</loc>
+    <loc>https://seagorentalboat.com/?type=houseboat</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=caiacco</loc>
+    <loc>https://seagorentalboat.com/?type=caiacco</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://seago.replit.app/?type=barche-a-motore</loc>
+    <loc>https://seagorentalboat.com/?type=barche-a-motore</loc>
     <lastmod>2025-07-23</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

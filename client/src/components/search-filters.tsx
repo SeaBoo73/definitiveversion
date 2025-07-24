@@ -24,6 +24,7 @@ export interface SearchFilters {
   guests: number;
   boatTypes?: string[];
   skipperRequired?: boolean;
+  experienceMode?: boolean;
 }
 
 export function SearchFilters({ onSearch }: SearchFiltersProps) {
@@ -56,6 +57,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
         searchParams.set("boatTypes", filters.boatTypes.join(","));
       }
       if (filters.skipperRequired) searchParams.set("skipperRequired", "true");
+      if (filters.experienceMode) searchParams.set("experienceMode", "true");
       
       setLocation(`/search?${searchParams.toString()}`);
     }
@@ -233,11 +235,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setShowAdvanced(!showAdvanced)}
-            className={showAdvanced ? "bg-gray-100 text-gray-900" : "text-gray-900 hover:bg-gray-50"}
+            onClick={() => updateFilter("experienceMode", !filters.experienceMode)}
+            className={filters.experienceMode ? "bg-blue-100 text-blue-700 border-blue-300" : "text-gray-900 hover:bg-gray-50"}
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
-            <span className="text-gray-900">Esperienze o charter</span>
+            <span className={filters.experienceMode ? "text-blue-700" : "text-gray-900"}>Esperienze o charter</span>
           </Button>
         </div>
 

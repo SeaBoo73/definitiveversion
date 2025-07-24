@@ -236,10 +236,10 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             variant="outline"
             size="sm"
             onClick={() => updateFilter("experienceMode", !filters.experienceMode)}
-            className={filters.experienceMode ? "bg-blue-100 text-blue-700 border-blue-300" : "text-gray-900 hover:bg-gray-50"}
+            className={filters.experienceMode ? "bg-orange-100 text-orange-700 border-orange-300" : "text-gray-900 hover:bg-gray-50"}
           >
             <SlidersHorizontal className="mr-2 h-4 w-4" />
-            <span className={filters.experienceMode ? "text-blue-700" : "text-gray-900"}>Esperienze o charter</span>
+            <span className={filters.experienceMode ? "text-orange-700" : "text-gray-900"}>Esperienze o charter</span>
           </Button>
         </div>
 

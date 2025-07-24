@@ -29,17 +29,30 @@ export default function DiventaNoleggiatorePage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [step, setStep] = useState<"info" | "form">("info");
+  
+  // Extract pre-filled data from URL parameters
+  const getPreFilledValues = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
+      firstName: urlParams.get('firstName') || "",
+      lastName: urlParams.get('lastName') || "",
+      email: urlParams.get('email') || "",
+      phone: urlParams.get('phone') || "",
+      acceptTerms: false,
+    };
+  };
+
+  // Check if we have pre-filled data to determine initial step
+  const hasPreFilledData = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.has('firstName') || urlParams.has('email') || urlParams.has('phone');
+  };
+
+  const [step, setStep] = useState<"info" | "form">(hasPreFilledData() ? "form" : "info");
 
   const form = useForm<OwnerRegistrationForm>({
     resolver: zodResolver(ownerRegistrationSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-      acceptTerms: false,
-    }
+    defaultValues: getPreFilledValues()
   });
 
   const registrationMutation = useMutation({
@@ -211,6 +224,17 @@ export default function DiventaNoleggiatorePage() {
             </p>
           </CardHeader>
           <CardContent>
+            {hasPreFilledData() && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                <div className="flex items-center text-green-800">
+                  <CheckCircle className="h-5 w-5 mr-2" />
+                  <p className="text-sm font-medium">
+                    I tuoi dati sono stati pre-compilati dalla homepage. Verifica e completa la registrazione.
+                  </p>
+                </div>
+              </div>
+            )}
+            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 {/* Personal Info Only */}

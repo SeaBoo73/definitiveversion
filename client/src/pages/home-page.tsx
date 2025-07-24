@@ -18,6 +18,7 @@ import { GoogleMapsLazio } from "@/components/google-maps-lazio";
 import { CategoryGallery } from "@/components/category-gallery";
 import { SEOHead, seoConfigs } from "@/components/seo-head";
 import { StructuredData } from "@/components/structured-data";
+import { QuickRegistration } from "@/components/quick-registration";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -236,15 +237,35 @@ export default function HomePage() {
 
       {/* Affitta la tua barca */}
       <section className="py-16 bg-gradient-to-r from-ocean-blue to-deep-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">Affitta la tua barca</h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Guadagna mettendo a disposizione la tua imbarcazione. Gestisci tutto facilmente dalla tua dashboard personale.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg" asChild>
-              <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
-            </Button>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Affitta la tua barca</h2>
+            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+              Guadagna mettendo a disposizione la tua imbarcazione. Gestisci tutto facilmente dalla tua dashboard personale.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+            {/* Left side - Quick Action */}
+            <div className="text-center lg:text-left">
+              <h3 className="text-2xl font-bold mb-4">Registrazione immediata</h3>
+              <p className="text-blue-100 mb-6">
+                Clicca qui per procedere direttamente alla registrazione senza compilare i dati.
+              </p>
+              <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg" asChild>
+                <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
+              </Button>
+            </div>
+            
+            {/* Right side - Quick Registration Form */}
+            <div className="flex justify-center">
+              <QuickRegistration 
+                title="Registrazione rapida"
+                description="Compila i dati per iniziare subito"
+                buttonText="Continua con questi dati"
+                className="bg-white/95 backdrop-blur shadow-xl"
+              />
+            </div>
           </div>
         </div>
       </section>

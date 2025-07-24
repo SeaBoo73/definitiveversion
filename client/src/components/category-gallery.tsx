@@ -162,9 +162,7 @@ export function CategoryGallery() {
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-opacity"></div>
                   
-                  <div className="absolute top-3 right-3 bg-white bg-opacity-90 rounded-full w-10 h-10 flex items-center justify-center">
-                    <span className="font-bold text-sm text-gray-800">{category.count}</span>
-                  </div>
+
                 </div>
                 
                 <h3 className="font-semibold text-gray-900 group-hover:text-ocean-blue transition-colors mb-1">

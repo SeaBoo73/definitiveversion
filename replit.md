@@ -177,6 +177,10 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Sostituita con interfaccia stabile che mostra 14 porti del Lazio
   - ✅ Layout responsive con griglia compatta e conteggio barche
   - ✅ Design gradient marino consistente con branding SeaGO
+- **Pulizia Design Categorie:**
+  - ✅ Rimossi numeri sui badge dalle immagini delle categorie barche
+  - ✅ Design più pulito e moderno senza elementi numerici visivi
+  - ✅ Mantenuta funzionalità conteggio per logica interna senza impatto visivo
 
 ### July 24, 2025 - Sistema Pre-compilazione Dati Registrazione
 - **Reindirizzamento Pulsante "Diventa Noleggiatore" Ottimizzato:**

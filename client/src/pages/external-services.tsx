@@ -24,7 +24,8 @@ import {
   ArrowLeft,
   Search,
   Calendar,
-  User
+  User,
+  Users
 } from 'lucide-react';
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { useQuery } from '@tanstack/react-query';
@@ -32,6 +33,7 @@ import { Link } from 'wouter';
 import { SEOHead } from '@/components/seo-head';
 import { StructuredData } from '@/components/structured-data';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { PartnersSection } from '@/components/partners-section';
 
 interface WeatherData {
   location: string;
@@ -320,16 +322,18 @@ export default function ExternalServices() {
 
           <Card 
             className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
-              activeTab === 'marine' 
-                ? 'border-teal-500 bg-teal-50 shadow-lg' 
-                : 'hover:border-teal-200'
+              activeTab === 'partners' 
+                ? 'border-purple-500 bg-purple-50 shadow-lg' 
+                : 'hover:border-purple-200'
             }`}
-            onClick={() => setActiveTab('marine')}
+            onClick={() => setActiveTab('partners')}
           >
             <CardContent className="p-4 text-center">
-              <img src={seagoLogo} alt="SeaGO" className="h-8 w-8 mx-auto mb-2 object-contain" />
-              <h3 className="font-medium text-sm">Condizioni Marine</h3>
-              <p className="text-xs text-gray-500 mt-1">Onde e sicurezza</p>
+              <Users className={`h-8 w-8 mx-auto mb-2 ${
+                activeTab === 'partners' ? 'text-purple-600' : 'text-purple-500'
+              }`} />
+              <h3 className="font-medium text-sm">Partner</h3>
+              <p className="text-xs text-gray-500 mt-1">Servizi verificati</p>
             </CardContent>
           </Card>
         </div>
@@ -375,7 +379,7 @@ export default function ExternalServices() {
           <TabsTrigger value="weather">Meteo</TabsTrigger>
           <TabsTrigger value="fuel">Carburante</TabsTrigger>
           <TabsTrigger value="ports">Porti</TabsTrigger>
-          <TabsTrigger value="marine">Condizioni Marine</TabsTrigger>
+          <TabsTrigger value="partners">Partner</TabsTrigger>
         </TabsList>
 
         {/* Weather Tab */}
@@ -682,127 +686,9 @@ export default function ExternalServices() {
           )}
         </TabsContent>
 
-        {/* Marine Conditions Tab */}
-        <TabsContent value="marine" className="space-y-6">
-          {weatherData && (
-            <>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <img src={seagoLogo} alt="SeaGO" className="h-5 w-5 object-contain" />
-                    Condizioni Marine Attuali
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="text-center">
-                      <img src={seagoLogo} alt="SeaGO" className="h-12 w-12 mx-auto mb-3 object-contain" />
-                      <div className="text-3xl font-bold">{weatherData.waves.height} m</div>
-                      <div className="text-sm text-gray-600">Altezza Onde</div>
-                      <Badge 
-                        className={`mt-2 ${getWaveCondition(weatherData.waves.height).color} text-white`}
-                      >
-                        {getWaveCondition(weatherData.waves.height).text}
-                      </Badge>
-                    </div>
-                    
-                    <div className="text-center">
-                      <Compass className="h-12 w-12 mx-auto mb-3 text-blue-500" />
-                      <div className="text-3xl font-bold">{weatherData.waves.direction}°</div>
-                      <div className="text-sm text-gray-600">Direzione Onde</div>
-                      <div className="text-sm mt-2 text-blue-600">
-                        {getWindDirection(weatherData.waves.direction)}
-                      </div>
-                    </div>
-                    
-                    <div className="text-center">
-                      <Clock className="h-12 w-12 mx-auto mb-3 text-purple-500" />
-                      <div className="text-3xl font-bold">{weatherData.waves.period}s</div>
-                      <div className="text-sm text-gray-600">Periodo Onde</div>
-                      <div className="text-sm mt-2 text-purple-600">
-                        {weatherData.waves.period < 6 ? 'Frequenti' : 
-                         weatherData.waves.period < 10 ? 'Moderate' : 'Lunghe'}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Raccomandazioni di Navigazione</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {weatherData.waves.height <= 0.5 && weatherData.windSpeed <= 10 && (
-                      <Alert>
-                        <Info className="h-4 w-4" />
-                        <AlertDescription className="text-green-800">
-                          <strong>Condizioni Ottime:</strong> Mare calmo, ideale per tutte le imbarcazioni. 
-                          Navigazione sicura per principianti.
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                    
-                    {((weatherData.waves.height > 0.5 && weatherData.waves.height <= 1.5) || 
-                      (weatherData.windSpeed > 10 && weatherData.windSpeed <= 20)) && (
-                      <Alert>
-                        <Info className="h-4 w-4" />
-                        <AlertDescription className="text-yellow-800">
-                          <strong>Condizioni Moderate:</strong> Prestare attenzione. Consigliata esperienza di navigazione. 
-                          Verificare stabilità dell'imbarcazione.
-                        </AlertDescription>
-                      </Alert>
-                    )}
-                    
-                    {(weatherData.waves.height > 1.5 || weatherData.windSpeed > 20) && (
-                      <Alert>
-                        <Info className="h-4 w-4" />
-                        <AlertDescription className="text-red-800">
-                          <strong>Condizioni Difficili:</strong> Sconsigliata la navigazione per imbarcazioni piccole. 
-                          Solo navigatori esperti con imbarcazioni adeguate.
-                        </AlertDescription>
-                      </Alert>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">Equipaggiamento Consigliato</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <ul className="space-y-1 text-sm">
-                            <li>• Giubbotti salvagente</li>
-                            <li>• Radio VHF</li>
-                            <li>• Kit di primo soccorso</li>
-                            <li>• Razzi di segnalazione</li>
-                            {weatherData.waves.height > 1.0 && <li>• Ancora galleggiante</li>}
-                            {weatherData.windSpeed > 15 && <li>• Equipaggiamento antipioggia</li>}
-                          </ul>
-                        </CardContent>
-                      </Card>
-
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="text-base">Previsioni Brevi</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2 text-sm">
-                            {weatherData.forecast.slice(0, 3).map((forecast, index) => (
-                              <div key={index} className="flex justify-between">
-                                <span>{formatTime(forecast.time)}</span>
-                                <span>{forecast.waves}m • {forecast.windSpeed}kn</span>
-                              </div>
-                            ))}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
-          )}
+        {/* Partners Tab */}
+        <TabsContent value="partners" className="space-y-6">
+          <PartnersSection />
         </TabsContent>
       </Tabs>
       </div>

@@ -6,7 +6,8 @@ import {
   Fuel, 
   Anchor,
   ChevronDown,
-  MapPin
+  MapPin,
+  Users
 } from 'lucide-react';
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import {
@@ -75,14 +76,14 @@ export function ServicesNavButton() {
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
-          <Link href="/external-services?tab=marine" className="w-full">
+          <Link href="/external-services?tab=partners" className="w-full">
             <div className="flex items-center gap-3 w-full">
-              <img src={seagoLogo} alt="SeaGO" className="h-5 w-5 object-contain" />
+              <Users className="h-5 w-5 text-purple-600" />
               <div className="flex-1">
-                <div className="font-medium">Condizioni Marine</div>
-                <div className="text-xs text-gray-500">Onde, vento, visibilità</div>
+                <div className="font-medium">Partner Ufficiali</div>
+                <div className="text-xs text-gray-500">Capuano Trasporti e altri</div>
               </div>
-              <Badge variant="outline" className="text-xs">API</Badge>
+              <Badge variant="outline" className="text-xs">Verificato</Badge>
             </div>
           </Link>
         </DropdownMenuItem>

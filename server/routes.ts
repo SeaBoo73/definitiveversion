@@ -67,6 +67,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Simplified owner registration - only basic info
+  const basicOwnerSchema = z.object({
+    firstName: z.string().min(2),
+    lastName: z.string().min(2),
+    email: z.string().email(),
+    phone: z.string().min(10),
+    acceptTerms: z.boolean()
+  });
+
+  app.post("/api/become-owner", async (req, res) => {
+    try {
+      const validatedData = basicOwnerSchema.parse(req.body);
+      
+      // For now, just create a user record with role="owner"
+      // Later the owner will add boats via dashboard
+      const user = await storage.createUser({
+        email: validatedData.email,
+        password: "temp_password", // They'll need to login via auth system
+        role: "owner",
+        firstName: validatedData.firstName,
+        lastName: validatedData.lastName,
+        phone: validatedData.phone
+      });
+      
+      res.json({ 
+        message: "Registrazione completata! Riceverai le credenziali per accedere alla dashboard.",
+        userId: user.id 
+      });
+    } catch (error: any) {
+      console.error("Owner registration error:", error);
+      res.status(400).json({ message: error.message || "Errore durante la registrazione" });
+    }
+  });
+
   // Boats endpoints
   app.get("/api/boats", async (req, res) => {
     try {

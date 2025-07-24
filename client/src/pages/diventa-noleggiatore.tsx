@@ -96,7 +96,7 @@ export default function DiventaNoleggiatorePage() {
               </h1>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
                 Trasforma la tua barca in una fonte di reddito. 
-                Condividi la passione per il mare e guadagna fino al 85% su ogni prenotazione.
+                Condividi la passione per il mare e ottieni guadagni elevati su ogni prenotazione.
               </p>
               <Button
                 onClick={() => setStep("form")}
@@ -119,11 +119,11 @@ export default function DiventaNoleggiatorePage() {
                 <Euro className="h-12 w-12 text-green-500 mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-4">Guadagni Elevati</h3>
                 <p className="text-gray-600 mb-4">
-                  Mantieni l'<strong>85% di ogni prenotazione</strong>. 
-                  SeaGO trattiene solo il 15% che viene pagato dal cliente.
+                  Ottieni <strong>guadagni competitivi</strong> su ogni prenotazione. 
+                  La nostra struttura di commissioni è trasparente e conveniente.
                 </p>
                 <Badge className="bg-green-100 text-green-800">
-                  Il cliente paga la commissione
+                  Tariffe competitive
                 </Badge>
               </CardContent>
             </Card>
@@ -155,25 +155,25 @@ export default function DiventaNoleggiatorePage() {
             </Card>
           </div>
 
-          {/* Commission Info */}
+          {/* Benefits Info */}
           <div className="bg-green-50 border border-green-200 rounded-xl p-8 mt-12">
             <div className="flex items-start space-x-4">
               <CheckCircle className="h-8 w-8 text-green-600 flex-shrink-0 mt-1" />
               <div>
                 <h3 className="text-xl font-bold text-green-800 mb-2">
-                  Commissione trasparente: solo il 15%
+                  Sistema di guadagni vantaggioso
                 </h3>
                 <p className="text-green-700 mb-4">
-                  <strong>Importante:</strong> Il 15% di commissione viene pagato direttamente dal cliente, 
-                  non viene detratto dai tuoi guadagni.
+                  <strong>Trasparenza totale:</strong> La nostra struttura tariffaria è semplice, 
+                  competitiva e ti permette di massimizzare i tuoi guadagni.
                 </p>
                 <div className="bg-white p-4 rounded-lg">
-                  <p className="text-sm font-medium mb-2">Esempio pratico:</p>
+                  <p className="text-sm font-medium mb-2">Vantaggi per i noleggiatori:</p>
                   <div className="space-y-1 text-sm">
-                    <div>• Prezzo tua barca: €300/giorno</div>
-                    <div>• Commissione SeaGO (15%): €45 (pagata dal cliente)</div>
-                    <div>• Prezzo finale cliente: €345</div>
-                    <div className="font-bold text-green-600">• Tu ricevi: €300 (100% del tuo prezzo)</div>
+                    <div>• Guadagni superiori rispetto alla concorrenza</div>
+                    <div>• Nessun costo nascosto o spesa imprevista</div>
+                    <div>• Pagamenti puntuali e sicuri</div>
+                    <div className="font-bold text-green-600">• Struttura tariffaria trasparente e conveniente</div>
                   </div>
                 </div>
               </div>

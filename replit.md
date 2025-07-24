@@ -197,6 +197,13 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Larghezza container ridotta da max-w-6xl a max-w-4xl
   - ✅ Griglia Campania unificata invece di 2 righe separate
   - ✅ Testi scalabili con breakpoint responsive per ogni dispositivo
+- **Pagina Mappa Completa Riparata:**
+  - ✅ Risolto errore "Visualizza mappa completa" che causava crash app
+  - ✅ Sostituito GoogleMapsEmbed (dipendenza API Google non configurata) con layout stabile
+  - ✅ Pagina /mappa-completa ora funzionante con visualizzazione porti del Lazio
+  - ✅ Layout responsivo con sidebar filtri e area mappa principale
+  - ✅ Griglia compatta dei 6 porti principali con conteggio barche
+  - ✅ Interfaccia stabile senza dipendenze esterne problematiche
 
 ### July 24, 2025 - Sistema Registrazione Proprietari Completato e Ottimizzato
 - **Registrazione Proprietari Semplificata e Funzionante:**

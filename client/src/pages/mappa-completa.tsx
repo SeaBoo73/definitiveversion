@@ -1,11 +1,10 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
-import { InteractiveMap } from "@/components/interactive-map";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Anchor, Filter } from "lucide-react";
+import { MapPin, Anchor, Filter, Navigation } from "lucide-react";
 
 export default function MappaCompletaPage() {
   const porti = [
@@ -93,7 +92,42 @@ export default function MappaCompletaPage() {
             <Card>
               <CardContent className="p-0">
                 <div className="h-96 lg:h-[600px] rounded-lg overflow-hidden">
-                  <InteractiveMap />
+                  {/* Mappa Semplificata Stabile */}
+                  <div className="w-full h-full bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 flex items-center justify-center relative">
+                    {/* Background decorativo */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-cyan-300/20 to-blue-500/20"></div>
+                    
+                    {/* Contenuto principale */}
+                    <div className="relative z-10 text-center">
+                      <div className="text-6xl mb-4">🗺️</div>
+                      <h3 className="text-2xl font-bold text-gray-800 mb-2">Mappa Completa del Lazio</h3>
+                      <p className="text-gray-600 mb-6">14 Porti principali con {porti.reduce((sum, p) => sum + p.barche, 0)} imbarcazioni disponibili</p>
+                      
+                      {/* Griglia porti compatta */}
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-2xl mx-auto">
+                        {porti.map((porto, index) => (
+                          <div key={index} className="bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+                            <div className="flex items-center justify-between">
+                              <div className="text-left">
+                                <h4 className="font-bold text-sm text-gray-900">{porto.nome}</h4>
+                                <p className="text-xs text-gray-600">{porto.tipo}</p>
+                              </div>
+                              <div className="text-center">
+                                <Badge variant="secondary" className="text-xs">
+                                  {porto.barche}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-6 flex items-center justify-center space-x-2 text-sm text-blue-700">
+                        <Navigation className="h-4 w-4" />
+                        <span>Mappa interattiva completa in arrivo</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

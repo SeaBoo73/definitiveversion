@@ -1,10 +1,10 @@
-// SeaGO Service Worker - v2.1.0
-const CACHE_NAME = 'seago-cache-v2.1.0';
-const API_CACHE_NAME = 'seago-api-cache-v2.1.0';
+// SeaGO Service Worker - v2.1.1 - FORCE REFRESH
+const CACHE_NAME = 'seago-cache-v2.1.1';
+const API_CACHE_NAME = 'seago-api-cache-v2.1.1';
 
 // Install event - clear old caches and force update
 self.addEventListener('install', (event) => {
-  console.log('SeaGO SW v2.1.0 installing...');
+  console.log('SeaGO SW v2.1.1 installing - FORCE REFRESH...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -23,7 +23,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - take control immediately
 self.addEventListener('activate', (event) => {
-  console.log('SeaGO SW v2.1.0 activated');
+  console.log('SeaGO SW v2.1.1 activated - CACHE CLEARED');
   event.waitUntil(self.clients.claim());
 });
 

@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MobileNavigation } from "@/components/mobile-navigation";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
@@ -404,7 +404,6 @@ export default function DocumentiPage() {
       </div>
 
       <Footer />
-      <MobileNavigation />
     </div>
   );
 }

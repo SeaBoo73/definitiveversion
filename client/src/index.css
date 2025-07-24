@@ -90,6 +90,11 @@
       max-width: 100vw !important;
       overflow-x: visible;
     }
+    
+    /* Spazio per bottom navigation su mobile */
+    body {
+      padding-bottom: 80px; /* Spazio per la navigation bar mobile */
+    }
   }
 }
 

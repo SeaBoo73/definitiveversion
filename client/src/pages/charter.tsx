@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MobileNavigation } from "@/components/mobile-navigation";
+
 import { SEOHead, seoConfigs } from "@/components/seo-head";
 import { StructuredData } from "@/components/structured-data";
 import { Breadcrumbs } from "@/components/breadcrumbs";
@@ -255,7 +255,6 @@ export function CharterPage() {
       </section>
       
       <Footer />
-      <MobileNavigation />
     </div>
   );
 }

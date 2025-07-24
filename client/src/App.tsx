@@ -10,6 +10,7 @@ import { SimpleTest } from "./simple-test";
 import { MinimalApp } from "./minimal-app";
 import { ErrorBoundary } from "./error-boundary";
 import { CleanApp } from "./clean-app";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import "./hide-overlay";
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
@@ -137,7 +138,8 @@ function App() {
         <AuthProvider>
           <Toaster />
           <Router />
-
+          {/* Mobile Navigation sempre visibile su tutte le pagine */}
+          <MobileNavigation />
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

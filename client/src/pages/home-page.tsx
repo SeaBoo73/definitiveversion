@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
 import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg";
-import { MobileNavigation } from "@/components/mobile-navigation";
+
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
 import { TrendingDestinations } from "@/components/trending-destinations";
@@ -402,7 +402,6 @@ export default function HomePage() {
       </section>
 
       <Footer />
-      <MobileNavigation />
       <LiveChatButton />
     </div>
   );

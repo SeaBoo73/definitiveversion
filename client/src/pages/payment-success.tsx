@@ -4,7 +4,7 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { CheckCircle } from "lucide-react";
-import { MobileNavigation } from "@/components/mobile-navigation";
+
 
 export default function PaymentSuccess() {
   useEffect(() => {
@@ -97,7 +97,6 @@ export default function PaymentSuccess() {
       </div>
       
       <Footer />
-      <MobileNavigation />
     </div>
   );
 }

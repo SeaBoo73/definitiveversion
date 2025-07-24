@@ -228,112 +228,11 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Destinazioni di Tendenza */}
-          <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Destinazioni di Tendenza</h2>
-                <p className="text-lg text-gray-600">Le località più richieste dai nostri navigatori</p>
-              </div>
-              <TrendingDestinations />
-            </div>
-          </section>
 
-          {/* Imbarcazioni in evidenza */}
-          <section className="py-16 bg-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between items-center mb-12">
-                <div>
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Imbarcazioni in evidenza</h2>
-                  <p className="text-lg text-gray-600">Le migliori proposte selezionate per te</p>
-                </div>
-                <Button variant="ghost" className="hidden md:block" asChild>
-                  <Link href="/?show=all">
-                    Vedi tutte →
-                  </Link>
-                </Button>
-              </div>
-
-              {isLoading ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {[...Array(8)].map((_, i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="bg-gray-200 h-48 rounded-xl mb-4"></div>
-                      <div className="space-y-2">
-                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                        <div className="h-3 bg-gray-200 rounded w-2/3"></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : filteredBoats && filteredBoats.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {featuredBoats.map((boat) => (
-                    <BoatCard key={boat?.id || Math.random()} boat={boat} />
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <p className="text-gray-600">Nessuna imbarcazione disponibile al momento.</p>
-                </div>
-              )}
-
-              <div className="text-center mt-8">
-                <Button className="md:hidden bg-ocean-blue hover:bg-blue-600" asChild>
-                  <Link href="/?show=all">
-                    Vedi tutte le imbarcazioni
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </section>
         </>
       )}
 
-      {/* Come funziona SeaGO */}
-      <section id="how-it-works" className="py-16 bg-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Come funziona SeaGO</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Prenota la tua imbarcazione ideale in 3 semplici passaggi
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-ocean-blue text-white rounded-full text-2xl font-bold mb-6">
-                1
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Cerca</h3>
-              <p className="text-gray-600">
-                Trova l'imbarcazione perfetta usando la nostra mappa interattiva e i filtri avanzati per tipo, prezzo e ubicazione
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-seafoam text-white rounded-full text-2xl font-bold mb-6">
-                2
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Prenota</h3>
-              <p className="text-gray-600">
-                Seleziona le date, paga online in totale sicurezza e ricevi conferma istantanea della tua prenotazione
-              </p>
-            </div>
-
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-coral text-white rounded-full text-2xl font-bold mb-6">
-                3
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Naviga</h3>
-              <p className="text-gray-600">
-                Ritira la tua imbarcazione nel porto concordato e goditi un'esperienza indimenticabile in mare
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Affitta la tua barca */}
       <section className="py-16 bg-gradient-to-r from-ocean-blue to-deep-navy text-white">

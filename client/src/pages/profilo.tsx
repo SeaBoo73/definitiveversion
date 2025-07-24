@@ -73,6 +73,13 @@ export default function ProfiloPage() {
     },
     {
       icon: HelpCircle,
+      title: "Come funziona SeaGO",
+      subtitle: "Guida completa in 3 passaggi",
+      href: "/come-funziona",
+      color: "text-purple-600"
+    },
+    {
+      icon: MessageCircle,
       title: "Centro Assistenza",
       subtitle: "FAQ e supporto",
       href: "/aiuto",
@@ -126,7 +133,6 @@ export default function ProfiloPage() {
         </div>
 
         <Footer />
-        <MobileNavigation />
       </div>
     );
   }

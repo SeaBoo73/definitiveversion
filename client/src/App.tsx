@@ -88,6 +88,7 @@ function Router() {
       <Route path="/mappa-completa" component={lazy(() => import('./pages/mappa-completa'))} />
       <Route path="/simple-mappa" component={SimpleMappa} />
       <Route path="/come-prenotare" component={ComePrenotarePage} />
+      <Route path="/come-funziona" component={lazy(() => import('./pages/come-funziona'))} />
       <Route path="/politiche-cancellazione" component={PoliticheCancellazionePage} />
       <Route path="/rimborsi" component={RimborsiPage} />
       <Route path="/condizioni-servizio" component={CondizioniServizioPage} />

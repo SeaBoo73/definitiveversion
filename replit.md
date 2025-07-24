@@ -171,6 +171,8 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Homepage sezione "Affitta la tua barca" con doppia opzione: registrazione immediata o con dati pre-compilati
   - ✅ Quando utente compila form rapido, viene portato direttamente al tab registrazione con campi compilati
   - ✅ Header e tutti i link "Diventa noleggiatore" ora puntano alla pagina di registrazione standard
+  - ✅ Parametro URL "role=owner" aggiunto per selezione automatica ruolo noleggiatore
+  - ✅ Quando si clicca "Diventa noleggiatore" il radio button "Mi registro come noleggiatore" è automaticamente selezionato
 
 ### July 24, 2025 - Sistema Registrazione Proprietari Completato e Ottimizzato
 - **Registrazione Proprietari Semplificata e Funzionante:**

@@ -56,12 +56,16 @@ export default function AuthPage() {
   // Extract pre-filled data from URL parameters for registration
   const getPreFilledRegisterValues = () => {
     const urlParams = new URLSearchParams(window.location.search);
+    // Get role from URL parameter, defaulting to "customer"
+    const roleParam = urlParams.get('role');
+    const role = (roleParam === 'owner') ? "owner" as const : "customer" as const;
+    
     return {
       username: "",
       email: urlParams.get('email') || "",
       password: "",
       confirmPassword: "",
-      role: "customer" as const,
+      role: role,
       firstName: urlParams.get('firstName') || "",
       lastName: urlParams.get('lastName') || "",
       phone: urlParams.get('phone') || "",

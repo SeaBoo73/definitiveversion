@@ -47,6 +47,7 @@ export function QuickRegistration({
     // Create URL parameters with the form data
     const params = new URLSearchParams({
       tab: 'register',
+      role: 'owner',
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,

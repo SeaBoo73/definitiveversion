@@ -25,15 +25,15 @@ export function LiveChatButton() {
       {/* Chat Button - Fixed position, adjusted for mobile bottom nav */}
       <Button
         onClick={() => setShowOptions(true)}
-        className="fixed bottom-24 md:bottom-6 right-6 z-40 bg-gradient-to-r from-blue-500 to-ocean-blue hover:from-blue-600 hover:to-blue-700 text-white rounded-full w-14 h-14 shadow-lg transition-all"
+        className="fixed bottom-24 md:bottom-6 right-6 z-40 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full w-14 h-14 shadow-lg transition-all flex items-center justify-center"
         size="lg"
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
 
-      {/* Chat Options Modal */}
+      {/* Chat Options Modal - Positioned above mobile bottom nav */}
       {showOptions && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 pb-24 md:pb-4">
           <Card className="w-full max-w-sm">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -49,7 +49,7 @@ export function LiveChatButton() {
               {/* AI Chat - Primary Option */}
               <Button
                 onClick={handleAiChat}
-                className="w-full bg-gradient-to-r from-blue-500 to-ocean-blue hover:from-blue-600 hover:to-blue-700 text-white justify-start"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white justify-start"
               >
                 <Bot className="h-4 w-4 mr-2" />
                 Chat con AI

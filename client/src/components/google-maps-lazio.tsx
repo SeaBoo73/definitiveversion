@@ -156,22 +156,22 @@ export function GoogleMapsLazio() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 opacity-20"></div>
         
         {/* Contenuto Principale */}
-        <div className="relative z-10 h-full flex flex-col justify-center items-center px-8">
-          <div className="text-center mb-6">
-            <div className="text-5xl mb-3">🗺️</div>
-            <h3 className="text-xl font-bold text-gray-800 mb-2">Porti del Lazio e Campania</h3>
-            <p className="text-sm text-gray-600 mb-4">14 Porti Principali con Coordinate GPS Precise</p>
+        <div className="relative z-10 h-full flex flex-col justify-center items-center px-4 py-4">
+          <div className="text-center mb-4">
+            <div className="text-4xl lg:text-5xl mb-2">🗺️</div>
+            <h3 className="text-lg lg:text-xl font-bold text-gray-800 mb-2">Porti del Lazio e Campania</h3>
+            <p className="text-xs lg:text-sm text-gray-600 mb-3">14 Porti Principali con Coordinate GPS Precise</p>
             <div className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full">
               ✅ Lazio + Campania
             </div>
           </div>
 
           {/* Griglia Porti - 2 righe: Lazio e Campania */}
-          <div className="max-w-6xl space-y-4">
+          <div className="w-full max-w-4xl space-y-3">
             {/* Porti del Lazio */}
             <div>
-              <h4 className="text-sm font-bold text-blue-800 mb-2 text-center">🏛️ LAZIO</h4>
-              <div className="grid grid-cols-3 gap-2 text-xs">
+              <h4 className="text-xs md:text-sm font-bold text-blue-800 mb-2 text-center">🏛️ LAZIO</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
                 <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
                   <div className="text-blue-600 font-bold mb-1">⚓ Civitavecchia</div>
                   <div className="text-gray-600 text-xs">4 barche</div>
@@ -201,39 +201,45 @@ export function GoogleMapsLazio() {
 
             {/* Porti della Campania */}
             <div>
-              <h4 className="text-sm font-bold text-red-800 mb-2 text-center">🌋 CAMPANIA</h4>
-              <div className="grid grid-cols-4 gap-2 text-xs">
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-red-600 font-bold mb-1">⚓ Napoli</div>
-                  <div className="text-gray-600 text-xs">8 barche</div>
+              <h4 className="text-xs md:text-sm font-bold text-red-800 mb-2 text-center">🌋 CAMPANIA</h4>
+              <div className="space-y-2">
+                {/* Prima riga - 4 porti principali */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-red-600 font-bold mb-1">⚓ Napoli</div>
+                    <div className="text-gray-600 text-xs">8 barche</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-yellow-600 font-bold mb-1">🍋 Sorrento</div>
+                    <div className="text-gray-600 text-xs">5 barche</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-blue-600 font-bold mb-1">🏔️ Amalfi</div>
+                    <div className="text-gray-600 text-xs">3 barche</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-green-600 font-bold mb-1">⚓ Salerno</div>
+                    <div className="text-gray-600 text-xs">4 barche</div>
+                  </div>
                 </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-yellow-600 font-bold mb-1">🍋 Sorrento</div>
-                  <div className="text-gray-600 text-xs">5 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-blue-600 font-bold mb-1">🏔️ Amalfi</div>
-                  <div className="text-gray-600 text-xs">3 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-green-600 font-bold mb-1">⚓ Salerno</div>
-                  <div className="text-gray-600 text-xs">4 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-purple-600 font-bold mb-1">🌋 Ischia</div>
-                  <div className="text-gray-600 text-xs">6 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-cyan-600 font-bold mb-1">💎 Capri</div>
-                  <div className="text-gray-600 text-xs">4 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-teal-600 font-bold mb-1">🏝️ Procida</div>
-                  <div className="text-gray-600 text-xs">3 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
-                  <div className="text-orange-600 font-bold mb-1">⚓ Castellammare</div>
-                  <div className="text-gray-600 text-xs">2 barche</div>
+                {/* Seconda riga - 4 isole e porti minori */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-purple-600 font-bold mb-1">🌋 Ischia</div>
+                    <div className="text-gray-600 text-xs">6 barche</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-cyan-600 font-bold mb-1">💎 Capri</div>
+                    <div className="text-gray-600 text-xs">4 barche</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-teal-600 font-bold mb-1">🏝️ Procida</div>
+                    <div className="text-gray-600 text-xs">3 barche</div>
+                  </div>
+                  <div className="bg-white/80 backdrop-blur-sm p-2 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                    <div className="text-orange-600 font-bold mb-1">⚓ Castellammare</div>
+                    <div className="text-gray-600 text-xs">2 barche</div>
+                  </div>
                 </div>
               </div>
             </div>

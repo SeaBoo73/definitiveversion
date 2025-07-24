@@ -11,6 +11,7 @@ import externalRoutes from "./routes/external";
 import { Server as SocketIOServer } from "socket.io";
 import { aiService } from "./ai-service";
 import { storage } from "./storage";
+import { EmailService } from "./email-service";
 import { setupAuth } from "./auth";
 import { insertBoatSchema, insertBookingSchema, insertReviewSchema, insertMessageSchema } from "@shared/schema";
 import { z } from "zod";
@@ -156,6 +157,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         customerId: req.user.id,
         ownerId: boat.ownerId,
         status: "pending" as const,
+        startDate: new Date(req.body.startDate),
+        endDate: new Date(req.body.endDate),
         createdAt: new Date(),
       };
 
@@ -170,10 +173,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Stripe payment route for one-time payments
   app.post("/api/create-payment-intent", async (req, res) => {
     try {
-      const { amount, currency = "eur" } = req.body;
+      const { amount, currency = "eur", bookingId } = req.body;
       const paymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100), // Convert to cents
         currency: currency,
+        metadata: { bookingId: bookingId?.toString() || '' },
         automatic_payment_methods: {
           enabled: true,
         },
@@ -183,6 +187,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res
         .status(500)
         .json({ message: "Error creating payment intent: " + error.message });
+    }
+  });
+
+  // Confirm payment and send notifications
+  app.post("/api/confirm-payment", async (req, res) => {
+    try {
+      const { paymentIntentId, bookingId } = req.body;
+      
+      // Get booking details
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ error: "Booking not found" });
+      }
+
+      // Get boat and user details
+      const boat = await storage.getBoat(booking.boatId);
+      const customer = await storage.getUser(booking.customerId);
+      const owner = boat ? await storage.getUser(boat.ownerId) : null;
+
+      if (!boat || !customer || !owner) {
+        return res.status(404).json({ error: "Required data not found" });
+      }
+
+      // Update booking status to confirmed
+      await storage.updateBooking(bookingId, { 
+        status: "confirmed"
+      });
+
+      // Send email notification
+      const emailData = {
+        customerName: `${customer.firstName} ${customer.lastName}`,
+        customerEmail: customer.email,
+        ownerName: `${owner.firstName} ${owner.lastName}`,
+        ownerEmail: owner.email,
+        startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
+        endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
+        boatType: boat.type,
+        boatName: boat.name,
+        totalPrice: parseFloat(booking.totalPrice),
+        paymentMethod: "Stripe",
+        bookingCode: `SEA${booking.id.toString().padStart(6, '0')}`
+      };
+
+      await EmailService.sendBookingNotification(emailData);
+
+      res.json({ success: true, bookingCode: emailData.bookingCode });
+    } catch (error: any) {
+      console.error("Error confirming payment:", error);
+      res.status(500).json({ message: "Error confirming payment: " + error.message });
     }
   });
 

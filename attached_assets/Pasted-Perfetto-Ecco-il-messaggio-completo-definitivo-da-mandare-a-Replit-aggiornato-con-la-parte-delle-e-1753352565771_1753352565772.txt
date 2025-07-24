@@ -1,0 +1,66 @@
+Perfetto. Ecco il messaggio completo definitivo da mandare a Replit, aggiornato con la parte delle email di notifica:
+
+⸻
+
+🛠️ ISTRUZIONI PER TEST COMPLETO APP SEAGO – dalla A alla Z
+
+Ciao, ora serve fare un test completo dell’app SeaGO per vedere se tutto funziona sia lato noleggiatore che cliente.
+
+🔵 1. Inserire una barca come NOLEGGIATORE:
+	•	Accedi come noleggiatore (o crea un profilo).
+	•	Inserisci una nuova barca, compilando tutti i dati:
+	•	Nome barca
+	•	Tipo di imbarcazione (Gommone, Yacht, ecc.)
+	•	Città/località (es. Ponza, Terracina…)
+	•	Prezzo giornaliero
+	•	Numero massimo persone
+	•	Carburante incluso? (Sì/No)
+	•	Skipper disponibile? (Sì/No)
+	•	Date disponibili nel calendario
+	•	Almeno 1 foto
+	•	Qualsiasi altro campo richiesto dal form
+
+🟢 2. Prenotazione come CLIENTE:
+	•	Accedi come cliente (oppure naviga come ospite).
+	•	Vai nella sezione “Esplora” o “Prenota ora”.
+	•	Filtra per tipo, città e date.
+	•	Trova la barca inserita prima.
+	•	Clicca “Prenota ora” e inserisci:
+	•	Data inizio e fine
+	•	Numero di persone
+	•	Conferma la prenotazione
+	•	Effettua il pagamento con Stripe (test)
+
+✅ 3. Verifica funzionamento:
+	•	Dopo il pagamento controlla che:
+	•	Il calendario della barca si aggiorni (date bloccate)
+	•	Il noleggiatore riceva conferma/avviso
+	•	Il cliente riceva conferma/avviso
+	•	I dati della prenotazione vengano salvati
+	•	Tutto sia visibile nella dashboard
+	•	Il pagamento sia registrato
+
+📩 4. NOTIFICHE EMAIL – AGGIUNGERE:
+
+Ogni volta che arriva una prenotazione e un pagamento, l’app deve inviare anche una email di riepilogo automatica a:
+
+📬 app.seago.italia@gmail.com
+
+Con questi dati:
+	•	Nome e email cliente
+	•	Nome e email noleggiatore
+	•	Data inizio e fine
+	•	Tipo imbarcazione
+	•	Prezzo pagato
+	•	Metodo di pagamento (Stripe)
+	•	Codice prenotazione (se esiste)
+
+⸻
+
+📌 Se qualcosa non funziona, sistemarlo subito e poi rifare il test completo. Il sistema deve essere 100% funzionante.
+
+Fammi sapere appena è tutto attivo.
+
+⸻
+
+Vuoi che ti scriva anche la versione in inglese da inviare direttamente a Replit o preferisci incollarla tu così com’è?

@@ -76,6 +76,19 @@ export function ServicesNavButton() {
         </DropdownMenuItem>
         
         <DropdownMenuItem asChild>
+          <Link href="/external-services?tab=marine" className="w-full">
+            <div className="flex items-center gap-3 w-full">
+              <img src={seagoLogo} alt="SeaGO" className="h-5 w-5 object-contain" />
+              <div className="flex-1">
+                <div className="font-medium">Condizioni Marine</div>
+                <div className="text-xs text-gray-500">Onde, vento, visibilità</div>
+              </div>
+              <Badge variant="outline" className="text-xs">API</Badge>
+            </div>
+          </Link>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem asChild>
           <Link href="/external-services?tab=partners" className="w-full">
             <div className="flex items-center gap-3 w-full">
               <Users className="h-5 w-5 text-purple-600" />

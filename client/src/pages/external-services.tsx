@@ -268,7 +268,7 @@ export default function ExternalServices() {
         </div>
 
         {/* Quick Access Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
           <Card 
             className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
               activeTab === 'weather' 
@@ -317,6 +317,21 @@ export default function ExternalServices() {
               }`} />
               <h3 className="font-medium text-sm">Servizi Portuali</h3>
               <p className="text-xs text-gray-500 mt-1">Porti e marine</p>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all border-2 ${
+              activeTab === 'marine' 
+                ? 'border-teal-500 bg-teal-50 shadow-lg' 
+                : 'hover:border-teal-200'
+            }`}
+            onClick={() => setActiveTab('marine')}
+          >
+            <CardContent className="p-4 text-center">
+              <img src={seagoLogo} alt="SeaGO" className="h-8 w-8 mx-auto mb-2 object-contain" />
+              <h3 className="font-medium text-sm">Condizioni Marine</h3>
+              <p className="text-xs text-gray-500 mt-1">Onde e sicurezza</p>
             </CardContent>
           </Card>
 
@@ -375,10 +390,11 @@ export default function ExternalServices() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="weather">Meteo</TabsTrigger>
           <TabsTrigger value="fuel">Carburante</TabsTrigger>
           <TabsTrigger value="ports">Porti</TabsTrigger>
+          <TabsTrigger value="marine">Condizioni Marine</TabsTrigger>
           <TabsTrigger value="partners">Partner</TabsTrigger>
         </TabsList>
 
@@ -683,6 +699,139 @@ export default function ExternalServices() {
                 Impossibile caricare i servizi portuali. Verificare la connessione.
               </AlertDescription>
             </Alert>
+          )}
+        </TabsContent>
+
+        {/* Marine Conditions Tab */}
+        <TabsContent value="marine" className="space-y-6">
+          {weatherData && (
+            <>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <img src={seagoLogo} alt="SeaGO" className="h-5 w-5 object-contain" />
+                    Condizioni Marine Attuali
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center">
+                      <img src={seagoLogo} alt="SeaGO" className="h-12 w-12 mx-auto mb-3 object-contain" />
+                      <div className="text-3xl font-bold">{weatherData.waves.height} m</div>
+                      <div className="text-sm text-gray-600">Altezza Onde</div>
+                      <Badge 
+                        className={`mt-2 ${getWaveCondition(weatherData.waves.height).color} text-white`}
+                      >
+                        {getWaveCondition(weatherData.waves.height).text}
+                      </Badge>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Compass className="h-12 w-12 mx-auto mb-3 text-blue-500" />
+                      <div className="text-3xl font-bold">{weatherData.waves.direction}°</div>
+                      <div className="text-sm text-gray-600">Direzione Onde</div>
+                      <div className="text-sm mt-2 text-blue-600">
+                        {getWindDirection(weatherData.waves.direction)}
+                      </div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <Clock className="h-12 w-12 mx-auto mb-3 text-purple-500" />
+                      <div className="text-3xl font-bold">{weatherData.waves.period}s</div>
+                      <div className="text-sm text-gray-600">Periodo Onde</div>
+                      <div className="text-sm mt-2 text-purple-600">
+                        {weatherData.waves.period < 6 ? 'Frequenti' : 
+                         weatherData.waves.period < 10 ? 'Moderate' : 'Lunghe'}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Raccomandazioni di Navigazione</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {weatherData.waves.height <= 0.5 && weatherData.windSpeed <= 10 && (
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription className="text-green-800">
+                          <strong>Condizioni Ottime:</strong> Mare calmo, ideale per tutte le imbarcazioni. 
+                          Navigazione sicura per principianti.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {((weatherData.waves.height > 0.5 && weatherData.waves.height <= 1.5) || 
+                      (weatherData.windSpeed > 10 && weatherData.windSpeed <= 20)) && (
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription className="text-yellow-800">
+                          <strong>Condizioni Moderate:</strong> Prestare attenzione. Consigliata esperienza di navigazione. 
+                          Verificare stabilità dell'imbarcazione.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                    
+                    {(weatherData.waves.height > 1.5 || weatherData.windSpeed > 20) && (
+                      <Alert>
+                        <Info className="h-4 w-4" />
+                        <AlertDescription className="text-red-800">
+                          <strong>Condizioni Difficili:</strong> Sconsigliata la navigazione per imbarcazioni piccole. 
+                          Solo navigatori esperti con imbarcazioni adeguate.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">Equipaggiamento Consigliato</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <ul className="space-y-1 text-sm">
+                            <li className="flex items-center gap-2">
+                              <img src={seagoLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              Giubbotto di salvataggio
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <img src={seagoLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              VHF nautico
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <img src={seagoLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              Kit di primo soccorso
+                            </li>
+                            <li className="flex items-center gap-2">
+                              <img src={seagoLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              Ancora di emergenza
+                            </li>
+                          </ul>
+                        </CardContent>
+                      </Card>
+
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="text-base">Previsioni Brevi</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm">
+                            {weatherData.forecast.slice(0, 3).map((forecast, index) => (
+                              <div key={index} className="flex justify-between">
+                                <span>{formatTime(forecast.time)}</span>
+                                <span>{forecast.waves}m • {forecast.windSpeed}kn</span>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </>
           )}
         </TabsContent>
 

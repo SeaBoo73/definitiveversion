@@ -19,6 +19,7 @@ import { CategoryGallery } from "@/components/category-gallery";
 import { SEOHead, seoConfigs } from "@/components/seo-head";
 import { StructuredData } from "@/components/structured-data";
 import { QuickRegistration } from "@/components/quick-registration";
+import { PartnersSection } from "@/components/partners-section";
 
 export default function HomePage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
@@ -229,11 +230,11 @@ export default function HomePage() {
             </div>
           </section>
 
-
         </>
       )}
 
-
+      {/* Partners Section */}
+      <PartnersSection />
 
       {/* Affitta la tua barca */}
       <section className="py-16 bg-gradient-to-r from-ocean-blue to-deep-navy text-white">

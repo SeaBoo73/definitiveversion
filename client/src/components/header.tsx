@@ -127,7 +127,7 @@ export function Header() {
               {user && <NotificationsCenter />}
               {!user && (
                 <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2">
-                  <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
+                  <Link href="/auth?tab=register">Diventa noleggiatore</Link>
                 </Button>
               )}
               

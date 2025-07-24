@@ -46,14 +46,15 @@ export function QuickRegistration({
   const onSubmit = (data: QuickRegistrationForm) => {
     // Create URL parameters with the form data
     const params = new URLSearchParams({
+      tab: 'register',
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
       phone: data.phone
     });
     
-    // Navigate to diventa-noleggiatore with pre-filled data
-    setLocation(`/diventa-noleggiatore?${params.toString()}`);
+    // Navigate to auth page with pre-filled data
+    setLocation(`/auth?${params.toString()}`);
   };
 
   return (

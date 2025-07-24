@@ -35,7 +35,15 @@ type RegisterData = z.infer<typeof registerSchema>;
 
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
-  const [activeTab, setActiveTab] = useState("login");
+  
+  // Check URL parameters for initial tab
+  const getInitialTab = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    return tabParam === 'register' ? 'register' : 'login';
+  };
+  
+  const [activeTab, setActiveTab] = useState(getInitialTab());
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -45,19 +53,25 @@ export default function AuthPage() {
     },
   });
 
-  const registerForm = useForm<RegisterData>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
+  // Extract pre-filled data from URL parameters for registration
+  const getPreFilledRegisterValues = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return {
       username: "",
-      email: "",
+      email: urlParams.get('email') || "",
       password: "",
       confirmPassword: "",
-      role: "customer",
-      firstName: "",
-      lastName: "",
-      phone: "",
+      role: "customer" as const,
+      firstName: urlParams.get('firstName') || "",
+      lastName: urlParams.get('lastName') || "",
+      phone: urlParams.get('phone') || "",
       acceptTerms: false,
-    },
+    };
+  };
+
+  const registerForm = useForm<RegisterData>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: getPreFilledRegisterValues(),
   });
 
   // Redirect if already logged in

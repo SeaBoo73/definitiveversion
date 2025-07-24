@@ -162,6 +162,16 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 24, 2025 - Sistema Pre-compilazione Dati Registrazione
+- **Reindirizzamento Pulsante "Diventa Noleggiatore" Ottimizzato:**
+  - ✅ Pulsante "Diventa noleggiatore" ora punta direttamente alla pagina /auth?tab=register
+  - ✅ Creato componente QuickRegistration per raccogliere dati base sulla homepage
+  - ✅ Sistema di pre-compilazione campi tramite URL parameters funzionante
+  - ✅ Pagina auth modificata per supportare tab automatico e campi pre-compilati
+  - ✅ Homepage sezione "Affitta la tua barca" con doppia opzione: registrazione immediata o con dati pre-compilati
+  - ✅ Quando utente compila form rapido, viene portato direttamente al tab registrazione con campi compilati
+  - ✅ Header e tutti i link "Diventa noleggiatore" ora puntano alla pagina di registrazione standard
+
 ### July 24, 2025 - Sistema Registrazione Proprietari Completato e Ottimizzato
 - **Registrazione Proprietari Semplificata e Funzionante:**
   - ✅ Form registrazione ridotto a 4 campi essenziali: nome, cognome, email, telefono

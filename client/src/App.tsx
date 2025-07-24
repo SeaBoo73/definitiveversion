@@ -116,6 +116,7 @@ function Router() {
       <Route path="/emergency-system" component={EmergencySystem} />
       <Route path="/external-services" component={ExternalServices} />
       <Route path="/ormeggio" component={OrmeggioBookingPage} />
+      <Route path="/test-moorings" component={lazy(() => import('./pages/test-moorings'))} />
       <Route path="/ricerca-avanzata" component={AdvancedSearchPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/boats/:id" component={BoatDetails} />

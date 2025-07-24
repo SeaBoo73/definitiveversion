@@ -6,6 +6,7 @@ import { registerAnalyticsRoutes } from "./routes/analytics";
 import { registerEmergencyRoutes } from "./routes/emergencies";
 import { registerFeatureRoutes } from "./routes/features";
 import { registerAvailabilityRoutes } from "./routes/availability-management";
+import { registerMooringRoutes } from "./routes/moorings";
 import emergencyRoutes from "./routes/emergency";
 import externalRoutes from "./routes/external";
 import { Server as SocketIOServer } from "socket.io";
@@ -33,6 +34,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   registerEmergencyRoutes(app);
   registerFeatureRoutes(app);
   registerAvailabilityRoutes(app);
+  
+  // Register mooring routes
+  registerMooringRoutes(app);
   
   // Emergency system routes
   app.use('/api/emergency', emergencyRoutes);
@@ -193,46 +197,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Confirm payment and send notifications
   app.post("/api/confirm-payment", async (req, res) => {
     try {
-      const { paymentIntentId, bookingId } = req.body;
+      const { paymentIntentId, bookingId, bookingType = "boat" } = req.body;
       
-      // Get booking details
-      const booking = await storage.getBooking(bookingId);
-      if (!booking) {
-        return res.status(404).json({ error: "Booking not found" });
+      if (bookingType === "mooring") {
+        // Handle mooring booking confirmation
+        const bookings = await storage.getMooringBookings({ customerId: undefined });
+        const booking = bookings.find(b => b.id === bookingId);
+        
+        if (!booking) {
+          return res.status(404).json({ error: "Mooring booking not found" });
+        }
+
+        // Update booking status to confirmed
+        await storage.updateMooringBooking(bookingId, { 
+          status: "confirmed",
+          stripePaymentIntentId: paymentIntentId
+        });
+
+        // Get manager details
+        const manager = await storage.getUser(booking.mooring.managerId);
+        
+        if (!manager) {
+          return res.status(404).json({ error: "Manager not found" });
+        }
+
+        // Send email notification for mooring
+        const emailData = {
+          customerName: `${booking.customer.firstName} ${booking.customer.lastName}`,
+          customerEmail: booking.customer.email,
+          managerName: `${manager.firstName} ${manager.lastName}`,
+          managerEmail: manager.email,
+          startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
+          endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
+          mooringName: booking.mooring.name,
+          mooringPort: booking.mooring.port,
+          mooringLocation: booking.mooring.location,
+          mooringType: booking.mooring.type,
+          boatName: booking.boatName,
+          boatType: booking.boatType,
+          boatLength: booking.boatLength,
+          totalPrice: parseFloat(booking.totalPrice),
+          paymentMethod: "Stripe",
+          bookingCode: `ORM${booking.id.toString().padStart(6, '0')}`,
+          specialRequests: booking.specialRequests,
+          notes: booking.notes
+        };
+
+        await EmailService.sendMooringBookingNotification(emailData);
+
+        res.json({ success: true, bookingCode: emailData.bookingCode });
+      } else {
+        // Handle regular boat booking confirmation (existing code)
+        const booking = await storage.getBooking(bookingId);
+        if (!booking) {
+          return res.status(404).json({ error: "Booking not found" });
+        }
+
+        // Get boat and user details
+        const boat = await storage.getBoat(booking.boatId);
+        const customer = await storage.getUser(booking.customerId);
+        const owner = boat ? await storage.getUser(boat.ownerId) : null;
+
+        if (!boat || !customer || !owner) {
+          return res.status(404).json({ error: "Required data not found" });
+        }
+
+        // Update booking status to confirmed
+        await storage.updateBooking(bookingId, { 
+          status: "confirmed"
+        });
+
+        // Send email notification
+        const emailData = {
+          customerName: `${customer.firstName} ${customer.lastName}`,
+          customerEmail: customer.email,
+          ownerName: `${owner.firstName} ${owner.lastName}`,
+          ownerEmail: owner.email,
+          startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
+          endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
+          boatType: boat.type,
+          boatName: boat.name,
+          totalPrice: parseFloat(booking.totalPrice),
+          paymentMethod: "Stripe",
+          bookingCode: `SEA${booking.id.toString().padStart(6, '0')}`
+        };
+
+        await EmailService.sendBookingNotification(emailData);
+
+        res.json({ success: true, bookingCode: emailData.bookingCode });
       }
-
-      // Get boat and user details
-      const boat = await storage.getBoat(booking.boatId);
-      const customer = await storage.getUser(booking.customerId);
-      const owner = boat ? await storage.getUser(boat.ownerId) : null;
-
-      if (!boat || !customer || !owner) {
-        return res.status(404).json({ error: "Required data not found" });
-      }
-
-      // Update booking status to confirmed
-      await storage.updateBooking(bookingId, { 
-        status: "confirmed"
-      });
-
-      // Send email notification
-      const emailData = {
-        customerName: `${customer.firstName} ${customer.lastName}`,
-        customerEmail: customer.email,
-        ownerName: `${owner.firstName} ${owner.lastName}`,
-        ownerEmail: owner.email,
-        startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
-        endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
-        boatType: boat.type,
-        boatName: boat.name,
-        totalPrice: parseFloat(booking.totalPrice),
-        paymentMethod: "Stripe",
-        bookingCode: `SEA${booking.id.toString().padStart(6, '0')}`
-      };
-
-      await EmailService.sendBookingNotification(emailData);
-
-      res.json({ success: true, bookingCode: emailData.bookingCode });
     } catch (error: any) {
       console.error("Error confirming payment:", error);
       res.status(500).json({ message: "Error confirming payment: " + error.message });

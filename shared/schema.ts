@@ -15,6 +15,8 @@ export const notificationTypeEnum = pgEnum("notification_type", ["message", "boo
 export const emergencyTypeEnum = pgEnum("emergency_type", ["medical", "mechanical", "weather", "collision", "fire", "grounding", "other"]);
 export const emergencySeverityEnum = pgEnum("emergency_severity", ["low", "medium", "high", "critical"]);
 export const emergencyStatusEnum = pgEnum("emergency_status", ["active", "resolved", "in_progress"]);
+export const mooringTypeEnum = pgEnum("mooring_type", ["pontile", "boa", "ancora", "gavitello"]);
+export const mooringBookingStatusEnum = pgEnum("mooring_booking_status", ["pending", "confirmed", "cancelled", "completed"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -863,11 +865,73 @@ export const aiInteractions = pgTable("ai_interactions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// Moorings/Ormeggi Tables
+export const moorings = pgTable("moorings", {
+  id: serial("id").primaryKey(),
+  managerId: integer("manager_id").references(() => users.id).notNull(),
+  name: text("name").notNull(),
+  port: text("port").notNull(),
+  location: text("location").notNull(),
+  type: mooringTypeEnum("type").notNull(),
+  maxLength: decimal("max_length", { precision: 4, scale: 2 }).notNull(),
+  maxBeam: decimal("max_beam", { precision: 4, scale: 2 }),
+  depth: decimal("depth", { precision: 4, scale: 2 }),
+  pricePerDay: decimal("price_per_day", { precision: 8, scale: 2 }).notNull(),
+  pricePerWeek: decimal("price_per_week", { precision: 8, scale: 2 }),
+  pricePerMonth: decimal("price_per_month", { precision: 8, scale: 2 }),
+  latitude: decimal("latitude", { precision: 10, scale: 8 }),
+  longitude: decimal("longitude", { precision: 11, scale: 8 }),
+  services: json("services"), // {security: true, fuel: true, water: true, etc}
+  description: text("description"),
+  images: text("images").array(),
+  contactName: text("contact_name"),
+  contactPhone: text("contact_phone"),
+  contactVHF: text("contact_vhf"),
+  rating: decimal("rating", { precision: 3, scale: 2 }).default("0.00"),
+  reviewCount: integer("review_count").default(0),
+  active: boolean("active").default(true),
+  featured: boolean("featured").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const mooringBookings = pgTable("mooring_bookings", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").references(() => users.id).notNull(),
+  mooringId: integer("mooring_id").references(() => moorings.id).notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  boatLength: decimal("boat_length", { precision: 4, scale: 2 }).notNull(),
+  boatName: text("boat_name"),
+  boatType: text("boat_type"),
+  totalPrice: decimal("total_price", { precision: 8, scale: 2 }).notNull(),
+  originalPrice: decimal("original_price", { precision: 8, scale: 2 }).notNull(),
+  commission: decimal("commission", { precision: 8, scale: 2 }).notNull(),
+  status: mooringBookingStatusEnum("status").default("pending"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  specialRequests: text("special_requests"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const mooringAvailability = pgTable("mooring_availability", {
+  id: serial("id").primaryKey(),
+  mooringId: integer("mooring_id").references(() => moorings.id).notNull(),
+  date: timestamp("date").notNull(),
+  available: boolean("available").default(true),
+  price: decimal("price", { precision: 8, scale: 2 }),
+  blockReason: text("block_reason"), // "booked", "maintenance", "weather"
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // New types
 export type Notification = typeof notifications.$inferSelect;
 export type Promotion = typeof promotions.$inferSelect;
 export type Analytics = typeof analytics.$inferSelect;
 export type AiInteraction = typeof aiInteractions.$inferSelect;
+export type Mooring = typeof moorings.$inferSelect;
+export type MooringBooking = typeof mooringBookings.$inferSelect;
+export type MooringAvailability = typeof mooringAvailability.$inferSelect;
 
 // New insert schemas
 export const insertNotificationSchema = createInsertSchema(notifications).omit({
@@ -891,10 +955,34 @@ export const insertAiInteractionSchema = createInsertSchema(aiInteractions).omit
   createdAt: true,
 });
 
+// Mooring insert schemas
+export const insertMooringSchema = createInsertSchema(moorings).omit({
+  id: true,
+  rating: true,
+  reviewCount: true,
+  createdAt: true,
+});
+
+export const insertMooringBookingSchema = createInsertSchema(mooringBookings).omit({
+  id: true,
+  commission: true,
+  status: true,
+  stripePaymentIntentId: true,
+  createdAt: true,
+});
+
+export const insertMooringAvailabilitySchema = createInsertSchema(mooringAvailability).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type InsertPromotion = z.infer<typeof insertPromotionSchema>;
 export type InsertAnalytics = z.infer<typeof insertAnalyticsSchema>;
 export type InsertAiInteraction = z.infer<typeof insertAiInteractionSchema>;
+export type InsertMooring = z.infer<typeof insertMooringSchema>;
+export type InsertMooringBooking = z.infer<typeof insertMooringBookingSchema>;
+export type InsertMooringAvailability = z.infer<typeof insertMooringAvailabilitySchema>;
 
 // Advanced availability management schemas
 export const insertAvailabilitySchema = createInsertSchema(availability).omit({

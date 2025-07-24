@@ -2,7 +2,7 @@ import {
   users, boats, bookings, reviews, conversations, messages, favorites, discounts, userDiscounts, documents,
   notifications, promotions, analytics, emergencies, dynamicPricing, boatFeatures, availability, weatherData,
   bookingRules, bookingLocks, priceHistory, conversationParticipants, messageReactions, messageReads, 
-  chatNotifications, chatAttachments,
+  chatNotifications, chatAttachments, moorings, mooringBookings, mooringAvailability,
   type User, type InsertUser, type Boat, type InsertBoat, type Booking, type InsertBooking, 
   type Review, type InsertReview, type Conversation, type InsertConversation, 
   type Message, type InsertMessage, type Favorite, type Discount, type UserDiscount, 
@@ -14,7 +14,9 @@ import {
   type BookingRule, type InsertBookingRule, type BookingLock, type InsertBookingLock,
   type PriceHistory, type InsertPriceHistory, type ConversationParticipant, type InsertConversationParticipant,
   type MessageReaction, type InsertMessageReaction, type MessageRead, type InsertMessageRead,
-  type ChatNotification, type InsertChatNotification, type ChatAttachment, type InsertChatAttachment
+  type ChatNotification, type InsertChatNotification, type ChatAttachment, type InsertChatAttachment,
+  type Mooring, type InsertMooring, type MooringBooking, type InsertMooringBooking, 
+  type MooringAvailability, type InsertMooringAvailability
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, and, or, desc, asc, gte, lte, ilike, sql } from "drizzle-orm";
@@ -174,6 +176,31 @@ export interface IStorage {
   releaseBookingLock(lockId: number, userId: number): Promise<void>;
   checkDateAvailability(boatId: number, startDate: Date, endDate: Date): Promise<boolean>;
   cleanupExpiredLocks(): Promise<number>;
+
+  // Mooring methods
+  getMooring(id: number): Promise<Mooring | undefined>;
+  getMoorings(filters?: {
+    type?: string;
+    location?: string;
+    port?: string;
+    managerId?: number;
+    maxLength?: number;
+    featured?: boolean;
+  }): Promise<Mooring[]>;
+  createMooring(mooring: InsertMooring): Promise<Mooring>;
+  updateMooring(id: number, updates: Partial<Mooring>): Promise<Mooring>;
+  deleteMooring(id: number): Promise<void>;
+
+  // Mooring booking methods
+  getMooringBooking(id: number): Promise<MooringBooking | undefined>;
+  getMooringBookings(filters?: {
+    customerId?: number;
+    mooringId?: number;
+    managerId?: number;
+    status?: string;
+  }): Promise<MooringBooking[]>;
+  createMooringBooking(booking: InsertMooringBooking): Promise<MooringBooking>;
+  updateMooringBooking(id: number, updates: Partial<MooringBooking>): Promise<MooringBooking>;
 
   // Session store
   sessionStore: connectPg.PGStore;
@@ -1539,6 +1566,132 @@ export class DatabaseStorage implements IStorage {
       confidence,
       passed: confidence >= 80
     };
+  }
+  // Mooring methods
+  async getMooring(id: number): Promise<Mooring | undefined> {
+    const [mooring] = await db.select().from(moorings).where(eq(moorings.id, id));
+    return mooring || undefined;
+  }
+
+  async getMoorings(filters: {
+    type?: string;
+    location?: string;
+    port?: string;
+    managerId?: number;
+    maxLength?: number;
+    featured?: boolean;
+  } = {}): Promise<Mooring[]> {
+    let query = db.select().from(moorings).where(eq(moorings.active, true));
+    
+    if (filters.type) {
+      query = query.where(eq(moorings.type, filters.type as any));
+    }
+    if (filters.location) {
+      query = query.where(ilike(moorings.location, `%${filters.location}%`));
+    }
+    if (filters.port) {
+      query = query.where(ilike(moorings.port, `%${filters.port}%`));
+    }
+    if (filters.managerId) {
+      query = query.where(eq(moorings.managerId, filters.managerId));
+    }
+    if (filters.maxLength) {
+      query = query.where(gte(moorings.maxLength, filters.maxLength.toString()));
+    }
+    if (filters.featured) {
+      query = query.where(eq(moorings.featured, filters.featured));
+    }
+    
+    return query.orderBy(desc(moorings.featured), desc(moorings.rating));
+  }
+
+  async createMooring(insertMooring: InsertMooring): Promise<Mooring> {
+    const [mooring] = await db
+      .insert(moorings)
+      .values(insertMooring)
+      .returning();
+    return mooring;
+  }
+
+  async updateMooring(id: number, updates: Partial<Mooring>): Promise<Mooring> {
+    const [mooring] = await db
+      .update(moorings)
+      .set(updates)
+      .where(eq(moorings.id, id))
+      .returning();
+    return mooring;
+  }
+
+  async deleteMooring(id: number): Promise<void> {
+    await db.delete(moorings).where(eq(moorings.id, id));
+  }
+
+  // Mooring booking methods
+  async getMooringBooking(id: number): Promise<MooringBooking | undefined> {
+    const [booking] = await db.select().from(mooringBookings).where(eq(mooringBookings.id, id));
+    return booking || undefined;
+  }
+
+  async getMooringBookings(filters: {
+    customerId?: number;
+    mooringId?: number;
+    managerId?: number;
+    status?: string;
+  } = {}): Promise<MooringBooking[]> {
+    let query = db
+      .select({
+        ...mooringBookings,
+        mooring: moorings,
+        customer: {
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          email: users.email,
+        }
+      })
+      .from(mooringBookings)
+      .innerJoin(moorings, eq(mooringBookings.mooringId, moorings.id))
+      .innerJoin(users, eq(mooringBookings.customerId, users.id));
+
+    if (filters.customerId) {
+      query = query.where(eq(mooringBookings.customerId, filters.customerId));
+    }
+    if (filters.mooringId) {
+      query = query.where(eq(mooringBookings.mooringId, filters.mooringId));
+    }
+    if (filters.managerId) {
+      query = query.where(eq(moorings.managerId, filters.managerId));
+    }
+    if (filters.status) {
+      query = query.where(eq(mooringBookings.status, filters.status as any));
+    }
+
+    return query.orderBy(desc(mooringBookings.createdAt)) as any;
+  }
+
+  async createMooringBooking(insertBooking: any): Promise<MooringBooking> {
+    // Calculate commission (15% like boats)
+    const commission = Number(insertBooking.totalPrice) * 0.15;
+    
+    const [booking] = await db
+      .insert(mooringBookings)
+      .values({
+        ...insertBooking,
+        commission: commission.toString(),
+        status: 'pending',
+        createdAt: new Date(),
+      })
+      .returning();
+    return booking;
+  }
+
+  async updateMooringBooking(id: number, updates: Partial<MooringBooking>): Promise<MooringBooking> {
+    const [booking] = await db
+      .update(mooringBookings)
+      .set(updates)
+      .where(eq(mooringBookings.id, id))
+      .returning();
+    return booking;
   }
 }
 

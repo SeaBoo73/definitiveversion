@@ -95,9 +95,10 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen flex">
       {/* Left side - Form */}
-      <div className="flex-1 p-8 bg-white overflow-y-auto">
-        <div className="w-full max-w-md mx-auto py-12">
-          <div className="text-center mb-8">
+      <div className="flex-1 bg-white">
+        <div className="h-screen overflow-y-auto p-8">
+          <div className="w-full max-w-md mx-auto">
+            <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <Anchor className="h-8 w-8 text-ocean-blue mr-2" />
               <h1 className="text-3xl font-bold text-ocean-blue">SeaGO</h1>
@@ -366,6 +367,7 @@ export default function AuthPage() {
               </Card>
             </TabsContent>
           </Tabs>
+          </div>
         </div>
       </div>
 

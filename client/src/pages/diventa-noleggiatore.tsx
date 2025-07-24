@@ -46,20 +46,36 @@ export default function DiventaNoleggiatorePage() {
     mutationFn: async (data: OwnerRegistrationForm) => {
       return apiRequest("POST", "/api/become-owner", data);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast({
         title: "Registrazione completata!",
-        description: "Riceverai le credenziali per accedere alla dashboard proprietario via email.",
+        description: data.message || "Riceverai le credenziali per accedere alla dashboard proprietario via email.",
       });
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-      setLocation("/owner-dashboard");
+      // Redirect to owner dashboard after successful registration
+      setTimeout(() => {
+        setLocation("/owner-dashboard");
+      }, 1500);
     },
-    onError: () => {
+    onError: (error: any) => {
+      // Extract error message from API response
+      const errorMessage = error.message || "Si è verificato un errore. Riprova.";
+      
       toast({
         title: "Errore",
-        description: "Si è verificato un errore. Riprova.",
+        description: errorMessage,
         variant: "destructive",
       });
+
+      // If user already exists, offer login option
+      if (errorMessage.includes("email esiste già")) {
+        setTimeout(() => {
+          toast({
+            title: "Account esistente",
+            description: "Se hai già un account, prova ad accedere alla dashboard proprietario.",
+          });
+        }, 2000);
+      }
     },
   });
 
@@ -318,9 +334,21 @@ export default function DiventaNoleggiatorePage() {
                   </Button>
                 </div>
                 
-                <p className="text-xs text-gray-500 text-center mt-4">
-                  Dopo la registrazione riceverai le credenziali per accedere alla dashboard proprietario dove potrai aggiungere le tue imbarcazioni.
-                </p>
+                <div className="text-center mt-4 space-y-2">
+                  <p className="text-xs text-gray-500">
+                    Dopo la registrazione riceverai le credenziali per accedere alla dashboard proprietario dove potrai aggiungere le tue imbarcazioni.
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    Hai già un account? {" "}
+                    <button
+                      type="button"
+                      onClick={() => setLocation("/owner-dashboard")}
+                      className="text-ocean-blue hover:underline font-medium"
+                    >
+                      Vai alla Dashboard Proprietario
+                    </button>
+                  </p>
+                </div>
               </form>
             </Form>
           </CardContent>

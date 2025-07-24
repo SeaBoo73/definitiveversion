@@ -29,72 +29,136 @@ const EsploraScreen = () => {
 
   const categories = [
     { 
-      id: 'gommoni', 
+      id: 'gommone', 
       name: 'Gommoni', 
-      image: 'https://via.placeholder.com/300x200?text=Gommoni',
-      count: '200+'
+      image: 'https://seagorentalboat.com/api/images/gommone%20senza%20patente_1752875806367.webp',
+      count: '200+',
+      description: 'Imbarcazioni pneumatiche versatili e sicure'
+    },
+    { 
+      id: 'barche-senza-patente', 
+      name: 'Barche senza patente', 
+      image: 'https://seagorentalboat.com/api/images/OIP%20(1)_1752921317486.webp',
+      count: '150+',
+      description: 'Facili da guidare, perfette per principianti'
     },
     { 
       id: 'yacht', 
       name: 'Yacht', 
-      image: 'https://via.placeholder.com/300x200?text=Yacht',
-      count: '85+'
+      image: 'https://seagorentalboat.com/api/images/R%20(1)_1752920495156.jpg',
+      count: '85+',
+      description: 'Lusso e comfort per una navigazione esclusiva'
     },
     { 
-      id: 'catamarani', 
-      name: 'Catamarani', 
-      image: 'https://via.placeholder.com/300x200?text=Catamarani',
-      count: '45+'
+      id: 'sailboat', 
+      name: 'Barche a vela', 
+      image: 'https://seagorentalboat.com/api/images/barca%20a%20vela%20ludovica_1752876195081.jpg',
+      count: '60+',
+      description: 'L\'esperienza autentica della navigazione'
     },
     { 
       id: 'jetski', 
       name: 'Moto d\'acqua', 
-      image: 'https://via.placeholder.com/300x200?text=Jetski',
-      count: '30+'
+      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.38.19_1752875703213.jpeg',
+      count: '90+',
+      description: 'Adrenalina e velocità sull\'acqua'
     },
+    { 
+      id: 'catamarano', 
+      name: 'Catamarani', 
+      image: 'https://seagorentalboat.com/api/images/catamarano%20ludovica_1752876117442.jpg',
+      count: '45+',
+      description: 'Spazio e stabilità per gruppi numerosi'
+    },
+    { 
+      id: 'charter', 
+      name: 'Charter', 
+      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2020.22.10_1752876155096.jpeg',
+      count: '70+',
+      description: 'Esperienza completa con skipper professionista'
+    },
+    { 
+      id: 'houseboat', 
+      name: 'Houseboat', 
+      image: 'https://seagorentalboat.com/api/images/OIP_1752919948843.webp',
+      count: '25+',
+      description: 'La tua casa galleggiante per vacanze uniche'
+    }
   ];
 
   const featuredBoats = [
     {
       id: 1,
-      name: 'Azimut 55 Luxury',
+      name: 'Azimut 50',
       location: 'Civitavecchia',
       price: '€850',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://via.placeholder.com/280x180?text=Azimut+55',
-      isPopular: true
+      image: 'https://seagorentalboat.com/api/images/OIP%20(1)_1752921317486.webp',
+      isPopular: true,
+      capacity: 12,
+      features: ['Skipper incluso', 'Carburante incluso']
     },
     {
       id: 2,
-      name: 'Zodiac Pro 650',
+      name: 'Sea Ray 240',
       location: 'Anzio',
-      price: '€180',
+      price: '€280',
       rating: 4.8,
-      category: 'gommoni',
-      image: 'https://via.placeholder.com/280x180?text=Zodiac+Pro',
-      isPopular: true
+      category: 'gommone',
+      image: 'https://seagorentalboat.com/api/images/gommone%20senza%20patente_1752875806367.webp',
+      isPopular: true,
+      capacity: 8,
+      features: ['Senza patente', 'GPS incluso']
     },
     {
       id: 3,
-      name: 'Princess V58',
+      name: 'Ferretti 550',
       location: 'Formia',
-      price: '€950',
+      price: '€1200',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://via.placeholder.com/280x180?text=Princess+V58',
-      isPopular: false
+      image: 'https://seagorentalboat.com/api/images/R%20(1)_1752920495156.jpg',
+      isPopular: false,
+      capacity: 10,
+      features: ['Lusso premium', 'Capitano professionale']
     },
     {
       id: 4,
-      name: 'Lagoon 42',
+      name: 'Barca a Vela Ludovica',
       location: 'Gaeta',
       price: '€420',
       rating: 4.7,
-      category: 'catamarani',
-      image: 'https://via.placeholder.com/280x180?text=Lagoon+42',
-      isPopular: true
+      category: 'sailboat',
+      image: 'https://seagorentalboat.com/api/images/barca%20a%20vela%20ludovica_1752876195081.jpg',
+      isPopular: true,
+      capacity: 6,
+      features: ['Esperienza autentica', 'Vento incluso']
     },
+    {
+      id: 5,
+      name: 'Yamaha VX Cruiser',
+      location: 'Terracina',
+      price: '€180',
+      rating: 4.6,
+      category: 'jetski',
+      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.38.19_1752875703213.jpeg',
+      isPopular: true,
+      capacity: 3,
+      features: ['Adrenalina pura', 'Facile da guidare']
+    },
+    {
+      id: 6,
+      name: 'Catamarano Ludovica',
+      location: 'Ponza',
+      price: '€650',
+      rating: 4.8,
+      category: 'catamarano',
+      image: 'https://seagorentalboat.com/api/images/catamarano%20ludovica_1752876117442.jpg',
+      isPopular: true,
+      capacity: 12,
+      features: ['Stabilità massima', 'Spazio ampio']
+    }
   ];
 
   const ports = [
@@ -115,6 +179,12 @@ const EsploraScreen = () => {
       <View style={styles.featuredInfo}>
         <Text style={styles.featuredName}>{item.name}</Text>
         <Text style={styles.featuredLocation}>📍 {item.location}</Text>
+        <Text style={styles.featuredCapacity}>👥 Fino a {item.capacity} persone</Text>
+        <View style={styles.featuresContainer}>
+          {item.features?.slice(0, 2).map((feature, index) => (
+            <Text key={index} style={styles.featureTag}>• {feature}</Text>
+          ))}
+        </View>
         <View style={styles.featuredFooter}>
           <Text style={styles.featuredPrice}>{item.price}/giorno</Text>
           <View style={styles.featuredRating}>
@@ -457,7 +527,21 @@ const styles = StyleSheet.create({
   featuredLocation: {
     fontSize: 14,
     color: '#6b7280',
+    marginBottom: 4,
+  },
+  featuredCapacity: {
+    fontSize: 13,
+    color: '#4b5563',
+    marginBottom: 8,
+  },
+  featuresContainer: {
     marginBottom: 12,
+  },
+  featureTag: {
+    fontSize: 12,
+    color: '#059669',
+    marginBottom: 2,
+    fontWeight: '500',
   },
   featuredFooter: {
     flexDirection: 'row',

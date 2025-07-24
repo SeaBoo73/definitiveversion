@@ -12,52 +12,165 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const ServiziScreen = () => {
   const [selectedTab, setSelectedTab] = useState('meteo');
 
-  const weatherData = {
+  const [weatherData, setWeatherData] = useState({
     location: 'Roma/Fiumicino',
-    temperature: '24°C',
+    temperature: 26.5,
     conditions: 'Soleggiato',
-    windSpeed: '12 km/h',
-    waveHeight: '0.5m',
-    visibility: '15 km',
-    recommendations: 'Condizioni ideali per la navigazione'
-  };
+    windSpeed: 8.2,
+    windDirection: 'SW',
+    waveHeight: 0.8,
+    visibility: 12.5,
+    humidity: 68,
+    pressure: 1018.2,
+    uvIndex: 7,
+    recommendations: 'Condizioni ottime per la navigazione. Vento leggero da Sud-Ovest.',
+    forecast: {
+      tomorrow: { temp: 28, conditions: 'Soleggiato', waves: 0.6 },
+      dayAfter: { temp: 25, conditions: 'Parzialmente nuvoloso', waves: 1.2 }
+    },
+    lastUpdated: new Date().toLocaleTimeString('it-IT')
+  });
 
-  const fuelPrices = [
-    { port: 'Marina di Civitavecchia', price: '€1.85/L', distance: '0 km' },
-    { port: 'Porto di Gaeta', price: '€1.82/L', distance: '120 km' },
-    { port: 'Marina di Anzio', price: '€1.88/L', distance: '65 km' },
-    { port: 'Porto di Formia', price: '€1.84/L', distance: '140 km' },
-  ];
+  const [fuelPrices, setFuelPrices] = useState([
+    { 
+      station: 'IP Gruppo Api Marina', 
+      location: 'Marina di Civitavecchia', 
+      gasoline: 1.89, 
+      diesel: 1.76, 
+      distance: 0.2,
+      services: ['Self-service 24h', 'Carta di credito', 'Fatturazione'],
+      contact: '+39 0766 581234',
+      lastUpdate: '2 ore fa'
+    },
+    { 
+      station: 'Esso Portuale', 
+      location: 'Porto di Gaeta', 
+      gasoline: 1.84, 
+      diesel: 1.72, 
+      distance: 1.8,
+      services: ['Assistito', 'Lubrificanti', 'AdBlue'],
+      contact: '+39 0771 469852',
+      lastUpdate: '1 ora fa'
+    },
+    { 
+      station: 'Tamoil Marine', 
+      location: 'Marina di Anzio', 
+      gasoline: 1.92, 
+      diesel: 1.78, 
+      distance: 0.5,
+      services: ['Self-service', 'Lavaggio barche', 'Shop nautico'],
+      contact: '+39 06 9847521',
+      lastUpdate: '30 min fa'
+    },
+    { 
+      station: 'Agip Nautica', 
+      location: 'Porto di Formia', 
+      gasoline: 1.87, 
+      diesel: 1.74, 
+      distance: 0.8,
+      services: ['Assistito', 'Oli motore', 'Rifornimento rapido'],
+      contact: '+39 0771 725896',
+      lastUpdate: '45 min fa'
+    },
+    { 
+      station: 'Q8 Marina', 
+      location: 'Porto di Terracina', 
+      gasoline: 1.91, 
+      diesel: 1.77, 
+      distance: 1.2,
+      services: ['Self-service 24h', 'Bonifici', 'Fatturazione elettronica'],
+      contact: '+39 0773 852147',
+      lastUpdate: '1 ora fa'
+    }
+  ]);
 
-  const portServices = [
+  const [portServices, setPortServices] = useState([
     {
+      id: 'marina-civitavecchia',
       name: 'Marina di Civitavecchia',
-      services: ['Ormeggio', 'Rifornimento', 'Meccanico'],
-      contact: 'VHF Ch 12',
-      tariff: '€45/m',
-      availability: 'Disponibile'
+      location: 'Civitavecchia, Roma',
+      services: {
+        mooring: true, fuel: true, water: true, electricity: true, 
+        wifi: true, restaurant: true, repair: true, security: true
+      },
+      pricing: { mooring: 45, fuel: 1.89, water: 2.5, electricity: 0.5 },
+      contact: { phone: '+39 0766 581111', email: 'info@marinacivitavecchia.it', vhf: 'Canale 12' },
+      availability: { total: 350, available: 42, reserved: 18 },
+      rating: 4.7,
+      reviews: 189,
+      coordinates: { lat: 42.0942, lng: 11.7939 }
     },
     {
-      name: 'Porto di Gaeta',
-      services: ['Ormeggio', 'Rifornimento', 'Bar'],
-      contact: 'VHF Ch 16',
-      tariff: '€38/m',
-      availability: 'Limitata'
+      id: 'marina-gaeta',
+      name: 'Marina di Gaeta',
+      location: 'Gaeta, Latina',
+      services: {
+        mooring: true, fuel: true, water: true, electricity: true, 
+        wifi: true, restaurant: true, repair: false, security: true
+      },
+      pricing: { mooring: 38, fuel: 1.84, water: 2.0, electricity: 0.45 },
+      contact: { phone: '+39 0771 461528', email: 'porto@gaeta.it', vhf: 'Canale 16' },
+      availability: { total: 280, available: 23, reserved: 12 },
+      rating: 4.5,
+      reviews: 156,
+      coordinates: { lat: 41.2071, lng: 13.5722 }
     },
     {
+      id: 'marina-anzio',
+      name: 'Marina di Anzio',
+      location: 'Anzio, Roma',
+      services: {
+        mooring: true, fuel: true, water: true, electricity: true, 
+        wifi: false, restaurant: false, repair: true, security: true
+      },
+      pricing: { mooring: 35, fuel: 1.92, water: 2.2, electricity: 0.48 },
+      contact: { phone: '+39 06 9847521', email: 'marina@anzio.com', vhf: 'Canale 14' },
+      availability: { total: 180, available: 31, reserved: 8 },
+      rating: 4.2,
+      reviews: 98,
+      coordinates: { lat: 41.4489, lng: 12.6219 }
+    },
+    {
+      id: 'marina-formia',
       name: 'Marina di Formia',
-      services: ['Ormeggio', 'Meccanico', 'Ristorante'],
-      contact: 'VHF Ch 09',
-      tariff: '€42/m',
-      availability: 'Disponibile'
+      location: 'Formia, Latina',
+      services: {
+        mooring: true, fuel: true, water: true, electricity: true, 
+        wifi: true, restaurant: true, repair: true, security: true
+      },
+      pricing: { mooring: 42, fuel: 1.87, water: 2.3, electricity: 0.52 },
+      contact: { phone: '+39 0771 725896', email: 'info@marinaformia.it', vhf: 'Canale 09' },
+      availability: { total: 240, available: 18, reserved: 15 },
+      rating: 4.6,
+      reviews: 134,
+      coordinates: { lat: 41.2567, lng: 13.6058 }
     },
-  ];
+    {
+      id: 'marina-terracina',
+      name: 'Marina di Terracina',
+      location: 'Terracina, Latina',
+      services: {
+        mooring: true, fuel: true, water: true, electricity: true, 
+        wifi: true, restaurant: false, repair: false, security: true
+      },
+      pricing: { mooring: 32, fuel: 1.91, water: 1.8, electricity: 0.42 },
+      contact: { phone: '+39 0773 852147', email: 'porto@terracina.gov.it', vhf: 'Canale 11' },
+      availability: { total: 160, available: 28, reserved: 7 },
+      rating: 4.1,
+      reviews: 87,
+      coordinates: { lat: 41.2905, lng: 13.2544 }
+    }
+  ]);
 
   const emergencyContacts = [
-    { name: 'Guardia Costiera', number: '1530', type: 'emergency' },
-    { name: 'Emergenza Sanitaria', number: '118', type: 'medical' },
-    { name: 'Capitaneria Roma', number: '+39 06 123 4567', type: 'port' },
-    { name: 'Assistenza SeaGO', number: '+39 06 987 6543', type: 'support' },
+    { name: 'Guardia Costiera', number: '1530', type: 'emergency', description: 'Emergenze e soccorso in mare 24/7' },
+    { name: 'Emergenza Sanitaria', number: '118', type: 'medical', description: 'Pronto soccorso medico immediato' },
+    { name: 'Capitaneria di Porto Roma', number: '+39 06 59084409', type: 'port', description: 'Capitaneria principale Lazio' },
+    { name: 'Capitaneria Civitavecchia', number: '+39 0766 366200', type: 'port', description: 'Controllo traffico marittimo' },
+    { name: 'Capitaneria Gaeta', number: '+39 0771 469837', type: 'port', description: 'Servizi portuali Golfo di Gaeta' },
+    { name: 'Assistenza SeaGO 24/7', number: '+39 06 8937 4562', type: 'support', description: 'Supporto tecnico piattaforma' },
+    { name: 'Assistenza Meccanica Mobile', number: '+39 335 1847592', type: 'technical', description: 'Riparazioni in acqua e porto' },
+    { name: 'Rimorchio Nautico', number: '+39 347 2951874', type: 'towing', description: 'Recupero imbarcazioni in avaria' }
   ];
 
   const renderWeatherTab = () => (

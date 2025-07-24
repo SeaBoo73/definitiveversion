@@ -50,22 +50,12 @@ export function Header() {
               <Link 
                 href="/esperienze" 
                 className={`px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/esperienze"
+                  location === "/esperienze" || location === "/charter"
                     ? "text-blue-600 border-b-2 border-blue-600" 
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
                 Esperienze
-              </Link>
-              <Link 
-                href="/charter" 
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/charter"
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                Charter
               </Link>
               <Link 
                 href="/ormeggio" 
@@ -211,24 +201,13 @@ export function Header() {
               <Link 
                 href="/esperienze" 
                 className={`block px-3 py-2 rounded-md font-medium transition-colors ${
-                  location === "/esperienze"
+                  location === "/esperienze" || location === "/charter"
                     ? "text-deep-navy bg-gray-100 font-semibold" 
                     : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Esperienze
-              </Link>
-              <Link 
-                href="/charter" 
-                className={`block px-3 py-2 rounded-md font-medium transition-colors ${
-                  location === "/charter"
-                    ? "text-deep-navy bg-gray-100 font-semibold" 
-                    : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Charter
               </Link>
               <Link 
                 href="/ormeggio" 

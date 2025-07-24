@@ -91,22 +91,26 @@ export default function ProfiloPage() {
     {
       icon: User,
       title: "Informazioni personali",
-      subtitle: "Nome, email, telefono"
+      subtitle: "Nome, email, telefono",
+      href: "/profilo/informazioni"
     },
     {
       icon: CreditCard,
       title: "Pagamenti",
-      subtitle: "Carte e metodi di pagamento"
+      subtitle: "Carte e metodi di pagamento",
+      href: "/metodi-pagamento"
     },
     {
       icon: Bell,
       title: "Notifiche",
-      subtitle: "Gestisci le notifiche"
+      subtitle: "Gestisci le notifiche",
+      href: "/profilo/notifiche"
     },
     {
       icon: Shield,
       title: "Privacy e sicurezza",
-      subtitle: "Impostazioni account"
+      subtitle: "Impostazioni account",
+      href: "/privacy-policy"
     }
   ];
 

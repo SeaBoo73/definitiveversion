@@ -132,7 +132,7 @@ export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
   conversationId: integer("conversation_id").references(() => conversations.id).notNull(),
   senderId: integer("sender_id").references(() => users.id).notNull(),
-  replyToId: integer("reply_to_id").references(() => messages.id),
+  replyToId: integer("reply_to_id"),
   type: messageTypeEnum("type").default("text"),
   content: text("content").notNull(),
   attachments: text("attachments").array(),
@@ -610,7 +610,6 @@ export const insertConversationSchema = createInsertSchema(conversations).omit({
 export const insertMessageSchema = createInsertSchema(messages).omit({
   id: true,
   createdAt: true,
-  readAt: true,
 });
 
 export const insertDiscountSchema = createInsertSchema(discounts).omit({

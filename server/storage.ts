@@ -427,8 +427,8 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  // Message methods with conversation support
-  async getMessages(conversationId: number) {
+  // Get messages by conversation
+  async getConversationMessages(conversationId: number) {
     return await db
       .select({
         id: messages.id,
@@ -436,7 +436,6 @@ export class DatabaseStorage implements IStorage {
         senderId: messages.senderId,
         content: messages.content,
         createdAt: messages.createdAt,
-        readAt: messages.readAt,
         senderName: sql<string>`COALESCE(${users.firstName} || ' ' || ${users.lastName}, ${users.email})`,
         senderEmail: users.email
       })

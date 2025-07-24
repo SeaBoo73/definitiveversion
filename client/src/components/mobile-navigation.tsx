@@ -45,19 +45,19 @@ export function MobileNavigation() {
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 md:hidden">
-      <div className="flex items-center justify-around py-2">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-[100] md:hidden">
+      <div className="flex items-center justify-around py-2 px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
             <Link key={item.path} href={item.path}>
-              <div className={`flex flex-col items-center py-2 px-3 rounded-lg transition-colors ${
+              <div className={`flex flex-col items-center py-2 px-2 rounded-lg transition-colors min-w-0 ${
                 item.active 
                   ? "text-ocean-blue bg-blue-50" 
                   : "text-gray-600 hover:text-ocean-blue"
               }`}>
-                <Icon className="h-5 w-5 mb-1" />
-                <span className="text-xs font-medium">{item.label}</span>
+                <Icon className="h-5 w-5 mb-1 flex-shrink-0" />
+                <span className="text-xs font-medium truncate">{item.label}</span>
               </div>
             </Link>
           );

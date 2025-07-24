@@ -69,7 +69,7 @@ export default function HomePage() {
   const featuredBoats = filteredBoats.slice(0, 8);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 overflow-x-hidden">
       <SEOHead {...seoConfigs.home} />
       <StructuredData type="homepage" />
       <AppDownloadBanner />

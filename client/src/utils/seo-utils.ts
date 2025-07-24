@@ -220,3 +220,10 @@ export const maritimeMetaTags = {
     { name: 'twitter:site', content: '@SeaGO_Italia' }
   ]
 };
+
+// Get base URL with custom domain support
+export const getBaseUrl = () => {
+  return import.meta.env.VITE_CUSTOM_DOMAIN 
+    ? `https://${import.meta.env.VITE_CUSTOM_DOMAIN}`
+    : 'https://seagorentalboat.com';
+};

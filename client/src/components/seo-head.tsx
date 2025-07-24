@@ -30,7 +30,7 @@ export function SEOHead({
   const finalDescription = description || defaultDescription;
   const finalKeywords = keywords || defaultKeywords;
   const finalImage = image || defaultImage;
-  const finalCanonical = canonical || `https://seago.replit.app${location}`;
+  const finalCanonical = canonical || `https://seagorentalboat.com${location}`;
 
   useEffect(() => {
     // Update document title

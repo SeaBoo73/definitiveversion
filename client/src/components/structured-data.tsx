@@ -9,7 +9,8 @@ export function StructuredData({ type, data }: StructuredDataProps) {
   const [location] = useLocation();
   
   const getStructuredData = () => {
-    const baseUrl = "https://seago.replit.app";
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 
+                   (import.meta.env.VITE_CUSTOM_DOMAIN ? `https://${import.meta.env.VITE_CUSTOM_DOMAIN}` : 'https://seago.replit.app');
     
     switch (type) {
       case 'homepage':

@@ -173,6 +173,9 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Header e tutti i link "Diventa noleggiatore" ora puntano alla pagina di registrazione standard
   - ✅ Parametro URL "role=owner" aggiunto per selezione automatica ruolo noleggiatore
   - ✅ Quando si clicca "Diventa noleggiatore" il radio button "Mi registro come noleggiatore" è automaticamente selezionato
+  - ✅ Risolto problema scroll pagina auth per accesso completo ai form
+  - ✅ Aggiornate password hash utenti test per funzionamento login corretto
+  - ✅ Credeziali test operative: customer@test.com / owner@test.com (password: password123)
 
 ### July 24, 2025 - Sistema Registrazione Proprietari Completato e Ottimizzato
 - **Registrazione Proprietari Semplificata e Funzionante:**

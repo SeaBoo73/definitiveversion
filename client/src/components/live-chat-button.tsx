@@ -22,10 +22,10 @@ export function LiveChatButton() {
 
   return (
     <>
-      {/* Chat Button - Fixed position */}
+      {/* Chat Button - Fixed position, adjusted for mobile bottom nav */}
       <Button
         onClick={() => setShowOptions(true)}
-        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-blue-500 to-ocean-blue hover:from-blue-600 hover:to-blue-700 text-white rounded-full w-14 h-14 shadow-lg transition-all"
+        className="fixed bottom-24 md:bottom-6 right-6 z-40 bg-gradient-to-r from-blue-500 to-ocean-blue hover:from-blue-600 hover:to-blue-700 text-white rounded-full w-14 h-14 shadow-lg transition-all"
         size="lg"
       >
         <MessageCircle className="h-6 w-6" />

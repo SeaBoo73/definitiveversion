@@ -153,7 +153,7 @@ export function Header() {
                     </DropdownMenuItem>
                     {user.role === "owner" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/owner-dashboard">Dashboard Host</Link>
+                        <Link href="/owner-dashboard">Dashboard Sea Host</Link>
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem onClick={handleLogout}>

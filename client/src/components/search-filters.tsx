@@ -196,18 +196,6 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           </Select>
         </div>
 
-        {/* Search Button - Only show on homepage */}
-        {!onSearch && (
-          <div className="flex items-end">
-            <Button 
-              className="w-full bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
-              onClick={handleSearch}
-            >
-              <Search className="mr-2 h-4 w-4" />
-              Cerca
-            </Button>
-          </div>
-        )}
       </div>
 
       {/* Advanced Filters */}
@@ -335,6 +323,19 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 Cancella tutto
               </Badge>
             </div>
+          </div>
+        )}
+
+        {/* Search Button - After all filters */}
+        {!onSearch && (
+          <div className="mt-6">
+            <Button 
+              className="w-full bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
+              onClick={handleSearch}
+            >
+              <Search className="mr-2 h-4 w-4" />
+              Cerca
+            </Button>
           </div>
         )}
       </div>

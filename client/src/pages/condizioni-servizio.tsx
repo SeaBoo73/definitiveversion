@@ -1,232 +1,185 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MobileNavigation } from "@/components/mobile-navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Shield, Users, CreditCard, AlertTriangle, Scale } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
+import { ArrowLeft, FileText, Shield, AlertCircle } from "lucide-react";
 
 export default function CondizioniServizioPage() {
-  const sections = [
-    {
-      icon: <FileText className="h-6 w-6 text-blue-600" />,
-      title: "1. Definizioni e Ambito di Applicazione",
-      content: [
-        "SeaGO è una piattaforma digitale che mette in contatto proprietari di imbarcazioni con utenti interessati al noleggio.",
-        "I presenti Termini si applicano a tutti gli utenti della piattaforma SeaGO.",
-        "L'utilizzo della piattaforma implica l'accettazione integrale dei presenti Termini.",
-        "SeaGO agisce esclusivamente come intermediario tra proprietari e noleggiatori."
-      ]
-    },
-    {
-      icon: <Users className="h-6 w-6 text-green-600" />,
-      title: "2. Registrazione e Account Utente",
-      content: [
-        "Per utilizzare SeaGO è necessario creare un account fornendo informazioni veritiere e aggiornate.",
-        "Ogni utente è responsabile della sicurezza delle proprie credenziali di accesso.",
-        "È vietato creare account multipli o condividere le credenziali con terzi.",
-        "SeaGO si riserva il diritto di sospendere account che violano i Termini di Servizio."
-      ]
-    },
-    {
-      icon: <Shield className="h-6 w-6 text-purple-600" />,
-      title: "3. Obblighi degli Utenti",
-      content: [
-        "Fornire informazioni accurate e aggiornate durante la registrazione e le prenotazioni.",
-        "Rispettare le normative marittime e di sicurezza vigenti.",
-        "Utilizzare le imbarcazioni con cura e responsabilità.",
-        "Segnalare immediatamente eventuali danni o problemi tecnici.",
-        "Rispettare gli orari di check-in e check-out concordati."
-      ]
-    },
-    {
-      icon: <CreditCard className="h-6 w-6 text-orange-600" />,
-      title: "4. Prenotazioni e Pagamenti",
-      content: [
-        "Tutti i pagamenti devono essere effettuati tramite i sistemi di pagamento autorizzati di SeaGO.",
-        "Il prezzo finale include commissioni di servizio e tasse applicabili.",
-        "Le prenotazioni sono confermate solo dopo il pagamento completo.",
-        "Cancellazioni e rimborsi sono regolati dalle politiche specifiche di ogni annuncio.",
-        "SeaGO non è responsabile per pagamenti effettuati al di fuori della piattaforma."
-      ]
-    },
-    {
-      icon: <AlertTriangle className="h-6 w-6 text-red-600" />,
-      title: "5. Responsabilità e Assicurazioni",
-      content: [
-        "I noleggiatori sono responsabili per eventuali danni causati all'imbarcazione durante il noleggio.",
-        "È obbligatorio verificare la copertura assicurativa prima del noleggio.",
-        "SeaGO raccomanda la stipula di un'assicurazione di viaggio aggiuntiva.",
-        "Ogni imbarcazione deve essere coperta da assicurazione valida fornita dal proprietario.",
-        "SeaGO agisce come intermediario e non assume responsabilità dirette per danni o incidenti."
-      ]
-    },
-    {
-      icon: <Scale className="h-6 w-6 text-indigo-600" />,
-      title: "6. Risoluzione Controversie",
-      content: [
-        "SeaGO offre un servizio di mediazione per risolvere controversie tra utenti.",
-        "Le dispute dovranno essere segnalate entro 48 ore dall'evento.",
-        "In caso di mancata risoluzione, si applica la giurisdizione italiana.",
-        "Il foro competente è quello del tribunale di Milano.",
-        "SeaGO si riserva il diritto di sospendere utenti coinvolti in controversie gravi."
-      ]
-    }
-  ];
-
-  const importantRules = [
-    {
-      title: "Età Minima",
-      description: "I noleggiatori devono essere maggiorenni e in possesso di documento di identità valido."
-    },
-    {
-      title: "Patenti Nautiche",
-      description: "Per imbarcazioni che richiedono patente, è necessario presentare la licenza valida al check-in."
-    },
-    {
-      title: "Numero Massimo Ospiti",
-      description: "È vietato superare il numero massimo di persone consentite a bordo."
-    },
-    {
-      title: "Uso Commerciale",
-      description: "Le imbarcazioni non possono essere utilizzate per scopi commerciali senza autorizzazione."
-    },
-    {
-      title: "Sostanze Illegali",
-      description: "È rigorosamente vietato l'uso di sostanze illegali a bordo delle imbarcazioni."
-    },
-    {
-      title: "Rispetto dell'Ambiente",
-      description: "Gli utenti devono rispettare l'ambiente marino e le aree marine protette."
-    }
-  ];
+  const [location, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Condizioni di Servizio
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Termini e condizioni per l'utilizzo della piattaforma SeaGO. 
-            Leggi attentamente prima di utilizzare i nostri servizi.
-          </p>
-          <p className="text-sm text-gray-500 mt-4">
-            <strong>Ultimo aggiornamento:</strong> Luglio 2025
+          <FileText className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Termini e Condizioni</h1>
+          <p className="text-xl text-gray-600">
+            Ultima modifica: 25 Luglio 2025
           </p>
         </div>
 
-        {/* Main Sections */}
-        <div className="space-y-8 mb-12">
-          {sections.map((section, index) => (
-            <Card key={index}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3">
-                  {section.icon}
-                  {section.title}
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <ul className="space-y-3">
-                  {section.content.map((item, itemIndex) => (
-                    <li key={itemIndex} className="flex items-start gap-3">
-                      <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0"></div>
-                      <span className="text-gray-700">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
+        <div className="bg-white rounded-lg shadow-sm p-8 space-y-8">
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduzione</h2>
+            <p className="text-gray-600 leading-relaxed">
+              Benvenuto su SeaGO, la piattaforma italiana per il noleggio di imbarcazioni. 
+              Utilizzando i nostri servizi, accetti di essere vincolato da questi termini e condizioni. 
+              Se non accetti questi termini, non utilizzare i nostri servizi.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Definizioni</h2>
+            <ul className="space-y-2 text-gray-600">
+              <li><strong>SeaGO:</strong> La piattaforma e il servizio fornito</li>
+              <li><strong>Utente:</strong> Qualsiasi persona che utilizza la piattaforma</li>
+              <li><strong>Proprietario:</strong> Chi mette a disposizione imbarcazioni</li>
+              <li><strong>Cliente:</strong> Chi prenota un'imbarcazione</li>
+              <li><strong>Imbarcazione:</strong> Qualsiasi mezzo nautico disponibile sulla piattaforma</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">3. Utilizzo della Piattaforma</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                SeaGO fornisce una piattaforma tecnologica che connette proprietari di imbarcazioni 
+                con persone interessate a noleggiarle. Non siamo proprietari delle imbarcazioni 
+                né forniamo direttamente servizi di noleggio.
+              </p>
+              <p>
+                Gli utenti devono avere almeno 18 anni e fornire informazioni accurate e complete 
+                durante la registrazione.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Prenotazioni e Pagamenti</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Le prenotazioni sono soggette alla disponibilità e alla conferma del proprietario. 
+                I pagamenti vengono elaborati in modo sicuro tramite Stripe.
+              </p>
+              <p>
+                SeaGO applica una commissione del 15% su ogni transazione per mantenere 
+                e migliorare la piattaforma.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Responsabilità e Sicurezza</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                I proprietari sono responsabili della manutenzione, sicurezza e conformità 
+                alle normative delle loro imbarcazioni. I clienti devono utilizzare 
+                le imbarcazioni in modo responsabile e conforme alle leggi.
+              </p>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="flex items-start space-x-3">
+                  <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-yellow-800">Importante</p>
+                    <p className="text-yellow-700 text-sm">
+                      Tutte le imbarcazioni devono essere coperte da assicurazione valida. 
+                      Gli utenti sono tenuti a rispettare le normative nautiche vigenti.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">6. Cancellazioni e Rimborsi</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                Le politiche di cancellazione variano per ogni imbarcazione e sono 
+                stabilite dal proprietario. I rimborsi sono elaborati secondo 
+                la politica specifica della prenotazione.
+              </p>
+              <p>
+                SeaGO si riserva il diritto di cancellare prenotazioni in caso 
+                di problemi di sicurezza o violazioni dei termini.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Limitazione di Responsabilità</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>
+                SeaGO agisce come intermediario e non è responsabile per danni, 
+                incidenti o problemi che possono verificarsi durante l'utilizzo 
+                delle imbarcazioni.
+              </p>
+              <p>
+                La nostra responsabilità è limitata all'importo delle commissioni 
+                ricevute per la specifica transazione.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Privacy e Dati Personali</h2>
+            <p className="text-gray-600 leading-relaxed">
+              Il trattamento dei dati personali è regolato dalla nostra Privacy Policy, 
+              conforme al GDPR e alle normative italiane sulla protezione dei dati.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Modifiche ai Termini</h2>
+            <p className="text-gray-600 leading-relaxed">
+              SeaGO si riserva il diritto di modificare questi termini. 
+              Gli utenti saranno notificati di eventuali modifiche significative 
+              e dovranno accettare i nuovi termini per continuare a utilizzare il servizio.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Legge Applicabile</h2>
+            <p className="text-gray-600 leading-relaxed">
+              Questi termini sono regolati dalla legge italiana. 
+              Eventuali controversie saranno risolte dai tribunali competenti italiani.
+            </p>
+          </section>
+
+          <section className="border-t pt-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <div className="flex items-start space-x-3">
+                <Shield className="h-6 w-6 text-blue-600 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-2">Contatti</h3>
+                  <p className="text-blue-800 text-sm">
+                    Per domande sui termini e condizioni, contattaci all'indirizzo: 
+                    <br />
+                    <strong>legal@seago.it</strong>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-
-        {/* Important Rules */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-6 w-6 text-red-600" />
-              Regole Importanti
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {importantRules.map((rule, index) => (
-                <div key={index} className="p-4 border border-red-200 rounded-lg bg-red-50">
-                  <h4 className="font-semibold text-red-900 mb-2">{rule.title}</h4>
-                  <p className="text-sm text-red-700">{rule.description}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Legal Information */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Informazioni Legali</CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">SeaGO S.r.l.</h4>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p><strong>Sede Legale:</strong> Via Marina, 123 - 20121 Milano (MI)</p>
-                  <p><strong>P.IVA:</strong> 12345678901</p>
-                  <p><strong>Codice Fiscale:</strong> 12345678901</p>
-                  <p><strong>REA:</strong> MI-1234567</p>
-                  <p><strong>Capitale Sociale:</strong> €50.000,00 i.v.</p>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Contatti Legali</h4>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <p><strong>Email Legale:</strong> legal@seago.it</p>
-                  <p><strong>PEC:</strong> seago@pec.seago.it</p>
-                  <p><strong>Telefono:</strong> +39 02 1234 5678</p>
-                  <p><strong>Fax:</strong> +39 02 1234 5679</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Updates */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Modifiche ai Termini di Servizio</CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="space-y-4">
-              <p className="text-gray-700">
-                SeaGO si riserva il diritto di modificare i presenti Termini di Servizio in qualsiasi momento. 
-                Le modifiche entreranno in vigore dalla data di pubblicazione sulla piattaforma.
-              </p>
-              
-              <p className="text-gray-700">
-                Gli utenti saranno notificati via email delle modifiche sostanziali e avranno 30 giorni 
-                per accettare i nuovi termini o interrompere l'utilizzo del servizio.
-              </p>
-              
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <p className="text-blue-800 text-sm">
-                  <strong>Nota:</strong> L'uso continuato della piattaforma dopo la pubblicazione 
-                  di modifiche costituisce accettazione dei nuovi Termini di Servizio.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       <Footer />
-      <MobileNavigation />
     </div>
   );
 }

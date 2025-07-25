@@ -67,6 +67,25 @@ export default function AiutoScreen() {
     setExpandedFaq(expandedFaq === id ? null : id);
   };
 
+  const handleOpenWebLink = async (url: string) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        // Alert fallback se non disponibile
+        console.log('Cannot open URL:', url);
+      }
+    } catch (error) {
+      console.error('Error opening URL:', error);
+    }
+  };
+
+  const handleRateApp = () => {
+    // Placeholder per la valutazione dell'app
+    handleOpenWebLink('https://apps.apple.com/app/seago');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -129,15 +148,24 @@ export default function AiutoScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Azioni Rapide</Text>
           <View style={styles.quickActionsContainer}>
-            <TouchableOpacity style={styles.quickAction}>
+            <TouchableOpacity 
+              style={styles.quickAction}
+              onPress={() => handleOpenWebLink('https://seago.it/condizioni-servizio')}
+            >
               <Icon name="document-text" size={24} color="#0ea5e9" />
               <Text style={styles.quickActionText}>Termini di Servizio</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.quickAction}>
+            <TouchableOpacity 
+              style={styles.quickAction}
+              onPress={() => handleOpenWebLink('https://seago.it/privacy-policy')}
+            >
               <Icon name="shield-checkmark" size={24} color="#10b981" />
               <Text style={styles.quickActionText}>Privacy Policy</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.quickAction}>
+            <TouchableOpacity 
+              style={styles.quickAction}
+              onPress={handleRateApp}
+            >
               <Icon name="star" size={24} color="#f59e0b" />
               <Text style={styles.quickActionText}>Valuta l'App</Text>
             </TouchableOpacity>

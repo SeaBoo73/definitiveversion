@@ -1,172 +1,222 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MobileNavigation } from "@/components/mobile-navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Eye, Database, UserCheck, Lock, Globe } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
+import { ArrowLeft, Shield, Eye, Lock, Database, UserCheck } from "lucide-react";
 
 export default function PrivacyPolicyPage() {
-  const sections = [
-    {
-      icon: <Shield className="h-6 w-6 text-blue-600" />,
-      title: "1. Informazioni Generali",
-      content: [
-        "SeaGO S.r.l. (di seguito 'SeaGO') rispetta la privacy degli utenti e si impegna a proteggere i dati personali in conformità al GDPR.",
-        "La presente Privacy Policy descrive come raccogliamo, utilizziamo e proteggiamo le informazioni personali degli utenti.",
-        "Utilizzando SeaGO, l'utente acconsente al trattamento dei dati secondo quanto descritto in questa policy.",
-        "SeaGO agisce come Titolare del Trattamento per i dati raccolti attraverso la piattaforma."
-      ]
-    },
-    {
-      icon: <Database className="h-6 w-6 text-green-600" />,
-      title: "2. Dati Raccolti",
-      content: [
-        "Dati di registrazione: nome, cognome, email, numero di telefono, data di nascita",
-        "Dati di utilizzo: cronologia delle prenotazioni, preferenze di navigazione, log di accesso",
-        "Dati di pagamento: informazioni necessarie per processare i pagamenti (tramite Stripe)",
-        "Dati di geolocalizzazione: posizione per mostrare imbarcazioni nelle vicinanze (solo con consenso)",
-        "Cookies e tecnologie simili per migliorare l'esperienza utente"
-      ]
-    },
-    {
-      icon: <Eye className="h-6 w-6 text-purple-600" />,
-      title: "3. Finalità del Trattamento",
-      content: [
-        "Fornire i servizi di intermediazione per il noleggio di imbarcazioni",
-        "Gestire prenotazioni, pagamenti e comunicazioni tra utenti",
-        "Migliorare la qualità del servizio e personalizzare l'esperienza utente",
-        "Adempiere agli obblighi legali e fiscali",
-        "Prevenire frodi e garantire la sicurezza della piattaforma"
-      ]
-    },
-    {
-      icon: <UserCheck className="h-6 w-6 text-orange-600" />,
-      title: "4. Base Giuridica e Consenso",
-      content: [
-        "Esecuzione del contratto: per fornire i servizi richiesti dall'utente",
-        "Interesse legittimo: per migliorare i servizi e prevenire frodi",
-        "Consenso esplicito: per marketing e comunicazioni promozionali",
-        "Obbligo legale: per adempimenti fiscali e normativi",
-        "L'utente può revocare il consenso in qualsiasi momento dalle impostazioni dell'account"
-      ]
-    },
-    {
-      icon: <Lock className="h-6 w-6 text-red-600" />,
-      title: "5. Protezione e Sicurezza",
-      content: [
-        "Utilizziamo crittografia SSL/TLS per proteggere le comunicazioni",
-        "I dati sono archiviati su server sicuri con backup regolari",
-        "Accesso limitato ai dati solo al personale autorizzato",
-        "Monitoraggio continuo per rilevare accessi non autorizzati",
-        "Formazione regolare del personale sui protocolli di sicurezza"
-      ]
-    },
-    {
-      icon: <Globe className="h-6 w-6 text-indigo-600" />,
-      title: "6. Condivisione con Terzi",
-      content: [
-        "Stripe per il processamento sicuro dei pagamenti",
-        "Fornitori di servizi cloud per l'hosting e backup dati",
-        "Autorità competenti quando richiesto dalla legge",
-        "Partner commerciali solo con consenso esplicito dell'utente",
-        "Non vendiamo mai i dati personali a terze parti per scopi commerciali"
-      ]
-    }
-  ];
-
-  const userRights = [
-    "Accesso: richiedere una copia dei tuoi dati personali",
-    "Rettifica: correggere dati inesatti o incompleti",
-    "Cancellazione: richiedere la rimozione dei tuoi dati ('diritto all'oblio')",
-    "Portabilità: ricevere i tuoi dati in formato strutturato",
-    "Limitazione: limitare il trattamento in determinate circostanze",
-    "Opposizione: opporsi al trattamento per marketing diretto"
-  ];
+  const [location, setLocation] = useLocation();
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <MobileNavigation />
       
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Privacy Policy
-          </h1>
-          <p className="text-lg text-gray-600">
-            Protezione e trasparenza sui tuoi dati personali
-          </p>
-          <p className="text-sm text-gray-500 mt-2">
-            Ultimo aggiornamento: Luglio 2025
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+
+        {/* Header */}
+        <div className="text-center mb-12">
+          <Shield className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Privacy Policy</h1>
+          <p className="text-xl text-gray-600">
+            Ultima modifica: 25 Luglio 2025 | Conforme al GDPR
           </p>
         </div>
 
-        <div className="space-y-6">
-          {sections.map((section, index) => (
-            <Card key={index} className="shadow-md">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  {section.icon}
-                  {section.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {section.content.map((item, itemIndex) => (
-                    <li key={itemIndex} className="text-gray-700 leading-relaxed">
-                      • {item}
-                    </li>
-                  ))}
+        <div className="bg-white rounded-lg shadow-sm p-8 space-y-8">
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Eye className="h-6 w-6 text-blue-600 mr-3" />
+              1. Introduzione
+            </h2>
+            <p className="text-gray-600 leading-relaxed">
+              SeaGO rispetta la tua privacy e si impegna a proteggere i tuoi dati personali. 
+              Questa Privacy Policy spiega come raccogliamo, utilizziamo e proteggiamo 
+              le tue informazioni quando utilizzi la nostra piattaforma.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Database className="h-6 w-6 text-blue-600 mr-3" />
+              2. Dati che Raccogliamo
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Dati di Registrazione:</h3>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  <li>Nome e cognome</li>
+                  <li>Indirizzo email</li>
+                  <li>Numero di telefono</li>
+                  <li>Data di nascita (per verificare l'età)</li>
                 </ul>
-              </CardContent>
-            </Card>
-          ))}
-
-          {/* Diritti dell'utente */}
-          <Card className="shadow-md bg-blue-50 border-blue-200">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-lg text-blue-900">
-                <UserCheck className="h-6 w-6 text-blue-600" />
-                I Tuoi Diritti
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-blue-800 mb-4">
-                In conformità al GDPR, hai i seguenti diritti sui tuoi dati:
-              </p>
-              <ul className="space-y-2">
-                {userRights.map((right, index) => (
-                  <li key={index} className="text-blue-700 leading-relaxed">
-                    • {right}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-
-          {/* Contatti */}
-          <Card className="shadow-md bg-gray-100">
-            <CardHeader>
-              <CardTitle className="text-lg text-gray-900">
-                Contatti per la Privacy
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-gray-700">
-                Per esercitare i tuoi diritti o per qualsiasi domanda sulla privacy:
-              </p>
-              <div className="bg-white p-4 rounded-lg border">
-                <p className="font-semibold text-gray-900">Data Protection Officer (DPO)</p>
-                <p className="text-gray-700">Email: privacy@seago.it</p>
-                <p className="text-gray-700">Telefono: +39 02 1234 5678</p>
-                <p className="text-gray-700">
-                  Indirizzo: Via del Mare 123, 20100 Milano (MI), Italia
-                </p>
               </div>
-              <p className="text-sm text-gray-600">
-                Risponderemo alla tua richiesta entro 30 giorni dalla ricezione.
+              
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Dati di Utilizzo:</h3>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  <li>Informazioni sulle ricerche e prenotazioni</li>
+                  <li>Dati di navigazione e utilizzo della piattaforma</li>
+                  <li>Informazioni del dispositivo e browser</li>
+                  <li>Indirizzo IP e dati di geolocalizzazione (se autorizzata)</li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Documenti:</h3>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  <li>Documento d'identità (per verifica)</li>
+                  <li>Patente nautica (quando richiesta)</li>
+                  <li>Documenti delle imbarcazioni (per proprietari)</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <UserCheck className="h-6 w-6 text-blue-600 mr-3" />
+              3. Come Utilizziamo i Tuoi Dati
+            </h2>
+            <div className="space-y-3 text-gray-600">
+              <p><strong>Fornitura del servizio:</strong> Per gestire registrazioni, prenotazioni e pagamenti</p>
+              <p><strong>Comunicazione:</strong> Per inviarti conferme, aggiornamenti e assistenza</p>
+              <p><strong>Sicurezza:</strong> Per verificare l'identità e prevenire frodi</p>
+              <p><strong>Miglioramento:</strong> Per analizzare l'utilizzo e migliorare la piattaforma</p>
+              <p><strong>Marketing:</strong> Per inviarti offerte personalizzate (solo con il tuo consenso)</p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Base Giuridica del Trattamento</h2>
+            <div className="space-y-3 text-gray-600">
+              <p><strong>Esecuzione del contratto:</strong> Per fornire i servizi richiesti</p>
+              <p><strong>Interesse legittimo:</strong> Per la sicurezza e il miglioramento del servizio</p>
+              <p><strong>Consenso:</strong> Per marketing e comunicazioni promozionali</p>
+              <p><strong>Obbligo legale:</strong> Per rispettare normative fiscali e di sicurezza</p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Condivisione dei Dati</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>Non vendiamo mai i tuoi dati personali. Condividiamo informazioni solo quando necessario:</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li><strong>Con proprietari/clienti:</strong> Dati necessari per la prenotazione</li>
+                <li><strong>Con fornitori di servizi:</strong> Stripe per pagamenti, servizi cloud sicuri</li>
+                <li><strong>Per obblighi legali:</strong> Se richiesto dalle autorità competenti</li>
+                <li><strong>Per sicurezza:</strong> Per prevenire frodi e attività illegali</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Lock className="h-6 w-6 text-blue-600 mr-3" />
+              6. Sicurezza dei Dati
+            </h2>
+            <div className="space-y-4">
+              <p className="text-gray-600">
+                Implementiamo misure di sicurezza appropriate per proteggere i tuoi dati:
               </p>
-            </CardContent>
-          </Card>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <ul className="list-disc list-inside text-green-800 space-y-1">
+                  <li>Crittografia SSL/TLS per tutte le comunicazioni</li>
+                  <li>Hash sicuro delle password</li>
+                  <li>Accesso limitato ai dati su base need-to-know</li>
+                  <li>Monitoraggio continuo per attività sospette</li>
+                  <li>Backup regolari e sicuri</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">7. I Tuoi Diritti (GDPR)</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <p className="font-semibold text-gray-900">Hai il diritto di:</p>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  <li>Accedere ai tuoi dati</li>
+                  <li>Rettificare dati inesatti</li>
+                  <li>Cancellare i tuoi dati</li>
+                  <li>Limitare il trattamento</li>
+                </ul>
+              </div>
+              <div className="space-y-3">
+                <p className="font-semibold text-gray-900">Inoltre puoi:</p>
+                <ul className="list-disc list-inside text-gray-600 space-y-1">
+                  <li>Portabilità dei dati</li>
+                  <li>Opporti al trattamento</li>
+                  <li>Revocare il consenso</li>
+                  <li>Presentare reclamo</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">8. Cookie e Tecnologie Simili</h2>
+            <div className="space-y-4 text-gray-600">
+              <p>Utilizziamo cookie per:</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li><strong>Essenziali:</strong> Per il funzionamento della piattaforma</li>
+                <li><strong>Analitici:</strong> Per comprendere l'utilizzo del sito</li>
+                <li><strong>Preferenze:</strong> Per ricordare le tue impostazioni</li>
+              </ul>
+              <p>Puoi gestire le preferenze dei cookie nelle impostazioni del browser.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Conservazione dei Dati</h2>
+            <div className="space-y-3 text-gray-600">
+              <p>Conserviamo i tuoi dati solo per il tempo necessario:</p>
+              <ul className="list-disc list-inside space-y-1">
+                <li><strong>Account attivi:</strong> Finché utilizzi il servizio</li>
+                <li><strong>Dati di prenotazione:</strong> 7 anni per obblighi fiscali</li>
+                <li><strong>Dati di marketing:</strong> Fino alla revoca del consenso</li>
+                <li><strong>Log di sicurezza:</strong> 12 mesi</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">10. Modifiche alla Privacy Policy</h2>
+            <p className="text-gray-600 leading-relaxed">
+              Possiamo aggiornare questa Privacy Policy periodicamente. 
+              Ti notificheremo eventuali modifiche significative via email 
+              o tramite avviso sulla piattaforma.
+            </p>
+          </section>
+
+          <section className="border-t pt-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <div className="flex items-start space-x-3">
+                <Shield className="h-6 w-6 text-blue-600 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-2">Data Protection Officer</h3>
+                  <p className="text-blue-800 text-sm">
+                    Per esercitare i tuoi diritti o per domande sulla privacy, contatta il nostro DPO:
+                    <br />
+                    <strong>Email:</strong> privacy@seago.it
+                    <br />
+                    <strong>Indirizzo:</strong> Via del Porto 123, 00121 Roma
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
 

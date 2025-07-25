@@ -1,284 +1,221 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MobileNavigation } from "@/components/mobile-navigation";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLocation } from "wouter";
 import { 
+  ArrowLeft,
+  Phone, 
   Mail, 
   MapPin, 
-  Clock, 
-  MessageCircle, 
-  Users, 
-  Headphones,
+  Clock,
+  MessageCircle,
   Send
 } from "lucide-react";
 
-export default function ContattiPage() {
-  const handleChatClick = () => {
-    window.location.href = '/ia';
-  };
+export default function ContattaciPage() {
+  const [location, setLocation] = useLocation();
 
-  const contactMethods = [
+  const contactInfo = [
     {
-      icon: <MessageCircle className="h-8 w-8 text-blue-600" />,
-      title: "Assistente IA",
-      description: "Consigli intelligenti per barche e navigazione",
-      details: "Disponibile 24/7",
-      action: "Avvia IA",
-      onClick: handleChatClick,
-      primary: true
-    },
-    {
-      icon: <Mail className="h-8 w-8 text-purple-600" />,
       title: "Email",
-      description: "Supporto via email con risposta garantita",
-      details: "supporto@seago.it",
-      action: "Invia Email"
+      value: "support@seago.it",
+      description: "Rispondiamo entro 24 ore",
+      icon: Mail,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50"
     },
     {
-      icon: <Headphones className="h-8 w-8 text-orange-600" />,
-      title: "Assistenza Tecnica",
-      description: "Per problemi tecnici della piattaforma",
-      details: "tech@seago.it",
-      action: "Contatta"
-    }
-  ];
-
-  const departments = [
-    {
-      name: "Supporto Clienti",
-      email: "supporto@seago.it",
-      description: "Assistenza generale e prenotazioni"
+      title: "Telefono",
+      value: "+39 06 1234 5678",
+      description: "Lunedì-Venerdì 9:00-18:00",
+      icon: Phone,
+      color: "text-green-600",
+      bgColor: "bg-green-50"
     },
     {
-      name: "Assistenza Proprietari",
-      email: "hosts@seago.it", 
-      description: "Supporto per proprietari di imbarcazioni"
+      title: "Indirizzo",
+      value: "Via del Porto 123, 00121 Roma",
+      description: "Sede legale",
+      icon: MapPin,
+      color: "text-purple-600",
+      bgColor: "bg-purple-50"
     },
     {
-      name: "Ufficio Commerciale",
-      email: "business@seago.it",
-      description: "Partnership e opportunità commerciali"
-    },
-    {
-      name: "Ufficio Legale",
-      email: "legal@seago.it",
-      description: "Questioni legali e conformità"
-    },
-    {
-      name: "Ufficio Stampa",
-      email: "press@seago.it",
-      description: "Media e comunicazione"
+      title: "Orari",
+      value: "Lun-Ven: 9:00-18:00",
+      description: "Sabato e Domenica chiuso",
+      icon: Clock,
+      color: "text-orange-600",
+      bgColor: "bg-orange-50"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Contattaci
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Siamo qui per aiutarti! Scegli il metodo di contatto che preferisci per ricevere assistenza immediata dal nostro team.
+          <MessageCircle className="h-16 w-16 text-blue-600 mx-auto mb-4" />
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Contattaci</h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Siamo qui per aiutarti. Contattaci per qualsiasi domanda o assistenza
           </p>
         </div>
 
-        {/* Contact Methods */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {contactMethods.map((method, index) => (
-            <Card key={index} className={`text-center hover:shadow-lg transition-shadow ${method.primary ? 'border-blue-500 bg-blue-50' : ''}`}>
-              <CardContent className="pt-6">
-                <div className="flex justify-center mb-4">
-                  {method.icon}
-                </div>
-                <h3 className="font-semibold text-lg mb-2">{method.title}</h3>
-                <p className="text-gray-600 text-sm mb-3">{method.description}</p>
-                <p className="font-medium text-gray-900 mb-4">{method.details}</p>
-                <Button 
-                  className={method.primary ? 'bg-blue-600 hover:bg-blue-700 w-full' : 'w-full'} 
-                  variant={method.primary ? 'default' : 'outline'}
-                  onClick={method.onClick}
-                >
-                  {method.action}
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Contact Information */}
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Informazioni di Contatto</h2>
+            <div className="space-y-6">
+              {contactInfo.map((info, index) => (
+                <Card key={index}>
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4">
+                      <div className={`w-12 h-12 ${info.bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                        <info.icon className={`h-6 w-6 ${info.color}`} />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-1">{info.title}</h3>
+                        <p className="text-lg text-gray-900 mb-1">{info.value}</p>
+                        <p className="text-sm text-gray-600">{info.description}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          {/* Contact Form */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Send className="h-6 w-6" />
-                Invia un Messaggio
-              </CardTitle>
-            </CardHeader>
-            
-            <CardContent>
-              <form className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                    <Input placeholder="Il tuo nome" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Cognome</label>
-                    <Input placeholder="Il tuo cognome" />
-                  </div>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <Input type="email" placeholder="la-tua-email@esempio.com" />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Telefono (opzionale)</label>
-                  <Input type="tel" placeholder="+39 123 456 7890" />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Oggetto</label>
-                  <select className="w-full p-2 border border-gray-300 rounded-md">
-                    <option>Seleziona un argomento</option>
-                    <option>Supporto per prenotazione</option>
-                    <option>Problema con pagamento</option>
-                    <option>Assistenza tecnica</option>
-                    <option>Diventare proprietario</option>
-                    <option>Partnership commerciale</option>
-                    <option>Altro</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Messaggio</label>
-                  <Textarea 
-                    placeholder="Descrivi la tua richiesta o il problema che stai riscontrando..."
-                    rows={5}
-                  />
-                </div>
-                
-                <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                  Invia Messaggio
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          {/* Company Info & Hours */}
-          <div className="space-y-6">
-            <Card>
+            {/* Emergency Contact */}
+            <Card className="mt-6 border-red-200 bg-red-50">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-6 w-6" />
-                  Informazioni Azienda
-                </CardTitle>
+                <CardTitle className="text-red-800">Emergenze in Mare</CardTitle>
+                <CardDescription className="text-red-600">
+                  Per emergenze durante la navigazione
+                </CardDescription>
               </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-gray-900">SeaGO S.r.l.</h4>
-                  <p className="text-gray-600">Via Marina, 123</p>
-                  <p className="text-gray-600">20121 Milano (MI), Italia</p>
-                </div>
-                
-                <div>
-                  <p className="text-gray-600"><strong>P.IVA:</strong> 12345678901</p>
-                  <p className="text-gray-600"><strong>Telefono:</strong> +39 02 1234 5678</p>
-                  <p className="text-gray-600"><strong>Email:</strong> info@seago.it</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-6 w-6" />
-                  Orari di Assistenza
-                </CardTitle>
-              </CardHeader>
-              
               <CardContent>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-700">Chat Live</span>
-                    <span className="font-medium text-green-600">24/7</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-700">Telefono</span>
-                    <span className="font-medium">Lun-Ven 9:00-18:00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-700">Email</span>
-                    <span className="font-medium">24/7 (risposta entro 2h)</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-700">Assistenza Weekend</span>
-                    <span className="font-medium">Sab-Dom 10:00-16:00</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-6 w-6" />
-                  Emergenze 24/7
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-red-900 mb-2">Assistenza di Emergenza</h4>
-                  <p className="text-red-700 text-sm mb-3">
-                    Per emergenze durante il noleggio (guasti, maltempo, incidenti)
-                  </p>
-                  <div className="space-y-2">
-                    <p className="font-medium text-red-900">📞 +39 800 123 456 (gratuito)</p>
-                    <p className="text-red-700 text-sm">Disponibile 24 ore su 24, 7 giorni su 7</p>
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-5 w-5 text-red-600" />
+                  <div>
+                    <p className="font-semibold text-red-800">Guardia Costiera: 1530</p>
+                    <p className="text-sm text-red-600">Attivo 24/7 per emergenze marittime</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Contact Form */}
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Invia un Messaggio</CardTitle>
+                <CardDescription>
+                  Compila il form e ti risponderemo il prima possibile
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <form className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="nome">Nome *</Label>
+                      <Input id="nome" placeholder="Il tuo nome" required />
+                    </div>
+                    <div>
+                      <Label htmlFor="cognome">Cognome *</Label>
+                      <Input id="cognome" placeholder="Il tuo cognome" required />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="email">Email *</Label>
+                    <Input id="email" type="email" placeholder="la-tua-email@esempio.com" required />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="telefono">Telefono</Label>
+                    <Input id="telefono" type="tel" placeholder="+39 xxx xxx xxxx" />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="argomento">Argomento *</Label>
+                    <Select>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Seleziona un argomento" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="prenotazione">Supporto Prenotazione</SelectItem>
+                        <SelectItem value="pagamento">Problemi di Pagamento</SelectItem>
+                        <SelectItem value="proprietario">Diventare Proprietario</SelectItem>
+                        <SelectItem value="tecnico">Supporto Tecnico</SelectItem>
+                        <SelectItem value="fatturazione">Fatturazione</SelectItem>
+                        <SelectItem value="altro">Altro</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="messaggio">Messaggio *</Label>
+                    <Textarea 
+                      id="messaggio" 
+                      placeholder="Descrivi la tua richiesta o domanda..."
+                      rows={6}
+                      required 
+                    />
+                  </div>
+                  
+                  <Button type="submit" className="w-full">
+                    <Send className="mr-2 h-4 w-4" />
+                    Invia Messaggio
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
-        {/* Departments */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Dipartimenti Specializzati</CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {departments.map((dept, index) => (
-                <div key={index} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                  <h4 className="font-semibold text-gray-900 mb-2">{dept.name}</h4>
-                  <p className="text-sm text-gray-600 mb-3">{dept.description}</p>
-                  <a 
-                    href={`mailto:${dept.email}`}
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                  >
-                    {dept.email}
-                  </a>
+        {/* Map Section */}
+        <div className="mt-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Dove Siamo</CardTitle>
+              <CardDescription>
+                La nostra sede a Roma, facilmente raggiungibile
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-600">Mappa della sede SeaGO</p>
+                  <p className="text-sm text-gray-500">Via del Porto 123, 00121 Roma</p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <Footer />
-      <MobileNavigation />
     </div>
   );
 }

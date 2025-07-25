@@ -346,11 +346,11 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
-              className="w-full flex items-center justify-between p-4 hover:bg-blue-100/50 text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-blue-100/50 text-left text-gray-900"
             >
               <div className="flex items-center">
                 <Fuel className="h-5 w-5 text-blue-600 mr-2" />
-                <h3 className="text-lg font-semibold text-blue-900">Politiche Carburante</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Politiche Carburante</h3>
               </div>
               {fuelPolicyOpen ? (
                 <ChevronDown className="h-4 w-4 text-blue-600" />

@@ -141,7 +141,7 @@ export function AdvancedSearch() {
                 <SelectContent>
                   {boatTypes.map(type => (
                     <SelectItem key={type.value} value={type.value}>
-                      {type.label}
+                      <span className="text-gray-900">{type.label}</span>
                     </SelectItem>
                   ))}
                 </SelectContent>

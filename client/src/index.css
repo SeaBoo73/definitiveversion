@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix for Select dropdown items visibility */
+[data-radix-select-content] [data-radix-select-item] {
+  color: #1f2937 !important;
+}
+
+[data-radix-select-content] [data-radix-select-item-text] {
+  color: #1f2937 !important;
+}
+
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(20, 14.3%, 4.1%);

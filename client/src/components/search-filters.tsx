@@ -252,7 +252,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                   ].map((type) => (
                     <label
                       key={type.value}
-                      className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded"
+                      className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded border border-gray-200 bg-white"
                     >
                       <input
                         type="checkbox"
@@ -269,7 +269,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                         }}
                         className="rounded border-gray-300 text-coral focus:ring-coral"
                       />
-                      <span className="text-sm text-gray-700">{type.label}</span>
+                      <span className="text-sm text-gray-900 font-medium">{type.label}</span>
                     </label>
                   ))}
                 </div>

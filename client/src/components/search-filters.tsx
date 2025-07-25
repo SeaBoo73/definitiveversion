@@ -189,7 +189,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             <SelectContent>
               {Array.from({ length: 29 }, (_, i) => i + 2).map((num) => (
                 <SelectItem key={num} value={num.toString()}>
-                  {num} ospiti
+                  <span className="text-gray-900">{num} ospiti</span>
                 </SelectItem>
               ))}
             </SelectContent>

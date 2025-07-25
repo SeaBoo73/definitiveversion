@@ -553,7 +553,7 @@ function TestMoorings() {
                     <SelectContent>
                       {moorings.map((mooring) => (
                         <SelectItem key={mooring.id} value={mooring.id.toString()}>
-                          {mooring.name} - €{mooring.pricePerDay}/giorno
+                          <span className="text-gray-900">{mooring.name} - €{mooring.pricePerDay}/giorno</span>
                         </SelectItem>
                       ))}
                     </SelectContent>

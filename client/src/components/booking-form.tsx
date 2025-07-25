@@ -256,7 +256,7 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                     <SelectContent>
                       {Array.from({ length: boat.maxPersons }, (_, i) => (
                         <SelectItem key={i + 1} value={(i + 1).toString()}>
-                          {i + 1} {i + 1 === 1 ? 'ospite' : 'ospiti'}
+                          <span className="text-gray-900">{i + 1} {i + 1 === 1 ? 'ospite' : 'ospiti'}</span>
                         </SelectItem>
                       ))}
                     </SelectContent>

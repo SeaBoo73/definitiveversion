@@ -321,7 +321,9 @@ export default function DocumentManagement() {
                   </SelectTrigger>
                   <SelectContent>
                     {Object.entries(DOCUMENT_TYPES).map(([key, value]) => (
-                      <SelectItem key={key} value={key}>{value}</SelectItem>
+                      <SelectItem key={key} value={key}>
+                        <span className="text-gray-900">{value}</span>
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

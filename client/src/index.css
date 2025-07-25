@@ -5,9 +5,41 @@
 /* Fix for Select dropdown items visibility */
 [data-radix-select-content] [data-radix-select-item] {
   color: #1f2937 !important;
+  background-color: white !important;
 }
 
 [data-radix-select-content] [data-radix-select-item-text] {
+  color: #1f2937 !important;
+}
+
+/* More specific selector for Radix UI Select items */
+.radix-select-item {
+  color: #1f2937 !important;
+}
+
+/* Ensure all select content is visible */
+[data-radix-select-viewport] {
+  background-color: white !important;
+}
+
+/* Fix for all Select dropdown text */
+[role="option"] {
+  color: #1f2937 !important;
+}
+
+/* Additional comprehensive fix for Radix Select visibility */
+.select-item-text {
+  color: #1f2937 !important;
+}
+
+/* Force visibility on all select dropdown items */
+[data-radix-collection-item] {
+  color: #1f2937 !important;
+  background-color: white !important;
+}
+
+/* Comprehensive fix for select dropdown text */
+[data-radix-select-item] * {
   color: #1f2937 !important;
 }
 

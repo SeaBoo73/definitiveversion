@@ -83,10 +83,10 @@ export default function CategoriesPage() {
     queryKey: ["/api/boats"],
   });
 
-  // Scroll to top when component mounts
+  // Scroll to top when component mounts or location changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+  }, [location]);
 
   // Calculate real counts for each category
   const getCategoryCount = (categoryId: string) => {

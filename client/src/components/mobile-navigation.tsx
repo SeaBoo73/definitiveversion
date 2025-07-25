@@ -1,4 +1,5 @@
 import { Link, useLocation } from "wouter";
+import { useEffect } from "react";
 import { 
   Search, 
   Calendar, 
@@ -10,6 +11,11 @@ import {
 
 export function MobileNavigation() {
   const [location] = useLocation();
+
+  // Scroll to top when navigation changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location]);
 
   const navItems = [
     {

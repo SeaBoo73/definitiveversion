@@ -35,6 +35,8 @@ export default function HomePage() {
       const urlParams = new URLSearchParams(window.location.search);
       const typeParam = urlParams.get('type');
       setSelectedCategory(typeParam || "");
+      // Scroll to top when category changes
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     // Controlla al mount

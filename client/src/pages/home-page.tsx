@@ -173,12 +173,6 @@ export default function HomePage() {
               </div>
               
               <GoogleMapsLazio />
-              
-              <div className="text-center mt-8">
-                <Button size="lg" variant="outline" asChild className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
-                  <Link href="/mappa-completa">Visualizza Mappa Completa</Link>
-                </Button>
-              </div>
             </div>
           </section>
 
@@ -233,7 +227,7 @@ export default function HomePage() {
       )}
 
       {/* Affitta la tua barca */}
-      <section className="py-16 bg-gradient-to-r from-ocean-blue to-deep-navy text-white">
+      <section className="py-16 bg-gradient-to-r from-blue-500 to-blue-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Affitta la tua barca</h2>
@@ -311,7 +305,7 @@ export default function HomePage() {
 
           <div className="text-center mt-12">
             <p className="text-gray-600 mb-6">Non trovi quello che cerchi?</p>
-            <Button className="bg-ocean-blue hover:bg-blue-600 text-white" asChild>
+            <Button className="bg-blue-500 hover:bg-blue-600 text-white" asChild>
               <Link href="/aiuto">Centro assistenza</Link>
             </Button>
           </div>

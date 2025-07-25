@@ -147,7 +147,7 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
   const finalTotalPrice = booking.totalPrice + skipperCost + fuelCost;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-6 pb-20">
       {/* Booking Summary */}
       <Card>
         <CardHeader>

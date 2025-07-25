@@ -212,7 +212,7 @@ export function CategoryGallery() {
                     <p className="text-xs text-gray-600 mt-1">{category.description}</p>
                     <Button 
                       size="sm" 
-                      className="w-full mt-2 bg-ocean-blue hover:bg-blue-600 text-xs"
+                      className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-xs"
                     >
                       Prenota
                     </Button>
@@ -227,8 +227,8 @@ export function CategoryGallery() {
             <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Charter Giornalieri</h3>
             <div className="space-y-4">
               {charterGiornalieri.map((charter) => (
-                <Link key={charter.id} href="/esperienze">
-                  <div className="bg-gradient-to-r from-blue-50 to-ocean-blue/5 rounded-lg border border-blue-200 p-4 flex items-center space-x-4">
+                <Link key={charter.id} href="/search?boatTypes=charter">
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border border-blue-200 p-4 flex items-center space-x-4">
                     <div className="relative w-16 h-16 rounded-lg overflow-hidden">
                       <img
                         src={charter.image}
@@ -240,8 +240,8 @@ export function CategoryGallery() {
                       <h4 className="font-semibold text-gray-900 text-sm">{charter.name}</h4>
                       <p className="text-xs text-gray-600 mt-1">{charter.description}</p>
                       <div className="flex items-center justify-between mt-2">
-                        <span className="text-sm font-bold text-ocean-blue">{charter.price}</span>
-                        <Button size="sm" className="bg-ocean-blue hover:bg-blue-600 text-xs px-3">
+                        <span className="text-sm font-bold text-blue-500">{charter.price}</span>
+                        <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-xs px-3">
                           Prenota
                         </Button>
                       </div>

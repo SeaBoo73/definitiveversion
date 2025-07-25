@@ -138,10 +138,10 @@ export function AdvancedSearch() {
                 <SelectTrigger>
                   <SelectValue placeholder="Seleziona tipo" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white">
                   {boatTypes.map(type => (
-                    <SelectItem key={type.value} value={type.value}>
-                      <span className="text-gray-900">{type.label}</span>
+                    <SelectItem key={type.value} value={type.value} className="text-black hover:bg-gray-100">
+                      <span className="text-black font-medium">{type.label}</span>
                     </SelectItem>
                   ))}
                 </SelectContent>

@@ -91,6 +91,31 @@ select option {
   background: white !important;
 }
 
+/* FINAL COMPREHENSIVE FIX - Override ALL potential gray text issues */
+[data-radix-select-content] {
+  background: white !important;
+}
+
+[data-radix-select-content] [data-radix-select-item] {
+  color: #000000 !important;
+  background: white !important;
+}
+
+[data-radix-select-content] [data-radix-select-item]:hover {
+  background: #f3f4f6 !important;
+  color: #000000 !important;
+}
+
+[data-radix-select-content] span {
+  color: #000000 !important;
+}
+
+/* Force override of any muted colors in dropdown context */
+[data-radix-select-viewport] [data-radix-select-item] {
+  --text-muted-foreground: #000000 !important;
+  --foreground: #000000 !important;
+}
+
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(20, 14.3%, 4.1%);

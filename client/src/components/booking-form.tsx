@@ -253,10 +253,10 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       {Array.from({ length: boat.maxPersons }, (_, i) => (
-                        <SelectItem key={i + 1} value={(i + 1).toString()}>
-                          <span className="text-gray-900">{i + 1} {i + 1 === 1 ? 'ospite' : 'ospiti'}</span>
+                        <SelectItem key={i + 1} value={(i + 1).toString()} className="text-black hover:bg-gray-100">
+                          <span className="text-black font-medium">{i + 1} {i + 1 === 1 ? 'ospite' : 'ospiti'}</span>
                         </SelectItem>
                       ))}
                     </SelectContent>

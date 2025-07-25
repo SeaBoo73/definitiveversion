@@ -186,10 +186,10 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
               <Users className="mr-2 h-4 w-4" />
               <SelectValue placeholder={`${filters.guests} ospiti`} className="text-gray-900" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               {Array.from({ length: 29 }, (_, i) => i + 2).map((num) => (
-                <SelectItem key={num} value={num.toString()}>
-                  <span className="text-gray-900">{num} ospiti</span>
+                <SelectItem key={num} value={num.toString()} className="text-black hover:bg-gray-100">
+                  <span className="text-black font-medium">{num} ospiti</span>
                 </SelectItem>
               ))}
             </SelectContent>

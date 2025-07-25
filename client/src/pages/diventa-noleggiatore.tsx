@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Anchor, Euro, Shield, Star, CheckCircle } from "lucide-react";
+import { Anchor, Euro, Shield, Star, CheckCircle, ArrowLeft } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
@@ -71,8 +71,8 @@ export default function DiventaNoleggiatorePage() {
       }, 1500);
     },
     onError: (error: any) => {
-      // Extract error message from API response
-      const errorMessage = error.message || "Si è verificato un errore. Riprova.";
+      // Extract error message from API response  
+      const errorMessage = error?.response?.data?.message || error?.message || "Si è verificato un errore. Riprova.";
       
       toast({
         title: "Errore",
@@ -99,8 +99,20 @@ export default function DiventaNoleggiatorePage() {
   if (step === "info") {
     return (
       <div className="min-h-screen bg-gray-50">
+        {/* Back to Home Button */}
+        <div className="p-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+        
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-ocean-blue to-blue-600 text-white">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
           <div className="max-w-6xl mx-auto px-4 py-16">
             <div className="text-center">
               <Anchor className="h-16 w-16 mx-auto mb-6" />
@@ -198,7 +210,7 @@ export default function DiventaNoleggiatorePage() {
             <Button
               onClick={() => setStep("form")}
               size="lg"
-              className="bg-ocean-blue hover:bg-blue-600 text-lg px-8 py-3"
+              className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-3"
             >
               Inizia la registrazione
             </Button>
@@ -214,6 +226,17 @@ export default function DiventaNoleggiatorePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-2xl mx-auto px-4">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl text-center">

@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { CheckCircle } from "lucide-react";
+import { Link, useLocation } from "wouter";
+import { CheckCircle, ArrowLeft } from "lucide-react";
 
 
 export default function PaymentSuccess() {
+  const [location, setLocation] = useLocation();
+  
   useEffect(() => {
     // Scroll to top on page load
     window.scrollTo(0, 0);
@@ -17,6 +19,18 @@ export default function PaymentSuccess() {
       <Header />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+        
         <div className="text-center">
           <div className="flex justify-center mb-8">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">

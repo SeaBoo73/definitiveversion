@@ -11,8 +11,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema } from "@shared/schema";
 import { z } from "zod";
-import { Redirect, Link } from "wouter";
-import { Anchor } from "lucide-react";
+import { Redirect, Link, useLocation } from "wouter";
+import { Anchor, ArrowLeft } from "lucide-react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 
 const loginSchema = z.object({
@@ -36,6 +36,7 @@ type RegisterData = z.infer<typeof registerSchema>;
 
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
+  const [location, setLocation] = useLocation();
   
   // Check URL parameters for initial tab
   const getInitialTab = () => {
@@ -98,6 +99,18 @@ export default function AuthPage() {
       {/* Left side - Form */}
       <div className="flex-1 bg-white overflow-y-auto">
         <div className="p-8 min-h-full">
+          {/* Back to Home Button */}
+          <div className="mb-6">
+            <Button
+              variant="ghost"
+              onClick={() => setLocation("/")}
+              className="text-gray-600 hover:text-gray-900"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Torna alla home
+            </Button>
+          </div>
+          
           <div className="w-full max-w-md mx-auto min-h-screen flex flex-col justify-center py-12">
             <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">

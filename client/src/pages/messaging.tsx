@@ -3,10 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import { ConversationList } from '@/components/messaging/conversation-list';
 import { ChatInterface } from '@/components/messaging/chat-interface';
 import { Card, CardContent } from '@/components/ui/card';
-import { MessageSquare, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { MessageSquare, Users, ArrowLeft } from 'lucide-react';
+import { useLocation } from 'wouter';
 
 export default function MessagingPage() {
   const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null);
+  const [location, setLocation] = useLocation();
 
   // Query per ottenere l'utente corrente
   const { data: user } = useQuery({
@@ -38,6 +41,18 @@ export default function MessagingPage() {
 
   return (
     <div className="container mx-auto p-6">
+      {/* Back to Home Button */}
+      <div className="mb-6">
+        <Button
+          variant="ghost"
+          onClick={() => setLocation("/")}
+          className="text-gray-600 hover:text-gray-900"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Torna alla home
+        </Button>
+      </div>
+      
       <div className="mb-6">
         <h1 className="text-3xl font-bold mb-2">Sistema di Messaggistica</h1>
         <p className="text-muted-foreground">

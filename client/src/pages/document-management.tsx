@@ -21,9 +21,11 @@ import {
   Eye,
   AlertTriangle,
   Plus,
-  History
+  History,
+  ArrowLeft
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
+import { useLocation } from "wouter";
 
 interface Document {
   id: number;
@@ -72,6 +74,7 @@ const VERIFICATION_COLORS = {
 };
 
 export default function DocumentManagement() {
+  const [location, setLocation] = useLocation();
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [verifyDialogOpen, setVerifyDialogOpen] = useState(false);
@@ -278,6 +281,18 @@ export default function DocumentManagement() {
 
   return (
     <div className="container mx-auto p-6">
+      {/* Back to Home Button */}
+      <div className="mb-6">
+        <Button
+          variant="ghost"
+          onClick={() => setLocation("/")}
+          className="text-gray-600 hover:text-gray-900"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Torna alla home
+        </Button>
+      </div>
+      
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold">Gestione Documenti</h1>

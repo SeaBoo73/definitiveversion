@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
+import { useLocation } from "wouter";
+import { ArrowLeft } from "lucide-react";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
@@ -66,6 +68,7 @@ const CheckoutForm = () => {
 export default function Checkout() {
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
+  const [location, setLocation] = useLocation();
 
   useEffect(() => {
     // Create PaymentIntent as soon as the page loads
@@ -102,6 +105,18 @@ export default function Checkout() {
       <Header />
       
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+        
         <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-deep-navy text-center">

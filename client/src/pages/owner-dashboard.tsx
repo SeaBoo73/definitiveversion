@@ -38,8 +38,10 @@ import {
   Camera,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  ArrowLeft
 } from "lucide-react";
+import { useLocation } from "wouter";
 
 const boatFormSchema = insertBoatSchema.extend({
   pricePerDay: z.string().min(1, "Prezzo richiesto"),
@@ -54,6 +56,7 @@ export default function OwnerDashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [location, setLocation] = useLocation();
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
 
@@ -216,6 +219,18 @@ export default function OwnerDashboard() {
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Home Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => setLocation("/")}
+            className="text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Torna alla home
+          </Button>
+        </div>
+        
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard Sea Host</h1>
           <p className="text-gray-600 mt-2">Gestisci le tue imbarcazioni e prenotazioni</p>

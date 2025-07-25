@@ -43,6 +43,54 @@
   color: #1f2937 !important;
 }
 
+/* Force text visibility in SelectItemText */
+[data-radix-select-item-text] {
+  color: #1f2937 !important;
+  opacity: 1 !important;
+}
+
+/* Override any theme colors that might hide text */
+.select-dropdown-fix {
+  color: #1f2937 !important;
+}
+
+/* Emergency fix for invisible text in dropdowns */
+[role="listbox"] [role="option"] {
+  color: #1f2937 !important;
+  opacity: 1 !important;
+}
+
+/* Override muted-foreground in Select items specifically */
+[data-radix-select-item] {
+  --muted-foreground: #1f2937 !important;
+}
+
+/* Force dark text in all Select components */
+.radix-select-content {
+  --foreground: #1f2937 !important;
+  --popover-foreground: #1f2937 !important;
+}
+
+/* ULTIMATE FIX: Force all select dropdown text to be visible */
+[data-radix-select-content] * {
+  color: #1f2937 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Secondary fix for Radix SelectItem */
+[data-radix-select-item-text] {
+  color: #000000 !important;
+  opacity: 1 !important;
+  font-weight: 500 !important;
+}
+
+/* Tertiary approach - direct element targeting */
+select option {
+  color: #1f2937 !important;
+  background: white !important;
+}
+
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(20, 14.3%, 4.1%);

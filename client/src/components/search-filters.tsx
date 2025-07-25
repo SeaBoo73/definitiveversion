@@ -350,7 +350,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
             >
               <div className="flex items-center">
                 <Fuel className="h-5 w-5 text-blue-600 mr-2" />
-                <h3 className="text-lg font-semibold text-gray-900">Politiche Carburante</h3>
+                <h3 className="text-sm font-medium text-gray-900">Politiche Carburante</h3>
               </div>
               {fuelPolicyOpen ? (
                 <ChevronDown className="h-4 w-4 text-blue-600" />

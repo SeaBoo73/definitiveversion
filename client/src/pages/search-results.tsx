@@ -43,6 +43,11 @@ export function SearchResults() {
     queryKey: ["/api/boats"],
   });
 
+  // Scroll to top when component mounts or search parameters change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [searchParams.boatTypes, searchParams.location, searchParams.startDate, searchParams.endDate]);
+
   // Filter boats based on search parameters
   const filteredBoats = boats.filter((boat: Boat) => {
     if (searchParams.location && boat.port !== searchParams.location) return false;

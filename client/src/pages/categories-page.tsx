@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/header";
@@ -82,6 +82,11 @@ export default function CategoriesPage() {
   const { data: boats = [], isLoading } = useQuery<Boat[]>({
     queryKey: ["/api/boats"],
   });
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   // Calculate real counts for each category
   const getCategoryCount = (categoryId: string) => {

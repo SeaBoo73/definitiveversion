@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BookingModal } from "@/components/booking-modal";
 import { ReviewSystem } from "@/components/review-system";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   MapPin, 
   Users, 
@@ -39,6 +39,11 @@ export default function BoatDetails() {
     queryKey: ["/api/boats", id],
     enabled: !!id,
   });
+
+  // Scroll to top when component mounts or boat changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
 
   if (isLoading) {
     return (

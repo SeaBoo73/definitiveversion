@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Modal, ScrollView } from 'rea
 import MapView, { Marker, Callout } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-// Coordinate reali dei porti del Lazio
-const lazioPortsCoordinates = {
+// Coordinate reali dei porti del Lazio e Campania
+const allPortsCoordinates = {
+  // Lazio
   "Civitavecchia": { lat: 42.0942, lng: 11.7939 },
   "Gaeta": { lat: 41.2058, lng: 13.5696 },
   "Terracina": { lat: 41.2857, lng: 13.2443 },
@@ -17,7 +18,25 @@ const lazioPortsCoordinates = {
   "Ladispoli": { lat: 41.9436, lng: 12.0818 },
   "Ostia": { lat: 41.7351, lng: 12.2928 },
   "Nettuno": { lat: 41.4539, lng: 12.6619 },
-  "Montalto di Castro": { lat: 42.3489, lng: 11.6092 }
+  "Montalto di Castro": { lat: 42.3489, lng: 11.6092 },
+  // Campania
+  "Napoli": { lat: 40.8358, lng: 14.2488 },
+  "Salerno": { lat: 40.6824, lng: 14.7681 },
+  "Sorrento": { lat: 40.6262, lng: 14.3775 },
+  "Amalfi": { lat: 40.6340, lng: 14.6027 },
+  "Positano": { lat: 40.6281, lng: 14.4889 },
+  "Capri": { lat: 40.5506, lng: 14.2436 },
+  "Ischia": { lat: 40.7335, lng: 13.9334 },
+  "Procida": { lat: 40.7592, lng: 14.0158 },
+  "Pozzuoli": { lat: 40.8266, lng: 14.1188 },
+  "Castellammare di Stabia": { lat: 40.7026, lng: 14.4853 },
+  "Agropoli": { lat: 40.3504, lng: 14.9928 },
+  "Palinuro": { lat: 40.0292, lng: 15.2839 },
+  "Marina di Camerota": { lat: 40.0072, lng: 15.3626 },
+  "Sapri": { lat: 40.0710, lng: 15.6295 },
+  "Cetara": { lat: 40.6543, lng: 14.7024 },
+  "Maiori": { lat: 40.6483, lng: 14.6417 },
+  "Minori": { lat: 40.6505, lng: 14.6288 }
 };
 
 interface RealMapViewProps {
@@ -110,7 +129,7 @@ export default function RealMapView({ onPortSelect }: RealMapViewProps) {
         showsUserLocation={true}
         showsMyLocationButton={true}
       >
-        {Object.entries(lazioPortsCoordinates).map(([port, coords]) => {
+        {Object.entries(allPortsCoordinates).map(([port, coords]) => {
           const portData = getBoatsForPort(port);
           return (
             <Marker

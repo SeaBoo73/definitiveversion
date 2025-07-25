@@ -162,6 +162,17 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 25, 2025 - Integrazione Completa Porti Campania
+- **Sistema Località Esteso con Porti Campania:**
+  - ✅ Aggiunti 33 porti e località marittime della Campania al sistema di selezione
+  - ✅ Inclusi porti principali: Napoli, Salerno, Sorrento, Amalfi, Positano, Capri, Ischia, Procida
+  - ✅ Aggiunte località costiere del Cilento: Agropoli, Palinuro, Marina di Camerota, Sapri
+  - ✅ Completata integrazione in tutti i componenti di selezione località (port-selector, external-services)
+  - ✅ Backend aggiornato con dati reali dei porti campani (coordinate GPS, servizi, tariffe)
+  - ✅ Database comprende ora 48 località totali (15 Lazio + 33 Campania)
+  - ✅ Pulsante "Cerca" riposizionato correttamente alla fine di tutti i filtri mobile
+  - ✅ Esperienza utente migliorata con ricerca località estesa su entrambe le regioni
+
 ### July 24, 2025 - Sezione Partner e Fix Mappa Completa
 - **Sezione Partner Ufficiali Implementata:**
   - ✅ Creato componente PartnersSection completo con design professionale

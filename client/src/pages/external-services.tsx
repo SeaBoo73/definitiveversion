@@ -371,6 +371,25 @@ export default function ExternalServices() {
                 <SelectItem value="Terracina">Terracina</SelectItem>
                 <SelectItem value="Ponza">Ponza</SelectItem>
                 <SelectItem value="Formia">Formia</SelectItem>
+                {/* Campania Ports */}
+                <SelectItem value="Napoli">Napoli</SelectItem>
+                <SelectItem value="Salerno">Salerno</SelectItem>
+                <SelectItem value="Sorrento">Sorrento</SelectItem>
+                <SelectItem value="Amalfi">Amalfi</SelectItem>
+                <SelectItem value="Positano">Positano</SelectItem>
+                <SelectItem value="Capri">Capri</SelectItem>
+                <SelectItem value="Ischia">Ischia</SelectItem>
+                <SelectItem value="Procida">Procida</SelectItem>
+                <SelectItem value="Pozzuoli">Pozzuoli</SelectItem>
+                <SelectItem value="Castellammare di Stabia">Castellammare di Stabia</SelectItem>
+                <SelectItem value="Agropoli">Agropoli</SelectItem>
+                <SelectItem value="Palinuro">Palinuro</SelectItem>
+                <SelectItem value="Marina di Camerota">Marina di Camerota</SelectItem>
+                <SelectItem value="Sapri">Sapri</SelectItem>
+                <SelectItem value="Cetara">Cetara</SelectItem>
+                <SelectItem value="Maiori">Maiori</SelectItem>
+                <SelectItem value="Minori">Minori</SelectItem>
+                <SelectItem value="Acciaroli">Acciaroli</SelectItem>
               </SelectContent>
             </Select>
             <Button 

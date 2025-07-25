@@ -348,6 +348,212 @@ router.get('/port-services', async (req, res) => {
         },
         rating: 4.4,
         reviews: 94
+      },
+      // Campania Ports
+      {
+        id: 'porto-napoli',
+        name: 'Porto di Napoli',
+        location: 'Napoli, Campania',
+        coordinates: { lat: 40.8358, lng: 14.2488 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: true,
+          restaurant: true,
+          repair: true,
+          security: true
+        },
+        pricing: {
+          mooring: 55.0,
+          fuel: 1.75,
+          water: 0.60,
+          electricity: 0.45
+        },
+        contact: {
+          phone: '+39 081 2011111',
+          email: 'info@portonapoli.it',
+          website: 'https://porto.napoli.it',
+          vhf: 'Ch 14'
+        },
+        availability: {
+          total: 450,
+          available: 67,
+          reserved: 383
+        },
+        rating: 4.6,
+        reviews: 234
+      },
+      {
+        id: 'marina-salerno',
+        name: 'Marina di Salerno',
+        location: 'Salerno, Campania',
+        coordinates: { lat: 40.6824, lng: 14.7681 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: true,
+          restaurant: true,
+          repair: true,
+          security: true
+        },
+        pricing: {
+          mooring: 48.0,
+          fuel: 1.72,
+          water: 0.55,
+          electricity: 0.42
+        },
+        contact: {
+          phone: '+39 089 234567',
+          email: 'marina@salerno.it',
+          vhf: 'Ch 12'
+        },
+        availability: {
+          total: 320,
+          available: 45,
+          reserved: 275
+        },
+        rating: 4.5,
+        reviews: 187
+      },
+      {
+        id: 'porto-sorrento',
+        name: 'Porto di Sorrento',
+        location: 'Sorrento, Campania',
+        coordinates: { lat: 40.6262, lng: 14.3775 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: true,
+          restaurant: true,
+          repair: false,
+          security: true
+        },
+        pricing: {
+          mooring: 65.0,
+          fuel: 1.80,
+          water: 0.65,
+          electricity: 0.50
+        },
+        contact: {
+          phone: '+39 081 8781234',
+          email: 'porto@sorrento.it',
+          vhf: 'Ch 09'
+        },
+        availability: {
+          total: 180,
+          available: 22,
+          reserved: 158
+        },
+        rating: 4.7,
+        reviews: 156
+      },
+      {
+        id: 'marina-capri',
+        name: 'Marina Grande Capri',
+        location: 'Capri, Campania',
+        coordinates: { lat: 40.5506, lng: 14.2436 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: false,
+          restaurant: true,
+          repair: false,
+          security: true
+        },
+        pricing: {
+          mooring: 85.0,
+          fuel: 1.95,
+          water: 0.80,
+          electricity: 0.60
+        },
+        contact: {
+          phone: '+39 081 8370634',
+          email: 'marina@capri.it',
+          vhf: 'Ch 07'
+        },
+        availability: {
+          total: 120,
+          available: 8,
+          reserved: 112
+        },
+        rating: 4.8,
+        reviews: 298
+      },
+      {
+        id: 'porto-ischia',
+        name: 'Porto di Ischia',
+        location: 'Ischia, Campania',
+        coordinates: { lat: 40.7335, lng: 13.9334 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: true,
+          restaurant: true,
+          repair: true,
+          security: true
+        },
+        pricing: {
+          mooring: 58.0,
+          fuel: 1.78,
+          water: 0.62,
+          electricity: 0.48
+        },
+        contact: {
+          phone: '+39 081 991234',
+          email: 'porto@ischia.it',
+          vhf: 'Ch 11'
+        },
+        availability: {
+          total: 220,
+          available: 31,
+          reserved: 189
+        },
+        rating: 4.4,
+        reviews: 178
+      },
+      {
+        id: 'marina-amalfi',
+        name: 'Marina di Amalfi',
+        location: 'Amalfi, Campania',
+        coordinates: { lat: 40.6340, lng: 14.6027 },
+        services: {
+          mooring: true,
+          fuel: false,
+          water: true,
+          electricity: true,
+          wifi: false,
+          restaurant: true,
+          repair: false,
+          security: false
+        },
+        pricing: {
+          mooring: 75.0,
+          fuel: 0,
+          water: 0.70,
+          electricity: 0.55
+        },
+        contact: {
+          phone: '+39 089 871234',
+          email: 'marina@amalfi.it',
+          vhf: 'Ch 16'
+        },
+        availability: {
+          total: 90,
+          available: 12,
+          reserved: 78
+        },
+        rating: 4.3,
+        reviews: 134
       }
     ];
 

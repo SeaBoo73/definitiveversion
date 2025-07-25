@@ -23,6 +23,44 @@ const lazioPortsData = [
   { name: "Montalto di Castro", region: "Lazio", type: "Porto del Nord", boats: 2 }
 ];
 
+const campaniaPortsData = [
+  { name: "Napoli", region: "Campania", type: "Porto Principale", boats: 25 },
+  { name: "Salerno", region: "Campania", type: "Porto Commerciale", boats: 20 },
+  { name: "Sorrento", region: "Campania", type: "Porto Turistico", boats: 18 },
+  { name: "Amalfi", region: "Campania", type: "Porto Storico", boats: 16 },
+  { name: "Positano", region: "Campania", type: "Porto Turistico", boats: 15 },
+  { name: "Capri", region: "Campania", type: "Isola", boats: 22 },
+  { name: "Ischia", region: "Campania", type: "Isola Termale", boats: 19 },
+  { name: "Procida", region: "Campania", type: "Isola", boats: 14 },
+  { name: "Pozzuoli", region: "Campania", type: "Porto Storico", boats: 13 },
+  { name: "Castellammare di Stabia", region: "Campania", type: "Porto Turistico", boats: 12 },
+  { name: "Torre del Greco", region: "Campania", type: "Porto Peschereccio", boats: 10 },
+  { name: "Bagnoli", region: "Campania", type: "Porto Urbano", boats: 9 },
+  { name: "Marina di Stabia", region: "Campania", type: "Porto Turistico", boats: 11 },
+  { name: "Marina Grande (Capri)", region: "Campania", type: "Porto Principale Capri", boats: 8 },
+  { name: "Porto di Casamicciola", region: "Campania", type: "Porto Ischia", boats: 7 },
+  { name: "Forio d'Ischia", region: "Campania", type: "Porto Ischia", boats: 6 },
+  { name: "Marina Piccola (Sorrento)", region: "Campania", type: "Porto Turistico", boats: 5 },
+  { name: "Cetara", region: "Campania", type: "Porto Peschereccio", boats: 4 },
+  { name: "Maiori", region: "Campania", type: "Porto Turistico", boats: 4 },
+  { name: "Minori", region: "Campania", type: "Porto Turistico", boats: 3 },
+  { name: "Conca dei Marini", region: "Campania", type: "Porto Turistico", boats: 3 },
+  { name: "Furore", region: "Campania", type: "Marina", boats: 2 },
+  { name: "Vietri sul Mare", region: "Campania", type: "Porto Ceramico", boats: 3 },
+  { name: "Agropoli", region: "Campania", type: "Porto Cilentano", boats: 8 },
+  { name: "Palinuro", region: "Campania", type: "Porto Naturale", boats: 6 },
+  { name: "Marina di Camerota", region: "Campania", type: "Porto Cilentano", boats: 5 },
+  { name: "Sapri", region: "Campania", type: "Porto Sud Campania", boats: 4 },
+  { name: "Scario", region: "Campania", type: "Porto Cilentano", boats: 3 },
+  { name: "Acciaroli", region: "Campania", type: "Porto Peschereccio", boats: 3 },
+  { name: "Santa Maria di Castellabate", region: "Campania", type: "Porto Turistico", boats: 4 },
+  { name: "Pisciotta", region: "Campania", type: "Marina Cilentana", boats: 2 },
+  { name: "Ascea", region: "Campania", type: "Marina Archeologica", boats: 2 },
+  { name: "Camerota", region: "Campania", type: "Porto Naturale", boats: 3 }
+];
+
+const allPortsData = [...lazioPortsData, ...campaniaPortsData];
+
 interface PortSelectorProps {
   value: string;
   onChange: (port: string) => void;
@@ -33,7 +71,7 @@ export function PortSelector({ value, onChange, placeholder = "Seleziona porto..
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredPorts = lazioPortsData.filter(port =>
+  const filteredPorts = allPortsData.filter(port =>
     port.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 

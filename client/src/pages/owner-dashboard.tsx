@@ -55,7 +55,14 @@ import {
   Heart,
   Wine,
   ChefHat,
-  Sailboat
+  Sailboat,
+  User,
+  Mail,
+  Phone,
+  CreditCard,
+  Shield,
+  Key,
+  Save
 } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -309,6 +316,7 @@ export default function OwnerDashboard() {
             <TabsTrigger value="experiences">Le mie esperienze</TabsTrigger>
             <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
             <TabsTrigger value="messages">Messaggi</TabsTrigger>
+            <TabsTrigger value="profile">Il mio profilo</TabsTrigger>
             <TabsTrigger value="analytics">Statistiche</TabsTrigger>
           </TabsList>
 
@@ -1043,6 +1051,309 @@ export default function OwnerDashboard() {
                 <p className="text-gray-600">I messaggi dai tuoi clienti appariranno qui</p>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="profile" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">Il mio profilo</h2>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Edit className="h-4 w-4" />
+                Modifica profilo
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              {/* Informazioni Personali */}
+              <Card className="lg:col-span-2">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                      <User className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <CardTitle>Informazioni Personali</CardTitle>
+                      <p className="text-sm text-gray-600">Gestisci i tuoi dati di contatto</p>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="firstName" className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-blue-600" />
+                        Nome
+                      </Label>
+                      <Input 
+                        id="firstName" 
+                        value={user?.username?.split('.')[0] || ""} 
+                        className="border-blue-200 focus:border-blue-500"
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="lastName" className="flex items-center gap-2">
+                        <User className="h-4 w-4 text-blue-600" />
+                        Cognome
+                      </Label>
+                      <Input 
+                        id="lastName" 
+                        value={user?.username?.split('.')[1]?.split('@')[0] || ""} 
+                        className="border-blue-200 focus:border-blue-500"
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="flex items-center gap-2">
+                        <Mail className="h-4 w-4 text-blue-600" />
+                        Email
+                      </Label>
+                      <Input 
+                        id="email" 
+                        type="email" 
+                        value={user?.username || ""} 
+                        className="border-blue-200 focus:border-blue-500"
+                        readOnly
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="flex items-center gap-2">
+                        <Phone className="h-4 w-4 text-blue-600" />
+                        Telefono
+                      </Label>
+                      <Input 
+                        id="phone" 
+                        placeholder="+39 333 123 4567" 
+                        className="border-blue-200 focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio" className="flex items-center gap-2">
+                      <FileText className="h-4 w-4 text-blue-600" />
+                      Biografia (opzionale)
+                    </Label>
+                    <Textarea 
+                      id="bio" 
+                      placeholder="Raccontaci qualcosa di te e della tua esperienza nel settore nautico..."
+                      rows={3}
+                      className="border-blue-200 focus:border-blue-500"
+                    />
+                  </div>
+
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    <Save className="h-4 w-4 mr-2" />
+                    Salva modifiche
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Foto Profilo */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Camera className="h-5 w-5 text-gray-600" />
+                    Foto Profilo
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <User className="h-16 w-16 text-gray-400" />
+                  </div>
+                  <Button variant="outline" size="sm" className="mb-2">
+                    <Camera className="h-4 w-4 mr-2" />
+                    Carica foto
+                  </Button>
+                  <p className="text-xs text-gray-500">
+                    Formati: JPG, PNG<br />
+                    Max: 5MB
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Pagamenti e IBAN */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <CreditCard className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <CardTitle>Dati di Pagamento</CardTitle>
+                    <p className="text-sm text-gray-600">Configura il tuo IBAN per ricevere i compensi</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Info className="h-5 w-5 text-green-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-green-800">Come funzionano i pagamenti</h4>
+                      <p className="text-sm text-green-700 mt-1">
+                        I tuoi guadagni vengono accreditati automaticamente ogni 7 giorni sul conto corrente che indicherai.
+                        La commissione SeaGO del 15% viene trattenuta automaticamente.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="iban" className="flex items-center gap-2">
+                      <CreditCard className="h-4 w-4 text-green-600" />
+                      IBAN *
+                    </Label>
+                    <Input 
+                      id="iban" 
+                      placeholder="IT60 X054 2811 1010 0000 0123 456" 
+                      className="border-green-200 focus:border-green-500 font-mono"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bankName" className="flex items-center gap-2">
+                      <CreditCard className="h-4 w-4 text-green-600" />
+                      Nome Banca
+                    </Label>
+                    <Input 
+                      id="bankName" 
+                      placeholder="es. Intesa Sanpaolo, UniCredit..." 
+                      className="border-green-200 focus:border-green-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="accountHolder" className="flex items-center gap-2">
+                      <User className="h-4 w-4 text-green-600" />
+                      Intestatario Conto *
+                    </Label>
+                    <Input 
+                      id="accountHolder" 
+                      placeholder="Nome e Cognome come sul conto" 
+                      className="border-green-200 focus:border-green-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="swiftBic" className="flex items-center gap-2">
+                      <CreditCard className="h-4 w-4 text-green-600" />
+                      Codice SWIFT/BIC (opzionale)
+                    </Label>
+                    <Input 
+                      id="swiftBic" 
+                      placeholder="BCITITMM" 
+                      className="border-green-200 focus:border-green-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Shield className="h-5 w-5 text-yellow-600 mt-0.5" />
+                    <div>
+                      <h4 className="font-semibold text-yellow-800">Sicurezza e Privacy</h4>
+                      <p className="text-sm text-yellow-700 mt-1">
+                        I tuoi dati bancari sono crittografati e protetti secondo i più alti standard di sicurezza.
+                        Utilizziamo la tecnologia SSL e non condividiamo mai i tuoi dati con terze parti.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                  <Save className="h-4 w-4 mr-2" />
+                  Salva dati di pagamento
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Sicurezza Account */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <Shield className="h-6 w-6 text-red-600" />
+                  </div>
+                  <div>
+                    <CardTitle>Sicurezza Account</CardTitle>
+                    <p className="text-sm text-gray-600">Gestisci la sicurezza del tuo account</p>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Key className="h-5 w-5 text-gray-600" />
+                    <div>
+                      <p className="font-medium">Password</p>
+                      <p className="text-sm text-gray-600">Ultima modifica: 15 giorni fa</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Cambia password
+                  </Button>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Shield className="h-5 w-5 text-gray-600" />
+                    <div>
+                      <p className="font-medium">Autenticazione a due fattori</p>
+                      <p className="text-sm text-gray-600">Non attivata</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Attiva 2FA
+                  </Button>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <Mail className="h-5 w-5 text-gray-600" />
+                    <div>
+                      <p className="font-medium">Notifiche Email</p>
+                      <p className="text-sm text-gray-600">Ricevi aggiornamenti via email</p>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Gestisci
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Statistiche Account */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <Calendar className="h-8 w-8 text-blue-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-gray-900">12</p>
+                  <p className="text-sm text-gray-600">Mesi attivo</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <Star className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-gray-900">4.8</p>
+                  <p className="text-sm text-gray-600">Rating medio</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-gray-900">98%</p>
+                  <p className="text-sm text-gray-600">Tasso conferma</p>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">

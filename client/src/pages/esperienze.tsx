@@ -189,6 +189,27 @@ export function EsperienzePage() {
     "Business": "bg-slate-100 text-slate-700"
   };
 
+  const getExperienceSlug = (title: string) => {
+    const mapping: Record<string, string> = {
+      "Tramonti in barca": "tramonto",
+      "Tour delle isole nascoste": "tour-isole",
+      "Giornate in barca a vela": "vela",
+      "Degustazioni di prodotti tipici": "degustazione",
+      "Pesca sportiva": "pesca-sportiva",
+      "Cene romantiche in barca": "cena-romantica",
+      "Aperitivi al tramonto": "aperitivo-tramonto",
+      "Snorkeling e immersioni": "snorkeling",
+      "Charter con skipper esperto": "charter-skipper",
+      "Charter bareboat": "charter-bareboat",
+      "Yacht di lusso": "yacht-lusso",
+      "Charter multi-giorno": "charter-multigiorno",
+      "Feste private": "feste-private",
+      "Matrimoni e proposte": "matrimoni-proposte",
+      "Team building aziendali": "team-building"
+    };
+    return mapping[title] || "tramonto";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white pb-20 md:pb-0">
       <SEOHead {...seoConfigs.esperienze} />
@@ -363,7 +384,7 @@ export function EsperienzePage() {
                           </CardDescription>
                           <div className="mt-4">
                             <Button asChild variant="outline" className="w-full border-coral text-red-600 hover:bg-coral hover:text-white font-semibold">
-                              <Link href="/search">Scopri di più</Link>
+                              <Link href={`/esperienza/${getExperienceSlug(item.title)}`}>Scopri di più</Link>
                             </Button>
                           </div>
                         </CardContent>

@@ -191,6 +191,28 @@ export default function OwnerDashboard() {
     }
   };
 
+  // Security Account Handlers
+  const handleChangePassword = () => {
+    toast({
+      title: "Cambio Password",
+      description: "Funzionalità in arrivo. Ti invieremo un'email con le istruzioni per cambiare la password.",
+    });
+  };
+
+  const handleActivate2FA = () => {
+    toast({
+      title: "Autenticazione 2FA",
+      description: "Funzionalità in sviluppo. L'autenticazione a due fattori sarà disponibile presto.",
+    });
+  };
+
+  const handleManageNotifications = () => {
+    toast({
+      title: "Gestione Notifiche",
+      description: "Preferenze notifiche aggiornate. Riceverai aggiornamenti importanti via email.",
+    });
+  };
+
   const openEditModal = (boat: Boat) => {
     setEditingBoat(boat);
     form.reset({
@@ -1312,7 +1334,7 @@ export default function OwnerDashboard() {
                       <p className="text-sm text-gray-600">Ultima modifica: 15 giorni fa</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={handleChangePassword}>
                     Cambia password
                   </Button>
                 </div>
@@ -1325,7 +1347,7 @@ export default function OwnerDashboard() {
                       <p className="text-sm text-gray-600">Non attivata</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={handleActivate2FA}>
                     Attiva 2FA
                   </Button>
                 </div>
@@ -1338,7 +1360,7 @@ export default function OwnerDashboard() {
                       <p className="text-sm text-gray-600">Ricevi aggiornamenti via email</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={handleManageNotifications}>
                     Gestisci
                   </Button>
                 </div>

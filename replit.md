@@ -208,6 +208,25 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Colore Euro cambiato da coral a green per evitare conflitti visivi
   - ✅ Ordine logico: Imbarcazioni → Esperienze → Prenotazioni → Guadagni → Valutazione
 
+### July 26, 2025 - Sistema Sicurezza Account e Chat Live Attivati
+- **Fix Dropdown Profilo Header Completo:**
+  - ✅ Menu dropdown profilo header con link corretti per owner/customer
+  - ✅ "Il mio profilo" punta a owner-dashboard?tab=profile per proprietari
+  - ✅ "Le mie prenotazioni" punta a owner-dashboard?tab=bookings per proprietari
+  - ✅ Dashboard owner supporta parametri URL per tab automatici
+  - ✅ Sistema routing migliorato per accesso diretto alle sezioni
+- **Pulsanti Sicurezza Account Funzionanti:**
+  - ✅ Pulsante "Cambia password" con toast informativo funzionante
+  - ✅ Pulsante "Attiva 2FA" con messaggio sviluppo futuro
+  - ✅ Pulsante "Gestisci" notifiche email con conferma aggiornamento
+  - ✅ Tutti i handler di sicurezza account implementati e testati
+  - ✅ Toast personalizzati per ogni funzione di sicurezza
+- **Chat Live Pagina Aiuto Attivata:**
+  - ✅ Pulsante "Avvia chat" in sezione "Chat Live" ora funzionante
+  - ✅ Click su card "Chat Live" apre componente AiChat
+  - ✅ Integrazione completa sistema chat in pagina assistenza
+  - ✅ Componente AiChat correttamente importato e utilizzato
+
 ### July 26, 2025 - Sistema Esperienze Porti Campania Esteso + Autofill Intelligente Ormeggi
 - **Espansione Completa Porti per Esperienze:**
   - ✅ Aggiunta lista completa di 48 porti (15 Lazio + 33 Campania) nella sezione Esperienze

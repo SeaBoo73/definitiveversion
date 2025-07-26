@@ -1,14 +1,8 @@
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { Anchor, Facebook, Instagram, Twitter, Youtube, Globe, DollarSign } from "lucide-react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Footer() {
-  const [, setLocation] = useLocation();
-
-  const handleNavigate = (path: string) => {
-    console.log('🚢 SeaGO Footer Navigation:', path);
-    setLocation(path);
-  };
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -60,22 +54,22 @@ export function Footer() {
           {/* Prenotazioni */}
           <div>
             <h4 className="font-semibold mb-4">Prenotazioni</h4>
-            <ul className="space-y-2 text-gray-400" style={{pointerEvents: 'auto', zIndex: 10, position: 'relative'}}>
-              <li><button onClick={() => handleNavigate('/come-prenotare')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Come prenotare una barca?</button></li>
-              <li><button onClick={() => handleNavigate('/modifica-prenotazione')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Posso modificare la prenotazione?</button></li>
-              <li><button onClick={() => handleNavigate('/politiche-cancellazione')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Politiche di cancellazione</button></li>
-              <li><button onClick={() => handleNavigate('/documenti')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Documenti necessari</button></li>
+            <ul className="space-y-2 text-gray-400">
+              <li><Link to="/come-prenotare" className="hover:text-white transition-colors">Come prenotare una barca?</Link></li>
+              <li><Link to="/modifica-prenotazione" className="hover:text-white transition-colors">Posso modificare la prenotazione?</Link></li>
+              <li><Link to="/politiche-cancellazione" className="hover:text-white transition-colors">Politiche di cancellazione</Link></li>
+              <li><Link to="/documenti" className="hover:text-white transition-colors">Documenti necessari</Link></li>
             </ul>
           </div>
 
           {/* Pagamenti */}
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
-            <ul className="space-y-2 text-gray-400" style={{pointerEvents: 'auto', zIndex: 10, position: 'relative'}}>
-              <li><button onClick={() => handleNavigate('/metodi-pagamento')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Metodi di pagamento</button></li>
-              <li><button onClick={() => handleNavigate('/sicurezza-pagamenti')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Sicurezza dei pagamenti</button></li>  
-              <li><button onClick={() => handleNavigate('/rimborsi')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Richiesta di rimborso</button></li>
-              <li><button onClick={() => handleNavigate('/fatturazione')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Fatturazione</button></li>
+            <ul className="space-y-2 text-gray-400">
+              <li><Link to="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento</Link></li>
+              <li><Link to="/sicurezza-pagamenti" className="hover:text-white transition-colors">Sicurezza dei pagamenti</Link></li>  
+              <li><Link to="/rimborsi" className="hover:text-white transition-colors">Richiesta di rimborso</Link></li>
+              <li><Link to="/fatturazione" className="hover:text-white transition-colors">Fatturazione</Link></li>
             </ul>
           </div>
 

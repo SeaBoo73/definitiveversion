@@ -219,7 +219,7 @@ export function EsperienzePage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Form */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-6">
+            <Card>
               <CardHeader>
                 <CardTitle className="flex items-center text-lg">
                   <Search className="h-5 w-5 mr-2" />

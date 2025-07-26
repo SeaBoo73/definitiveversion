@@ -48,7 +48,14 @@ import {
   Gauge,
   Ruler,
   Calendar as CalendarIcon,
-  DollarSign
+  DollarSign,
+  Sparkles,
+  Sunset,
+  Fish,
+  Heart,
+  Wine,
+  ChefHat,
+  Sailboat
 } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -299,6 +306,7 @@ export default function OwnerDashboard() {
         <Tabs defaultValue="boats" className="space-y-6">
           <TabsList>
             <TabsTrigger value="boats">Le mie imbarcazioni</TabsTrigger>
+            <TabsTrigger value="experiences">Le mie esperienze</TabsTrigger>
             <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
             <TabsTrigger value="messages">Messaggi</TabsTrigger>
             <TabsTrigger value="analytics">Statistiche</TabsTrigger>
@@ -721,6 +729,258 @@ export default function OwnerDashboard() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="experiences" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">Le mie esperienze</h2>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-coral hover:bg-orange-600">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Aggiungi esperienza
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader className="text-center pb-6">
+                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-coral to-orange-500 rounded-full flex items-center justify-center mb-4">
+                      <Sparkles className="h-8 w-8 text-white" />
+                    </div>
+                    <DialogTitle className="text-2xl font-bold text-gray-900">
+                      ✨ Crea una nuova esperienza
+                    </DialogTitle>
+                    <p className="text-gray-600 mt-2">
+                      Offri ai tuoi ospiti un'esperienza memorabile sul mare
+                    </p>
+                  </DialogHeader>
+
+                  <form className="space-y-8">
+                    
+                    {/* Sezione 1: Informazioni Base */}
+                    <div className="bg-coral/10 border border-coral/30 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-coral rounded-full flex items-center justify-center">
+                          <Info className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Informazioni Base</h3>
+                          <p className="text-sm text-gray-600">Nome, categoria e dettagli principali</p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="experienceTitle" className="flex items-center gap-2">
+                            <Sparkles className="h-4 w-4 text-coral" />
+                            Titolo esperienza *
+                          </Label>
+                          <Input 
+                            id="experienceTitle" 
+                            placeholder="es. Tour delle Isole Pontine, Tramonto con Aperitivo..." 
+                            className="border-coral/30 focus:border-coral"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="experienceCategory" className="flex items-center gap-2">
+                            <Star className="h-4 w-4 text-coral" />
+                            Categoria *
+                          </Label>
+                          <Select>
+                            <SelectTrigger className="border-coral/30 focus:border-coral">
+                              <SelectValue placeholder="Seleziona categoria" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="tour">🌊 Tour ed Escursioni</SelectItem>
+                              <SelectItem value="gourmet">🍽️ Esperienze Gourmet</SelectItem>
+                              <SelectItem value="charter">⛵ Charter Privato</SelectItem>
+                              <SelectItem value="events">🎉 Eventi Speciali</SelectItem>
+                              <SelectItem value="courses">🎓 Corsi Nautici</SelectItem>
+                              <SelectItem value="fishing">🎣 Pesca Sportiva</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="experienceDuration" className="flex items-center gap-2">
+                            <Clock className="h-4 w-4 text-coral" />
+                            Durata
+                          </Label>
+                          <Input 
+                            id="experienceDuration" 
+                            placeholder="es. 4 ore, Giornata intera, Weekend..." 
+                            className="border-coral/30 focus:border-coral"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="experienceLocation" className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 text-coral" />
+                            Località partenza *
+                          </Label>
+                          <Input 
+                            id="experienceLocation" 
+                            placeholder="es. Porto di Gaeta, Marina di Civitavecchia..." 
+                            className="border-coral/30 focus:border-coral"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sezione 2: Dettagli Esperienza */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                          <Users className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Dettagli Esperienza</h3>
+                          <p className="text-sm text-gray-600">Capacità, prezzi e cosa include</p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="maxParticipants" className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-blue-600" />
+                            Partecipanti massimi *
+                          </Label>
+                          <Input 
+                            id="maxParticipants" 
+                            type="number" 
+                            placeholder="es. 12" 
+                            className="border-blue-200 focus:border-blue-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="pricePerPerson" className="flex items-center gap-2">
+                            <DollarSign className="h-4 w-4 text-blue-600" />
+                            Prezzo per persona (€) *
+                          </Label>
+                          <Input 
+                            id="pricePerPerson" 
+                            type="number" 
+                            step="0.01" 
+                            placeholder="es. 85.00" 
+                            className="border-blue-200 focus:border-blue-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="difficulty" className="flex items-center gap-2">
+                            <Gauge className="h-4 w-4 text-blue-600" />
+                            Difficoltà
+                          </Label>
+                          <Select>
+                            <SelectTrigger className="border-blue-200 focus:border-blue-500">
+                              <SelectValue placeholder="Livello" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="easy">🟢 Facile - Per tutti</SelectItem>
+                              <SelectItem value="medium">🟡 Medio - Esperienza base</SelectItem>
+                              <SelectItem value="hard">🔴 Difficile - Esperti</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 space-y-2">
+                        <Label htmlFor="includes" className="flex items-center gap-2">
+                          <CheckCircle className="h-4 w-4 text-blue-600" />
+                          Cosa include (una per riga)
+                        </Label>
+                        <Textarea 
+                          id="includes" 
+                          placeholder="es. Pranzo a bordo&#10;Attrezzatura snorkeling&#10;Guida esperta&#10;Assicurazione"
+                          rows={4}
+                          className="border-blue-200 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Sezione 3: Descrizione Esperienza */}
+                    <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                          <FileText className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Descrizione Esperienza</h3>
+                          <p className="text-sm text-gray-600">Racconta cosa rende speciale la tua esperienza</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="experienceDescription" className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-green-600" />
+                            Descrizione completa *
+                          </Label>
+                          <Textarea 
+                            id="experienceDescription" 
+                            placeholder="Descrivi nel dettaglio l'esperienza: itinerario, attività, momenti speciali che vivranno gli ospiti..."
+                            rows={5}
+                            className="border-green-200 focus:border-green-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="specialNotes" className="flex items-center gap-2">
+                            <Info className="h-4 w-4 text-green-600" />
+                            Note speciali e requisiti
+                          </Label>
+                          <Textarea 
+                            id="specialNotes" 
+                            placeholder="es. Esperienza soggetta a condizioni meteo, si consiglia abbigliamento comodo, età minima 18 anni..."
+                            rows={3}
+                            className="border-green-200 focus:border-green-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Pulsanti di Azione */}
+                    <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                      <Button 
+                        type="submit" 
+                        className="flex-1 bg-gradient-to-r from-coral to-orange-500 hover:from-orange-500 hover:to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                      >
+                        <Sparkles className="h-4 w-4" />
+                        ✨ Crea esperienza
+                      </Button>
+                      
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        className="flex-1 sm:flex-initial min-w-[120px] border-gray-300 text-gray-700 hover:bg-gray-50 py-3 px-6 rounded-lg transition-colors duration-200"
+                      >
+                        ❌ Annulla
+                      </Button>
+                    </div>
+
+                    {/* Info Footer */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
+                      <p className="text-sm text-gray-600">
+                        🌟 <strong>Consiglio:</strong> Le esperienze uniche e ben descritte attirano più prenotazioni e ottengono recensioni migliori!
+                      </p>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {/* Lista esperienze placeholder */}
+            <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+              <Sparkles className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Nessuna esperienza creata</h3>
+              <p className="text-gray-600 mb-4">
+                Inizia a offrire esperienze uniche ai tuoi ospiti per aumentare i guadagni!
+              </p>
+              <p className="text-sm text-gray-500">
+                Le esperienze possono generare fino al 40% di ricavi aggiuntivi rispetto al solo noleggio
+              </p>
             </div>
           </TabsContent>
 

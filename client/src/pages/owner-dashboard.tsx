@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -64,7 +65,6 @@ import {
   Key,
   Save
 } from "lucide-react";
-import { useLocation } from "wouter";
 
 const boatFormSchema = insertBoatSchema.extend({
   pricePerDay: z.string().min(1, "Prezzo richiesto"),

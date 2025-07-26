@@ -72,7 +72,7 @@ export function BoatCard({ boat }: BoatCardProps) {
 
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
-      <Link href={`/boats/${boat.id}`}>
+      <Link href={`/boats/${boat.id}`} className="block">
         <div className="relative">
           <img
             src={boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"}

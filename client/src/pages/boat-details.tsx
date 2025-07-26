@@ -36,6 +36,9 @@ export default function BoatDetails() {
   const boatIndex = pathParts.indexOf('boats') + 1;
   const id = boatIndex > 0 && pathParts[boatIndex] ? pathParts[boatIndex] : null;
 
+  // Debug logging
+  console.log('🚢 BoatDetails Debug:', { location, pathParts, boatIndex, id });
+
   const { data: boat, isLoading } = useQuery<Boat>({
     queryKey: ["/api/boats", id],
     enabled: !!id,

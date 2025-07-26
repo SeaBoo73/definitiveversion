@@ -148,10 +148,10 @@ export function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href="/customer-dashboard">Il mio profilo</Link>
+                      <Link href={user.role === "owner" ? "/owner-dashboard?tab=profile" : "/customer-dashboard"}>Il mio profilo</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/customer-dashboard">Le mie prenotazioni</Link>
+                      <Link href={user.role === "owner" ? "/owner-dashboard?tab=bookings" : "/customer-dashboard"}>Le mie prenotazioni</Link>
                     </DropdownMenuItem>
                     {user.role === "owner" && (
                       <DropdownMenuItem asChild>

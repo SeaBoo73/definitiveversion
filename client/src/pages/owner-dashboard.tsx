@@ -82,6 +82,11 @@ export default function OwnerDashboard() {
   const [location, setLocation] = useLocation();
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
+  
+  // Get tab from URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabFromUrl = urlParams.get('tab');
+  const initialTab = tabFromUrl || 'boats';
 
   // Fetch owner's boats
   const { data: boats = [], isLoading: boatsLoading } = useQuery<Boat[]>({
@@ -322,7 +327,7 @@ export default function OwnerDashboard() {
           </Card>
         </div>
 
-        <Tabs defaultValue="boats" className="space-y-6">
+        <Tabs defaultValue={initialTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="boats">Le mie imbarcazioni</TabsTrigger>
             <TabsTrigger value="experiences">Le mie esperienze</TabsTrigger>

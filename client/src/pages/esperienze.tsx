@@ -1,7 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { Link } from "wouter";
+import { useState } from "react";
 import { 
   Sunset, 
   MapPin, 
@@ -10,7 +14,6 @@ import {
   ChefHat, 
   Wine, 
   UtensilsCrossed, 
-
   Camera, 
   GraduationCap, 
   PartyPopper, 
@@ -18,7 +21,8 @@ import {
   Users,
   Ship,
   Crown,
-  Calendar
+  Calendar,
+  Search
 } from "lucide-react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { Header } from "@/components/header";
@@ -29,6 +33,12 @@ import { StructuredData } from "@/components/structured-data";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export function EsperienzePage() {
+  const [porto, setPorto] = useState("");
+  const [dataDal, setDataDal] = useState("");
+  const [dataAl, setDataAl] = useState("");
+  const [numeroPersone, setNumeroPersone] = useState("");
+  const [tipoEsperienza, setTipoEsperienza] = useState("");
+
   const experiences = [
     {
       category: "Tour ed Escursioni Tematiche",
@@ -204,55 +214,166 @@ export function EsperienzePage() {
         </div>
       </div>
 
-      {/* Experiences Grid */}
+      {/* Content with Sidebar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="space-y-12">
-          {experiences.map((category, categoryIndex) => (
-            <div key={categoryIndex} className="space-y-6">
-              {/* Category Header */}
-              <div className="flex items-center space-x-3 mb-8">
-                <div className="flex items-center justify-center w-12 h-12 bg-coral rounded-lg text-white">
-                  {category.icon}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Sidebar Form */}
+          <div className="lg:col-span-1">
+            <Card className="sticky top-6">
+              <CardHeader>
+                <CardTitle className="flex items-center text-lg">
+                  <Search className="h-5 w-5 mr-2" />
+                  Affina la ricerca
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Porto */}
+                <div className="space-y-2">
+                  <Label htmlFor="porto" className="text-sm font-medium">Porto</Label>
+                  <Select value={porto} onValueChange={setPorto}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Tutti i porti" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Tutti i porti</SelectItem>
+                      <SelectItem value="civitavecchia">Civitavecchia</SelectItem>
+                      <SelectItem value="gaeta">Gaeta</SelectItem>
+                      <SelectItem value="anzio">Anzio</SelectItem>
+                      <SelectItem value="terracina">Terracina</SelectItem>
+                      <SelectItem value="formia">Formia</SelectItem>
+                      <SelectItem value="ponza">Ponza</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <h2 className="text-3xl font-bold text-deep-navy">
-                  {category.category}
-                </h2>
-              </div>
 
-              {/* Experience Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {category.items.map((item, itemIndex) => (
-                  <Card key={itemIndex} className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02] border-gray-200">
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center space-x-2">
-                          <div className="flex items-center justify-center w-10 h-10 bg-ocean-light rounded-lg text-deep-navy">
-                            {item.icon}
+                {/* Dal */}
+                <div className="space-y-2">
+                  <Label htmlFor="dal" className="text-sm font-medium">Dal</Label>
+                  <Input
+                    id="dal"
+                    type="date"
+                    value={dataDal}
+                    onChange={(e) => setDataDal(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Al */}
+                <div className="space-y-2">
+                  <Label htmlFor="al" className="text-sm font-medium">Al</Label>
+                  <Input
+                    id="al"
+                    type="date"
+                    value={dataAl}
+                    onChange={(e) => setDataAl(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Numero persone */}
+                <div className="space-y-2">
+                  <Label htmlFor="persone" className="text-sm font-medium">Numero persone</Label>
+                  <Select value={numeroPersone} onValueChange={setNumeroPersone}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="2 ospiti" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">1 persona</SelectItem>
+                      <SelectItem value="2">2 persone</SelectItem>
+                      <SelectItem value="3">3 persone</SelectItem>
+                      <SelectItem value="4">4 persone</SelectItem>
+                      <SelectItem value="5">5 persone</SelectItem>
+                      <SelectItem value="6">6 persone</SelectItem>
+                      <SelectItem value="8">8 persone</SelectItem>
+                      <SelectItem value="10">10 persone</SelectItem>
+                      <SelectItem value="12">12+ persone</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Tipo esperienza */}
+                <div className="space-y-2">
+                  <Label htmlFor="tipo" className="text-sm font-medium">Tipo esperienza</Label>
+                  <Select value={tipoEsperienza} onValueChange={setTipoEsperienza}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Seleziona tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Tutti i tipi</SelectItem>
+                      <SelectItem value="tramonto">Tramonti in barca</SelectItem>
+                      <SelectItem value="tour-isole">Tour delle isole</SelectItem>
+                      <SelectItem value="vela">Giornate in barca a vela</SelectItem>
+                      <SelectItem value="pesca">Pesca sportiva</SelectItem>
+                      <SelectItem value="cena">Cena romantica</SelectItem>
+                      <SelectItem value="aperitivo">Aperitivo in rada</SelectItem>
+                      <SelectItem value="degustazione">Degustazione prodotti tipici</SelectItem>
+                      <SelectItem value="snorkeling">Snorkeling e immersioni</SelectItem>
+                      <SelectItem value="charter-skipper">Charter con skipper</SelectItem>
+                      <SelectItem value="charter-bareboat">Charter bareboat</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Search Button */}
+                <Button className="w-full bg-coral hover:bg-orange-600 text-white">
+                  <Search className="h-4 w-4 mr-2" />
+                  Cerca esperienze
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Experiences Grid */}
+          <div className="lg:col-span-3">
+            <div className="space-y-12">
+              {experiences.map((category, categoryIndex) => (
+                <div key={categoryIndex} className="space-y-6">
+                  {/* Category Header */}
+                  <div className="flex items-center space-x-3 mb-8">
+                    <div className="flex items-center justify-center w-12 h-12 bg-coral rounded-lg text-white">
+                      {category.icon}
+                    </div>
+                    <h2 className="text-3xl font-bold text-deep-navy">
+                      {category.category}
+                    </h2>
+                  </div>
+
+                  {/* Experience Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {category.items.map((item, itemIndex) => (
+                      <Card key={itemIndex} className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02] border-gray-200">
+                        <CardHeader className="pb-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center space-x-2">
+                              <div className="flex items-center justify-center w-10 h-10 bg-ocean-light rounded-lg text-deep-navy">
+                                {item.icon}
+                              </div>
+                              <CardTitle className="text-lg text-deep-navy group-hover:text-coral transition-colors">
+                                {item.title}
+                              </CardTitle>
+                            </div>
+                            <Badge className={`${badgeColors[item.badge as keyof typeof badgeColors]} border-0`}>
+                              {item.badge}
+                            </Badge>
                           </div>
-                          <CardTitle className="text-lg text-deep-navy group-hover:text-coral transition-colors">
-                            {item.title}
-                          </CardTitle>
-                        </div>
-                        <Badge className={`${badgeColors[item.badge as keyof typeof badgeColors]} border-0`}>
-                          {item.badge}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <CardDescription className="text-sea-gray text-base leading-relaxed">
-                        {item.description}
-                      </CardDescription>
-                      <div className="mt-4">
-                        <Button asChild variant="outline" className="w-full border-coral text-red-600 hover:bg-coral hover:text-white font-semibold">
-                          <Link href="/search">Scopri di più</Link>
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                        </CardHeader>
+                        <CardContent>
+                          <CardDescription className="text-sea-gray text-base leading-relaxed">
+                            {item.description}
+                          </CardDescription>
+                          <div className="mt-4">
+                            <Button asChild variant="outline" className="w-full border-coral text-red-600 hover:bg-coral hover:text-white font-semibold">
+                              <Link href="/search">Scopri di più</Link>
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
 

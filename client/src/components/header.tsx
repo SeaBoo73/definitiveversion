@@ -60,12 +60,13 @@ export function Header() {
               </Link>
               <Link 
                 href="/ormeggio" 
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/ormeggio" 
                     ? "text-blue-600 border-b-2 border-blue-600" 
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
+                <Anchor className="h-4 w-4" />
                 Ormeggio
               </Link>
               <Link 
@@ -213,13 +214,14 @@ export function Header() {
               </Link>
               <Link 
                 href="/ormeggio" 
-                className={`block px-3 py-2 rounded-md font-medium transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2 rounded-md font-medium transition-colors ${
                   location === "/ormeggio" 
                     ? "text-deep-navy bg-gray-100 font-semibold" 
                     : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <Anchor className="h-4 w-4" />
                 Ormeggio
               </Link>
               <Link 

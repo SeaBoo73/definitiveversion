@@ -104,14 +104,14 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
         fuelIncluded: data.fuelIncluded
       });
     },
-    onSuccess: (response) => {
-      const newBooking = response.data || response;
+    onSuccess: (response: any) => {
+      const newBooking = response;
       toast({
         title: "Prenotazione creata",
         description: "La tua prenotazione è stata registrata. Procedi al pagamento."
       });
       queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
-      onBookingComplete(newBooking.id);
+      onBookingComplete(newBooking?.id || Date.now());
     },
     onError: (error: any) => {
       toast({

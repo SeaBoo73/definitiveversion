@@ -184,7 +184,9 @@ The application follows modern web development best practices with a focus on ty
 - **Icona Esperienze Aggiornata:**
   - ✅ Sostituita icona Calendar con Sparkles per sezione Esperienze
   - ✅ Icona più accattivante e evocativa sia nel menu desktop che mobile
+  - ✅ Aggiornata anche nella pagina Servizi (external-services.tsx)
   - ✅ Design migliorato per attrarre maggior attenzione agli utenti
+  - ✅ Consistenza icona Sparkles su tutta la piattaforma
 
 ### July 25, 2025 - Integrazione Completa Porti Campania
 - **Sistema Località Esteso con Porti Campania:**

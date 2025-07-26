@@ -25,7 +25,8 @@ import {
   Search,
   Calendar,
   User,
-  Users
+  Users,
+  Sparkles
 } from 'lucide-react';
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { useQuery } from '@tanstack/react-query';
@@ -221,7 +222,7 @@ export default function ExternalServices() {
                 <span>Ormeggio</span>
               </Link>
               <Link href="/esperienze" className="flex items-center gap-2 text-gray-600 hover:text-ocean-blue transition-colors">
-                <Calendar className="h-4 w-4" />
+                <Sparkles className="h-4 w-4" />
                 <span>Esperienze</span>
               </Link>
               <Link href="/profilo" className="flex items-center gap-2 text-gray-600 hover:text-ocean-blue transition-colors">

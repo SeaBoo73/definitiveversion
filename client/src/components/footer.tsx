@@ -43,10 +43,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Servizi</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
-              <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa Sea Host</Link></li>
-              <li><Link href="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
-              <li><Link href="/recensioni-user" className="hover:text-white transition-colors">Recensioni</Link></li>
+              <li><Link to="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
+              <li><Link to="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa Sea Host</Link></li>
+              <li><Link to="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
+              <li><Link to="/recensioni-user" className="hover:text-white transition-colors">Recensioni</Link></li>
             </ul>
           </div>
 
@@ -54,10 +54,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Prenotazioni</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/come-prenotare" className="hover:text-white transition-colors">Come prenotare una barca?</Link></li>
-              <li><Link href="/modifica-prenotazione" className="hover:text-white transition-colors">Posso modificare la prenotazione?</Link></li>
-              <li><Link href="/politiche-cancellazione" className="hover:text-white transition-colors">Politiche di cancellazione</Link></li>
-              <li><Link href="/documenti" className="hover:text-white transition-colors">Documenti necessari</Link></li>
+              <li><Link to="/come-prenotare" className="hover:text-white transition-colors">Come prenotare una barca?</Link></li>
+              <li><Link to="/modifica-prenotazione" className="hover:text-white transition-colors">Posso modificare la prenotazione?</Link></li>
+              <li><Link to="/politiche-cancellazione" className="hover:text-white transition-colors">Politiche di cancellazione</Link></li>
+              <li><Link to="/documenti" className="hover:text-white transition-colors">Documenti necessari</Link></li>
             </ul>
           </div>
 
@@ -65,10 +65,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento</Link></li>
-              <li><Link href="/sicurezza-pagamenti" className="hover:text-white transition-colors">Sicurezza dei pagamenti</Link></li>
-              <li><Link href="/rimborsi" className="hover:text-white transition-colors">Richiesta di rimborso</Link></li>
-              <li><Link href="/fatturazione" className="hover:text-white transition-colors">Fatturazione</Link></li>
+              <li><Link to="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento</Link></li>
+              <li><Link to="/sicurezza-pagamenti" className="hover:text-white transition-colors">Sicurezza dei pagamenti</Link></li>
+              <li><Link to="/rimborsi" className="hover:text-white transition-colors">Richiesta di rimborso</Link></li>
+              <li><Link to="/fatturazione" className="hover:text-white transition-colors">Fatturazione</Link></li>
             </ul>
           </div>
 
@@ -76,10 +76,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Per i noleggiatori</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Come inserire la tua barca</Link></li>
-              <li><Link href="/gestione-prenotazioni" className="hover:text-white transition-colors">Gestione delle prenotazioni</Link></li>
-              <li><Link href="/commissioni-guadagni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
-              <li><Link href="/assistenza-proprietari" className="hover:text-white transition-colors">Assistenza proprietari</Link></li>
+              <li><Link to="/diventa-noleggiatore" className="hover:text-white transition-colors">Come inserire la tua barca</Link></li>
+              <li><Link to="/gestione-prenotazioni" className="hover:text-white transition-colors">Gestione delle prenotazioni</Link></li>
+              <li><Link to="/commissioni-guadagni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
+              <li><Link to="/assistenza-proprietari" className="hover:text-white transition-colors">Assistenza proprietari</Link></li>
             </ul>
           </div>
 
@@ -87,10 +87,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Supporto</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/aiuto" className="hover:text-white transition-colors">Centro assistenza</Link></li>
-              <li><Link href="/contatti" className="hover:text-white transition-colors">Contattaci</Link></li>
-              <li><Link href="/condizioni-servizio" className="hover:text-white transition-colors">Termini e condizioni</Link></li>
-              <li><Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/aiuto" className="hover:text-white transition-colors">Centro assistenza</Link></li>
+              <li><Link to="/contatti" className="hover:text-white transition-colors">Contattaci</Link></li>
+              <li><Link to="/condizioni-servizio" className="hover:text-white transition-colors">Termini e condizioni</Link></li>
+              <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
         </div>

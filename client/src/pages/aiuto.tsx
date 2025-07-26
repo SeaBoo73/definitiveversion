@@ -95,14 +95,7 @@ export default function AiutoPage() {
       color: "text-blue-600",
       bgColor: "bg-blue-50"
     },
-    {
-      title: "Telefono",
-      description: "Lunedì-Venerdì 9:00-18:00",
-      contact: "+39 06 1234 5678",
-      icon: Phone,
-      color: "text-green-600",
-      bgColor: "bg-green-50"
-    },
+
     {
       title: "Chat Live",
       description: "Assistenza immediata",

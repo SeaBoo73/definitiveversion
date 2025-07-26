@@ -13,7 +13,6 @@ const quickRegistrationSchema = z.object({
   firstName: z.string().min(2, "Nome richiesto"),
   lastName: z.string().min(2, "Cognome richiesto"),
   email: z.string().email("Email non valida"),
-  phone: z.string().min(10, "Numero di telefono valido richiesto"),
 });
 
 type QuickRegistrationForm = z.infer<typeof quickRegistrationSchema>;
@@ -39,7 +38,6 @@ export function QuickRegistration({
       firstName: "",
       lastName: "",
       email: "",
-      phone: "",
     }
   });
 
@@ -50,8 +48,7 @@ export function QuickRegistration({
       role: 'owner',
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email,
-      phone: data.phone
+      email: data.email
     });
     
     // Navigate to auth page with pre-filled data
@@ -108,20 +105,6 @@ export function QuickRegistration({
                   <FormLabel className="text-sm">Email</FormLabel>
                   <FormControl>
                     <Input type="email" {...field} placeholder="mario.rossi@email.com" className="text-sm" />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm">Telefono</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder="+39 333 123 4567" className="text-sm" />
                   </FormControl>
                   <FormMessage className="text-xs" />
                 </FormItem>

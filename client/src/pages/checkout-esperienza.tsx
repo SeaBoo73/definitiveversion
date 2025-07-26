@@ -157,10 +157,7 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: any }) => {
                     <CheckCircle2 className="h-4 w-4" />
                     <span>Conferma immediata via email</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-green-600">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Assistenza telefonica inclusa</span>
-                  </div>
+
                 </div>
               </CardContent>
             </Card>

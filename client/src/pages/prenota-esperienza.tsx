@@ -39,7 +39,7 @@ export default function PrenotaEsperienza() {
   const [nome, setNome] = useState("");
   const [cognome, setCognome] = useState("");
   const [email, setEmail] = useState("");
-  const [telefono, setTelefono] = useState("");
+
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -75,7 +75,7 @@ export default function PrenotaEsperienza() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!dataPrenotazione || !orario || !porto || !nome || !cognome || !email || !telefono) {
+    if (!dataPrenotazione || !orario || !porto || !nome || !cognome || !email) {
       toast({
         title: "Campi mancanti",
         description: "Compila tutti i campi obbligatori",
@@ -98,8 +98,7 @@ export default function PrenotaEsperienza() {
         cliente: {
           nome,
           cognome,
-          email,
-          telefono
+          email
         },
         note
       };
@@ -280,27 +279,15 @@ export default function PrenotaEsperienza() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email">Email *</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="tua@email.com"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="telefono">Telefono *</Label>
-                        <Input
-                          id="telefono"
-                          type="tel"
-                          value={telefono}
-                          onChange={(e) => setTelefono(e.target.value)}
-                          placeholder="+39 123 456 7890"
-                        />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="tua@email.com"
+                      />
                     </div>
                   </div>
 

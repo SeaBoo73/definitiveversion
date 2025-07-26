@@ -29,14 +29,7 @@ export default function ContattaciPage() {
       color: "text-blue-600",
       bgColor: "bg-blue-50"
     },
-    {
-      title: "Telefono",
-      value: "+39 06 1234 5678",
-      description: "Lunedì-Venerdì 9:00-18:00",
-      icon: Phone,
-      color: "text-green-600",
-      bgColor: "bg-green-50"
-    },
+
     {
       title: "Indirizzo",
       value: "Via del Porto 123, 00121 Roma",

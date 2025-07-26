@@ -33,7 +33,6 @@ import {
 const bookingFormSchema = z.object({
   guestName: z.string().min(2, "Nome richiesto"),
   guestEmail: z.string().email("Email non valida"),
-  guestPhone: z.string().min(10, "Numero di telefono richiesto"),
   numberOfGuests: z.string().min(1, "Numero di ospiti richiesto"),
   notes: z.string().optional(),
   skipperRequired: z.boolean().default(false),
@@ -76,7 +75,6 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
     defaultValues: {
       guestName: user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username : '',
       guestEmail: user?.email || '',
-      guestPhone: '',
       numberOfGuests: '1',
       notes: '',
       skipperRequired: boat.skipperRequired || false,
@@ -100,7 +98,7 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
         numberOfGuests: parseInt(data.numberOfGuests),
         guestName: data.guestName,
         guestEmail: data.guestEmail,
-        guestPhone: data.guestPhone,
+
         notes: data.notes,
         skipperRequired: data.skipperRequired,
         fuelIncluded: data.fuelIncluded
@@ -232,36 +230,23 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="guestPhone">Telefono *</Label>
-                  <Input
-                    id="guestPhone"
-                    {...form.register("guestPhone")}
-                  />
-                  {form.formState.errors.guestPhone && (
-                    <p className="text-sm text-red-600">{form.formState.errors.guestPhone.message}</p>
-                  )}
-                </div>
-                
-                <div>
-                  <Label htmlFor="numberOfGuests">Numero di ospiti *</Label>
-                  <Select 
-                    value={form.watch("numberOfGuests")} 
-                    onValueChange={(value) => form.setValue("numberOfGuests", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white">
-                      {Array.from({ length: boat.maxPersons }, (_, i) => (
-                        <SelectItem key={i + 1} value={(i + 1).toString()} className="text-black hover:bg-gray-100">
-                          <span className="text-black font-medium">{i + 1} {i + 1 === 1 ? 'ospite' : 'ospiti'}</span>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+              <div>
+                <Label htmlFor="numberOfGuests">Numero di ospiti *</Label>
+                <Select 
+                  value={form.watch("numberOfGuests")} 
+                  onValueChange={(value) => form.setValue("numberOfGuests", value)}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    {Array.from({ length: boat.maxPersons }, (_, i) => (
+                      <SelectItem key={i + 1} value={(i + 1).toString()} className="text-black hover:bg-gray-100">
+                        <span className="text-black font-medium">{i + 1} {i + 1 === 1 ? 'ospite' : 'ospiti'}</span>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

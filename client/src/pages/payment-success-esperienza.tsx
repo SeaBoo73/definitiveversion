@@ -40,8 +40,7 @@ export default function PaymentSuccessEsperienza() {
         cliente: {
           nome: "Mario",
           cognome: "Rossi",
-          email: "mario.rossi@example.com",
-          telefono: "+39 123 456 7890"
+          email: "mario.rossi@example.com"
         },
         status: "confirmed",
         paymentMethod: "Carta di credito",
@@ -162,10 +161,7 @@ export default function PaymentSuccessEsperienza() {
                     <Mail className="h-4 w-4 text-gray-500" />
                     <span>{bookingDetails.cliente.email}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-4 w-4 text-gray-500" />
-                    <span>{bookingDetails.cliente.telefono}</span>
-                  </div>
+
                 </div>
               </CardContent>
             </Card>

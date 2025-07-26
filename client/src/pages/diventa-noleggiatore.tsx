@@ -19,7 +19,6 @@ const ownerRegistrationSchema = z.object({
   firstName: z.string().min(2, "Nome richiesto"),
   lastName: z.string().min(2, "Cognome richiesto"),
   email: z.string().email("Email non valida"),
-  phone: z.string().min(10, "Numero di telefono valido richiesto"),
   acceptTerms: z.boolean().refine(val => val === true, "Devi accettare i termini di servizio"),
 });
 
@@ -37,7 +36,6 @@ export default function DiventaNoleggiatorePage() {
       firstName: urlParams.get('firstName') || "",
       lastName: urlParams.get('lastName') || "",
       email: urlParams.get('email') || "",
-      phone: urlParams.get('phone') || "",
       acceptTerms: false,
     };
   };
@@ -45,7 +43,7 @@ export default function DiventaNoleggiatorePage() {
   // Check if we have pre-filled data to determine initial step
   const hasPreFilledData = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.has('firstName') || urlParams.has('email') || urlParams.has('phone');
+    return urlParams.has('firstName') || urlParams.has('email');
   };
 
   const [step, setStep] = useState<"info" | "form">(hasPreFilledData() ? "form" : "info");
@@ -304,20 +302,6 @@ export default function DiventaNoleggiatorePage() {
                         <FormLabel>Email *</FormLabel>
                         <FormControl>
                           <Input type="email" {...field} placeholder="mario.rossi@email.com" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Telefono *</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="+39 333 123 4567" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

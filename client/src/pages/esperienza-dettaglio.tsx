@@ -251,10 +251,7 @@ export default function EsperienzaDettaglio() {
                 </Button>
                 
                 <div className="space-y-2 pt-4 border-t">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Phone className="h-4 w-4" />
-                    <span>Assistenza telefonica</span>
-                  </div>
+
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <Mail className="h-4 w-4" />
                     <span>Conferma immediata via email</span>

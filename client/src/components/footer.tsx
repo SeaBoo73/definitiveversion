@@ -54,9 +54,9 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Prenotazioni</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/come-prenotare" className="hover:text-white transition-colors">Come prenotare un'imbarcazione</Link></li>
+              <li><Link href="/come-prenotare" className="hover:text-white transition-colors">Come prenotare una barca?</Link></li>
+              <li><Link href="/modifica-prenotazione" className="hover:text-white transition-colors">Posso modificare la prenotazione?</Link></li>
               <li><Link href="/politiche-cancellazione" className="hover:text-white transition-colors">Politiche di cancellazione</Link></li>
-              <li><Link href="/modifica-prenotazione" className="hover:text-white transition-colors">Modificare una prenotazione</Link></li>
               <li><Link href="/documenti" className="hover:text-white transition-colors">Documenti necessari</Link></li>
             </ul>
           </div>
@@ -65,9 +65,9 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link href="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento accettati</Link></li>
+              <li><Link href="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento</Link></li>
               <li><Link href="/sicurezza-pagamenti" className="hover:text-white transition-colors">Sicurezza dei pagamenti</Link></li>
-              <li><Link href="/rimborsi" className="hover:text-white transition-colors">Rimborsi e restituzioni</Link></li>
+              <li><Link href="/rimborsi" className="hover:text-white transition-colors">Richiesta di rimborso</Link></li>
               <li><Link href="/fatturazione" className="hover:text-white transition-colors">Fatturazione</Link></li>
             </ul>
           </div>
@@ -78,7 +78,7 @@ export function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Come inserire la tua barca</Link></li>
               <li><Link href="/gestione-prenotazioni" className="hover:text-white transition-colors">Gestione delle prenotazioni</Link></li>
-              <li><Link href="/commissioni-guadagni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
+              <li><Link href="/commissioni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
               <li><Link href="/assistenza-proprietari" className="hover:text-white transition-colors">Assistenza proprietari</Link></li>
             </ul>
           </div>

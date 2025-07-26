@@ -73,8 +73,8 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
   const days = startDate && endDate ? differenceInDays(endDate, startDate) : 1;
   const basePrice = Number(boat.pricePerDay) * days;
   const skipperPrice = skipperRequested ? 50 * days : 0; // €50/day for skipper
-  const commission = (basePrice + skipperPrice) * 0.15;
-  const totalPrice = basePrice + skipperPrice + commission;
+  const platformFee = Math.round((basePrice + skipperPrice) * 0.15); // 15% commission
+  const totalPrice = basePrice + skipperPrice + platformFee;
 
   const createBookingMutation = useMutation({
     mutationFn: async (data: BookingFormData) => {
@@ -319,7 +319,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                   )}
                   <div className="flex justify-between">
                     <span>Commissione SeaGO (15%)</span>
-                    <span>€{commission.toFixed(2)}</span>
+                    <span>€{platformFee.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">

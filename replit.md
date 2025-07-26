@@ -181,6 +181,10 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Chiusura automatica suggerimenti quando si clicca fuori dall'area
   - ✅ Database completo porti con nome e regione per migliore UX
   - ✅ Sistema reattivo che mostra "Nessun porto trovato" per ricerche senza risultati
+- **Icona Esperienze Aggiornata:**
+  - ✅ Sostituita icona Calendar con Sparkles per sezione Esperienze
+  - ✅ Icona più accattivante e evocativa sia nel menu desktop che mobile
+  - ✅ Design migliorato per attrarre maggior attenzione agli utenti
 
 ### July 25, 2025 - Integrazione Completa Porti Campania
 - **Sistema Località Esteso con Porti Campania:**

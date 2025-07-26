@@ -6,7 +6,8 @@ import {
   Settings, 
   User,
   MapPin,
-  Compass
+  Compass,
+  Sparkles
 } from "lucide-react";
 
 export function MobileNavigation() {
@@ -31,7 +32,7 @@ export function MobileNavigation() {
       active: location === "/ormeggio"
     },
     {
-      icon: Calendar,
+      icon: Sparkles,
       label: "Esperienze", 
       path: "/esperienze",
       active: location === "/esperienze" || location === "/charter"

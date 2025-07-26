@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
-import { Anchor, Menu, User, Bot, X } from "lucide-react";
+import { Anchor, Menu, User, Bot, X, Sunset, Sparkles } from "lucide-react";
 import { useState } from "react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
@@ -49,12 +49,13 @@ export function Header() {
               </Link>
               <Link 
                 href="/esperienze" 
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/esperienze" || location === "/charter"
                     ? "text-blue-600 border-b-2 border-blue-600" 
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
+                <Sparkles className="h-4 w-4" />
                 Esperienze
               </Link>
               <Link 
@@ -200,13 +201,14 @@ export function Header() {
               </Link>
               <Link 
                 href="/esperienze" 
-                className={`block px-3 py-2 rounded-md font-medium transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2 rounded-md font-medium transition-colors ${
                   location === "/esperienze" || location === "/charter"
                     ? "text-deep-navy bg-gray-100 font-semibold" 
                     : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <Sparkles className="h-4 w-4" />
                 Esperienze
               </Link>
               <Link 

@@ -6,7 +6,7 @@ export function Footer() {
   const [, setLocation] = useLocation();
 
   const handleNavigate = (path: string) => {
-    console.log('Footer link clicked:', path);
+    console.log('🚢 SeaGO Footer Navigation:', path);
     setLocation(path);
   };
 
@@ -72,10 +72,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><button onClick={() => handleNavigate('/metodi-pagamento')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Metodi di pagamento</button></li>
-              <li><button onClick={() => handleNavigate('/sicurezza-pagamenti')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Sicurezza dei pagamenti</button></li>
-              <li><button onClick={() => handleNavigate('/rimborsi')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Richiesta di rimborso</button></li>
-              <li><button onClick={() => handleNavigate('/fatturazione')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Fatturazione</button></li>
+              <li><button onClick={() => handleNavigate('/metodi-pagamento')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Metodi di pagamento</button></li>
+              <li><button onClick={() => handleNavigate('/sicurezza-pagamenti')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Sicurezza dei pagamenti</button></li>  
+              <li><button onClick={() => handleNavigate('/rimborsi')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Richiesta di rimborso</button></li>
+              <li><button onClick={() => handleNavigate('/fatturazione')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Fatturazione</button></li>
             </ul>
           </div>
 

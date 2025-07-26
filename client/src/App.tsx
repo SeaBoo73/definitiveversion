@@ -64,6 +64,7 @@ import OrmeggioBookingPage from "@/pages/ormeggio-booking";
 import AdminPerformancePage from "@/pages/admin-performance";
 import AltreEsperienzePage from "@/pages/altre-esperienze";
 import CategoriesPage from "@/pages/categories-page";
+import { TestSingleLink } from "./test-single-link";
 
 function Router() {
   return (
@@ -143,6 +144,8 @@ function App() {
           <Router />
           {/* Mobile Navigation sempre visibile su tutte le pagine */}
           <MobileNavigation />
+          {/* Test temporaneo per debug */}
+          {import.meta.env.DEV && <TestSingleLink />}
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

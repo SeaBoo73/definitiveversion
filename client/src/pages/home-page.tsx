@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SearchFilters } from "@/components/search-filters";
+import { AppDownloadBanner } from "@/components/app-download-banner";
 
 import { BoatCard } from "@/components/boat-card";
 import { Button } from "@/components/ui/button";
@@ -75,6 +76,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 overflow-x-hidden">
       <SEOHead {...seoConfigs.home} />
       <StructuredData type="homepage" />
+      <AppDownloadBanner />
       <Header />
       
       {/* Hero Section */}

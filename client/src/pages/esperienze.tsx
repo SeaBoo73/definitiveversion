@@ -235,7 +235,7 @@ export function EsperienzePage() {
                       <SelectValue placeholder="Tutti i porti" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Tutti i porti</SelectItem>
+                      <SelectItem value="tutti">Tutti i porti</SelectItem>
                       <SelectItem value="civitavecchia">Civitavecchia</SelectItem>
                       <SelectItem value="gaeta">Gaeta</SelectItem>
                       <SelectItem value="anzio">Anzio</SelectItem>
@@ -299,7 +299,7 @@ export function EsperienzePage() {
                       <SelectValue placeholder="Seleziona tipo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Tutti i tipi</SelectItem>
+                      <SelectItem value="tutti">Tutti i tipi</SelectItem>
                       <SelectItem value="tramonto">Tramonti in barca</SelectItem>
                       <SelectItem value="tour-isole">Tour delle isole</SelectItem>
                       <SelectItem value="vela">Giornate in barca a vela</SelectItem>

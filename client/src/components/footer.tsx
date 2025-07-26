@@ -78,7 +78,7 @@ export function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li><Link href="/diventa-noleggiatore" className="hover:text-white transition-colors">Come inserire la tua barca</Link></li>
               <li><Link href="/gestione-prenotazioni" className="hover:text-white transition-colors">Gestione delle prenotazioni</Link></li>
-              <li><Link href="/commissioni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
+              <li><Link href="/commissioni-guadagni" className="hover:text-white transition-colors">Commissioni e guadagni</Link></li>
               <li><Link href="/assistenza-proprietari" className="hover:text-white transition-colors">Assistenza proprietari</Link></li>
             </ul>
           </div>

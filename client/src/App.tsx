@@ -103,6 +103,7 @@ function Router() {
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
       <Route path="/fatturazione" component={FatturazionePage} />
       <Route path="/commissioni" component={CommissioniGuadagniPage} />
+      <Route path="/commissioni-guadagni" component={CommissioniGuadagniPage} />
       <Route path="/gestione-prenotazioni" component={GestionePrenotazioniPage} />
       <Route path="/assistenza-proprietari" component={AssistenzaProprietariPage} />
       <Route path="/inserisci-barca" component={DiventaNoleggiatorePage} />

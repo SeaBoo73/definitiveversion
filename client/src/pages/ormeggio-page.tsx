@@ -26,7 +26,8 @@ import {
   Users,
   CheckCircle2,
   Heart,
-  Share2
+  Share2,
+  ArrowLeft
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -270,6 +271,16 @@ export default function OrmeggioPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back to Home Button */}
+          <div className="mb-6">
+            <Button variant="outline" asChild className="text-white border-white hover:bg-white hover:text-blue-600">
+              <Link href="/">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Torna alla Home
+              </Link>
+            </Button>
+          </div>
+          
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Marketplace Ormeggi

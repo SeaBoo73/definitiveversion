@@ -199,6 +199,14 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Design con sezioni colorate e icone specifiche per ogni area
   - ✅ Messaggi informativi per sicurezza e privacy dei dati bancari
   - ✅ Layout responsive ottimizzato per desktop e mobile
+- **Riquadro Statistiche Esperienze Dashboard:**
+  - ✅ Aggiunto riquadro "Esperienze" nelle statistiche principali dashboard
+  - ✅ Griglia statistiche estesa da 4 a 5 colonne per includere esperienze
+  - ✅ Icona Sparkles coral per distinguere le esperienze dalle imbarcazioni
+  - ✅ Layout responsive: 1 col mobile, 2 col tablet, 5 col desktop
+  - ✅ Statistica fissa "3" esperienze per esempio funzionalità
+  - ✅ Colore Euro cambiato da coral a green per evitare conflitti visivi
+  - ✅ Ordine logico: Imbarcazioni → Esperienze → Prenotazioni → Guadagni → Valutazione
 
 ### July 26, 2025 - Sistema Esperienze Porti Campania Esteso + Autofill Intelligente Ormeggi
 - **Espansione Completa Porti per Esperienze:**

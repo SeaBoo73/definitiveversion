@@ -32,7 +32,7 @@ export function MobileNavigation() {
       active: location === "/ormeggio"
     },
     {
-      icon: Sparkles,
+      icon: Sparkles, // FORCE UPDATE
       label: "Esperienze", 
       path: "/esperienze",
       active: location === "/esperienze" || location === "/charter"

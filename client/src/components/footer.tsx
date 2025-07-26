@@ -1,8 +1,15 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Anchor, Facebook, Instagram, Twitter, Youtube, Globe, DollarSign } from "lucide-react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Footer() {
+  const [, setLocation] = useLocation();
+
+  const handleNavigate = (path: string) => {
+    console.log('Footer link clicked:', path);
+    setLocation(path);
+  };
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -54,10 +61,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Prenotazioni</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link to="/come-prenotare" className="hover:text-white transition-colors">Come prenotare una barca?</Link></li>
-              <li><Link to="/modifica-prenotazione" className="hover:text-white transition-colors">Posso modificare la prenotazione?</Link></li>
-              <li><Link to="/politiche-cancellazione" className="hover:text-white transition-colors">Politiche di cancellazione</Link></li>
-              <li><Link to="/documenti" className="hover:text-white transition-colors">Documenti necessari</Link></li>
+              <li><button onClick={() => handleNavigate('/come-prenotare')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Come prenotare una barca?</button></li>
+              <li><button onClick={() => handleNavigate('/modifica-prenotazione')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Posso modificare la prenotazione?</button></li>
+              <li><button onClick={() => handleNavigate('/politiche-cancellazione')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Politiche di cancellazione</button></li>
+              <li><button onClick={() => handleNavigate('/documenti')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Documenti necessari</button></li>
             </ul>
           </div>
 
@@ -65,10 +72,10 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
             <ul className="space-y-2 text-gray-400">
-              <li><Link to="/metodi-pagamento" className="hover:text-white transition-colors">Metodi di pagamento</Link></li>
-              <li><Link to="/sicurezza-pagamenti" className="hover:text-white transition-colors">Sicurezza dei pagamenti</Link></li>
-              <li><Link to="/rimborsi" className="hover:text-white transition-colors">Richiesta di rimborso</Link></li>
-              <li><Link to="/fatturazione" className="hover:text-white transition-colors">Fatturazione</Link></li>
+              <li><button onClick={() => handleNavigate('/metodi-pagamento')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Metodi di pagamento</button></li>
+              <li><button onClick={() => handleNavigate('/sicurezza-pagamenti')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Sicurezza dei pagamenti</button></li>
+              <li><button onClick={() => handleNavigate('/rimborsi')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Richiesta di rimborso</button></li>
+              <li><button onClick={() => handleNavigate('/fatturazione')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer">Fatturazione</button></li>
             </ul>
           </div>
 

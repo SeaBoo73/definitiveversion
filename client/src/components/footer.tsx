@@ -60,22 +60,22 @@ export function Footer() {
           {/* Prenotazioni */}
           <div>
             <h4 className="font-semibold mb-4">Prenotazioni</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><button onClick={() => handleNavigate('/come-prenotare')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Come prenotare una barca?</button></li>
-              <li><button onClick={() => handleNavigate('/modifica-prenotazione')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Posso modificare la prenotazione?</button></li>
-              <li><button onClick={() => handleNavigate('/politiche-cancellazione')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Politiche di cancellazione</button></li>
-              <li><button onClick={() => handleNavigate('/documenti')} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Documenti necessari</button></li>
+            <ul className="space-y-2 text-gray-400" style={{pointerEvents: 'auto', zIndex: 10, position: 'relative'}}>
+              <li><button onClick={() => handleNavigate('/come-prenotare')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Come prenotare una barca?</button></li>
+              <li><button onClick={() => handleNavigate('/modifica-prenotazione')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Posso modificare la prenotazione?</button></li>
+              <li><button onClick={() => handleNavigate('/politiche-cancellazione')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Politiche di cancellazione</button></li>
+              <li><button onClick={() => handleNavigate('/documenti')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors cursor-pointer block text-left w-full bg-transparent border-0 p-0">Documenti necessari</button></li>
             </ul>
           </div>
 
           {/* Pagamenti */}
           <div>
             <h4 className="font-semibold mb-4">Pagamenti</h4>
-            <ul className="space-y-2 text-gray-400">
-              <li><button onClick={() => handleNavigate('/metodi-pagamento')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Metodi di pagamento</button></li>
-              <li><button onClick={() => handleNavigate('/sicurezza-pagamenti')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Sicurezza dei pagamenti</button></li>  
-              <li><button onClick={() => handleNavigate('/rimborsi')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Richiesta di rimborso</button></li>
-              <li><button onClick={() => handleNavigate('/fatturazione')} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Fatturazione</button></li>
+            <ul className="space-y-2 text-gray-400" style={{pointerEvents: 'auto', zIndex: 10, position: 'relative'}}>
+              <li><button onClick={() => handleNavigate('/metodi-pagamento')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Metodi di pagamento</button></li>
+              <li><button onClick={() => handleNavigate('/sicurezza-pagamenti')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Sicurezza dei pagamenti</button></li>  
+              <li><button onClick={() => handleNavigate('/rimborsi')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Richiesta di rimborso</button></li>
+              <li><button onClick={() => handleNavigate('/fatturazione')} style={{pointerEvents: 'auto', zIndex: 20}} className="hover:text-white transition-colors text-left w-full bg-transparent border-none p-0 text-gray-400 cursor-pointer block">Fatturazione</button></li>
             </ul>
           </div>
 

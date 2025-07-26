@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -238,12 +238,106 @@ const mooringSpots: MooringSpot[] = [
   }
 ];
 
+// Lista completa di tutti i porti del Lazio e Campania per autofill con regioni
+const portsWithRegion = [
+  // Porti del Lazio
+  { name: "Civitavecchia", region: "Lazio" },
+  { name: "Gaeta", region: "Lazio" },
+  { name: "Anzio", region: "Lazio" },
+  { name: "Terracina", region: "Lazio" },
+  { name: "Formia", region: "Lazio" },
+  { name: "Ponza", region: "Lazio" },
+  { name: "Ventotene", region: "Lazio" },
+  { name: "Nettuno", region: "Lazio" },
+  { name: "San Felice Circeo", region: "Lazio" },
+  { name: "Sperlonga", region: "Lazio" },
+  { name: "Sabaudia", region: "Lazio" },
+  { name: "Latina", region: "Lazio" },
+  { name: "Santa Marinella", region: "Lazio" },
+  { name: "Ladispoli", region: "Lazio" },
+  { name: "Fiumicino", region: "Lazio" },
+  // Porti della Campania
+  { name: "Napoli", region: "Campania" },
+  { name: "Salerno", region: "Campania" },
+  { name: "Sorrento", region: "Campania" },
+  { name: "Amalfi", region: "Campania" },
+  { name: "Positano", region: "Campania" },
+  { name: "Capri", region: "Campania" },
+  { name: "Ischia", region: "Campania" },
+  { name: "Procida", region: "Campania" },
+  { name: "Castellammare di Stabia", region: "Campania" },
+  { name: "Marina di Stabia", region: "Campania" },
+  { name: "Piano di Sorrento", region: "Campania" },
+  { name: "Vico Equense", region: "Campania" },
+  { name: "Massa Lubrense", region: "Campania" },
+  { name: "Cetara", region: "Campania" },
+  { name: "Maiori", region: "Campania" },
+  { name: "Minori", region: "Campania" },
+  { name: "Atrani", region: "Campania" },
+  { name: "Furore", region: "Campania" },
+  { name: "Conca dei Marini", region: "Campania" },
+  { name: "Ravello", region: "Campania" },
+  { name: "Agropoli", region: "Campania" },
+  { name: "Palinuro", region: "Campania" },
+  { name: "Marina di Camerota", region: "Campania" },
+  { name: "Sapri", region: "Campania" },
+  { name: "Scario", region: "Campania" },
+  { name: "Pisciotta", region: "Campania" },
+  { name: "Acciaroli", region: "Campania" },
+  { name: "Santa Maria di Castellabate", region: "Campania" },
+  { name: "San Marco di Castellabate", region: "Campania" },
+  { name: "Punta Licosa", region: "Campania" },
+  { name: "Marina di Ascea", region: "Campania" },
+  { name: "Velia", region: "Campania" },
+  { name: "Marina di Velia", region: "Campania" },
+  { name: "Castellabate", region: "Campania" }
+];
+
 export default function OrmeggioPage() {
   const [searchLocation, setSearchLocation] = useState("");
   const [maxLength, setMaxLength] = useState("");
   const [priceRange, setPriceRange] = useState("");
   const [services, setServices] = useState("");
   const [sortBy, setSortBy] = useState("featured");
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredPorts, setFilteredPorts] = useState<{ name: string; region: string }[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const suggestionsRef = useRef<HTMLDivElement>(null);
+
+  // Gestione autofill intelligente
+  useEffect(() => {
+    if (searchLocation.trim().length > 0) {
+      const filtered = portsWithRegion.filter(port =>
+        port.name.toLowerCase().includes(searchLocation.toLowerCase())
+      ).slice(0, 8); // Limita a 8 suggerimenti
+      setFilteredPorts(filtered);
+      setShowSuggestions(filtered.length > 0);
+    } else {
+      setFilteredPorts([]);
+      setShowSuggestions(false);
+    }
+  }, [searchLocation]);
+
+  // Chiudi suggerimenti quando si clicca fuori
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node) &&
+          inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handlePortSelection = (portName: string) => {
+    setSearchLocation(portName);
+    setShowSuggestions(false);
+    inputRef.current?.focus(); // Mantieni il focus sull'input
+  };
 
   const filteredSpots = mooringSpots.filter(spot => {
     if (searchLocation && !spot.location.toLowerCase().includes(searchLocation.toLowerCase())) return false;
@@ -335,11 +429,49 @@ export default function OrmeggioPage() {
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
+                ref={inputRef}
                 placeholder="Dove vuoi ormeggiare?"
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
+                onFocus={() => {
+                  if (filteredPorts.length > 0) {
+                    setShowSuggestions(true);
+                  }
+                }}
                 className="pl-10"
               />
+              
+              {/* Dropdown dei suggerimenti */}
+              {showSuggestions && (
+                <div 
+                  ref={suggestionsRef}
+                  className="absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-64 overflow-y-auto"
+                >
+                  {filteredPorts.map((port, index) => (
+                    <button
+                      key={index}
+                      className="w-full text-left px-4 py-3 hover:bg-blue-50 hover:text-blue-700 transition-colors flex items-center gap-3 border-b border-gray-100 last:border-b-0"
+                      onClick={() => handlePortSelection(port.name)}
+                    >
+                      <MapPin className="h-4 w-4 text-gray-400" />
+                      <span className="font-medium">{port.name}</span>
+                      <span className={`text-sm ml-auto px-2 py-1 rounded-full ${
+                        port.region === 'Campania' 
+                          ? 'bg-orange-100 text-orange-700' 
+                          : 'bg-blue-100 text-blue-700'
+                      }`}>
+                        {port.region}
+                      </span>
+                    </button>
+                  ))}
+                  {filteredPorts.length === 0 && searchLocation.trim().length > 0 && (
+                    <div className="px-4 py-3 text-gray-500 text-center">
+                      <Search className="h-4 w-4 mx-auto mb-2 text-gray-400" />
+                      Nessun porto trovato per "{searchLocation}"
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             
             <Select value={maxLength} onValueChange={setMaxLength}>

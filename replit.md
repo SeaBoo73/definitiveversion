@@ -162,7 +162,7 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
-### July 26, 2025 - Sistema Esperienze Porti Campania Esteso
+### July 26, 2025 - Sistema Esperienze Porti Campania Esteso + Autofill Intelligente Ormeggi
 - **Espansione Completa Porti per Esperienze:**
   - ✅ Aggiunta lista completa di 48 porti (15 Lazio + 33 Campania) nella sezione Esperienze
   - ✅ Dropdown porti include tutti i porti campani: Napoli, Salerno, Sorrento, Amalfi, Positano, Capri, Ischia, Procida
@@ -172,6 +172,15 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Pagine prenota-esperienza aggiornate con porti Campania per ogni tipo di esperienza
   - ✅ Sistema di prenotazione esperienze con pagamento Stripe completamente funzionante
   - ✅ Flusso completo: Esplora → Dettaglio → Prenota → Pagamento → Conferma
+- **Sistema Autofill Intelligente Ormeggi Implementato:**
+  - ✅ Campo "Dove vuoi ormeggiare?" con autofill intelligente basato su 48 porti
+  - ✅ Suggerimenti in tempo reale mentre l'utente digita con filtro case-insensitive
+  - ✅ Dropdown con massimo 8 suggerimenti per località cercata
+  - ✅ Badge colorati per distinguere regioni: Lazio (blu) e Campania (arancione)
+  - ✅ Click-to-select per selezione rapida destinazione con icona MapPin
+  - ✅ Chiusura automatica suggerimenti quando si clicca fuori dall'area
+  - ✅ Database completo porti con nome e regione per migliore UX
+  - ✅ Sistema reattivo che mostra "Nessun porto trovato" per ricerche senza risultati
 
 ### July 25, 2025 - Integrazione Completa Porti Campania
 - **Sistema Località Esteso con Porti Campania:**

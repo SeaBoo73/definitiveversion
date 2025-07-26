@@ -187,6 +187,11 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Aggiornata anche nella pagina Servizi (external-services.tsx)
   - ✅ Design migliorato per attrarre maggior attenzione agli utenti
   - ✅ Consistenza icona Sparkles su tutta la piattaforma
+- **Icona Ormeggio Homepage Aggiunta:**
+  - ✅ Aggiunta icona Anchor accanto al titolo "Trova il tuo ormeggio ideale"
+  - ✅ Icona blu oceano (text-ocean-blue) coerente con il design marittimo
+  - ✅ Layout centrato con gap-3 per spaziatura perfetta
+  - ✅ Miglioramento visivo sezione ormeggi nella homepage desktop
 
 ### July 25, 2025 - Integrazione Completa Porti Campania
 - **Sistema Località Esteso con Porti Campania:**

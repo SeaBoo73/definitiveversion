@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useLocation } from "wouter";
+import { AiChat } from "@/components/ai-chat";
 import { 
   ArrowLeft,
   Phone, 
@@ -74,6 +75,7 @@ export default function AiutoPage() {
   const [selectedCategory, setSelectedCategory] = useState("Tutte");
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const [showAiChat, setShowAiChat] = useState(false);
 
   const filteredFaqs = faqData.filter(faq => {
     const matchesCategory = selectedCategory === "Tutte" || faq.category === selectedCategory;
@@ -84,6 +86,10 @@ export default function AiutoPage() {
 
   const toggleFaq = (id: number) => {
     setExpandedFaq(expandedFaq === id ? null : id);
+  };
+
+  const handleChatClick = () => {
+    setShowAiChat(true);
   };
 
   const contactOptions = [
@@ -137,7 +143,11 @@ export default function AiutoPage() {
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Contattaci</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {contactOptions.map((option, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow cursor-pointer">
+              <Card 
+                key={index} 
+                className="hover:shadow-lg transition-shadow cursor-pointer"
+                onClick={option.title === "Chat Live" ? handleChatClick : undefined}
+              >
                 <CardHeader>
                   <div className={`w-12 h-12 ${option.bgColor} rounded-lg flex items-center justify-center mb-4`}>
                     <option.icon className={`h-6 w-6 ${option.color}`} />
@@ -266,6 +276,12 @@ export default function AiutoPage() {
       </div>
 
       <Footer />
+      
+      {/* AI Chat Component */}
+      <AiChat 
+        isOpen={showAiChat} 
+        onClose={() => setShowAiChat(false)} 
+      />
     </div>
   );
 }

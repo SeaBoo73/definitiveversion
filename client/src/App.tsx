@@ -64,7 +64,6 @@ import OrmeggioBookingPage from "@/pages/ormeggio-booking";
 import AdminPerformancePage from "@/pages/admin-performance";
 import AltreEsperienzePage from "@/pages/altre-esperienze";
 import CategoriesPage from "@/pages/categories-page";
-import { TestSingleLink } from "./test-single-link";
 
 function Router() {
   return (
@@ -102,6 +101,7 @@ function Router() {
       <Route path="/recensioni-user" component={ReviewsPage} />
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
+      <Route path="/come-prenotare" component={ComePrenotarePage} />
       <Route path="/fatturazione" component={FatturazionePage} />
       <Route path="/commissioni" component={CommissioniGuadagniPage} />
       <Route path="/commissioni-guadagni" component={CommissioniGuadagniPage} />
@@ -144,8 +144,7 @@ function App() {
           <Router />
           {/* Mobile Navigation sempre visibile su tutte le pagine */}
           <MobileNavigation />
-          {/* Test temporaneo per debug */}
-          {import.meta.env.DEV && <TestSingleLink />}
+
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

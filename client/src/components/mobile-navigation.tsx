@@ -2,7 +2,6 @@ import { Link, useLocation } from "wouter";
 import { useEffect } from "react";
 import { 
   Search, 
-  Calendar, 
   Settings, 
   User,
   MapPin,
@@ -12,6 +11,7 @@ import {
 
 export function MobileNavigation() {
   const [location] = useLocation();
+  // Updated: Using Sparkles icon for Esperienze
 
   // Scroll to top when navigation changes
   useEffect(() => {

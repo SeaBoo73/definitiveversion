@@ -109,7 +109,6 @@ function Router() {
       <Route path="/recensioni-user" component={ReviewsPage} />
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
-      <Route path="/come-prenotare" component={ComePrenotarePage} />
       <Route path="/fatturazione" component={FatturazionePage} />
       <Route path="/commissioni" component={CommissioniGuadagniPage} />
       <Route path="/commissioni-guadagni" component={CommissioniGuadagniPage} />

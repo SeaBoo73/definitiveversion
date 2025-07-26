@@ -1,110 +1,176 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Calendar, CreditCard, CheckCircle, Anchor, Users } from "lucide-react";
 
 export default function ComePrenotarePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <main className="pt-20 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-sm p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">
-              Come Prenotare una Barca
-            </h1>
-            
-            <div className="prose max-w-none">
-              <h2 className="text-xl font-semibold mb-4">Guida Passo-Passo</h2>
-              
-              <div className="space-y-6">
-                <div className="flex gap-4 p-4 bg-blue-50 rounded-lg">
-                  <div className="flex-shrink-0 w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center font-bold">
-                    1
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Cerca la Barca Perfetta</h3>
-                    <p className="text-gray-600">
-                      Utilizza i filtri di ricerca per trovare la barca ideale: tipo, 
-                      dimensioni, località, date disponibili e servizi inclusi.
-                    </p>
-                  </div>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Come Prenotare una Barca
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Guida passo-passo per prenotare la tua imbarcazione ideale su SeaGO
+          </p>
+        </div>
+
+        <Card className="mb-12">
+          <CardHeader>
+            <CardTitle>Processo di Prenotazione in 4 Semplici Passi</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Search className="h-8 w-8 text-blue-600" />
                 </div>
-                
-                <div className="flex gap-4 p-4 bg-green-50 rounded-lg">
-                  <div className="flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center font-bold">
-                    2
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Seleziona Date e Orari</h3>
-                    <p className="text-gray-600">
-                      Scegli le date di noleggio e gli orari di ritiro/riconsegna. 
-                      Controlla la disponibilità in tempo reale.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4 p-4 bg-yellow-50 rounded-lg">
-                  <div className="flex-shrink-0 w-8 h-8 bg-yellow-500 text-white rounded-full flex items-center justify-center font-bold">
-                    3
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Aggiungi Servizi Extra</h3>
-                    <p className="text-gray-600">
-                      Personalizza la tua esperienza con servizi aggiuntivi come 
-                      skipper professionale, carburante incluso o attrezzature extra.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4 p-4 bg-purple-50 rounded-lg">
-                  <div className="flex-shrink-0 w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold">
-                    4
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Completa i Tuoi Dati</h3>
-                    <p className="text-gray-600">
-                      Inserisci i dati personali e i documenti richiesti. 
-                      Verifica che tutti i partecipanti abbiano i documenti necessari.
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4 p-4 bg-red-50 rounded-lg">
-                  <div className="flex-shrink-0 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center font-bold">
-                    5
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Effettua il Pagamento</h3>
-                    <p className="text-gray-600">
-                      Procedi al checkout sicuro e completa il pagamento con carta 
-                      di credito, PayPal o altri metodi disponibili.
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
-                <h3 className="font-semibold text-blue-900 mb-2">✅ Conferma Immediata</h3>
-                <p className="text-blue-800">
-                  Riceverai immediatamente una email di conferma con tutti i dettagli 
-                  della prenotazione e le informazioni per il check-in.
+                <h3 className="font-semibold mb-2">1. Cerca</h3>
+                <p className="text-sm text-gray-600">
+                  Trova la barca perfetta usando i nostri filtri avanzati
                 </p>
               </div>
-              
-              <div className="bg-gray-50 border rounded-lg p-4 mt-6">
-                <h3 className="font-semibold mb-2">💡 Consigli Utili</h3>
-                <ul className="text-gray-600 space-y-1">
-                  <li>• Prenota in anticipo per migliore disponibilità</li>
-                  <li>• Controlla le condizioni meteo prima della partenza</li>
-                  <li>• Porta documenti di identità e patente nautica se richiesta</li>
-                  <li>• Arrivi 30 minuti prima dell'orario di ritiro</li>
-                </ul>
+              <div className="text-center">
+                <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">2. Seleziona Date</h3>
+                <p className="text-sm text-gray-600">
+                  Scegli le date del tuo noleggio e verifica la disponibilità
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <CreditCard className="h-8 w-8 text-orange-600" />
+                </div>
+                <h3 className="font-semibold mb-2">3. Paga</h3>
+                <p className="text-sm text-gray-600">
+                  Completa il pagamento in modo sicuro con Stripe
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="font-semibold mb-2">4. Goditi</h3>
+                <p className="text-sm text-gray-600">
+                  Ricevi conferma e preparati per la tua avventura
+                </p>
               </div>
             </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Anchor className="h-6 w-6 mr-2 text-blue-600" />
+                Cosa Include la Prenotazione
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                  <span className="text-sm">Assicurazione completa inclusa</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                  <span className="text-sm">Assistenza 24/7 durante il noleggio</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                  <span className="text-sm">Check-in e check-out assistiti</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                  <span className="text-sm">Equipaggiamenti di sicurezza obbligatori</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                  <span className="text-sm">Chat diretta con il proprietario</span>
+                </div>
+                <div className="flex items-center">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+                  <span className="text-sm">Cancellazione flessibile*</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Users className="h-6 w-6 mr-2 text-green-600" />
+                Servizi Aggiuntivi
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h4 className="font-semibold text-blue-700">Skipper Professionale</h4>
+                  <p className="text-sm text-gray-600">Capitano esperto per una navigazione sicura e rilassante</p>
+                  <p className="text-xs text-blue-600 font-semibold">Da €150/giorno</p>
+                </div>
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h4 className="font-semibold text-green-700">Carburante Incluso</h4>
+                  <p className="text-sm text-gray-600">Naviga senza pensieri con il carburante già incluso</p>
+                  <p className="text-xs text-green-600 font-semibold">Secondo consumo</p>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h4 className="font-semibold text-orange-700">Equipaggiamenti Extra</h4>
+                  <p className="text-sm text-gray-600">Attrezzature per sport acquatici, pesca, snorkeling</p>
+                  <p className="text-xs text-orange-600 font-semibold">Su richiesta</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Tempistiche di Prenotazione</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-blue-50 p-4 rounded-lg text-center">
+                <h4 className="font-bold text-blue-800 text-lg mb-2">Immediata</h4>
+                <p className="text-sm text-blue-700">
+                  La maggior parte delle barche può essere prenotata istantaneamente
+                </p>
+              </div>
+              <div className="bg-yellow-50 p-4 rounded-lg text-center">
+                <h4 className="font-bold text-yellow-800 text-lg mb-2">Entro 24h</h4>
+                <p className="text-sm text-yellow-700">
+                  Alcune richieste necessitano conferma del proprietario
+                </p>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg text-center">
+                <h4 className="font-bold text-green-800 text-lg mb-2">Garantita</h4>
+                <p className="text-sm text-green-700">
+                  Ricevi sempre una risposta definitiva entro 24 ore
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="bg-gradient-to-r from-blue-600 to-ocean-blue rounded-lg p-8 text-white text-center">
+          <h3 className="text-2xl font-bold mb-4">Pronto a Partire?</h3>
+          <p className="mb-6 opacity-90">
+            Oltre 200 imbarcazioni ti aspettano per la tua prossima avventura in mare.
+          </p>
+          <div className="space-y-2">
+            <p className="text-sm opacity-80">*Condizioni di cancellazione variano per barca</p>
+            <p className="text-sm opacity-80">Assistenza disponibile 24/7 al numero 1530 (Guardia Costiera)</p>
           </div>
         </div>
-      </main>
-      
+      </div>
+
       <Footer />
     </div>
   );

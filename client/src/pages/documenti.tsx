@@ -1,406 +1,244 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, CreditCard, Shield, AlertTriangle, CheckCircle, User, Anchor, Car } from "lucide-react";
+import { FileText, CreditCard, IdCard, Shield, AlertTriangle, CheckCircle } from "lucide-react";
 
 export default function DocumentiPage() {
-  const documentTypes = [
-    {
-      category: "Documenti obbligatori",
-      required: true,
-      icon: <FileText className="h-6 w-6 text-red-600" />,
-      documents: [
-        {
-          name: "Documento di identità valido",
-          description: "Carta d'identità, passaporto o patente di guida",
-          required: true,
-          notes: "Deve essere in corso di validità e non scaduto"
-        },
-        {
-          name: "Codice fiscale",
-          description: "Tessera sanitaria o certificato di attribuzione",
-          required: true,
-          notes: "Necessario per la registrazione del contratto"
-        }
-      ]
-    },
-    {
-      category: "Per imbarcazioni senza patente",
-      required: false,
-      icon: <Anchor className="h-6 w-6 text-green-600" />,
-      documents: [
-        {
-          name: "Nessuna patente richiesta",
-          description: "Imbarcazioni fino a 40 CV senza patente nautica",
-          required: false,
-          notes: "Età minima 18 anni. Briefing di sicurezza obbligatorio"
-        },
-        {
-          name: "Esperienza di navigazione",
-          description: "Dichiarazione di esperienza (consigliata)",
-          required: false,
-          notes: "Utile per dimostrare competenze nautiche di base"
-        }
-      ]
-    },
-    {
-      category: "Patenti nautiche",
-      required: false,
-      icon: <Car className="h-6 w-6 text-blue-600" />,
-      documents: [
-        {
-          name: "Patente nautica entro 12 miglia",
-          description: "Per imbarcazioni oltre 40 CV o 10 metri",
-          required: false,
-          notes: "Obbligatoria per motori oltre 40 CV"
-        },
-        {
-          name: "Patente nautica senza limiti",
-          description: "Per navigazione oltre 12 miglia dalla costa",
-          required: false,
-          notes: "Richiesta per charter e yacht di lusso"
-        },
-        {
-          name: "Certificato VHF",
-          description: "Certificato di operatore radio VHF",
-          required: false,
-          notes: "Obbligatorio per imbarcazioni con radio VHF"
-        }
-      ]
-    },
-    {
-      category: "Documenti di pagamento",
-      required: true,
-      icon: <CreditCard className="h-6 w-6 text-purple-600" />,
-      documents: [
-        {
-          name: "Carta di credito valida",
-          description: "Visa, Mastercard, American Express",
-          required: true,
-          notes: "Per il pagamento e la cauzione di sicurezza"
-        },
-        {
-          name: "Autorizzazione prelievo cauzione",
-          description: "Consenso per il blocco della cauzione",
-          required: true,
-          notes: "Importo variabile da €500 a €2000 a seconda dell'imbarcazione"
-        }
-      ]
-    },
-    {
-      category: "Assicurazione e garanzie",
-      required: false,
-      icon: <Shield className="h-6 w-6 text-orange-600" />,
-      documents: [
-        {
-          name: "Assicurazione di viaggio",
-          description: "Copertura per annullamenti e emergenze",
-          required: false,
-          notes: "Consigliata per proteggere la prenotazione"
-        },
-        {
-          name: "Certificato medico",
-          description: "Per noleggi lunghi o persone con condizioni mediche",
-          required: false,
-          notes: "Richiesto solo in casi specifici o per charter professionali"
-        }
-      ]
-    }
-  ];
-
-  const boatTypes = [
-    {
-      type: "Gommoni senza patente",
-      maxPower: "40 CV",
-      licenseRequired: "Nessuna",
-      ageRequired: "18 anni",
-      briefing: "Obbligatorio",
-      documents: ["Documento identità", "Codice fiscale"]
-    },
-    {
-      type: "Barche a motore",
-      maxPower: "Oltre 40 CV",
-      licenseRequired: "Patente nautica",
-      ageRequired: "18 anni",
-      briefing: "Obbligatorio",
-      documents: ["Documento identità", "Patente nautica", "Codice fiscale"]
-    },
-    {
-      type: "Barche a vela",
-      maxPower: "Motore ausiliario",
-      licenseRequired: "Patente nautica",
-      ageRequired: "18 anni",
-      briefing: "Obbligatorio",
-      documents: ["Documento identità", "Patente nautica", "Esperienza vela"]
-    },
-    {
-      type: "Yacht e Charter",
-      maxPower: "Illimitata",
-      licenseRequired: "Patente senza limiti",
-      ageRequired: "21 anni",
-      briefing: "Completo",
-      documents: ["Documento identità", "Patente senza limiti", "Certificato VHF", "Referenze"]
-    }
-  ];
-
-  const specialRequirements = [
-    {
-      situation: "Noleggio con skipper",
-      requirements: [
-        "Documento di identità",
-        "Nessuna patente richiesta",
-        "Briefing di sicurezza"
-      ],
-      notes: "Lo skipper professionista ha tutte le certificazioni necessarie"
-    },
-    {
-      situation: "Gruppi e famiglie",
-      requirements: [
-        "Lista passeggeri completa",
-        "Documenti per tutti i maggiorenni",
-        "Autorizzazione genitori per minorenni"
-      ],
-      notes: "Ogni persona a bordo deve essere registrata"
-    },
-    {
-      situation: "Stranieri UE",
-      requirements: [
-        "Passaporto o carta d'identità UE",
-        "Patente nautica del paese di origine",
-        "Traduzione certificata (se richiesta)"
-      ],
-      notes: "Validità automatica per patenti UE"
-    },
-    {
-      situation: "Stranieri extra-UE",
-      requirements: [
-        "Passaporto valido",
-        "Visto turistico (se necessario)",
-        "Patente nautica internazionale o traduzione"
-      ],
-      notes: "Controllo validità patente case-by-case"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Documenti Necessari
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Guida completa ai documenti richiesti per il noleggio di imbarcazioni. 
-            Prepara tutto in anticipo per un check-in rapido e senza problemi.
+            Scopri quali documenti servono per noleggiare un'imbarcazione su SeaGO
           </p>
         </div>
 
-        {/* Alert importante */}
-        <Alert className="mb-8">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertDescription>
-            <strong>Importante:</strong> Porta sempre i documenti originali. Copie non sono accettate per il check-in. 
-            Verifica i requisiti specifici dell'imbarcazione prima della partenza.
-          </AlertDescription>
-        </Alert>
-
-        {/* Tabs per navigazione */}
-        <Tabs defaultValue="documents" className="mb-8">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="documents">Documenti richiesti</TabsTrigger>
-            <TabsTrigger value="boat-types">Per tipo di barca</TabsTrigger>
-            <TabsTrigger value="special">Casi speciali</TabsTrigger>
-          </TabsList>
-
-          {/* Tab: Documenti */}
-          <TabsContent value="documents" className="space-y-6">
-            {documentTypes.map((category, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-3">
-                      {category.icon}
-                      {category.category}
-                    </CardTitle>
-                    <Badge variant={category.required ? "destructive" : "secondary"}>
-                      {category.required ? "Obbligatorio" : "Opzionale"}
-                    </Badge>
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <IdCard className="h-6 w-6 mr-2 text-blue-600" />
+                Documenti Personali
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Documento d'Identità</h4>
+                    <p className="text-sm text-gray-600">Carta d'identità, passaporto o patente di guida validi</p>
                   </div>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="space-y-4">
-                    {category.documents.map((doc, docIndex) => (
-                      <div key={docIndex} className="border rounded-lg p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-semibold text-gray-900">{doc.name}</h4>
-                          {doc.required ? (
-                            <Badge variant="destructive" className="text-xs">Obbligatorio</Badge>
-                          ) : (
-                            <Badge variant="secondary" className="text-xs">Opzionale</Badge>
-                          )}
-                        </div>
-                        <p className="text-gray-600 mb-2">{doc.description}</p>
-                        {doc.notes && (
-                          <div className="bg-blue-50 text-blue-800 text-sm p-2 rounded">
-                            <strong>Nota:</strong> {doc.notes}
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Codice Fiscale</h4>
+                    <p className="text-sm text-gray-600">Necessario per la registrazione e fatturazione</p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-
-          {/* Tab: Per tipo di barca */}
-          <TabsContent value="boat-types" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {boatTypes.map((boat, index) => (
-                <Card key={index}>
-                  <CardHeader>
-                    <CardTitle className="text-lg">{boat.type}</CardTitle>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <span className="text-gray-600">Potenza max:</span>
-                          <div className="font-semibold">{boat.maxPower}</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Patente:</span>
-                          <div className="font-semibold">{boat.licenseRequired}</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Età minima:</span>
-                          <div className="font-semibold">{boat.ageRequired}</div>
-                        </div>
-                        <div>
-                          <span className="text-gray-600">Briefing:</span>
-                          <div className="font-semibold">{boat.briefing}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="pt-3 border-t">
-                        <h5 className="font-semibold text-gray-900 mb-2">Documenti richiesti:</h5>
-                        <ul className="space-y-1">
-                          {boat.documents.map((doc, docIndex) => (
-                            <li key={docIndex} className="flex items-center gap-2 text-sm">
-                              <CheckCircle className="h-3 w-3 text-green-600" />
-                              {doc}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Tab: Casi speciali */}
-          <TabsContent value="special" className="space-y-6">
-            {specialRequirements.map((special, index) => (
-              <Card key={index}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    {special.situation}
-                  </CardTitle>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h5 className="font-semibold text-gray-900 mb-3">Requisiti specifici:</h5>
-                      <ul className="space-y-2">
-                        {special.requirements.map((req, reqIndex) => (
-                          <li key={reqIndex} className="flex items-center gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0" />
-                            <span>{req}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-yellow-50 text-yellow-800 text-sm p-3 rounded">
-                      <strong>Attenzione:</strong> {special.notes}
-                    </div>
+                </div>
+                <div className="flex items-start">
+                  <CreditCard className="h-5 w-5 mr-2 text-blue-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Carta di Credito</h4>
+                    <p className="text-sm text-gray-600">Per il pagamento e eventuale deposito cauzionale</p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </TabsContent>
-        </Tabs>
-
-        {/* Checklist finale */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CheckCircle className="h-6 w-6" />
-              Checklist prima della partenza
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">24 ore prima</h4>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Verifica validità documenti</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Controlla previsioni meteo</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Conferma orario check-in</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Prepara lista passeggeri</span>
-                  </li>
-                </ul>
+                </div>
               </div>
-              
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-4">Al check-in</h4>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Presenta documenti originali</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Firma contratto di noleggio</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Partecipa al briefing di sicurezza</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-4 h-4 border border-gray-300 rounded"></div>
-                    <span>Ispeziona l'imbarcazione</span>
-                  </li>
-                </ul>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <FileText className="h-6 w-6 mr-2 text-green-600" />
+                Patenti Nautiche
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h4 className="font-semibold text-green-700">Barche senza Patente</h4>
+                  <p className="text-sm text-gray-600">Nessuna patente richiesta per motori fino a 40 CV</p>
+                  <p className="text-xs text-green-600 font-semibold">Solo maggiorenni</p>
+                </div>
+                <div className="border-l-4 border-blue-400 pl-4">
+                  <h4 className="font-semibold text-blue-700">Patente Nautica Entro le Miglia</h4>
+                  <p className="text-sm text-gray-600">Per barche oltre 40 CV e navigazione costiera</p>
+                  <p className="text-xs text-blue-600 font-semibold">Entro 12 miglia dalla costa</p>
+                </div>
+                <div className="border-l-4 border-orange-400 pl-4">
+                  <h4 className="font-semibold text-orange-700">Patente Nautica Senza Limiti</h4>
+                  <p className="text-sm text-gray-600">Per navigazione d'altura e yacht più grandi</p>
+                  <p className="text-xs text-orange-600 font-semibold">Navigazione illimitata</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Documenti per Categoria di Imbarcazione</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Gommoni</h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  Solo documento d'identità
+                </p>
+                <div className="text-xs text-green-600 font-semibold">
+                  Nessuna patente richiesta
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <IdCard className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Barche a Motore</h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  Patente nautica richiesta
+                </p>
+                <div className="text-xs text-blue-600 font-semibold">
+                  Entro le miglia o senza limiti
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Yacht</h3>
+                <p className="text-sm text-gray-600 mb-2">
+                  Patente + esperienza comprovata
+                </p>
+                <div className="text-xs text-purple-600 font-semibold">
+                  Può richiedere skipper obbligatorio
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-8">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Shield className="h-6 w-6 mr-2 text-green-600" />
+                Documenti per l'Assicurazione
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-gray-600 text-sm">
+                  L'assicurazione è inclusa in ogni prenotazione. Potrebbero essere richiesti:
+                </p>
+                <div className="space-y-2">
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                    <span>Certificato medico per età &gt; 65 anni</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                    <span>Dichiarazione esperienza nautica</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                    <span>Lista equipaggio (per barche grandi)</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <AlertTriangle className="h-6 w-6 mr-2 text-orange-600" />
+                Documenti Stranieri
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <p className="text-gray-600 text-sm">
+                  Per cittadini non UE sono necessari documenti aggiuntivi:
+                </p>
+                <div className="space-y-2">
+                  <div className="flex items-center text-sm">
+                    <FileText className="h-4 w-4 mr-2 text-blue-500" />
+                    <span>Passaporto con visto valido</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <FileText className="h-4 w-4 mr-2 text-blue-500" />
+                    <span>Patente nautica del paese d'origine</span>
+                  </div>
+                  <div className="flex items-center text-sm">
+                    <FileText className="h-4 w-4 mr-2 text-blue-500" />
+                    <span>Traduzione ufficiale dei documenti</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Check-in e Verifica Documenti</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-blue-50 p-6 rounded-lg">
+              <h4 className="font-semibold text-blue-800 mb-3">Cosa Aspettarsi al Check-in</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <h5 className="font-semibold text-sm mb-2">Verifica Documenti:</h5>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Controllo identità e patente</li>
+                    <li>• Verifica validità assicurazione</li>
+                    <li>• Conferma dati prenotazione</li>
+                  </ul>
+                </div>
+                <div>
+                  <h5 className="font-semibold text-sm mb-2">Briefing Sicurezza:</h5>
+                  <ul className="text-sm text-blue-700 space-y-1">
+                    <li>• Spiegazione equipaggiamenti</li>
+                    <li>• Procedure di emergenza</li>
+                    <li>• Limiti e zone di navigazione</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="bg-gradient-to-r from-blue-600 to-green-600 rounded-lg p-8 text-white text-center">
+          <h3 className="text-2xl font-bold mb-4">Documenti Pronti?</h3>
+          <p className="mb-6 opacity-90">
+            Assicurati di avere tutti i documenti necessari prima della prenotazione per un check-in veloce e senza problemi.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4 mt-6">
+            <div className="bg-white bg-opacity-20 rounded-lg p-4">
+              <h4 className="font-semibold mb-2">🎯 Consiglio Pro</h4>
+              <p className="text-sm opacity-90">
+                Carica i documenti sul tuo profilo per velocizzare le future prenotazioni
+              </p>
+            </div>
+            <div className="bg-white bg-opacity-20 rounded-lg p-4">
+              <h4 className="font-semibold mb-2">📱 Documenti Digitali</h4>
+              <p className="text-sm opacity-90">
+                Foto dei documenti salvate sul telefono sono accettate per il check-in
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <Footer />

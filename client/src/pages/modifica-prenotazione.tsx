@@ -1,294 +1,214 @@
-import { useState } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MobileNavigation } from "@/components/mobile-navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Calendar, Edit3, Search, AlertTriangle, CheckCircle, Clock, Mail } from "lucide-react";
-import { Link } from "wouter";
+import { Calendar, Clock, AlertTriangle, CheckCircle, XCircle, Edit } from "lucide-react";
 
 export default function ModificaPrenotazionePage() {
-  const [bookingCode, setBookingCode] = useState("");
-  const [email, setEmail] = useState("");
-  const [step, setStep] = useState<"search" | "found" | "edit">("search");
-  
-  // Dati di esempio per la prenotazione trovata
-  const mockBooking = {
-    id: "SEA-2025-1234",
-    boatName: "Azimut 62 Luxury",
-    startDate: "2025-08-15",
-    endDate: "2025-08-22",
-    port: "Marina di Ostia",
-    totalPrice: 2800,
-    status: "confermata",
-    guests: 8,
-    skipperIncluded: true,
-    fuelIncluded: false
-  };
-
-  const handleSearch = () => {
-    // Simula la ricerca della prenotazione
-    if (bookingCode && email) {
-      setStep("found");
-    }
-  };
-
-  const canModify = () => {
-    const startDate = new Date(mockBooking.startDate);
-    const now = new Date();
-    const timeDiff = startDate.getTime() - now.getTime();
-    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    return daysDiff > 7; // Modificabile fino a 7 giorni prima
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Modifica Prenotazione
+            Modificare una Prenotazione
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Trova e modifica la tua prenotazione inserendo il codice e l'email utilizzata per la prenotazione.
+            Scopri come modificare le tue prenotazioni esistenti su SeaGO
           </p>
         </div>
 
-        {step === "search" && (
-          <Card className="max-w-2xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Search className="h-6 w-6" />
-                Trova la tua prenotazione
+              <CardTitle className="flex items-center">
+                <Edit className="h-6 w-6 mr-2 text-blue-600" />
+                Cosa Puoi Modificare
               </CardTitle>
             </CardHeader>
-            
-            <CardContent className="space-y-6">
-              <div>
-                <Label htmlFor="booking-code">Codice prenotazione</Label>
-                <Input
-                  id="booking-code"
-                  placeholder="es. SEA-2025-1234"
-                  value={bookingCode}
-                  onChange={(e) => setBookingCode(e.target.value)}
-                  className="mt-1"
-                />
-                <p className="text-sm text-gray-500 mt-1">
-                  Trovi il codice nell'email di conferma
-                </p>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Date del Noleggio</h4>
+                    <p className="text-sm text-gray-600">Cambia date di inizio e fine secondo disponibilità</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Servizi Aggiuntivi</h4>
+                    <p className="text-sm text-gray-600">Aggiungi o rimuovi skipper, carburante, equipaggiamenti</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Numero di Persone</h4>
+                    <p className="text-sm text-gray-600">Modifica il numero di ospiti entro il limite della barca</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <XCircle className="h-5 w-5 mr-2 text-red-500 mt-0.5" />
+                  <div>
+                    <h4 className="font-semibold">Cambio Imbarcazione</h4>
+                    <p className="text-sm text-gray-600">Non è possibile cambiare barca - serve nuova prenotazione</p>
+                  </div>
+                </div>
               </div>
-
-              <div>
-                <Label htmlFor="email">Email di prenotazione</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="la-tua-email@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1"
-                />
-              </div>
-
-              <Button 
-                onClick={handleSearch}
-                className="w-full"
-                disabled={!bookingCode || !email}
-              >
-                Cerca prenotazione
-              </Button>
-
-              <Alert>
-                <AlertTriangle className="h-4 w-4" />
-                <AlertDescription>
-                  Non trovi il codice prenotazione? <Link href="/contatti" className="text-blue-600 hover:underline">Contatta il supporto</Link>
-                </AlertDescription>
-              </Alert>
             </CardContent>
           </Card>
-        )}
 
-        {step === "found" && (
-          <div className="space-y-6">
-            {/* Prenotazione trovata */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2">
-                    <CheckCircle className="h-6 w-6 text-green-600" />
-                    Prenotazione trovata
-                  </CardTitle>
-                  <Badge className="bg-green-100 text-green-800">
-                    {mockBooking.status}
-                  </Badge>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Clock className="h-6 w-6 mr-2 text-orange-600" />
+                Tempistiche per le Modifiche
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="border-l-4 border-green-400 pl-4">
+                  <h4 className="font-semibold text-green-700">Oltre 48 ore prima</h4>
+                  <p className="text-sm text-gray-600">Modifiche gratuite per date e servizi</p>
                 </div>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Dettagli prenotazione</h4>
-                    <dl className="space-y-2">
-                      <div>
-                        <dt className="text-sm text-gray-600">Codice:</dt>
-                        <dd className="font-mono text-sm">{mockBooking.id}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-sm text-gray-600">Imbarcazione:</dt>
-                        <dd className="font-semibold">{mockBooking.boatName}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-sm text-gray-600">Porto:</dt>
-                        <dd>{mockBooking.port}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-sm text-gray-600">Date:</dt>
-                        <dd>{mockBooking.startDate} → {mockBooking.endDate}</dd>
-                      </div>
-                    </dl>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-3">Servizi inclusi</h4>
-                    <dl className="space-y-2">
-                      <div>
-                        <dt className="text-sm text-gray-600">Ospiti:</dt>
-                        <dd>{mockBooking.guests} persone</dd>
-                      </div>
-                      <div>
-                        <dt className="text-sm text-gray-600">Skipper:</dt>
-                        <dd>{mockBooking.skipperIncluded ? "Incluso" : "Non incluso"}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-sm text-gray-600">Carburante:</dt>
-                        <dd>{mockBooking.fuelIncluded ? "Incluso" : "Non incluso"}</dd>
-                      </div>
-                      <div>
-                        <dt className="text-sm text-gray-600">Totale:</dt>
-                        <dd className="text-lg font-bold text-blue-600">€{mockBooking.totalPrice}</dd>
-                      </div>
-                    </dl>
-                  </div>
+                <div className="border-l-4 border-yellow-400 pl-4">
+                  <h4 className="font-semibold text-yellow-700">24-48 ore prima</h4>
+                  <p className="text-sm text-gray-600">Possibili modifiche con piccolo sovrapprezzo</p>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Opzioni di modifica */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Edit3 className="h-6 w-6" />
-                  Cosa puoi modificare
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                {canModify() ? (
-                  <div className="space-y-4">
-                    <Alert className="border-green-200 bg-green-50">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      <AlertDescription className="text-green-800">
-                        Puoi modificare la tua prenotazione fino a 7 giorni prima della partenza.
-                      </AlertDescription>
-                    </Alert>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Button variant="outline" className="h-auto p-4 text-left">
-                        <div>
-                          <div className="font-semibold">Modifica date</div>
-                          <div className="text-sm text-gray-500">Cambia le date del noleggio</div>
-                        </div>
-                      </Button>
-
-                      <Button variant="outline" className="h-auto p-4 text-left">
-                        <div>
-                          <div className="font-semibold">Aggiungi servizi</div>
-                          <div className="text-sm text-gray-500">Skipper, carburante, extras</div>
-                        </div>
-                      </Button>
-
-                      <Button variant="outline" className="h-auto p-4 text-left">
-                        <div>
-                          <div className="font-semibold">Modifica ospiti</div>
-                          <div className="text-sm text-gray-500">Cambia numero di persone</div>
-                        </div>
-                      </Button>
-
-                      <Button variant="outline" className="h-auto p-4 text-left">
-                        <div>
-                          <div className="font-semibold">Contatta proprietario</div>
-                          <div className="text-sm text-gray-500">Invia un messaggio</div>
-                        </div>
-                      </Button>
-                    </div>
-
-                    <div className="pt-4 border-t">
-                      <Button className="mr-4">
-                        Procedi con le modifiche
-                      </Button>
-                      <Button variant="destructive" className="mr-4">
-                        Cancella prenotazione
-                      </Button>
-                      <Button variant="outline" onClick={() => setStep("search")}>
-                        Cerca un'altra prenotazione
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <Alert className="border-red-200 bg-red-50">
-                    <AlertTriangle className="h-4 w-4 text-red-600" />
-                    <AlertDescription className="text-red-800">
-                      Non è più possibile modificare questa prenotazione. Per modifiche dell'ultimo minuto, 
-                      <Link href="/contatti" className="underline ml-1">contatta il supporto</Link>.
-                    </AlertDescription>
-                  </Alert>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Assistenza */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Mail className="h-6 w-6" />
-                  Serve aiuto?
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Button variant="outline" asChild>
-                    <Link href="/contatti">
-                      Contatta supporto
-                    </Link>
-                  </Button>
-                  
-                  <Button variant="outline" asChild>
-                    <Link href="/politiche-cancellazione">
-                      Politiche cancellazione
-                    </Link>
-                  </Button>
-                  
-                  <Button variant="outline" asChild>
-                    <Link href="/customer-dashboard">
-                      La mia dashboard
-                    </Link>
-                  </Button>
+                <div className="border-l-4 border-red-400 pl-4">
+                  <h4 className="font-semibold text-red-700">Meno di 24 ore</h4>
+                  <p className="text-sm text-gray-600">Modifiche limitate, soggette ad approvazione</p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Come Modificare la Tua Prenotazione</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-blue-600">1</span>
+                </div>
+                <h3 className="font-semibold mb-2">Accedi al Dashboard</h3>
+                <p className="text-sm text-gray-600">
+                  Entra nel tuo account cliente
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-green-600">2</span>
+                </div>
+                <h3 className="font-semibold mb-2">Trova la Prenotazione</h3>
+                <p className="text-sm text-gray-600">
+                  Seleziona la prenotazione da modificare
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-orange-600">3</span>
+                </div>
+                <h3 className="font-semibold mb-2">Richiedi Modifica</h3>
+                <p className="text-sm text-gray-600">
+                  Indica le modifiche desiderate
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-purple-600">4</span>
+                </div>
+                <h3 className="font-semibold mb-2">Conferma</h3>
+                <p className="text-sm text-gray-600">
+                  Attendi conferma dal proprietario
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-8">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+            <h3 className="font-semibold text-green-900 mb-3 flex items-center">
+              <CheckCircle className="h-5 w-5 mr-2" />
+              Modifiche Gratuite
+            </h3>
+            <ul className="list-disc list-inside text-sm text-green-800 space-y-1">
+              <li>Cambio date con oltre 48h di anticipo</li>
+              <li>Aggiunta servizi aggiuntivi</li>
+              <li>Riduzione numero ospiti</li>
+              <li>Modifica orari check-in/out (entro limiti)</li>
+            </ul>
           </div>
-        )}
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
+            <h3 className="font-semibold text-amber-900 mb-3 flex items-center">
+              <AlertTriangle className="h-5 w-5 mr-2" />
+              Modifiche a Pagamento
+            </h3>
+            <ul className="list-disc list-inside text-sm text-amber-800 space-y-1">
+              <li>Cambio date last-minute (24-48h)</li>
+              <li>Upgrade servizi premium</li>
+              <li>Aumento numero ospiti</li>
+              <li>Modifiche urgenti (meno di 24h)</li>
+            </ul>
+          </div>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Situazioni Speciali</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-blue-800 mb-2">🌦️ Maltempo</h4>
+                <p className="text-sm text-blue-700">
+                  In caso di condizioni meteo avverse, puoi richiedere lo spostamento gratuito della prenotazione.
+                  La decisione finale spetta al proprietario per motivi di sicurezza.
+                </p>
+              </div>
+              <div className="bg-orange-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-orange-800 mb-2">🔧 Problemi Tecnici</h4>
+                <p className="text-sm text-orange-700">
+                  Se la barca ha problemi tecnici, il proprietario ti offrirà un rimborso completo o una barca 
+                  sostitutiva equivalente senza costi aggiuntivi.
+                </p>
+              </div>
+              <div className="bg-red-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-red-800 mb-2">🚨 Emergenze</h4>
+                <p className="text-sm text-red-700">
+                  Per emergenze mediche o familiari gravi, contatta immediatamente il nostro supporto.
+                  Valuteremo ogni caso individualmente per trovare la soluzione migliore.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="text-center bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white">
+          <h3 className="text-2xl font-bold mb-4">Hai Bisogno di Aiuto?</h3>
+          <p className="mb-6 opacity-90">
+            Il nostro team è disponibile 24/7 per aiutarti con qualsiasi modifica alla tua prenotazione.
+          </p>
+          <div className="space-x-4">
+            <Button className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3">
+              Chat Live
+            </Button>
+            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 font-semibold px-8 py-3">
+              Chiama: +39 06 1234 5678
+            </Button>
+          </div>
+        </div>
       </div>
 
       <Footer />
-      <MobileNavigation />
     </div>
   );
 }

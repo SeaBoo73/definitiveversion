@@ -1,174 +1,190 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { MessageCircle, FileText, Clock, Users, Star } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { MessageCircle, Phone, Mail, FileText, Users, HelpCircle } from "lucide-react";
 
 export default function AssistenzaProprietariPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Assistenza Proprietari
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Supporto dedicato 24/7 per i proprietari di imbarcazioni. Il nostro team è qui per aiutarti.
+            Supporto dedicato per i proprietari di imbarcazioni su SeaGO
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
-            <MessageCircle className="h-12 w-12 text-green-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-4">Assistente IA</h3>
-            <p className="text-gray-600 mb-4">
-              Consigli intelligenti e supporto automatizzato con IA disponibile 24/7
-            </p>
-            <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors" onClick={() => window.location.href = '/ia'}>
-              Avvia IA
-            </button>
-          </div>
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="flex flex-col items-center">
+                <MessageCircle className="h-8 w-8 mb-2 text-blue-600" />
+                Chat dal Vivo
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                Supporto immediato tramite chat per risolvere rapidamente i tuoi dubbi.
+              </p>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                Avvia Chat
+              </Button>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 text-center">
-            <FileText className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-4">Centro Guide</h3>
-            <p className="text-gray-600 mb-4">
-              Guide complete e FAQ per gestire al meglio la tua imbarcazione
-            </p>
-            <button className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
-              Consulta Guide
-            </button>
-          </div>
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="flex flex-col items-center">
+                <Phone className="h-8 w-8 mb-2 text-green-600" />
+                Supporto Telefonico
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                Parla direttamente con un nostro esperto per questioni complesse.
+              </p>
+              <Button className="w-full bg-green-600 hover:bg-green-700">
+                +39 06 1234 5678
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="text-center">
+            <CardHeader>
+              <CardTitle className="flex flex-col items-center">
+                <Mail className="h-8 w-8 mb-2 text-orange-600" />
+                Email Dedicata
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                Invia una email per questioni non urgenti. Risposta entro 4 ore.
+              </p>
+              <Button className="w-full bg-orange-600 hover:bg-orange-700">
+                proprietari@seago.com
+              </Button>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="space-y-12">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-            <h2 className="text-2xl font-semibold mb-6">Supporto Specializzato</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-lg font-medium mb-4">Account Manager Dedicato</h3>
-                <p className="text-gray-600 mb-4">
-                  Ogni proprietario ha un account manager personale che conosce la tua imbarcazione 
-                  e le tue esigenze specifiche.
-                </p>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Ottimizzazione dei prezzi e disponibilità</li>
-                  <li>• Consigli per migliorare l'attrattività</li>
-                  <li>• Supporto per problematiche tecniche</li>
-                  <li>• Assistenza con documentazione e assicurazioni</li>
-                </ul>
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <HelpCircle className="h-6 w-6 mr-2 text-blue-600" />
+                FAQ Proprietari
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="border-b pb-3">
+                  <h4 className="font-semibold mb-2">Come vengono elaborati i pagamenti?</h4>
+                  <p className="text-sm text-gray-600">I pagamenti vengono trasferiti automaticamente ogni 7 giorni sul tuo conto corrente registrato.</p>
+                </div>
+                <div className="border-b pb-3">
+                  <h4 className="font-semibold mb-2">Posso modificare il prezzo della mia barca?</h4>
+                  <p className="text-sm text-gray-600">Sì, puoi modificare il prezzo in qualsiasi momento dalla tua dashboard proprietario.</p>
+                </div>
+                <div className="border-b pb-3">
+                  <h4 className="font-semibold mb-2">Cosa succede in caso di danni?</h4>
+                  <p className="text-sm text-gray-600">Ogni prenotazione include assicurazione. I danni vengono gestiti dal nostro team assicurativo.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Come gestire le recensioni negative?</h4>
+                  <p className="text-sm text-gray-600">Puoi rispondere alle recensioni e contattare il supporto per moderare contenuti inappropriati.</p>
+                </div>
               </div>
-              
-              <div>
-                <h3 className="text-lg font-medium mb-4">Team di Emergenza</h3>
-                <p className="text-gray-600 mb-4">
-                  In caso di emergenze o problemi durante i noleggi, il nostro team 
-                  è pronto a intervenire immediatamente.
-                </p>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Assistenza tecnica h24</li>
-                  <li>• Coordinamento con servizi di soccorso</li>
-                  <li>• Gestione pratiche assicurative</li>
-                  <li>• Comunicazione con clienti e autorità</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-            <h2 className="text-2xl font-semibold mb-6">Tempi di Risposta</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <Clock className="h-8 w-8 text-red-500 mx-auto mb-2" />
-                <h3 className="font-semibold text-red-600">EMERGENZE</h3>
-                <p className="text-2xl font-bold">&lt; 5 min</p>
-                <p className="text-sm text-gray-600">Risposta immediata</p>
-              </div>
-              
-              <div className="text-center">
-                <MessageCircle className="h-8 w-8 text-orange-500 mx-auto mb-2" />
-                <h3 className="font-semibold text-orange-600">URGENTE</h3>
-                <p className="text-2xl font-bold">&lt; 30 min</p>
-                <p className="text-sm text-gray-600">Problemi durante noleggi</p>
-              </div>
-              
-              <div className="text-center">
-                <MessageCircle className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-                <h3 className="font-semibold text-yellow-600">NORMALE</h3>
-                <p className="text-2xl font-bold">&lt; 2 ore</p>
-                <p className="text-sm text-gray-600">Richieste generali</p>
-              </div>
-              
-              <div className="text-center">
-                <FileText className="h-8 w-8 text-green-500 mx-auto mb-2" />
-                <h3 className="font-semibold text-green-600">INFORMAZIONI</h3>
-                <p className="text-2xl font-bold">&lt; 1 giorno</p>
-                <p className="text-sm text-gray-600">Documentazione e guide</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-            <h2 className="text-2xl font-semibold mb-6">Cosa Dicono i Proprietari</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex items-center mb-4">
-                  <Users className="w-6 h-6 text-ocean-blue mr-2" />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <FileText className="h-6 w-6 mr-2 text-green-600" />
+                Guide e Risorse
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex items-center p-3 bg-blue-50 rounded-lg">
+                  <FileText className="h-5 w-5 mr-3 text-blue-600" />
                   <div>
-                    <h4 className="font-semibold">Marco R.</h4>
-                    <p className="text-sm text-gray-600">Proprietario Beneteau 40</p>
+                    <h4 className="font-semibold text-sm">Guida Completa Proprietario</h4>
+                    <p className="text-xs text-gray-600">PDF scaricabile con tutte le informazioni</p>
                   </div>
                 </div>
-                <div className="flex mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-700">
-                  "Il supporto SeaGO è eccezionale. Il mio account manager mi ha aiutato 
-                  ad aumentare del 40% i guadagni ottimizzando prezzi e disponibilità."
-                </p>
-              </div>
-              
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <div className="flex items-center mb-4">
-                  <Users className="w-6 h-6 text-ocean-blue mr-2" />
+                <div className="flex items-center p-3 bg-green-50 rounded-lg">
+                  <Users className="h-5 w-5 mr-3 text-green-600" />
                   <div>
-                    <h4 className="font-semibold">Sofia B.</h4>
-                    <p className="text-sm text-gray-600">Proprietaria Jeanneau 42</p>
+                    <h4 className="font-semibold text-sm">Community Proprietari</h4>
+                    <p className="text-xs text-gray-600">Gruppo Telegram esclusivo per proprietari</p>
                   </div>
                 </div>
-                <div className="flex mb-3">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
+                <div className="flex items-center p-3 bg-orange-50 rounded-lg">
+                  <MessageCircle className="h-5 w-5 mr-3 text-orange-600" />
+                  <div>
+                    <h4 className="font-semibold text-sm">Webinar Mensili</h4>
+                    <p className="text-xs text-gray-600">Incontri online con tips e aggiornamenti</p>
+                  </div>
                 </div>
-                <p className="text-gray-700">
-                  "Quando ho avuto un problema tecnico durante un noleggio, il team di emergenza 
-                  ha risolto tutto in 15 minuti. Professionalità incredibile!"
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Orari di Supporto</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <MessageCircle className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Chat Live</h3>
+                <p className="text-sm text-gray-600">
+                  24/7 per emergenze<br />
+                  9:00-19:00 per supporto generale
                 </p>
               </div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-r from-ocean-blue to-deep-navy text-white rounded-xl p-8 text-center">
-            <h2 className="text-2xl font-semibold mb-4">Hai Bisogno di Aiuto?</h2>
-            <p className="text-lg mb-8">
-              Non esitare a contattarci. Il nostro team di esperti è sempre pronto ad aiutarti.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <MessageCircle className="h-8 w-8 mx-auto mb-2" />
-                <h3 className="font-semibold mb-2">Assistente IA</h3>
-                <p>Disponibile 24/7</p>
+              <div className="text-center">
+                <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Phone className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Telefono</h3>
+                <p className="text-sm text-gray-600">
+                  Lun-Ven: 9:00-18:00<br />
+                  Sab-Dom: 10:00-16:00
+                </p>
               </div>
-              <div>
-                <FileText className="h-8 w-8 mx-auto mb-2" />
+              <div className="text-center">
+                <div className="bg-orange-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                  <Mail className="h-8 w-8 text-orange-600" />
+                </div>
                 <h3 className="font-semibold mb-2">Email</h3>
-                <p>proprietari@seago.it</p>
+                <p className="text-sm text-gray-600">
+                  Risposta entro 4 ore<br />
+                  (orario lavorativo)
+                </p>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
+
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white text-center">
+          <h3 className="text-2xl font-bold mb-4">Hai Bisogno di Aiuto Personalizzato?</h3>
+          <p className="mb-6 opacity-90">
+            Il nostro Account Manager dedicato può aiutarti a ottimizzare la tua presenza su SeaGO.
+          </p>
+          <Button className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3">
+            Richiedi Consulenza Gratuita
+          </Button>
         </div>
       </div>
 

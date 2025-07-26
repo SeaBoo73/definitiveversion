@@ -226,6 +226,12 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Click su card "Chat Live" apre componente AiChat
   - ✅ Integrazione completa sistema chat in pagina assistenza
   - ✅ Componente AiChat correttamente importato e utilizzato
+- **Upload Foto Profilo Mobile Implementato:**
+  - ✅ Pulsante "Carica foto" ora permette accesso alle foto del dispositivo
+  - ✅ Input file nascosto con attributo capture="environment" per fotocamera mobile
+  - ✅ Validazione formato file (JPG, PNG) e dimensione massima (5MB)
+  - ✅ Handler completo con toast informativi per successo/errore
+  - ✅ Supporto completo per selezione foto da galleria e fotocamera dispositivo
 
 ### July 26, 2025 - Sistema Esperienze Porti Campania Esteso + Autofill Intelligente Ormeggi
 - **Espansione Completa Porti per Esperienze:**

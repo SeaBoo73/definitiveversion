@@ -213,6 +213,38 @@ export default function OwnerDashboard() {
     });
   };
 
+  // Profile Photo Upload Handler
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.match(/^image\/(jpeg|jpg|png)$/)) {
+        toast({
+          title: "Formato non supportato",
+          description: "Carica solo file JPG o PNG",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "File troppo grande",
+          description: "La foto deve essere massimo 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // For now, just show success toast - later we'll implement actual upload
+      toast({
+        title: "Foto caricata",
+        description: `${file.name} è stata caricata con successo`,
+      });
+    }
+  };
+
   const openEditModal = (boat: Boat) => {
     setEditingBoat(boat);
     form.reset({
@@ -1203,7 +1235,20 @@ export default function OwnerDashboard() {
                   <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <User className="h-16 w-16 text-gray-400" />
                   </div>
-                  <Button variant="outline" size="sm" className="mb-2">
+                  <input
+                    type="file"
+                    id="photo-upload"
+                    accept="image/jpeg,image/jpg,image/png"
+                    capture="environment"
+                    onChange={handlePhotoUpload}
+                    className="hidden"
+                  />
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="mb-2"
+                    onClick={() => document.getElementById('photo-upload')?.click()}
+                  >
                     <Camera className="h-4 w-4 mr-2" />
                     Carica foto
                   </Button>

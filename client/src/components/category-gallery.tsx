@@ -70,33 +70,25 @@ const categoryMapping = [
   },
 ];
 
-// Versione mobile semplificata con solo le categorie essenziali
-const simpleMobileCategories = [
-  {
-    id: "gommone",
-    name: "Gommoni",
-    description: "Imbarcazioni versatili",
-    image: gommoneImage,
-  },
-  {
-    id: "barche-senza-patente", 
-    name: "Senza patente",
-    description: "Facili da guidare",
-    image: barcheSenzaPatenteImage,
-  },
-  {
-    id: "yacht",
-    name: "Yacht",
-    description: "Lusso e comfort",
-    image: motorboatImage,
-  },
-  {
-    id: "sailboat",
-    name: "Barche a vela", 
-    description: "Navigazione autentica",
-    image: sailboatImage,
-  }
-];
+// Versione mobile con tutte le categorie - nomi compatti per mobile
+const mobileCategoryMapping = categoryMapping.map(cat => ({
+  ...cat,
+  name: cat.id === "barche-senza-patente" ? "Senza patente" : 
+        cat.id === "motorboat" ? "Barche motore" :
+        cat.id === "houseboat" ? "Casa galleggiante" :
+        cat.id === "jetski" ? "Moto d'acqua" :
+        cat.name,
+  description: cat.id === "gommone" ? "Imbarcazioni versatili" :
+               cat.id === "barche-senza-patente" ? "Facili da guidare" :
+               cat.id === "yacht" ? "Lusso e comfort" :
+               cat.id === "sailboat" ? "Navigazione autentica" :
+               cat.id === "jetski" ? "Adrenalina in acqua" :
+               cat.id === "catamarano" ? "Spazio e stabilità" :
+               cat.id === "charter" ? "Con skipper" :
+               cat.id === "houseboat" ? "Casa galleggiante" :
+               cat.id === "motorboat" ? "Velocità e comfort" :
+               cat.description
+}));
 
 // Charter giornalieri semplici
 const charterGiornalieri = [
@@ -194,12 +186,12 @@ export function CategoryGallery() {
             <p className="text-gray-600">Scegli tra le nostre imbarcazioni</p>
           </div>
 
-          {/* Tipi di Imbarcazione Mobile */}
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            {simpleMobileCategories.map((category) => (
+          {/* Tipi di Imbarcazione Mobile - Tutte le 9 categorie */}
+          <div className="grid grid-cols-3 gap-2 mb-6">
+            {mobileCategoryMapping.map((category) => (
               <Link key={category.id} href={`/search?boatTypes=${category.id}`}>
                 <div className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-                  <div className="relative h-32">
+                  <div className="relative h-24">
                     <img
                       src={category.image}
                       alt={category.name}
@@ -207,12 +199,12 @@ export function CategoryGallery() {
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-20"></div>
                   </div>
-                  <div className="p-3">
-                    <h3 className="font-semibold text-gray-900 text-sm">{category.name}</h3>
-                    <p className="text-xs text-gray-600 mt-1">{category.description}</p>
+                  <div className="p-2">
+                    <h3 className="font-semibold text-gray-900 text-xs leading-tight">{category.name}</h3>
+                    <p className="text-xs text-gray-600 mt-1 line-clamp-2">{category.description}</p>
                     <Button 
                       size="sm" 
-                      className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-xs"
+                      className="w-full mt-2 bg-blue-500 hover:bg-blue-600 text-xs py-1"
                     >
                       Prenota
                     </Button>

@@ -243,9 +243,11 @@ export default function EsperienzaDettaglio() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Button className="w-full bg-coral hover:bg-orange-600 text-white text-lg py-3">
-                  <Calendar className="h-5 w-5 mr-2" />
-                  Prenota ora
+                <Button asChild className="w-full bg-coral hover:bg-orange-600 text-white text-lg py-3">
+                  <Link href={`/prenota-esperienza/${tipo}`}>
+                    <Calendar className="h-5 w-5 mr-2" />
+                    Prenota ora
+                  </Link>
                 </Button>
                 
                 <div className="space-y-2 pt-4 border-t">

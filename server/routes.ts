@@ -299,6 +299,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Experience payment route
+  app.post("/api/create-experience-payment", async (req, res) => {
+    try {
+      const { prezzoTotale, tipo, cliente } = req.body;
+      
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(prezzoTotale * 100), // Convert to cents
+        currency: "eur",
+        metadata: {
+          tipo_esperienza: tipo,
+          cliente_nome: `${cliente.nome} ${cliente.cognome}`,
+          cliente_email: cliente.email,
+          cliente_telefono: cliente.telefono
+        }
+      });
+
+      // In a real app, you would save the booking to database here
+      const bookingId = `EXP-${Date.now()}`;
+
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        bookingId: bookingId
+      });
+    } catch (error: any) {
+      console.error('Error creating experience payment:', error);
+      res
+        .status(500)
+        .json({ message: "Error creating payment intent: " + error.message });
+    }
+  });
+
   // Static file serving for images
   app.get("/api/images/:filename", (req, res) => {
     const filename = req.params.filename;

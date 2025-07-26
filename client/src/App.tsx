@@ -65,6 +65,9 @@ import AdminPerformancePage from "@/pages/admin-performance";
 import AltreEsperienzePage from "@/pages/altre-esperienze";
 import CategoriesPage from "@/pages/categories-page";
 import EsperienzaDettaglio from "@/pages/esperienza-dettaglio";
+import PrenotaEsperienza from "@/pages/prenota-esperienza";
+import CheckoutEsperienza from "@/pages/checkout-esperienza";
+import PaymentSuccessEsperienza from "@/pages/payment-success-esperienza";
 
 function Router() {
   return (
@@ -77,6 +80,9 @@ function Router() {
       <Route path="/search" component={SearchResults} />
       <Route path="/esperienze" component={EsperienzePage} />
       <Route path="/esperienza/:tipo" component={EsperienzaDettaglio} />
+      <Route path="/prenota-esperienza/:tipo" component={PrenotaEsperienza} />
+      <Route path="/checkout-esperienza" component={CheckoutEsperienza} />
+      <Route path="/payment-success-esperienza" component={PaymentSuccessEsperienza} />
       <Route path="/charter" component={CharterPage} />
       <Route path="/aiuto" component={AiutoPage} />
       <Route path="/ia" component={AIAssistantPage} />

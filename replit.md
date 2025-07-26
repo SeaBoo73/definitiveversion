@@ -232,6 +232,12 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Validazione formato file (JPG, PNG) e dimensione massima (5MB)
   - ✅ Handler completo con toast informativi per successo/errore
   - ✅ Supporto completo per selezione foto da galleria e fotocamera dispositivo
+- **Chat AI Scroll e Accessibilità Mobile Migliorati:**
+  - ✅ Layout chat modificato da altezza fissa a max-height responsive (90vh)
+  - ✅ Container scrollabile con items-start per evitare centramento problematico
+  - ✅ ScrollArea messaggi con altezza minima (300px) per garantire visibilità
+  - ✅ Pulsante "Chiudi chat" aggiunto in fondo oltre a quello nell'header
+  - ✅ Chat completamente accessibile e scrollabile su tutti i dispositivi mobili
 
 ### July 26, 2025 - Sistema Esperienze Porti Campania Esteso + Autofill Intelligente Ormeggi
 - **Espansione Completa Porti per Esperienze:**

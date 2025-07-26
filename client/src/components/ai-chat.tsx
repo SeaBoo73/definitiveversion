@@ -113,8 +113,8 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 pb-24 md:pb-4">
-      <Card className="w-full max-w-2xl h-[600px] md:h-[700px] flex flex-col">
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-start justify-center p-4 pb-24 md:pb-4 overflow-y-auto">
+      <Card className="w-full max-w-2xl max-h-[90vh] flex flex-col my-4">
         <CardHeader className="flex flex-row items-center justify-between pb-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-t-lg">
           <div className="flex items-center space-x-2">
             <Bot className="h-6 w-6" />
@@ -152,7 +152,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
           )}
 
           {/* Messages */}
-          <ScrollArea className="flex-1 p-4">
+          <ScrollArea className="flex-1 p-4 min-h-[300px]">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
@@ -234,7 +234,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
 
           {/* Message Input */}
           <form onSubmit={handleSendMessage} className="border-t p-4">
-            <div className="flex space-x-2">
+            <div className="flex space-x-2 mb-3">
               <Input
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
@@ -248,6 +248,19 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
                 className="bg-blue-500 hover:bg-blue-600"
               >
                 <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {/* Close button at bottom for mobile */}
+            <div className="flex justify-center">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={onClose}
+                className="text-gray-600 hover:text-gray-800 text-xs"
+              >
+                <X className="h-3 w-3 mr-1" />
+                Chiudi chat
               </Button>
             </div>
           </form>

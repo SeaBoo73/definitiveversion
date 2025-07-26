@@ -89,11 +89,9 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                 )}
                 
                 {index === 0 ? (
-                  <Link href={item.href || '/'}>
-                    <a className="flex items-center text-gray-500 hover:text-ocean-blue">
-                      <Home className="h-4 w-4 mr-1" />
-                      <span className="sr-only">{item.label}</span>
-                    </a>
+                  <Link href={item.href || '/'} className="flex items-center text-gray-500 hover:text-ocean-blue">
+                    <Home className="h-4 w-4 mr-1" />
+                    <span className="sr-only">{item.label}</span>
                   </Link>
                 ) : index === breadcrumbs.length - 1 ? (
                   <span 
@@ -103,10 +101,8 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                     {item.label}
                   </span>
                 ) : (
-                  <Link href={item.href || '#'}>
-                    <a className="text-gray-500 hover:text-ocean-blue">
-                      {item.label}
-                    </a>
+                  <Link href={item.href || '#'} className="text-gray-500 hover:text-ocean-blue">
+                    {item.label}
                   </Link>
                 )}
               </li>

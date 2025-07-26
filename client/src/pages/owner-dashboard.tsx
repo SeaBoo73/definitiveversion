@@ -39,7 +39,16 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  ArrowLeft
+  ArrowLeft,
+  Anchor,
+  Waves,
+  Settings,
+  FileText,
+  Info,
+  Gauge,
+  Ruler,
+  Calendar as CalendarIcon,
+  DollarSign
 } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -305,120 +314,358 @@ export default function OwnerDashboard() {
                     Aggiungi imbarcazione
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>
-                      {editingBoat ? "Modifica imbarcazione" : "Aggiungi nuova imbarcazione"}
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader className="text-center pb-6">
+                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-teal-500 rounded-full flex items-center justify-center mb-4">
+                      <Ship className="h-8 w-8 text-white" />
+                    </div>
+                    <DialogTitle className="text-2xl font-bold text-gray-900">
+                      {editingBoat ? "✏️ Modifica la tua imbarcazione" : "🚢 Aggiungi la tua imbarcazione"}
                     </DialogTitle>
+                    <p className="text-gray-600 mt-2">
+                      {editingBoat ? "Aggiorna i dettagli della tua imbarcazione" : "Inserisci tutti i dettagli per far conoscere la tua imbarcazione ai navigatori"}
+                    </p>
                   </DialogHeader>
 
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="name">Nome imbarcazione *</Label>
-                        <Input id="name" {...form.register("name")} />
-                        {form.formState.errors.name && (
-                          <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
-                        )}
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    
+                    {/* Sezione 1: Informazioni Base */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                          <Info className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Informazioni Base</h3>
+                          <p className="text-sm text-gray-600">Nome, tipo e caratteristiche principali</p>
+                        </div>
                       </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="name" className="flex items-center gap-2">
+                            <Ship className="h-4 w-4 text-blue-600" />
+                            Nome imbarcazione *
+                          </Label>
+                          <Input 
+                            id="name" 
+                            placeholder="es. Azzurra 680, Sea Dreams..." 
+                            {...form.register("name")} 
+                            className="border-blue-200 focus:border-blue-500"
+                          />
+                          {form.formState.errors.name && (
+                            <p className="text-sm text-red-500">{form.formState.errors.name.message}</p>
+                          )}
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="manufacturer">Cantiere/Marca</Label>
-                        <Input id="manufacturer" {...form.register("manufacturer")} />
-                      </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="manufacturer" className="flex items-center gap-2">
+                            <Settings className="h-4 w-4 text-blue-600" />
+                            Cantiere/Marca
+                          </Label>
+                          <Input 
+                            id="manufacturer" 
+                            placeholder="es. Jeanneau, Beneteau, Zodiac..." 
+                            {...form.register("manufacturer")} 
+                            className="border-blue-200 focus:border-blue-500"
+                          />
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="type">Tipologia *</Label>
-                        <Select onValueChange={(value) => form.setValue("type", value as any)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleziona tipologia" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="gommone">Gommone</SelectItem>
-                            <SelectItem value="yacht">Yacht</SelectItem>
-                            <SelectItem value="catamarano">Catamarano</SelectItem>
-                            <SelectItem value="jetski">Moto d'acqua</SelectItem>
-                            <SelectItem value="sailboat">Barca a vela</SelectItem>
-                            <SelectItem value="kayak">Kayak</SelectItem>
-                            <SelectItem value="charter">Charter</SelectItem>
-                            <SelectItem value="houseboat">Houseboat</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="type" className="flex items-center gap-2">
+                            <Waves className="h-4 w-4 text-blue-600" />
+                            Tipologia *
+                          </Label>
+                          <Select onValueChange={(value) => form.setValue("type", value as any)}>
+                            <SelectTrigger className="border-blue-200 focus:border-blue-500">
+                              <SelectValue placeholder="Seleziona tipologia" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="gommone">🛥️ Gommone</SelectItem>
+                              <SelectItem value="yacht">🛳️ Yacht</SelectItem>
+                              <SelectItem value="catamarano">⛵ Catamarano</SelectItem>
+                              <SelectItem value="jetski">🏄 Moto d'acqua</SelectItem>
+                              <SelectItem value="sailboat">⛵ Barca a vela</SelectItem>
+                              <SelectItem value="kayak">🚣 Kayak</SelectItem>
+                              <SelectItem value="charter">🚢 Charter</SelectItem>
+                              <SelectItem value="houseboat">🏠 Houseboat</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="year">Anno di costruzione</Label>
-                        <Input id="year" type="number" {...form.register("year")} />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="maxPersons">Numero massimo persone *</Label>
-                        <Input id="maxPersons" type="number" {...form.register("maxPersons")} />
-                        {form.formState.errors.maxPersons && (
-                          <p className="text-sm text-red-500">{form.formState.errors.maxPersons.message}</p>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="length">Lunghezza (metri)</Label>
-                        <Input id="length" type="number" step="0.1" {...form.register("length")} />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="motorization">Motorizzazione</Label>
-                        <Input id="motorization" {...form.register("motorization")} />
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="port">Porto di partenza *</Label>
-                        <Input id="port" {...form.register("port")} />
-                        {form.formState.errors.port && (
-                          <p className="text-sm text-red-500">{form.formState.errors.port.message}</p>
-                        )}
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="pricePerDay">Prezzo giornaliero (€) *</Label>
-                        <Input id="pricePerDay" type="number" step="0.01" {...form.register("pricePerDay")} />
-                        {form.formState.errors.pricePerDay && (
-                          <p className="text-sm text-red-500">{form.formState.errors.pricePerDay.message}</p>
-                        )}
+                        <div className="space-y-2">
+                          <Label htmlFor="year" className="flex items-center gap-2">
+                            <CalendarIcon className="h-4 w-4 text-blue-600" />
+                            Anno di costruzione
+                          </Label>
+                          <Input 
+                            id="year" 
+                            type="number" 
+                            placeholder="es. 2020" 
+                            {...form.register("year")} 
+                            className="border-blue-200 focus:border-blue-500"
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="description">Descrizione</Label>
-                      <Textarea id="description" {...form.register("description")} />
+                    {/* Sezione 2: Caratteristiche Tecniche */}
+                    <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                          <Gauge className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Caratteristiche Tecniche</h3>
+                          <p className="text-sm text-gray-600">Dimensioni, capacità e motorizzazione</p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="maxPersons" className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-green-600" />
+                            Numero massimo persone *
+                          </Label>
+                          <Input 
+                            id="maxPersons" 
+                            type="number" 
+                            placeholder="es. 8" 
+                            {...form.register("maxPersons")} 
+                            className="border-green-200 focus:border-green-500"
+                          />
+                          {form.formState.errors.maxPersons && (
+                            <p className="text-sm text-red-500">{form.formState.errors.maxPersons.message}</p>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="length" className="flex items-center gap-2">
+                            <Ruler className="h-4 w-4 text-green-600" />
+                            Lunghezza (metri)
+                          </Label>
+                          <Input 
+                            id="length" 
+                            type="number" 
+                            step="0.1" 
+                            placeholder="es. 12.5" 
+                            {...form.register("length")} 
+                            className="border-green-200 focus:border-green-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="motorization" className="flex items-center gap-2">
+                            <Settings className="h-4 w-4 text-green-600" />
+                            Motorizzazione
+                          </Label>
+                          <Input 
+                            id="motorization" 
+                            placeholder="es. 2x Mercury 250HP" 
+                            {...form.register("motorization")} 
+                            className="border-green-200 focus:border-green-500"
+                          />
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="documentsRequired">Documenti richiesti</Label>
-                      <Textarea 
-                        id="documentsRequired" 
-                        placeholder="es. Documento di identità, patente nautica..."
-                        {...form.register("documentsRequired")} 
-                      />
+                    {/* Sezione 3: Ubicazione e Prezzi */}
+                    <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                          <MapPin className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Ubicazione e Prezzi</h3>
+                          <p className="text-sm text-gray-600">Porto base e tariffe giornaliere</p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="port" className="flex items-center gap-2">
+                            <Anchor className="h-4 w-4 text-purple-600" />
+                            Porto di partenza *
+                          </Label>
+                          <Input 
+                            id="port" 
+                            placeholder="es. Marina di Gaeta, Porto di Civitavecchia" 
+                            {...form.register("port")} 
+                            className="border-purple-200 focus:border-purple-500"
+                          />
+                          {form.formState.errors.port && (
+                            <p className="text-sm text-red-500">{form.formState.errors.port.message}</p>
+                          )}
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="pricePerDay" className="flex items-center gap-2">
+                            <DollarSign className="h-4 w-4 text-purple-600" />
+                            Prezzo giornaliero (€) *
+                          </Label>
+                          <Input 
+                            id="pricePerDay" 
+                            type="number" 
+                            step="0.01" 
+                            placeholder="es. 350.00" 
+                            {...form.register("pricePerDay")} 
+                            className="border-purple-200 focus:border-purple-500"
+                          />
+                          {form.formState.errors.pricePerDay && (
+                            <p className="text-sm text-red-500">{form.formState.errors.pricePerDay.message}</p>
+                          )}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="flex space-x-4">
+                    {/* Sezione 4: Descrizioni e Documenti */}
+                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                          <FileText className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Descrizioni e Documenti</h3>
+                          <p className="text-sm text-gray-600">Dettagli aggiuntivi e requisiti necessari</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="description" className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-orange-600" />
+                            Descrizione completa
+                          </Label>
+                          <Textarea 
+                            id="description" 
+                            placeholder="Descrivi la tua imbarcazione: comfort, equipaggiamenti, punti di forza..."
+                            rows={4}
+                            {...form.register("description")} 
+                            className="border-orange-200 focus:border-orange-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="documentsRequired" className="flex items-center gap-2">
+                            <FileText className="h-4 w-4 text-orange-600" />
+                            Documenti richiesti
+                          </Label>
+                          <Textarea 
+                            id="documentsRequired" 
+                            placeholder="es. Documento di identità, patente nautica (per barche >40HP), esperienza di navigazione..."
+                            rows={3}
+                            {...form.register("documentsRequired")} 
+                            className="border-orange-200 focus:border-orange-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Sezione 5: Campi Aggiuntivi Utili */}
+                    <div className="bg-teal-50 border border-teal-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center">
+                          <Star className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Informazioni Aggiuntive</h3>
+                          <p className="text-sm text-gray-600">Dettagli utili per attrare più clienti</p>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="cabins" className="flex items-center gap-2">
+                            <span className="text-teal-600">🛏️</span>
+                            Numero cabine
+                          </Label>
+                          <Input 
+                            id="cabins" 
+                            type="number" 
+                            placeholder="es. 3" 
+                            className="border-teal-200 focus:border-teal-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="bathrooms" className="flex items-center gap-2">
+                            <span className="text-teal-600">🚿</span>
+                            Numero bagni
+                          </Label>
+                          <Input 
+                            id="bathrooms" 
+                            type="number" 
+                            placeholder="es. 2" 
+                            className="border-teal-200 focus:border-teal-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="fuelConsumption" className="flex items-center gap-2">
+                            <span className="text-teal-600">⛽</span>
+                            Consumo carburante (L/h)
+                          </Label>
+                          <Input 
+                            id="fuelConsumption" 
+                            type="number" 
+                            placeholder="es. 45" 
+                            className="border-teal-200 focus:border-teal-500"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="equipment" className="flex items-center gap-2">
+                            <span className="text-teal-600">🎯</span>
+                            Equipaggiamenti principali
+                          </Label>
+                          <Input 
+                            id="equipment" 
+                            placeholder="es. GPS, Autopilota, Tender..." 
+                            className="border-teal-200 focus:border-teal-500"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Pulsanti di Azione */}
+                    <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                       <Button 
                         type="submit" 
-                        className="bg-ocean-blue hover:bg-blue-600"
+                        className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
                         disabled={createBoatMutation.isPending || updateBoatMutation.isPending}
                       >
-                        {editingBoat ? "Aggiorna" : "Aggiungi"} imbarcazione
+                        {createBoatMutation.isPending || updateBoatMutation.isPending ? (
+                          <>
+                            <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+                            Salvando...
+                          </>
+                        ) : (
+                          <>
+                            <Ship className="h-4 w-4" />
+                            {editingBoat ? "🔄 Aggiorna imbarcazione" : "✨ Aggiungi imbarcazione"}
+                          </>
+                        )}
                       </Button>
+                      
                       <Button 
                         type="button" 
                         variant="outline" 
+                        className="flex-1 sm:flex-initial min-w-[120px] border-gray-300 text-gray-700 hover:bg-gray-50 py-3 px-6 rounded-lg transition-colors duration-200"
                         onClick={() => {
                           setShowAddBoatModal(false);
                           setEditingBoat(null);
                           form.reset();
                         }}
                       >
-                        Annulla
+                        ❌ Annulla
                       </Button>
+                    </div>
+
+                    {/* Info Footer */}
+                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
+                      <p className="text-sm text-gray-600">
+                        💡 <strong>Suggerimento:</strong> Più informazioni inserisci, più è probabile che i clienti scelgano la tua imbarcazione!
+                      </p>
                     </div>
                   </form>
                 </DialogContent>

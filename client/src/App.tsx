@@ -64,6 +64,7 @@ import OrmeggioBookingPage from "@/pages/ormeggio-booking";
 import AdminPerformancePage from "@/pages/admin-performance";
 import AltreEsperienzePage from "@/pages/altre-esperienze";
 import CategoriesPage from "@/pages/categories-page";
+import { TestFooterNavigation } from "./test-footer-navigation";
 
 function Router() {
   return (
@@ -143,6 +144,7 @@ function App() {
           <Router />
           {/* Mobile Navigation sempre visibile su tutte le pagine */}
           <MobileNavigation />
+          <TestFooterNavigation />
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

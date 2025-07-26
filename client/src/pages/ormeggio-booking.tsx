@@ -32,7 +32,8 @@ import {
   CheckCircle,
   Heart,
   Share2,
-  SortAsc
+  SortAsc,
+  ArrowLeft
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -227,6 +228,18 @@ export default function OrmeggioBookingPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+      
+      {/* Back to Home Button */}
+      <div className="bg-white border-b px-4 py-3">
+        <div className="max-w-7xl mx-auto">
+          <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
+            <Link href="/">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              ← Torna alla Home
+            </Link>
+          </Button>
+        </div>
+      </div>
       
       {/* Hero Search Section - Stile Booking.com */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">

@@ -63,6 +63,7 @@ import OrmeggioPage from "@/pages/ormeggio-page";
 import OrmeggioBookingPage from "@/pages/ormeggio-booking";
 import AdminPerformancePage from "@/pages/admin-performance";
 import AltreEsperienzePage from "@/pages/altre-esperienze";
+import { BoatDetail } from "@/pages/boat-detail";
 import CategoriesPage from "@/pages/categories-page";
 import EsperienzaDettaglio from "@/pages/esperienza-dettaglio";
 import PrenotaEsperienza from "@/pages/prenota-esperienza";
@@ -128,7 +129,7 @@ function Router() {
       <Route path="/test-moorings" component={lazy(() => import('./pages/test-moorings'))} />
       <Route path="/ricerca-avanzata" component={AdvancedSearchPage} />
       <Route path="/auth" component={AuthPage} />
-      <Route path="/boats/:id" component={BoatDetails} />
+      <Route path="/boats/:id" component={BoatDetail} />
       <Route path="/boats/:id/book" component={BoatBooking} />
       <Route path="/boats/:boatId/availability" component={AvailabilityManagement} />
       <ProtectedRoute path="/messaging" component={MessagingPage} />

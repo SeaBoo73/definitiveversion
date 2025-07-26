@@ -151,7 +151,21 @@ export function BoatCard({ boat }: BoatCardProps) {
           </div>
           
           <div className="mt-4 space-y-2">
-            <Button className="w-full bg-ocean-blue hover:bg-blue-600" onClick={(e) => e.preventDefault()}>
+            <Button 
+              className="w-full bg-ocean-blue hover:bg-blue-600" 
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // If user is logged in, proceed to booking
+                if (user) {
+                  window.location.href = `/boats/${boat.id}`;
+                } else {
+                  // Redirect to login with redirect parameter
+                  window.location.href = `/auth?redirect=/boats/${boat.id}`;
+                }
+              }}
+              data-testid="button-prenota-now"
+            >
               Prenota ora
             </Button>
           </div>

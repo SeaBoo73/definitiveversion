@@ -162,6 +162,17 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 26, 2025 - Sistema Esperienze Porti Campania Esteso
+- **Espansione Completa Porti per Esperienze:**
+  - ✅ Aggiunta lista completa di 48 porti (15 Lazio + 33 Campania) nella sezione Esperienze
+  - ✅ Dropdown porti include tutti i porti campani: Napoli, Salerno, Sorrento, Amalfi, Positano, Capri, Ischia, Procida
+  - ✅ Aggiunta Costiera Cilentana: Agropoli, Palinuro, Marina di Camerota, Sapri, Scario, Pisciotta
+  - ✅ Include tutti i porti della Costiera Amalfitana: Cetara, Maiori, Minori, Atrani, Furore, Conca dei Marini
+  - ✅ Località campane aggiunte: Castellammare di Stabia, Piano di Sorrento, Vico Equense, Massa Lubrense
+  - ✅ Pagine prenota-esperienza aggiornate con porti Campania per ogni tipo di esperienza
+  - ✅ Sistema di prenotazione esperienze con pagamento Stripe completamente funzionante
+  - ✅ Flusso completo: Esplora → Dettaglio → Prenota → Pagamento → Conferma
+
 ### July 25, 2025 - Integrazione Completa Porti Campania
 - **Sistema Località Esteso con Porti Campania:**
   - ✅ Aggiunti 33 porti e località marittime della Campania al sistema di selezione

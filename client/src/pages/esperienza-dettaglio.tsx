@@ -30,7 +30,7 @@ export default function EsperienzaDettaglio() {
       durata: "3 ore",
       persone: "2-12 persone",
       prezzo: "€89",
-      location: "Civitavecchia, Gaeta, Anzio",
+      location: "Civitavecchia, Gaeta, Anzio, Napoli, Sorrento, Capri",
       rating: 4.8,
       reviews: 142,
       dettagli: [
@@ -58,7 +58,7 @@ export default function EsperienzaDettaglio() {
       durata: "8 ore",
       persone: "4-12 persone",
       prezzo: "€159",
-      location: "Ponza, Ventotene, Palmarola",
+      location: "Ponza, Ventotene, Capri, Ischia, Procida, Amalfi",
       rating: 4.9,
       reviews: 89,
       dettagli: [

@@ -51,7 +51,7 @@ export default function PrenotaEsperienza() {
       prezzo: 89,
       maxPersone: 12,
       orari: ["17:30", "18:00", "18:30"],
-      porti: ["Civitavecchia", "Gaeta", "Anzio", "Terracina"]
+      porti: ["Civitavecchia", "Gaeta", "Anzio", "Terracina", "Formia", "Ponza", "Napoli", "Salerno", "Sorrento", "Amalfi", "Positano", "Capri", "Ischia", "Procida"]
     },
     "tour-isole": {
       title: "Tour delle isole nascoste",
@@ -60,7 +60,7 @@ export default function PrenotaEsperienza() {
       prezzo: 159,
       maxPersone: 12,
       orari: ["08:30", "09:00"],
-      porti: ["Ponza", "Ventotene", "Formia"]
+      porti: ["Ponza", "Ventotene", "Formia", "Napoli", "Salerno", "Capri", "Ischia", "Procida", "Amalfi", "Positano", "Agropoli", "Palinuro", "Marina di Camerota"]
     }
   };
 

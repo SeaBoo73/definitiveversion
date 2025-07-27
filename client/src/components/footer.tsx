@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Anchor, Instagram, Globe, DollarSign } from "lucide-react";
+import { Anchor, Instagram, Globe } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
@@ -102,7 +102,6 @@ export function Footer() {
               <span className="text-gray-400 text-sm">Italiano (IT)</span>
             </div>
             <div className="flex items-center space-x-2">
-              <DollarSign className="h-4 w-4 text-gray-400" />
               <span className="text-gray-400 text-sm">€ EUR</span>
             </div>
           </div>

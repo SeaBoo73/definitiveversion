@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
-import { Anchor, Menu, User, Bot, X, Sunset, Sparkles } from "lucide-react";
+import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
 import { useState } from "react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
@@ -39,12 +39,13 @@ export function Header() {
             <div className="flex items-center space-x-1">
               <Link 
                 href="/" 
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/" 
                     ? "text-blue-600 border-b-2 border-blue-600" 
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
+                <Ship className="h-4 w-4" />
                 Esplora
               </Link>
               <Link 
@@ -204,13 +205,14 @@ export function Header() {
             <div className="max-w-7xl mx-auto px-4 py-3 space-y-2">
               <Link 
                 href="/" 
-                className={`block px-3 py-2 rounded-md font-medium transition-colors ${
+                className={`flex items-center gap-2 px-3 py-2 rounded-md font-medium transition-colors ${
                   location === "/" 
                     ? "text-deep-navy bg-gray-100 font-semibold" 
                     : "text-sea-gray hover:text-deep-navy hover:bg-gray-50"
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
+                <Ship className="h-4 w-4" />
                 Esplora
               </Link>
               <Link 

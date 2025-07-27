@@ -33,7 +33,8 @@ import {
   Heart,
   Share2,
   SortAsc,
-  Home
+  Home,
+  X
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -350,10 +351,28 @@ export default function OrmeggioBookingPage() {
           <div className="lg:w-80 space-y-6">
             <Card>
               <CardContent className="p-6">
-                <h3 className="font-bold text-lg mb-4 flex items-center">
-                  <Filter className="h-5 w-5 mr-2" />
-                  Filtri
-                </h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-bold text-lg flex items-center">
+                    <Filter className="h-5 w-5 mr-2" />
+                    Filtri
+                  </h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setDestination('');
+                      setCheckIn(undefined);
+                      setCheckOut(undefined);
+                      setBoatLength('');
+                      setPriceRange('all');
+                      setSortBy('price');
+                    }}
+                    className="text-gray-600 hover:text-red-600 hover:border-red-300"
+                  >
+                    <X className="h-4 w-4 mr-1" />
+                    Rimuovi filtri
+                  </Button>
+                </div>
                 
                 {/* Price Range */}
                 <div className="space-y-3 mb-6">

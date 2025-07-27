@@ -27,7 +27,8 @@ import {
   CheckCircle2,
   Heart,
   Share2,
-  Home
+  Home,
+  X
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -425,6 +426,28 @@ export default function OrmeggioPage() {
       {/* Search and Filters */}
       <section className="py-8 bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Filtri Header con pulsante Rimuovi */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Filter className="h-5 w-5 text-gray-600" />
+              <h2 className="text-lg font-semibold text-gray-900">Filtri</h2>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setSearchLocation('');
+                setMaxLength('');
+                setPriceRange('');
+                setServices('');
+                setSortBy('featured');
+              }}
+              className="text-gray-600 hover:text-red-600 hover:border-red-300"
+            >
+              <X className="h-4 w-4 mr-2" />
+              Rimuovi filtri
+            </Button>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="relative">
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />

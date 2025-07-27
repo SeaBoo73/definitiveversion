@@ -214,6 +214,17 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Interfaccia user-friendly con box informativo blu per assistere l'utente
   - ✅ Feedback immediato su validità cantiere inserito senza submit form
 
+### July 27, 2025 - Menu Dropdown Porti per Form Imbarcazioni
+- **Sistema Selezione Porti Integrato:**
+  - ✅ Sostituito campo "Porto di partenza" da input testo libero a dropdown strutturato
+  - ✅ Creato database completo `shared/ports-data.ts` con 40+ porti di Lazio e Campania
+  - ✅ Include tutti i porti utilizzati nelle esperienze: Civitavecchia, Gaeta, Ponza, Napoli, Sorrento, Amalfi, Capri, etc.
+  - ✅ Menu organizzato per regioni con badge colorati: Lazio (blu), Campania (arancione)
+  - ✅ Ogni porto con nome completo: "Porto di Civitavecchia", "Marina di Sorrento", etc.
+  - ✅ Interfaccia user-friendly con conteggio porti per regione e indicatori visivi
+  - ✅ Prevenzione errori di battitura e standardizzazione nomi porti nel database
+  - ✅ Sincronizzazione completa con sistema porti utilizzato nelle esperienze
+
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**
   - ✅ Form "Aggiungi imbarcazione" completamente ridisegnato con design moderno e professionale

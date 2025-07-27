@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertBoatSchema, Boat, Booking } from "@shared/schema";
 import { validateManufacturer, findSimilarManufacturers, getManufacturersByCategory } from "@shared/boat-manufacturers";
+import { getAllPorts } from "@shared/ports-data";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -641,12 +642,48 @@ export default function OwnerDashboard() {
                             <Anchor className="h-4 w-4 text-purple-600" />
                             Porto di partenza *
                           </Label>
-                          <Input 
-                            id="port" 
-                            placeholder="es. Marina di Gaeta, Porto di Civitavecchia" 
-                            {...form.register("port")} 
-                            className="border-purple-200 focus:border-purple-500"
-                          />
+                          <Select onValueChange={(value) => form.setValue("port", value)}>
+                            <SelectTrigger className="border-purple-200 focus:border-purple-500">
+                              <SelectValue placeholder="Seleziona il porto di partenza" />
+                            </SelectTrigger>
+                            <SelectContent className="max-h-60">
+                              {(() => {
+                                const allPorts = getAllPorts();
+                                const lazioPorts = allPorts.filter(p => p.region === "Lazio");
+                                const campaniaPorts = allPorts.filter(p => p.region === "Campania");
+                                
+                                return (
+                                  <>
+                                    {/* Porti del Lazio */}
+                                    <div className="px-2 py-1.5 text-xs font-semibold text-blue-600 bg-blue-50">
+                                      🏛️ Lazio ({lazioPorts.length} porti)
+                                    </div>
+                                    {lazioPorts.map((port) => (
+                                      <SelectItem key={port.name} value={port.fullName}>
+                                        <span className="flex items-center gap-2">
+                                          <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+                                          {port.fullName}
+                                        </span>
+                                      </SelectItem>
+                                    ))}
+                                    
+                                    {/* Porti della Campania */}
+                                    <div className="px-2 py-1.5 text-xs font-semibold text-orange-600 bg-orange-50 mt-1">
+                                      🌋 Campania ({campaniaPorts.length} porti)
+                                    </div>
+                                    {campaniaPorts.map((port) => (
+                                      <SelectItem key={port.name} value={port.fullName}>
+                                        <span className="flex items-center gap-2">
+                                          <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                                          {port.fullName}
+                                        </span>
+                                      </SelectItem>
+                                    ))}
+                                  </>
+                                );
+                              })()}
+                            </SelectContent>
+                          </Select>
                           {form.formState.errors.port && (
                             <p className="text-sm text-red-500">{form.formState.errors.port.message}</p>
                           )}

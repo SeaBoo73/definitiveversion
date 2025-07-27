@@ -268,57 +268,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Hai bisogno di aiuto? */}
-      <section id="help" className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Hai bisogno di aiuto?</h2>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Siamo qui per aiutarti. Trova le risposte alle domande più frequenti
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Prenotazioni</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><Link href="/faq#prenotazione" className="text-blue-600 hover:text-blue-800">• Come prenotare una barca?</Link></li>
-                <li><Link href="/faq#modifica" className="text-blue-600 hover:text-blue-800">• Posso modificare la prenotazione?</Link></li>
-                <li><Link href="/faq#cancellazione" className="text-blue-600 hover:text-blue-800">• Politiche di cancellazione</Link></li>
-                <li><Link href="/faq#documenti" className="text-blue-600 hover:text-blue-800">• Documenti necessari</Link></li>
-              </ul>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Pagamenti</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><Link href="/faq#pagamento" className="text-blue-600 hover:text-blue-800">• Metodi di pagamento</Link></li>
-                <li><Link href="/faq#sicurezza" className="text-blue-600 hover:text-blue-800">• Sicurezza dei pagamenti</Link></li>
-                <li><Link href="/faq#rimborso" className="text-blue-600 hover:text-blue-800">• Richiesta di rimborso</Link></li>
-                <li><Link href="/faq#fattura" className="text-blue-600 hover:text-blue-800">• Fatturazione</Link></li>
-              </ul>
-            </div>
-
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Per i noleggiatori</h3>
-              <ul className="space-y-2 text-gray-600">
-                <li><Link href="/inserisci-barca" className="text-blue-600 hover:text-blue-800">• Come inserire la tua barca</Link></li>
-                <li><Link href="/gestione-prenotazioni" className="text-blue-600 hover:text-blue-800">• Gestione delle prenotazioni</Link></li>
-                <li><Link href="/commissioni" className="text-blue-600 hover:text-blue-800">• Commissioni e guadagni</Link></li>
-                <li><Link href="/assistenza-proprietari" className="text-blue-600 hover:text-blue-800">• Assistenza proprietari</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">Non trovi quello che cerchi?</p>
-            <Button className="bg-blue-500 hover:bg-blue-600 text-white" asChild>
-              <Link href="/aiuto">Centro assistenza</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
       <Footer />
       <LiveChatButton />
     </div>

@@ -36,6 +36,11 @@ export default function CustomerDashboard() {
   const [location, setLocation] = useLocation();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
+  // Get tab from URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const tabFromUrl = urlParams.get('tab');
+  const initialTab = tabFromUrl || 'bookings';
+
   // Check for success parameter
   useEffect(() => {
     const urlParams = new URLSearchParams(location.split('?')[1] || '');
@@ -191,7 +196,7 @@ export default function CustomerDashboard() {
           </Card>
         </div>
 
-        <Tabs defaultValue="bookings" className="space-y-6">
+        <Tabs defaultValue={initialTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="bookings">Le mie prenotazioni</TabsTrigger>
             <TabsTrigger value="favorites">Preferiti</TabsTrigger>

@@ -19,6 +19,7 @@ import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_17528761
 import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";
 import houseboatImage from "@assets/OIP_1752919948843.webp";
 import motorboatImage from "@assets/R (1)_1752920495156.jpg";
+import caiaccoImage from "@assets/caiacco_1753599016775.jpg";
 
 const categoryMapping = [
   {
@@ -74,6 +75,12 @@ const categoryMapping = [
     name: "Barche a motore",
     description: "Velocità e comfort per esplorare la costa", 
     image: motorboatImage,
+  },
+  {
+    id: "kayak",
+    name: "Caiacco",
+    description: "Tradizione e autenticità per esplorare coste e calette",
+    image: caiaccoImage,
   },
 ];
 

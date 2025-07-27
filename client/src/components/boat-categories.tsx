@@ -9,7 +9,7 @@ import charterImage from "@assets/WhatsApp Image 2025-06-12 at 20.22.10_17528761
 import sailboatImage from "@assets/barca a vela ludovica_1752876195081.jpg";
 import houseboatImage from "@assets/OIP_1752919948843.webp";
 import guletImage from "@assets/gulet-romance-3-cabin-luxury-gulet-for-charter-3-1024x683_1752919948842.jpg";
-import kayakImage from "@assets/R_1752920173178.jpg";
+import kayakImage from "@assets/caiacco_1753599016775.jpg";
 import motorboatImage from "@assets/R (1)_1752920495156.jpg";
 // import yachtImage from "@assets/WhatsApp Image 2025-06-15 at 23.37.00 (1)_1752875876213.jpeg";
 
@@ -87,7 +87,7 @@ const categories = [
   {
     id: "kayak",
     name: "Caiacco",
-    description: "Esplora calette nascoste e natura incontaminata",
+    description: "Tradizione e autenticità per esplorare coste e calette",
     image: kayakImage,
     count: 22
   }

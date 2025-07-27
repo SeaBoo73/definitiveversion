@@ -71,6 +71,8 @@ const boatFormSchema = insertBoatSchema.extend({
   maxPersons: z.string().min(1, "Numero massimo persone richiesto"),
   length: z.string().optional(),
   year: z.string().optional(),
+  cancellationPolicy: z.enum(["flexible", "moderate", "strict", "super_strict"]).optional().default("moderate"),
+  refundMethod: z.enum(["credit_card", "bank_transfer", "paypal", "seago_credit"]).optional().default("credit_card"),
 });
 
 type BoatFormData = z.infer<typeof boatFormSchema>;
@@ -120,20 +122,14 @@ export default function OwnerDashboard() {
       images: [],
       documentsRequired: "",
       active: true,
+      cancellationPolicy: "moderate",
+      refundMethod: "credit_card",
     },
   });
 
   const createBoatMutation = useMutation({
-    mutationFn: async (data: BoatFormData) => {
-      const boatData = {
-        ...data,
-        pricePerDay: data.pricePerDay,
-        maxPersons: parseInt(data.maxPersons),
-        length: data.length ? data.length : undefined,
-        year: data.year ? parseInt(data.year) : undefined,
-        ownerId: user!.id,
-      };
-      const res = await apiRequest("POST", "/api/boats", boatData);
+    mutationFn: async (data: any) => {
+      const res = await apiRequest("POST", "/api/boats", data);
       return await res.json();
     },
     onSuccess: () => {
@@ -184,10 +180,20 @@ export default function OwnerDashboard() {
   });
 
   const onSubmit = (data: BoatFormData) => {
+    const processedData = {
+      ...data,
+      pricePerDay: data.pricePerDay,
+      maxPersons: parseInt(data.maxPersons),
+      length: data.length ? data.length : undefined,
+      year: data.year ? parseInt(data.year) : undefined,
+      cancellationPolicy: data.cancellationPolicy,
+      refundMethod: data.refundMethod,
+    };
+    
     if (editingBoat) {
-      updateBoatMutation.mutate({ id: editingBoat.id, data: data as any });
+      updateBoatMutation.mutate({ id: editingBoat.id, data: processedData as any });
     } else {
-      createBoatMutation.mutate(data);
+      createBoatMutation.mutate({ ...processedData, ownerId: user!.id } as any);
     }
   };
 
@@ -253,6 +259,8 @@ export default function OwnerDashboard() {
       maxPersons: boat.maxPersons.toString(),
       length: boat.length?.toString() || "",
       year: boat.year?.toString() || "",
+      cancellationPolicy: boat.cancellationPolicy || "moderate",
+      refundMethod: boat.refundMethod || "credit_card",
     });
     setShowAddBoatModal(true);
   };
@@ -710,6 +718,48 @@ export default function OwnerDashboard() {
                             placeholder="es. GPS, Autopilota, Tender..." 
                             className="border-teal-200 focus:border-teal-500"
                           />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="cancellationPolicy" className="flex items-center gap-2">
+                            <span className="text-teal-600">📋</span>
+                            Politica di cancellazione
+                          </Label>
+                          <Select 
+                            value={form.watch("cancellationPolicy")} 
+                            onValueChange={(value) => form.setValue("cancellationPolicy", value as any)}
+                          >
+                            <SelectTrigger className="border-teal-200 focus:border-teal-500">
+                              <SelectValue placeholder="Seleziona politica" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="flexible">🟢 Flessibile - Cancellazione gratuita fino a 24h prima</SelectItem>
+                              <SelectItem value="moderate">🔵 Moderata - Cancellazione gratuita fino a 48h prima</SelectItem>
+                              <SelectItem value="strict">🟡 Rigida - Cancellazione gratuita fino a 7 giorni prima</SelectItem>
+                              <SelectItem value="super_strict">🔴 Super Rigida - Cancellazione gratuita fino a 14 giorni prima</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="refundMethod" className="flex items-center gap-2">
+                            <span className="text-teal-600">💳</span>
+                            Metodo di rimborso
+                          </Label>
+                          <Select 
+                            value={form.watch("refundMethod")} 
+                            onValueChange={(value) => form.setValue("refundMethod", value as any)}
+                          >
+                            <SelectTrigger className="border-teal-200 focus:border-teal-500">
+                              <SelectValue placeholder="Seleziona metodo" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="credit_card">💳 Carta di credito (3-5 giorni lavorativi)</SelectItem>
+                              <SelectItem value="bank_transfer">🏦 Bonifico bancario (5-7 giorni lavorativi)</SelectItem>
+                              <SelectItem value="paypal">📱 PayPal (1-3 giorni lavorativi)</SelectItem>
+                              <SelectItem value="seago_credit">🌊 Credito SeaGO (Immediato)</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
                       </div>
                     </div>

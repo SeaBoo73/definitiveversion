@@ -122,6 +122,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/boats/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const id = parseInt(req.params.id);
+      const boat = await storage.getBoat(id);
+      
+      if (!boat) {
+        return res.status(404).json({ message: "Boat not found" });
+      }
+
+      if (boat.ownerId !== req.user.id && req.user.role !== "admin") {
+        return res.sendStatus(403);
+      }
+
+      const validation = insertBoatSchema.partial().safeParse(req.body);
+      if (!validation.success) {
+        return res.status(400).json({ message: "Invalid boat data" });
+      }
+
+      const updatedBoat = await storage.updateBoat(id, validation.data);
+      res.json(updatedBoat);
+    } catch (error) {
+      console.error("Error updating boat:", error);
+      res.status(500).json({ message: "Error updating boat" });
+    }
+  });
+
+  app.delete("/api/boats/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.sendStatus(401);
+    }
+
+    try {
+      const id = parseInt(req.params.id);
+      const boat = await storage.getBoat(id);
+      
+      if (!boat) {
+        return res.status(404).json({ message: "Boat not found" });
+      }
+
+      if (boat.ownerId !== req.user.id && req.user.role !== "admin") {
+        return res.sendStatus(403);
+      }
+
+      await storage.deleteBoat(id);
+      res.sendStatus(204);
+    } catch (error) {
+      console.error("Error deleting boat:", error);
+      res.status(500).json({ message: "Error deleting boat" });
+    }
+  });
+
   // Booking endpoints
   app.get("/api/bookings", async (req, res) => {
     if (!req.isAuthenticated()) {

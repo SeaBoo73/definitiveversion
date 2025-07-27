@@ -17,6 +17,8 @@ export const emergencySeverityEnum = pgEnum("emergency_severity", ["low", "mediu
 export const emergencyStatusEnum = pgEnum("emergency_status", ["active", "resolved", "in_progress"]);
 export const mooringTypeEnum = pgEnum("mooring_type", ["pontile", "boa", "ancora", "gavitello"]);
 export const mooringBookingStatusEnum = pgEnum("mooring_booking_status", ["pending", "confirmed", "cancelled", "completed"]);
+export const cancellationPolicyEnum = pgEnum("cancellation_policy", ["flexible", "moderate", "strict", "super_strict"]);
+export const refundMethodEnum = pgEnum("refund_method", ["credit_card", "bank_transfer", "paypal", "seago_credit"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -58,6 +60,14 @@ export const boats = pgTable("boats", {
   pickupTime: text("pickup_time").default("09:00"), // Orario ritiro (es. 09:00)
   returnTime: text("return_time").default("18:00"), // Orario riconsegna (es. 18:00)
   dailyReturnRequired: boolean("daily_return_required").default(true), // Ritorno serale obbligatorio
+  cancellationPolicy: cancellationPolicyEnum("cancellation_policy").default("moderate"),
+  refundMethod: refundMethodEnum("refund_method").default("credit_card"),
+  cancellationRules: json("cancellation_rules").$type<{
+    flexible: { hours: number; refundPercentage: number }[];
+    moderate: { hours: number; refundPercentage: number }[];
+    strict: { hours: number; refundPercentage: number }[];
+    super_strict: { hours: number; refundPercentage: number }[];
+  }>(),
   active: boolean("active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -413,8 +423,46 @@ export const documentTemplates = pgTable("document_templates", {
   requiredFields: json("required_fields"), // Campi richiesti per questo tipo documento
   validationRules: json("validation_rules"), // Regole di validazione automatica
   isActive: boolean("is_active").notNull().default(true),
-  country: text("country").default("IT"),
-  createdAt: timestamp("created_at").notNull().defaultNow()
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+// Experiences table
+export const experiences = pgTable("experiences", {
+  id: serial("id").primaryKey(),
+  ownerId: integer("owner_id").references(() => users.id).notNull(),
+  title: text("title").notNull(),
+  category: text("category").notNull(), // "tour", "gourmet", "charter", "events", "courses", "fishing"
+  description: text("description").notNull(),
+  duration: text("duration").notNull(), // "2 ore", "Giornata intera", etc.
+  location: text("location").notNull(),
+  maxParticipants: integer("max_participants").notNull(),
+  pricePerPerson: decimal("price_per_person", { precision: 8, scale: 2 }).notNull(),
+  difficulty: text("difficulty").default("Facile"), // "Facile", "Medio", "Difficile"
+  included: text("included").array(), // Servizi inclusi
+  specialNotes: text("special_notes"), // Note speciali, requisiti
+  images: text("images").array(),
+  cancellationPolicy: cancellationPolicyEnum("cancellation_policy").default("moderate"),
+  refundMethod: refundMethodEnum("refund_method").default("credit_card"),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Predefined cancellation policies
+export const cancellationPolicies = pgTable("cancellation_policies", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(), // "Flessibile", "Moderata", "Rigida", "Super Rigida"
+  type: cancellationPolicyEnum("type").notNull(),
+  description: text("description").notNull(),
+  rules: json("rules").$type<{
+    timeframes: { hours: number; refundPercentage: number; description: string }[];
+    noRefundAfter: number; // hours before start
+    processingFee: number; // percentage
+  }>(),
+  icon: text("icon").default("Calendar"),
+  color: text("color").default("blue"),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const userDocumentRequirements = pgTable("user_document_requirements", {
@@ -444,6 +492,7 @@ export const documentAuditLog = pgTable("document_audit_log", {
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   ownedBoats: many(boats),
+  ownedExperiences: many(experiences),
   bookings: many(bookings),
   sentMessages: many(messages),
   givenReviews: many(reviews, { relationName: "reviewer" }),
@@ -520,6 +569,20 @@ export const favoritesRelations = relations(favorites, ({ one }) => ({
   }),
 }));
 
+// Relations for experiences
+export const experiencesRelations = relations(experiences, ({ one }) => ({
+  owner: one(users, {
+    fields: [experiences.ownerId],
+    references: [users.id],
+  }),
+}));
+
+// Relations for cancellation policies
+export const cancellationPoliciesRelations = relations(cancellationPolicies, ({ many }) => ({
+  boats: many(boats),
+  experiences: many(experiences),
+}));
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
@@ -545,6 +608,16 @@ export const insertBookingSchema = createInsertSchema(bookings).omit({
 });
 
 export const insertReviewSchema = createInsertSchema(reviews).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertExperienceSchema = createInsertSchema(experiences).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertCancellationPolicySchema = createInsertSchema(cancellationPolicies).omit({
   id: true,
   createdAt: true,
 });

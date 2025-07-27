@@ -193,7 +193,7 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Solo i proprietari (role="owner") vedono "Dashboard Sea Host" nella navigation
   - ✅ Clienti mantengono accesso a "Area Clienti" + pulsante "Diventa noleggiatore"
   - ✅ Correzione applicata sia al menu desktop che mobile
-  - ✅ Pulsante porta direttamente alla registrazione con ruolo owner preselezionato
+  - ✅ Pulsante porta alla pagina termini e condizioni `/diventa-noleggiatore` prima della registrazione
 
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**

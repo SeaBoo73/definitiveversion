@@ -137,7 +137,7 @@ export function Header() {
               {user && <NotificationsCenter />}
               {(!user || user.role === "customer") && (
                 <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2">
-                  <Link href="/auth?tab=register&role=owner">Diventa noleggiatore</Link>
+                  <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
                 </Button>
               )}
               
@@ -277,7 +277,7 @@ export function Header() {
                 {!user ? (
                   <>
                     <Button asChild className="w-full bg-coral hover:bg-orange-600 text-white font-bold shadow-lg">
-                      <Link href="/auth?tab=register&role=owner" onClick={() => setIsMobileMenuOpen(false)}>
+                      <Link href="/diventa-noleggiatore" onClick={() => setIsMobileMenuOpen(false)}>
                         Diventa noleggiatore
                       </Link>
                     </Button>
@@ -316,7 +316,7 @@ export function Header() {
                     )}
                     {user.role === "customer" && (
                       <Button variant="ghost" asChild className="w-full justify-start text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100">
-                        <Link href="/auth?tab=register&role=owner" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/diventa-noleggiatore" onClick={() => setIsMobileMenuOpen(false)}>
                           Diventa noleggiatore
                         </Link>
                       </Button>

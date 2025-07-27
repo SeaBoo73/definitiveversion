@@ -33,7 +33,7 @@ import {
   Heart,
   Share2,
   SortAsc,
-  ArrowLeft
+  Home
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -234,8 +234,8 @@ export default function OrmeggioBookingPage() {
         <div className="max-w-7xl mx-auto">
           <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
             <Link href="/">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              ← Torna alla Home
+              <Home className="h-4 w-4 mr-2" />
+              Ormeggio
             </Link>
           </Button>
         </div>

@@ -2,8 +2,11 @@ import { Link } from "wouter";
 import { Anchor, Instagram, Globe } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
 
   return (
     <footer className="bg-gray-900 text-white">
@@ -37,7 +40,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4">Servizi</h4>
+            <h4 className="font-semibold mb-4">{t('nav.services')}</h4>
             <ul className="space-y-2 text-gray-400">
               <li><Link to="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
               <li><Link to="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa Sea Host</Link></li>
@@ -81,7 +84,7 @@ export function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold mb-4">Supporto</h4>
+            <h4 className="font-semibold mb-4">{t('footer.support')}</h4>
             <ul className="space-y-2 text-gray-400">
               <li><Link to="/aiuto" className="hover:text-white transition-colors">Centro assistenza</Link></li>
               <li><Link to="/contatti" className="hover:text-white transition-colors">Contattaci</Link></li>
@@ -97,12 +100,9 @@ export function Footer() {
             © 2024 SeaGO. Tutti i diritti riservati.
           </p>
           <div className="flex items-center space-x-6 mt-4 md:mt-0">
+            <LanguageSwitcher />
             <div className="flex items-center space-x-2">
-              <Globe className="h-4 w-4 text-gray-400" />
-              <span className="text-gray-400 text-sm">Italiano (IT)</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <span className="text-gray-400 text-sm">€ EUR</span>
+              <span className="text-gray-400 text-sm">{t('footer.currency')}</span>
             </div>
           </div>
         </div>

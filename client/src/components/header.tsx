@@ -8,9 +8,11 @@ import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
 import { useState } from "react";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
+  const { t } = useLanguage();
   const [location, setLocation] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -46,7 +48,7 @@ export function Header() {
                 }`}
               >
                 <Ship className="h-4 w-4" />
-                Esplora
+                {t('nav.explore')}
               </Link>
               <Link 
                 href="/esperienze" 
@@ -57,7 +59,7 @@ export function Header() {
                 }`}
               >
                 <Sparkles className="h-4 w-4" />
-                Esperienze
+                {t('nav.experiences')}
               </Link>
               <Link 
                 href="/ormeggio" 
@@ -68,7 +70,7 @@ export function Header() {
                 }`}
               >
                 <Anchor className="h-4 w-4" />
-                Ormeggio
+                {t('nav.mooring')}
               </Link>
               <Link 
                 href="/ia" 
@@ -90,14 +92,14 @@ export function Header() {
                     : "text-gray-500 hover:text-gray-900"
                 }`}
               >
-                Aiuto
+                {t('nav.help')}
               </Link>
               {user?.role === "owner" && (
                 <Link 
                   href="/owner-dashboard" 
                   className="text-gray-700 hover:text-deep-navy transition-colors font-medium px-4 py-2 rounded-md hover:bg-gray-50 text-sm"
                 >
-                  Dashboard Sea Host
+                  {t('nav.dashboard_host')}
                 </Link>
               )}
               {user?.role === "customer" && (
@@ -105,7 +107,7 @@ export function Header() {
                   href="/customer-dashboard" 
                   className="text-gray-700 hover:text-deep-navy transition-colors font-medium px-4 py-2 rounded-md hover:bg-gray-50 text-sm"
                 >
-                  Area Clienti
+                  {t('nav.customer_area')}
                 </Link>
               )}
               {user?.role === "admin" && (
@@ -138,7 +140,7 @@ export function Header() {
               {user && <NotificationsCenter />}
               {(!user || user.role === "customer") && (
                 <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2">
-                  <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
+                  <Link href="/diventa-noleggiatore">{t('nav.become_host')}</Link>
                 </Button>
               )}
               
@@ -157,23 +159,23 @@ export function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href={user.role === "owner" ? "/owner-dashboard?tab=profile" : "/customer-dashboard?tab=profile"}>Il mio profilo</Link>
+                      <Link href={user.role === "owner" ? "/owner-dashboard?tab=profile" : "/customer-dashboard?tab=profile"}>{t('nav.my_profile')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={user.role === "owner" ? "/owner-dashboard?tab=bookings" : "/customer-dashboard?tab=bookings"}>Le mie prenotazioni</Link>
+                      <Link href={user.role === "owner" ? "/owner-dashboard?tab=bookings" : "/customer-dashboard?tab=bookings"}>{t('nav.my_bookings')}</Link>
                     </DropdownMenuItem>
                     {user.role === "owner" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/owner-dashboard">Dashboard Sea Host</Link>
+                        <Link href="/owner-dashboard">{t('nav.dashboard_host')}</Link>
                       </DropdownMenuItem>
                     )}
                     {user.role === "customer" && (
                       <DropdownMenuItem asChild>
-                        <Link href="/customer-dashboard">Area Clienti</Link>
+                        <Link href="/customer-dashboard">{t('nav.customer_area')}</Link>
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem onClick={handleLogout}>
-                      Disconnetti
+                      {t('nav.logout')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -213,7 +215,7 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Ship className="h-4 w-4" />
-                Esplora
+                {t('nav.explore')}
               </Link>
               <Link 
                 href="/esperienze" 
@@ -225,7 +227,7 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Sparkles className="h-4 w-4" />
-                Esperienze
+                {t('nav.experiences')}
               </Link>
               <Link 
                 href="/ormeggio" 
@@ -237,7 +239,7 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Anchor className="h-4 w-4" />
-                Ormeggio
+                {t('nav.mooring')}
               </Link>
               <Link 
                 href="/ia" 
@@ -260,7 +262,7 @@ export function Header() {
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Servizi
+                {t('nav.services')}
               </Link>
               <Link 
                 href="/aiuto" 
@@ -271,7 +273,7 @@ export function Header() {
                 }`}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Aiuto
+                {t('nav.help')}
               </Link>
               
               {/* Mobile User Actions */}
@@ -280,12 +282,12 @@ export function Header() {
                   <>
                     <Button asChild className="w-full bg-coral hover:bg-orange-600 text-white font-bold shadow-lg">
                       <Link href="/diventa-noleggiatore" onClick={() => setIsMobileMenuOpen(false)}>
-                        Diventa noleggiatore
+                        {t('nav.become_host')}
                       </Link>
                     </Button>
                     <Button asChild variant="outline" className="w-full">
                       <Link href="/auth" onClick={() => setIsMobileMenuOpen(false)}>
-                        Accedi
+                        {t('nav.login')}
                       </Link>
                     </Button>
                   </>
@@ -296,7 +298,7 @@ export function Header() {
                       className="block px-3 py-2 rounded-md font-medium text-sea-gray hover:text-deep-navy hover:bg-gray-50 transition-colors"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      Il mio profilo
+                      {t('nav.my_profile')}
                     </Link>
                     {user.role === "owner" && (
                       <Link 
@@ -304,7 +306,7 @@ export function Header() {
                         className="block px-3 py-2 rounded-md font-medium text-sea-gray hover:text-deep-navy hover:bg-gray-50 transition-colors"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Dashboard Sea Host
+                        {t('nav.dashboard_host')}
                       </Link>
                     )}
                     {user.role === "customer" && (
@@ -313,13 +315,13 @@ export function Header() {
                         className="block px-3 py-2 rounded-md font-medium text-sea-gray hover:text-deep-navy hover:bg-gray-50 transition-colors"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
-                        Area Clienti
+                        {t('nav.customer_area')}
                       </Link>
                     )}
                     {user.role === "customer" && (
                       <Button variant="ghost" asChild className="w-full justify-start text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100">
                         <Link href="/diventa-noleggiatore" onClick={() => setIsMobileMenuOpen(false)}>
-                          Diventa noleggiatore
+                          {t('nav.become_host')}
                         </Link>
                       </Button>
                     )}
@@ -331,7 +333,7 @@ export function Header() {
                         setIsMobileMenuOpen(false);
                       }}
                     >
-                      Disconnetti
+                      {t('nav.logout')}
                     </Button>
                   </>
                 )}

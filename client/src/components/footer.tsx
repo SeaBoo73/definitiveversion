@@ -1,5 +1,6 @@
 import { Link } from "wouter";
-import { Anchor, Facebook, Instagram, Twitter, Youtube, Globe, DollarSign } from "lucide-react";
+import { Anchor, Instagram, Globe, DollarSign } from "lucide-react";
+import { SiTiktok } from "react-icons/si";
 import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Footer() {
@@ -25,17 +26,11 @@ export function Footer() {
               Scopri il mare come mai prima d'ora.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://instagram.com/seago_italia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Youtube size={20} />
+              <a href="https://tiktok.com/@seago_italia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+                <SiTiktok size={20} />
               </a>
             </div>
           </div>

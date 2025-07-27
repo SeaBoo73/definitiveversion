@@ -91,10 +91,11 @@ export default function OwnerDashboard() {
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
-  // Get tab from URL parameter
+  // Get tab from URL parameter and manage active tab
   const urlParams = new URLSearchParams(window.location.search);
   const tabFromUrl = urlParams.get('tab');
   const initialTab = tabFromUrl || 'boats';
+  const [activeTab, setActiveTab] = useState(initialTab);
 
   // Fetch owner's boats
   const { data: boats = [], isLoading: boatsLoading } = useQuery<Boat[]>({
@@ -143,6 +144,7 @@ export default function OwnerDashboard() {
       setShowAddBoatModal(false);
       setEditingBoat(null);
       form.reset();
+      setActiveTab("boats"); // Switch to boats tab to show the new boat
       toast({
         title: "Imbarcazione aggiunta",
         description: "La tua imbarcazione è stata aggiunta con successo",
@@ -395,7 +397,7 @@ export default function OwnerDashboard() {
           </Card>
         </div>
 
-        <Tabs defaultValue={initialTab} className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="boats">Le mie imbarcazioni</TabsTrigger>
             <TabsTrigger value="experiences">Le mie esperienze</TabsTrigger>

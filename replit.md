@@ -162,7 +162,7 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
-### July 27, 2025 - Rimozione Definitiva Sistema Multi-Lingua
+### July 27, 2025 - Rimozione Definitiva Sistema Multi-Lingua + Pulizia Sezione Partner
 - **Sistema Multi-Lingua Completamente Rimosso:**
   - ✅ Rimosso LanguageProvider da App.tsx per eliminare wrapper non necessario
   - ✅ Header completamente convertito in italiano rimuovendo tutte le chiamate {t('...')}
@@ -173,6 +173,11 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Navigazione e UI completamente in italiano nativo
   - ✅ Eliminazione completa dipendenze da sistema di traduzione
   - ✅ Performance migliorate senza overhead traduzione runtime
+- **Sezione Partner Aggiornata:**
+  - ✅ Rimosso Capuano Trasporti dall'elenco partner su richiesta utente
+  - ✅ PartnersSection trasformata in call-to-action esclusivo per nuovi partner
+  - ✅ Design migliorato con focus su acquisizione nuovi partner qualificati
+  - ✅ Messaggio più accattivante per espansione rete partner SeaGO
 
 ### July 27, 2025 - Sistema Navigazione Role-Based + Pagina Diventa Noleggiatore
 - **Navigazione Role-Based Implementata:**

@@ -188,6 +188,13 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Dropdown tipologie ora completo con tutte le 10 categorie disponibili
   - ✅ Sincronizzazione completa tra form frontend e schema database
 
+- **Fix Pulsante "Diventa Noleggiatore" per Clienti:**
+  - ✅ Pulsante arancione "Diventa noleggiatore" ora sempre visibile per clienti registrati
+  - ✅ Solo i proprietari (role="owner") vedono "Dashboard Sea Host" nella navigation
+  - ✅ Clienti mantengono accesso a "Area Clienti" + pulsante "Diventa noleggiatore"
+  - ✅ Correzione applicata sia al menu desktop che mobile
+  - ✅ Pulsante porta direttamente alla registrazione con ruolo owner preselezionato
+
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**
   - ✅ Form "Aggiungi imbarcazione" completamente ridisegnato con design moderno e professionale

@@ -195,6 +195,25 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Correzione applicata sia al menu desktop che mobile
   - ✅ Pulsante porta alla pagina termini e condizioni `/diventa-noleggiatore` prima della registrazione
 
+### July 27, 2025 - Sistema Validazione Cantieri Nautici Implementato
+- **Database Completo Cantieri/Marche per Tutte le Categorie:**
+  - ✅ Creato database comprensivo `shared/boat-manufacturers.ts` con oltre 200 cantieri nautici autentici
+  - ✅ Categorizzati per tipologia: yacht (20), sailboat (25), catamaran (18), gommoni (18), jetski (11), charter (10), houseboat (13), gulet (11), kayak (15), motorboat (24), barche-senza-patente (20)
+  - ✅ Include cantieri italiani e internazionali: Azimut, Ferretti, Riva, Jeanneau, Beneteau, Bavaria, Zodiac, Quicksilver, etc.
+  - ✅ Funzioni di validazione: `validateManufacturer()`, `findSimilarManufacturers()`, `getManufacturersByCategory()`
+- **Validazione Intelligente Campo Cantiere/Marca:**
+  - ✅ Schema Zod aggiornato con validazione custom per campo manufacturer
+  - ✅ Errore specifico: "Cantiere/Marca non riconosciuto. Inserisci un cantiere nautico valido."
+  - ✅ Sistema suggerimenti smart: cantieri simili + cantieri popolari per categoria selezionata
+  - ✅ Bottoni click-to-select per correzione rapida con colori distintivi (blu/verde)
+  - ✅ Validazione in tempo reale durante compilazione form "Aggiungi imbarcazione"
+  - ✅ Prevenzione inserimento cantieri inesistenti o errati nel database
+- **UX Migliorata Form Imbarcazioni:**
+  - ✅ Suggerimenti "Forse intendevi:" per correggere errori di battitura
+  - ✅ Sezione "Cantieri popolari per [categoria]:" con 5 opzioni più usate
+  - ✅ Interfaccia user-friendly con box informativo blu per assistere l'utente
+  - ✅ Feedback immediato su validità cantiere inserito senza submit form
+
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**
   - ✅ Form "Aggiungi imbarcazione" completamente ridisegnato con design moderno e professionale

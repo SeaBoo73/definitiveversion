@@ -17,6 +17,7 @@ import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertBoatSchema, Boat, Booking } from "@shared/schema";
+import { validateManufacturer, findSimilarManufacturers, getManufacturersByCategory } from "@shared/boat-manufacturers";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
@@ -71,6 +72,10 @@ const boatFormSchema = insertBoatSchema.extend({
   maxPersons: z.string().min(1, "Numero massimo persone richiesto"),
   length: z.string().optional(),
   year: z.string().optional(),
+  manufacturer: z.string().optional().refine((val) => {
+    if (!val || !val.trim()) return true; // Optional field
+    return validateManufacturer(val.trim());
+  }, "Cantiere/Marca non riconosciuto. Inserisci un cantiere nautico valido."),
   cancellationPolicy: z.enum(["flexible", "moderate", "strict", "super_strict"]).optional().default("moderate"),
   refundMethod: z.enum(["credit_card", "bank_transfer", "paypal", "seago_credit"]).optional().default("credit_card"),
 });
@@ -464,6 +469,58 @@ export default function OwnerDashboard() {
                             {...form.register("manufacturer")} 
                             className="border-blue-200 focus:border-blue-500"
                           />
+                          {form.formState.errors.manufacturer && (
+                            <div className="space-y-2">
+                              <p className="text-sm text-red-500">{form.formState.errors.manufacturer.message}</p>
+                              {(() => {
+                                const inputValue = form.watch("manufacturer");
+                                const suggestions = inputValue ? findSimilarManufacturers(inputValue, 3) : [];
+                                const boatType = form.watch("type");
+                                const categoryManufacturers = boatType ? getManufacturersByCategory(boatType).slice(0, 5) : [];
+                                
+                                return (
+                                  <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
+                                    {suggestions.length > 0 && (
+                                      <div className="mb-3">
+                                        <p className="text-xs font-medium text-blue-800 mb-1">Forse intendevi:</p>
+                                        <div className="flex flex-wrap gap-1">
+                                          {suggestions.map((suggestion) => (
+                                            <button
+                                              key={suggestion}
+                                              type="button"
+                                              onClick={() => form.setValue("manufacturer", suggestion)}
+                                              className="text-xs px-2 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded border border-blue-300 transition-colors"
+                                            >
+                                              {suggestion}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                    {categoryManufacturers.length > 0 && (
+                                      <div>
+                                        <p className="text-xs font-medium text-blue-800 mb-1">
+                                          Cantieri popolari per {boatType}:
+                                        </p>
+                                        <div className="flex flex-wrap gap-1">
+                                          {categoryManufacturers.map((manufacturer) => (
+                                            <button
+                                              key={manufacturer}
+                                              type="button"
+                                              onClick={() => form.setValue("manufacturer", manufacturer)}
+                                              className="text-xs px-2 py-1 bg-green-100 hover:bg-green-200 text-green-700 rounded border border-green-300 transition-colors"
+                                            >
+                                              {manufacturer}
+                                            </button>
+                                          ))}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          )}
                         </div>
 
                         <div className="space-y-2">

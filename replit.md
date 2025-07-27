@@ -162,7 +162,7 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
-### July 27, 2025 - Sistema Navigazione Role-Based Completato
+### July 27, 2025 - Sistema Navigazione Role-Based + Pagina Diventa Noleggiatore
 - **Navigazione Role-Based Implementata:**
   - ✅ "Dashboard Sea Host" mostrato SOLO per utenti registrati come noleggiatori (role="owner")
   - ✅ "Area Clienti" mostrato per utenti registrati come clienti (role="customer")
@@ -170,6 +170,16 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Logica condizionale basata su user.role implementata in tutto l'header
   - ✅ Consistenza terminologica su tutte le piattaforme (web e mobile)
   - ✅ Link corretti: /owner-dashboard per proprietari, /customer-dashboard per clienti
+
+- **Pagina "Diventa Noleggiatore" Completa:**
+  - ✅ Cambiato "Diventa proprietario" in "Diventa noleggiatore" in tutta la piattaforma
+  - ✅ Creata pagina `/diventa-noleggiatore` con condizioni complete e accettazione termini
+  - ✅ Sezioni dettagliate: vantaggi, commissioni 15%, requisiti documenti, criteri idoneità
+  - ✅ Sistema checkbox per accettazione: termini servizio, commissioni, requisiti
+  - ✅ Logica smart: utenti loggati → dashboard, utenti non loggati → registrazione
+  - ✅ Design professionale con card colorate, icone specifiche e CTA gradient
+  - ✅ Integrazione completa con sistema routing esistente
+  - ✅ Supporto e assistenza con link a centro aiuto e chat IA
 
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**

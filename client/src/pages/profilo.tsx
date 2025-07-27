@@ -56,9 +56,9 @@ export default function ProfiloPage() {
     },
     {
       icon: Ship,
-      title: "Diventa proprietario",
+      title: "Diventa noleggiatore",
       subtitle: "Metti in affitto la tua barca",
-      href: "/owner-dashboard",
+      href: "/diventa-noleggiatore",
       color: "text-ocean-blue"
     }
   ];

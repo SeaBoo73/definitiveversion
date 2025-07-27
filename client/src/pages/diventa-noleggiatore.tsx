@@ -1,230 +1,55 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocation } from "wouter";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Anchor, Euro, Shield, Star, CheckCircle, ArrowLeft } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-
-const ownerRegistrationSchema = z.object({
-  // Personal Info Only - Boat details will be collected later in owner dashboard
-  firstName: z.string().min(2, "Nome richiesto"),
-  lastName: z.string().min(2, "Cognome richiesto"),
-  email: z.string().email("Email non valida"),
-  acceptTerms: z.boolean().refine(val => val === true, "Devi accettare i termini di servizio"),
-});
-
-type OwnerRegistrationForm = z.infer<typeof ownerRegistrationSchema>;
+import { Separator } from "@/components/ui/separator";
+import { useAuth } from "@/hooks/use-auth";
+import { Link, useLocation } from "wouter";
+import { 
+  Ship, 
+  Euro, 
+  Shield, 
+  Clock, 
+  Users, 
+  CheckCircle, 
+  AlertTriangle,
+  ArrowLeft,
+  FileText,
+  CreditCard,
+  Phone,
+  Globe
+} from "lucide-react";
 
 export default function DiventaNoleggiatorePage() {
+  const { user } = useAuth();
   const [, setLocation] = useLocation();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  
-  // Extract pre-filled data from URL parameters
-  const getPreFilledValues = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return {
-      firstName: urlParams.get('firstName') || "",
-      lastName: urlParams.get('lastName') || "",
-      email: urlParams.get('email') || "",
-      acceptTerms: false,
-    };
-  };
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [acceptedCommission, setAcceptedCommission] = useState(false);
+  const [acceptedRequirements, setAcceptedRequirements] = useState(false);
 
-  // Check if we have pre-filled data to determine initial step
-  const hasPreFilledData = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.has('firstName') || urlParams.has('email');
-  };
-
-  const [step, setStep] = useState<"info" | "form">(hasPreFilledData() ? "form" : "info");
-
-  const form = useForm<OwnerRegistrationForm>({
-    resolver: zodResolver(ownerRegistrationSchema),
-    defaultValues: getPreFilledValues()
-  });
-
-  const registrationMutation = useMutation({
-    mutationFn: async (data: OwnerRegistrationForm) => {
-      return apiRequest("POST", "/api/become-owner", data);
-    },
-    onSuccess: (data) => {
-      toast({
-        title: "Registrazione completata!",
-        description: data.message || "Riceverai le credenziali per accedere alla dashboard proprietario via email.",
-      });
-      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-      // Redirect to owner dashboard after successful registration
-      setTimeout(() => {
+  const handleProceed = () => {
+    if (acceptedTerms && acceptedCommission && acceptedRequirements) {
+      if (user) {
+        // User logged in, redirect to owner dashboard
         setLocation("/owner-dashboard");
-      }, 1500);
-    },
-    onError: (error: any) => {
-      // Extract error message from API response  
-      const errorMessage = error?.response?.data?.message || error?.message || "Si è verificato un errore. Riprova.";
-      
-      toast({
-        title: "Errore",
-        description: errorMessage,
-        variant: "destructive",
-      });
-
-      // If user already exists, offer login option
-      if (errorMessage.includes("email esiste già")) {
-        setTimeout(() => {
-          toast({
-            title: "Account esistente",
-            description: "Se hai già un account, prova ad accedere alla dashboard proprietario.",
-          });
-        }, 2000);
+      } else {
+        // User not logged in, redirect to registration
+        setLocation("/auth?tab=register&role=owner");
       }
-    },
-  });
-
-  const onSubmit = (data: OwnerRegistrationForm) => {
-    registrationMutation.mutate(data);
+    }
   };
 
-  if (step === "info") {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Back to Home Button */}
-        <div className="p-6">
-          <Button
-            variant="ghost"
-            onClick={() => setLocation("/")}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Torna alla home
-          </Button>
-        </div>
-        
-        {/* Hero Section */}
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-          <div className="max-w-6xl mx-auto px-4 py-16">
-            <div className="text-center">
-              <Anchor className="h-16 w-16 mx-auto mb-6" />
-              <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                Diventa Noleggiatore SeaGO
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Trasforma la tua barca in una fonte di reddito. 
-                Condividi la passione per il mare e ottieni guadagni elevati su ogni prenotazione.
-              </p>
-              <Button
-                onClick={() => setStep("form")}
-                size="lg"
-                className="bg-white text-ocean-blue hover:bg-gray-100 text-lg px-8 py-3"
-              >
-                Inizia ora - È gratis
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Benefits Section */}
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <h2 className="text-3xl font-bold text-center mb-12">Perché scegliere SeaGO?</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <Card className="text-center">
-              <CardContent className="p-8">
-                <Euro className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-4">Guadagni Elevati</h3>
-                <p className="text-gray-600 mb-4">
-                  Ottieni <strong>guadagni competitivi</strong> su ogni prenotazione. 
-                  La nostra struttura di commissioni è trasparente e conveniente.
-                </p>
-                <Badge className="bg-green-100 text-green-800">
-                  Tariffe competitive
-                </Badge>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="p-8">
-                <Shield className="h-12 w-12 text-blue-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-4">Protezione Totale</h3>
-                <p className="text-gray-600 mb-4">
-                  Assicurazione inclusa, pagamenti sicuri e supporto clienti 24/7.
-                </p>
-                <Badge className="bg-blue-100 text-blue-800">
-                  Sicurezza garantita
-                </Badge>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardContent className="p-8">
-                <Star className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-4">Visibilità Massima</h3>
-                <p className="text-gray-600 mb-4">
-                  Le tue barche saranno visibili a migliaia di clienti in tutta Italia.
-                </p>
-                <Badge className="bg-yellow-100 text-yellow-800">
-                  Marketing incluso
-                </Badge>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Benefits Info */}
-          <div className="bg-green-50 border border-green-200 rounded-xl p-8 mt-12">
-            <div className="flex items-start space-x-4">
-              <CheckCircle className="h-8 w-8 text-green-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="text-xl font-bold text-green-800 mb-2">
-                  Sistema di guadagni vantaggioso
-                </h3>
-                <p className="text-green-700 mb-4">
-                  <strong>Trasparenza totale:</strong> La nostra struttura tariffaria è semplice, 
-                  competitiva e ti permette di massimizzare i tuoi guadagni.
-                </p>
-                <div className="bg-white p-4 rounded-lg">
-                  <p className="text-sm font-medium mb-2">Vantaggi per i noleggiatori:</p>
-                  <div className="space-y-1 text-sm">
-                    <div>• Guadagni superiori rispetto alla concorrenza</div>
-                    <div>• Nessun costo nascosto o spesa imprevista</div>
-                    <div>• Pagamenti puntuali e sicuri</div>
-                    <div className="font-bold text-green-600">• Struttura tariffaria trasparente e conveniente</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="text-center mt-12">
-            <Button
-              onClick={() => setStep("form")}
-              size="lg"
-              className="bg-blue-500 hover:bg-blue-600 text-lg px-8 py-3"
-            >
-              Inizia la registrazione
-            </Button>
-            <p className="text-sm text-gray-600 mt-4">
-              Registrazione gratuita • Nessun costo nascosto • Supporto dedicato
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const canProceed = acceptedTerms && acceptedCommission && acceptedRequirements;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-2xl mx-auto px-4">
-        {/* Back to Home Button */}
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back Button */}
         <div className="mb-6">
           <Button
             variant="ghost"
@@ -235,156 +60,221 @@ export default function DiventaNoleggiatorePage() {
             Torna alla home
           </Button>
         </div>
-        <Card>
+
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="p-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full">
+              <Ship className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Diventa Noleggiatore SeaGO
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Trasforma la tua imbarcazione in una fonte di reddito. Unisciti alla community di noleggiatori SeaGO.
+          </p>
+        </div>
+
+        {/* Benefits Section */}
+        <Card className="mb-8">
           <CardHeader>
-            <CardTitle className="text-2xl text-center">
-              Registrazione Noleggiatore
+            <CardTitle className="flex items-center gap-2">
+              <CheckCircle className="h-6 w-6 text-green-600" />
+              Vantaggi del Noleggiatore SeaGO
             </CardTitle>
-            <p className="text-center text-gray-600">
-              Inserisci i tuoi dati base. I dettagli delle imbarcazioni li aggiungerai nella dashboard.
-            </p>
           </CardHeader>
           <CardContent>
-            {hasPreFilledData() && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-                <div className="flex items-center text-green-800">
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  <p className="text-sm font-medium">
-                    I tuoi dati sono stati pre-compilati dalla homepage. Verifica e completa la registrazione.
-                  </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex items-start gap-3">
+                <Euro className="h-5 w-5 text-green-600 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Guadagni Extra</h3>
+                  <p className="text-gray-600 text-sm">Monetizza la tua barca quando non la usi. Guadagni medi di €12.500/anno.</p>
                 </div>
               </div>
-            )}
-            
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {/* Personal Info Only */}
-                <div className="bg-blue-50 p-6 rounded-lg space-y-4">
-                  <h3 className="text-lg font-semibold text-blue-900 mb-4">👤 Informazioni Personali</h3>
-                  <p className="text-sm text-blue-700 mb-4">
-                    Inserisci i tuoi dati base. I dettagli delle imbarcazioni li aggiungerai successivamente nella tua dashboard.
-                  </p>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="firstName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Nome *</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="Mario" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="lastName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Cognome *</FormLabel>
-                          <FormControl>
-                            <Input {...field} placeholder="Rossi" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email *</FormLabel>
-                        <FormControl>
-                          <Input type="email" {...field} placeholder="mario.rossi@email.com" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+              <div className="flex items-start gap-3">
+                <Shield className="h-5 w-5 text-blue-600 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Copertura Assicurativa</h3>
+                  <p className="text-gray-600 text-sm">Protezione completa per la tua imbarcazione durante i noleggi.</p>
                 </div>
-
-                {/* Next Steps Info */}
-                <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                  <h4 className="font-semibold text-green-800 mb-3">📋 Prossimi Passi</h4>
-                  <ul className="text-sm text-green-800 space-y-2">
-                    <li>• Completa questa registrazione con i tuoi dati base</li>
-                    <li>• Riceverai un account proprietario SeaGO</li>
-                    <li>• Nella dashboard potrai aggiungere tutte le tue imbarcazioni</li>
-                    <li>• Per ogni barca inserirai: dettagli tecnici, foto, prezzi e disponibilità</li>
-                    <li>• Il nostro team verificherà la documentazione</li>
-                    <li>• Una volta approvato, le tue barche saranno visibili ai clienti</li>
-                  </ul>
+              </div>
+              <div className="flex items-start gap-3">
+                <Users className="h-5 w-5 text-purple-600 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Clienti Verificati</h3>
+                  <p className="text-gray-600 text-sm">Tutti i clienti sono verificati e valutati dalla community.</p>
                 </div>
-
-                {/* Terms */}
-                <FormField
-                  control={form.control}
-                  name="acceptTerms"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel className="text-sm font-medium">
-                          Accetto i termini e condizioni di SeaGO
-                        </FormLabel>
-                        <p className="text-xs text-gray-600">
-                          Registrandoti accetti di essere contattato per completare l'inserimento delle tue imbarcazioni e di rispettare gli standard SeaGO per il noleggio.
-                        </p>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="flex gap-4 pt-6">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setStep("info")}
-                    className="flex-1"
-                  >
-                    Indietro
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={registrationMutation.isPending}
-                    className="flex-1 bg-ocean-blue hover:bg-blue-600"
-                  >
-                    {registrationMutation.isPending ? "Invio..." : "Registrati come Noleggiatore"}
-                  </Button>
+              </div>
+              <div className="flex items-start gap-3">
+                <Clock className="h-5 w-5 text-orange-600 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Gestione Semplice</h3>
+                  <p className="text-gray-600 text-sm">Dashboard intuitiva per gestire calendario, prenotazioni e pagamenti.</p>
                 </div>
-                
-                <div className="text-center mt-4 space-y-2">
-                  <p className="text-xs text-gray-500">
-                    Dopo la registrazione riceverai le credenziali per accedere alla dashboard proprietario dove potrai aggiungere le tue imbarcazioni.
-                  </p>
-                  <p className="text-xs text-gray-600">
-                    Hai già un account? {" "}
-                    <button
-                      type="button"
-                      onClick={() => setLocation("/owner-dashboard")}
-                      className="text-ocean-blue hover:underline font-medium"
-                    >
-                      Vai alla Dashboard Proprietario
-                    </button>
-                  </p>
-                </div>
-              </form>
-            </Form>
+              </div>
+            </div>
           </CardContent>
         </Card>
+
+        {/* Commission Structure */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="h-6 w-6 text-blue-600" />
+              Struttura Commissioni
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-gray-700 font-medium">Commissione SeaGO</span>
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">15%</Badge>
+              </div>
+              <p className="text-gray-600 text-sm mb-3">
+                SeaGO trattiene il 15% del valore di ogni prenotazione per coprire:
+              </p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>• Marketing e promozione della tua imbarcazione</li>
+                <li>• Elaborazione pagamenti sicuri</li>
+                <li>• Supporto clienti 24/7</li>
+                <li>• Copertura assicurativa durante i noleggi</li>
+                <li>• Manutenzione piattaforma tecnologica</li>
+              </ul>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Requirements */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-6 w-6 text-orange-600" />
+              Requisiti e Documenti
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="h-5 w-5 text-yellow-600 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Documenti Obbligatori</h3>
+                  <ul className="text-gray-600 text-sm mt-2 space-y-1">
+                    <li>• Certificato di proprietà dell'imbarcazione</li>
+                    <li>• Assicurazione nautica valida</li>
+                    <li>• Licenza di navigazione (se richiesta)</li>
+                    <li>• Documento di identità del proprietario</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Globe className="h-5 w-5 text-green-600 mt-1" />
+                <div>
+                  <h3 className="font-semibold text-gray-900">Criteri di Idoneità</h3>
+                  <ul className="text-gray-600 text-sm mt-2 space-y-1">
+                    <li>• Imbarcazione in buone condizioni di sicurezza</li>
+                    <li>• Equipaggiamenti di sicurezza conformi</li>
+                    <li>• Ormeggio presso porti partner SeaGO</li>
+                    <li>• Disponibilità minima 30 giorni/anno</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Terms Acceptance */}
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Accettazione Condizioni</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-start space-x-3">
+              <Checkbox
+                id="terms"
+                checked={acceptedTerms}
+                onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+              />
+              <label htmlFor="terms" className="text-sm text-gray-700 leading-5">
+                Accetto i{" "}
+                <Link href="/termini-servizio" className="text-blue-600 hover:underline">
+                  Termini di Servizio
+                </Link>
+                {" "}e la{" "}
+                <Link href="/privacy-policy" className="text-blue-600 hover:underline">
+                  Privacy Policy
+                </Link>
+                {" "}di SeaGO
+              </label>
+            </div>
+            
+            <div className="flex items-start space-x-3">
+              <Checkbox
+                id="commission"
+                checked={acceptedCommission}
+                onCheckedChange={(checked) => setAcceptedCommission(checked === true)}
+              />
+              <label htmlFor="commission" className="text-sm text-gray-700 leading-5">
+                Accetto la struttura commissionale del 15% su ogni prenotazione e comprendo che questo importo verrà trattenuto automaticamente
+              </label>
+            </div>
+            
+            <div className="flex items-start space-x-3">
+              <Checkbox
+                id="requirements"
+                checked={acceptedRequirements}
+                onCheckedChange={(checked) => setAcceptedRequirements(checked === true)}
+              />
+              <label htmlFor="requirements" className="text-sm text-gray-700 leading-5">
+                Confermo di possedere tutti i documenti richiesti e che la mia imbarcazione rispetta i criteri di idoneità
+              </label>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* CTA Button */}
+        <div className="text-center">
+          <Button
+            onClick={handleProceed}
+            disabled={!canProceed}
+            className={`px-8 py-3 text-lg font-semibold rounded-lg transition-all ${
+              canProceed
+                ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg"
+                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+            }`}
+          >
+            {user ? "Accedi alla Dashboard" : "Registrati come Noleggiatore"}
+          </Button>
+          <p className="text-gray-500 text-sm mt-3">
+            {user 
+              ? "Sarai reindirizzato alla tua dashboard per aggiungere la prima imbarcazione"
+              : "Sarai reindirizzato alla pagina di registrazione"
+            }
+          </p>
+        </div>
+
+        {/* Support */}
+        <div className="mt-12 text-center">
+          <div className="bg-gray-100 rounded-lg p-6">
+            <Phone className="h-6 w-6 text-blue-600 mx-auto mb-2" />
+            <h3 className="font-semibold text-gray-900 mb-2">Hai bisogno di aiuto?</h3>
+            <p className="text-gray-600 text-sm mb-3">
+              Il nostro team è sempre disponibile per supportarti nel processo di registrazione
+            </p>
+            <div className="flex justify-center space-x-4">
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/aiuto">Centro Assistenza</Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/ia">Chat IA</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
+      
+      <Footer />
     </div>
   );
 }

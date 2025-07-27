@@ -27,7 +27,7 @@ import {
   CheckCircle2,
   Heart,
   Share2,
-  ArrowLeft
+  Home
 } from 'lucide-react';
 import { Link } from 'wouter';
 
@@ -367,8 +367,8 @@ export default function OrmeggioPage() {
         <div className="max-w-7xl mx-auto">
           <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
             <Link href="/">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              ← Torna alla Home
+              <Home className="h-4 w-4 mr-2" />
+              Ormeggio
             </Link>
           </Button>
         </div>
@@ -385,8 +385,8 @@ export default function OrmeggioPage() {
               className="text-white border-2 border-white hover:bg-white hover:text-blue-600 font-semibold px-6 py-3 text-lg shadow-lg"
             >
               <Link href="/">
-                <ArrowLeft className="h-5 w-5 mr-3" />
-                Torna alla Home
+                <Home className="h-5 w-5 mr-3" />
+                Ormeggio
               </Link>
             </Button>
           </div>

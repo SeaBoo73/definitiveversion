@@ -31,6 +31,7 @@ import {
   X
 } from 'lucide-react';
 import { Link } from 'wouter';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 
 interface MooringSpot {
   id: string;
@@ -362,35 +363,11 @@ export default function OrmeggioPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
-      {/* Back to Home - Alternative Position */}
-      <div className="bg-white border-b px-4 py-3">
-        <div className="max-w-7xl mx-auto">
-          <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
-            <Link href="/">
-              <Home className="h-4 w-4 mr-2" />
-              Ormeggio
-            </Link>
-          </Button>
-        </div>
-      </div>
+      <Breadcrumbs />
       
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back to Home Button - More Prominent */}
-          <div className="mb-8">
-            <Button 
-              variant="outline" 
-              asChild 
-              className="text-white border-2 border-white hover:bg-white hover:text-blue-600 font-semibold px-6 py-3 text-lg shadow-lg"
-            >
-              <Link href="/">
-                <Home className="h-5 w-5 mr-3" />
-                Ormeggio
-              </Link>
-            </Button>
-          </div>
           
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">

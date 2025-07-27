@@ -53,7 +53,7 @@ import { InstallPrompt } from "@/components/install-prompt";
 import AnalyticsPage from "@/pages/analytics-page";
 import EmergencyPage from "@/pages/emergency-page";
 import EmergencySystem from "@/pages/emergency-system";
-import { LanguageProvider } from "@/contexts/LanguageContext";
+
 import ExternalServices from "@/pages/external-services";
 import AdvancedSearchPage from "@/pages/advanced-search-page";
 import { ReviewsPage } from "@/pages/reviews-page";
@@ -147,17 +147,15 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <LanguageProvider>
-        <QueryClientProvider client={queryClient}>
-          <AuthProvider>
-            <Toaster />
-            <Router />
-            {/* Mobile Navigation sempre visibile su tutte le pagine */}
-            <MobileNavigation />
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Toaster />
+          <Router />
+          {/* Mobile Navigation sempre visibile su tutte le pagine */}
+          <MobileNavigation />
 
-          </AuthProvider>
-        </QueryClientProvider>
-      </LanguageProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 }

@@ -736,18 +736,113 @@ export default function OwnerDashboard() {
                           />
                         </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="documentsRequired" className="flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-orange-600" />
+                        <div className="space-y-3">
+                          <Label className="flex items-center gap-2 text-lg font-medium">
+                            <FileText className="h-5 w-5 text-orange-600" />
                             Documenti richiesti
                           </Label>
-                          <Textarea 
-                            id="documentsRequired" 
-                            placeholder="es. Documento di identità, patente nautica (per barche >40HP), esperienza di navigazione..."
-                            rows={3}
-                            {...form.register("documentsRequired")} 
-                            className="border-orange-200 focus:border-orange-500"
-                          />
+                          <div className="bg-white rounded-lg border border-orange-200 p-4 space-y-3">
+                            <p className="text-sm text-gray-600 mb-4">Seleziona i documenti necessari per il noleggio:</p>
+                            
+                            <div className="grid grid-cols-1 gap-3">
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">📄 Documento di identità valido</span>
+                                  <p className="text-sm text-gray-500">Carta d'identità o passaporto in corso di validità</p>
+                                </div>
+                              </label>
+
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">⚓ Patente nautica</span>
+                                  <p className="text-sm text-gray-500">Obbligatoria per motori oltre 40 HP</p>
+                                </div>
+                              </label>
+
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">🛡️ Deposito cauzionale</span>
+                                  <p className="text-sm text-gray-500">Garanzia per eventuali danni (trattenuta su carta di credito)</p>
+                                </div>
+                              </label>
+
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">🌊 Esperienza di navigazione</span>
+                                  <p className="text-sm text-gray-500">Dichiarazione o certificato di esperienza marina</p>
+                                </div>
+                              </label>
+
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">💳 Carta di credito intestata</span>
+                                  <p className="text-sm text-gray-500">Per il pagamento e le garanzie</p>
+                                </div>
+                              </label>
+
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">📋 Briefing di sicurezza</span>
+                                  <p className="text-sm text-gray-500">Partecipazione obbligatoria al briefing pre-partenza</p>
+                                </div>
+                              </label>
+
+                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
+                                <input 
+                                  type="checkbox" 
+                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
+                                />
+                                <div className="flex-1">
+                                  <span className="font-medium text-gray-900">🎓 Età minima 18 anni</span>
+                                  <p className="text-sm text-gray-500">Maggiore età per il conduttore dell'imbarcazione</p>
+                                </div>
+                              </label>
+                            </div>
+
+                            <div className="mt-4 p-3 bg-orange-50 rounded-lg">
+                              <p className="text-sm text-orange-800">
+                                <strong>💡 Suggerimento:</strong> Seleziona solo i documenti realmente necessari per la tua imbarcazione. 
+                                Requisiti eccessivi potrebbero scoraggiare i clienti.
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <Label htmlFor="documentsRequired" className="text-sm font-medium text-gray-700">
+                              Note aggiuntive sui documenti (opzionale)
+                            </Label>
+                            <Textarea 
+                              id="documentsRequired" 
+                              placeholder="es. Note specifiche, documenti particolari, condizioni speciali..."
+                              rows={2}
+                              {...form.register("documentsRequired")} 
+                              className="border-orange-200 focus:border-orange-500"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>

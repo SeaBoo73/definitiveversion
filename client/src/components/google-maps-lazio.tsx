@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'wouter';
 
 interface Port {
   id: string;
@@ -172,30 +173,30 @@ export function GoogleMapsLazio() {
             <div>
               <h4 className="text-xs md:text-sm font-bold text-blue-800 mb-2 text-center">🏛️ LAZIO</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 text-xs">
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                <Link href="/search?location=Civitavecchia" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-blue-600 font-bold mb-1 text-xs">⚓ Civitavecchia</div>
                   <div className="text-gray-600 text-xs">4 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Gaeta" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-green-600 font-bold mb-1 text-xs">⚓ Gaeta</div>
                   <div className="text-gray-600 text-xs">2 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Ponza" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-orange-600 font-bold mb-1 text-xs">🏝️ Ponza</div>
                   <div className="text-gray-600 text-xs">2 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Terracina" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-purple-600 font-bold mb-1 text-xs">⚓ Terracina</div>
                   <div className="text-gray-600 text-xs">2 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Anzio" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-indigo-600 font-bold mb-1 text-xs">🏖️ Anzio</div>
                   <div className="text-gray-600 text-xs">3 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Formia" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-pink-600 font-bold mb-1 text-xs">🌊 Formia</div>
                   <div className="text-gray-600 text-xs">2 barche</div>
-                </div>
+                </Link>
               </div>
             </div>
 
@@ -204,38 +205,38 @@ export function GoogleMapsLazio() {
               <h4 className="text-xs md:text-sm font-bold text-red-800 mb-2 text-center">🌋 CAMPANIA</h4>
               {/* Griglia unificata con più spazio */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 text-xs">
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                <Link href="/search?location=Napoli" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-red-600 font-bold mb-1 text-xs">⚓ Napoli</div>
                   <div className="text-gray-600 text-xs">8 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Sorrento" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-yellow-600 font-bold mb-1 text-xs">🍋 Sorrento</div>
                   <div className="text-gray-600 text-xs">5 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Amalfi" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-blue-600 font-bold mb-1 text-xs">🏔️ Amalfi</div>
                   <div className="text-gray-600 text-xs">3 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Salerno" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-green-600 font-bold mb-1 text-xs">⚓ Salerno</div>
                   <div className="text-gray-600 text-xs">4 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Ischia" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-purple-600 font-bold mb-1 text-xs">🌋 Ischia</div>
                   <div className="text-gray-600 text-xs">6 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Capri" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-cyan-600 font-bold mb-1 text-xs">💎 Capri</div>
                   <div className="text-gray-600 text-xs">4 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Procida" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-teal-600 font-bold mb-1 text-xs">🏝️ Procida</div>
                   <div className="text-gray-600 text-xs">3 barche</div>
-                </div>
-                <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all">
+                </Link>
+                <Link href="/search?location=Castellammare" className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm text-center hover:bg-white/90 transition-all cursor-pointer">
                   <div className="text-orange-600 font-bold mb-1 text-xs">⚓ Castellammare</div>
                   <div className="text-gray-600 text-xs">2 barche</div>
-                </div>
+                </Link>
               </div>
             </div>
           </div>

@@ -119,6 +119,7 @@ export default function ExternalServices() {
       if (!response.ok) throw new Error('Failed to fetch weather data');
       return response.json();
     },
+    staleTime: 0, // Always refetch for new location
     refetchInterval: 300000 // Refresh every 5 minutes
   });
 
@@ -130,6 +131,7 @@ export default function ExternalServices() {
       if (!response.ok) throw new Error('Failed to fetch fuel prices');
       return response.json();
     },
+    staleTime: 0, // Always refetch for new location
     refetchInterval: 3600000 // Refresh every hour
   });
 
@@ -141,8 +143,16 @@ export default function ExternalServices() {
       if (!response.ok) throw new Error('Failed to fetch port services');
       return response.json();
     },
+    staleTime: 0, // Always refetch for new location
     refetchInterval: 1800000 // Refresh every 30 minutes
   });
+
+  // Force refetch when location changes
+  useEffect(() => {
+    refetchWeather();
+    refetchFuel();
+    refetchPorts();
+  }, [selectedLocation, refetchWeather, refetchFuel, refetchPorts]);
 
   const formatTime = (timeString: string) => {
     return new Date(timeString).toLocaleString('it-IT', {
@@ -363,6 +373,9 @@ export default function ExternalServices() {
             <Select value={selectedLocation} onValueChange={setSelectedLocation}>
               <SelectTrigger className="w-48">
                 <SelectValue placeholder="Seleziona località" />
+                {(weatherLoading || fuelLoading || portsLoading) && (
+                  <RefreshCw className="h-4 w-4 ml-2 animate-spin text-blue-600" />
+                )}
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Roma">Roma / Fiumicino</SelectItem>

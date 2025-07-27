@@ -162,6 +162,15 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 27, 2025 - Sistema Navigazione Role-Based Completato
+- **Navigazione Role-Based Implementata:**
+  - ✅ "Dashboard Sea Host" mostrato SOLO per utenti registrati come noleggiatori (role="owner")
+  - ✅ "Area Clienti" mostrato per utenti registrati come clienti (role="customer")
+  - ✅ Modifiche applicate a tutti i menu: desktop navigation, dropdown menu, mobile menu
+  - ✅ Logica condizionale basata su user.role implementata in tutto l'header
+  - ✅ Consistenza terminologica su tutte le piattaforme (web e mobile)
+  - ✅ Link corretti: /owner-dashboard per proprietari, /customer-dashboard per clienti
+
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**
   - ✅ Form "Aggiungi imbarcazione" completamente ridisegnato con design moderno e professionale

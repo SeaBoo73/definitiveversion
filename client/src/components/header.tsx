@@ -99,6 +99,14 @@ export function Header() {
                   Dashboard Sea Host
                 </Link>
               )}
+              {user?.role === "customer" && (
+                <Link 
+                  href="/customer-dashboard" 
+                  className="text-gray-700 hover:text-deep-navy transition-colors font-medium px-4 py-2 rounded-md hover:bg-gray-50 text-sm"
+                >
+                  Area Clienti
+                </Link>
+              )}
               {user?.role === "admin" && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -156,6 +164,11 @@ export function Header() {
                     {user.role === "owner" && (
                       <DropdownMenuItem asChild>
                         <Link href="/owner-dashboard">Dashboard Sea Host</Link>
+                      </DropdownMenuItem>
+                    )}
+                    {user.role === "customer" && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/customer-dashboard">Area Clienti</Link>
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem onClick={handleLogout}>
@@ -290,6 +303,15 @@ export function Header() {
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         Dashboard Sea Host
+                      </Link>
+                    )}
+                    {user.role === "customer" && (
+                      <Link 
+                        href="/customer-dashboard" 
+                        className="block px-3 py-2 rounded-md font-medium text-sea-gray hover:text-deep-navy hover:bg-gray-50 transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        Area Clienti
                       </Link>
                     )}
                     {user.role === "customer" && (

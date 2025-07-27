@@ -484,6 +484,8 @@ export default function OwnerDashboard() {
                               <SelectItem value="kayak">🚣 Kayak</SelectItem>
                               <SelectItem value="charter">🚢 Charter</SelectItem>
                               <SelectItem value="houseboat">🏠 Houseboat</SelectItem>
+                              <SelectItem value="motorboat">🚤 Barca a motore</SelectItem>
+                              <SelectItem value="barche-senza-patente">🛴 Barche senza patente</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>

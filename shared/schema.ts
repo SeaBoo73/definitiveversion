@@ -6,7 +6,7 @@ import { z } from "zod";
 export const userRoleEnum = pgEnum("user_role", ["customer", "owner", "admin"]);
 export const customerLevelEnum = pgEnum("customer_level", ["bronze", "silver", "gold", "platinum"]);
 export const discountTypeEnum = pgEnum("discount_type", ["percentage", "fixed", "loyalty", "early_bird", "last_minute"]);
-export const boatTypeEnum = pgEnum("boat_type", ["gommone", "barche-senza-patente", "yacht", "catamarano", "jetski", "sailboat", "kayak", "charter", "houseboat"]);
+export const boatTypeEnum = pgEnum("boat_type", ["gommone", "barche-senza-patente", "yacht", "catamarano", "jetski", "sailboat", "kayak", "charter", "houseboat", "motorboat"]);
 export const bookingStatusEnum = pgEnum("booking_status", ["pending", "confirmed", "cancelled", "completed"]);
 export const messageStatusEnum = pgEnum("message_status", ["sent", "delivered", "read"]);
 export const messageTypeEnum = pgEnum("message_type", ["text", "image", "document", "system"]);

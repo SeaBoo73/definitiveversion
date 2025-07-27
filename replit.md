@@ -181,6 +181,13 @@ The application follows modern web development best practices with a focus on ty
   - ✅ Integrazione completa con sistema routing esistente
   - ✅ Supporto e assistenza con link a centro aiuto e chat IA
 
+- **Menu Registrazione Tipologie Barche Completato:**
+  - ✅ Aggiunto "Barca a motore" con valore "motorboat" nel form registrazione
+  - ✅ Aggiunto "Barche senza patente" con valore "barche-senza-patente" 
+  - ✅ Schema database aggiornato con nuovo tipo "motorboat" nell'enum boat_type
+  - ✅ Dropdown tipologie ora completo con tutte le 10 categorie disponibili
+  - ✅ Sincronizzazione completa tra form frontend e schema database
+
 ### July 26, 2025 - Form "Aggiungi Imbarcazione" Completamente Ridisegnato
 - **Trasformazione Completa Form Owner Dashboard:**
   - ✅ Form "Aggiungi imbarcazione" completamente ridisegnato con design moderno e professionale

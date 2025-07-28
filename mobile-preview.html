@@ -725,6 +725,84 @@
         .suggestions .fuel-policy-list li:before {
             color: #f59e0b;
         }
+
+        /* Mooring Section Styles */
+        .mooring-section {
+            padding: 24px 16px;
+            background: #f8fafc;
+        }
+
+        .mooring-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .mooring-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .mooring-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .mooring-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .mooring-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .mooring-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .mooring-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 8px 0;
+        }
+
+        .mooring-description {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0 0 16px 0;
+            line-height: 1.4;
+        }
+
+        .mooring-button {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            width: 100%;
+        }
+
+        .mooring-button:hover {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+        }
+
+        .mooring-button:active {
+            transform: translateY(1px);
+        }
     </style>
 </head>
 <body>
@@ -1056,6 +1134,40 @@
                                     <div class="category-description">Kayak e canoe per avventure acquatiche</div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ormeggio Section -->
+                <div class="mooring-section">
+                    <div class="mooring-header">
+                        <h2 class="section-title">⚓ Trova il tuo ormeggio ideale</h2>
+                        <p class="section-subtitle">Ormeggi sicuri e servizi completi per la tua imbarcazione</p>
+                    </div>
+                    
+                    <div class="mooring-grid">
+                        <!-- Pontili attrezzati -->
+                        <div class="mooring-card">
+                            <div class="mooring-icon">⚓</div>
+                            <h3 class="mooring-title">Pontili attrezzati</h3>
+                            <p class="mooring-description">Servizi completi con acqua, elettricità e assistenza</p>
+                            <button class="mooring-button">Esplora pontili</button>
+                        </div>
+                        
+                        <!-- Boe di ormeggio -->
+                        <div class="mooring-card">
+                            <div class="mooring-icon">🛟</div>
+                            <h3 class="mooring-title">Boe di ormeggio</h3>
+                            <p class="mooring-description">Soluzioni economiche per soste brevi</p>
+                            <button class="mooring-button">Trova boe</button>
+                        </div>
+                        
+                        <!-- Ormeggi sicuri -->
+                        <div class="mooring-card">
+                            <div class="mooring-icon">🔒</div>
+                            <h3 class="mooring-title">Ormeggi sicuri</h3>
+                            <p class="mooring-description">Videosorveglianza e assistenza 24/7</p>
+                            <button class="mooring-button">Sicurezza H24</button>
                         </div>
                     </div>
                 </div>

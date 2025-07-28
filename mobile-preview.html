@@ -636,6 +636,95 @@
         .filter-option.active span {
             color: #0ea5e9;
         }
+
+        /* Fuel Policy Styles */
+        .fuel-policy-section {
+            padding: 16px;
+            background: #f8fafc;
+        }
+
+        .fuel-policy-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .fuel-policy-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 16px 0;
+            text-align: center;
+        }
+
+        .fuel-policy-main {
+            font-size: 16px;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 8px;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .fuel-policy-section-item {
+            margin-bottom: 16px;
+        }
+
+        .fuel-policy-section-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .fuel-policy-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0ea5e9;
+            margin-bottom: 8px;
+        }
+
+        .fuel-policy-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fuel-policy-list li {
+            padding: 4px 0 4px 16px;
+            font-size: 14px;
+            color: #4b5563;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .fuel-policy-list li:before {
+            content: "•";
+            color: #0ea5e9;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .suggestions {
+            background: #fef3c7;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .suggestions .fuel-policy-subtitle {
+            color: #d97706;
+        }
+
+        .suggestions .fuel-policy-list li {
+            color: #92400e;
+        }
+
+        .suggestions .fuel-policy-list li:before {
+            color: #f59e0b;
+        }
     </style>
 </head>
 <body>
@@ -767,17 +856,7 @@
                         </select>
                     </div>
                     
-                    <!-- Politiche Carburante Dropdown -->
-                    <div class="form-group">
-                        <label class="form-label">⛽ Politiche Carburante</label>
-                        <select class="form-select">
-                            <option>Tutte le politiche</option>
-                            <option>Consumo a parte (fatturazione a litri)</option>
-                            <option>Consumo a parte (ore motore)</option>
-                            <option>Carburante incluso nel prezzo</option>
-                            <option>Serbatoio pieno/pieno</option>
-                        </select>
-                    </div>
+
                     
                     <!-- Altri Filtri -->
                     <div class="filter-options">
@@ -794,6 +873,45 @@
                     </div>
                     
                     <button class="search-button">🔍 Cerca</button>
+                </div>
+
+                <!-- Politiche Carburante Info -->
+                <div class="fuel-policy-section">
+                    <div class="fuel-policy-card">
+                        <h3 class="fuel-policy-title">⛽ Politiche Carburante</h3>
+                        <div class="fuel-policy-content">
+                            <div class="fuel-policy-main">
+                                <strong>Consumo a parte (fatturazione a litri o a ore motore)</strong>
+                            </div>
+                            
+                            <div class="fuel-policy-section-item">
+                                <div class="fuel-policy-subtitle">🔹 Come funziona:</div>
+                                <ul class="fuel-policy-list">
+                                    <li>Il carburante è escluso dal prezzo del noleggio</li>
+                                    <li>Si paga separatamente a fine giornata</li>
+                                    <li>Misurazione tramite litri consumati (sensori/contalitri)</li>
+                                    <li>Oppure ore di navigazione (contatore motore)</li>
+                                </ul>
+                            </div>
+
+                            <div class="fuel-policy-section-item">
+                                <div class="fuel-policy-subtitle">Tariffe tipiche:</div>
+                                <ul class="fuel-policy-list">
+                                    <li><strong>Litri:</strong> circa 1,80 – 2,20 €/litro per benzina marina</li>
+                                    <li><strong>Ore motore:</strong> 15-20 €/ora (varia per potenza motore)</li>
+                                </ul>
+                            </div>
+
+                            <div class="fuel-policy-section-item suggestions">
+                                <div class="fuel-policy-subtitle">💡 Suggerimenti per il noleggio:</div>
+                                <ul class="fuel-policy-list">
+                                    <li>Il carburante è sempre escluso dal prezzo del noleggio</li>
+                                    <li>Pagamento separato a fine giornata in base al consumo effettivo</li>
+                                    <li>Per una gita media stimare circa 30-50 € di carburante</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Quick Stats -->

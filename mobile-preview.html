@@ -1618,6 +1618,9 @@
         // Sistema di routing avanzato
         let currentPage = 'home';
         let pageHistory = [];
+        
+        // Sistema di autenticazione simulato
+        let isUserLoggedIn = false;
 
         // Dati delle categorie barche
         const categoryData = {
@@ -1830,8 +1833,117 @@
         }
 
         function confirmBooking() {
+            // Controlla se l'utente è loggato
+            if (!isUserLoggedIn) {
+                alert('🔐 Accesso Richiesto\n\nPer completare la prenotazione devi prima accedere o registrarti.\n\nTi stiamo reindirizzando alla sezione accesso...');
+                
+                // Reindirizza alla sezione profilo per l'accesso
+                setTimeout(() => {
+                    showScreen('profilo');
+                }, 1500);
+                return;
+            }
+            
+            // Se loggato, procede con la prenotazione
             alert('✅ Prenotazione confermata! Riceverai una email di conferma a breve.');
             navigateTo('home');
+        }
+        
+        // Funzione per login simulato
+        function simulateLogin() {
+            isUserLoggedIn = true;
+            alert('✅ Accesso effettuato con successo!\n\nBenvenuto in SeaGO! Ora puoi completare le prenotazioni.');
+            
+            // Aggiorna l'interfaccia per mostrare l'utente loggato
+            updateProfileSection();
+        }
+        
+        // Funzione per logout simulato  
+        function simulateLogout() {
+            isUserLoggedIn = false;
+            alert('👋 Logout effettuato con successo!\n\nGrazie per aver usato SeaGO!');
+            
+            // Aggiorna l'interfaccia
+            updateProfileSection();
+        }
+        
+        // Aggiorna la sezione profilo in base allo stato di login
+        function updateProfileSection() {
+            const profileSection = document.getElementById('profilo');
+            if (!profileSection) return;
+            
+            if (isUserLoggedIn) {
+                // Mostra interfaccia utente loggato
+                profileSection.innerHTML = `
+                    <div class="content">
+                        <div class="profile-header" style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
+                            <h2>👋 Ciao, Marco!</h2>
+                            <p>Benvenuto nella tua area personale SeaGO</p>
+                        </div>
+                        
+                        <div class="profile-menu" style="padding: 20px;">
+                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <h4>📅 Le mie prenotazioni</h4>
+                                <p>Gestisci le tue prenotazioni e cronologia</p>
+                            </div>
+                            
+                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <h4>⭐ Le mie recensioni</h4>
+                                <p>Vedi e scrivi recensioni sulle barche</p>
+                            </div>
+                            
+                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <h4>💳 Metodi di pagamento</h4>
+                                <p>Gestisci carte di credito e pagamenti</p>
+                            </div>
+                            
+                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <h4>🏆 Diventa Sea Host</h4>
+                                <p>Affitta la tua barca su SeaGO</p>
+                            </div>
+                            
+                            <button onclick="simulateLogout()" style="background: #ef4444; color: white; padding: 12px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-top: 20px;">
+                                🚪 Esci
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Mostra interfaccia login/registrazione
+                profileSection.innerHTML = `
+                    <div class="content">
+                        <div class="auth-header" style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
+                            <h2>🔐 Accedi o Registrati</h2>
+                            <p>Entra in SeaGO per prenotare le tue barche</p>
+                        </div>
+                        
+                        <div class="auth-options" style="padding: 20px;">
+                            <button onclick="simulateLogin()" style="background: #0891b2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                                🚪 Accedi con Email
+                            </button>
+                            
+                            <button onclick="simulateLogin()" style="background: #059669; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                                📝 Registrati Nuovo Account
+                            </button>
+                            
+                            <div style="text-align: center; margin: 20px 0; color: #666;">oppure continua con</div>
+                            
+                            <button onclick="simulateLogin()" style="background: #1877f2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 8px;">
+                                📘 Facebook
+                            </button>
+                            
+                            <button onclick="simulateLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600;">
+                                🔴 Google
+                            </button>
+                            
+                            <p style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+                                Registrandoti accetti i nostri<br>
+                                <strong>Termini di Servizio</strong> e <strong>Privacy Policy</strong>
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }
         }
 
         function performSearch() {
@@ -1952,6 +2064,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize home screen
             showScreen('home');
+            
+            // Initialize profile section based on login status
+            updateProfileSection();
             
             // Setup port search
             const container = document.querySelector('.port-search-container');

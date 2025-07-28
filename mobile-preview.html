@@ -210,44 +210,289 @@
         <div class="content" id="content">
             <!-- Schermata Esplora -->
             <div id="esplora" class="screen">
-                <div class="search-bar">
-                    <input type="text" class="search-input" placeholder="🔍 Dove vuoi navigare?">
+                <!-- Hero Section -->
+                <div style="background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color: white; padding: 32px 16px; text-align: center; margin: -16px -16px 24px -16px;">
+                    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">Noleggia Barche in Italia</h1>
+                    <p style="font-size: 16px; opacity: 0.9;">Scopri le acque più belle del Mediterraneo</p>
                 </div>
-                
-                <div class="section-title">Categorie Barche</div>
-                <div class="categories-grid">
-                    <div class="category-card">
-                        <div class="category-icon">🚤</div>
-                        <div class="category-name">Gommoni</div>
-                        <div class="category-count">200+ barche</div>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-icon">🛥️</div>
-                        <div class="category-name">Senza Patente</div>
-                        <div class="category-count">150+ barche</div>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-icon">🛳️</div>
-                        <div class="category-name">Yacht</div>
-                        <div class="category-count">85+ barche</div>
-                    </div>
-                    <div class="category-card">
-                        <div class="category-icon">⛵</div>
-                        <div class="category-name">Barche a Vela</div>
-                        <div class="category-count">60+ barche</div>
+
+                <!-- Form di Ricerca Identico alla Versione Web -->
+                <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                    <div style="display: grid; gap: 16px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Dove</label>
+                            <input type="text" placeholder="Destinazione o porto" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Dal</label>
+                                <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Al</label>
+                                <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Ospiti</label>
+                                <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                    <option>1-2 persone</option>
+                                    <option>3-4 persone</option>
+                                    <option>5-8 persone</option>
+                                    <option>9+ persone</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Tipo imbarcazione</label>
+                                <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                    <option>Tutte le categorie</option>
+                                    <option>Gommoni</option>
+                                    <option>Senza patente</option>
+                                    <option>Yacht</option>
+                                    <option>Barche a vela</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button style="background: linear-gradient(135deg, #f97316, #ea580c); color: white; padding: 14px 24px; border: none; border-radius: 8px; font-weight: 600; font-size: 16px; cursor: pointer; margin-top: 8px;">
+                            🔍 Cerca Barche
+                        </button>
                     </div>
                 </div>
 
-                <div class="section-title">Barche in Evidenza</div>
-                <div class="boat-card">
-                    <div class="boat-image">🚤 Azzurra 680</div>
-                    <div class="boat-title">Gommone Azzurra 680 - Civitavecchia</div>
-                    <div class="boat-price">€350/giorno</div>
+                <!-- Politiche Carburante -->
+                <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 20px;">⛽</span>
+                        <div>
+                            <div style="font-weight: 600; color: #92400e; font-size: 14px;">Politiche Carburante</div>
+                            <div style="color: #92400e; font-size: 12px;">Il carburante non è incluso nel prezzo base</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="boat-card">
-                    <div class="boat-image">🛥️ Luxury Charter</div>
-                    <div class="boat-title">Yacht di Lusso - Gaeta</div>
-                    <div class="boat-price">€1.200/giorno</div>
+
+                <!-- Prima Sezione Categorie: "Esplora per categoria" -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🔍 Esplora per categoria</h2>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #0ea5e9; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🚤</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Gommoni</div>
+                            <div style="color: #6b7280; font-size: 12px;">3 barche disponibili</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #10b981; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🛥️</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Senza Patente</div>
+                            <div style="color: #6b7280; font-size: 12px;">2 barche disponibili</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #8b5cf6; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🛳️</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Yacht</div>
+                            <div style="color: #6b7280; font-size: 12px;">4 barche disponibili</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #f59e0b; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">⛵</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Barche a Vela</div>
+                            <div style="color: #6b7280; font-size: 12px;">2 barche disponibili</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seconda Sezione Categorie: "Prenota la tua barca" -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🚤 Prenota la tua barca</h2>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #ef4444; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🚁</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Catamarani</div>
+                            <div style="color: #6b7280; font-size: 12px;">1 barca disponibile</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #06b6d4; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🏄</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Moto d'acqua</div>
+                            <div style="color: #6b7280; font-size: 12px;">5 barche disponibili</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #84cc16; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🏠</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Houseboat</div>
+                            <div style="color: #6b7280; font-size: 12px;">1 barca disponibile</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="width: 48px; height: 48px; background: #f97316; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🛶</div>
+                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Caiacco</div>
+                            <div style="color: #6b7280; font-size: 12px;">3 barche disponibili</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charter Giornalieri -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">⛵ Charter Giornalieri</h2>
+                    <div style="display: grid; gap: 16px;">
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">⛵</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #374151; font-size: 16px;">Charter Costa</div>
+                                    <div style="color: #6b7280; font-size: 14px;">Escursione lungo la costa</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="color: #0891b2; font-weight: 700; font-size: 18px;">€180/persona</div>
+                                <button style="background: #0891b2; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Prenota</button>
+                            </div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">🏝️</div>
+                                <div>
+                                    <div style="font-weight: 600; color: #374151; font-size: 16px;">Tour delle Isole</div>
+                                    <div style="color: #6b7280; font-size: 14px;">Visita Ponza e Palmarola</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="color: #7c3aed; font-weight: 700; font-size: 18px;">€240/persona</div>
+                                <button style="background: #7c3aed; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Prenota</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mappa Lazio e Campania -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🗺️ Porti del Lazio e Campania</h2>
+                    <div style="background: linear-gradient(135deg, #1e40af, #1e3a8a); border-radius: 16px; padding: 20px; color: white; margin-bottom: 16px;">
+                        <div style="text-align: center; font-size: 18px; font-weight: 600; margin-bottom: 12px;">14 Porti Disponibili</div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; text-align: center;">
+                            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px;">
+                                <div style="font-weight: 600; font-size: 16px;">Lazio</div>
+                                <div style="font-size: 14px; opacity: 0.9;">6 porti attivi</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px;">
+                                <div style="font-weight: 600; font-size: 16px;">Campania</div>
+                                <div style="font-size: 14px; opacity: 0.9;">8 porti attivi</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Civitavecchia</div>
+                            <div style="color: #0ea5e9; font-size: 12px;">12 barche</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Gaeta</div>
+                            <div style="color: #0ea5e9; font-size: 12px;">8 barche</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Napoli</div>
+                            <div style="color: #f97316; font-size: 12px;">15 barche</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Sorrento</div>
+                            <div style="color: #f97316; font-size: 12px;">9 barche</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistiche con Crescita -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">📊 Le Nostre Statistiche</h2>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: #0ea5e9; margin-bottom: 4px;">21</div>
+                            <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Barche</div>
+                            <div style="background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600;">+12%</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: #10b981; margin-bottom: 4px;">15</div>
+                            <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Porti</div>
+                            <div style="background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600;">+18%</div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
+                            <div style="font-size: 24px; font-weight: 700; color: #f59e0b; margin-bottom: 4px;">850+</div>
+                            <div style="font-size: 12px; color: #374151; margin-bottom: 4px;">Clienti</div>
+                            <div style="background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600;">+24%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Condizioni Meteo e Servizi -->
+                <div style="margin-bottom: 32px;">
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🌊 Condizioni Meteo e Servizi</h2>
+                    <div style="background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 16px; padding: 20px; color: white; margin-bottom: 16px;">
+                        <div style="text-align: center; margin-bottom: 16px;">
+                            <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Meteo Roma/Fiumicino</div>
+                            <div style="font-size: 32px; margin-bottom: 8px;">☀️</div>
+                            <div style="font-size: 24px; font-weight: 700;">22°C</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 14px; opacity: 0.9;">Vento</div>
+                                <div style="font-weight: 600;">12 km/h NE</div>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 14px; opacity: 0.9;">Onde</div>
+                                <div style="font-weight: 600;">0.5m</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: grid; gap: 12px;">
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 20px;">⛽</span>
+                                    <div>
+                                        <div style="font-weight: 600; color: #374151;">Carburante Marino</div>
+                                        <div style="color: #6b7280; font-size: 14px;">Gasolio nautico</div>
+                                    </div>
+                                </div>
+                                <div style="font-weight: 700; color: #0ea5e9;">€1.45/L</div>
+                            </div>
+                        </div>
+                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 20px;">🆘</span>
+                                    <div>
+                                        <div style="font-weight: 600; color: #374151;">Assistenza 24/7</div>
+                                        <div style="color: #6b7280; font-size: 14px;">Chat AI + Supporto</div>
+                                    </div>
+                                </div>
+                                <div style="font-weight: 700; color: #10b981;">Attivo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sezione Registrazione Finale -->
+                <div style="margin-bottom: 100px;">
+                    <div style="background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 16px; padding: 24px; color: white; text-align: center;">
+                        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">🚤 Affitta la tua barca</h2>
+                        <p style="font-size: 16px; opacity: 0.9; margin-bottom: 20px;">Trasforma la tua barca in una fonte di reddito</p>
+                        
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+                            <div style="display: grid; gap: 12px;">
+                                <input type="text" placeholder="Nome e Cognome" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px;">
+                                <input type="email" placeholder="Email" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px;">
+                                <input type="tel" placeholder="Telefono" style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px;">
+                                <select style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px;">
+                                    <option>Tipo di imbarcazione</option>
+                                    <option>Gommone</option>
+                                    <option>Yacht</option>
+                                    <option>Barca a vela</option>
+                                    <option>Catamarano</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button style="background: white; color: #f97316; padding: 14px 32px; border: none; border-radius: 8px; font-weight: 700; font-size: 16px; cursor: pointer; width: 100%;">
+                            🌟 Inizia a Guadagnare
+                        </button>
+                        
+                        <div style="margin-top: 16px; font-size: 14px; opacity: 0.8;">
+                            Guadagna fino a €2.500/mese con SeaGO
+                        </div>
+                    </div>
                 </div>
             </div>
 

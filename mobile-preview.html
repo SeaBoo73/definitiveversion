@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeaGO Mobile - Anteprima App</title>
+    <title>SeaGO - Naviga verso l'avventura</title>
     <style>
         * {
             margin: 0;
@@ -28,12 +28,27 @@
         }
 
         .header {
-            background: #0ea5e9;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
             color: white;
             padding: 20px 16px 16px;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
             font-weight: bold;
             font-size: 18px;
+        }
+
+        .logo-container {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
         }
 
         .content {
@@ -205,8 +220,10 @@
 <body>
     <div class="mobile-frame">
         <div class="header">
-            <img src="/assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg" alt="SeaGO" style="height: 32px; width: auto; margin-right: 8px;">
-            SeaGO - Noleggio Barche
+            <div class="logo-container">
+                <span style="color: #022237;">🌊</span>
+            </div>
+            <span>SeaGO - Naviga verso l'avventura</span>
         </div>
         
         <div class="content" id="content">
@@ -301,126 +318,207 @@
                     </div>
                 </div>
 
-                <!-- Prima Sezione Categorie: "Esplora per categoria" -->
+                <!-- Esplora per categoria - Immagini Reali dal Sito Web -->
                 <div style="margin: 0 16px 32px 16px;">
-                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🔍 Esplora per categoria</h2>
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Esplora per categoria</h2>
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 16px;">Trova l'imbarcazione perfetta per la tua avventura</p>
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #0ea5e9; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🚤</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Gommoni</div>
-                            <div style="color: #6b7280; font-size: 12px;">3 barche disponibili</div>
+                        <!-- Gommoni -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/gommone senza patente_1752875806367.webp" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Gommoni</div>
+                                <div style="color: #6b7280; font-size: 12px;">Imbarcazioni pneumatiche versatili e sicure</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #10b981; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🛥️</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Senza Patente</div>
-                            <div style="color: #6b7280; font-size: 12px;">2 barche disponibili</div>
+                        <!-- Barche senza patente -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/OIP (1)_1752921317486.webp" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Barche senza patente</div>
+                                <div style="color: #6b7280; font-size: 12px;">Facili da guidare, perfette per principianti</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #8b5cf6; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🛳️</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Yacht</div>
-                            <div style="color: #6b7280; font-size: 12px;">4 barche disponibili</div>
+                        <!-- Yacht -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/R (1)_1752920495156.jpg" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Yacht</div>
+                                <div style="color: #6b7280; font-size: 12px;">Lusso e comfort per una navigazione esclusiva</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #f59e0b; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">⛵</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Barche a Vela</div>
-                            <div style="color: #6b7280; font-size: 12px;">2 barche disponibili</div>
+                        <!-- Barche a vela -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/barca a vela ludovica_1752876195081.jpg" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Barche a vela</div>
+                                <div style="color: #6b7280; font-size: 12px;">L'esperienza autentica della navigazione</div>
+                            </div>
+                        </div>
+                        <!-- Moto d'acqua -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Moto d'acqua</div>
+                                <div style="color: #6b7280; font-size: 12px;">Adrenalina e velocità sull'acqua</div>
+                            </div>
+                        </div>
+                        <!-- Catamarani -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/catamarano ludovica_1752876117442.jpg" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Catamarani</div>
+                                <div style="color: #6b7280; font-size: 12px;">Spazio e stabilità per gruppi numerosi</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Seconda Sezione Categorie: "Prenota la tua barca" -->
+                <!-- Prenota la tua barca - Continuazione Categorie Reali -->
                 <div style="margin: 0 16px 32px 16px;">
-                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🚤 Prenota la tua barca</h2>
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">Prenota la tua barca</h2>
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 16px;">Scegli tra le nostre imbarcazioni</p>
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #ef4444; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🚁</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Catamarani</div>
-                            <div style="color: #6b7280; font-size: 12px;">1 barca disponibile</div>
+                        <!-- Charter -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Charter</div>
+                                <div style="color: #6b7280; font-size: 12px;">Esperienza completa con skipper professionista</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #06b6d4; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🏄</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Moto d'acqua</div>
-                            <div style="color: #6b7280; font-size: 12px;">5 barche disponibili</div>
+                        <!-- Houseboat -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/OIP_1752919948843.webp" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Houseboat</div>
+                                <div style="color: #6b7280; font-size: 12px;">La tua casa galleggiante per vacanze uniche</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #84cc16; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🏠</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Houseboat</div>
-                            <div style="color: #6b7280; font-size: 12px;">1 barca disponibile</div>
+                        <!-- Barche a motore -->
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/R (1)_1752920495156.jpg" style="width: 100%; height: 80px; object-fit: cover;">
+                            <div style="padding: 12px; text-align: center;">
+                                <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Barche a motore</div>
+                                <div style="color: #6b7280; font-size: 12px;">Velocità e comfort per esplorare la costa</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="width: 48px; height: 48px; background: #f97316; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">🛶</div>
-                            <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-size: 14px;">Caiacco</div>
-                            <div style="color: #6b7280; font-size: 12px;">3 barche disponibili</div>
+                        <!-- Vedi Tutte -->
+                        <div style="background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                            <div style="text-align: center; color: white;">
+                                <div style="font-size: 24px; margin-bottom: 8px;">🔍</div>
+                                <div style="font-weight: 600; font-size: 14px;">Vedi Tutte le Categorie</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Charter Giornalieri -->
+                <!-- Charter Giornalieri come da Sito Web -->
                 <div style="margin: 0 16px 32px 16px;">
-                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">⛵ Charter Giornalieri</h2>
-                    <div style="display: grid; gap: 16px;">
-                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #06b6d4, #0891b2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">⛵</div>
-                                <div>
-                                    <div style="font-weight: 600; color: #374151; font-size: 16px;">Charter Costa</div>
-                                    <div style="color: #6b7280; font-size: 14px;">Escursione lungo la costa</div>
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">Charter Giornalieri</h2>
+                    <div style="display: grid; gap: 12px;">
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" style="width: 100%; height: 100px; object-fit: cover;">
+                            <div style="padding: 16px;">
+                                <div style="font-weight: 600; color: #374151; font-size: 16px; margin-bottom: 4px;">Charter Costa</div>
+                                <div style="color: #6b7280; font-size: 14px; margin-bottom: 12px;">Esplora la costa con skipper</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="color: #0891b2; font-weight: 700; font-size: 18px;">€180/giorno</div>
+                                    <button style="background: #0891b2; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Prenota</button>
                                 </div>
                             </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="color: #0891b2; font-weight: 700; font-size: 18px;">€180/persona</div>
-                                <button style="background: #0891b2; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Prenota</button>
-                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">🏝️</div>
-                                <div>
-                                    <div style="font-weight: 600; color: #374151; font-size: 16px;">Tour delle Isole</div>
-                                    <div style="color: #6b7280; font-size: 14px;">Visita Ponza e Palmarola</div>
+                        <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <img src="/attached_assets/catamarano ludovica_1752876117442.jpg" style="width: 100%; height: 100px; object-fit: cover;">
+                            <div style="padding: 16px;">
+                                <div style="font-weight: 600; color: #374151; font-size: 16px; margin-bottom: 4px;">Tour delle Isole</div>
+                                <div style="color: #6b7280; font-size: 14px; margin-bottom: 12px;">Gita alle isole vicine</div>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div style="color: #7c3aed; font-weight: 700; font-size: 18px;">€240/giorno</div>
+                                    <button style="background: #7c3aed; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Prenota</button>
                                 </div>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="color: #7c3aed; font-weight: 700; font-size: 18px;">€240/persona</div>
-                                <button style="background: #7c3aed; color: white; padding: 8px 16px; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Prenota</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mappa Lazio e Campania -->
+                <!-- Mappa Porti Lazio e Campania come da Sito Web -->
                 <div style="margin: 0 16px 32px 16px;">
-                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 16px;">🗺️ Porti del Lazio e Campania</h2>
-                    <div style="background: linear-gradient(135deg, #1e40af, #1e3a8a); border-radius: 16px; padding: 20px; color: white; margin-bottom: 16px;">
-                        <div style="text-align: center; font-size: 18px; font-weight: 600; margin-bottom: 12px;">14 Porti Disponibili</div>
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; text-align: center;">
-                            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px;">
-                                <div style="font-weight: 600; font-size: 16px;">Lazio</div>
-                                <div style="font-size: 14px; opacity: 0.9;">6 porti attivi</div>
+                    <h2 style="font-size: 20px; font-weight: 700; color: #1f2937; margin-bottom: 8px;">🗺️ Esplora il Mare di Lazio e Campania</h2>
+                    <p style="color: #6b7280; font-size: 14px; margin-bottom: 16px;">Scopri le imbarcazioni disponibili nei porti più belli di Lazio e Campania. 14 porti principali da Civitavecchia a Capri con prezzi in tempo reale.</p>
+                    
+                    <!-- Porti del Lazio -->
+                    <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 12px;">🏛️ LAZIO</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #0891b2; font-size: 13px;">⚓ Civitavecchia</div>
+                                <div style="color: #64748b; font-size: 11px;">4 barche</div>
                             </div>
-                            <div style="background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px;">
-                                <div style="font-weight: 600; font-size: 16px;">Campania</div>
-                                <div style="font-size: 14px; opacity: 0.9;">8 porti attivi</div>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #0891b2; font-size: 13px;">⚓ Gaeta</div>
+                                <div style="color: #64748b; font-size: 11px;">2 barche</div>
+                            </div>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #0891b2; font-size: 13px;">🏝️ Ponza</div>
+                                <div style="color: #64748b; font-size: 11px;">2 barche</div>
+                            </div>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #0891b2; font-size: 13px;">⚓ Terracina</div>
+                                <div style="color: #64748b; font-size: 11px;">2 barche</div>
+                            </div>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #0891b2; font-size: 13px;">🏖️ Anzio</div>
+                                <div style="color: #64748b; font-size: 11px;">3 barche</div>
+                            </div>
+                            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #0891b2; font-size: 13px;">🌊 Formia</div>
+                                <div style="color: #64748b; font-size: 11px;">2 barche</div>
                             </div>
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
-                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Civitavecchia</div>
-                            <div style="color: #0ea5e9; font-size: 12px;">12 barche</div>
+
+                    <!-- Porti della Campania -->
+                    <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                        <h3 style="font-size: 16px; font-weight: 600; color: #374151; margin-bottom: 12px;">🌋 CAMPANIA</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">⚓ Napoli</div>
+                                <div style="color: #9a3412; font-size: 11px;">8 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">🍋 Sorrento</div>
+                                <div style="color: #9a3412; font-size: 11px;">5 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">🏔️ Amalfi</div>
+                                <div style="color: #9a3412; font-size: 11px;">3 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">⚓ Salerno</div>
+                                <div style="color: #9a3412; font-size: 11px;">4 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">🌋 Ischia</div>
+                                <div style="color: #9a3412; font-size: 11px;">6 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">💎 Capri</div>
+                                <div style="color: #9a3412; font-size: 11px;">4 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">🏝️ Procida</div>
+                                <div style="color: #9a3412; font-size: 11px;">3 barche</div>
+                            </div>
+                            <div style="background: #fef7f0; border: 1px solid #fed7aa; border-radius: 8px; padding: 8px; text-align: center;">
+                                <div style="font-weight: 600; color: #ea580c; font-size: 13px;">⚓ Castellammare</div>
+                                <div style="color: #9a3412; font-size: 11px;">2 barche</div>
+                            </div>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
-                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Gaeta</div>
-                            <div style="color: #0ea5e9; font-size: 12px;">8 barche</div>
-                        </div>
-                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
-                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Napoli</div>
-                            <div style="color: #f97316; font-size: 12px;">15 barche</div>
-                        </div>
-                        <div style="background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; text-align: center;">
-                            <div style="font-weight: 600; color: #374151; font-size: 14px;">Sorrento</div>
-                            <div style="color: #f97316; font-size: 12px;">9 barche</div>
-                        </div>
+                    </div>
+
+                    <div style="background: #f0f9ff; border: 1px solid #0891b2; border-radius: 8px; padding: 12px; text-align: center; margin-top: 16px;">
+                        <div style="color: #0891b2; font-size: 12px;">La mappa Google Maps si attiverà automaticamente appena l'API sarà configurata</div>
                     </div>
                 </div>
 
@@ -495,7 +593,7 @@
                 </div>
 
                 <!-- Sezione Registrazione Finale -->
-                <div style="margin: 0 16px 100px 16px;">
+                <div style="margin: 0 16px 32px 16px;">
                     <div style="background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 16px; padding: 24px; color: white; text-align: center;">
                         <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 12px;">🚤 Affitta la tua barca</h2>
                         <p style="font-size: 16px; opacity: 0.9; margin-bottom: 20px;">Trasforma la tua barca in una fonte di reddito</p>
@@ -524,6 +622,48 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Footer SeaGO -->
+                <footer style="background: linear-gradient(135deg, #0891b2, #0284c7); color: white; padding: 32px 16px; margin-top: 64px;">
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px;">
+                            <div style="width: 48px; height: 48px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px;">
+                                <span style="color: #022237;">🌊</span>
+                            </div>
+                            <h3 style="font-size: 24px; font-weight: 700; margin: 0;">SeaGO</h3>
+                        </div>
+                        <p style="opacity: 0.9; font-size: 16px; margin: 0;">La piattaforma leader per il noleggio barche in Italia</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
+                        <div>
+                            <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Servizi</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px;">
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Noleggio Barche</li>
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Charter Giornalieri</li>
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Servizi Ormeggio</li>
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Esperienze Marine</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Assistenza</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px;">
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Chat AI 24/7</li>
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Meteo Marino</li>
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Emergenze</li>
+                                <li style="margin-bottom: 8px; opacity: 0.9;">Supporto Tecnico</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 16px; text-align: center;">
+                        <p style="margin: 0; font-size: 12px; opacity: 0.7;">© 2025 SeaGO. Tutti i diritti riservati.</p>
+                        <p style="margin: 8px 0 0; font-size: 12px; opacity: 0.7;">Naviga verso l'avventura con SeaGO</p>
+                    </div>
+                </footer>
+
+                <!-- Margine Bottom per Navigation -->
+                <div style="height: 100px;"></div>
             </div>
 
             <!-- Schermata Ormeggio -->

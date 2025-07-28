@@ -1157,12 +1157,19 @@ app.get("/mobile-preview", async (req, res) => {
 
 (async () => {
   const server = await registerRoutes(app);
-  // Commenting out Vite setup to serve native app preview directly
-  // await setupVite(app, server);
+  
+  // Enable Vite setup for development
+  if (process.env.NODE_ENV === "development") {
+    await setupVite(app, server);
+  } else {
+    serveStatic(app);
+  }
 
-  // Start the server
-  const port = 5000;
+  // Use dynamic port allocation
+  const port = parseInt(process.env.PORT || "5000", 10);
   server.listen(port, "0.0.0.0", () => {
-    console.log(`Server running on port ${port} - Native App Preview Mode`);
+    log(`🚀 Server running on port ${port}`);
+    log(`📱 Mobile preview: http://localhost:${port}/mobile-preview`);
+    log(`🌐 Web app: http://localhost:${port}`);
   });
 })();

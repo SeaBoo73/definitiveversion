@@ -531,6 +531,203 @@
             opacity: 0.7;
         }
 
+        /* Stili per le nuove pagine */
+        .back-btn {
+            background: none;
+            border: none;
+            color: #0891b2;
+            font-size: 16px;
+            padding: 8px 0;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .boats-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .boat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .boat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .boat-card h4 {
+            margin: 0 0 8px 0;
+            color: #1e293b;
+            font-size: 18px;
+        }
+
+        .boat-price {
+            color: #059669;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 4px 0;
+        }
+
+        .boat-location {
+            color: #64748b;
+            margin: 4px 0 12px 0;
+        }
+
+        .location-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0891b2;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .services-section {
+            margin: 24px 0;
+        }
+
+        .services-section h3 {
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .services-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .services-section li {
+            padding: 8px 0;
+            color: #059669;
+            font-weight: 500;
+        }
+
+        .boat-details-content {
+            padding: 20px 0;
+        }
+
+        .boat-image-placeholder {
+            margin-bottom: 20px;
+        }
+
+        .boat-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            color: #1e293b;
+        }
+
+        .boat-features {
+            margin: 20px 0;
+        }
+
+        .boat-features h4 {
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .boat-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .boat-features li {
+            padding: 4px 0;
+            color: #64748b;
+        }
+
+        .booking-form {
+            padding: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .price-summary {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .price-summary h3 {
+            margin: 0 0 12px 0;
+            color: #1e293b;
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .price-line.total {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .full-width {
+            width: 100%;
+            margin-top: 20px;
+        }
+
         .screen {
             display: none;
         }
@@ -909,7 +1106,7 @@
                         </div>
                     </div>
                     
-                    <button class="search-button">🔍 Cerca</button>
+                    <button class="search-button" onclick="performSearch()">🔍 Cerca</button>
                 </div>
 
                 <!-- Politiche Carburante Info -->
@@ -975,7 +1172,7 @@
                     
                     <div class="categories-grid">
                         <!-- Gommoni -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="gommoni" onclick="navigateTo('category', {category: 'gommoni'})">
                             <div class="category-image" style="background-image: url('/attached_assets/gommone senza patente_1752875806367.webp');">
                                 <div class="category-overlay">
                                     <div class="category-name">Gommoni</div>
@@ -986,7 +1183,7 @@
                         </div>
 
                         <!-- Barche senza patente -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="barche-senza-patente" onclick="navigateTo('category', {category: 'barche-senza-patente'})">
                             <div class="category-image" style="background-image: url('/attached_assets/OIP (1)_1752921317486.webp');">
                                 <div class="category-overlay">
                                     <div class="category-name">Barche senza patente</div>
@@ -997,7 +1194,7 @@
                         </div>
 
                         <!-- Yacht -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="yacht" onclick="navigateTo('category', {category: 'yacht'})">
                             <div class="category-image" style="background-image: url('/attached_assets/R (1)_1752920495156.jpg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Yacht</div>
@@ -1008,7 +1205,7 @@
                         </div>
 
                         <!-- Barche a vela -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="sailboat" onclick="navigateTo('category', {category: 'sailboat'})">
                             <div class="category-image" style="background-image: url('/attached_assets/barca a vela ludovica_1752876195081.jpg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Barche a vela</div>
@@ -1019,7 +1216,7 @@
                         </div>
 
                         <!-- Moto d'acqua -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="jetski" onclick="navigateTo('category', {category: 'jetski'})">
                             <div class="category-image" style="background-image: url('/attached_assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Moto d'acqua</div>
@@ -1030,7 +1227,7 @@
                         </div>
 
                         <!-- Catamarani -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="catamaran" onclick="navigateTo('category', {category: 'catamaran'})">
                             <div class="category-image" style="background-image: url('/attached_assets/catamarano ludovica_1752876117442.jpg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Catamarani</div>
@@ -1041,7 +1238,7 @@
                         </div>
 
                         <!-- Charter -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="charter" onclick="navigateTo('category', {category: 'charter'})">
                             <div class="category-image" style="background-image: url('/attached_assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Charter</div>
@@ -1052,7 +1249,7 @@
                         </div>
 
                         <!-- Houseboat -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="houseboat" onclick="navigateTo('category', {category: 'houseboat'})">
                             <div class="category-image" style="background-image: url('/attached_assets/OIP_1752919948843.webp');">
                                 <div class="category-overlay">
                                     <div class="category-name">Houseboat</div>
@@ -1063,7 +1260,7 @@
                         </div>
 
                         <!-- Barche a motore -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="motorboat" onclick="navigateTo('category', {category: 'motorboat'})">
                             <div class="category-image" style="background-image: url('/attached_assets/R_1752920173178.jpg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Barche a motore</div>
@@ -1074,7 +1271,7 @@
                         </div>
 
                         <!-- Gulet -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="gulet" onclick="navigateTo('category', {category: 'gulet'})">
                             <div class="category-image" style="background-image: url('/attached_assets/gulet-romance-3-cabin-luxury-gulet-for-charter-3-1024x683_1752919948842.jpg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Gulet</div>
@@ -1085,7 +1282,7 @@
                         </div>
 
                         <!-- Caiacco -->
-                        <div class="category-card">
+                        <div class="category-card" data-category="kayak" onclick="navigateTo('category', {category: 'kayak'})">
                             <div class="category-image" style="background-image: url('/attached_assets/caiacco_1753599016775.jpg');">
                                 <div class="category-overlay">
                                     <div class="category-name">Caiacco</div>
@@ -1186,6 +1383,131 @@
             </div>
         </div>
 
+        <!-- Pagina Categoria -->
+        <div id="category-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1 id="category-title">Categoria Barche</h1>
+                </div>
+                <div class="category-content">
+                    <p id="category-description">Descrizione categoria</p>
+                    <div id="category-boats" class="boats-grid">
+                        <!-- Barche caricate dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Località -->
+        <div id="location-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1 id="location-title">Porto</h1>
+                </div>
+                <div class="location-content">
+                    <p id="location-description">Descrizione porto</p>
+                    <div class="location-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="location-boats">0</span>
+                            <span class="stat-label">Barche disponibili</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="location-rating">0</span>
+                            <span class="stat-label">Rating medio</span>
+                        </div>
+                    </div>
+                    <div class="services-section">
+                        <h3>Servizi disponibili</h3>
+                        <ul id="location-services">
+                            <!-- Servizi caricati dinamicamente -->
+                        </ul>
+                    </div>
+                    <button class="btn-primary full-width">Prenota Ormeggio</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Dettagli Barca -->
+        <div id="boat-details-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1 id="boat-title">Dettagli Barca</h1>
+                </div>
+                <div class="boat-details-content">
+                    <div class="boat-image-placeholder">
+                        <div style="background: linear-gradient(135deg, #0891b2, #0284c7); height: 200px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                            🛥️
+                        </div>
+                    </div>
+                    <div class="boat-info">
+                        <h3 id="boat-name">Nome Barca</h3>
+                        <p id="boat-price">Prezzo</p>
+                        <p id="boat-location">Località</p>
+                        <div class="boat-features">
+                            <h4>Caratteristiche:</h4>
+                            <ul>
+                                <li>Capacità: 8 persone</li>
+                                <li>Lunghezza: 12 metri</li>
+                                <li>Bagni: 2</li>
+                                <li>Cabine: 3</li>
+                            </ul>
+                        </div>
+                        <button class="btn-primary full-width" onclick="showBookingForm()">Prenota Ora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Prenotazione -->
+        <div id="booking-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1>Prenota la tua Barca</h1>
+                </div>
+                <div class="booking-content">
+                    <form class="booking-form">
+                        <div class="form-group">
+                            <label>Date di noleggio</label>
+                            <input type="date" id="start-date" required>
+                            <input type="date" id="end-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Numero ospiti</label>
+                            <select>
+                                <option>1-2 persone</option>
+                                <option>3-4 persone</option>
+                                <option>5-8 persone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Servizi aggiuntivi</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox"> Skipper (+€150/giorno)</label>
+                                <label><input type="checkbox"> Carburante incluso (+€80/giorno)</label>
+                                <label><input type="checkbox"> Pulizia finale (+€50)</label>
+                            </div>
+                        </div>
+                        <div class="price-summary">
+                            <h3>Riepilogo Prezzo</h3>
+                            <div class="price-line">
+                                <span>Noleggio base:</span>
+                                <span>€350/giorno</span>
+                            </div>
+                            <div class="price-line total">
+                                <span>Totale:</span>
+                                <span>€350</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-primary full-width" onclick="confirmBooking()">Conferma Prenotazione</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <a href="#" class="nav-item active" onclick="showScreen('home', this)">
@@ -1212,15 +1534,184 @@
     </div>
 
     <script>
-        console.log("📱SeaGO Mobile App Preview Loaded - Identica alla versione web");
+        console.log("📱SeaGO Mobile App Preview Loaded - Sistema di navigazione completo");
         console.log("Homepage web replicata perfettamente su mobile");
 
+        // Sistema di routing avanzato
+        let currentPage = 'home';
+        let pageHistory = [];
+
+        // Dati delle categorie barche
+        const categoryData = {
+            'yacht': {
+                title: 'Yacht di Lusso',
+                description: 'Scopri i nostri yacht di lusso per esperienze indimenticabili',
+                boats: [
+                    { name: 'Azimut 68', price: '€2,500/giorno', location: 'Civitavecchia' },
+                    { name: 'Ferretti 720', price: '€3,200/giorno', location: 'Gaeta' },
+                    { name: 'Princess V58', price: '€2,800/giorno', location: 'Ponza' }
+                ]
+            },
+            'sailboat': {
+                title: 'Barche a Vela',
+                description: 'Vela tradizionale per gli amanti del mare autentico',
+                boats: [
+                    { name: 'Jeanneau Sun Odyssey 449', price: '€350/giorno', location: 'Gaeta' },
+                    { name: 'Bavaria Cruiser 46', price: '€420/giorno', location: 'Civitavecchia' },
+                    { name: 'Beneteau Oceanis 40.1', price: '€380/giorno', location: 'Anzio' }
+                ]
+            },
+            'gommoni': {
+                title: 'Gommoni e RIB',
+                description: 'Gommoni veloci per escursioni giornaliere',
+                boats: [
+                    { name: 'Zodiac Pro 420', price: '€180/giorno', location: 'Terracina' },
+                    { name: 'Capelli Tempest 626', price: '€220/giorno', location: 'Formia' },
+                    { name: 'Joker Boat 650', price: '€200/giorno', location: 'Gaeta' }
+                ]
+            },
+            'jetski': {
+                title: 'Moto d\'Acqua',
+                description: 'Adrenalina e velocità sull\'acqua',
+                boats: [
+                    { name: 'Yamaha VX Cruiser', price: '€120/giorno', location: 'Anzio' },
+                    { name: 'Sea-Doo GTI SE', price: '€150/giorno', location: 'Terracina' },
+                    { name: 'Kawasaki Ultra 310X', price: '€180/giorno', location: 'Gaeta' }
+                ]
+            },
+            'charter': {
+                title: 'Charter con Skipper',
+                description: 'Esperienza completa con skipper professionista',
+                boats: [
+                    { name: 'Bavaria 50 + Skipper', price: '€800/giorno', location: 'Civitavecchia' },
+                    { name: 'Lagoon 42 + Equipaggio', price: '€1,200/giorno', location: 'Gaeta' },
+                    { name: 'Jeanneau 54 + Skipper', price: '€900/giorno', location: 'Ponza' }
+                ]
+            }
+        };
+
+        // Dati delle località
+        const locationData = {
+            'civitavecchia': {
+                title: 'Porto di Civitavecchia',
+                description: 'Principale porto del Lazio con collegamenti per Sardegna e Corsica',
+                services: ['Carburante', 'Acqua', 'Elettricità', 'Wi-Fi', 'Ristoranti', 'Supermercato'],
+                boats: 8,
+                rating: 4.5
+            },
+            'gaeta': {
+                title: 'Porto di Gaeta',
+                description: 'Porto turistico nel golfo di Gaeta, ideale per escursioni costiere',
+                services: ['Marina turistico', 'Noleggio attrezzature', 'Bar', 'Parcheggio', 'Docce'],
+                boats: 12,
+                rating: 4.3
+            },
+            'ponza': {
+                title: 'Porto di Ponza',
+                description: 'Isola paradisiaca con acque cristalline e paesaggi mozzafiato',
+                services: ['Ormeggi turistici', 'Ristoranti', 'Escursioni', 'Diving center'],
+                boats: 6,
+                rating: 4.7
+            }
+        };
+
+        // Funzioni di navigazione
+        function navigateTo(page, params = {}) {
+            if (currentPage !== 'home') {
+                pageHistory.push(currentPage);
+            }
+            currentPage = page;
+            showPage(page, params);
+        }
+
+        function goBack() {
+            if (pageHistory.length > 0) {
+                currentPage = pageHistory.pop();
+                showPage(currentPage);
+            } else {
+                showScreen('home');
+            }
+        }
+
+        function showPage(page, params = {}) {
+            // Nascondi tutte le pagine
+            document.querySelectorAll('.screen').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('[id$="-page"]').forEach(p => p.style.display = 'none');
+            
+            // Mostra la pagina richiesta
+            const pageElement = document.getElementById(page + '-page');
+            if (pageElement) {
+                pageElement.style.display = 'block';
+                // Aggiorna contenuto se necessario
+                if (params.category) updateCategoryPage(params.category);
+                if (params.location) updateLocationPage(params.location);
+                if (params.boat) updateBoatDetailsPage(params.boat);
+            } else {
+                // Fallback alle screen normali
+                const screenElement = document.getElementById(page);
+                if (screenElement) {
+                    screenElement.style.display = 'block';
+                }
+            }
+        }
+
+        function updateCategoryPage(category) {
+            const data = categoryData[category] || categoryData['yacht'];
+            document.getElementById('category-title').textContent = data.title;
+            document.getElementById('category-description').textContent = data.description;
+            
+            const boatsList = document.getElementById('category-boats');
+            boatsList.innerHTML = data.boats.map(boat => `
+                <div class="boat-card" onclick="navigateTo('boat-details', {boat: '${boat.name}'})">
+                    <h4>${boat.name}</h4>
+                    <p class="boat-price">${boat.price}</p>
+                    <p class="boat-location">📍 ${boat.location}</p>
+                    <button class="btn-primary">Vedi Dettagli</button>
+                </div>
+            `).join('');
+        }
+
+        function updateLocationPage(location) {
+            const data = locationData[location] || locationData['civitavecchia'];
+            document.getElementById('location-title').textContent = data.title;
+            document.getElementById('location-description').textContent = data.description;
+            document.getElementById('location-boats').textContent = data.boats;
+            document.getElementById('location-rating').textContent = data.rating;
+            
+            const servicesList = document.getElementById('location-services');
+            servicesList.innerHTML = data.services.map(service => `<li>✓ ${service}</li>`).join('');
+        }
+
+        function updateBoatDetailsPage(boatName) {
+            document.getElementById('boat-name').textContent = boatName;
+            document.getElementById('boat-price').textContent = '€350/giorno';
+            document.getElementById('boat-location').textContent = '📍 Gaeta';
+        }
+
+        function showBookingForm() {
+            navigateTo('booking');
+        }
+
+        function confirmBooking() {
+            alert('✅ Prenotazione confermata! Riceverai una email di conferma a breve.');
+            navigateTo('home');
+        }
+
+        function performSearch() {
+            const location = document.getElementById('portSearch')?.value || 'qualsiasi località';
+            alert(`🔍 SeaGO: Cercando barche a ${location}...\n\nTrovate 12 barche disponibili!`);
+        }
+
         function showScreen(screenId, element) {
-            // Hide all screens
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => {
+            // Reset routing to main screens
+            currentPage = screenId;
+            pageHistory = [];
+            
+            // Hide all screens and pages
+            document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
             });
+            document.querySelectorAll('[id$="-page"]').forEach(p => p.style.display = 'none');
             
             // Show selected screen
             const targetScreen = document.getElementById(screenId);
@@ -1233,35 +1724,43 @@
             navItems.forEach(item => {
                 item.classList.remove('active');
             });
-            element.classList.add('active');
+            if (element) element.classList.add('active');
             
             // Scroll to top
-            document.querySelector('.content').scrollTop = 0;
+            const content = document.querySelector('.content');
+            if (content) content.scrollTop = 0;
         }
 
         // Port search functionality
         function showPortSuggestions() {
             const suggestions = document.getElementById('portSuggestions');
-            suggestions.style.display = 'block';
+            if (suggestions) suggestions.style.display = 'block';
         }
 
         function selectPort(portName) {
             const input = document.getElementById('portSearch');
             const suggestions = document.getElementById('portSuggestions');
             
-            input.value = portName;
-            suggestions.style.display = 'none';
+            if (input) input.value = portName;
+            if (suggestions) suggestions.style.display = 'none';
             
-            // Simulate search action
-            setTimeout(() => {
-                alert('SeaGO: Cercando barche a ' + portName + '...');
-            }, 500);
+            // Navigate to location page
+            const locationKey = portName.toLowerCase().replace(/\s+/g, '').replace('portodi', '');
+            if (locationData[locationKey]) {
+                navigateTo('location', {location: locationKey});
+            } else {
+                setTimeout(() => {
+                    alert('SeaGO: Cercando barche a ' + portName + '...');
+                }, 500);
+            }
         }
 
         function filterPorts() {
             const input = document.getElementById('portSearch');
             const suggestions = document.getElementById('portSuggestions');
-            const searchTerm = input.value.toLowerCase();
+            const searchTerm = input ? input.value.toLowerCase() : '';
+            
+            if (!suggestions) return;
             
             if (searchTerm.length > 0) {
                 suggestions.style.display = 'block';
@@ -1312,34 +1811,36 @@
             }
         }
 
-        // Close suggestions when clicking outside
-        document.addEventListener('click', function(event) {
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize home screen
+            showScreen('home');
+            
+            // Setup port search
             const container = document.querySelector('.port-search-container');
             const suggestions = document.getElementById('portSuggestions');
             
-            if (!container.contains(event.target)) {
-                suggestions.style.display = 'none';
+            // Close suggestions when clicking outside
+            document.addEventListener('click', function(event) {
+                if (container && suggestions && !container.contains(event.target)) {
+                    suggestions.style.display = 'none';
+                }
+            });
+
+            // Prevent suggestions from closing when clicking inside
+            if (suggestions) {
+                suggestions.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
             }
-        });
 
-        // Prevent suggestions from closing when clicking inside
-        document.getElementById('portSuggestions').addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-
-        // Filter options functionality
-        document.addEventListener('DOMContentLoaded', function() {
+            // Filter options functionality
             const filterOptions = document.querySelectorAll('.filter-option');
-            
             filterOptions.forEach(option => {
                 option.addEventListener('click', function() {
-                    // Toggle active state
                     this.classList.toggle('active');
-                    
-                    // Get filter type
                     const filterText = this.querySelector('span').textContent;
                     
-                    // Show feedback
                     if (this.classList.contains('active')) {
                         console.log('SeaGO: Filtro attivato -', filterText);
                     } else {

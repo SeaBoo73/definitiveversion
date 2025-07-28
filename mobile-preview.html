@@ -205,7 +205,8 @@
 <body>
     <div class="mobile-frame">
         <div class="header">
-            🚤 SeaGO - Noleggio Barche
+            <img src="/assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg" alt="SeaGO" style="height: 32px; width: auto; margin-right: 8px;">
+            SeaGO - Noleggio Barche
         </div>
         
         <div class="content" id="content">
@@ -213,8 +214,9 @@
             <div id="esplora" class="screen">
                 <!-- Hero Section -->
                 <div style="background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%); color: white; padding: 32px 16px; text-align: center; margin-bottom: 0;">
-                    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">Noleggia Barche in Italia</h1>
-                    <p style="font-size: 16px; opacity: 0.9;">Scopri le acque più belle del Mediterraneo</p>
+                    <h1 style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">Naviga verso l'avventura</h1>
+                    <p style="font-size: 16px; opacity: 0.9; margin-bottom: 8px;">Prenota barche, yacht e imbarcazioni uniche in tutta Italia.</p>
+                    <p style="font-size: 14px; opacity: 0.8;">Vivi il mare come mai prima d'ora.</p>
                 </div>
 
                 <!-- Form di Ricerca Identico alla Versione Web -->
@@ -222,41 +224,68 @@
                     <div style="display: grid; gap: 16px;">
                         <div>
                             <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Dove</label>
-                            <input type="text" placeholder="Destinazione o porto" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                <option>Seleziona porto...</option>
+                                <option>Civitavecchia</option>
+                                <option>Gaeta</option>
+                                <option>Ponza</option>
+                                <option>Terracina</option>
+                                <option>Anzio</option>
+                                <option>Formia</option>
+                                <option>Napoli</option>
+                                <option>Sorrento</option>
+                                <option>Amalfi</option>
+                                <option>Salerno</option>
+                                <option>Ischia</option>
+                                <option>Capri</option>
+                                <option>Procida</option>
+                                <option>Castellammare</option>
+                            </select>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div>
                                 <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Dal</label>
-                                <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                <input type="date" placeholder="Seleziona data" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Al</label>
-                                <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                                <input type="date" placeholder="Seleziona data" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
                             </div>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div>
                                 <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Ospiti</label>
                                 <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                                    <option>1-2 persone</option>
-                                    <option>3-4 persone</option>
-                                    <option>5-8 persone</option>
-                                    <option>9+ persone</option>
+                                    <option>2 ospiti</option>
+                                    <option>1 ospite</option>
+                                    <option>3 ospiti</option>
+                                    <option>4 ospiti</option>
+                                    <option>5 ospiti</option>
+                                    <option>6 ospiti</option>
+                                    <option>7 ospiti</option>
+                                    <option>8 ospiti</option>
+                                    <option>9+ ospiti</option>
                                 </select>
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px; font-size: 14px;">Tipo imbarcazione</label>
                                 <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                                    <option>Tutte le categorie</option>
+                                    <option>Con Skipper</option>
+                                    <option>Esperienze o charter</option>
                                     <option>Gommoni</option>
-                                    <option>Senza patente</option>
+                                    <option>Barche senza patente</option>
                                     <option>Yacht</option>
                                     <option>Barche a vela</option>
+                                    <option>Moto d'acqua</option>
+                                    <option>Catamarani</option>
+                                    <option>Charter</option>
+                                    <option>Houseboat</option>
+                                    <option>Barche a motore</option>
                                 </select>
                             </div>
                         </div>
                         <button style="background: linear-gradient(135deg, #f97316, #ea580c); color: white; padding: 14px 24px; border: none; border-radius: 8px; font-weight: 600; font-size: 16px; cursor: pointer; margin-top: 8px;">
-                            🔍 Cerca Barche
+                            Cerca
                         </button>
                     </div>
                 </div>

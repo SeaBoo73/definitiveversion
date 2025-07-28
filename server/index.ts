@@ -1143,3 +1143,14 @@ app.get("/mobile-preview", async (req, res) => {
 </html>
   `);
 });
+
+(async () => {
+  const server = await registerRoutes(app);
+  await setupVite(app, server);
+
+  // Start the server
+  const port = 5000;
+  server.listen(port, "0.0.0.0", () => {
+    log(`Server running on port ${port}`);
+  });
+})();

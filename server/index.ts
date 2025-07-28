@@ -16,10 +16,7 @@ app.get("/app-preview", (req, res) => {
   res.sendFile(path.resolve("mobile-preview.html"));
 });
 
-// Redirect root to native app preview for easier access
-app.get("/", (req, res) => {
-  res.sendFile(path.resolve("mobile-preview.html"));
-});
+// Remove redirect - let Vite handle the root route for React app
 
 // Mobile preview route (before authentication middleware)
 app.get("/mobile-preview", async (req, res) => {

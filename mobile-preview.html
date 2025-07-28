@@ -1491,7 +1491,7 @@
                                     <div style="font-size: 12px; color: #6b7280;">da €106/persona</div>
                                 </div>
                             </div>
-                            <button style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                            <button onclick="showBoatDetails('azimut-50-fly')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
                         </div>
 
                         <div class="boat-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
@@ -1512,7 +1512,7 @@
                                     <div style="font-size: 12px; color: #6b7280;">da €23/persona</div>
                                 </div>
                             </div>
-                            <button style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                            <button onclick="showBoatDetails('zodiac-pro-420')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
                         </div>
                     </div>
                 </div>
@@ -1544,9 +1544,9 @@
                 <div class="quick-search" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 24px;">
                     <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1f2937;">🔍 Ricerca Rapida</h3>
                     <div style="display: grid; gap: 12px;">
-                        <button onclick="alert('🔍 Cercando gommoni disponibili...')" style="background: #eff6ff; color: #0891b2; border: 1px solid #0891b2; padding: 12px; border-radius: 6px; font-weight: 600;">🚤 Gommoni Disponibili</button>
-                        <button onclick="alert('🔍 Cercando barche senza patente...')" style="background: #f0fdf4; color: #059669; border: 1px solid #059669; padding: 12px; border-radius: 6px; font-weight: 600;">⛵ Senza Patente</button>
-                        <button onclick="alert('🔍 Cercando yacht di lusso...')" style="background: #fef3c7; color: #d97706; border: 1px solid #d97706; padding: 12px; border-radius: 6px; font-weight: 600;">🛥️ Yacht di Lusso</button>
+                        <button onclick="showCategory('gommoni')" style="background: #eff6ff; color: #0891b2; border: 1px solid #0891b2; padding: 12px; border-radius: 6px; font-weight: 600;">🚤 Gommoni Disponibili</button>
+                        <button onclick="showCategory('barche-senza-patente')" style="background: #f0fdf4; color: #059669; border: 1px solid #059669; padding: 12px; border-radius: 6px; font-weight: 600;">⛵ Senza Patente</button>
+                        <button onclick="showCategory('yacht')" style="background: #fef3c7; color: #d97706; border: 1px solid #d97706; padding: 12px; border-radius: 6px; font-weight: 600;">🛥️ Yacht di Lusso</button>
                     </div>
                 </div>
             </div>
@@ -1586,7 +1586,7 @@
                                     <div style="font-size: 12px; color: #6b7280;">da €360/giorno (8m)</div>
                                 </div>
                             </div>
-                            <button style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
+                            <button onclick="showMooringBooking('civitavecchia')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
                         </div>
 
                         <div class="port-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
@@ -1611,7 +1611,7 @@
                                     <div style="font-size: 12px; color: #6b7280;">da €416/giorno (8m)</div>
                                 </div>
                             </div>
-                            <button style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
+                            <button onclick="showMooringBooking('gaeta')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
                         </div>
                     </div>
                 </div>
@@ -1702,7 +1702,7 @@
                                     <div style="font-size: 12px; color: #6b7280;">da €1,160 totale</div>
                                 </div>
                             </div>
-                            <button style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
+                            <button onclick="showExperienceBooking('tramonto-amalfi')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
                         </div>
 
                         <div class="experience-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
@@ -1727,7 +1727,7 @@
                                     <div style="font-size: 12px; color: #6b7280;">da €1,068 totale</div>
                                 </div>
                             </div>
-                            <button style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
+                            <button onclick="showExperienceBooking('tour-pontine')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
                         </div>
                     </div>
                 </div>
@@ -1748,6 +1748,179 @@
         <!-- Sezione Profilo -->
         <div id="profilo" class="screen" style="display: none;">
             <!-- Il contenuto verrà inserito dinamicamente dalla funzione updateProfileSection() -->
+        </div>
+
+        <!-- Pagina Dettaglio Barca -->
+        <div id="boat-details" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 id="boat-title" style="margin: 0; font-size: 22px; font-weight: 300;">Dettagli Barca</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content" id="boat-details-content">
+                <!-- Contenuto dettaglio barca verrà inserito qui -->
+            </div>
+        </div>
+
+        <!-- Pagina Prenotazione Ormeggio -->
+        <div id="mooring-booking" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Prenota Ormeggio</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content" id="mooring-booking-content">
+                <!-- Contenuto prenotazione ormeggio verrà inserito qui -->
+            </div>
+        </div>
+
+        <!-- Pagina Prenotazione Esperienza -->
+        <div id="experience-booking" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Prenota Esperienza</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content" id="experience-booking-content">
+                <!-- Contenuto prenotazione esperienza verrà inserito qui -->
+            </div>
+        </div>
+
+        <!-- Pagine Profilo Dettagliate -->
+        <div id="my-bookings" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Le mie prenotazioni</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="margin: 0; color: #1f2937;">Azimut 50 Fly</h3>
+                        <span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">CONFERMATA</span>
+                    </div>
+                    <p style="margin: 0 0 8px 0; color: #6b7280;">📍 Civitavecchia • 15-17 Agosto 2025</p>
+                    <p style="margin: 0 0 12px 0; color: #6b7280;">💰 €1,700 totale • 8 ospiti</p>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="margin: 0; color: #1f2937;">Zodiac Pro 420</h3>
+                        <span style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">IN ATTESA</span>
+                    </div>
+                    <p style="margin: 0 0 8px 0; color: #6b7280;">📍 Gaeta • 22-24 Agosto 2025</p>
+                    <p style="margin: 0 0 12px 0; color: #6b7280;">💰 €540 totale • 4 ospiti</p>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="my-reviews" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Le mie recensioni</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 8px 0; color: #1f2937;">Azimut 50 Fly</h3>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                        <span style="font-size: 14px; color: #6b7280;">Agosto 2025</span>
+                    </div>
+                    <p style="margin: 0; color: #374151; line-height: 1.5;">"Esperienza fantastica! Barca perfetta e servizio impeccabile. Consigliatissimo per una giornata speciale."</p>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 8px 0; color: #1f2937;">Zodiac Pro 420</h3>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                        <span style="font-size: 14px; color: #6b7280;">Luglio 2025</span>
+                    </div>
+                    <p style="margin: 0; color: #374151; line-height: 1.5;">"Gommone perfetto per esplorare la costa. Facile da guidare e molto divertente!"</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="payment-methods" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Metodi di pagamento</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">💳 Carte Salvate</h3>
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600;">•••• •••• •••• 1234</div>
+                                <div style="font-size: 14px; color: #6b7280;">Visa • Scade 12/27</div>
+                            </div>
+                            <button style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px;">Rimuovi</button>
+                        </div>
+                    </div>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">+ Aggiungi Carta</button>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">🔒 Pagamenti Sicuri</h3>
+                    <div style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                        <p>• Tutti i pagamenti sono protetti da crittografia SSL</p>
+                        <p>• Supportiamo Visa, Mastercard, American Express</p>
+                        <p>• Apple Pay e Google Pay disponibili</p>
+                        <p>• Nessun costo aggiuntivo per le transazioni</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="become-host" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Diventa Sea Host</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">🚤 Affitta la tua barca</h3>
+                    <p style="margin: 0 0 16px 0; color: #6b7280;">Guadagna fino a €12,500 all'anno affittando la tua barca quando non la usi.</p>
+                    <div style="background: #eff6ff; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 18px; font-weight: bold; color: #0891b2; text-align: center;">€850/mese di guadagno medio</div>
+                        <div style="font-size: 14px; color: #6b7280; text-align: center;">Con solo 10 giorni di noleggio</div>
+                    </div>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">Inizia Ora</button>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">✅ Vantaggi Sea Host</h3>
+                    <div style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                        <p>• Assicurazione casco coperta da SeaGO</p>
+                        <p>• Gestione prenotazioni automatica</p>
+                        <p>• Pagamenti sicuri ogni 7 giorni</p>
+                        <p>• Supporto clienti dedicato 24/7</p>
+                        <p>• Check-in/out assistito nei porti</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Pagina Categoria -->
@@ -2176,6 +2349,194 @@
             }
         }
 
+        // Funzioni per navigazione pagine dettagliate
+        function showBoatDetails(boatId) {
+            const boatData = {
+                'azimut-50-fly': {
+                    title: 'Azimut 50 Fly',
+                    location: 'Civitavecchia',
+                    price: '€850/giorno',
+                    rating: '4.9 (127 recensioni)',
+                    description: 'Lussuoso yacht perfetto per gruppi fino a 8 persone. Include cabine, bagni e tutte le comodità per una giornata indimenticabile.',
+                    features: ['2 Cabine', '2 Bagni', 'Cucina attrezzata', 'Aria condizionata', 'Lettini prendisole', 'Sistema audio Bluetooth']
+                },
+                'zodiac-pro-420': {
+                    title: 'Zodiac Pro 420', 
+                    location: 'Gaeta',
+                    price: '€180/giorno',
+                    rating: '4.7 (89 recensioni)',
+                    description: 'Gommone semi-rigido ideale per esplorare la costa e raggiungere calette nascoste. Facile da guidare, non richiede patente nautica.',
+                    features: ['Max 6 persone', 'Motore 40 HP', 'Tendalino parasole', 'Scaletta bagno', 'Kit sicurezza incluso', 'GPS/Ecoscandaglio']
+                }
+            };
+            
+            const boat = boatData[boatId];
+            if (!boat) return;
+            
+            document.getElementById('boat-title').textContent = boat.title;
+            document.getElementById('boat-details-content').innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="margin: 0; color: #1f2937;">${boat.title}</h3>
+                        <span style="color: #fbbf24;">⭐ ${boat.rating}</span>
+                    </div>
+                    <p style="margin: 0 0 8px 0; color: #6b7280;">📍 ${boat.location}</p>
+                    <p style="margin: 0 0 16px 0; font-size: 18px; font-weight: bold; color: #0891b2;">${boat.price}</p>
+                    <p style="margin: 0 0 16px 0; color: #374151; line-height: 1.5;">${boat.description}</p>
+                    
+                    <h4 style="margin: 0 0 12px 0; color: #1f2937;">✨ Caratteristiche</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px;">
+                        ${boat.features.map(feature => `<div style="background: #f8fafc; padding: 8px; border-radius: 6px; font-size: 14px; color: #374151;">• ${feature}</div>`).join('')}
+                    </div>
+                    
+                    <button onclick="bookBoat('${boatId}')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 16px;">📅 Prenota Ora</button>
+                </div>
+            `;
+            navigateTo('boat-details');
+        }
+
+        function showMooringBooking(portId) {
+            const portData = {
+                'civitavecchia': { name: 'Porto di Civitavecchia', price: '€45/metro/giorno' },
+                'gaeta': { name: 'Marina di Gaeta', price: '€52/metro/giorno' }
+            };
+            
+            const port = portData[portId] || portData['civitavecchia'];
+            
+            document.getElementById('mooring-booking-content').innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937;">⚓ ${port.name}</h3>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Lunghezza barca (metri)</label>
+                        <select id="mooringLength" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 12px;">
+                            <option value="8">8 metri</option>
+                            <option value="10">10 metri</option>
+                            <option value="12">12 metri</option>
+                            <option value="15">15 metri</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Date soggiorno</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <input type="date" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <input type="date" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div style="background: #eff6ff; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 16px; font-weight: bold; color: #0891b2;">${port.price}</div>
+                        <div style="font-size: 14px; color: #6b7280;">Prezzo per metro al giorno</div>
+                    </div>
+                    <button onclick="checkAuth('Ormeggio prenotato! Verrai contattato entro 2 ore per la conferma.')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
+                </div>
+            `;
+            navigateTo('mooring-booking');
+        }
+
+        function showExperienceBooking(experienceId) {
+            const experiences = {
+                'tramonto-amalfi': { name: 'Tramonto in Costiera Amalfitana', price: '€145/persona', duration: '4 ore' },
+                'tour-pontine': { name: 'Tour Isole Pontine', price: '€89/persona', duration: '8 ore' }
+            };
+            
+            const exp = experiences[experienceId] || experiences['tramonto-amalfi'];
+            
+            document.getElementById('experience-booking-content').innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937;">✨ ${exp.name}</h3>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Data esperienza</label>
+                        <input type="date" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 12px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Numero partecipanti</label>
+                        <select style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <option>2 persone</option>
+                            <option>4 persone</option>
+                            <option>6 persone</option>
+                            <option>8 persone</option>
+                        </select>
+                    </div>
+                    <div style="background: #eff6ff; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 16px; font-weight: bold; color: #0891b2;">${exp.price}</div>
+                        <div style="font-size: 14px; color: #6b7280;">Durata: ${exp.duration}</div>
+                    </div>
+                    <button onclick="checkAuth('Esperienza prenotata! Riceverai la conferma via email.')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
+                </div>
+            `;
+            navigateTo('experience-booking');
+        }
+
+        function bookBoat(boatId) {
+            checkAuth(`Barca prenotata! Procedi con il pagamento per confermare la prenotazione.`);
+        }
+
+        function checkAuth(successMessage) {
+            if (isLoggedIn) {
+                alert(successMessage);
+            } else {
+                alert('Devi effettuare l\'accesso per continuare. Verrai reindirizzato alla sezione Profilo.');
+                showScreen('profilo');
+            }
+        }
+
+        function navigateToPage(pageId) {
+            navigateTo(pageId);
+        }
+
+        function showCategory(categoryType) {
+            const categories = {
+                'yacht': { name: 'Yacht', boats: ['Azimut 80', 'Ferretti 720', 'Sunseeker 70'], icon: '🛥️' },
+                'gommoni': { name: 'Gommoni', boats: ['Zodiac Pro 420', 'Joker Boat 650', 'Marlin 28'], icon: '🚤' },
+                'barche-senza-patente': { name: 'Barche senza patente', boats: ['Quicksilver 455', 'Marinello 16', 'Saver 540'], icon: '⛵' }
+            };
+            
+            const category = categories[categoryType];
+            if (!category) return;
+            
+            // Aggiorna il contenuto della pagina categoria
+            document.getElementById('category-title').textContent = category.name;
+            document.getElementById('category-boats-list').innerHTML = category.boats.map(boat => `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h4 style="margin: 0 0 8px 0; color: #1f2937;">${boat}</h4>
+                    <p style="margin: 0 0 12px 0; color: #6b7280;">📍 Disponibile • da €180/giorno</p>
+                    <button onclick="showBoatDetails('${boat.toLowerCase().replace(/\s+/g, '-')}')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                </div>
+            `).join('');
+            
+            navigateTo('category-page');
+        }
+
+        function showProfilePage(pageType) {
+            switch(pageType) {
+                case 'bookings':
+                    navigateTo('my-bookings');
+                    break;
+                case 'reviews':
+                    navigateTo('my-reviews');
+                    break;
+                case 'payments':
+                    navigateTo('payment-methods');
+                    break;
+                case 'host':
+                    navigateTo('become-host');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function handleLogin() {
+            isLoggedIn = true;
+            alert('🌟 Accesso effettuato con successo!');
+            updateProfileSection();
+        }
+
+        function handleLogout() {
+            isLoggedIn = false;
+            alert('👋 Logout effettuato. A presto!');
+            updateProfileSection();
+        }
+
         // Aggiorna la sezione profilo in base allo stato di login
         function updateProfileSection() {
             const profileSection = document.getElementById('profilo');
@@ -2191,27 +2552,27 @@
                         </div>
                         
                         <div class="profile-menu" style="padding: 20px;">
-                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div class="menu-item" onclick="showProfilePage('bookings')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>📅 Le mie prenotazioni</h4>
                                 <p>Gestisci le tue prenotazioni e cronologia</p>
                             </div>
                             
-                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div class="menu-item" onclick="showProfilePage('reviews')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>⭐ Le mie recensioni</h4>
                                 <p>Vedi e scrivi recensioni sulle barche</p>
                             </div>
                             
-                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div class="menu-item" onclick="showProfilePage('payments')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>💳 Metodi di pagamento</h4>
                                 <p>Gestisci carte di credito e pagamenti</p>
                             </div>
                             
-                            <div class="menu-item" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <div class="menu-item" onclick="showProfilePage('host')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>🏆 Diventa Sea Host</h4>
                                 <p>Affitta la tua barca su SeaGO</p>
                             </div>
                             
-                            <button onclick="simulateLogout()" style="background: #ef4444; color: white; padding: 12px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-top: 20px;">
+                            <button onclick="handleLogout()" style="background: #ef4444; color: white; padding: 12px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-top: 20px;">
                                 🚪 Esci
                             </button>
                         </div>
@@ -2227,21 +2588,21 @@
                         </div>
                         
                         <div class="auth-options" style="padding: 20px;">
-                            <button onclick="simulateLogin()" style="background: #0891b2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                            <button onclick="handleLogin()" style="background: #0891b2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
                                 🚪 Accedi con Email
                             </button>
                             
-                            <button onclick="simulateLogin()" style="background: #059669; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                            <button onclick="handleLogin()" style="background: #059669; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
                                 📝 Registrati Nuovo Account
                             </button>
                             
                             <div style="text-align: center; margin: 20px 0; color: #666;">oppure continua con</div>
                             
-                            <button onclick="simulateLogin()" style="background: #1877f2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 8px;">
+                            <button onclick="handleLogin()" style="background: #1877f2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 8px;">
                                 📘 Facebook
                             </button>
                             
-                            <button onclick="simulateLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600;">
+                            <button onclick="handleLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600;">
                                 🔴 Google
                             </button>
                             

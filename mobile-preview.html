@@ -441,57 +441,161 @@
 
         /* Footer */
         .footer {
-            background: linear-gradient(135deg, #0891b2, #0284c7);
+            background: #1e293b;
             color: white;
-            padding: 32px 16px;
+            padding: 40px 16px 80px;
+        }
+
+        .footer-brand {
+            margin-bottom: 32px;
         }
 
         .footer-logo {
-            text-align: center;
-            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .footer-logo img {
-            height: 48px;
-            width: auto;
-            margin-bottom: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
         }
 
-        .footer-tagline {
-            opacity: 0.9;
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .footer-description {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: #334155;
+            border-radius: 6px;
+            text-align: center;
+            line-height: 32px;
+            text-decoration: none;
             font-size: 16px;
+            transition: background 0.2s ease;
         }
 
-        .footer-content {
+        .social-icon:hover {
+            background: #475569;
+        }
+
+        .footer-links {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
             gap: 24px;
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
 
-        .footer-section h4 {
+        @media (min-width: 640px) {
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .footer-links {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .footer-column h4 {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 12px;
+            color: white;
         }
 
-        .footer-section ul {
+        .footer-column ul {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
-        .footer-section ul li {
+        .footer-column li {
             margin-bottom: 8px;
+        }
+
+        .footer-column a {
             font-size: 14px;
-            opacity: 0.9;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-column a:hover {
+            color: #cbd5e1;
         }
 
         .footer-bottom {
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 16px;
-            text-align: center;
-            font-size: 12px;
-            opacity: 0.7;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .footer-legal {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+            .footer-legal {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        .footer-legal span {
+            font-size: 14px;
+            color: #94a3b8;
+        }
+
+        .footer-legal a {
+            font-size: 14px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-legal a:hover {
+            color: #cbd5e1;
+        }
+
+        .footer-prezzi {
+            font-size: 14px;
+            color: #94a3b8;
+            font-weight: 500;
         }
 
         .screen {
@@ -1104,35 +1208,72 @@
 
                 <!-- Footer -->
                 <div class="footer">
-                    <div class="footer-logo">
-                        <img src="/attached_assets/Immagine%20WhatsApp%202025-07-23%20ore%2018.35.06_81ef1af0_1753713030733.jpg" alt="SeaGO Logo">
-                        <div class="footer-tagline">La piattaforma leader per il noleggio barche in Italia</div>
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <img src="/attached_assets/Immagine%20WhatsApp%202025-07-23%20ore%2018.35.06_81ef1af0_1753713030733.jpg" alt="SeaGO Logo">
+                            <span class="footer-logo-text">SeaGO</span>
+                        </div>
+                        <div class="footer-description">
+                            La piattaforma leader per il noleggio di imbarcazioni in Italia. Scopri il mare come mai prima d'ora.
+                        </div>
+                        <div class="footer-social">
+                            <a href="#" class="social-icon">📷</a>
+                            <a href="#" class="social-icon">🎵</a>
+                        </div>
                     </div>
                     
-                    <div class="footer-content">
-                        <div class="footer-section">
+                    <div class="footer-links">
+                        <div class="footer-column">
                             <h4>Servizi</h4>
                             <ul>
-                                <li>Noleggio Barche</li>
-                                <li>Charter Giornalieri</li>
-                                <li>Servizi Ormeggio</li>
-                                <li>Esperienze Marine</li>
+                                <li><a href="#">Prenota una barca</a></li>
+                                <li><a href="#">Diventa Sea Host</a></li>
+                                <li><a href="#">Assicurazioni</a></li>
+                                <li><a href="#">Recensioni</a></li>
                             </ul>
                         </div>
-                        <div class="footer-section">
-                            <h4>Assistenza</h4>
+                        
+                        <div class="footer-column">
+                            <h4>Prenotazioni</h4>
                             <ul>
-                                <li>Chat AI 24/7</li>
-                                <li>Meteo Marino</li>
-                                <li>Emergenze</li>
-                                <li>Supporto Tecnico</li>
+                                <li><a href="#">Come prenotare</a></li>
+                                <li><a href="#">Modifica prenotazione</a></li>
+                                <li><a href="#">Politiche di cancellazione</a></li>
+                                <li><a href="#">Documenti richiesti</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-column">
+                            <h4>Pagamenti</h4>
+                            <ul>
+                                <li><a href="#">Metodi di pagamento</a></li>
+                                <li><a href="#">Sicurezza pagamenti</a></li>
+                                <li><a href="#">Rimborsi</a></li>
+                                <li><a href="#">Fatturazione</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="footer-column">
+                            <h4>Supporto</h4>
+                            <ul>
+                                <li><a href="#">Centro assistenza</a></li>
+                                <li><a href="#">Contatti</a></li>
+                                <li><a href="#">Emergenze</a></li>
+                                <li><a href="#">FAQ</a></li>
                             </ul>
                         </div>
                     </div>
                     
                     <div class="footer-bottom">
-                        <p>© 2025 SeaGO. Tutti i diritti riservati.</p>
-                        <p>Naviga verso l'avventura con SeaGO</p>
+                        <div class="footer-legal">
+                            <span>© 2025 SeaGO. Tutti i diritti riservati.</span>
+                            <a href="#">Privacy Policy</a>
+                            <a href="#">Termini di Servizio</a>
+                            <a href="#">Cookie Policy</a>
+                        </div>
+                        <div class="footer-prezzi">
+                            <span>💰 Prezzi</span>
+                        </div>
                     </div>
                 </div>
 

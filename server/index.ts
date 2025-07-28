@@ -1157,11 +1157,12 @@ app.get("/mobile-preview", async (req, res) => {
 
 (async () => {
   const server = await registerRoutes(app);
-  await setupVite(app, server);
+  // Commenting out Vite setup to serve native app preview directly
+  // await setupVite(app, server);
 
   // Start the server
   const port = 5000;
   server.listen(port, "0.0.0.0", () => {
-    log(`Server running on port ${port}`);
+    console.log(`Server running on port ${port} - Native App Preview Mode`);
   });
 })();

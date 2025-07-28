@@ -96,9 +96,15 @@ app.get("/mobile-preview", async (req, res) => {
             padding: 16px;
             margin-bottom: 16px;
             display: flex;
-            align-items: center;
-            gap: 12px;
+            flex-direction: column;
+            gap: 4px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .search-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
         }
         .search-input {
             flex: 1;
@@ -139,6 +145,18 @@ app.get("/mobile-preview", async (req, res) => {
             font-size: 12px;
             color: #64748b;
             font-weight: 500;
+        }
+        .stat-change {
+            font-size: 10px;
+            color: #10b981;
+            margin-top: 4px;
+        }
+        .section-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 0 16px;
         }
         .section-container {
             background: white;
@@ -360,22 +378,40 @@ app.get("/mobile-preview", async (req, res) => {
                 
                 <div class="search-section">
                     <div class="search-bar">
-                        <span class="search-icon">🔍</span>
+                        <span class="search-label">Dove</span>
                         <input type="text" class="search-input" placeholder="Seleziona porto..." onclick="showAlert('Selezione porto - Apre menu località')">
                     </div>
-                    <div class="search-bar">
-                        <span class="search-icon">📅</span>
-                        <input type="text" class="search-input" placeholder="Dal - Al" onclick="showAlert('Calendario date - Seleziona periodo')">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <div class="search-bar">
+                            <span class="search-label">Dal</span>
+                            <input type="text" class="search-input" placeholder="Seleziona data" onclick="showAlert('Data partenza - Calendario')">
+                        </div>
+                        <div class="search-bar">
+                            <span class="search-label">Al</span>
+                            <input type="text" class="search-input" placeholder="Seleziona data" onclick="showAlert('Data ritorno - Calendario')">
+                        </div>
                     </div>
                     <div class="search-bar">
-                        <span class="search-icon">👥</span>
+                        <span class="search-label">Ospiti</span>
                         <input type="text" class="search-input" placeholder="2 ospiti" onclick="showAlert('Numero ospiti - Seleziona persone')">
                     </div>
                     <div class="search-bar">
-                        <span class="search-icon">⛵</span>
-                        <input type="text" class="search-input" placeholder="Con Skipper" onclick="showAlert('Tipo imbarcazione - Charter/Esperienze')">
+                        <span class="search-label">Tipo imbarcazione</span>
+                        <input type="text" class="search-input" placeholder="Con Skipper" onclick="showAlert('Tipo imbarcazione - Con Skipper/Esperienze o charter')">
                     </div>
                     <button style="background: #1e40af; color: white; border: none; border-radius: 12px; padding: 16px; width: 100%; font-size: 16px; font-weight: 600; margin-top: 8px;" onclick="showAlert('Cerca barche - Avvia ricerca')">Cerca</button>
+                </div>
+
+                <div class="section-container">
+                    <div class="section-title">Politiche Carburante</div>
+                    <div style="padding: 16px;">
+                        <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 12px; padding: 16px; text-align: center;">
+                            <div style="font-size: 14px; color: #92400e; line-height: 1.5;">
+                                Il carburante è generalmente escluso dal prezzo di noleggio. <br>
+                                Per charter ed esperienze guidate il carburante è incluso nel prezzo.
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="stats-section">
@@ -383,24 +419,29 @@ app.get("/mobile-preview", async (req, res) => {
                         <div class="stat-card">
                             <div class="stat-number">500+</div>
                             <div class="stat-label">Barche disponibili</div>
+                            <div class="stat-change">+12% questo mese</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-number">2.5K</div>
                             <div class="stat-label">Utenti attivi</div>
+                            <div class="stat-change">+18% questo mese</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-number">4.8/5</div>
                             <div class="stat-label">Valutazione media</div>
+                            <div class="stat-change">Sempre eccellente</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-number">1.2K</div>
                             <div class="stat-label">Prenotazioni</div>
+                            <div class="stat-change">+24% questo mese</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="section-container">
                     <div class="section-title">Esplora per categoria</div>
+                    <div class="section-subtitle">Trova l'imbarcazione perfetta per la tua avventura</div>
                     <div class="categories-grid">
                         <div class="category-card" onclick="showAlert('Gommoni - Imbarcazioni pneumatiche versatili')">
                             <img src="/api/images/gommone senza patente_1752875806367.webp" class="category-image" alt="Gommoni">
@@ -460,7 +501,173 @@ app.get("/mobile-preview", async (req, res) => {
                 </div>
 
                 <div class="section-container">
+                    <div class="section-title">Prenota la tua barca</div>
+                    <div class="section-subtitle">Scegli tra le nostre imbarcazioni</div>
+                    <div class="categories-grid">
+                        <div class="category-card" onclick="showAlert('Gommoni - Imbarcazioni versatili')">
+                            <img src="/api/images/gommone senza patente_1752875806367.webp" class="category-image" alt="Gommoni">
+                            <div class="category-name">Gommoni</div>
+                            <div class="category-desc">Imbarcazioni versatili</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Senza patente - Facili da guidare')">
+                            <img src="/api/images/OIP (1)_1752921317486.webp" class="category-image" alt="Senza patente">
+                            <div class="category-name">Senza patente</div>
+                            <div class="category-desc">Facili da guidare</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Yacht - Lusso e comfort')">
+                            <img src="/api/images/R (1)_1752920495156.jpg" class="category-image" alt="Yacht">
+                            <div class="category-name">Yacht</div>
+                            <div class="category-desc">Lusso e comfort</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Barche a vela - Navigazione autentica')">
+                            <img src="/api/images/barca a vela ludovica_1752876195081.jpg" class="category-image" alt="Barche a vela">
+                            <div class="category-name">Barche a vela</div>
+                            <div class="category-desc">Navigazione autentica</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Moto d\\'acqua - Adrenalina in acqua')">
+                            <img src="/api/images/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg" class="category-image" alt="Moto d'acqua">
+                            <div class="category-name">Moto d'acqua</div>
+                            <div class="category-desc">Adrenalina in acqua</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Catamarani - Spazio e stabilità')">
+                            <img src="/api/images/catamarano ludovica_1752876117442.jpg" class="category-image" alt="Catamarani">
+                            <div class="category-name">Catamarani</div>
+                            <div class="category-desc">Spazio e stabilità</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Charter - Con skipper')">
+                            <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="category-image" alt="Charter">
+                            <div class="category-name">Charter</div>
+                            <div class="category-desc">Con skipper</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Casa galleggiante - Casa galleggiante')">
+                            <img src="/api/images/OIP_1752919948843.webp" class="category-image" alt="Casa galleggiante">
+                            <div class="category-name">Casa galleggiante</div>
+                            <div class="category-desc">Casa galleggiante</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                        <div class="category-card" onclick="showAlert('Barche motore - Velocità e comfort')">
+                            <img src="/api/images/R (1)_1752920495156.jpg" class="category-image" alt="Barche motore">
+                            <div class="category-name">Barche motore</div>
+                            <div class="category-desc">Velocità e comfort</div>
+                            <button class="category-link">Prenota</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container">
+                    <div class="section-title">Charter Giornalieri</div>
+                    <div class="boats-section">
+                        <div class="boat-card featured-boat" onclick="showAlert('Charter Costa - Esplora la costa con skipper')">
+                            <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="boat-image" alt="Charter Costa">
+                            <div class="boat-content">
+                                <div class="boat-title">Charter Costa</div>
+                                <div class="boat-details">Esplora la costa con skipper</div>
+                                <div class="boat-price">€180/giorno</div>
+                            </div>
+                        </div>
+                        <div class="boat-card featured-boat" onclick="showAlert('Tour delle Isole - Gita alle isole vicine')">
+                            <img src="/api/images/catamarano ludovica_1752876117442.jpg" class="boat-image" alt="Tour delle Isole">
+                            <div class="boat-content">
+                                <div class="boat-title">Tour delle Isole</div>
+                                <div class="boat-details">Gita alle isole vicine</div>
+                                <div class="boat-price">€240/giorno</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container">
+                    <div class="section-title">Esplora il Mare di Lazio e Campania</div>
+                    <div class="section-subtitle">Scopri le imbarcazioni disponibili nei porti più belli di Lazio e Campania. 14 porti principali da Civitavecchia a Capri con prezzi in tempo reale.</div>
+                    <div style="text-align: center; padding: 16px;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">🗺️</div>
+                        <div style="font-weight: 600; margin-bottom: 16px;">Porti del Lazio e Campania</div>
+                        <div style="font-size: 14px; color: #64748b; margin-bottom: 16px;">14 Porti Principali con Coordinate GPS Precise</div>
+                        
+                        <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px;">
+                            <div style="font-weight: 600; margin-bottom: 12px; color: #1e40af;">🏛️ LAZIO</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Civitavecchia - 4 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">⚓ Civitavecchia</div>
+                                    <div style="font-size: 10px; color: #64748b;">4 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Gaeta - 2 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">⚓ Gaeta</div>
+                                    <div style="font-size: 10px; color: #64748b;">2 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Ponza - 2 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🏝️ Ponza</div>
+                                    <div style="font-size: 10px; color: #64748b;">2 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Terracina - 2 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">⚓ Terracina</div>
+                                    <div style="font-size: 10px; color: #64748b;">2 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Anzio - 3 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🏖️ Anzio</div>
+                                    <div style="font-size: 10px; color: #64748b;">3 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Formia - 2 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🌊 Formia</div>
+                                    <div style="font-size: 10px; color: #64748b;">2 barche</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #fef9e7; border-radius: 12px; padding: 16px;">
+                            <div style="font-weight: 600; margin-bottom: 12px; color: #d97706;">🌋 CAMPANIA</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Napoli - 8 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">⚓ Napoli</div>
+                                    <div style="font-size: 10px; color: #64748b;">8 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Sorrento - 5 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🍋 Sorrento</div>
+                                    <div style="font-size: 10px; color: #64748b;">5 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Amalfi - 3 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🏔️ Amalfi</div>
+                                    <div style="font-size: 10px; color: #64748b;">3 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Salerno - 4 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">⚓ Salerno</div>
+                                    <div style="font-size: 10px; color: #64748b;">4 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Ischia - 6 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🌋 Ischia</div>
+                                    <div style="font-size: 10px; color: #64748b;">6 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Capri - 4 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">💎 Capri</div>
+                                    <div style="font-size: 10px; color: #64748b;">4 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Procida - 3 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">🏝️ Procida</div>
+                                    <div style="font-size: 10px; color: #64748b;">3 barche</div>
+                                </div>
+                                <div style="background: white; padding: 8px; border-radius: 8px; text-align: center;" onclick="showAlert('Castellammare - 2 barche disponibili')">
+                                    <div style="font-size: 12px; font-weight: 600;">⚓ Castellammare</div>
+                                    <div style="font-size: 10px; color: #64748b;">2 barche</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 16px; padding: 12px; background: #e0f2fe; border-radius: 8px; font-size: 12px; color: #0369a1;">
+                            La mappa Google Maps si attiverà automaticamente appena l'API sarà configurata
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container">
                     <div class="section-title">⚓ Trova il tuo ormeggio ideale</div>
+                    <div class="section-subtitle">Ormeggi sicuri e servizi completi per la tua imbarcazione</div>
                     <div style="padding: 16px;">
                         <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
                             <div style="background: #f8fafc; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0;" onclick="showAlert('Pontili attrezzati - Servizi completi con acqua ed elettricità')">
@@ -548,6 +755,77 @@ app.get("/mobile-preview", async (req, res) => {
                                 <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">Registrazione immediata</div>
                                 <div style="font-size: 14px; margin-bottom: 12px;">Clicca qui per procedere direttamente alla registrazione senza compilare i dati.</div>
                                 <button style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; padding: 12px; width: 100%; font-size: 14px; font-weight: 600;" onclick="showAlert('Diventa noleggiatore - Registrazione diretta')">Diventa noleggiatore</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-container">
+                    <div class="section-title">Condizioni Meteo e Servizi</div>
+                    <div class="section-subtitle">Informazioni utili per la tua navigazione</div>
+                    <div style="padding: 16px;">
+                        <div style="background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border-radius: 16px; padding: 20px; margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 600;">Condizioni Marine</div>
+                                    <div style="font-size: 14px; opacity: 0.9;">Roma/Fiumicino</div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 24px; font-weight: 700;">28°C</div>
+                                    <div style="font-size: 12px; opacity: 0.8;">Nuvoloso</div>
+                                </div>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; font-size: 12px;">
+                                <div style="text-align: center;">
+                                    <div style="font-weight: 600;">22 kn</div>
+                                    <div style="opacity: 0.8;">SSW</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-weight: 600;">0.86 m</div>
+                                    <div style="opacity: 0.8;">Leggero</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-weight: 600;">73 km</div>
+                                    <div style="opacity: 0.8;">Visibilità</div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 12px; text-align: center;">
+                                Navigazione: Attenzione richiesta
+                            </div>
+                        </div>
+                        <button style="background: #1e40af; color: white; border: none; border-radius: 12px; padding: 12px; width: 100%; font-size: 14px; font-weight: 600;" onclick="showAlert('Dettagli meteo completi')">Dettagli completi</button>
+                    </div>
+                </div>
+
+                <div class="section-container">
+                    <div class="section-title">Affitta la tua barca</div>
+                    <div class="section-subtitle">Guadagna mettendo a disposizione la tua imbarcazione. Gestisci tutto facilmente dalla tua dashboard personale.</div>
+                    <div style="padding: 16px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                            <div style="background: #f0f9ff; padding: 16px; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 20px; font-weight: 700; color: #1e40af; margin-bottom: 4px;">€3.5K</div>
+                                <div style="font-size: 11px; color: #64748b;">Guadagno medio mensile</div>
+                            </div>
+                            <div style="background: #ecfdf5; padding: 16px; border-radius: 12px; text-align: center;">
+                                <div style="font-size: 20px; font-weight: 700; color: #10b981; margin-bottom: 4px;">85%</div>
+                                <div style="font-size: 11px; color: #64748b;">Tasso occupazione</div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 16px;">
+                            <div style="font-weight: 600; margin-bottom: 12px; font-size: 16px;">Registrazione immediata</div>
+                            <div style="font-size: 14px; color: #64748b; margin-bottom: 12px;">Clicca qui per procedere direttamente alla registrazione senza compilare i dati.</div>
+                            <button style="background: #1e40af; color: white; border: none; border-radius: 12px; padding: 12px; width: 100%; font-size: 14px; font-weight: 600; margin-bottom: 16px;" onclick="showAlert('Diventa noleggiatore - Registrazione diretta')">Diventa noleggiatore</button>
+                        </div>
+
+                        <div style="border-top: 1px solid #e5e7eb; padding-top: 16px;">
+                            <div style="font-weight: 600; margin-bottom: 12px; font-size: 16px;">Registrazione rapida</div>
+                            <div style="font-size: 14px; color: #64748b; margin-bottom: 12px;">Compila i dati per iniziare subito</div>
+                            <div style="display: grid; gap: 8px;">
+                                <input type="text" placeholder="Nome" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; font-size: 14px;">
+                                <input type="text" placeholder="Cognome" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; font-size: 14px;">
+                                <input type="email" placeholder="Email" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; font-size: 14px;">
+                                <button style="background: #10b981; color: white; border: none; border-radius: 8px; padding: 12px; font-size: 14px; font-weight: 600;" onclick="showAlert('Continua con questi dati - Vai alla registrazione completa')">Continua con questi dati</button>
                             </div>
                         </div>
                     </div>
@@ -865,424 +1143,3 @@ app.get("/mobile-preview", async (req, res) => {
 </html>
   `);
 });
-                    <div class="service-card" onclick="showAlert('21 Barche disponibili oggi')">
-                        <div class="service-icon">🚤</div>
-                        <div class="service-title">Barche</div>
-                        <div class="service-value">21 disponibili</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('15 Porti nel Lazio')">
-                        <div class="service-icon">⚓</div>
-                        <div class="service-title">Porti</div>
-                        <div class="service-value">15 porti</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('850+ Clienti soddisfatti')">
-                        <div class="service-icon">⭐</div>
-                        <div class="service-title">Clienti</div>
-                        <div class="service-value">850+ felici</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('24/7 Supporto disponibile')">
-                        <div class="service-icon">🔒</div>
-                        <div class="service-title">Supporto</div>
-                        <div class="service-value">24/7</div>
-                    </div>
-                </div>
-                
-                <div class="section-title">🚤 Categorie Barche</div>
-                <div class="categories-grid">
-                    <div class="category-card" onclick="showAlert('Gommoni - 7 barche: da €180 a €450/giorno')">
-                        <img src="/api/images/gommone senza patente_1752875806367.webp" class="category-image" alt="Gommoni">
-                        <div class="category-name">Gommoni</div>
-                        <div class="category-count">7 barche • da €180</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Senza Patente - 3 barche: perfette per principianti')">
-                        <img src="/api/images/OIP (1)_1752921317486.webp" class="category-image" alt="Senza Patente">
-                        <div class="category-name">Senza Patente</div>
-                        <div class="category-count">3 barche • da €120</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Yacht - 5 barche di lusso: esperienze premium')">
-                        <img src="/api/images/R (1)_1752920495156.jpg" class="category-image" alt="Yacht">
-                        <div class="category-name">Yacht</div>
-                        <div class="category-count">5 barche • da €850</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Barche a Vela - 6 barche: navigazione autentica')">
-                        <img src="/api/images/barca a vela ludovica_1752876195081.jpg" class="category-image" alt="Barche a Vela">
-                        <div class="category-name">Barche a Vela</div>
-                        <div class="category-count">6 barche • da €280</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Moto d\\'acqua - Adrenalina pura: noleggio orario')">
-                        <img src="/api/images/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg" class="category-image" alt="Moto d'acqua">
-                        <div class="category-name">Moto d'acqua</div>
-                        <div class="category-count">Disponibili • €80/ora</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Catamarani - Spazio per gruppi: fino a 12 persone')">
-                        <img src="/api/images/catamarano ludovica_1752876117442.jpg" class="category-image" alt="Catamarani">
-                        <div class="category-name">Catamarani</div>
-                        <div class="category-count">Disponibili • €520</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Charter - Con skipper: esperienza completa')">
-                        <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="category-image" alt="Charter">
-                        <div class="category-name">Charter</div>
-                        <div class="category-count">15 esperienze • €1.200</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Houseboat - Casa galleggiante: vacanze uniche')">
-                        <img src="/api/images/OIP_1752919948843.webp" class="category-image" alt="Houseboat">
-                        <div class="category-name">Houseboat</div>
-                        <div class="category-count">Disponibili • €380</div>
-                    </div>
-                </div>
-                
-                <div class="section-title">🌟 Barche in Evidenza</div>
-                <div class="boat-card featured-boat" onclick="showAlert('Azzurra 680 - Gommone luxury con tutti i comfort')">
-                    <img src="/api/images/Immagine WhatsApp 2025-07-27 ore 07.52.02_b0a0f2cb_1753598054172.jpg" class="boat-image" alt="Azzurra 680">
-                    <div class="boat-title">⭐ Azzurra 680 - Gommone Lusso</div>
-                    <div class="boat-details">📍 Civitavecchia • 👥 8 persone • ⛽ Carburante incluso • ⭐ 4.9 (47 recensioni)</div>
-                    <div class="boat-price">€350/giorno <span style="font-size: 12px; color: #10b981;">• Bestseller</span></div>
-                </div>
-                <div class="boat-card featured-boat" onclick="showAlert('Charter Premium - Esperienza completa con skipper professionale')">
-                    <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="boat-image" alt="Charter Premium">
-                    <div class="boat-title">⭐ Charter Premium con Skipper</div>
-                    <div class="boat-details">📍 Gaeta • 👥 12 persone • 👨‍✈️ Skipper professionale • 🥂 Aperitivo • ⭐ 5.0 (23 recensioni)</div>
-                    <div class="boat-price">€1.200/giorno <span style="font-size: 12px; color: #f59e0b;">• Luxury</span></div>
-                </div>
-                <div class="boat-card featured-boat" onclick="showAlert('Barca a Vela Ludovica - Navigazione autentica con istruttore')">
-                    <img src="/api/images/barca a vela ludovica_1752876195081.jpg" class="boat-image" alt="Barca a Vela Ludovica">
-                    <div class="boat-title">⭐ Barca a Vela "Ludovica"</div>
-                    <div class="boat-details">📍 Ponza • 👥 6 persone • ⛵ Navigazione autentica • 🎓 Corso vela • ⭐ 4.8 (31 recensioni)</div>
-                    <div class="boat-price">€280/giorno <span style="font-size: 12px; color: #3b82f6;">• Con corso</span></div>
-                </div>
-                <div class="boat-card featured-boat" onclick="showAlert('Senza Patente Easy - Perfetto per famiglie e principianti')">
-                    <img src="/api/images/OIP (1)_1752921317486.webp" class="boat-image" alt="Easy Boat">
-                    <div class="boat-title">⭐ Easy Boat - Senza Patente</div>
-                    <div class="boat-details">📍 Terracina • 👥 5 persone • 🎓 Briefing incluso • 🔧 Assistenza • ⭐ 4.7 (89 recensioni)</div>
-                    <div class="boat-price">€120/giorno <span style="font-size: 12px; color: #22c55e;">• Principianti</span></div>
-                </div>
-                <div class="boat-card featured-boat" onclick="showAlert('Jetski Yamaha - Adrenalina pura sul mare del Lazio')">
-                    <img src="/api/images/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg" class="boat-image" alt="Jetski Yamaha">
-                    <div class="boat-title">⭐ Jetski Yamaha VX Cruiser</div>
-                    <div class="boat-details">📍 Anzio • 👥 2 persone • ⚡ 180HP • 🏁 Adrenalina • ⭐ 4.6 (54 recensioni)</div>
-                    <div class="boat-price">€80/ora <span style="font-size: 12px; color: #ef4444;">• Adrenalina</span></div>
-                </div>
-            </div>
-            
-            <div id="ormeggio" class="screen">
-                <div class="hero-section">
-                    <div class="hero-title">⚓ Servizi Ormeggio</div>
-                    <div class="hero-subtitle">Trova il posto perfetto per la tua barca</div>
-                </div>
-                
-                <div class="filters-bar">
-                    <div class="filter-item" onclick="showAlert('Filtro date - Seleziona periodo ormeggio')">
-                        <span class="filter-label">📅 Date</span>
-                        <span class="filter-value">Seleziona periodo</span>
-                    </div>
-                    <div class="filter-item" onclick="showAlert('Filtro lunghezza - Specifica metri barca')">
-                        <span class="filter-label">📏 Lunghezza</span>
-                        <span class="filter-value">8-20 metri</span>
-                    </div>
-                    <div class="filter-item" onclick="showAlert('Filtro servizi - Scegli servizi porto')">
-                        <span class="filter-label">🛠️ Servizi</span>
-                        <span class="filter-value">Tutti</span>
-                    </div>
-                </div>
-                
-                <div class="section-title">🏖️ Porti Disponibili</div>
-                <div class="boat-card" onclick="showAlert('Porto di Civitavecchia - Prenota ormeggio pontile')">
-                    <img src="/api/images/image_1753598279018.png" class="boat-image" alt="Porto Civitavecchia">
-                    <div class="boat-title">Porto di Civitavecchia - Pontile A</div>
-                    <div class="boat-details">⭐ 4.8 • 🔒 Sicurezza H24 • 🚿 Servizi completi</div>
-                    <div class="boat-price">€45/metro/giorno</div>
-                </div>
-                <div class="boat-card" onclick="showAlert('Marina di Gaeta - Prenota posto premium')">
-                    <img src="/api/images/image_1753598580513.png" class="boat-image" alt="Marina Gaeta">
-                    <div class="boat-title">Marina di Gaeta - Servizi Premium</div>
-                    <div class="boat-details">⭐ 4.9 • ⛽ Carburante • 🍽️ Ristorante</div>
-                    <div class="boat-price">€38/metro/giorno</div>
-                </div>
-                <div class="boat-card" onclick="showAlert('Porto di Anzio - Prenota ormeggio')">
-                    <img src="/api/images/image_1753598781937.png" class="boat-image" alt="Porto Anzio">
-                    <div class="boat-title">Porto di Anzio - Marina Turistico</div>
-                    <div class="boat-details">⭐ 4.7 • 🏪 Market • 🔧 Assistenza tecnica</div>
-                    <div class="boat-price">€32/metro/giorno</div>
-                </div>
-            </div>
-            
-            <div id="esperienze" class="screen">
-                <div class="hero-section">
-                    <div class="hero-title">✨ Esperienze Marine</div>
-                    <div class="hero-subtitle">Scopri il mare in modo unico</div>
-                </div>
-                
-                <div class="categories-grid">
-                    <div class="category-card" onclick="showAlert('Tour Guidati - Scopri la costa con esperto')">
-                        <div class="category-name">🗺️ Tour Guidati</div>
-                        <div class="category-count">12 esperienze</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Gourmet - Degustazioni marine esclusive')">
-                        <div class="category-name">🍾 Gourmet</div>
-                        <div class="category-count">8 esperienze</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Charter - Esperienza completa con skipper')">
-                        <div class="category-name">👨‍✈️ Charter</div>
-                        <div class="category-count">15 esperienze</div>
-                    </div>
-                    <div class="category-card" onclick="showAlert('Eventi - Celebrazioni speciali in mare')">
-                        <div class="category-name">🎉 Eventi</div>
-                        <div class="category-count">6 esperienze</div>
-                    </div>
-                </div>
-                
-                <div class="section-title">🌟 Esperienze Premium</div>
-                <div class="boat-card experience-card" onclick="showAlert('Tour Costiera Amalfitana - Prenota esperienza premium')">
-                    <img src="/api/images/Immagine WhatsApp 2025-07-27 ore 07.52.03_0d100773_1753598624016.jpg" class="boat-image" alt="Costiera Amalfitana">
-                    <div class="boat-title">Tour Costiera Amalfitana VIP</div>
-                    <div class="boat-details">⏰ 8 ore • 🍽️ Pranzo incluso • 👥 Max 8 persone</div>
-                    <div class="boat-price">€120/persona</div>
-                </div>
-                <div class="boat-card experience-card" onclick="showAlert('Aperitivo al Tramonto - Esperienza romantica')">
-                    <img src="/api/images/Immagine WhatsApp 2025-07-27 ore 07.52.03_4e65c9b7_1753598157994.jpg" class="boat-image" alt="Aperitivo Tramonto">
-                    <div class="boat-title">Aperitivo al Tramonto - Ponza</div>
-                    <div class="boat-details">⏰ 3 ore • 🥂 Drink inclusi • 🌅 Vista esclusiva</div>
-                    <div class="boat-price">€85/persona</div>
-                </div>
-                <div class="boat-card experience-card" onclick="showAlert('Escursione Isole Pontine - Giornata completa')">
-                    <img src="/api/images/image_1753600144919.png" class="boat-image" alt="Isole Pontine">
-                    <div class="boat-title">Escursione Isole Pontine</div>
-                    <div class="boat-details">⏰ Giornata intera • 🏝️ 3 isole • 🍱 Picnic marino</div>
-                    <div class="boat-price">€95/persona</div>
-                </div>
-            </div>
-            
-            <div id="servizi" class="screen">
-                <div class="hero-section">
-                    <div class="hero-title">🛠️ Servizi Esterni</div>
-                    <div class="hero-subtitle">Tutto quello che ti serve per navigare</div>
-                </div>
-                
-                <div class="service-grid">
-                    <div class="service-card" onclick="showAlert('Meteo Marino - Condizioni in tempo reale')">
-                        <div class="service-icon">🌊</div>
-                        <div class="service-title">Meteo Marino</div>
-                        <div class="service-value">Vento: 12 nodi</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('Carburante - Distributori e prezzi')">
-                        <div class="service-icon">⛽</div>
-                        <div class="service-title">Carburante</div>
-                        <div class="service-value">€1.48/litro</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('Porti - Servizi e disponibilità')">
-                        <div class="service-icon">⚓</div>
-                        <div class="service-title">Info Porti</div>
-                        <div class="service-value">15 porti</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('Emergenze - Contatti sicurezza')">
-                        <div class="service-icon">🆘</div>
-                        <div class="service-title">Emergenze</div>
-                        <div class="service-value">Guardia Costiera</div>
-                    </div>
-                </div>
-                
-                <div class="section-title">🌊 Condizioni Marine Live</div>
-                <div class="boat-card" onclick="showAlert('Meteo Civitavecchia - Condizioni ottimali')">
-                    <img src="/api/images/image_1753600168887.png" class="boat-image" alt="Meteo Civitavecchia">
-                    <div class="boat-title">Civitavecchia - Condizioni Ottimali</div>
-                    <div class="boat-details">🌡️ 24°C • 💨 12 nodi NE • 🌊 Onde 0.5m</div>
-                    <div class="boat-price" style="color: #22c55e;">Navigazione Sicura ✅</div>
-                </div>
-                <div class="boat-card" onclick="showAlert('Meteo Gaeta - Condizioni buone')">
-                    <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-bottom: 8px;">🌤️ Gaeta Live</div>
-                    <div class="boat-title">Gaeta - Condizioni Buone</div>
-                    <div class="boat-details">🌡️ 23°C • 💨 15 nodi SE • 🌊 Onde 0.8m</div>
-                    <div class="boat-price" style="color: #22c55e;">Navigazione Buona ✅</div>
-                </div>
-                
-                <div class="section-title">⛽ Distributori Carburante</div>
-                <div class="boat-card" onclick="showAlert('IP Marina Civitavecchia - Rifornimento')">
-                    <div style="background: linear-gradient(135deg, #f59e0b, #d97706); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-bottom: 8px;">⛽ IP Marina</div>
-                    <div class="boat-title">IP Marina - Civitavecchia</div>
-                    <div class="boat-details">📍 Porto Turistico • 🕒 24h • 💳 Carte accettate</div>
-                    <div class="boat-price">€1.48/litro</div>
-                </div>
-            </div>
-            
-            <div id="profilo" class="screen">
-                <div class="hero-section">
-                    <div class="hero-title">👤 Il Mio Profilo</div>
-                    <div class="hero-subtitle">Gestisci il tuo account SeaGO</div>
-                </div>
-                
-                <div class="section-title">🔐 Account</div>
-                <div class="boat-card" onclick="showAlert('Login - Accedi al tuo account SeaGO')">
-                    <div style="background: linear-gradient(135deg, #10b981, #059669); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-bottom: 8px;">🔑 Login</div>
-                    <div class="boat-title">Accedi al tuo Account</div>
-                    <div class="boat-details">Email e password • Accesso rapido • Sicuro</div>
-                    <div class="boat-price" style="color: #10b981;">Accedi ora</div>
-                </div>
-                <div class="boat-card" onclick="showAlert('Registrazione - Crea nuovo account')">
-                    <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-bottom: 8px;">📝 Registro</div>
-                    <div class="boat-title">Registrati su SeaGO</div>
-                    <div class="boat-details">Gratis • Facile • Veloce</div>
-                    <div class="boat-price" style="color: #3b82f6;">Registrati</div>
-                </div>
-                
-                <div class="section-title">📋 Le Mie Prenotazioni</div>
-                <div class="boat-card" onclick="showAlert('Prenotazioni attive - Gestisci le tue prenotazioni')">
-                    <div style="background: linear-gradient(135deg, #f59e0b, #d97706); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-bottom: 8px;">📅 Prenotazioni</div>
-                    <div class="boat-title">Le Mie Prenotazioni</div>
-                    <div class="boat-details">3 prenotazioni attive • 2 prossime • 5 completate</div>
-                    <div class="boat-price" style="color: #f59e0b;">Gestisci</div>
-                </div>
-                
-                <div class="section-title">🛠️ Diventa Noleggiatore</div>
-                <div class="boat-card" onclick="showAlert('Diventa Sea Host - Registra la tua barca')">
-                    <div style="background: linear-gradient(135deg, #f97316, #ea580c); height: 120px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; margin-bottom: 8px;">🚤 Sea Host</div>
-                    <div class="boat-title">Diventa Sea Host</div>
-                    <div class="boat-details">Guadagna fino a €12.500/anno • Commissione 15%</div>
-                    <div class="boat-price" style="color: #f97316;">Registra barca</div>
-                </div>
-                
-                <div class="section-title">🤝 Assistenza</div>
-                <div class="service-grid">
-                    <div class="service-card" onclick="showAlert('Chat AI - Assistenza intelligente 24/7')">
-                        <div class="service-icon">🤖</div>
-                        <div class="service-title">Chat AI</div>
-                        <div class="service-value">24/7</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('FAQ - Domande frequenti')">
-                        <div class="service-icon">❓</div>
-                        <div class="service-title">FAQ</div>
-                        <div class="service-value">50+ risposte</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('Email - Supporto via email')">
-                        <div class="service-icon">📧</div>
-                        <div class="service-title">Email</div>
-                        <div class="service-value">Supporto</div>
-                    </div>
-                    <div class="service-card" onclick="showAlert('Centro Aiuto - Guide complete')">
-                        <div class="service-icon">📚</div>
-                        <div class="service-title">Centro Aiuto</div>
-                        <div class="service-value">Guide complete</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="bottom-nav">
-            <div class="nav-item active" onclick="showScreen('esplora', this)">
-                <div class="nav-icon">🔍</div>
-                <span>Esplora</span>
-            </div>
-            <div class="nav-item" onclick="showScreen('ormeggio', this)">
-                <div class="nav-icon">⚓</div>
-                <span>Ormeggio</span>
-            </div>
-            <div class="nav-item" onclick="showScreen('esperienze', this)">
-                <div class="nav-icon">✨</div>
-                <span>Esperienze</span>
-            </div>
-            <div class="nav-item" onclick="showScreen('servizi', this)">
-                <div class="nav-icon">🛠️</div>
-                <span>Servizi</span>
-            </div>
-            <div class="nav-item" onclick="showScreen('profilo', this)">
-                <div class="nav-icon">👤</div>
-                <span>Profilo</span>
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        function showScreen(screenId, navItem) {
-            // Nascondi tutte le schermate
-            const screens = document.querySelectorAll('.screen');
-            screens.forEach(screen => screen.classList.remove('active'));
-            
-            // Rimuovi classe active da tutti i nav items
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            
-            // Mostra schermata selezionata
-            document.getElementById(screenId).classList.add('active');
-            navItem.classList.add('active');
-            
-            // Aggiorna titolo header
-            const titles = {
-                'esplora': '🚤 SeaGO - Esplora',
-                'ormeggio': '⚓ SeaGO - Ormeggio', 
-                'esperienze': '✨ SeaGO - Esperienze',
-                'servizi': '🛠️ SeaGO - Servizi',
-                'profilo': '👤 SeaGO - Profilo'
-            };
-            document.querySelector('.header').textContent = titles[screenId] || '🚤 SeaGO - Anteprima App Mobile';
-        }
-        
-        function showAlert(message) {
-            alert('📱 Anteprima Mobile: ' + message + '\\n\\nNell\\'app reale questa funzione aprirà la schermata corrispondente.');
-        }
-    </script>
-</body>
-</html>
-  `);
-});
-
-app.use((req, res, next) => {
-  const start = Date.now();
-  const path = req.path;
-  let capturedJsonResponse: Record<string, any> | undefined = undefined;
-
-  const originalResJson = res.json;
-  res.json = function (bodyJson, ...args) {
-    capturedJsonResponse = bodyJson;
-    return originalResJson.apply(res, [bodyJson, ...args]);
-  };
-
-  res.on("finish", () => {
-    const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
-      if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
-      }
-
-      if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
-      }
-
-      log(logLine);
-    }
-  });
-
-  next();
-});
-
-(async () => {
-  const server = await registerRoutes(app);
-
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
-
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
-})();

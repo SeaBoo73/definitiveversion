@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -10,9 +11,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/attached_assets', express.static('attached_assets'));
 app.use('/api/images', express.static('attached_assets'));
 
-// Redirect root to mobile preview for easier access
+// Native app preview route
+app.get("/app-preview", (req, res) => {
+  res.sendFile(path.resolve("mobile-preview.html"));
+});
+
+// Redirect root to native app preview for easier access
 app.get("/", (req, res) => {
-  res.redirect("/mobile-preview");
+  res.redirect("/app-preview");
 });
 
 // Mobile preview route (before authentication middleware)

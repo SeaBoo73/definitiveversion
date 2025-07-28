@@ -162,6 +162,19 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 28, 2025 - Routing Principale Ripristinato e Separazione Homepage Web/Mobile
+- **Routing Principale Corretto:**
+  - ✅ Route `/` ora serve correttamente l'homepage web originale di SeaGO
+  - ✅ Route `/app-preview` dedicata esclusivamente all'anteprima mobile preview
+  - ✅ Eliminata route duplicata `/mobile-preview` per evitare conflitti
+  - ✅ Server Express ripulito da contenuto HTML inline non necessario
+  - ✅ Comportamento originale ripristinato: dominio principale mostra homepage web
+- **Separazione Chiara Web/Mobile:**
+  - ✅ Homepage web (/) con tutte le funzionalità complete React
+  - ✅ Anteprima mobile (/app-preview) accessibile solo su Replit per testing
+  - ✅ Log server aggiornati per riflettere percorsi corretti
+  - ✅ Configurazione pronta per deployment su dominio principale
+
 ### July 28, 2025 - Anteprima Mobile Completa con Sezioni Interattive
 - **Contenuto Completo per Tutte le Sezioni di Navigazione:**
   - ✅ Sezione Esplora: barche in evidenza, statistiche SeaGO, ricerca rapida

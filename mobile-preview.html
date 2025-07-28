@@ -579,6 +579,57 @@
         .port-option.hidden {
             display: none;
         }
+
+        /* Filter Options Styles */
+        .filter-options {
+            margin: 16px 0;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .filter-option:hover {
+            border-color: #0ea5e9;
+            background: #f8fafc;
+        }
+
+        .filter-option.active {
+            border-color: #0ea5e9;
+            background: #eff6ff;
+        }
+
+        .filter-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .filter-option span {
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.2;
+        }
+
+        .filter-option:hover span,
+        .filter-option.active span {
+            color: #0ea5e9;
+        }
     </style>
 </head>
 <body>
@@ -690,6 +741,25 @@
                             <option>10+ ospiti</option>
                         </select>
                     </div>
+                    
+                    <!-- Filtri Aggiuntivi -->
+                    <div class="filter-options">
+                        <div class="filter-row">
+                            <div class="filter-option">
+                                <div class="filter-icon">🚤</div>
+                                <span>Tipo imbarcazione</span>
+                            </div>
+                            <div class="filter-option">
+                                <div class="filter-icon">👨‍✈️</div>
+                                <span>Con Skipper</span>
+                            </div>
+                            <div class="filter-option">
+                                <div class="filter-icon">⚓</div>
+                                <span>Esperienze o charter</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button class="search-button">🔍 Cerca Barche</button>
                 </div>
 
@@ -1057,6 +1127,28 @@
         // Prevent suggestions from closing when clicking inside
         document.getElementById('portSuggestions').addEventListener('click', function(event) {
             event.stopPropagation();
+        });
+
+        // Filter options functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterOptions = document.querySelectorAll('.filter-option');
+            
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Toggle active state
+                    this.classList.toggle('active');
+                    
+                    // Get filter type
+                    const filterText = this.querySelector('span').textContent;
+                    
+                    // Show feedback
+                    if (this.classList.contains('active')) {
+                        console.log('SeaGO: Filtro attivato -', filterText);
+                    } else {
+                        console.log('SeaGO: Filtro disattivato -', filterText);
+                    }
+                });
+            });
         });
     </script>
 </body>

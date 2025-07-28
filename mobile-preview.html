@@ -495,6 +495,83 @@
         .spacer {
             height: 100px;
         }
+
+        /* Port Search Styles */
+        .port-search-container {
+            position: relative;
+        }
+
+        .port-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 4px;
+        }
+
+        .port-suggestions-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .total-boats {
+            color: #0ea5e9;
+        }
+
+        .suggestions-list {
+            padding: 8px 0;
+        }
+
+        .region-header {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0ea5e9;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .port-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .port-option:hover {
+            background: #f8fafc;
+        }
+
+        .port-option:last-child {
+            border-bottom: none;
+        }
+
+        .boat-count {
+            font-size: 12px;
+            color: #0ea5e9;
+            font-weight: 600;
+        }
+
+        .port-option.hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -521,61 +598,70 @@
                 <div class="search-form">
                     <div class="form-group">
                         <label class="form-label">Dove</label>
-                        <select class="form-select">
-                            <option>Seleziona porto...</option>
-                            <optgroup label="Lazio (15 porti)">
-                                <option>⚓ Civitavecchia (15 barche)</option>
-                                <option>🏝️ Ponza (18 barche)</option>
-                                <option>⚓ Gaeta (12 barche)</option>
-                                <option>🏖️ Anzio (10 barche)</option>
-                                <option>✈️ Fiumicino (9 barche)</option>
-                                <option>⚓ Terracina (8 barche)</option>
-                                <option>🏛️ Ostia (7 barche)</option>
-                                <option>🌊 San Felice Circeo (6 barche)</option>
-                                <option>⚓ Formia (5 barche)</option>
-                                <option>🏖️ Nettuno (5 barche)</option>
-                                <option>🌊 Santa Marinella (4 barche)</option>
-                                <option>🏝️ Ventotene (4 barche)</option>
-                                <option>🏖️ Ladispoli (3 barche)</option>
-                                <option>🌊 Sperlonga (3 barche)</option>
-                                <option>⚓ Montalto di Castro (2 barche)</option>
-                            </optgroup>
-                            <optgroup label="Campania (33 porti)">
-                                <option>⚓ Napoli (25 barche)</option>
-                                <option>⚓ Salerno (20 barche)</option>
-                                <option>🍋 Sorrento (18 barche)</option>
-                                <option>🏛️ Amalfi (16 barche)</option>
-                                <option>🌺 Positano (15 barche)</option>
-                                <option>🏝️ Capri (22 barche)</option>
-                                <option>🌋 Ischia (19 barche)</option>
-                                <option>🏝️ Procida (14 barche)</option>
-                                <option>🌋 Pozzuoli (13 barche)</option>
-                                <option>⚓ Castellammare di Stabia (12 barche)</option>
-                                <option>🎣 Torre del Greco (10 barche)</option>
-                                <option>🏙️ Bagnoli (9 barche)</option>
-                                <option>⚓ Marina di Stabia (11 barche)</option>
-                                <option>🌋 Casamicciola (7 barche)</option>
-                                <option>🌋 Forio d'Ischia (6 barche)</option>
-                                <option>🎣 Cetara (4 barche)</option>
-                                <option>🏖️ Maiori (4 barche)</option>
-                                <option>🌊 Minori (3 barche)</option>
-                                <option>🌊 Conca dei Marini (3 barche)</option>
-                                <option>🌊 Furore (2 barche)</option>
-                                <option>🌊 Agropoli (8 barche)</option>
-                                <option>🌊 Palinuro (6 barche)</option>
-                                <option>🌊 Marina di Camerota (5 barche)</option>
-                                <option>⚓ Sapri (4 barche)</option>
-                                <option>🌊 Scario (3 barche)</option>
-                                <option>🌊 Pisciotta (2 barche)</option>
-                                <option>🍋 Vico Equense (5 barche)</option>
-                                <option>🍋 Piano di Sorrento (4 barche)</option>
-                                <option>🍋 Massa Lubrense (3 barche)</option>
-                                <option>🌊 Atrani (2 barche)</option>
-                                <option>🌊 Marina del Cantone (3 barche)</option>
-                                <option>🌋 Lacco Ameno (4 barche)</option>
-                                <option>🌋 Sant'Angelo (3 barche)</option>
-                            </optgroup>
-                        </select>
+                        <div class="port-search-container">
+                            <input type="text" class="form-input" id="portSearch" placeholder="Cerca tra 48 porti italiani..." oninput="filterPorts()" onclick="showPortSuggestions()">
+                            <div class="port-suggestions" id="portSuggestions" style="display: none;">
+                                <div class="port-suggestions-header">
+                                    <span>48 porti disponibili</span>
+                                    <span class="total-boats">500+ barche totali</span>
+                                </div>
+                                <div class="suggestions-list">
+                                    <!-- Lazio Ports -->
+                                    <div class="region-header">Lazio (15 porti)</div>
+                                    <div class="port-option" onclick="selectPort('Civitavecchia')">Civitavecchia <span class="boat-count">15 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Ponza')">Ponza <span class="boat-count">18 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Gaeta')">Gaeta <span class="boat-count">12 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Anzio')">Anzio <span class="boat-count">10 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Fiumicino')">Fiumicino <span class="boat-count">9 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Terracina')">Terracina <span class="boat-count">8 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Ostia')">Ostia <span class="boat-count">7 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('San Felice Circeo')">San Felice Circeo <span class="boat-count">6 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Formia')">Formia <span class="boat-count">5 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Nettuno')">Nettuno <span class="boat-count">5 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Santa Marinella')">Santa Marinella <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Ventotene')">Ventotene <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Ladispoli')">Ladispoli <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Sperlonga')">Sperlonga <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Montalto di Castro')">Montalto di Castro <span class="boat-count">2 barche</span></div>
+                                    
+                                    <!-- Campania Ports -->
+                                    <div class="region-header">Campania (33 porti)</div>
+                                    <div class="port-option" onclick="selectPort('Napoli')">Napoli <span class="boat-count">25 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Salerno')">Salerno <span class="boat-count">20 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Sorrento')">Sorrento <span class="boat-count">18 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Amalfi')">Amalfi <span class="boat-count">16 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Positano')">Positano <span class="boat-count">15 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Capri')">Capri <span class="boat-count">22 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Ischia')">Ischia <span class="boat-count">19 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Procida')">Procida <span class="boat-count">14 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Pozzuoli')">Pozzuoli <span class="boat-count">13 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Castellammare di Stabia')">Castellammare di Stabia <span class="boat-count">12 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Torre del Greco')">Torre del Greco <span class="boat-count">10 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Bagnoli')">Bagnoli <span class="boat-count">9 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Marina di Stabia')">Marina di Stabia <span class="boat-count">11 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Casamicciola')">Casamicciola <span class="boat-count">7 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Forio d\'Ischia')">Forio d'Ischia <span class="boat-count">6 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Cetara')">Cetara <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Maiori')">Maiori <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Minori')">Minori <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Conca dei Marini')">Conca dei Marini <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Furore')">Furore <span class="boat-count">2 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Agropoli')">Agropoli <span class="boat-count">8 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Palinuro')">Palinuro <span class="boat-count">6 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Marina di Camerota')">Marina di Camerota <span class="boat-count">5 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Sapri')">Sapri <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Scario')">Scario <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Pisciotta')">Pisciotta <span class="boat-count">2 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Vico Equense')">Vico Equense <span class="boat-count">5 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Piano di Sorrento')">Piano di Sorrento <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Massa Lubrense')">Massa Lubrense <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Atrani')">Atrani <span class="boat-count">2 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Marina del Cantone')">Marina del Cantone <span class="boat-count">3 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Lacco Ameno')">Lacco Ameno <span class="boat-count">4 barche</span></div>
+                                    <div class="port-option" onclick="selectPort('Sant\'Angelo')">Sant'Angelo <span class="boat-count">3 barche</span></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
@@ -877,6 +963,94 @@
             // Scroll to top
             document.querySelector('.content').scrollTop = 0;
         }
+
+        // Port search functionality
+        function showPortSuggestions() {
+            const suggestions = document.getElementById('portSuggestions');
+            suggestions.style.display = 'block';
+        }
+
+        function selectPort(portName) {
+            const input = document.getElementById('portSearch');
+            const suggestions = document.getElementById('portSuggestions');
+            
+            input.value = portName;
+            suggestions.style.display = 'none';
+            
+            // Simulate search action
+            setTimeout(() => {
+                alert('SeaGO: Cercando barche a ' + portName + '...');
+            }, 500);
+        }
+
+        function filterPorts() {
+            const input = document.getElementById('portSearch');
+            const suggestions = document.getElementById('portSuggestions');
+            const searchTerm = input.value.toLowerCase();
+            
+            if (searchTerm.length > 0) {
+                suggestions.style.display = 'block';
+                
+                // Filter port options
+                const portOptions = suggestions.querySelectorAll('.port-option');
+                const regionHeaders = suggestions.querySelectorAll('.region-header');
+                
+                let hasVisibleLazio = false;
+                let hasVisibleCampania = false;
+                
+                portOptions.forEach(option => {
+                    const portName = option.textContent.toLowerCase();
+                    const isVisible = portName.includes(searchTerm);
+                    option.style.display = isVisible ? 'flex' : 'none';
+                    
+                    if (isVisible) {
+                        // Check which region this port belongs to
+                        let currentElement = option.previousElementSibling;
+                        while (currentElement) {
+                            if (currentElement.classList.contains('region-header')) {
+                                if (currentElement.textContent.includes('Lazio')) {
+                                    hasVisibleLazio = true;
+                                } else if (currentElement.textContent.includes('Campania')) {
+                                    hasVisibleCampania = true;
+                                }
+                                break;
+                            }
+                            currentElement = currentElement.previousElementSibling;
+                        }
+                    }
+                });
+                
+                // Show/hide region headers
+                regionHeaders.forEach(header => {
+                    if (header.textContent.includes('Lazio')) {
+                        header.style.display = hasVisibleLazio ? 'block' : 'none';
+                    } else if (header.textContent.includes('Campania')) {
+                        header.style.display = hasVisibleCampania ? 'block' : 'none';
+                    }
+                });
+            } else {
+                // Show all options when search is empty
+                const allElements = suggestions.querySelectorAll('.port-option, .region-header');
+                allElements.forEach(element => {
+                    element.style.display = element.classList.contains('region-header') ? 'block' : 'flex';
+                });
+            }
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            const container = document.querySelector('.port-search-container');
+            const suggestions = document.getElementById('portSuggestions');
+            
+            if (!container.contains(event.target)) {
+                suggestions.style.display = 'none';
+            }
+        });
+
+        // Prevent suggestions from closing when clicking inside
+        document.getElementById('portSuggestions').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     </script>
 </body>
 </html>

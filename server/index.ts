@@ -43,6 +43,10 @@ app.get("/mobile-preview", (req, res) => {
         .nav-icon { width: 24px; height: 24px; margin-bottom: 4px; font-size: 20px; }
         .info-banner { background: #e0f2fe; border: 1px solid #0ea5e9; border-radius: 8px; padding: 12px; margin-bottom: 16px; text-align: center; }
         .info-text { color: #0369a1; font-size: 14px; font-weight: 500; }
+        .category-card:hover, .boat-card:hover, .nav-item:hover { cursor: pointer; transform: translateY(-2px); transition: all 0.2s ease; }
+        .category-card:active, .boat-card:active { transform: scale(0.98); }
+        .screen { display: none; }
+        .screen.active { display: block; }
         @media (max-width: 375px) { .mobile-frame { max-width: 100%; } }
     </style>
 </head>
@@ -53,69 +57,155 @@ app.get("/mobile-preview", (req, res) => {
             <div class="info-banner">
                 <div class="info-text">📱 Anteprima dell'App SeaGO Mobile per iOS e Android</div>
             </div>
-            <div id="esplora" class="screen">
+            <div id="esplora" class="screen active">
                 <div class="search-bar">
-                    <input type="text" class="search-input" placeholder="🔍 Dove vuoi navigare?" disabled>
+                    <input type="text" class="search-input" placeholder="🔍 Dove vuoi navigare?" onclick="showAlert('Funzione di ricerca')">
                 </div>
                 <div class="section-title">Categorie Barche</div>
                 <div class="categories-grid">
-                    <div class="category-card">
+                    <div class="category-card" onclick="showAlert('Categoria Gommoni selezionata')">
                         <div class="category-icon">🚤</div>
                         <div class="category-name">Gommoni</div>
                         <div class="category-count">200+ barche</div>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="showAlert('Categoria Senza Patente selezionata')">
                         <div class="category-icon">🛥️</div>
                         <div class="category-name">Senza Patente</div>
                         <div class="category-count">150+ barche</div>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="showAlert('Categoria Yacht selezionata')">
                         <div class="category-icon">🛳️</div>
                         <div class="category-name">Yacht</div>
                         <div class="category-count">85+ barche</div>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="showAlert('Categoria Barche a Vela selezionata')">
                         <div class="category-icon">⛵</div>
                         <div class="category-name">Barche a Vela</div>
                         <div class="category-count">60+ barche</div>
                     </div>
                 </div>
                 <div class="section-title">Barche in Evidenza</div>
-                <div class="boat-card">
+                <div class="boat-card" onclick="showAlert('Gommone Azzurra 680 - Visualizza dettagli')">
                     <div class="boat-image">🚤 Azzurra 680</div>
                     <div class="boat-title">Gommone Azzurra 680 - Civitavecchia</div>
                     <div class="boat-price">€350/giorno</div>
                 </div>
-                <div class="boat-card">
+                <div class="boat-card" onclick="showAlert('Yacht di Lusso - Visualizza dettagli')">
                     <div class="boat-image">🛥️ Luxury Charter</div>
                     <div class="boat-title">Yacht di Lusso - Gaeta</div>
                     <div class="boat-price">€1.200/giorno</div>
                 </div>
             </div>
+            
+            <div id="ormeggio" class="screen">
+                <div class="section-title">Servizi Ormeggio</div>
+                <div class="boat-card" onclick="showAlert('Porto di Civitavecchia - Prenota ormeggio')">
+                    <div class="boat-image">⚓ Porto Civitavecchia</div>
+                    <div class="boat-title">Porto di Civitavecchia - Pontile A</div>
+                    <div class="boat-price">€45/metro/giorno</div>
+                </div>
+                <div class="boat-card" onclick="showAlert('Marina di Gaeta - Prenota ormeggio')">
+                    <div class="boat-image">⚓ Marina Gaeta</div>
+                    <div class="boat-title">Marina di Gaeta - Servizi Premium</div>
+                    <div class="boat-price">€38/metro/giorno</div>
+                </div>
+            </div>
+            
+            <div id="esperienze" class="screen">
+                <div class="section-title">Esperienze Marine</div>
+                <div class="boat-card" onclick="showAlert('Tour Costiera Amalfitana - Prenota esperienza')">
+                    <div class="boat-image">✨ Tour Amalfi</div>
+                    <div class="boat-title">Tour Costiera Amalfitana</div>
+                    <div class="boat-price">€120/persona</div>
+                </div>
+                <div class="boat-card" onclick="showAlert('Aperitivo al Tramonto - Prenota esperienza')">
+                    <div class="boat-image">🍾 Aperitivo</div>
+                    <div class="boat-title">Aperitivo al Tramonto - Ponza</div>
+                    <div class="boat-price">€85/persona</div>
+                </div>
+            </div>
+            
+            <div id="servizi" class="screen">
+                <div class="section-title">Servizi Esterni</div>
+                <div class="boat-card" onclick="showAlert('Meteo Marino - Visualizza condizioni')">
+                    <div class="boat-image">🌊 Meteo</div>
+                    <div class="boat-title">Condizioni Meteo Marine</div>
+                    <div class="boat-price">Vento: 15 nodi</div>
+                </div>
+                <div class="boat-card" onclick="showAlert('Carburante - Trova distributori')">
+                    <div class="boat-image">⛽ Carburante</div>
+                    <div class="boat-title">Distributori Carburante</div>
+                    <div class="boat-price">€1.45/litro</div>
+                </div>
+            </div>
+            
+            <div id="profilo" class="screen">
+                <div class="section-title">Il Mio Profilo</div>
+                <div class="boat-card" onclick="showAlert('Accedi al tuo account')">
+                    <div class="boat-image">👤 Account</div>
+                    <div class="boat-title">Accedi o Registrati</div>
+                    <div class="boat-price">Gestisci account</div>
+                </div>
+                <div class="boat-card" onclick="showAlert('Le mie prenotazioni')">
+                    <div class="boat-image">📋 Prenotazioni</div>
+                    <div class="boat-title">Le Mie Prenotazioni</div>
+                    <div class="boat-price">3 prenotazioni attive</div>
+                </div>
+            </div>
         </div>
         <div class="bottom-nav">
-            <div class="nav-item active">
+            <div class="nav-item active" onclick="showScreen('esplora', this)">
                 <div class="nav-icon">🔍</div>
                 <span>Esplora</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="showScreen('ormeggio', this)">
                 <div class="nav-icon">⚓</div>
                 <span>Ormeggio</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="showScreen('esperienze', this)">
                 <div class="nav-icon">✨</div>
                 <span>Esperienze</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="showScreen('servizi', this)">
                 <div class="nav-icon">🛠️</div>
                 <span>Servizi</span>
             </div>
-            <div class="nav-item">
+            <div class="nav-item" onclick="showScreen('profilo', this)">
                 <div class="nav-icon">👤</div>
                 <span>Profilo</span>
             </div>
         </div>
     </div>
+    
+    <script>
+        function showScreen(screenId, navItem) {
+            // Nascondi tutte le schermate
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Rimuovi classe active da tutti i nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Mostra schermata selezionata
+            document.getElementById(screenId).classList.add('active');
+            navItem.classList.add('active');
+            
+            // Aggiorna titolo header
+            const titles = {
+                'esplora': '🚤 SeaGO - Esplora',
+                'ormeggio': '⚓ SeaGO - Ormeggio', 
+                'esperienze': '✨ SeaGO - Esperienze',
+                'servizi': '🛠️ SeaGO - Servizi',
+                'profilo': '👤 SeaGO - Profilo'
+            };
+            document.querySelector('.header').textContent = titles[screenId] || '🚤 SeaGO - Anteprima App Mobile';
+        }
+        
+        function showAlert(message) {
+            alert('📱 Anteprima Mobile: ' + message + '\\n\\nNell\\'app reale questa funzione aprirà la schermata corrispondente.');
+        }
+    </script>
 </body>
 </html>
   `);

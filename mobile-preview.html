@@ -486,8 +486,42 @@
             opacity: 0.9;
         }
 
-        .footer-bottom {
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 24px 0;
+            padding: 16px 0;
             border-top: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            transition: background 0.2s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .social-icon {
+            font-size: 18px;
+        }
+
+        .social-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-bottom {
             padding-top: 16px;
             text-align: center;
             font-size: 12px;
@@ -1128,6 +1162,17 @@
                                 <li>Supporto Tecnico</li>
                             </ul>
                         </div>
+                    </div>
+                    
+                    <div class="footer-social">
+                        <a href="#" class="social-link">
+                            <span class="social-icon">📷</span>
+                            <span class="social-text">Instagram</span>
+                        </a>
+                        <a href="#" class="social-link">
+                            <span class="social-icon">🎵</span>
+                            <span class="social-text">TikTok</span>
+                        </a>
                     </div>
                     
                     <div class="footer-bottom">

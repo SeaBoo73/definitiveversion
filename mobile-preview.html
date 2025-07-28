@@ -1049,7 +1049,7 @@
         
         <div class="content">
             <!-- Schermata Home - identica alla versione web -->
-            <div id="home" class="screen active">
+            <div id="home" class="screen active" style="display: block;">
                 <!-- Hero Section -->
                 <div class="hero">
                     <div class="hero-content">
@@ -1745,6 +1745,11 @@
             </div>
         </div>
 
+        <!-- Sezione Profilo -->
+        <div id="profilo" class="screen" style="display: none;">
+            <!-- Il contenuto verrà inserito dinamicamente dalla funzione updateProfileSection() -->
+        </div>
+
         <!-- Pagina Categoria -->
         <div id="category-page" class="screen" style="display: none; margin: 0; padding: 0;">
             <!-- Header pulito con layout elegante -->
@@ -2262,6 +2267,7 @@
             
             // Hide all screens and pages
             document.querySelectorAll('.screen').forEach(screen => {
+                screen.style.display = 'none';
                 screen.classList.remove('active');
             });
             document.querySelectorAll('[id$="-page"]').forEach(p => p.style.display = 'none');
@@ -2269,6 +2275,7 @@
             // Show selected screen
             const targetScreen = document.getElementById(screenId);
             if (targetScreen) {
+                targetScreen.style.display = 'block';
                 targetScreen.classList.add('active');
             }
             

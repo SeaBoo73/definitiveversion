@@ -591,6 +591,12 @@
             gap: 8px;
         }
 
+        .filter-row-two {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
         .filter-option {
             display: flex;
             flex-direction: column;
@@ -742,13 +748,25 @@
                         </select>
                     </div>
                     
-                    <!-- Filtri Aggiuntivi -->
+                    <!-- Tipo Imbarcazione Dropdown -->
+                    <div class="form-group">
+                        <label class="form-label">🚤 Tipo imbarcazione</label>
+                        <select class="form-select">
+                            <option>Tutte le categorie</option>
+                            <option>Gommoni</option>
+                            <option>Barche senza patente</option>
+                            <option>Yacht</option>
+                            <option>Barche a vela</option>
+                            <option>Moto d'acqua</option>
+                            <option>Catamarani</option>
+                            <option>Charter</option>
+                            <option>Houseboat</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Altri Filtri -->
                     <div class="filter-options">
-                        <div class="filter-row">
-                            <div class="filter-option">
-                                <div class="filter-icon">🚤</div>
-                                <span>Tipo imbarcazione</span>
-                            </div>
+                        <div class="filter-row-two">
                             <div class="filter-option">
                                 <div class="filter-icon">👨‍✈️</div>
                                 <span>Con Skipper</span>

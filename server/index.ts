@@ -16,7 +16,10 @@ app.get("/app-preview", (req, res) => {
   res.sendFile(path.resolve("mobile-preview.html"));
 });
 
-// Remove redirect - let Vite handle the root route for React app
+// Redirect root to native app preview for easier access
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve("mobile-preview.html"));
+});
 
 // Mobile preview route (before authentication middleware)
 app.get("/mobile-preview", async (req, res) => {
@@ -356,6 +359,84 @@ app.get("/mobile-preview", async (req, res) => {
             font-weight: 700;
             color: #1e40af;
         }
+        
+        /* Port Selector Styles */
+        .port-selector {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .dropdown-icon {
+            position: absolute;
+            right: 12px;
+            color: #6b7280;
+            font-size: 12px;
+            pointer-events: none;
+        }
+        .port-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 4px;
+        }
+        .port-dropdown-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .port-count {
+            color: #1e40af;
+        }
+        .port-list {
+            padding: 8px 0;
+        }
+        .port-region {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e40af;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .port-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .port-item:hover {
+            background: #f8fafc;
+        }
+        .port-item:last-child {
+            border-bottom: none;
+        }
+        .boat-count {
+            font-size: 12px;
+            color: #1e40af;
+            font-weight: 600;
+        }
+        .port-item.hidden {
+            display: none;
+        }
+        
         @media (max-width: 390px) { .mobile-frame { max-width: 100%; } }
     </style>
 </head>
@@ -387,7 +468,67 @@ app.get("/mobile-preview", async (req, res) => {
                 <div class="search-section">
                     <div class="search-bar">
                         <span class="search-label">Dove</span>
-                        <input type="text" class="search-input" placeholder="Seleziona porto..." onclick="showAlert('Selezione porto - Apre menu località')">
+                        <div class="port-selector" onclick="togglePortDropdown()">
+                            <input type="text" class="search-input" id="portInput" placeholder="Cerca tra 48 porti..." oninput="filterPorts()">
+                            <div class="dropdown-icon">▼</div>
+                        </div>
+                        <div class="port-dropdown" id="portDropdown" style="display: none;">
+                            <div class="port-dropdown-header">
+                                <span>48 porti disponibili</span>
+                                <span class="port-count">500+ barche totali</span>
+                            </div>
+                            <div class="port-list" id="portList">
+                                <!-- Lazio Ports -->
+                                <div class="port-region">Lazio (15 porti)</div>
+                                <div class="port-item" onclick="selectPort('Civitavecchia')">⚓ Civitavecchia <span class="boat-count">15 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Ponza')">🏝️ Ponza <span class="boat-count">18 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Gaeta')">⚓ Gaeta <span class="boat-count">12 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Anzio')">🏖️ Anzio <span class="boat-count">10 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Fiumicino')">✈️ Fiumicino <span class="boat-count">9 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Terracina')">⚓ Terracina <span class="boat-count">8 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Ostia')">🏛️ Ostia <span class="boat-count">7 barche</span></div>
+                                <div class="port-item" onclick="selectPort('San Felice Circeo')">🌊 San Felice Circeo <span class="boat-count">6 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Formia')">⚓ Formia <span class="boat-count">5 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Nettuno')">🏖️ Nettuno <span class="boat-count">5 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Santa Marinella')">🌊 Santa Marinella <span class="boat-count">4 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Ventotene')">🏝️ Ventotene <span class="boat-count">4 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Ladispoli')">🏖️ Ladispoli <span class="boat-count">3 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Sperlonga')">🌊 Sperlonga <span class="boat-count">3 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Montalto di Castro')">⚓ Montalto di Castro <span class="boat-count">2 barche</span></div>
+                                
+                                <!-- Campania Ports -->
+                                <div class="port-region">Campania (33 porti)</div>
+                                <div class="port-item" onclick="selectPort('Napoli')">⚓ Napoli <span class="boat-count">25 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Salerno')">⚓ Salerno <span class="boat-count">20 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Sorrento')">🍋 Sorrento <span class="boat-count">18 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Amalfi')">🏛️ Amalfi <span class="boat-count">16 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Positano')">🌺 Positano <span class="boat-count">15 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Capri')">🏝️ Capri <span class="boat-count">22 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Ischia')">🌋 Ischia <span class="boat-count">19 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Procida')">🏝️ Procida <span class="boat-count">14 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Pozzuoli')">🌋 Pozzuoli <span class="boat-count">13 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Castellammare di Stabia')">⚓ Castellammare di Stabia <span class="boat-count">12 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Torre del Greco')">🎣 Torre del Greco <span class="boat-count">10 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Bagnoli')">🏙️ Bagnoli <span class="boat-count">9 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Marina di Stabia')">⚓ Marina di Stabia <span class="boat-count">11 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Casamicciola')">🌋 Casamicciola <span class="boat-count">7 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Forio d\'Ischia')">🌋 Forio d'Ischia <span class="boat-count">6 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Cetara')">🎣 Cetara <span class="boat-count">4 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Maiori')">🏖️ Maiori <span class="boat-count">4 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Minori')">🌊 Minori <span class="boat-count">3 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Conca dei Marini')">🌊 Conca dei Marini <span class="boat-count">3 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Furore')">🌊 Furore <span class="boat-count">2 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Agropoli')">🌊 Agropoli <span class="boat-count">8 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Palinuro')">🌊 Palinuro <span class="boat-count">6 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Marina di Camerota')">🌊 Marina di Camerota <span class="boat-count">5 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Sapri')">⚓ Sapri <span class="boat-count">4 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Scario')">🌊 Scario <span class="boat-count">3 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Pisciotta')">🌊 Pisciotta <span class="boat-count">2 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Vico Equense')">🍋 Vico Equense <span class="boat-count">5 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Piano di Sorrento')">🍋 Piano di Sorrento <span class="boat-count">4 barche</span></div>
+                                <div class="port-item" onclick="selectPort('Massa Lubrense')">🍋 Massa Lubrense <span class="boat-count">3 barche</span></div>
+                            </div>
+                        </div>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                         <div class="search-bar">
@@ -1146,6 +1287,90 @@ app.get("/mobile-preview", async (req, res) => {
         function showAlert(message) {
             alert('SeaGO Mobile: ' + message);
         }
+        
+        // Port dropdown functionality
+        function togglePortDropdown() {
+            const dropdown = document.getElementById('portDropdown');
+            const isVisible = dropdown.style.display !== 'none';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                document.getElementById('portInput').focus();
+            }
+        }
+        
+        function selectPort(portName) {
+            document.getElementById('portInput').value = portName;
+            document.getElementById('portDropdown').style.display = 'none';
+            showAlert('Porto selezionato: ' + portName + ' - Caricamento barche disponibili...');
+        }
+        
+        function filterPorts() {
+            const input = document.getElementById('portInput').value.toLowerCase();
+            const dropdown = document.getElementById('portDropdown');
+            const portItems = dropdown.querySelectorAll('.port-item');
+            const portRegions = dropdown.querySelectorAll('.port-region');
+            
+            // Show dropdown when typing
+            if (input.length > 0) {
+                dropdown.style.display = 'block';
+            }
+            
+            let hasVisibleLazio = false;
+            let hasVisibleCampania = false;
+            
+            portItems.forEach(item => {
+                const portName = item.textContent.toLowerCase();
+                const isVisible = portName.includes(input);
+                item.style.display = isVisible ? 'flex' : 'none';
+                
+                // Check which regions have visible items
+                if (isVisible) {
+                    const isLazio = item.previousElementSibling && 
+                                   item.previousElementSibling.textContent.includes('Lazio');
+                    const isCampania = item.previousElementSibling && 
+                                      item.previousElementSibling.textContent.includes('Campania');
+                    
+                    // Find the region by looking at previous siblings
+                    let currentElement = item.previousElementSibling;
+                    while (currentElement) {
+                        if (currentElement.classList.contains('port-region')) {
+                            if (currentElement.textContent.includes('Lazio')) {
+                                hasVisibleLazio = true;
+                            } else if (currentElement.textContent.includes('Campania')) {
+                                hasVisibleCampania = true;
+                            }
+                            break;
+                        }
+                        currentElement = currentElement.previousElementSibling;
+                    }
+                }
+            });
+            
+            // Show/hide region headers based on visible items
+            portRegions.forEach(region => {
+                if (region.textContent.includes('Lazio')) {
+                    region.style.display = hasVisibleLazio ? 'block' : 'none';
+                } else if (region.textContent.includes('Campania')) {
+                    region.style.display = hasVisibleCampania ? 'block' : 'none';
+                }
+            });
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const portSelector = document.querySelector('.port-selector');
+            const dropdown = document.getElementById('portDropdown');
+            
+            if (!portSelector.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+        
+        // Prevent dropdown from closing when clicking inside it
+        document.getElementById('portDropdown').addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
     </script>
 </body>
 </html>

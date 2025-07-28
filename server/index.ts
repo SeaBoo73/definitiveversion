@@ -18,7 +18,7 @@ app.get("/app-preview", (req, res) => {
 
 // Redirect root to native app preview for easier access
 app.get("/", (req, res) => {
-  res.redirect("/app-preview");
+  res.sendFile(path.resolve("mobile-preview.html"));
 });
 
 // Mobile preview route (before authentication middleware)

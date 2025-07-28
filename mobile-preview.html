@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaGO Mobile - Anteprima App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f3f4f6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .mobile-frame {
+            max-width: 375px;
+            height: 100vh;
+            margin: 0 auto;
+            background: white;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: #0ea5e9;
+            color: white;
+            padding: 20px 16px 16px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            height: calc(100vh - 140px);
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .search-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #374151;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .category-name {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .category-count {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 16px;
+        }
+
+        .boat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .boat-image {
+            width: 100%;
+            height: 160px;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .boat-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .boat-price {
+            color: #0ea5e9;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active {
+            color: #0ea5e9;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+            font-size: 20px;
+        }
+
+        .filters-chip {
+            display: inline-flex;
+            align-items: center;
+            background: #f3f4f6;
+            border-radius: 20px;
+            padding: 8px 16px;
+            margin: 4px;
+            font-size: 14px;
+            color: #374151;
+            border: none;
+            cursor: pointer;
+        }
+
+        .filters-chip.active {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        @media (max-width: 375px) {
+            .mobile-frame {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="header">
+            🚤 SeaGO - Noleggio Barche
+        </div>
+        
+        <div class="content" id="content">
+            <!-- Schermata Esplora -->
+            <div id="esplora" class="screen">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="🔍 Dove vuoi navigare?">
+                </div>
+                
+                <div class="section-title">Categorie Barche</div>
+                <div class="categories-grid">
+                    <div class="category-card">
+                        <div class="category-icon">🚤</div>
+                        <div class="category-name">Gommoni</div>
+                        <div class="category-count">200+ barche</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🛥️</div>
+                        <div class="category-name">Senza Patente</div>
+                        <div class="category-count">150+ barche</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">🛳️</div>
+                        <div class="category-name">Yacht</div>
+                        <div class="category-count">85+ barche</div>
+                    </div>
+                    <div class="category-card">
+                        <div class="category-icon">⛵</div>
+                        <div class="category-name">Barche a Vela</div>
+                        <div class="category-count">60+ barche</div>
+                    </div>
+                </div>
+
+                <div class="section-title">Barche in Evidenza</div>
+                <div class="boat-card">
+                    <div class="boat-image">🚤 Azzurra 680</div>
+                    <div class="boat-title">Gommone Azzurra 680 - Civitavecchia</div>
+                    <div class="boat-price">€350/giorno</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">🛥️ Luxury Charter</div>
+                    <div class="boat-title">Yacht di Lusso - Gaeta</div>
+                    <div class="boat-price">€1.200/giorno</div>
+                </div>
+            </div>
+
+            <!-- Schermata Ormeggio -->
+            <div id="ormeggio" class="screen" style="display:none;">
+                <div class="section-title">Servizi Ormeggio</div>
+                <div class="filters-chip active">🏖️ Tutti i Porti</div>
+                <div class="filters-chip">💰 Prezzo</div>
+                <div class="filters-chip">📏 Lunghezza</div>
+                
+                <div class="boat-card">
+                    <div class="boat-image">⚓ Marina di Nettuno</div>
+                    <div class="boat-title">Posto Barca - Pontile A</div>
+                    <div class="boat-price">€45/metro/giorno</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">⚓ Porto di Gaeta</div>
+                    <div class="boat-title">Ormeggio su Boa</div>
+                    <div class="boat-price">€25/metro/giorno</div>
+                </div>
+            </div>
+
+            <!-- Schermata Esperienze -->
+            <div id="esperienze" class="screen" style="display:none;">
+                <div class="section-title">Esperienze Marine</div>
+                <div class="boat-card">
+                    <div class="boat-image">✨ Tour Ponza</div>
+                    <div class="boat-title">Tour Isola di Ponza - Giornata</div>
+                    <div class="boat-price">€120/persona</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">🍽️ Cena Romantica</div>
+                    <div class="boat-title">Charter Gourmet al Tramonto</div>
+                    <div class="boat-price">€180/persona</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">🎣 Pesca Sportiva</div>
+                    <div class="boat-title">Esperienza Pesca d'Altura</div>
+                    <div class="boat-price">€95/persona</div>
+                </div>
+            </div>
+
+            <!-- Schermata Servizi -->
+            <div id="servizi" class="screen" style="display:none;">
+                <div class="section-title">Servizi Nautici</div>
+                <div class="boat-card">
+                    <div class="boat-image">🌤️ Meteo Marino</div>
+                    <div class="boat-title">Condizioni Mare - Roma/Fiumicino</div>
+                    <div class="boat-price">Vento: 12 km/h NE</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">⛽ Carburante</div>
+                    <div class="boat-title">Prezzi Gasolio Marino</div>
+                    <div class="boat-price">€1.45/litro</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">🆘 Assistenza</div>
+                    <div class="boat-title">Chat AI SeaGO</div>
+                    <div class="boat-price">Supporto 24/7</div>
+                </div>
+            </div>
+
+            <!-- Schermata Profilo -->
+            <div id="profilo" class="screen" style="display:none;">
+                <div class="section-title">Il Mio Profilo</div>
+                <div class="boat-card">
+                    <div class="boat-image">👤 Account</div>
+                    <div class="boat-title">Gestisci Profilo</div>
+                    <div class="boat-price">Dati personali</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">📅 Prenotazioni</div>
+                    <div class="boat-title">Le Mie Prenotazioni</div>
+                    <div class="boat-price">3 attive</div>
+                </div>
+                <div class="boat-card">
+                    <div class="boat-image">⚙️ Impostazioni</div>
+                    <div class="boat-title">Preferenze App</div>
+                    <div class="boat-price">Notifiche, Privacy</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <a href="#" class="nav-item active" onclick="showScreen('esplora', this)">
+                <div class="nav-icon">🔍</div>
+                <span>Esplora</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('ormeggio', this)">
+                <div class="nav-icon">⚓</div>
+                <span>Ormeggio</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('esperienze', this)">
+                <div class="nav-icon">✨</div>
+                <span>Esperienze</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('servizi', this)">
+                <div class="nav-icon">🛠️</div>
+                <span>Servizi</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('profilo', this)">
+                <div class="nav-icon">👤</div>
+                <span>Profilo</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId, element) {
+            // Nascondi tutte le schermate
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.style.display = 'none');
+            
+            // Mostra la schermata selezionata
+            document.getElementById(screenId).style.display = 'block';
+            
+            // Aggiorna navigazione attiva
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            
+            // Aggiorna titolo header
+            const headers = {
+                'esplora': '🔍 Esplora',
+                'ormeggio': '⚓ Ormeggio',
+                'esperienze': '✨ Esperienze',
+                'servizi': '🛠️ Servizi',
+                'profilo': '👤 Profilo'
+            };
+            
+            document.querySelector('.header').innerHTML = `🚤 SeaGO - ${headers[screenId]}`;
+        }
+
+        // Simula scroll infinito
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📱SeaGO Mobile App Preview Loaded');
+            console.log('Tap sui tab in basso per navigare');
+        });
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import path from "path";
 import Stripe from "stripe";
 import { registerOwnerRoutes } from "./routes/owner-registration";
 import { registerAnalyticsRoutes } from "./routes/analytics";
@@ -391,6 +392,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const imagePath = `./attached_assets/${filename}`;
     res.sendFile(imagePath, { root: "." });
   });
+
+
 
   const httpServer = createServer(app);
 

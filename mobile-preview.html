@@ -1447,16 +1447,14 @@
         <!-- Pagina Categoria -->
         <div id="category-page" class="screen" style="display: none;">
             <div class="content">
-                <!-- Header con logo SeaGO -->
-                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; text-align: center; color: white; position: relative;">
-                    <button onclick="goBack()" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 8px; font-size: 14px;">← Indietro</button>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px;">
-                        <div style="background: rgba(255,255,255,0.9); padding: 8px; border-radius: 8px;">
-                            <span style="color: #0891b2; font-size: 20px; font-weight: bold;">⛵</span>
-                        </div>
-                        <span style="font-size: 24px; font-weight: bold;">SeaGO</span>
+                <!-- Header pulito e lineare -->
+                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px 20px; color: white; position: relative;">
+                    <button onclick="goBack()" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: white; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">← Indietro</button>
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 18px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 4px;">SeaGO</div>
+                        <h1 id="category-title" style="margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 0.3px;">Categoria Barche</h1>
                     </div>
-                    <h1 id="category-title" style="margin: 0; font-size: 28px; font-weight: bold;">Categoria Barche</h1>
                 </div>
                 
                 <div class="category-content" style="padding: 20px;">
@@ -1697,7 +1695,7 @@
                     { name: 'Kayak sit-on-top', price: '€30/giorno', location: 'Anzio' },
                     { name: 'SUP Premium Board', price: '€25/giorno', location: 'Sperlonga' }
                 ]
-            }
+            },
             'jetski': {
                 title: 'Moto d\'Acqua',
                 description: 'Adrenalina e velocità sull\'acqua',

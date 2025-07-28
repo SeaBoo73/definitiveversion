@@ -10,6 +10,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/attached_assets', express.static('attached_assets'));
 app.use('/api/images', express.static('attached_assets'));
 
+// Redirect root to mobile preview for easier access
+app.get("/", (req, res) => {
+  res.redirect("/mobile-preview");
+});
+
 // Mobile preview route (before authentication middleware)
 app.get("/mobile-preview", async (req, res) => {
   res.setHeader('Content-Type', 'text/html');

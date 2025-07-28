@@ -88,58 +88,118 @@ app.get("/mobile-preview", async (req, res) => {
                     <input type="text" class="search-input" placeholder="Dove vuoi navigare?" onclick="showAlert('Ricerca barche - Apre schermata filtri avanzati')">
                 </div>
                 
+                <div class="filters-bar">
+                    <div class="filter-item" onclick="showAlert('Filtro date - Calendario prenotazione')">
+                        <span class="filter-label">📅 Date</span>
+                        <span class="filter-value">Oggi - Domani</span>
+                    </div>
+                    <div class="filter-item" onclick="showAlert('Filtro persone - Numero ospiti')">
+                        <span class="filter-label">👥 Persone</span>
+                        <span class="filter-value">1-8 persone</span>
+                    </div>
+                    <div class="filter-item" onclick="showAlert('Filtro budget - Range prezzi')">
+                        <span class="filter-label">💰 Budget</span>
+                        <span class="filter-value">€100 - €1.500</span>
+                    </div>
+                </div>
+                
+                <div class="service-grid" style="margin-bottom: 24px;">
+                    <div class="service-card" onclick="showAlert('21 Barche disponibili oggi')">
+                        <div class="service-icon">🚤</div>
+                        <div class="service-title">Barche</div>
+                        <div class="service-value">21 disponibili</div>
+                    </div>
+                    <div class="service-card" onclick="showAlert('15 Porti nel Lazio')">
+                        <div class="service-icon">⚓</div>
+                        <div class="service-title">Porti</div>
+                        <div class="service-value">15 porti</div>
+                    </div>
+                    <div class="service-card" onclick="showAlert('850+ Clienti soddisfatti')">
+                        <div class="service-icon">⭐</div>
+                        <div class="service-title">Clienti</div>
+                        <div class="service-value">850+ felici</div>
+                    </div>
+                    <div class="service-card" onclick="showAlert('24/7 Supporto disponibile')">
+                        <div class="service-icon">🔒</div>
+                        <div class="service-title">Supporto</div>
+                        <div class="service-value">24/7</div>
+                    </div>
+                </div>
+                
                 <div class="section-title">🚤 Categorie Barche</div>
                 <div class="categories-grid">
-                    <div class="category-card" onclick="showAlert('Gommoni - 7 barche disponibili')">
+                    <div class="category-card" onclick="showAlert('Gommoni - 7 barche: da €180 a €450/giorno')">
                         <img src="/api/images/gommone senza patente_1752875806367.webp" class="category-image" alt="Gommoni">
                         <div class="category-name">Gommoni</div>
-                        <div class="category-count">7 barche</div>
+                        <div class="category-count">7 barche • da €180</div>
                     </div>
-                    <div class="category-card" onclick="showAlert('Senza Patente - 3 barche disponibili')">
+                    <div class="category-card" onclick="showAlert('Senza Patente - 3 barche: perfette per principianti')">
                         <img src="/api/images/OIP (1)_1752921317486.webp" class="category-image" alt="Senza Patente">
                         <div class="category-name">Senza Patente</div>
-                        <div class="category-count">3 barche</div>
+                        <div class="category-count">3 barche • da €120</div>
                     </div>
-                    <div class="category-card" onclick="showAlert('Yacht - 5 barche disponibili')">
+                    <div class="category-card" onclick="showAlert('Yacht - 5 barche di lusso: esperienze premium')">
                         <img src="/api/images/R (1)_1752920495156.jpg" class="category-image" alt="Yacht">
                         <div class="category-name">Yacht</div>
-                        <div class="category-count">5 barche</div>
+                        <div class="category-count">5 barche • da €850</div>
                     </div>
-                    <div class="category-card" onclick="showAlert('Barche a Vela - 6 barche disponibili')">
+                    <div class="category-card" onclick="showAlert('Barche a Vela - 6 barche: navigazione autentica')">
                         <img src="/api/images/barca a vela ludovica_1752876195081.jpg" class="category-image" alt="Barche a Vela">
                         <div class="category-name">Barche a Vela</div>
-                        <div class="category-count">6 barche</div>
+                        <div class="category-count">6 barche • da €280</div>
                     </div>
-                    <div class="category-card" onclick="showAlert('Moto d\\'acqua - Esperienza adrenalina')">
+                    <div class="category-card" onclick="showAlert('Moto d\\'acqua - Adrenalina pura: noleggio orario')">
                         <img src="/api/images/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg" class="category-image" alt="Moto d'acqua">
                         <div class="category-name">Moto d'acqua</div>
-                        <div class="category-count">Disponibili</div>
+                        <div class="category-count">Disponibili • €80/ora</div>
                     </div>
-                    <div class="category-card" onclick="showAlert('Catamarani - Spazio e comfort')">
+                    <div class="category-card" onclick="showAlert('Catamarani - Spazio per gruppi: fino a 12 persone')">
                         <img src="/api/images/catamarano ludovica_1752876117442.jpg" class="category-image" alt="Catamarani">
                         <div class="category-name">Catamarani</div>
-                        <div class="category-count">Disponibili</div>
+                        <div class="category-count">Disponibili • €520</div>
+                    </div>
+                    <div class="category-card" onclick="showAlert('Charter - Con skipper: esperienza completa')">
+                        <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="category-image" alt="Charter">
+                        <div class="category-name">Charter</div>
+                        <div class="category-count">15 esperienze • €1.200</div>
+                    </div>
+                    <div class="category-card" onclick="showAlert('Houseboat - Casa galleggiante: vacanze uniche')">
+                        <img src="/api/images/OIP_1752919948843.webp" class="category-image" alt="Houseboat">
+                        <div class="category-name">Houseboat</div>
+                        <div class="category-count">Disponibili • €380</div>
                     </div>
                 </div>
                 
                 <div class="section-title">🌟 Barche in Evidenza</div>
-                <div class="boat-card" onclick="showAlert('Azzurra 680 - Prenota ora')">
+                <div class="boat-card featured-boat" onclick="showAlert('Azzurra 680 - Gommone luxury con tutti i comfort')">
                     <img src="/api/images/Immagine WhatsApp 2025-07-27 ore 07.52.02_b0a0f2cb_1753598054172.jpg" class="boat-image" alt="Azzurra 680">
-                    <div class="boat-title">Azzurra 680 - Gommone Lusso</div>
-                    <div class="boat-details">📍 Civitavecchia • 👥 8 persone • ⛽ Carburante incluso</div>
-                    <div class="boat-price">€350/giorno</div>
+                    <div class="boat-title">⭐ Azzurra 680 - Gommone Lusso</div>
+                    <div class="boat-details">📍 Civitavecchia • 👥 8 persone • ⛽ Carburante incluso • ⭐ 4.9 (47 recensioni)</div>
+                    <div class="boat-price">€350/giorno <span style="font-size: 12px; color: #10b981;">• Bestseller</span></div>
                 </div>
-                <div class="boat-card" onclick="showAlert('Luxury Charter - Prenota esperienza')">
-                    <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="boat-image" alt="Charter">
-                    <div class="boat-title">Charter Premium con Skipper</div>
-                    <div class="boat-details">📍 Gaeta • 👥 12 persone • 👨‍✈️ Skipper incluso</div>
-                    <div class="boat-price">€1.200/giorno</div>
+                <div class="boat-card featured-boat" onclick="showAlert('Charter Premium - Esperienza completa con skipper professionale')">
+                    <img src="/api/images/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg" class="boat-image" alt="Charter Premium">
+                    <div class="boat-title">⭐ Charter Premium con Skipper</div>
+                    <div class="boat-details">📍 Gaeta • 👥 12 persone • 👨‍✈️ Skipper professionale • 🥂 Aperitivo • ⭐ 5.0 (23 recensioni)</div>
+                    <div class="boat-price">€1.200/giorno <span style="font-size: 12px; color: #f59e0b;">• Luxury</span></div>
                 </div>
-                <div class="boat-card" onclick="showAlert('Barca a Vela Ludovica - Prenota')">
-                    <img src="/api/images/barca a vela ludovica_1752876195081.jpg" class="boat-image" alt="Barca a Vela">
-                    <div class="boat-title">Barca a Vela "Ludovica"</div>
-                    <div class="boat-details">📍 Ponza • 👥 6 persone • ⛵ Navigazione autentica</div>
-                    <div class="boat-price">€280/giorno</div>
+                <div class="boat-card featured-boat" onclick="showAlert('Barca a Vela Ludovica - Navigazione autentica con istruttore')">
+                    <img src="/api/images/barca a vela ludovica_1752876195081.jpg" class="boat-image" alt="Barca a Vela Ludovica">
+                    <div class="boat-title">⭐ Barca a Vela "Ludovica"</div>
+                    <div class="boat-details">📍 Ponza • 👥 6 persone • ⛵ Navigazione autentica • 🎓 Corso vela • ⭐ 4.8 (31 recensioni)</div>
+                    <div class="boat-price">€280/giorno <span style="font-size: 12px; color: #3b82f6;">• Con corso</span></div>
+                </div>
+                <div class="boat-card featured-boat" onclick="showAlert('Senza Patente Easy - Perfetto per famiglie e principianti')">
+                    <img src="/api/images/OIP (1)_1752921317486.webp" class="boat-image" alt="Easy Boat">
+                    <div class="boat-title">⭐ Easy Boat - Senza Patente</div>
+                    <div class="boat-details">📍 Terracina • 👥 5 persone • 🎓 Briefing incluso • 🔧 Assistenza • ⭐ 4.7 (89 recensioni)</div>
+                    <div class="boat-price">€120/giorno <span style="font-size: 12px; color: #22c55e;">• Principianti</span></div>
+                </div>
+                <div class="boat-card featured-boat" onclick="showAlert('Jetski Yamaha - Adrenalina pura sul mare del Lazio')">
+                    <img src="/api/images/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg" class="boat-image" alt="Jetski Yamaha">
+                    <div class="boat-title">⭐ Jetski Yamaha VX Cruiser</div>
+                    <div class="boat-details">📍 Anzio • 👥 2 persone • ⚡ 180HP • 🏁 Adrenalina • ⭐ 4.6 (54 recensioni)</div>
+                    <div class="boat-price">€80/ora <span style="font-size: 12px; color: #ef4444;">• Adrenalina</span></div>
                 </div>
             </div>
             

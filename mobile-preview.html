@@ -446,8 +446,14 @@
         }
         
         #category-page {
-            margin: 0;
-            padding: 0;
+            margin: 0 !important;
+            padding: 0 !important;
+            top: 0 !important;
+        }
+        
+        #category-page > div:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
 
         /* Boats Grid Styles */
@@ -1456,9 +1462,9 @@
         </div>
 
         <!-- Pagina Categoria -->
-        <div id="category-page" class="screen" style="display: none;">
-            <!-- Header pulito e lineare senza spazi -->
-            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px 20px; color: white; position: relative; margin: 0;">
+        <div id="category-page" class="screen" style="display: none; margin: 0; padding: 0;">
+            <!-- Header pulito attaccato al top -->
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px 20px; color: white; position: relative; margin: 0; top: 0;">
                 <button onclick="goBack()" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: white; padding: 10px 16px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">← Indietro</button>
                 
                 <div style="text-align: center;">
@@ -1466,8 +1472,6 @@
                     <h1 id="category-title" style="margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 0.3px;">Categoria Barche</h1>
                 </div>
             </div>
-            
-            <div class="content" style="margin-top: 0; padding-top: 0;">
                 
             <div class="category-content" style="padding: 20px; margin: 0;">
                 <p id="category-description" style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Descrizione categoria</p>

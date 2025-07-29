@@ -1499,41 +1499,119 @@
             </div>
         </div>
 
-        <!-- Sezione Esplora -->
-        <div id="esplora" class="screen" style="display: none;">
+        <!-- Sezione Aiuto -->
+        <div id="aiuto" class="screen" style="display: none;">
             <div class="content">
-                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; text-align: center; color: white; margin: 0 -16px 20px;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🔍</div>
-                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">Esplora SeaGO</h2>
-                    <p style="margin: 0; opacity: 0.9;">Trova la barca perfetta per la tua avventura</p>
+                <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); padding: 20px; text-align: center; color: white; margin: 0 -16px 20px;">
+                    <div style="font-size: 32px; margin-bottom: 12px;">❓</div>
+                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">Centro Assistenza</h2>
+                    <p style="margin: 0; opacity: 0.9;">Siamo qui per aiutarti. Trova le risposte alle domande più frequenti</p>
                 </div>
 
-                <!-- Barche in Evidenza -->
-                <div class="featured-boats" style="margin-bottom: 24px;">
-                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">⭐ Barche in Evidenza</h3>
+                <!-- Contattaci -->
+                <div class="help-contacts" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">📞 Contattaci</h3>
                     <div style="display: grid; gap: 16px;">
-                        <div class="boat-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <!-- Email -->
+                        <div class="contact-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                <div style="background: #dbeafe; color: #1d4ed8; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">📧</div>
                                 <div>
-                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Azimut 50 Fly</h4>
-                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Civitavecchia</p>
-                                </div>
-                                <span style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">BESTSELLER</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
-                                    <span style="font-size: 14px; color: #6b7280;">4.9 (127 recensioni)</span>
-                                </div>
-                                <div style="text-align: right;">
-                                    <div style="font-size: 18px; font-weight: bold; color: #0891b2;">€850/giorno</div>
-                                    <div style="font-size: 12px; color: #6b7280;">da €106/persona</div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Email</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">Rispondiamo entro 24 ore</p>
                                 </div>
                             </div>
-                            <button onclick="showBoatDetails('azimut-50-fly')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                            <div style="font-weight: 600; color: #1d4ed8; margin-bottom: 12px;">support@seago.it</div>
+                            <button onclick="contactSupport('email')" style="width: 100%; background: #1d4ed8; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Invia Email</button>
                         </div>
 
-                        <div class="boat-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                        <!-- Chat Live -->
+                        <div class="contact-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                <div style="background: #f3e8ff; color: #7c3aed; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px;">💬</div>
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Chat Live</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">Assistenza immediata</p>
+                                </div>
+                            </div>
+                            <div style="font-weight: 600; color: #7c3aed; margin-bottom: 12px;">Avvia chat</div>
+                            <button onclick="startLiveChat()" style="width: 100%; background: #7c3aed; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Avvia Chat</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Section -->
+                <div class="faq-section" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">❓ Domande Frequenti</h3>
+                    
+                    <!-- Prenotazioni FAQ -->
+                    <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div onclick="toggleFaq('faq1')" style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Come posso prenotare una barca?</h4>
+                            <span id="faq1-icon" style="font-size: 18px; color: #6b7280;">+</span>
+                        </div>
+                        <div id="faq1" style="display: none; padding: 0 16px 16px; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            Usa la funzione di ricerca per trovare la barca ideale, seleziona le date desiderate e completa la prenotazione fornendo i dati richiesti e procedendo con il pagamento sicuro.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div onclick="toggleFaq('faq2')" style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Posso modificare la mia prenotazione?</h4>
+                            <span id="faq2-icon" style="font-size: 18px; color: #6b7280;">+</span>
+                        </div>
+                        <div id="faq2" style="display: none; padding: 0 16px 16px; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            Le modifiche sono possibili fino a 48 ore prima della data di partenza, soggette alla disponibilità e alle politiche del proprietario della barca.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div onclick="toggleFaq('faq3')" style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Quali documenti servono per noleggiare?</h4>
+                            <span id="faq3-icon" style="font-size: 18px; color: #6b7280;">+</span>
+                        </div>
+                        <div id="faq3" style="display: none; padding: 0 16px 16px; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            Serve un documento d'identità valido e, per barche che lo richiedono, la patente nautica appropriata. Alcuni proprietari potrebbero richiedere documenti aggiuntivi.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div onclick="toggleFaq('faq4')" style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Quali metodi di pagamento accettate?</h4>
+                            <span id="faq4-icon" style="font-size: 18px; color: #6b7280;">+</span>
+                        </div>
+                        <div id="faq4" style="display: none; padding: 0 16px 16px; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            Accettiamo tutte le principali carte di credito e debito, Apple Pay, Google Pay tramite la nostra integrazione sicura con Stripe.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div onclick="toggleFaq('faq5')" style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Le barche sono assicurate?</h4>
+                            <span id="faq5-icon" style="font-size: 18px; color: #6b7280;">+</span>
+                        </div>
+                        <div id="faq5" style="display: none; padding: 0 16px 16px; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            Tutte le imbarcazioni sulla piattaforma SeaGO sono coperte da assicurazione di base. Sono disponibili coperture aggiuntive durante la prenotazione.
+                        </div>
+                    </div>
+
+                    <div class="faq-item" style="background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <div onclick="toggleFaq('faq6')" style="padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Posso cancellare la prenotazione?</h4>
+                            <span id="faq6-icon" style="font-size: 18px; color: #6b7280;">+</span>
+                        </div>
+                        <div id="faq6" style="display: none; padding: 0 16px 16px; color: #6b7280; font-size: 14px; line-height: 1.5;">
+                            Le cancellazioni sono soggette alle politiche del proprietario. Generalmente è possibile cancellare con pieno rimborso fino a 7 giorni prima.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer"></div>
+            </div>
+        </div>
+
+        <!-- Sezione Esperienze (resto del contenuto non modificato) -->
+        <div class="boat-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                                 <div>
                                     <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Zodiac Pro 420</h4>
@@ -2682,9 +2760,9 @@
                 <div class="nav-icon">🏠</div>
                 <span>Home</span>
             </a>
-            <a href="#" class="nav-item" onclick="showScreen('esplora', this)">
-                <div class="nav-icon">🔍</div>
-                <span>Esplora</span>
+            <a href="#" class="nav-item" onclick="showScreen('aiuto', this)">
+                <div class="nav-icon">❓</div>
+                <span>Aiuto</span>
             </a>
             <a href="#" class="nav-item" onclick="showScreen('esperienze', this)">
                 <div class="nav-icon">✨</div>
@@ -3527,6 +3605,33 @@
                 suggestions.style.display = 'none';
             }
         });
+
+        // Funzioni per FAQ sezione aiuto
+        function toggleFaq(faqId) {
+            const faq = document.getElementById(faqId);
+            const icon = document.getElementById(faqId + '-icon');
+            
+            if (faq.style.display === 'none' || faq.style.display === '') {
+                faq.style.display = 'block';
+                icon.textContent = '-';
+            } else {
+                faq.style.display = 'none';
+                icon.textContent = '+';
+            }
+        }
+
+        // Funzioni per contatti sezione aiuto
+        function contactSupport(type) {
+            if (type === 'email') {
+                alert('📧 Apertura client email...\n\nTo: support@seago.it\nOggetto: Richiesta Assistenza SeaGO\n\nDescrivici il tuo problema e ti risponderemo entro 24 ore!');
+                console.log('SeaGO: Apertura email support');
+            }
+        }
+
+        function startLiveChat() {
+            alert('💬 Avvio chat live...\n\n🤖 Assistente virtuale SeaGO\n⚡ Risposta immediata\n🔄 Chat attiva 24/7\n\nPuoi chiedere info su prenotazioni, barche, pagamenti, documenti e molto altro!');
+            console.log('SeaGO: Avvio chat live assistenza');
+        }
 
         // Funzione per aprire la pagina Sea Host
         function showSeaHostPage() {

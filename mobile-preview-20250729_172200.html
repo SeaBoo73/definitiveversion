@@ -1881,7 +1881,7 @@
                 <!-- Esperienze in Evidenza -->
                 <div class="featured-experiences" style="margin-bottom: 24px;">
                     <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">🌟 Esperienze Premium</h3>
-                    <div id="experiencesContainer" style="display: grid; gap: 16px;">
+                    <div style="display: grid; gap: 16px;">
                         <div class="experience-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
                                 <div>
@@ -3695,55 +3695,6 @@
                     { title: 'Faraglioni al Tramonto', category: 'Romantico', price: '€85', duration: '2.5 ore', rating: '4.8', reviews: '156', description: 'Aperitivo davanti ai Faraglioni' },
                     { title: 'Shopping Luxury', category: 'Shopping', price: '€95', duration: '3 ore', rating: '4.7', reviews: '89', description: 'Shopping esclusivo via Camerelle' }
                 ]
-            },
-            'anzio': {
-                featured: [
-                    { title: 'Tour delle Grotte di Nerone', category: 'Storico', price: '€40', duration: '2 ore', rating: '4.5', reviews: '78', description: 'Scopri le antiche grotte imperiali' },
-                    { title: 'Pesca nel Golfo', category: 'Pesca Sportiva', price: '€55', duration: '4 ore', rating: '4.6', reviews: '134', description: 'Pesca tradizionale nel Golfo di Anzio' },
-                    { title: 'Aperitivo Villa Borghese', category: 'Gourmet', price: '€42', duration: '2 ore', rating: '4.4', reviews: '92', description: 'Aperitivo con vista sulla villa storica' }
-                ]
-            },
-            'ponza': {
-                featured: [
-                    { title: 'Giro dell\'Isola Completo', category: 'Escursione', price: '€70', duration: '6 ore', rating: '4.8', reviews: '189', description: 'Tutto il meglio di Ponza in un giorno' },
-                    { title: 'Piscine Naturali', category: 'Relax', price: '€50', duration: '3 ore', rating: '4.7', reviews: '167', description: 'Bagno nelle famose piscine naturali' },
-                    { title: 'Tramonto a Palmarola', category: 'Romantico', price: '€85', duration: '4 ore', rating: '4.9', reviews: '213', description: 'Isola più bella del Mediterraneo' }
-                ]
-            },
-            'terracina': {
-                featured: [
-                    { title: 'Monte Circeo dal Mare', category: 'Panoramico', price: '€45', duration: '3 ore', rating: '4.6', reviews: '123', description: 'Vista unica del promontorio del Circeo' },
-                    { title: 'Grotte di Tiberio', category: 'Storico', price: '€38', duration: '2 ore', rating: '4.5', reviews: '89', description: 'Antiche grotte romane sul mare' },
-                    { title: 'Snorkeling Riviera d\'Ulisse', category: 'Avventura', price: '€42', duration: '2.5 ore', rating: '4.4', reviews: '76', description: 'Immersioni nella riviera di Ulisse' }
-                ]
-            },
-            'formia': {
-                featured: [
-                    { title: 'Tomba di Cicerone', category: 'Culturale', price: '€35', duration: '2 ore', rating: '4.3', reviews: '67', description: 'Storia romana dal mare di Formia' },
-                    { title: 'Tour Golfo di Gaeta', category: 'Panoramico', price: '€48', duration: '3 ore', rating: '4.6', reviews: '112', description: 'Navigazione nel bellissimo golfo' },
-                    { title: 'Pesca Tradizionale', category: 'Pesca', price: '€52', duration: '4 ore', rating: '4.5', reviews: '98', description: 'Tecniche di pesca locali' }
-                ]
-            },
-            'salerno': {
-                featured: [
-                    { title: 'Costa di Amalfi Express', category: 'Tour', price: '€65', duration: '4 ore', rating: '4.7', reviews: '178', description: 'La costiera da Salerno verso sud' },
-                    { title: 'Paestum dal Mare', category: 'Culturale', price: '€55', duration: '3 ore', rating: '4.5', reviews: '89', description: 'Templi greci visti dal mare' },
-                    { title: 'Cilento Selvaggio', category: 'Natura', price: '€70', duration: '5 ore', rating: '4.8', reviews: '145', description: 'Costa incontaminata del Cilento' }
-                ]
-            },
-            'amalfi': {
-                featured: [
-                    { title: 'Sentiero degli Dei dal Mare', category: 'Panoramico', price: '€75', duration: '3 ore', rating: '4.9', reviews: '256', description: 'Vista unica del famoso sentiero' },
-                    { title: 'Grotta dello Smeraldo', category: 'Avventura', price: '€45', duration: '2 ore', rating: '4.6', reviews: '134', description: 'Magia della grotta verde' },
-                    { title: 'Limoncello & Sfusato', category: 'Gourmet', price: '€55', duration: '2.5 ore', rating: '4.7', reviews: '198', description: 'Sapori autentici di Amalfi' }
-                ]
-            },
-            'ischia': {
-                featured: [
-                    { title: 'Terme di Ischia dal Mare', category: 'Benessere', price: '€60', duration: '4 ore', rating: '4.8', reviews: '167', description: 'Relax termale con vista mare' },
-                    { title: 'Castello Aragonese', category: 'Storico', price: '€50', duration: '3 ore', rating: '4.6', reviews: '123', description: 'Fortezza medievale dal mare' },
-                    { title: 'Sorgenti Termali Marine', category: 'Benessere', price: '€45', duration: '2 ore', rating: '4.7', reviews: '189', description: 'Terme naturali in riva al mare' }
-                ]
             }
         };
 
@@ -3754,8 +3705,10 @@
             console.log('SeaGO: Aggiornamento esperienze per località', selectedLocation);
             
             // Aggiorna esperienze in evidenza (se esistono)
-            const experiencesContainer = document.getElementById('experiencesContainer');
-            if (experiencesContainer && locationData.featured) {
+            const featuredExperiences = document.querySelector('.featured-experiences .experience-card');
+            if (featuredExperiences && locationData.featured) {
+                const parentContainer = document.querySelector('.featured-experiences > div[style*="display: grid"]');
+                if (parentContainer) {
                     let experiencesHTML = '';
                     locationData.featured.forEach((exp, index) => {
                         const colors = ['#0891b2', '#059669', '#d97706'];
@@ -3780,7 +3733,8 @@
                             </div>
                         `;
                     });
-                    experiencesContainer.innerHTML = experiencesHTML;
+                    parentContainer.innerHTML = experiencesHTML;
+                }
             }
             
             alert('🌟 Esperienze aggiornate per ' + selectedLocation.charAt(0).toUpperCase() + selectedLocation.slice(1) + '\n\n✨ ' + (locationData.featured ? locationData.featured.length : 3) + ' esperienze premium disponibili\n🎯 Personalizzate per la località scelta\n📍 Prezzi e disponibilità aggiornati');

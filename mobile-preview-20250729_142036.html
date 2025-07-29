@@ -1,0 +1,2778 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaGO - Naviga verso l'avventura</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+        }
+
+        .mobile-frame {
+            max-width: 375px;
+            margin: 0 auto;
+            background: #f9fafb;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Header identico alla versione web */
+        .header {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .content {
+            overflow-y: auto;
+            padding-bottom: 80px;
+        }
+
+        /* Hero Section - identica alla versione web */
+        .hero {
+            background: linear-gradient(135deg, #1e40af, #1e3a8a);
+            background-image: url('/attached_assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+            color: white;
+            padding: 48px 16px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 64, 175, 0.6);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 32px;
+            line-height: 1.4;
+            color: #e5e7eb;
+        }
+
+        /* Search Form - identico alla versione web */
+        .search-form {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin: -32px 16px 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            border: 1px solid #e5e7eb;
+            position: relative;
+            z-index: 10;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            color: #374151;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .form-row .form-input {
+            padding: 10px 12px;
+            font-size: 14px;
+        }
+
+        .form-row .form-label {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .search-button {
+            width: 100%;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .search-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+
+        /* Quick Stats - identiche alla versione web */
+        .stats-section {
+            padding: 32px 16px;
+            background: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-left: 4px solid #0ea5e9;
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            color: #0ea5e9;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .stat-trend {
+            font-size: 10px;
+            color: #10b981;
+        }
+
+        /* Categories Section - identica alla versione web */
+        .categories-section {
+            padding: 32px 16px;
+            background: #f9fafb;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .categories-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .category-image {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .category-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 16px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .category-count {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .category-description {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* Weather Widget */
+        .weather-section {
+            padding: 32px 16px;
+            background: white;
+        }
+
+        .weather-card {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .weather-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .weather-temp {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .weather-detail {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .weather-detail-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .weather-detail-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 12px;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 11px;
+            font-weight: 500;
+            transition: color 0.2s;
+            padding: 4px 8px;
+        }
+
+        .nav-item.active {
+            color: #0ea5e9;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Registration Section */
+        .registration-section {
+            padding: 32px 16px;
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+            text-align: center;
+        }
+
+        .registration-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .registration-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 24px;
+        }
+
+        .registration-form {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .registration-form input,
+        .registration-form select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .registration-button {
+            background: white;
+            color: #f97316;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .registration-earnings {
+            margin-top: 16px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Screen Layout - no gaps */
+        .screen {
+            margin: 0;
+            padding: 0;
+        }
+        
+        #category-page {
+            margin: 0 !important;
+            padding: 0 !important;
+            top: 0 !important;
+        }
+        
+        #category-page > div:first-child {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        /* Boats Grid Styles */
+        .boats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .boat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .boat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .boat-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 8px 0;
+        }
+
+        .boat-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: #0891b2;
+            margin: 4px 0;
+        }
+
+        .boat-location {
+            font-size: 14px;
+            color: #6b7280;
+            margin: 4px 0 12px 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0891b2, #0284c7);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0891b2, #0284c7);
+            color: white;
+            padding: 32px 16px;
+        }
+
+        .footer-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .footer-logo img {
+            height: 48px;
+            width: auto;
+            margin-bottom: 12px;
+        }
+
+        .footer-tagline {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 8px;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 24px 0;
+            padding: 16px 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        .social-logo {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .social-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer-bottom {
+            padding-top: 16px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* Stili per le nuove pagine */
+        .back-btn {
+            background: none;
+            border: none;
+            color: #0891b2;
+            font-size: 16px;
+            padding: 8px 0;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        .boats-grid {
+            display: grid;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .boat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .boat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .boat-card h4 {
+            margin: 0 0 8px 0;
+            color: #1e293b;
+            font-size: 18px;
+        }
+
+        .boat-price {
+            color: #059669;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 4px 0;
+        }
+
+        .boat-location {
+            color: #64748b;
+            margin: 4px 0 12px 0;
+        }
+
+        .location-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #0891b2;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        .services-section {
+            margin: 24px 0;
+        }
+
+        .services-section h3 {
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .services-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .services-section li {
+            padding: 8px 0;
+            color: #059669;
+            font-weight: 500;
+        }
+
+        .boat-details-content {
+            padding: 20px 0;
+        }
+
+        .boat-image-placeholder {
+            margin-bottom: 20px;
+        }
+
+        .boat-info h3 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            color: #1e293b;
+        }
+
+        .boat-features {
+            margin: 20px 0;
+        }
+
+        .boat-features h4 {
+            margin-bottom: 12px;
+            color: #1e293b;
+        }
+
+        .boat-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .boat-features li {
+            padding: 4px 0;
+            color: #64748b;
+        }
+
+        .booking-form {
+            padding: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: normal;
+            margin: 0;
+        }
+
+        .price-summary {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .price-summary h3 {
+            margin: 0 0 12px 0;
+            color: #1e293b;
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .price-line.total {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 8px;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .full-width {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .spacer {
+            height: 100px;
+        }
+
+        /* Port Search Styles */
+        .port-search-container {
+            position: relative;
+        }
+
+        .port-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 4px;
+        }
+
+        .port-suggestions-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .total-boats {
+            color: #0ea5e9;
+        }
+
+        .suggestions-list {
+            padding: 8px 0;
+        }
+
+        .region-header {
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0ea5e9;
+            background: #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .port-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 14px;
+            border-bottom: 1px solid #f8fafc;
+        }
+
+        .port-option:hover {
+            background: #f8fafc;
+        }
+
+        .port-option:last-child {
+            border-bottom: none;
+        }
+
+        .boat-count {
+            font-size: 12px;
+            color: #0ea5e9;
+            font-weight: 600;
+        }
+
+        .port-option.hidden {
+            display: none;
+        }
+
+        /* Filter Options Styles */
+        .filter-options {
+            margin: 16px 0;
+        }
+
+        .filter-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .filter-row-two {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .filter-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .filter-option:hover {
+            border-color: #0ea5e9;
+            background: #f8fafc;
+        }
+
+        .filter-option.active {
+            border-color: #0ea5e9;
+            background: #eff6ff;
+        }
+
+        .filter-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .filter-option span {
+            font-size: 12px;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.2;
+        }
+
+        .filter-option:hover span,
+        .filter-option.active span {
+            color: #0ea5e9;
+        }
+
+        /* Fuel Policy Styles */
+        .fuel-policy-section {
+            padding: 16px;
+            background: #f8fafc;
+        }
+
+        .fuel-policy-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .fuel-policy-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 16px 0;
+            text-align: center;
+        }
+
+        .fuel-policy-main {
+            font-size: 16px;
+            color: #374151;
+            margin-bottom: 16px;
+            text-align: center;
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 8px;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .fuel-policy-section-item {
+            margin-bottom: 16px;
+        }
+
+        .fuel-policy-section-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .fuel-policy-subtitle {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0ea5e9;
+            margin-bottom: 8px;
+        }
+
+        .fuel-policy-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fuel-policy-list li {
+            padding: 4px 0 4px 16px;
+            font-size: 14px;
+            color: #4b5563;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .fuel-policy-list li:before {
+            content: "•";
+            color: #0ea5e9;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .suggestions {
+            background: #fef3c7;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .suggestions .fuel-policy-subtitle {
+            color: #d97706;
+        }
+
+        .suggestions .fuel-policy-list li {
+            color: #92400e;
+        }
+
+        .suggestions .fuel-policy-list li:before {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <!-- Header con logo SeaGO -->
+        <div class="header">
+            <img src="/attached_assets/Immagine%20WhatsApp%202025-07-23%20ore%2018.35.06_81ef1af0_1753713030733.jpg" alt="SeaGO Logo" style="height: 40px; width: auto; margin-right: 12px;">
+            <span>SeaGO</span>
+        </div>
+        
+        <div class="content">
+            <!-- Schermata Home - identica alla versione web -->
+            <div id="home" class="screen active" style="display: block;">
+                <!-- Hero Section -->
+                <div class="hero">
+                    <div class="hero-content">
+                        <h1>Naviga verso l'avventura</h1>
+                        <p>Prenota barche, yacht e imbarcazioni uniche in tutta Italia.<br>
+                        Vivi il mare come mai prima d'ora.</p>
+                    </div>
+                </div>
+
+                <!-- Search Form -->
+                <div class="search-form">
+                    <div class="form-group">
+                        <label class="form-label">Dove</label>
+                        <div class="port-search-container">
+                            <input type="text" class="form-input" id="portSearch" placeholder="Cerca tra 48 porti italiani..." oninput="filterPorts()" onclick="showPortSuggestions()">
+                            <div class="port-suggestions" id="portSuggestions" style="display: none;">
+                                <div class="port-suggestions-header">
+                                    <span>48 porti disponibili</span>
+                                    <span class="total-boats">500+ barche totali</span>
+                                </div>
+                                <div class="suggestions-list">
+                                    <!-- Lazio Ports -->
+                                    <div class="region-header">Lazio (15 porti)</div>
+                                    <div class="port-option" onclick="selectPort('Civitavecchia')">Civitavecchia</div>
+                                    <div class="port-option" onclick="selectPort('Ponza')">Ponza</div>
+                                    <div class="port-option" onclick="selectPort('Gaeta')">Gaeta</div>
+                                    <div class="port-option" onclick="selectPort('Anzio')">Anzio</div>
+                                    <div class="port-option" onclick="selectPort('Fiumicino')">Fiumicino</div>
+                                    <div class="port-option" onclick="selectPort('Terracina')">Terracina</div>
+                                    <div class="port-option" onclick="selectPort('Ostia')">Ostia</div>
+                                    <div class="port-option" onclick="selectPort('San Felice Circeo')">San Felice Circeo</div>
+                                    <div class="port-option" onclick="selectPort('Formia')">Formia</div>
+                                    <div class="port-option" onclick="selectPort('Nettuno')">Nettuno</div>
+                                    <div class="port-option" onclick="selectPort('Santa Marinella')">Santa Marinella</div>
+                                    <div class="port-option" onclick="selectPort('Ventotene')">Ventotene</div>
+                                    <div class="port-option" onclick="selectPort('Ladispoli')">Ladispoli</div>
+                                    <div class="port-option" onclick="selectPort('Sperlonga')">Sperlonga</div>
+                                    <div class="port-option" onclick="selectPort('Montalto di Castro')">Montalto di Castro</div>
+                                    
+                                    <!-- Campania Ports -->
+                                    <div class="region-header">Campania (33 porti)</div>
+                                    <div class="port-option" onclick="selectPort('Napoli')">Napoli</div>
+                                    <div class="port-option" onclick="selectPort('Salerno')">Salerno</div>
+                                    <div class="port-option" onclick="selectPort('Sorrento')">Sorrento</div>
+                                    <div class="port-option" onclick="selectPort('Amalfi')">Amalfi</div>
+                                    <div class="port-option" onclick="selectPort('Positano')">Positano</div>
+                                    <div class="port-option" onclick="selectPort('Capri')">Capri</div>
+                                    <div class="port-option" onclick="selectPort('Ischia')">Ischia</div>
+                                    <div class="port-option" onclick="selectPort('Procida')">Procida</div>
+                                    <div class="port-option" onclick="selectPort('Pozzuoli')">Pozzuoli</div>
+                                    <div class="port-option" onclick="selectPort('Castellammare di Stabia')">Castellammare di Stabia</div>
+                                    <div class="port-option" onclick="selectPort('Torre del Greco')">Torre del Greco</div>
+                                    <div class="port-option" onclick="selectPort('Bagnoli')">Bagnoli</div>
+                                    <div class="port-option" onclick="selectPort('Marina di Stabia')">Marina di Stabia</div>
+                                    <div class="port-option" onclick="selectPort('Casamicciola')">Casamicciola</div>
+                                    <div class="port-option" onclick="selectPort('Forio d\'Ischia')">Forio d'Ischia</div>
+                                    <div class="port-option" onclick="selectPort('Cetara')">Cetara</div>
+                                    <div class="port-option" onclick="selectPort('Maiori')">Maiori</div>
+                                    <div class="port-option" onclick="selectPort('Minori')">Minori</div>
+                                    <div class="port-option" onclick="selectPort('Conca dei Marini')">Conca dei Marini</div>
+                                    <div class="port-option" onclick="selectPort('Furore')">Furore</div>
+                                    <div class="port-option" onclick="selectPort('Agropoli')">Agropoli</div>
+                                    <div class="port-option" onclick="selectPort('Palinuro')">Palinuro</div>
+                                    <div class="port-option" onclick="selectPort('Marina di Camerota')">Marina di Camerota</div>
+                                    <div class="port-option" onclick="selectPort('Sapri')">Sapri</div>
+                                    <div class="port-option" onclick="selectPort('Scario')">Scario</div>
+                                    <div class="port-option" onclick="selectPort('Pisciotta')">Pisciotta</div>
+                                    <div class="port-option" onclick="selectPort('Vico Equense')">Vico Equense</div>
+                                    <div class="port-option" onclick="selectPort('Piano di Sorrento')">Piano di Sorrento</div>
+                                    <div class="port-option" onclick="selectPort('Massa Lubrense')">Massa Lubrense</div>
+                                    <div class="port-option" onclick="selectPort('Atrani')">Atrani</div>
+                                    <div class="port-option" onclick="selectPort('Marina del Cantone')">Marina del Cantone</div>
+                                    <div class="port-option" onclick="selectPort('Lacco Ameno')">Lacco Ameno</div>
+                                    <div class="port-option" onclick="selectPort('Sant\'Angelo')">Sant'Angelo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Dal</label>
+                            <input type="date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Al</label>
+                            <input type="date" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ospiti</label>
+                        <select class="form-select">
+                            <option>2 ospiti</option>
+                            <option>4 ospiti</option>
+                            <option>6 ospiti</option>
+                            <option>8 ospiti</option>
+                            <option>10+ ospiti</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Tipo Imbarcazione Dropdown -->
+                    <div class="form-group">
+                        <label class="form-label">Tipo imbarcazione</label>
+                        <select class="form-select">
+                            <option>Tutte le categorie</option>
+                            <option>Gommoni</option>
+                            <option>Barche senza patente</option>
+                            <option>Yacht</option>
+                            <option>Barche a vela</option>
+                            <option>Barche a motore</option>
+                            <option>Moto d'acqua</option>
+                            <option>Catamarani</option>
+                            <option>Charter</option>
+                            <option>Houseboat</option>
+                            <option>Gulet</option>
+                            <option>Caiacco</option>
+                        </select>
+                    </div>
+                    
+
+                    
+                    <!-- Altri Filtri -->
+                    <div class="filter-options">
+                        <div class="filter-row-two">
+                            <div class="filter-option">
+                                <div class="filter-icon">👨‍✈️</div>
+                                <span>Con Skipper</span>
+                            </div>
+                            <div class="filter-option">
+                                <div class="filter-icon">⚓</div>
+                                <span>Esperienze o charter</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="search-button" onclick="performSearch()">🔍 Cerca</button>
+                </div>
+
+                <!-- Politiche Carburante Info -->
+                <div class="fuel-policy-section">
+                    <div class="fuel-policy-card">
+                        <h3 class="fuel-policy-title">⛽ Politiche Carburante</h3>
+                        <div class="fuel-policy-content">
+                            <div class="fuel-policy-section-item">
+                                <div class="fuel-policy-subtitle">🔹 Come funziona:</div>
+                                <ul class="fuel-policy-list">
+                                    <li>Il carburante è escluso dal prezzo del noleggio</li>
+                                    <li>Si paga separatamente a fine giornata</li>
+                                    <li>Misurazione tramite litri consumati (sensori/contalitri)</li>
+                                    <li>Oppure ore di navigazione (contatore motore) - se possibile</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="stats-section">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-icon">⚓</span>
+                                <span class="stat-value">500+</span>
+                            </div>
+                            <div class="stat-label">Barche disponibili</div>
+                            <div class="stat-trend">+12% questo mese</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-icon">👥</span>
+                                <span class="stat-value">2.5K</span>
+                            </div>
+                            <div class="stat-label">Utenti attivi</div>
+                            <div class="stat-trend">+18% questo mese</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-icon">⭐</span>
+                                <span class="stat-value">4.8/5</span>
+                            </div>
+                            <div class="stat-label">Valutazione media</div>
+                            <div class="stat-trend">Sempre eccellente</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <span class="stat-icon">📈</span>
+                                <span class="stat-value">1.2K</span>
+                            </div>
+                            <div class="stat-label">Prenotazioni</div>
+                            <div class="stat-trend">+24% questo mese</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Section -->
+                <div class="categories-section">
+                    <h2 class="section-title">Esplora per categoria</h2>
+                    <p class="section-subtitle">Trova l'imbarcazione perfetta per le tue esigenze</p>
+                    
+                    <div class="categories-grid">
+                        <!-- Gommoni -->
+                        <div class="category-card" data-category="gommoni" onclick="navigateTo('category', {category: 'gommoni'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/gommone senza patente_1752875806367.webp');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Gommoni</div>
+                                    <div class="category-count">8 barche disponibili</div>
+                                    <div class="category-description">Imbarcazioni pneumatiche versatili e sicure</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Barche senza patente -->
+                        <div class="category-card" data-category="barche-senza-patente" onclick="navigateTo('category', {category: 'barche-senza-patente'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/OIP (1)_1752921317486.webp');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Barche senza patente</div>
+                                    <div class="category-count">5 barche disponibili</div>
+                                    <div class="category-description">Facili da guidare, perfette per principianti</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Yacht -->
+                        <div class="category-card" data-category="yacht" onclick="navigateTo('category', {category: 'yacht'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/R (1)_1752920495156.jpg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Yacht</div>
+                                    <div class="category-count">3 barche disponibili</div>
+                                    <div class="category-description">Lusso e comfort per una navigazione esclusiva</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Barche a vela -->
+                        <div class="category-card" data-category="sailboat" onclick="navigateTo('category', {category: 'sailboat'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/barca a vela ludovica_1752876195081.jpg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Barche a vela</div>
+                                    <div class="category-count">4 barche disponibili</div>
+                                    <div class="category-description">L'esperienza autentica della navigazione</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Moto d'acqua -->
+                        <div class="category-card" data-category="jetski" onclick="navigateTo('category', {category: 'jetski'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/WhatsApp Image 2025-06-15 at 23.38.19_1752875703213.jpeg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Moto d'acqua</div>
+                                    <div class="category-count">6 barche disponibili</div>
+                                    <div class="category-description">Adrenalina e velocità sull'acqua</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Catamarani -->
+                        <div class="category-card" data-category="catamaran" onclick="navigateTo('category', {category: 'catamaran'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/catamarano ludovica_1752876117442.jpg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Catamarani</div>
+                                    <div class="category-count">2 barche disponibili</div>
+                                    <div class="category-description">Spazio e stabilità per gruppi numerosi</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charter -->
+                        <div class="category-card" data-category="charter" onclick="navigateTo('category', {category: 'charter'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/WhatsApp Image 2025-06-12 at 20.22.10_1752876155096.jpeg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Charter</div>
+                                    <div class="category-count">7 barche disponibili</div>
+                                    <div class="category-description">Esperienza completa con skipper professionista</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Houseboat -->
+                        <div class="category-card" data-category="houseboat" onclick="navigateTo('category', {category: 'houseboat'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/OIP_1752919948843.webp');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Houseboat</div>
+                                    <div class="category-count">3 barche disponibili</div>
+                                    <div class="category-description">La tua casa galleggiante per vacanze uniche</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Barche a motore -->
+                        <div class="category-card" data-category="motorboat" onclick="navigateTo('category', {category: 'motorboat'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/R_1752920173178.jpg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Barche a motore</div>
+                                    <div class="category-count">12 barche disponibili</div>
+                                    <div class="category-description">Potenza e velocità per esplorare il mare</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gulet -->
+                        <div class="category-card" data-category="gulet" onclick="navigateTo('category', {category: 'gulet'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/gulet-romance-3-cabin-luxury-gulet-for-charter-3-1024x683_1752919948842.jpg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Gulet</div>
+                                    <div class="category-count">4 barche disponibili</div>
+                                    <div class="category-description">Tradizione turca di lusso e eleganza</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Caiacco -->
+                        <div class="category-card" data-category="kayak" onclick="navigateTo('category', {category: 'kayak'})">
+                            <div class="category-image" style="background-image: url('/attached_assets/caiacco_1753599016775.jpg');">
+                                <div class="category-overlay">
+                                    <div class="category-name">Caiacco</div>
+                                    <div class="category-count">6 barche disponibili</div>
+                                    <div class="category-description">Kayak e canoe per avventure acquatiche</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Widget -->
+                <div class="weather-section">
+                    <div class="weather-card">
+                        <div class="weather-title">Condizioni Meteo Marine - Roma/Fiumicino</div>
+                        <div style="font-size: 32px; margin-bottom: 8px;">☀️</div>
+                        <div class="weather-temp">22°C</div>
+                        <div class="weather-details">
+                            <div class="weather-detail">
+                                <div class="weather-detail-label">Vento</div>
+                                <div class="weather-detail-value">12 km/h NE</div>
+                            </div>
+                            <div class="weather-detail">
+                                <div class="weather-detail-label">Onde</div>
+                                <div class="weather-detail-value">0.5m</div>
+                            </div>
+                            <div class="weather-detail">
+                                <div class="weather-detail-label">Visibilità</div>
+                                <div class="weather-detail-value">Ottima</div>
+                            </div>
+                            <div class="weather-detail">
+                                <div class="weather-detail-label">Mare</div>
+                                <div class="weather-detail-value">Calmo</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Registration Section -->
+                <div class="registration-section">
+                    <div class="registration-title">🚤 Affitta la tua barca</div>
+                    <div class="registration-subtitle">Trasforma la tua barca in una fonte di reddito</div>
+                    
+                    <div class="registration-form">
+                        <input type="text" placeholder="Nome e Cognome">
+                        <input type="email" placeholder="Email">
+                        <input type="tel" placeholder="Telefono">
+
+                    </div>
+                    
+                    <button class="registration-button">🌟 Inizia a Guadagnare</button>
+                </div>
+
+                <!-- Footer -->
+                <div class="footer">
+                    <div class="footer-logo">
+                        <img src="/attached_assets/Immagine%20WhatsApp%202025-07-23%20ore%2018.35.06_81ef1af0_1753713030733.jpg" alt="SeaGO Logo">
+                        <div class="footer-tagline">La piattaforma leader per il noleggio barche in Italia</div>
+                    </div>
+                    
+                    <div class="footer-content">
+                        <div class="footer-section">
+                            <h4>Servizi</h4>
+                            <ul>
+                                <li>Noleggio Barche</li>
+                                <li>Charter Giornalieri</li>
+                                <li>Servizi Ormeggio</li>
+                                <li>Esperienze Marine</li>
+                            </ul>
+                        </div>
+                        <div class="footer-section">
+                            <h4>Assistenza</h4>
+                            <ul>
+                                <li>Chat AI 24/7</li>
+                                <li>Meteo Marino</li>
+                                <li>Emergenze</li>
+                                <li>Supporto Tecnico</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-social">
+                        <a href="https://www.instagram.com/sea_go_app?igsh=MWZ0bWVlZmpibGN4bw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" class="social-link">
+                            <img src="/attached_assets/image_1753735012089.png" alt="Instagram" class="social-logo">
+                        </a>
+                        <a href="https://www.tiktok.com/@seago61?_t=ZN-8yPiPE595hG&_r=1" target="_blank" rel="noopener noreferrer" class="social-link">
+                            <img src="/attached_assets/image_1753735032072.png" alt="TikTok" class="social-logo">
+                        </a>
+                    </div>
+                    
+                    <div class="footer-bottom">
+                        <p>© 2025 SeaGO. Tutti i diritti riservati.</p>
+                        <p>Naviga verso l'avventura con SeaGO</p>
+                    </div>
+                </div>
+
+                <div class="spacer"></div>
+            </div>
+        </div>
+
+        <!-- Sezione Esplora -->
+        <div id="esplora" class="screen" style="display: none;">
+            <div class="content">
+                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; text-align: center; color: white; margin: 0 -16px 20px;">
+                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">🔍 Esplora SeaGO</h2>
+                    <p style="margin: 0; opacity: 0.9;">Trova la barca perfetta per la tua avventura</p>
+                </div>
+
+                <!-- Barche in Evidenza -->
+                <div class="featured-boats" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">⭐ Barche in Evidenza</h3>
+                    <div style="display: grid; gap: 16px;">
+                        <div class="boat-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Azimut 50 Fly</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Civitavecchia</p>
+                                </div>
+                                <span style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">BESTSELLER</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.9 (127 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 18px; font-weight: bold; color: #0891b2;">€850/giorno</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €106/persona</div>
+                                </div>
+                            </div>
+                            <button onclick="showBoatDetails('azimut-50-fly')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                        </div>
+
+                        <div class="boat-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Zodiac Pro 420</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Gaeta</p>
+                                </div>
+                                <span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">ECO</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.7 (89 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 18px; font-weight: bold; color: #0891b2;">€180/giorno</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €23/persona</div>
+                                </div>
+                            </div>
+                            <button onclick="showBoatDetails('zodiac-pro-420')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Statistiche Rapide -->
+                <div class="quick-stats" style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1f2937; text-align: center;">📊 SeaGO in Numeri</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #0891b2;">500+</div>
+                            <div style="font-size: 12px; color: #6b7280;">Barche Disponibili</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #0891b2;">48</div>
+                            <div style="font-size: 12px; color: #6b7280;">Porti Partner</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #0891b2;">2.5K</div>
+                            <div style="font-size: 12px; color: #6b7280;">Clienti Soddisfatti</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 24px; font-weight: bold; color: #0891b2;">4.8★</div>
+                            <div style="font-size: 12px; color: #6b7280;">Rating Medio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ricerca Veloce -->
+                <div class="quick-search" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1f2937;">🔍 Ricerca Rapida</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <button onclick="showCategory('gommoni')" style="background: #eff6ff; color: #0891b2; border: 1px solid #0891b2; padding: 12px; border-radius: 6px; font-weight: 600;">🚤 Gommoni Disponibili</button>
+                        <button onclick="showCategory('barche-senza-patente')" style="background: #f0fdf4; color: #059669; border: 1px solid #059669; padding: 12px; border-radius: 6px; font-weight: 600;">⛵ Senza Patente</button>
+                        <button onclick="showCategory('yacht')" style="background: #fef3c7; color: #d97706; border: 1px solid #d97706; padding: 12px; border-radius: 6px; font-weight: 600;">🛥️ Yacht di Lusso</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Ormeggio -->
+        <div id="ormeggio" class="screen" style="display: none;">
+            <div class="content">
+                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; text-align: center; color: white; margin: 0 -16px 20px;">
+                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">⚓ Ormeggi SeaGO</h2>
+                    <p style="margin: 0; opacity: 0.9;">Trova il posto barca perfetto per te</p>
+                </div>
+
+                <!-- Porti in Evidenza -->
+                <div class="featured-ports" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">⭐ Porti in Evidenza</h3>
+                    <div style="display: grid; gap: 16px;">
+                        <div class="port-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Porto di Civitavecchia</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Lazio • 120 posti barca</p>
+                                </div>
+                                <span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">DISPONIBILE</span>
+                            </div>
+                            <div style="margin: 12px 0;">
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
+                                <div style="font-size: 13px; color: #374151;">⚡ Elettricità • 🚿 Docce • 🅿️ Parcheggio • 📶 Wi-Fi</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.6 (94 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 16px; font-weight: bold; color: #0891b2;">€45/metro/giorno</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €360/giorno (8m)</div>
+                                </div>
+                            </div>
+                            <button onclick="showMooringBooking('civitavecchia')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
+                        </div>
+
+                        <div class="port-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina di Gaeta</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Lazio • 85 posti barca</p>
+                                </div>
+                                <span style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">PREMIUM</span>
+                            </div>
+                            <div style="margin: 12px 0;">
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
+                                <div style="font-size: 13px; color: #374151;">⚡ Elettricità • 🚿 Docce • 🛒 Shop • 🍽️ Ristorante</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.8 (156 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 16px; font-weight: bold; color: #0891b2;">€52/metro/giorno</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €416/giorno (8m)</div>
+                                </div>
+                            </div>
+                            <button onclick="showMooringBooking('gaeta')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calcolatore Prezzi -->
+                <div class="price-calculator" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1f2937;">💰 Calcolatore Prezzi Ormeggio</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <div>
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Lunghezza barca (metri)</label>
+                            <select id="boatLength" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                                <option value="8">8 metri</option>
+                                <option value="10">10 metri</option>
+                                <option value="12">12 metri</option>
+                                <option value="15">15 metri</option>
+                                <option value="20">20 metri</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Durata (giorni)</label>
+                            <input type="number" value="1" min="1" id="days" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                        <button onclick="calculateMooringPrice()" style="background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">🧮 Calcola Prezzo</button>
+                        <div id="priceResult" style="text-align: center; font-size: 16px; font-weight: 600; color: #0891b2; margin-top: 8px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Esperienze -->
+        <div id="esperienze" class="screen" style="display: none;">
+            <div class="content">
+                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; text-align: center; color: white; margin: 0 -16px 20px;">
+                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">✨ Esperienze SeaGO</h2>
+                    <p style="margin: 0; opacity: 0.9;">Vivi il mare con le nostre esperienze uniche</p>
+                </div>
+
+                <!-- Categorie Esperienze -->
+                <div class="experience-categories" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">🌟 Categorie Esperienze</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div class="category-btn" style="background: #eff6ff; border: 1px solid #0891b2; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                            <div style="font-size: 20px; margin-bottom: 4px;">🛥️</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #0891b2;">Tour Guidati</div>
+                            <div style="font-size: 12px; color: #6b7280;">8 esperienze</div>
+                        </div>
+                        <div class="category-btn" style="background: #f0fdf4; border: 1px solid #059669; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                            <div style="font-size: 20px; margin-bottom: 4px;">🍽️</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #059669;">Gourmet</div>
+                            <div style="font-size: 12px; color: #6b7280;">5 esperienze</div>
+                        </div>
+                        <div class="category-btn" style="background: #fef3c7; border: 1px solid #d97706; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                            <div style="font-size: 20px; margin-bottom: 4px;">🎣</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #d97706;">Pesca</div>
+                            <div style="font-size: 12px; color: #6b7280;">6 esperienze</div>
+                        </div>
+                        <div class="category-btn" style="background: #fdf2f8; border: 1px solid #db2777; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                            <div style="font-size: 20px; margin-bottom: 4px;">🎉</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #db2777;">Eventi</div>
+                            <div style="font-size: 12px; color: #6b7280;">4 esperienze</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Esperienze in Evidenza -->
+                <div class="featured-experiences" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">🌟 Esperienze Premium</h3>
+                    <div style="display: grid; gap: 16px;">
+                        <div class="experience-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Tramonto in Costiera Amalfitana</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Sorrento • 4 ore • Max 8 persone</p>
+                                </div>
+                                <span style="background: #db2777; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">PREMIUM</span>
+                            </div>
+                            <div style="margin: 12px 0;">
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Include:</div>
+                                <div style="font-size: 13px; color: #374151;">🥂 Aperitivo • 🎵 Musica • 📸 Foto ricordo • ⛵ Skipper</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.9 (284 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 16px; font-weight: bold; color: #0891b2;">€145/persona</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €1,160 totale</div>
+                                </div>
+                            </div>
+                            <button onclick="showExperienceBooking('tramonto-amalfi')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
+                        </div>
+
+                        <div class="experience-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Tour Isole Pontine</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Ponza • 8 ore • Max 12 persone</p>
+                                </div>
+                                <span style="background: #059669; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">BESTSELLER</span>
+                            </div>
+                            <div style="margin: 12px 0;">
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Include:</div>
+                                <div style="font-size: 13px; color: #374151;">🍕 Pranzo • 🏊‍♂️ Snorkeling • 🏖️ 3 spiagge • ⛵ Skipper</div>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.8 (196 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 16px; font-weight: bold; color: #0891b2;">€89/persona</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €1,068 totale</div>
+                                </div>
+                            </div>
+                            <button onclick="showExperienceBooking('tour-pontine')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Prenotazione Esperienze -->
+                <div class="booking-info" style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1f2937;">ℹ️ Info Prenotazioni</h3>
+                    <div style="font-size: 14px; color: #6b7280; line-height: 1.5;">
+                        <div style="margin-bottom: 8px;">✅ <strong>Cancellazione gratuita</strong> fino a 24h prima</div>
+                        <div style="margin-bottom: 8px;">🌊 <strong>Condizioni meteo:</strong> rimborso completo se cancellato per maltempo</div>
+                        <div style="margin-bottom: 8px;">👨‍✈️ <strong>Skipper incluso</strong> in tutte le esperienze</div>
+                        <div>📱 <strong>Assistenza 24/7</strong> durante l'esperienza</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Profilo -->
+        <div id="profilo" class="screen" style="display: none;">
+            <!-- Il contenuto verrà inserito dinamicamente dalla funzione updateProfileSection() -->
+        </div>
+
+        <!-- Pagina Dettaglio Barca -->
+        <div id="boat-details" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 id="boat-title" style="margin: 0; font-size: 22px; font-weight: 300;">Dettagli Barca</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content" id="boat-details-content">
+                <!-- Contenuto dettaglio barca verrà inserito qui -->
+            </div>
+        </div>
+
+        <!-- Pagina Prenotazione Ormeggio -->
+        <div id="mooring-booking" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Prenota Ormeggio</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content" id="mooring-booking-content">
+                <!-- Contenuto prenotazione ormeggio verrà inserito qui -->
+            </div>
+        </div>
+
+        <!-- Pagina Prenotazione Esperienza -->
+        <div id="experience-booking" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Prenota Esperienza</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content" id="experience-booking-content">
+                <!-- Contenuto prenotazione esperienza verrà inserito qui -->
+            </div>
+        </div>
+
+        <!-- Pagine Profilo Dettagliate -->
+        <div id="my-bookings" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Le mie prenotazioni</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="margin: 0; color: #1f2937;">Azimut 50 Fly</h3>
+                        <span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">CONFERMATA</span>
+                    </div>
+                    <p style="margin: 0 0 8px 0; color: #6b7280;">📍 Civitavecchia • 15-17 Agosto 2025</p>
+                    <p style="margin: 0 0 12px 0; color: #6b7280;">💰 €1,700 totale • 8 ospiti</p>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="margin: 0; color: #1f2937;">Zodiac Pro 420</h3>
+                        <span style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px;">IN ATTESA</span>
+                    </div>
+                    <p style="margin: 0 0 8px 0; color: #6b7280;">📍 Gaeta • 22-24 Agosto 2025</p>
+                    <p style="margin: 0 0 12px 0; color: #6b7280;">💰 €540 totale • 4 ospiti</p>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="my-reviews" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Le mie recensioni</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 8px 0; color: #1f2937;">Azimut 50 Fly</h3>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                        <span style="font-size: 14px; color: #6b7280;">Agosto 2025</span>
+                    </div>
+                    <p style="margin: 0; color: #374151; line-height: 1.5;">"Esperienza fantastica! Barca perfetta e servizio impeccabile. Consigliatissimo per una giornata speciale."</p>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 8px 0; color: #1f2937;">Zodiac Pro 420</h3>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                        <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                        <span style="font-size: 14px; color: #6b7280;">Luglio 2025</span>
+                    </div>
+                    <p style="margin: 0; color: #374151; line-height: 1.5;">"Gommone perfetto per esplorare la costa. Facile da guidare e molto divertente!"</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="payment-methods" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Metodi di pagamento</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">💳 Carte Salvate</h3>
+                    <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-weight: 600;">•••• •••• •••• 1234</div>
+                                <div style="font-size: 14px; color: #6b7280;">Visa • Scade 12/27</div>
+                            </div>
+                            <button style="background: #ef4444; color: white; border: none; padding: 6px 12px; border-radius: 4px; font-size: 12px;">Rimuovi</button>
+                        </div>
+                    </div>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">+ Aggiungi Carta</button>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">🔒 Pagamenti Sicuri</h3>
+                    <div style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                        <p>• Tutti i pagamenti sono protetti da crittografia SSL</p>
+                        <p>• Supportiamo Visa, Mastercard, American Express</p>
+                        <p>• Apple Pay e Google Pay disponibili</p>
+                        <p>• Nessun costo aggiuntivo per le transazioni</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="become-host" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Diventa Sea Host</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">🚤 Affitta la tua barca</h3>
+                    <p style="margin: 0 0 16px 0; color: #6b7280;">Guadagna fino a €12,500 all'anno affittando la tua barca quando non la usi.</p>
+                    <div style="background: #eff6ff; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 18px; font-weight: bold; color: #0891b2; text-align: center;">€850/mese di guadagno medio</div>
+                        <div style="font-size: 14px; color: #6b7280; text-align: center;">Con solo 10 giorni di noleggio</div>
+                    </div>
+                    <button style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">Inizia Ora</button>
+                </div>
+                <div style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 12px 0; color: #1f2937;">✅ Vantaggi Sea Host</h3>
+                    <div style="color: #6b7280; font-size: 14px; line-height: 1.5;">
+                        <p>• Assicurazione casco coperta da SeaGO</p>
+                        <p>• Gestione prenotazioni automatica</p>
+                        <p>• Pagamenti sicuri ogni 7 giorni</p>
+                        <p>• Supporto clienti dedicato 24/7</p>
+                        <p>• Check-in/out assistito nei porti</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Categoria -->
+        <div id="category-page" class="screen" style="display: none; margin: 0; padding: 0;">
+            <!-- Header pulito con layout elegante -->
+            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0; top: 0; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px); flex-shrink: 0;">←</button>
+                
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 2px;">SeaGO</div>
+                    <h1 id="category-title" style="margin: 0; font-size: 22px; font-weight: 300; letter-spacing: 0.3px;">Categoria Barche</h1>
+                </div>
+                
+                <div style="width: 40px; flex-shrink: 0;"></div>
+            </div>
+                
+            <div class="category-content" style="padding: 20px; margin: 0;">
+                <p id="category-description" style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Descrizione categoria</p>
+                <div id="category-boats" class="boats-grid">
+                    <!-- Barche caricate dinamicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Località -->
+        <div id="location-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1 id="location-title">Porto</h1>
+                </div>
+                <div class="location-content">
+                    <p id="location-description">Descrizione porto</p>
+                    <div class="location-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="location-boats">0</span>
+                            <span class="stat-label">Barche disponibili</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="location-rating">0</span>
+                            <span class="stat-label">Rating medio</span>
+                        </div>
+                    </div>
+                    <div class="services-section">
+                        <h3>Servizi disponibili</h3>
+                        <ul id="location-services">
+                            <!-- Servizi caricati dinamicamente -->
+                        </ul>
+                    </div>
+                    <button class="btn-primary full-width">Prenota Ormeggio</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Dettagli Barca -->
+        <div id="boat-details-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1 id="boat-title">Dettagli Barca</h1>
+                </div>
+                <div class="boat-details-content">
+                    <div class="boat-image-placeholder">
+                        <div style="background: linear-gradient(135deg, #0891b2, #0284c7); height: 200px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px;">
+                            🛥️
+                        </div>
+                    </div>
+                    <div class="boat-info">
+                        <h3 id="boat-name">Nome Barca</h3>
+                        <p id="boat-price">Prezzo</p>
+                        <p id="boat-location">Località</p>
+                        <div class="boat-features">
+                            <h4>Caratteristiche:</h4>
+                            <ul>
+                                <li>Capacità: 8 persone</li>
+                                <li>Lunghezza: 12 metri</li>
+                                <li>Bagni: 2</li>
+                                <li>Cabine: 3</li>
+                            </ul>
+                        </div>
+                        <button class="btn-primary full-width" onclick="showBookingForm()">Prenota Ora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagina Prenotazione -->
+        <div id="booking-page" class="screen" style="display: none;">
+            <div class="content">
+                <div class="header">
+                    <button onclick="goBack()" class="back-btn">← Indietro</button>
+                    <h1>Prenota la tua Barca</h1>
+                </div>
+                <div class="booking-content">
+                    <form class="booking-form">
+                        <div class="form-group">
+                            <label>Date di noleggio</label>
+                            <input type="date" id="start-date" required>
+                            <input type="date" id="end-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Numero ospiti</label>
+                            <select>
+                                <option>1-2 persone</option>
+                                <option>3-4 persone</option>
+                                <option>5-8 persone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Servizi aggiuntivi</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox"> Skipper (+€150/giorno)</label>
+                                <label><input type="checkbox"> Carburante incluso (+€80/giorno)</label>
+                                <label><input type="checkbox"> Pulizia finale (+€50)</label>
+                            </div>
+                        </div>
+                        <div class="price-summary">
+                            <h3>Riepilogo Prezzo</h3>
+                            <div class="price-line">
+                                <span>Noleggio base:</span>
+                                <span>€350/giorno</span>
+                            </div>
+                            <div class="price-line total">
+                                <span>Totale:</span>
+                                <span>€350</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-primary full-width" onclick="confirmBooking()">Conferma Prenotazione</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="#" class="nav-item active" onclick="showScreen('home', this)">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('esplora', this)">
+                <div class="nav-icon">🔍</div>
+                <span>Esplora</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('ormeggio', this)">
+                <div class="nav-icon">⚓</div>
+                <span>Ormeggio</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('esperienze', this)">
+                <div class="nav-icon">✨</div>
+                <span>Esperienze</span>
+            </a>
+            <a href="#" class="nav-item" onclick="showScreen('profilo', this)">
+                <div class="nav-icon">👤</div>
+                <span>Profilo</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        console.log("📱SeaGO Mobile App Preview Loaded - Sistema di navigazione completo");
+        console.log("Homepage web replicata perfettamente su mobile");
+
+        // Sistema di routing avanzato
+        let currentPage = 'home';
+        let pageHistory = [];
+        
+        // Sistema di autenticazione simulato
+        let isUserLoggedIn = false;
+
+        // Dati delle categorie barche
+        const categoryData = {
+            'yacht': {
+                title: 'Yacht di Lusso',
+                description: 'Scopri i nostri yacht di lusso per esperienze indimenticabili',
+                boats: [
+                    { name: 'Azimut 68', price: '€2,500/giorno', location: 'Civitavecchia' },
+                    { name: 'Ferretti 720', price: '€3,200/giorno', location: 'Gaeta' },
+                    { name: 'Princess V58', price: '€2,800/giorno', location: 'Ponza' }
+                ]
+            },
+            'sailboat': {
+                title: 'Barche a Vela',
+                description: 'Vela tradizionale per gli amanti del mare autentico',
+                boats: [
+                    { name: 'Jeanneau Sun Odyssey 449', price: '€350/giorno', location: 'Gaeta' },
+                    { name: 'Bavaria Cruiser 46', price: '€420/giorno', location: 'Civitavecchia' },
+                    { name: 'Beneteau Oceanis 40.1', price: '€380/giorno', location: 'Anzio' }
+                ]
+            },
+            'gommoni': {
+                title: 'Gommoni e RIB',
+                description: 'Gommoni veloci per escursioni giornaliere',
+                boats: [
+                    { name: 'Zodiac Pro 420', price: '€180/giorno', location: 'Terracina' },
+                    { name: 'Capelli Tempest 626', price: '€220/giorno', location: 'Formia' },
+                    { name: 'Joker Boat 650', price: '€200/giorno', location: 'Gaeta' },
+                    { name: 'Quicksilver 605', price: '€165/giorno', location: 'Anzio' },
+                    { name: 'Marlin 24', price: '€240/giorno', location: 'Civitavecchia' }
+                ]
+            },
+            'barche-senza-patente': {
+                title: 'Barche senza Patente',
+                description: 'Facili da guidare, perfette per principianti',
+                boats: [
+                    { name: 'Ranieri Open Line 19', price: '€120/giorno', location: 'Gaeta' },
+                    { name: 'Quicksilver 455', price: '€100/giorno', location: 'Terracina' },
+                    { name: 'Allegra 18', price: '€90/giorno', location: 'Anzio' },
+                    { name: 'Marinello 16', price: '€85/giorno', location: 'Formia' },
+                    { name: 'Stabile 480', price: '€110/giorno', location: 'Ostia' }
+                ]
+            },
+            'catamaran': {
+                title: 'Catamarani',
+                description: 'Spazio e stabilità per gruppi numerosi',
+                boats: [
+                    { name: 'Lagoon 380', price: '€450/giorno', location: 'Civitavecchia' },
+                    { name: 'Fountaine Pajot Lucia 40', price: '€520/giorno', location: 'Gaeta' }
+                ]
+            },
+            'houseboat': {
+                title: 'Houseboat',
+                description: 'La tua casa galleggiante per vacanze uniche',
+                boats: [
+                    { name: 'Houseboat Deluxe 12', price: '€350/giorno', location: 'Ponza' },
+                    { name: 'Marina Home 40', price: '€420/giorno', location: 'Gaeta' },
+                    { name: 'Floating Villa 45', price: '€580/giorno', location: 'Civitavecchia' }
+                ]
+            },
+            'motorboat': {
+                title: 'Barche a Motore',
+                description: 'Potenza e velocità per esplorare il mare',
+                boats: [
+                    { name: 'Chris Craft Calypso 30', price: '€380/giorno', location: 'Civitavecchia' },
+                    { name: 'Cranchi E26', price: '€320/giorno', location: 'Gaeta' },
+                    { name: 'Sessa C32', price: '€420/giorno', location: 'Anzio' },
+                    { name: 'Gozzo Sorrentino 7.5m', price: '€280/giorno', location: 'Sorrento' }
+                ]
+            },
+            'gulet': {
+                title: 'Gulet Tradizionali',
+                description: 'Tradizione turca di lusso e eleganza',
+                boats: [
+                    { name: 'Sultan Gulet 24m', price: '€1,200/giorno', location: 'Gaeta' },
+                    { name: 'Mediterranean Dream 28m', price: '€1,500/giorno', location: 'Civitavecchia' },
+                    { name: 'Turkish Delight 22m', price: '€980/giorno', location: 'Ponza' }
+                ]
+            },
+            'kayak': {
+                title: 'Caiacco e Kayak',
+                description: 'Kayak e canoe per avventure acquatiche',
+                boats: [
+                    { name: 'Sea Kayak Touring', price: '€35/giorno', location: 'Gaeta' },
+                    { name: 'Canoa Canadese 3 posti', price: '€45/giorno', location: 'Terracina' },
+                    { name: 'Kayak sit-on-top', price: '€30/giorno', location: 'Anzio' },
+                    { name: 'SUP Premium Board', price: '€25/giorno', location: 'Sperlonga' }
+                ]
+            },
+            'jetski': {
+                title: 'Moto d\'Acqua',
+                description: 'Adrenalina e velocità sull\'acqua',
+                boats: [
+                    { name: 'Yamaha VX Cruiser', price: '€120/giorno', location: 'Anzio' },
+                    { name: 'Sea-Doo GTI SE', price: '€150/giorno', location: 'Terracina' },
+                    { name: 'Kawasaki Ultra 310X', price: '€180/giorno', location: 'Gaeta' }
+                ]
+            },
+            'charter': {
+                title: 'Charter con Skipper',
+                description: 'Esperienza completa con skipper professionista',
+                boats: [
+                    { name: 'Bavaria 50 + Skipper', price: '€800/giorno', location: 'Civitavecchia' },
+                    { name: 'Lagoon 42 + Equipaggio', price: '€1,200/giorno', location: 'Gaeta' },
+                    { name: 'Jeanneau 54 + Skipper', price: '€900/giorno', location: 'Ponza' }
+                ]
+            }
+        };
+
+        // Dati delle località
+        const locationData = {
+            'civitavecchia': {
+                title: 'Porto di Civitavecchia',
+                description: 'Principale porto del Lazio con collegamenti per Sardegna e Corsica',
+                services: ['Carburante', 'Acqua', 'Elettricità', 'Wi-Fi', 'Ristoranti', 'Supermercato'],
+                boats: 8,
+                rating: 4.5
+            },
+            'gaeta': {
+                title: 'Porto di Gaeta',
+                description: 'Porto turistico nel golfo di Gaeta, ideale per escursioni costiere',
+                services: ['Marina turistico', 'Noleggio attrezzature', 'Bar', 'Parcheggio', 'Docce'],
+                boats: 12,
+                rating: 4.3
+            },
+            'ponza': {
+                title: 'Porto di Ponza',
+                description: 'Isola paradisiaca con acque cristalline e paesaggi mozzafiato',
+                services: ['Ormeggi turistici', 'Ristoranti', 'Escursioni', 'Diving center'],
+                boats: 6,
+                rating: 4.7
+            }
+        };
+
+        // Funzioni di navigazione
+        function navigateTo(page, params = {}) {
+            if (currentPage !== 'home') {
+                pageHistory.push(currentPage);
+            }
+            currentPage = page;
+            showPage(page, params);
+        }
+
+        function goBack() {
+            if (pageHistory.length > 0) {
+                currentPage = pageHistory.pop();
+                showPage(currentPage);
+            } else {
+                showScreen('home');
+            }
+        }
+
+        function showPage(page, params = {}) {
+            // Nascondi tutte le pagine
+            document.querySelectorAll('.screen').forEach(p => p.style.display = 'none');
+            document.querySelectorAll('[id$="-page"]').forEach(p => p.style.display = 'none');
+            
+            // Mostra la pagina richiesta
+            const pageElement = document.getElementById(page + '-page');
+            if (pageElement) {
+                pageElement.style.display = 'block';
+                // Aggiorna contenuto se necessario
+                if (params.category) updateCategoryPage(params.category);
+                if (params.location) updateLocationPage(params.location);
+                if (params.boat) updateBoatDetailsPage(params.boat);
+            } else {
+                // Fallback alle screen normali
+                const screenElement = document.getElementById(page);
+                if (screenElement) {
+                    screenElement.style.display = 'block';
+                }
+            }
+        }
+
+        function updateCategoryPage(category) {
+            const data = categoryData[category] || categoryData['yacht'];
+            document.getElementById('category-title').textContent = data.title;
+            document.getElementById('category-description').textContent = data.description;
+            
+            const boatsList = document.getElementById('category-boats');
+            boatsList.innerHTML = data.boats.map(boat => `
+                <div class="boat-card" onclick="navigateTo('boat-details', {boat: '${boat.name}'})">
+                    <h4>${boat.name}</h4>
+                    <p class="boat-price">${boat.price}</p>
+                    <p class="boat-location">📍 ${boat.location}</p>
+                    <button class="btn-primary">Vedi Dettagli</button>
+                </div>
+            `).join('');
+        }
+
+        function updateLocationPage(location) {
+            const data = locationData[location] || locationData['civitavecchia'];
+            document.getElementById('location-title').textContent = data.title;
+            document.getElementById('location-description').textContent = data.description;
+            document.getElementById('location-boats').textContent = data.boats;
+            document.getElementById('location-rating').textContent = data.rating;
+            
+            const servicesList = document.getElementById('location-services');
+            servicesList.innerHTML = data.services.map(service => `<li>✓ ${service}</li>`).join('');
+        }
+
+        function updateBoatDetailsPage(boatName) {
+            document.getElementById('boat-name').textContent = boatName;
+            document.getElementById('boat-price').textContent = '€350/giorno';
+            document.getElementById('boat-location').textContent = '📍 Gaeta';
+        }
+
+        function showBookingForm() {
+            navigateTo('booking');
+        }
+
+        function confirmBooking() {
+            // Controlla se l'utente è loggato
+            if (!isUserLoggedIn) {
+                alert('🔐 Accesso Richiesto\n\nPer completare la prenotazione devi prima accedere o registrarti.\n\nTi stiamo reindirizzando alla sezione accesso...');
+                
+                // Reindirizza alla sezione profilo per l'accesso
+                setTimeout(() => {
+                    showScreen('profilo');
+                }, 1500);
+                return;
+            }
+            
+            // Se loggato, procede con la prenotazione
+            alert('✅ Prenotazione confermata! Riceverai una email di conferma a breve.');
+            navigateTo('home');
+        }
+        
+        // Funzione per login simulato
+        function simulateLogin() {
+            isUserLoggedIn = true;
+            alert('✅ Accesso effettuato con successo!\n\nBenvenuto in SeaGO! Ora puoi completare le prenotazioni.');
+            
+            // Aggiorna l'interfaccia per mostrare l'utente loggato
+            updateProfileSection();
+        }
+        
+        // Funzione per logout simulato  
+        function simulateLogout() {
+            isUserLoggedIn = false;
+            alert('👋 Logout effettuato con successo!\n\nGrazie per aver usato SeaGO!');
+            
+            // Aggiorna l'interfaccia
+            updateProfileSection();
+        }
+        
+        // Funzione per calcolare prezzo ormeggio
+        function calculateMooringPrice() {
+            const length = parseInt(document.getElementById('boatLength').value);
+            const days = parseInt(document.getElementById('days').value);
+            const pricePerMeter = 45; // €45 per metro per giorno
+            
+            const totalPrice = length * pricePerMeter * days;
+            const resultDiv = document.getElementById('priceResult');
+            
+            if (resultDiv) {
+                resultDiv.innerHTML = `💰 Prezzo totale: €${totalPrice} (${days} ${days === 1 ? 'giorno' : 'giorni'})`;
+            }
+        }
+
+        // Funzioni per navigazione pagine dettagliate
+        function showBoatDetails(boatId) {
+            const boatData = {
+                'azimut-50-fly': {
+                    title: 'Azimut 50 Fly',
+                    location: 'Civitavecchia',
+                    price: '€850/giorno',
+                    rating: '4.9 (127 recensioni)',
+                    description: 'Lussuoso yacht perfetto per gruppi fino a 8 persone. Include cabine, bagni e tutte le comodità per una giornata indimenticabile.',
+                    features: ['2 Cabine', '2 Bagni', 'Cucina attrezzata', 'Aria condizionata', 'Lettini prendisole', 'Sistema audio Bluetooth']
+                },
+                'zodiac-pro-420': {
+                    title: 'Zodiac Pro 420', 
+                    location: 'Gaeta',
+                    price: '€180/giorno',
+                    rating: '4.7 (89 recensioni)',
+                    description: 'Gommone semi-rigido ideale per esplorare la costa e raggiungere calette nascoste. Facile da guidare, non richiede patente nautica.',
+                    features: ['Max 6 persone', 'Motore 40 HP', 'Tendalino parasole', 'Scaletta bagno', 'Kit sicurezza incluso', 'GPS/Ecoscandaglio']
+                }
+            };
+            
+            const boat = boatData[boatId];
+            if (!boat) return;
+            
+            document.getElementById('boat-title').textContent = boat.title;
+            document.getElementById('boat-details-content').innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 style="margin: 0; color: #1f2937;">${boat.title}</h3>
+                        <span style="color: #fbbf24;">⭐ ${boat.rating}</span>
+                    </div>
+                    <p style="margin: 0 0 8px 0; color: #6b7280;">📍 ${boat.location}</p>
+                    <p style="margin: 0 0 16px 0; font-size: 18px; font-weight: bold; color: #0891b2;">${boat.price}</p>
+                    <p style="margin: 0 0 16px 0; color: #374151; line-height: 1.5;">${boat.description}</p>
+                    
+                    <h4 style="margin: 0 0 12px 0; color: #1f2937;">✨ Caratteristiche</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px;">
+                        ${boat.features.map(feature => `<div style="background: #f8fafc; padding: 8px; border-radius: 6px; font-size: 14px; color: #374151;">• ${feature}</div>`).join('')}
+                    </div>
+                    
+                    <button onclick="bookBoat('${boatId}')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 16px;">📅 Prenota Ora</button>
+                </div>
+            `;
+            navigateTo('boat-details');
+        }
+
+        function showMooringBooking(portId) {
+            const portData = {
+                'civitavecchia': { name: 'Porto di Civitavecchia', price: '€45/metro/giorno' },
+                'gaeta': { name: 'Marina di Gaeta', price: '€52/metro/giorno' }
+            };
+            
+            const port = portData[portId] || portData['civitavecchia'];
+            
+            document.getElementById('mooring-booking-content').innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937;">⚓ ${port.name}</h3>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Lunghezza barca (metri)</label>
+                        <select id="mooringLength" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 12px;">
+                            <option value="8">8 metri</option>
+                            <option value="10">10 metri</option>
+                            <option value="12">12 metri</option>
+                            <option value="15">15 metri</option>
+                        </select>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Date soggiorno</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <input type="date" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <input type="date" style="padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                        </div>
+                    </div>
+                    <div style="background: #eff6ff; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 16px; font-weight: bold; color: #0891b2;">${port.price}</div>
+                        <div style="font-size: 14px; color: #6b7280;">Prezzo per metro al giorno</div>
+                    </div>
+                    <button onclick="checkAuth('Ormeggio prenotato! Verrai contattato entro 2 ore per la conferma.')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
+                </div>
+            `;
+            navigateTo('mooring-booking');
+        }
+
+        function showExperienceBooking(experienceId) {
+            const experiences = {
+                'tramonto-amalfi': { name: 'Tramonto in Costiera Amalfitana', price: '€145/persona', duration: '4 ore' },
+                'tour-pontine': { name: 'Tour Isole Pontine', price: '€89/persona', duration: '8 ore' }
+            };
+            
+            const exp = experiences[experienceId] || experiences['tramonto-amalfi'];
+            
+            document.getElementById('experience-booking-content').innerHTML = `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937;">✨ ${exp.name}</h3>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Data esperienza</label>
+                        <input type="date" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; margin-bottom: 12px;">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Numero partecipanti</label>
+                        <select style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                            <option>2 persone</option>
+                            <option>4 persone</option>
+                            <option>6 persone</option>
+                            <option>8 persone</option>
+                        </select>
+                    </div>
+                    <div style="background: #eff6ff; border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                        <div style="font-size: 16px; font-weight: bold; color: #0891b2;">${exp.price}</div>
+                        <div style="font-size: 14px; color: #6b7280;">Durata: ${exp.duration}</div>
+                    </div>
+                    <button onclick="checkAuth('Esperienza prenotata! Riceverai la conferma via email.')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">Prenota Esperienza</button>
+                </div>
+            `;
+            navigateTo('experience-booking');
+        }
+
+        function bookBoat(boatId) {
+            checkAuth(`Barca prenotata! Procedi con il pagamento per confermare la prenotazione.`);
+        }
+
+        function checkAuth(successMessage) {
+            if (isLoggedIn) {
+                alert(successMessage);
+            } else {
+                alert('Devi effettuare l\'accesso per continuare. Verrai reindirizzato alla sezione Profilo.');
+                showScreen('profilo');
+            }
+        }
+
+        function navigateToPage(pageId) {
+            navigateTo(pageId);
+        }
+
+        function showCategory(categoryType) {
+            const categories = {
+                'yacht': { name: 'Yacht', boats: ['Azimut 80', 'Ferretti 720', 'Sunseeker 70'], icon: '🛥️' },
+                'gommoni': { name: 'Gommoni', boats: ['Zodiac Pro 420', 'Joker Boat 650', 'Marlin 28'], icon: '🚤' },
+                'barche-senza-patente': { name: 'Barche senza patente', boats: ['Quicksilver 455', 'Marinello 16', 'Saver 540'], icon: '⛵' }
+            };
+            
+            const category = categories[categoryType];
+            if (!category) return;
+            
+            // Aggiorna il contenuto della pagina categoria
+            document.getElementById('category-title').textContent = category.name;
+            document.getElementById('category-boats-list').innerHTML = category.boats.map(boat => `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <h4 style="margin: 0 0 8px 0; color: #1f2937;">${boat}</h4>
+                    <p style="margin: 0 0 12px 0; color: #6b7280;">📍 Disponibile • da €180/giorno</p>
+                    <button onclick="showBoatDetails('${boat.toLowerCase().replace(/\s+/g, '-')}')" style="width: 100%; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Vedi Dettagli</button>
+                </div>
+            `).join('');
+            
+            navigateTo('category-page');
+        }
+
+        function showProfilePage(pageType) {
+            switch(pageType) {
+                case 'bookings':
+                    navigateTo('my-bookings');
+                    break;
+                case 'reviews':
+                    navigateTo('my-reviews');
+                    break;
+                case 'payments':
+                    navigateTo('payment-methods');
+                    break;
+                case 'host':
+                    navigateTo('become-host');
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        function handleLogin() {
+            isLoggedIn = true;
+            alert('🌟 Accesso effettuato con successo!');
+            updateProfileSection();
+        }
+
+        function handleLogout() {
+            isLoggedIn = false;
+            alert('👋 Logout effettuato. A presto!');
+            updateProfileSection();
+        }
+
+        // Aggiorna la sezione profilo in base allo stato di login
+        function updateProfileSection() {
+            const profileSection = document.getElementById('profilo');
+            if (!profileSection) return;
+            
+            if (isUserLoggedIn) {
+                // Mostra interfaccia utente loggato
+                profileSection.innerHTML = `
+                    <div class="content">
+                        <div class="profile-header" style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
+                            <h2>👋 Ciao, Marco!</h2>
+                            <p>Benvenuto nella tua area personale SeaGO</p>
+                        </div>
+                        
+                        <div class="profile-menu" style="padding: 20px;">
+                            <div class="menu-item" onclick="showProfilePage('bookings')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                <h4>📅 Le mie prenotazioni</h4>
+                                <p>Gestisci le tue prenotazioni e cronologia</p>
+                            </div>
+                            
+                            <div class="menu-item" onclick="showProfilePage('reviews')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                <h4>⭐ Le mie recensioni</h4>
+                                <p>Vedi e scrivi recensioni sulle barche</p>
+                            </div>
+                            
+                            <div class="menu-item" onclick="showProfilePage('payments')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                <h4>💳 Metodi di pagamento</h4>
+                                <p>Gestisci carte di credito e pagamenti</p>
+                            </div>
+                            
+                            <div class="menu-item" onclick="showProfilePage('host')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                <h4>🏆 Diventa Sea Host</h4>
+                                <p>Affitta la tua barca su SeaGO</p>
+                            </div>
+                            
+                            <button onclick="handleLogout()" style="background: #ef4444; color: white; padding: 12px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-top: 20px;">
+                                🚪 Esci
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Mostra interfaccia login/registrazione
+                profileSection.innerHTML = `
+                    <div class="content">
+                        <div class="auth-header" style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
+                            <h2>🔐 Accedi o Registrati</h2>
+                            <p>Entra in SeaGO per prenotare le tue barche</p>
+                        </div>
+                        
+                        <div class="auth-options" style="padding: 20px;">
+                            <button onclick="handleLogin()" style="background: #0891b2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                                🚪 Accedi con Email
+                            </button>
+                            
+                            <button onclick="handleLogin()" style="background: #059669; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                                📝 Registrati Nuovo Account
+                            </button>
+                            
+                            <div style="text-align: center; margin: 20px 0; color: #666;">oppure continua con</div>
+                            
+                            <button onclick="handleLogin()" style="background: #1877f2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 8px;">
+                                📘 Facebook
+                            </button>
+                            
+                            <button onclick="handleLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600;">
+                                🔴 Google
+                            </button>
+                            
+                            <p style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+                                Registrandoti accetti i nostri<br>
+                                <strong>Termini di Servizio</strong> e <strong>Privacy Policy</strong>
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function performSearch() {
+            const location = document.getElementById('portSearch')?.value || 'qualsiasi località';
+            alert(`🔍 SeaGO: Cercando barche a ${location}...\n\nTrovate 12 barche disponibili!`);
+        }
+
+        function showScreen(screenId, element) {
+            // Reset routing to main screens
+            currentPage = screenId;
+            pageHistory = [];
+            
+            // Hide all screens and pages
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.style.display = 'none';
+                screen.classList.remove('active');
+            });
+            document.querySelectorAll('[id$="-page"]').forEach(p => p.style.display = 'none');
+            
+            // Show selected screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.style.display = 'block';
+                targetScreen.classList.add('active');
+            }
+            
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            if (element) element.classList.add('active');
+            
+            // Scroll to top
+            const content = document.querySelector('.content');
+            if (content) content.scrollTop = 0;
+        }
+
+        // Port search functionality
+        function showPortSuggestions() {
+            const suggestions = document.getElementById('portSuggestions');
+            if (suggestions) suggestions.style.display = 'block';
+        }
+
+        function selectPort(portName) {
+            const input = document.getElementById('portSearch');
+            const suggestions = document.getElementById('portSuggestions');
+            
+            if (input) input.value = portName;
+            if (suggestions) suggestions.style.display = 'none';
+            
+            // Navigate to location page
+            const locationKey = portName.toLowerCase().replace(/\s+/g, '').replace('portodi', '');
+            if (locationData[locationKey]) {
+                navigateTo('location', {location: locationKey});
+            } else {
+                setTimeout(() => {
+                    alert('SeaGO: Cercando barche a ' + portName + '...');
+                }, 500);
+            }
+        }
+
+        function filterPorts() {
+            const input = document.getElementById('portSearch');
+            const suggestions = document.getElementById('portSuggestions');
+            const searchTerm = input ? input.value.toLowerCase() : '';
+            
+            if (!suggestions) return;
+            
+            if (searchTerm.length > 0) {
+                suggestions.style.display = 'block';
+                
+                // Filter port options
+                const portOptions = suggestions.querySelectorAll('.port-option');
+                const regionHeaders = suggestions.querySelectorAll('.region-header');
+                
+                let hasVisibleLazio = false;
+                let hasVisibleCampania = false;
+                
+                portOptions.forEach(option => {
+                    const portName = option.textContent.toLowerCase();
+                    const isVisible = portName.includes(searchTerm);
+                    option.style.display = isVisible ? 'block' : 'none';
+                    
+                    if (isVisible) {
+                        // Check which region this port belongs to
+                        let currentElement = option.previousElementSibling;
+                        while (currentElement) {
+                            if (currentElement.classList.contains('region-header')) {
+                                if (currentElement.textContent.includes('Lazio')) {
+                                    hasVisibleLazio = true;
+                                } else if (currentElement.textContent.includes('Campania')) {
+                                    hasVisibleCampania = true;
+                                }
+                                break;
+                            }
+                            currentElement = currentElement.previousElementSibling;
+                        }
+                    }
+                });
+                
+                // Show/hide region headers
+                regionHeaders.forEach(header => {
+                    if (header.textContent.includes('Lazio')) {
+                        header.style.display = hasVisibleLazio ? 'block' : 'none';
+                    } else if (header.textContent.includes('Campania')) {
+                        header.style.display = hasVisibleCampania ? 'block' : 'none';
+                    }
+                });
+            } else {
+                // Show all options when search is empty
+                const allElements = suggestions.querySelectorAll('.port-option, .region-header');
+                allElements.forEach(element => {
+                    element.style.display = 'block';
+                });
+            }
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize home screen
+            showScreen('home');
+            
+            // Initialize profile section based on login status
+            updateProfileSection();
+            
+            // Setup port search
+            const container = document.querySelector('.port-search-container');
+            const suggestions = document.getElementById('portSuggestions');
+            
+            // Close suggestions when clicking outside
+            document.addEventListener('click', function(event) {
+                if (container && suggestions && !container.contains(event.target)) {
+                    suggestions.style.display = 'none';
+                }
+            });
+
+            // Prevent suggestions from closing when clicking inside
+            if (suggestions) {
+                suggestions.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            }
+
+            // Filter options functionality
+            const filterOptions = document.querySelectorAll('.filter-option');
+            filterOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const filterText = this.querySelector('span').textContent;
+                    
+                    if (this.classList.contains('active')) {
+                        console.log('SeaGO: Filtro attivato -', filterText);
+                    } else {
+                        console.log('SeaGO: Filtro disattivato -', filterText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

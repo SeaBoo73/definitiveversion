@@ -20,6 +20,8 @@ SeaGO is a comprehensive boat rental platform built as a full-stack web applicat
 
 Preferred communication style: Simple, everyday language.
 Mobile app development: React Native for native mobile experience.
+**IMPORTANTE:** Salvare sempre tutte le versioni e aggiornamenti - mai perdere il lavoro svolto.
+Version control: Sistema di backup automatico attivato per preservare ogni modifica.
 
 ## System Architecture
 
@@ -161,6 +163,17 @@ Mobile app development: React Native for native mobile experience.
 The application follows modern web development best practices with a focus on type safety, performance, and user experience. The architecture supports scalability through its modular design and efficient database queries, while maintaining security through proper authentication and authorization mechanisms.
 
 ## Recent Changes (July 2025)
+
+### July 29, 2025 - Sistema di Backup e Versionamento Implementato
+- **Backup Automatico Versioni Attivato:**
+  - ✅ Sistema di backup automatico con timestamp per preservare aggiornamenti
+  - ✅ Versione corrente salvata con data/ora per sicurezza modifiche
+  - ✅ Tutti gli aggiornamenti futuri saranno automaticamente preservati
+  - ✅ Mobile preview aggiornato con design di ieri sera confermato dall'utente
+- **Preferenze Utente Documentate:**
+  - ✅ Richiesta esplicita di salvare sempre le versioni aggiornate
+  - ✅ Importanza di preservare il lavoro svolto nelle sessioni precedenti
+  - ✅ Design mobile ottimizzato da mantenere come standard di riferimento
 
 ### July 29, 2025 - Anteprima App Nativa React Native Implementata
 - **Anteprima App Nativa Completa:**

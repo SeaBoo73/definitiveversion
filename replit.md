@@ -162,6 +162,17 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 29, 2025 - Anteprima App Nativa React Native Implementata
+- **Anteprima App Nativa Completa:**
+  - ✅ Creata anteprima specifica per l'app React Native (`/native-preview`)
+  - ✅ Design nativo iOS/Android con navigazione bottom tab a 5 sezioni
+  - ✅ Interfaccia che simula perfettamente React Native con touch feedback
+  - ✅ Tutte le 5 sezioni complete: Esplora, Ormeggio, Esperienze, Servizi, Profilo
+  - ✅ Dati autentici SeaGO integrati: barche, porti, prezzi, esperienze
+  - ✅ Design responsive ottimizzato per dispositivi mobili (390px)
+  - ✅ Elementi nativi: header colorato, tab bar fissa, card interattive
+  - ✅ Route dedicata accessibile su `/native-preview` per demo app store
+
 ### July 28, 2025 - Routing Principale Ripristinato e Separazione Homepage Web/Mobile
 - **Routing Principale Corretto:**
   - ✅ Route `/` ora serve correttamente l'homepage web originale di SeaGO

@@ -11,9 +11,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/attached_assets', express.static('attached_assets'));
 app.use('/api/images', express.static('attached_assets'));
 
-// Native app preview route - Only accessible via /app-preview
+// Mobile web preview route
 app.get("/app-preview", (req, res) => {
   res.sendFile(path.resolve("mobile-preview.html"));
+});
+
+// Native app preview route
+app.get("/native-preview", (req, res) => {
+  res.sendFile(path.resolve("native-app-preview.html"));
 });
 
 (async () => {
@@ -30,7 +35,8 @@ app.get("/app-preview", (req, res) => {
   const port = parseInt(process.env.PORT || "5000", 10);
   server.listen(port, "0.0.0.0", () => {
     log(`🚀 Server running on port ${port}`);
-    log(`📱 App preview: http://localhost:${port}/app-preview`);
+    log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
+    log(`📱 Native preview: http://localhost:${port}/native-preview`);
     log(`🌐 Web app: http://localhost:${port}`);
   });
 })();

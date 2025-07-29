@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeaGO - Anteprima App Nativa</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Design che simula un'app React Native */
+    .native-screen {
+      max-width: 390px;
+      margin: 0 auto;
+      background: #f8fafc;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+    .native-header {
+      background: linear-gradient(135deg, #0ea5e9 0%, #1e40af 100%);
+      padding: 12px 16px;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .native-content {
+      padding: 16px;
+      padding-bottom: 80px;
+    }
+    .native-tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 390px;
+      max-width: 100%;
+      background: white;
+      border-top: 1px solid #e5e7eb;
+      padding: 8px 0;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+    .native-tab {
+      flex: 1;
+      text-align: center;
+      padding: 8px;
+      color: #6b7280;
+      font-size: 12px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .native-tab.active {
+      color: #0ea5e9;
+    }
+    .native-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .native-button {
+      background: linear-gradient(135deg, #0ea5e9 0%, #1e40af 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .native-button:active {
+      transform: scale(0.98);
+    }
+    .search-bar {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .category-item {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .category-item:active {
+      transform: scale(0.98);
+    }
+    .boat-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .boat-image {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="native-screen">
+    <!-- Header -->
+    <div class="native-header">
+      <div class="flex items-center justify-between">
+        <h1 class="text-xl font-bold">SeaGO</h1>
+        <div class="flex items-center space-x-2">
+          <span class="text-sm opacity-75">📍 Roma</span>
+          <span class="text-sm opacity-75">☀️ 24°C</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="native-content" id="content">
+      <!-- Default: Esplora Screen -->
+      <div id="esplora-screen">
+        <!-- Search Bar -->
+        <input type="text" class="search-bar" placeholder="Cerca barche, località, esperienze...">
+        
+        <!-- Categories -->
+        <h3 class="text-lg font-semibold mb-3 text-gray-800">Categorie</h3>
+        <div class="category-grid">
+          <div class="category-item" onclick="showBoats('yacht')">
+            <div class="text-2xl mb-2">🛥️</div>
+            <div class="font-medium text-gray-800">Yacht</div>
+            <div class="text-xs text-gray-500">15 disponibili</div>
+          </div>
+          <div class="category-item" onclick="showBoats('gommoni')">
+            <div class="text-2xl mb-2">🚤</div>
+            <div class="font-medium text-gray-800">Gommoni</div>
+            <div class="text-xs text-gray-500">28 disponibili</div>
+          </div>
+          <div class="category-item" onclick="showBoats('vela')">
+            <div class="text-2xl mb-2">⛵</div>
+            <div class="font-medium text-gray-800">Barche a Vela</div>
+            <div class="text-xs text-gray-500">12 disponibili</div>
+          </div>
+          <div class="category-item" onclick="showBoats('jetski')">
+            <div class="text-2xl mb-2">🏄</div>
+            <div class="font-medium text-gray-800">Moto d'Acqua</div>
+            <div class="text-xs text-gray-500">8 disponibili</div>
+          </div>
+        </div>
+
+        <!-- Featured Boats -->
+        <h3 class="text-lg font-semibold mb-3 text-gray-800">In Evidenza</h3>
+        <div class="boat-card" onclick="showBoatDetails()">
+          <div class="boat-image">🛥️</div>
+          <div class="p-4">
+            <h4 class="font-semibold text-gray-800">Azimut 55</h4>
+            <p class="text-sm text-gray-600 mb-2">Porto di Civitavecchia</p>
+            <div class="flex items-center justify-between">
+              <span class="text-lg font-bold text-blue-600">€850/giorno</span>
+              <div class="flex items-center">
+                <span class="text-yellow-500">★★★★★</span>
+                <span class="text-xs text-gray-500 ml-1">(24)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="boat-card" onclick="showBoatDetails()">
+          <div class="boat-image">⛵</div>
+          <div class="p-4">
+            <h4 class="font-semibold text-gray-800">Beneteau Oceanis 46.1</h4>
+            <p class="text-sm text-gray-600 mb-2">Marina di Gaeta</p>
+            <div class="flex items-center justify-between">
+              <span class="text-lg font-bold text-blue-600">€420/giorno</span>
+              <div class="flex items-center">
+                <span class="text-yellow-500">★★★★☆</span>
+                <span class="text-xs text-gray-500 ml-1">(18)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ormeggio Screen -->
+      <div id="ormeggio-screen" style="display: none;">
+        <h3 class="text-lg font-semibold mb-3 text-gray-800">Porti e Ormeggi</h3>
+        
+        <div class="native-card">
+          <h4 class="font-semibold text-gray-800 mb-2">🏛️ Porto di Civitavecchia</h4>
+          <p class="text-sm text-gray-600 mb-3">Il porto principale del Lazio con servizi completi</p>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="text-gray-500">Posti disponibili:</span>
+              <span class="font-medium text-green-600 ml-1">15</span>
+            </div>
+            <div>
+              <span class="text-gray-500">Tariffa:</span>
+              <span class="font-medium text-blue-600 ml-1">€35/m</span>
+            </div>
+          </div>
+          <button class="native-button w-full mt-3">Prenota Ormeggio</button>
+        </div>
+
+        <div class="native-card">
+          <h4 class="font-semibold text-gray-800 mb-2">⚓ Marina di Gaeta</h4>
+          <p class="text-sm text-gray-600 mb-3">Marina moderna con tutti i comfort</p>
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="text-gray-500">Posti disponibili:</span>
+              <span class="font-medium text-green-600 ml-1">8</span>
+            </div>
+            <div>
+              <span class="text-gray-500">Tariffa:</span>
+              <span class="font-medium text-blue-600 ml-1">€42/m</span>
+            </div>
+          </div>
+          <button class="native-button w-full mt-3">Prenota Ormeggio</button>
+        </div>
+      </div>
+
+      <!-- Esperienze Screen -->
+      <div id="esperienze-screen" style="display: none;">
+        <h3 class="text-lg font-semibold mb-3 text-gray-800">Esperienze Uniche</h3>
+        
+        <div class="native-card">
+          <div class="flex items-center mb-3">
+            <span class="text-2xl mr-3">🌅</span>
+            <div>
+              <h4 class="font-semibold text-gray-800">Tour Isole Pontine</h4>
+              <p class="text-sm text-gray-600">Giornata completa Ponza e Palmarola</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-blue-600">€125/persona</span>
+            <button class="native-button">Prenota</button>
+          </div>
+        </div>
+
+        <div class="native-card">
+          <div class="flex items-center mb-3">
+            <span class="text-2xl mr-3">🐟</span>
+            <div>
+              <h4 class="font-semibold text-gray-800">Pesca Sportiva</h4>
+              <p class="text-sm text-gray-600">Mezza giornata con skipper esperto</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-blue-600">€85/persona</span>
+            <button class="native-button">Prenota</button>
+          </div>
+        </div>
+
+        <div class="native-card">
+          <div class="flex items-center mb-3">
+            <span class="text-2xl mr-3">🥂</span>
+            <div>
+              <h4 class="font-semibold text-gray-800">Aperitivo al Tramonto</h4>
+              <p class="text-sm text-gray-600">Crociera romantica Costa Laziale</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-lg font-bold text-blue-600">€65/persona</span>
+            <button class="native-button">Prenota</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Servizi Screen -->
+      <div id="servizi-screen" style="display: none;">
+        <h3 class="text-lg font-semibold mb-3 text-gray-800">Servizi Nautici</h3>
+        
+        <div class="native-card">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">⛈️</span>
+              <div>
+                <h4 class="font-semibold text-gray-800">Meteo Marino</h4>
+                <p class="text-sm text-gray-600">Condizioni attuali e previsioni</p>
+              </div>
+            </div>
+            <span class="text-green-500 font-medium">🟢 Buone</span>
+          </div>
+          <div class="grid grid-cols-3 gap-4 text-sm">
+            <div class="text-center">
+              <div class="font-medium text-blue-600">Vento</div>
+              <div class="text-gray-600">8 kt NE</div>
+            </div>
+            <div class="text-center">
+              <div class="font-medium text-blue-600">Onde</div>
+              <div class="text-gray-600">0.5-1m</div>
+            </div>
+            <div class="text-center">
+              <div class="font-medium text-blue-600">Vis.</div>
+              <div class="text-gray-600">10+ km</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="native-card">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">⛽</span>
+              <div>
+                <h4 class="font-semibold text-gray-800">Carburante Marino</h4>
+                <p class="text-sm text-gray-600">Prezzi aggiornati distributori</p>
+              </div>
+            </div>
+            <span class="text-blue-600 font-bold">€1.45/L</span>
+          </div>
+        </div>
+
+        <div class="native-card">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">🆘</span>
+              <div>
+                <h4 class="font-semibold text-gray-800">Emergenze</h4>
+                <p class="text-sm text-gray-600">Guardia Costiera - 1530</p>
+              </div>
+            </div>
+            <button class="bg-red-500 text-white px-4 py-2 rounded-lg font-medium">Chiama</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profilo Screen -->
+      <div id="profilo-screen" style="display: none;">
+        <div class="native-card">
+          <div class="flex items-center mb-4">
+            <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">
+              M
+            </div>
+            <div>
+              <h4 class="font-semibold text-gray-800">Marco Rossi</h4>
+              <p class="text-sm text-gray-600">Cliente SeaGO dal 2024</p>
+              <div class="flex items-center mt-1">
+                <span class="text-yellow-500">★★★★★</span>
+                <span class="text-xs text-gray-500 ml-1">(4.8)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="native-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="text-xl mr-3">📋</span>
+                <span class="font-medium text-gray-800">Le mie prenotazioni</span>
+              </div>
+              <span class="text-blue-600">→</span>
+            </div>
+          </div>
+
+          <div class="native-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="text-xl mr-3">❤️</span>
+                <span class="font-medium text-gray-800">Barche preferite</span>
+              </div>
+              <span class="text-blue-600">→</span>
+            </div>
+          </div>
+
+          <div class="native-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="text-xl mr-3">💳</span>
+                <span class="font-medium text-gray-800">Pagamenti</span>
+              </div>
+              <span class="text-blue-600">→</span>
+            </div>
+          </div>
+
+          <div class="native-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="text-xl mr-3">⚙️</span>
+                <span class="font-medium text-gray-800">Impostazioni</span>
+              </div>
+              <span class="text-blue-600">→</span>
+            </div>
+          </div>
+
+          <div class="native-card">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center">
+                <span class="text-xl mr-3">💬</span>
+                <span class="font-medium text-gray-800">Assistenza</span>
+              </div>
+              <span class="text-blue-600">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="native-tab-bar">
+      <div class="native-tab active" onclick="switchTab('esplora')">
+        <div style="font-size: 20px; margin-bottom: 2px;">🔍</div>
+        <div>Esplora</div>
+      </div>
+      <div class="native-tab" onclick="switchTab('ormeggio')">
+        <div style="font-size: 20px; margin-bottom: 2px;">⚓</div>
+        <div>Ormeggio</div>
+      </div>
+      <div class="native-tab" onclick="switchTab('esperienze')">
+        <div style="font-size: 20px; margin-bottom: 2px;">✨</div>
+        <div>Esperienze</div>
+      </div>
+      <div class="native-tab" onclick="switchTab('servizi')">
+        <div style="font-size: 20px; margin-bottom: 2px;">🛠️</div>
+        <div>Servizi</div>
+      </div>
+      <div class="native-tab" onclick="switchTab('profilo')">
+        <div style="font-size: 20px; margin-bottom: 2px;">👤</div>
+        <div>Profilo</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(tabName) {
+      // Hide all screens
+      const screens = ['esplora', 'ormeggio', 'esperienze', 'servizi', 'profilo'];
+      screens.forEach(screen => {
+        document.getElementById(screen + '-screen').style.display = 'none';
+      });
+      
+      // Remove active class from all tabs
+      document.querySelectorAll('.native-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Show selected screen
+      document.getElementById(tabName + '-screen').style.display = 'block';
+      
+      // Add active class to selected tab
+      event.target.closest('.native-tab').classList.add('active');
+      
+      // Update header title
+      const titles = {
+        'esplora': 'SeaGO - Esplora',
+        'ormeggio': 'SeaGO - Ormeggio',
+        'esperienze': 'SeaGO - Esperienze',
+        'servizi': 'SeaGO - Servizi',
+        'profilo': 'SeaGO - Profilo'
+      };
+      document.querySelector('.native-header h1').textContent = titles[tabName];
+    }
+
+    function showBoats(category) {
+      alert(`Visualizzazione barche categoria: ${category}\n\nQuesta funzionalità aprirà la lista completa delle imbarcazioni nella app nativa.`);
+    }
+
+    function showBoatDetails() {
+      alert(`Dettagli imbarcazione\n\nNella app nativa si aprirà la schermata con tutte le informazioni, foto, recensioni e prenotazione.`);
+    }
+
+    // Add some interaction feedback
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulate loading effect
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+      
+      // Add touch feedback to cards
+      document.querySelectorAll('.native-card, .category-item, .boat-card').forEach(element => {
+        element.addEventListener('touchstart', function() {
+          this.style.transform = 'scale(0.98)';
+          this.style.transition = 'transform 0.1s';
+        });
+        
+        element.addEventListener('touchend', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>

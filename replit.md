@@ -164,6 +164,15 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 29, 2025 - Rimozione Servizi Aggiuntivi Prenotazione (Ore 17:25)
+- **Servizi Aggiuntivi Rimossi dalla Prenotazione Barche:**
+  - ✅ Rimosso "Skipper (+€150/giorno)" dalla sezione prenotazione
+  - ✅ Rimosso "Carburante incluso (+€80/giorno)" dalla sezione prenotazione  
+  - ✅ Rimosso "Pulizia finale (+€50)" dalla sezione prenotazione
+  - ✅ Form prenotazione ora più pulito con solo date di noleggio e numero ospiti
+  - ✅ Riepilogo prezzi semplificato senza servizi aggiuntivi
+  - ✅ Backup creato: mobile-preview-no-extra-services.html
+
 ### July 29, 2025 - Rimozione Sistematica Emoji Completata (Ore 17:22)
 - **MILESTONE IMPORTANTE: Design Professionale Emoji-Free Completato:**
   - ✅ Rimozione sistematica e completa di TUTTE le emoji dall'interfaccia mobile

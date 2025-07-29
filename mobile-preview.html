@@ -1375,25 +1375,60 @@
                 <!-- Weather Widget -->
                 <div class="weather-section">
                     <div class="weather-card">
-                        <div class="weather-title">Condizioni Meteo Marine - Roma/Fiumicino</div>
-                        <div style="font-size: 32px; margin-bottom: 8px;">☀️</div>
-                        <div class="weather-temp">22°C</div>
+                        <!-- Location Selector -->
+                        <div style="position: relative; margin-bottom: 16px;">
+                            <div onclick="toggleWeatherLocationDropdown()" style="display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <span id="weather-location-title" class="weather-title">Condizioni Meteo Marine - Roma/Fiumicino</span>
+                                <svg width="16" height="16" style="margin-left: 8px; fill: white;" viewBox="0 0 24 24">
+                                    <path d="M7 10L12 15L17 10H7Z"/>
+                                </svg>
+                            </div>
+                            
+                            <div id="weather-location-dropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; margin-top: 4px; max-height: 250px; overflow-y: auto;">
+                                <div style="padding: 12px; border-bottom: 1px solid #e5e7eb; background: #f8fafc; font-weight: 600; color: #374151; font-size: 14px;">
+                                    Seleziona località per meteo marino
+                                </div>
+                                
+                                <!-- Lazio Locations -->
+                                <div style="padding: 8px 12px; background: #dbeafe; color: #1e40af; font-weight: 600; font-size: 12px;">Lazio</div>
+                                <div onclick="changeWeatherLocation('Roma/Fiumicino', 'fiumicino')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Roma/Fiumicino</div>
+                                <div onclick="changeWeatherLocation('Civitavecchia', 'civitavecchia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Civitavecchia</div>
+                                <div onclick="changeWeatherLocation('Gaeta', 'gaeta')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Gaeta</div>
+                                <div onclick="changeWeatherLocation('Ponza', 'ponza')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Ponza</div>
+                                <div onclick="changeWeatherLocation('Anzio', 'anzio')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Anzio</div>
+                                <div onclick="changeWeatherLocation('Terracina', 'terracina')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Terracina</div>
+                                
+                                <!-- Campania Locations -->
+                                <div style="padding: 8px 12px; background: #fed7aa; color: #ea580c; font-weight: 600; font-size: 12px;">Campania</div>
+                                <div onclick="changeWeatherLocation('Napoli', 'napoli')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Napoli</div>
+                                <div onclick="changeWeatherLocation('Salerno', 'salerno')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Salerno</div>
+                                <div onclick="changeWeatherLocation('Sorrento', 'sorrento')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Sorrento</div>
+                                <div onclick="changeWeatherLocation('Amalfi', 'amalfi')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Amalfi</div>
+                                <div onclick="changeWeatherLocation('Capri', 'capri')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Capri</div>
+                                <div onclick="changeWeatherLocation('Ischia', 'ischia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Ischia</div>
+                                <div onclick="changeWeatherLocation('Positano', 'positano')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Positano</div>
+                                <div onclick="changeWeatherLocation('Procida', 'procida')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Procida</div>
+                            </div>
+                        </div>
+                        
+                        <div id="weather-icon" style="font-size: 32px; margin-bottom: 8px;">☀️</div>
+                        <div id="weather-temp" class="weather-temp">22°C</div>
                         <div class="weather-details">
                             <div class="weather-detail">
                                 <div class="weather-detail-label">Vento</div>
-                                <div class="weather-detail-value">12 km/h NE</div>
+                                <div id="weather-wind" class="weather-detail-value">12 km/h NE</div>
                             </div>
                             <div class="weather-detail">
                                 <div class="weather-detail-label">Onde</div>
-                                <div class="weather-detail-value">0.5m</div>
+                                <div id="weather-waves" class="weather-detail-value">0.5m</div>
                             </div>
                             <div class="weather-detail">
                                 <div class="weather-detail-label">Visibilità</div>
-                                <div class="weather-detail-value">Ottima</div>
+                                <div id="weather-visibility" class="weather-detail-value">Ottima</div>
                             </div>
                             <div class="weather-detail">
                                 <div class="weather-detail-label">Mare</div>
-                                <div class="weather-detail-value">Calmo</div>
+                                <div id="weather-sea" class="weather-detail-value">Calmo</div>
                             </div>
                         </div>
                     </div>
@@ -3634,6 +3669,174 @@
             
             if (input && suggestions && !input.contains(event.target) && !suggestions.contains(event.target)) {
                 suggestions.style.display = 'none';
+            }
+        });
+
+        // Weather Location Functions
+        function toggleWeatherLocationDropdown() {
+            const dropdown = document.getElementById('weather-location-dropdown');
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        function changeWeatherLocation(locationName, locationKey) {
+            // Update the title
+            const title = document.getElementById('weather-location-title');
+            if (title) {
+                title.textContent = 'Condizioni Meteo Marine - ' + locationName;
+            }
+
+            // Hide dropdown
+            const dropdown = document.getElementById('weather-location-dropdown');
+            if (dropdown) {
+                dropdown.style.display = 'none';
+            }
+
+            // Get weather data for location
+            updateWeatherData(locationKey, locationName);
+        }
+
+        function updateWeatherData(locationKey, locationName) {
+            // Weather data for different locations
+            const weatherData = {
+                'fiumicino': {
+                    icon: '☀️',
+                    temp: '22°C',
+                    wind: '12 km/h NE',
+                    waves: '0.5m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'civitavecchia': {
+                    icon: '⛅',
+                    temp: '21°C',
+                    wind: '15 km/h NO',
+                    waves: '0.8m',
+                    visibility: 'Buona',
+                    sea: 'Poco mosso'
+                },
+                'gaeta': {
+                    icon: '☀️',
+                    temp: '23°C',
+                    wind: '8 km/h SE',
+                    waves: '0.3m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'ponza': {
+                    icon: '🌤️',
+                    temp: '24°C',
+                    wind: '18 km/h O',
+                    waves: '1.2m',
+                    visibility: 'Buona',
+                    sea: 'Mosso'
+                },
+                'anzio': {
+                    icon: '☀️',
+                    temp: '22°C',
+                    wind: '10 km/h SO',
+                    waves: '0.4m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'terracina': {
+                    icon: '☀️',
+                    temp: '25°C',
+                    wind: '12 km/h S',
+                    waves: '0.6m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'napoli': {
+                    icon: '🌤️',
+                    temp: '26°C',
+                    wind: '14 km/h SO',
+                    waves: '0.7m',
+                    visibility: 'Buona',
+                    sea: 'Poco mosso'
+                },
+                'salerno': {
+                    icon: '☀️',
+                    temp: '25°C',
+                    wind: '16 km/h S',
+                    waves: '0.9m',
+                    visibility: 'Ottima',
+                    sea: 'Poco mosso'
+                },
+                'sorrento': {
+                    icon: '☀️',
+                    temp: '27°C',
+                    wind: '11 km/h SE',
+                    waves: '0.5m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'amalfi': {
+                    icon: '☀️',
+                    temp: '26°C',
+                    wind: '13 km/h S',
+                    waves: '0.6m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'capri': {
+                    icon: '🌤️',
+                    temp: '25°C',
+                    wind: '20 km/h O',
+                    waves: '1.1m',
+                    visibility: 'Buona',
+                    sea: 'Mosso'
+                },
+                'ischia': {
+                    icon: '☀️',
+                    temp: '26°C',
+                    wind: '12 km/h SO',
+                    waves: '0.7m',
+                    visibility: 'Ottima',
+                    sea: 'Poco mosso'
+                },
+                'positano': {
+                    icon: '☀️',
+                    temp: '27°C',
+                    wind: '9 km/h SE',
+                    waves: '0.4m',
+                    visibility: 'Ottima',
+                    sea: 'Calmo'
+                },
+                'procida': {
+                    icon: '⛅',
+                    temp: '24°C',
+                    wind: '16 km/h NO',
+                    waves: '0.8m',
+                    visibility: 'Buona',
+                    sea: 'Poco mosso'
+                }
+            };
+
+            const data = weatherData[locationKey] || weatherData['fiumicino'];
+
+            // Update weather display
+            document.getElementById('weather-icon').textContent = data.icon;
+            document.getElementById('weather-temp').textContent = data.temp;
+            document.getElementById('weather-wind').textContent = data.wind;
+            document.getElementById('weather-waves').textContent = data.waves;
+            document.getElementById('weather-visibility').textContent = data.visibility;
+            document.getElementById('weather-sea').textContent = data.sea;
+
+            // Show confirmation
+            setTimeout(() => {
+                console.log('SeaGO: Meteo aggiornato per', locationName);
+            }, 500);
+        }
+
+        // Close weather dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('weather-location-dropdown');
+            const target = event.target.closest('.weather-card');
+            
+            if (dropdown && !target) {
+                dropdown.style.display = 'none';
             }
         });
 

@@ -1786,6 +1786,81 @@
                 <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 32px 20px; text-align: center; color: white; margin: 0 -16px 24px;">
                     <h2 style="margin: 0 0 16px 0; font-size: 28px; font-weight: 700; letter-spacing: -0.025em;">Esperienze Uniche in Mare</h2>
                     <p style="margin: 0 0 24px 0; font-size: 16px; line-height: 1.5; opacity: 0.95; max-width: 280px; margin-left: auto; margin-right: auto;">Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni. Ogni esperienza è pensata per creare ricordi indimenticabili.</p>
+                    
+                    <!-- Ricerca Porti per Esperienze -->
+                    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 12px; padding: 20px; margin: 24px 0;">
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: white; font-size: 14px;">Dove vuoi vivere la tua esperienza?</label>
+                            <div style="position: relative;">
+                                <input type="text" 
+                                       id="experiencePortSearch" 
+                                       placeholder="Cerca tra 48 porti italiani..." 
+                                       oninput="showExperiencePortSuggestions(this.value)"
+                                       onclick="showExperiencePortSuggestions(this.value)"
+                                       style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; background: white; color: #1f2937;">
+                                
+                                <div id="experiencePortSuggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; margin-top: 4px; max-height: 200px; overflow-y: auto;">
+                                    <div style="padding: 12px; border-bottom: 1px solid #e5e7eb; background: #f8fafc; font-weight: 600; color: #374151; font-size: 14px;">
+                                        48 porti disponibili per esperienze
+                                    </div>
+                                    <!-- Lazio Ports -->
+                                    <div style="padding: 8px 12px; background: #dbeafe; color: #1e40af; font-weight: 600; font-size: 12px;">Lazio (15 porti)</div>
+                                    <div onclick="selectExperiencePort('Civitavecchia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Civitavecchia</div>
+                                    <div onclick="selectExperiencePort('Ponza')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Ponza</div>
+                                    <div onclick="selectExperiencePort('Gaeta')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Gaeta</div>
+                                    <div onclick="selectExperiencePort('Anzio')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Anzio</div>
+                                    <div onclick="selectExperiencePort('Fiumicino')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Fiumicino</div>
+                                    <div onclick="selectExperiencePort('Terracina')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Terracina</div>
+                                    <div onclick="selectExperiencePort('Ostia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Ostia</div>
+                                    <div onclick="selectExperiencePort('San Felice Circeo')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">San Felice Circeo</div>
+                                    <div onclick="selectExperiencePort('Formia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Formia</div>
+                                    <div onclick="selectExperiencePort('Nettuno')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Nettuno</div>
+                                    <div onclick="selectExperiencePort('Santa Marinella')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Santa Marinella</div>
+                                    <div onclick="selectExperiencePort('Ventotene')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Ventotene</div>
+                                    <div onclick="selectExperiencePort('Ladispoli')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Ladispoli</div>
+                                    <div onclick="selectExperiencePort('Sperlonga')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Sperlonga</div>
+                                    <div onclick="selectExperiencePort('Montalto di Castro')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Montalto di Castro</div>
+                                    
+                                    <!-- Campania Ports -->
+                                    <div style="padding: 8px 12px; background: #fed7aa; color: #ea580c; font-weight: 600; font-size: 12px;">Campania (33 porti)</div>
+                                    <div onclick="selectExperiencePort('Napoli')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Napoli</div>
+                                    <div onclick="selectExperiencePort('Salerno')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Salerno</div>
+                                    <div onclick="selectExperiencePort('Sorrento')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Sorrento</div>
+                                    <div onclick="selectExperiencePort('Amalfi')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Amalfi</div>
+                                    <div onclick="selectExperiencePort('Positano')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Positano</div>
+                                    <div onclick="selectExperiencePort('Capri')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Capri</div>
+                                    <div onclick="selectExperiencePort('Ischia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Ischia</div>
+                                    <div onclick="selectExperiencePort('Procida')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Procida</div>
+                                    <div onclick="selectExperiencePort('Pozzuoli')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Pozzuoli</div>
+                                    <div onclick="selectExperiencePort('Castellammare di Stabia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Castellammare di Stabia</div>
+                                    <div onclick="selectExperiencePort('Torre del Greco')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Torre del Greco</div>
+                                    <div onclick="selectExperiencePort('Bagnoli')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Bagnoli</div>
+                                    <div onclick="selectExperiencePort('Marina di Stabia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Marina di Stabia</div>
+                                    <div onclick="selectExperiencePort('Casamicciola')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Casamicciola</div>
+                                    <div onclick="selectExperiencePort('Forio d\'Ischia')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Forio d'Ischia</div>
+                                    <div onclick="selectExperiencePort('Cetara')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Cetara</div>
+                                    <div onclick="selectExperiencePort('Maiori')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Maiori</div>
+                                    <div onclick="selectExperiencePort('Minori')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Minori</div>
+                                    <div onclick="selectExperiencePort('Conca dei Marini')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Conca dei Marini</div>
+                                    <div onclick="selectExperiencePort('Furore')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Furore</div>
+                                    <div onclick="selectExperiencePort('Agropoli')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Agropoli</div>
+                                    <div onclick="selectExperiencePort('Palinuro')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Palinuro</div>
+                                    <div onclick="selectExperiencePort('Marina di Camerota')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Marina di Camerota</div>
+                                    <div onclick="selectExperiencePort('Sapri')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Sapri</div>
+                                    <div onclick="selectExperiencePort('Scario')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Scario</div>
+                                    <div onclick="selectExperiencePort('Pisciotta')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Pisciotta</div>
+                                    <div onclick="selectExperiencePort('Vico Equense')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Vico Equense</div>
+                                    <div onclick="selectExperiencePort('Piano di Sorrento')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Piano di Sorrento</div>
+                                    <div onclick="selectExperiencePort('Massa Lubrense')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Massa Lubrense</div>
+                                    <div onclick="selectExperiencePort('Atrani')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Atrani</div>
+                                    <div onclick="selectExperiencePort('Marina del Cantone')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Marina del Cantone</div>
+                                    <div onclick="selectExperiencePort('Lacco Ameno')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Lacco Ameno</div>
+                                    <div onclick="selectExperiencePort('Sant\'Angelo')" style="padding: 8px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151;">Sant'Angelo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button onclick="showExperienceSearch()" style="background: #f97316; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 16px; cursor: pointer; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);">Trova la tua esperienza</button>
                 </div>
 
@@ -3326,6 +3401,57 @@
                 });
             }
         }
+
+        // Funzioni per la sezione Esperienze - 48 porti
+        function showExperiencePortSuggestions(value = '') {
+            const suggestions = document.getElementById('experiencePortSuggestions');
+            if (!suggestions) return;
+            
+            suggestions.style.display = 'block';
+            
+            if (value && value.length > 0) {
+                // Filter based on search value
+                filterExperiencePorts(value);
+            }
+        }
+
+        function selectExperiencePort(portName) {
+            const input = document.getElementById('experiencePortSearch');
+            const suggestions = document.getElementById('experiencePortSuggestions');
+            
+            if (input) input.value = portName;
+            if (suggestions) suggestions.style.display = 'none';
+            
+            // Show confirmation message
+            setTimeout(() => {
+                alert('🌟 Porto selezionato: ' + portName + '\nRicerca esperienze disponibili...');
+                console.log('SeaGO: Ricerca esperienze a', portName);
+            }, 300);
+        }
+
+        function filterExperiencePorts(searchTerm) {
+            const suggestions = document.getElementById('experiencePortSuggestions');
+            if (!suggestions) return;
+            
+            const lowerTerm = searchTerm.toLowerCase();
+            const portElements = suggestions.querySelectorAll('[onclick^="selectExperiencePort"]');
+            
+            portElements.forEach(element => {
+                const portName = element.textContent.toLowerCase();
+                const isVisible = portName.includes(lowerTerm);
+                element.style.display = isVisible ? 'block' : 'none';
+            });
+        }
+
+        // Click outside to close experience port suggestions
+        document.addEventListener('click', function(event) {
+            const input = document.getElementById('experiencePortSearch');
+            const suggestions = document.getElementById('experiencePortSuggestions');
+            
+            if (input && suggestions && !input.contains(event.target) && !suggestions.contains(event.target)) {
+                suggestions.style.display = 'none';
+            }
+        });
 
         // Funzioni per la sezione Servizi
         function searchMoorings() {

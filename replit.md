@@ -196,6 +196,21 @@ The application follows modern web development best practices with a focus on ty
   - ✅ 6 sezioni complete: Home, Esplora, Ormeggio, Esperienze, Servizi, Profilo
   - ✅ Sistema backup attivo: versione preservata automaticamente
 
+### July 29, 2025 - Rimozione Supporto Telefonico e Icone Laterali
+- **Supporto Telefonico Completamente Rimosso dalla Mobile App:**
+  - ✅ Eliminata sezione "Supporto Telefonico" dalla pagina Servizi
+  - ✅ Rimossa funzione JavaScript callSupport() per chiamate telefoniche
+  - ✅ Confermata assistenza solo digitale: Chat AI 24/7 + assistenza@seago.it
+  - ✅ Mantenuti solo numeri emergenza (1530 Guardia Costiera, 118)
+  - ✅ Centro assistenza con solo 2 opzioni: Chat AI e Email
+
+- **Design Icone Laterali Implementato:**
+  - ✅ Tutte le sezioni ora utilizzano icone laterali accanto ai titoli
+  - ✅ Rimossi box bianchi centrali e icone SVG dalle sezioni principali
+  - ✅ Layout coerente: icona 24px + margin-right 12px + titolo
+  - ✅ Sezioni aggiornate: Aiuto ❓, Esperienze ✨, Ormeggio ⚓, Servizi ⚙️
+  - ✅ Design pulito e moderno senza elementi centrali ingombranti
+
 ### July 29, 2025 - Fix Routing Dominio Principale e Deployment
 - **Problema Routing Dominio Risolto:**
   - ✅ Identificato problema: seagorentalboat.com mostrava versione mobile invece del sito web

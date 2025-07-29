@@ -1555,226 +1555,87 @@
         <!-- Sezione Ormeggio -->
         <div id="ormeggio" class="screen" style="display: none;">
             <div class="content">
-                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px; color: white; text-align: center; margin: 0 -16px 24px; border-radius: 0 0 20px 20px;">
-                    <div style="width: 32px; height: 32px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2L13.09 8.26L19 9L13.09 9.74L12 16L10.91 9.74L5 9L10.91 8.26L12 2Z" fill="#0891b2"/>
-                        </svg>
-                    </div>
-                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">⚓ Trova il tuo Ormeggio Ideale</h2>
-                    <p style="margin: 0; opacity: 0.9; font-size: 16px;">Prenota ormeggi sicuri nelle migliori marine d'Italia</p>
+                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; text-align: center; color: white; margin: 0 -16px 20px;">
+                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">⚓ Ormeggi SeaGO</h2>
+                    <p style="margin: 0; opacity: 0.9;">Trova il posto barca perfetto per te</p>
                 </div>
 
-                <!-- Filtri Ricerca Ormeggio -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🔍 Cerca Ormeggi Disponibili</h3>
-                    
-                    <!-- Dove vuoi ormeggiare -->
-                    <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">📍 Dove vuoi ormeggiare?</label>
-                        <input 
-                            type="text" 
-                            placeholder="Inserisci località (es. Civitavecchia, Gaeta, Ponza...)" 
-                            style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;"
-                            onkeyup="showPortSuggestions(this.value)"
-                            onclick="showPortSuggestions(this.value)"
-                        >
-                        <div id="port-suggestions" style="display: none; background: white; border: 1px solid #d1d5db; border-top: none; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto;"></div>
-                    </div>
-
-                    <!-- Date Check-in/out -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;">
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">📅 Check-in</label>
-                            <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                        </div>
-                        <div>
-                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">📅 Check-out</label>
-                            <input type="date" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                        </div>
-                    </div>
-
-                    <!-- Tipo Ormeggio -->
-                    <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">🚢 Tipo di ormeggio</label>
-                        <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                            <option value="">Tutti i tipi</option>
-                            <option value="pontile">Pontile fisso (€350-700/giorno)</option>
-                            <option value="boa">Boa di ormeggio (€120-200/giorno)</option>
-                        </select>
-                    </div>
-
-                    <!-- Lunghezza Barca -->
-                    <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">📏 Lunghezza barca</label>
-                        <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                            <option>Seleziona lunghezza</option>
-                            <option>8-10 metri</option>
-                            <option>10-12 metri</option>
-                            <option>12-15 metri</option>
-                            <option>15-18 metri</option>
-                            <option>18-20+ metri</option>
-                        </select>
-                    </div>
-
-                    <!-- Budget -->
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">💰 Budget per giorno</label>
-                        <select style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                            <option>Qualsiasi prezzo</option>
-                            <option>€100 - €200 (Boa)</option>
-                            <option>€200 - €400 (Pontile piccolo)</option>
-                            <option>€400 - €600 (Pontile medio)</option>
-                            <option>€600+ (Pontile luxury)</option>
-                        </select>
-                    </div>
-
-                    <button onclick="searchMoorings()" style="width: 100%; background: linear-gradient(135deg, #0891b2, #0284c7); color: white; border: none; padding: 16px; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);">⚓ Cerca Ormeggi Disponibili</button>
-                </div>
-
-                <!-- Ormeggi Partner SeaGO -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🏖️ Ormeggi Partner SeaGO</h3>
-                    <p style="margin: 0 0 20px 0; color: #6b7280; font-size: 14px;">Marine selezionate con servizi garantiti e tariffe convenienti</p>
-                    
-                    <!-- Marina di Civitavecchia -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #0891b2;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                            <div>
-                                <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina di Civitavecchia</h4>
-                                <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Civitavecchia, Roma • ⭐ 4.8 (243 recensioni)</p>
+                <!-- Porti in Evidenza -->
+                <div class="featured-ports" style="margin-bottom: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">⭐ Porti in Evidenza</h3>
+                    <div style="display: grid; gap: 16px;">
+                        <div class="port-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Porto di Civitavecchia</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Lazio • 120 posti barca</p>
+                                </div>
+                                <span style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">DISPONIBILE</span>
                             </div>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">PARTNER</div>
-                        </div>
-                        
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
-                            <div style="font-size: 13px; color: #374151;">💧 Acqua • ⚡ Corrente • 📶 WiFi • 🔒 Sicurezza H24 • 🚿 Docce</div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-size: 16px; font-weight: bold; color: #0891b2;">Pontile: €450/giorno</div>
-                                <div style="font-size: 14px; color: #6b7280;">Boa: €150/giorno • Sconto SeaGO: 20%</div>
+                            <div style="margin: 12px 0;">
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
+                                <div style="font-size: 13px; color: #374151;">⚡ Elettricità • 🚿 Docce • 🅿️ Parcheggio • 📶 Wi-Fi</div>
                             </div>
-                            <button onclick="bookMooring('civitavecchia')" style="background: #0891b2; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Prenota</button>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.6 (94 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 16px; font-weight: bold; color: #0891b2;">€45/metro/giorno</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €360/giorno (8m)</div>
+                                </div>
+                            </div>
+                            <button onclick="showMooringBooking('civitavecchia')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
                         </div>
-                    </div>
 
-                    <!-- Porto di Gaeta -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #059669;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                            <div>
-                                <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Porto di Gaeta</h4>
-                                <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Gaeta, Latina • ⭐ 4.7 (189 recensioni)</p>
+                        <div class="port-card" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                                <div>
+                                    <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina di Gaeta</h4>
+                                    <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Lazio • 85 posti barca</p>
+                                </div>
+                                <span style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">PREMIUM</span>
                             </div>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">PARTNER</div>
-                        </div>
-                        
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
-                            <div style="font-size: 13px; color: #374151;">💧 Acqua • ⚡ Corrente • 🍽️ Ristorante • 🔒 Sicurezza • ⛽ Carburante</div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-size: 16px; font-weight: bold; color: #059669;">Pontile: €380/giorno</div>
-                                <div style="font-size: 14px; color: #6b7280;">Boa: €120/giorno • Sconto SeaGO: 20%</div>
+                            <div style="margin: 12px 0;">
+                                <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
+                                <div style="font-size: 13px; color: #374151;">⚡ Elettricità • 🚿 Docce • 🛒 Shop • 🍽️ Ristorante</div>
                             </div>
-                            <button onclick="bookMooring('gaeta')" style="background: #059669; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Prenota</button>
-                        </div>
-                    </div>
-
-                    <!-- Marina di Anzio -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #d97706;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
-                            <div>
-                                <h4 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina di Anzio</h4>
-                                <p style="margin: 0; color: #6b7280; font-size: 14px;">📍 Anzio, Roma • ⭐ 4.6 (167 recensioni)</p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #fbbf24;">⭐⭐⭐⭐⭐</span>
+                                    <span style="font-size: 14px; color: #6b7280;">4.8 (156 recensioni)</span>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="font-size: 16px; font-weight: bold; color: #0891b2;">€52/metro/giorno</div>
+                                    <div style="font-size: 12px; color: #6b7280;">da €416/giorno (8m)</div>
+                                </div>
                             </div>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">PARTNER</div>
-                        </div>
-                        
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 14px; color: #6b7280; margin-bottom: 4px;">Servizi inclusi:</div>
-                            <div style="font-size: 13px; color: #374151;">💧 Acqua • ⚡ Corrente • 🔧 Assistenza tecnica • 🅿️ Parcheggio • 📶 WiFi</div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-size: 16px; font-weight: bold; color: #d97706;">Pontile: €420/giorno</div>
-                                <div style="font-size: 14px; color: #6b7280;">Boa: €140/giorno • Sconto SeaGO: 20%</div>
-                            </div>
-                            <button onclick="bookMooring('anzio')" style="background: #d97706; color: white; border: none; padding: 10px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Prenota</button>
+                            <button onclick="showMooringBooking('gaeta')" style="width: 100%; margin-top: 12px; background: #0891b2; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: 600;">Prenota Ormeggio</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Vantaggi Ormeggi SeaGO -->
-                <div style="background: #f0f9ff; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #0891b2;">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">✨ Vantaggi Esclusivi SeaGO</h3>
-                    
+                <!-- Calcolatore Prezzi -->
+                <div class="price-calculator" style="background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 24px;">
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #1f2937;">💰 Calcolatore Prezzi Ormeggio</h3>
                     <div style="display: grid; gap: 12px;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="background: #0891b2; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">✓</div>
-                            <div>
-                                <div style="font-weight: 600; color: #1f2937;">Posto Garantito</div>
-                                <div style="font-size: 14px; color: #6b7280;">Prenotazione confermata anche in alta stagione</div>
-                            </div>
+                        <div>
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Lunghezza barca (metri)</label>
+                            <select id="boatLength" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
+                                <option value="8">8 metri</option>
+                                <option value="10">10 metri</option>
+                                <option value="12">12 metri</option>
+                                <option value="15">15 metri</option>
+                                <option value="20">20 metri</option>
+                            </select>
                         </div>
-                        
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="background: #0891b2; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">🔒</div>
-                            <div>
-                                <div style="font-weight: 600; color: #1f2937;">Sicurezza H24</div>
-                                <div style="font-size: 14px; color: #6b7280;">Videosorveglianza e personale di guardia</div>
-                            </div>
+                        <div>
+                            <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 4px;">Durata (giorni)</label>
+                            <input type="number" value="1" min="1" id="days" style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px;">
                         </div>
-                        
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="background: #0891b2; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">💰</div>
-                            <div>
-                                <div style="font-weight: 600; color: #1f2937;">Sconto 20%</div>
-                                <div style="font-size: 14px; color: #6b7280;">Tariffe esclusive per clienti SeaGO</div>
-                            </div>
-                        </div>
-                        
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="background: #0891b2; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">📱</div>
-                            <div>
-                                <div style="font-weight: 600; color: #1f2937;">Assistenza Dedicata</div>
-                                <div style="font-size: 14px; color: #6b7280;">Supporto SeaGO 24/7 durante il soggiorno</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Calcolatore Prezzi Ormeggio -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🧮 Calcolatore Prezzi Ormeggio</h3>
-                    
-                    <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Lunghezza barca (metri)</label>
-                        <input type="number" id="boat-length" min="8" max="25" value="12" onchange="calculateMooringPrice()" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                    </div>
-                    
-                    <div style="margin-bottom: 16px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Numero di giorni</label>
-                        <input type="number" id="stay-days" min="1" max="30" value="3" onchange="calculateMooringPrice()" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Tipo di ormeggio</label>
-                        <select id="mooring-type" onchange="calculateMooringPrice()" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
-                            <option value="pontile">Pontile fisso</option>
-                            <option value="boa">Boa di ormeggio</option>
-                        </select>
-                    </div>
-                    
-                    <div id="price-calculation" style="background: #f0f9ff; border-radius: 8px; padding: 16px; text-align: center;">
-                        <div style="font-size: 20px; font-weight: bold; color: #0891b2; margin-bottom: 8px;">€1,080 totale</div>
-                        <div style="font-size: 14px; color: #6b7280;">€360/giorno × 3 giorni</div>
-                        <div style="font-size: 12px; color: #059669; margin-top: 4px;">💰 Sconto SeaGO incluso (-20%)</div>
+                        <button onclick="calculateMooringPrice()" style="background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">🧮 Calcola Prezzo</button>
+                        <div id="priceResult" style="text-align: center; font-size: 16px; font-weight: 600; color: #0891b2; margin-top: 8px;"></div>
                     </div>
                 </div>
             </div>
@@ -2277,256 +2138,6 @@
             </div>
         </div>
 
-        <!-- Sezione Servizi -->
-        <div id="servizi" class="screen" style="display: none;">
-            <div class="content">
-                <div style="background: linear-gradient(135deg, #059669, #047857); padding: 24px; color: white; text-align: center; margin: 0 -16px 24px; border-radius: 0 0 20px 20px;">
-                    <div style="width: 32px; height: 32px; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.954 2.21a.5.5 0 0 1 .092.004l3 .35a.5.5 0 0 1 .454.454l.35 3c.019.205.122.39.283.51l2.474 1.856a.5.5 0 0 1 .161.539l-1.35 3.538c-.085.223-.035.473.128.647l2.474 2.643a.5.5 0 0 1 .028.693l-2.102 2.353a.5.5 0 0 1-.693.028l-2.643-2.474a.75.75 0 0 0-.647-.128L8.9 17.562a.5.5 0 0 1-.539-.161l-1.856-2.474a.75.75 0 0 0-.51-.283l-3-.35a.5.5 0 0 1-.454-.454l-.35-3a.75.75 0 0 0-.283-.51L.05 8.44a.5.5 0 0 1-.161-.539l1.35-3.538c.085-.223.035-.473-.128-.647L-1.363 1.073a.5.5 0 0 1-.028-.693L.711.027a.5.5 0 0 1 .693-.028l2.643 2.474c.174.163.424.213.647.128L8.232.251a.5.5 0 0 1 .539.161l1.856 2.474a.75.75 0 0 0 .51.283l.817.098Z" fill="#059669"/>
-                        </svg>
-                    </div>
-                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">⚙️ Servizi SeaGO</h2>
-                    <p style="margin: 0; opacity: 0.9; font-size: 16px;">Tutto quello che serve per navigare in sicurezza</p>
-                </div>
-
-                <!-- Meteo e Condizioni Marine -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🌊 Meteo e Condizioni Marine</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Condizioni meteo marine in tempo reale per navigazione sicura</p>
-                    
-                    <!-- Meteo Attuale Roma/Fiumicino -->
-                    <div style="background: #f0f9ff; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #0891b2;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Roma/Fiumicino - Ora</h4>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">OTTIME</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center;">
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">☀️</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">22°C</div>
-                                <div style="font-size: 12px; color: #6b7280;">Sereno</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">💨</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">12 km/h</div>
-                                <div style="font-size: 12px; color: #6b7280;">Vento NE</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">🌊</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">0.5m</div>
-                                <div style="font-size: 12px; color: #6b7280;">Onde</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">👁️</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">10+ km</div>
-                                <div style="font-size: 12px; color: #6b7280;">Visibilità</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Previsioni 48h -->
-                    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-                        <h5 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #1f2937;">📅 Previsioni 48 ore</h5>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 12px;">
-                            <div style="text-align: center;">
-                                <div style="font-weight: 600;">Oggi</div>
-                                <div>☀️ 24°C</div>
-                                <div style="color: #10b981;">Mare calmo</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-weight: 600;">Domani</div>
-                                <div>⛅ 21°C</div>
-                                <div style="color: #fbbf24;">Mare mosso</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-weight: 600;">Dopodom.</div>
-                                <div>🌧️ 18°C</div>
-                                <div style="color: #ef4444;">Sconsigliato</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button onclick="openWeatherDetails()" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">🌊 Dettagli Meteo Marine</button>
-                </div>
-
-                <!-- Prezzi Carburante -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">⛽ Prezzi Carburante Nautico</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Distributori di carburante marino nel Lazio aggiornati oggi</p>
-                    
-                    <!-- Distributore Civitavecchia -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #059669;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina Civitavecchia</h4>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">APERTO</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #059669;">€1.65/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Gasolio marino</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #059669;">€1.89/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Benzina</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 12px; color: #6b7280;">📍 Porto di Civitavecchia • ⏰ 7:00-19:00</div>
-                    </div>
-
-                    <!-- Distributore Gaeta -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #d97706;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina di Gaeta</h4>
-                            <div style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">SELF 24H</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #d97706;">€1.62/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Gasolio marino</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #d97706;">€1.85/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Benzina</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 12px; color: #6b7280;">📍 Porto di Gaeta • ⏰ Self-service H24</div>
-                    </div>
-
-                    <!-- Distributore Anzio -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #7c3aed;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Porto di Anzio</h4>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">APERTO</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #7c3aed;">€1.68/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Gasolio marino</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #7c3aed;">€1.92/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Benzina</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 12px; color: #6b7280;">📍 Porto di Anzio • ⏰ 8:00-18:00</div>
-                    </div>
-
-                    <button onclick="showFuelMap()" style="width: 100%; background: #059669; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">🗺️ Mappa Distributori</button>
-                </div>
-
-                <!-- Servizi di Emergenza -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🚨 Servizi di Emergenza</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Contatti di emergenza per assistenza marittima immediata</p>
-                    
-                    <!-- Guardia Costiera -->
-                    <div style="background: #fef2f2; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #ef4444;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">🛥️ Guardia Costiera</h4>
-                            <button onclick="callEmergency('1530')" style="background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Chiama 1530</button>
-                        </div>
-                        <div style="font-size: 14px; color: #374151; margin-bottom: 4px;">Emergenze in mare e soccorso marittimo</div>
-                        <div style="font-size: 12px; color: #6b7280;">🎯 Disponibile H24 • 📞 Numero gratuito</div>
-                    </div>
-
-                    <!-- Emergenza Sanitaria -->
-                    <div style="background: #f0fdf4; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #10b981;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">🚑 Emergenza Sanitaria</h4>
-                            <button onclick="callEmergency('118')" style="background: #10b981; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Chiama 118</button>
-                        </div>
-                        <div style="font-size: 14px; color: #374151; margin-bottom: 4px;">Pronto soccorso e emergenze mediche</div>
-                        <div style="font-size: 12px; color: #6b7280;">🏥 Disponibile H24 • 🚁 Elisoccorso marino</div>
-                    </div>
-
-                    <!-- Capitaneria di Porto -->
-                    <div style="background: #f0f9ff; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #0891b2;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">⚓ Capitaneria Roma</h4>
-                            <button onclick="callEmergency('066832711')" style="background: #0891b2; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Chiama</button>
-                        </div>
-                        <div style="font-size: 14px; color: #374151; margin-bottom: 4px;">Assistenza tecnica e informazioni portuali</div>
-                        <div style="font-size: 12px; color: #6b7280;">🏢 Lun-Ven 8:00-18:00 • ⚓ Via dell'Arte 16, Roma</div>
-                    </div>
-
-                    <div style="background: #fef3c7; border-radius: 8px; padding: 12px; text-align: center;">
-                        <div style="font-size: 14px; font-weight: 600; color: #92400e; margin-bottom: 4px;">📍 Posizione Attuale</div>
-                        <div style="font-size: 12px; color: #92400e;">Condividi automaticamente la tua posizione GPS in caso di emergenza</div>
-                    </div>
-                </div>
-
-                <!-- Assistenza Tecnica -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🔧 Assistenza Tecnica</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Servizi di riparazione e manutenzione per le tue imbarcazioni</p>
-                    
-                    <div style="display: grid; gap: 12px;">
-                        <div style="background: #f8fafc; border-radius: 8px; padding: 16px;">
-                            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 8px;">
-                                <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #1f2937;">🔧 Riparazioni Motore</h4>
-                                <div style="font-size: 12px; color: #059669; font-weight: 600;">Disponibile</div>
-                            </div>
-                            <div style="font-size: 13px; color: #6b7280;">Riparazione motori fuoribordo e entrobordo • Assistenza H24</div>
-                        </div>
-                        
-                        <div style="background: #f8fafc; border-radius: 8px; padding: 16px;">
-                            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 8px;">
-                                <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #1f2937;">⚡ Problemi Elettrici</h4>
-                                <div style="font-size: 12px; color: #059669; font-weight: 600;">Disponibile</div>
-                            </div>
-                            <div style="font-size: 13px; color: #6b7280;">Riparazione impianti elettrici e elettronica di bordo</div>
-                        </div>
-
-                        <div style="background: #f8fafc; border-radius: 8px; padding: 16px;">
-                            <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 8px;">
-                                <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #1f2937;">🛠️ Manutenzione</h4>
-                                <div style="font-size: 12px; color: #059669; font-weight: 600;">Disponibile</div>
-                            </div>
-                            <div style="font-size: 13px; color: #6b7280;">Tagliandi programmati e manutenzione ordinaria</div>
-                        </div>
-                    </div>
-
-                    <button onclick="requestTechnicalAssistance()" style="width: 100%; background: #7c3aed; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600; margin-top: 16px;">🔧 Richiedi Assistenza</button>
-                </div>
-
-                <!-- Chat AI e Supporto -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🤖 Assistenza AI SeaGO</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Assistente intelligente per informazioni nautiche e supporto 24/7</p>
-                    
-                    <div style="background: #f0f9ff; border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #0891b2;">
-                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                            <div style="background: #0891b2; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">🤖</div>
-                            <div>
-                                <div style="font-weight: 600; color: #1f2937;">SeaGO AI Assistant</div>
-                                <div style="font-size: 14px; color: #6b7280;">Online • Risposta in ~2 secondi</div>
-                            </div>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px;">
-                            <button onclick="askAI('meteo')" style="background: white; border: 1px solid #0891b2; color: #0891b2; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">🌊 Meteo Mare</button>
-                            <button onclick="askAI('normative')" style="background: white; border: 1px solid #0891b2; color: #0891b2; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">📋 Normative</button>
-                            <button onclick="askAI('consigli')" style="background: white; border: 1px solid #0891b2; color: #0891b2; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">💡 Consigli</button>
-                            <button onclick="askAI('sicurezza')" style="background: white; border: 1px solid #0891b2; color: #0891b2; padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 600;">🛡️ Sicurezza</button>
-                        </div>
-                        
-                        <button onclick="openAIChat()" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">💬 Avvia Chat AI</button>
-                    </div>
-
-                    <!-- Supporto Telefonico -->
-                    <div style="background: #f8fafc; border-radius: 8px; padding: 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #1f2937;">📞 Supporto Telefonico</h4>
-                            <div style="font-size: 12px; color: #059669; font-weight: 600;">Attivo</div>
-                        </div>
-                        <div style="font-size: 13px; color: #6b7280; margin-bottom: 8px;">Assistenza clienti per prenotazioni e informazioni</div>
-                        <button onclick="callSupport()" style="background: #059669; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Chiama +39 06 123 4567</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
             <a href="#" class="nav-item active" onclick="showScreen('home', this)">
@@ -2544,10 +2155,6 @@
             <a href="#" class="nav-item" onclick="showScreen('esperienze', this)">
                 <div class="nav-icon">✨</div>
                 <span>Esperienze</span>
-            </a>
-            <a href="#" class="nav-item" onclick="showScreen('servizi', this)">
-                <div class="nav-icon">⚙️</div>
-                <span>Servizi</span>
             </a>
             <a href="#" class="nav-item" onclick="showScreen('profilo', this)">
                 <div class="nav-icon">👤</div>
@@ -3327,118 +2934,6 @@
             }
         }
 
-        // Funzioni per la sezione Servizi
-        function searchMoorings() {
-            console.log('SeaGO: Ricerca ormeggi attivata');
-            alert('🔍 Ricerca ormeggi in corso...\nTroveremo i migliori ormeggi disponibili per le tue date!');
-        }
-
-        function showPortSuggestions(value) {
-            const suggestions = document.getElementById('port-suggestions');
-            if (!suggestions) return;
-            
-            const ports = [
-                'Civitavecchia', 'Gaeta', 'Ponza', 'Anzio', 'Terracina', 'Formia',
-                'Napoli', 'Sorrento', 'Amalfi', 'Positano', 'Capri', 'Ischia'
-            ];
-            
-            if (value.length > 0) {
-                const filteredPorts = ports.filter(port => 
-                    port.toLowerCase().includes(value.toLowerCase())
-                );
-                
-                if (filteredPorts.length > 0) {
-                    suggestions.innerHTML = filteredPorts.map(port => 
-                        `<div onclick="selectPort('${port}')" style="padding: 8px; cursor: pointer; border-bottom: 1px solid #e5e7eb;">${port}</div>`
-                    ).join('');
-                    suggestions.style.display = 'block';
-                } else {
-                    suggestions.style.display = 'none';
-                }
-            } else {
-                suggestions.style.display = 'none';
-            }
-        }
-
-        function selectPort(port) {
-            const input = event.target.closest('.content').querySelector('input[type="text"]');
-            if (input) {
-                input.value = port;
-            }
-            document.getElementById('port-suggestions').style.display = 'none';
-        }
-
-        function bookMooring(port) {
-            console.log('SeaGO: Prenotazione ormeggio', port);
-            alert(`⚓ Prenotazione ormeggio a ${port}\n\n✅ Posto garantito\n💰 Sconto SeaGO 20%\n🔒 Pagamento sicuro`);
-        }
-
-        function calculateMooringPrice() {
-            const length = document.getElementById('boat-length')?.value || 12;
-            const days = document.getElementById('stay-days')?.value || 3;
-            const type = document.getElementById('mooring-type')?.value || 'pontile';
-            
-            const pricePerMeter = type === 'pontile' ? 30 : 12;
-            const basePrice = length * pricePerMeter * days;
-            const discountedPrice = Math.round(basePrice * 0.8); // 20% sconto SeaGO
-            
-            const resultDiv = document.getElementById('price-calculation');
-            if (resultDiv) {
-                resultDiv.innerHTML = `
-                    <div style="font-size: 20px; font-weight: bold; color: #0891b2; margin-bottom: 8px;">€${discountedPrice} totale</div>
-                    <div style="font-size: 14px; color: #6b7280;">€${Math.round(basePrice/days)}/giorno × ${days} giorni</div>
-                    <div style="font-size: 12px; color: #059669; margin-top: 4px;">💰 Sconto SeaGO incluso (-20%)</div>
-                `;
-            }
-        }
-
-        function openWeatherDetails() {
-            console.log('SeaGO: Apertura dettagli meteo marine');
-            alert('🌊 Dettagli Meteo Marine\n\n📊 Condizioni attuali: OTTIME\n🌬️ Vento: 12 km/h NE\n🌊 Onde: 0.5m\n👁️ Visibilità: 10+ km\n\n✅ Navigazione consigliata');
-        }
-
-        function showFuelMap() {
-            console.log('SeaGO: Apertura mappa distributori');
-            alert('🗺️ Mappa Distributori\n\n📍 3 distributori trovati nel Lazio\n⛽ Prezzi da €1.62/L\n🕐 Orari aggiornati\n🚗 Indicazioni stradali disponibili');
-        }
-
-        function callEmergency(number) {
-            console.log('SeaGO: Chiamata emergenza', number);
-            if (number === '1530') {
-                alert('🛥️ Guardia Costiera - 1530\n\n⚠️ Chiamata di emergenza\n📍 Posizione GPS condivisa\n🚨 Assistenza marittima in arrivo');
-            } else if (number === '118') {
-                alert('🚑 Emergenza Sanitaria - 118\n\n⚠️ Chiamata di emergenza\n🏥 Pronto soccorso\n🚁 Elisoccorso marino disponibile');
-            } else {
-                alert(`📞 Chiamata in corso...\n\nNumero: ${number}\n📍 Posizione condivisa automaticamente`);
-            }
-        }
-
-        function requestTechnicalAssistance() {
-            console.log('SeaGO: Richiesta assistenza tecnica');
-            alert('🔧 Assistenza Tecnica SeaGO\n\n✅ Richiesta inviata\n👨‍🔧 Tecnico in arrivo entro 30 min\n📱 Ti contatteremo a breve\n💰 Costo intervento: €50/ora');
-        }
-
-        function askAI(topic) {
-            console.log('SeaGO: Domanda AI su', topic);
-            const responses = {
-                'meteo': '🌊 AI: Condizioni meteo ottime per navigare! Mare calmo, vento 12km/h NE. Visibilità eccellente.',
-                'normative': '📋 AI: Ricorda: entro 6 miglia dalla costa serve patente nautica. Giubbotto salvagente obbligatorio.',
-                'consigli': '💡 AI: Per una giornata perfetta: parti al mattino presto, porta crema solare e controlla sempre il meteo!',
-                'sicurezza': '🛡️ AI: Controlla sempre: carburante, salvagenti, radio VHF, luci di navigazione e kit primo soccorso.'
-            };
-            alert(`🤖 SeaGO AI Assistant\n\n${responses[topic]}`);
-        }
-
-        function openAIChat() {
-            console.log('SeaGO: Apertura chat AI');
-            alert('💬 Chat AI SeaGO\n\n🤖 Ciao! Sono il tuo assistente AI\n❓ Cosa vuoi sapere sulla navigazione?\n⚡ Risposta in tempo reale\n🌊 Esperto in servizi marittimi');
-        }
-
-        function callSupport() {
-            console.log('SeaGO: Chiamata supporto clienti');
-            alert('📞 Supporto SeaGO\n\n✅ Chiamata in corso...\n👥 Operatore disponibile\n🕒 Lun-Dom 8:00-20:00\n💬 Chat AI alternativa 24/7');
-        }
-
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize home screen
@@ -3479,11 +2974,6 @@
                     }
                 });
             });
-
-            // Initialize mooring price calculator
-            if (document.getElementById('boat-length')) {
-                calculateMooringPrice();
-            }
         });
     </script>
 </body>

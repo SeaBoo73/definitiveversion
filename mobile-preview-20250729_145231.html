@@ -3327,118 +3327,6 @@
             }
         }
 
-        // Funzioni per la sezione Servizi
-        function searchMoorings() {
-            console.log('SeaGO: Ricerca ormeggi attivata');
-            alert('🔍 Ricerca ormeggi in corso...\nTroveremo i migliori ormeggi disponibili per le tue date!');
-        }
-
-        function showPortSuggestions(value) {
-            const suggestions = document.getElementById('port-suggestions');
-            if (!suggestions) return;
-            
-            const ports = [
-                'Civitavecchia', 'Gaeta', 'Ponza', 'Anzio', 'Terracina', 'Formia',
-                'Napoli', 'Sorrento', 'Amalfi', 'Positano', 'Capri', 'Ischia'
-            ];
-            
-            if (value.length > 0) {
-                const filteredPorts = ports.filter(port => 
-                    port.toLowerCase().includes(value.toLowerCase())
-                );
-                
-                if (filteredPorts.length > 0) {
-                    suggestions.innerHTML = filteredPorts.map(port => 
-                        `<div onclick="selectPort('${port}')" style="padding: 8px; cursor: pointer; border-bottom: 1px solid #e5e7eb;">${port}</div>`
-                    ).join('');
-                    suggestions.style.display = 'block';
-                } else {
-                    suggestions.style.display = 'none';
-                }
-            } else {
-                suggestions.style.display = 'none';
-            }
-        }
-
-        function selectPort(port) {
-            const input = event.target.closest('.content').querySelector('input[type="text"]');
-            if (input) {
-                input.value = port;
-            }
-            document.getElementById('port-suggestions').style.display = 'none';
-        }
-
-        function bookMooring(port) {
-            console.log('SeaGO: Prenotazione ormeggio', port);
-            alert(`⚓ Prenotazione ormeggio a ${port}\n\n✅ Posto garantito\n💰 Sconto SeaGO 20%\n🔒 Pagamento sicuro`);
-        }
-
-        function calculateMooringPrice() {
-            const length = document.getElementById('boat-length')?.value || 12;
-            const days = document.getElementById('stay-days')?.value || 3;
-            const type = document.getElementById('mooring-type')?.value || 'pontile';
-            
-            const pricePerMeter = type === 'pontile' ? 30 : 12;
-            const basePrice = length * pricePerMeter * days;
-            const discountedPrice = Math.round(basePrice * 0.8); // 20% sconto SeaGO
-            
-            const resultDiv = document.getElementById('price-calculation');
-            if (resultDiv) {
-                resultDiv.innerHTML = `
-                    <div style="font-size: 20px; font-weight: bold; color: #0891b2; margin-bottom: 8px;">€${discountedPrice} totale</div>
-                    <div style="font-size: 14px; color: #6b7280;">€${Math.round(basePrice/days)}/giorno × ${days} giorni</div>
-                    <div style="font-size: 12px; color: #059669; margin-top: 4px;">💰 Sconto SeaGO incluso (-20%)</div>
-                `;
-            }
-        }
-
-        function openWeatherDetails() {
-            console.log('SeaGO: Apertura dettagli meteo marine');
-            alert('🌊 Dettagli Meteo Marine\n\n📊 Condizioni attuali: OTTIME\n🌬️ Vento: 12 km/h NE\n🌊 Onde: 0.5m\n👁️ Visibilità: 10+ km\n\n✅ Navigazione consigliata');
-        }
-
-        function showFuelMap() {
-            console.log('SeaGO: Apertura mappa distributori');
-            alert('🗺️ Mappa Distributori\n\n📍 3 distributori trovati nel Lazio\n⛽ Prezzi da €1.62/L\n🕐 Orari aggiornati\n🚗 Indicazioni stradali disponibili');
-        }
-
-        function callEmergency(number) {
-            console.log('SeaGO: Chiamata emergenza', number);
-            if (number === '1530') {
-                alert('🛥️ Guardia Costiera - 1530\n\n⚠️ Chiamata di emergenza\n📍 Posizione GPS condivisa\n🚨 Assistenza marittima in arrivo');
-            } else if (number === '118') {
-                alert('🚑 Emergenza Sanitaria - 118\n\n⚠️ Chiamata di emergenza\n🏥 Pronto soccorso\n🚁 Elisoccorso marino disponibile');
-            } else {
-                alert(`📞 Chiamata in corso...\n\nNumero: ${number}\n📍 Posizione condivisa automaticamente`);
-            }
-        }
-
-        function requestTechnicalAssistance() {
-            console.log('SeaGO: Richiesta assistenza tecnica');
-            alert('🔧 Assistenza Tecnica SeaGO\n\n✅ Richiesta inviata\n👨‍🔧 Tecnico in arrivo entro 30 min\n📱 Ti contatteremo a breve\n💰 Costo intervento: €50/ora');
-        }
-
-        function askAI(topic) {
-            console.log('SeaGO: Domanda AI su', topic);
-            const responses = {
-                'meteo': '🌊 AI: Condizioni meteo ottime per navigare! Mare calmo, vento 12km/h NE. Visibilità eccellente.',
-                'normative': '📋 AI: Ricorda: entro 6 miglia dalla costa serve patente nautica. Giubbotto salvagente obbligatorio.',
-                'consigli': '💡 AI: Per una giornata perfetta: parti al mattino presto, porta crema solare e controlla sempre il meteo!',
-                'sicurezza': '🛡️ AI: Controlla sempre: carburante, salvagenti, radio VHF, luci di navigazione e kit primo soccorso.'
-            };
-            alert(`🤖 SeaGO AI Assistant\n\n${responses[topic]}`);
-        }
-
-        function openAIChat() {
-            console.log('SeaGO: Apertura chat AI');
-            alert('💬 Chat AI SeaGO\n\n🤖 Ciao! Sono il tuo assistente AI\n❓ Cosa vuoi sapere sulla navigazione?\n⚡ Risposta in tempo reale\n🌊 Esperto in servizi marittimi');
-        }
-
-        function callSupport() {
-            console.log('SeaGO: Chiamata supporto clienti');
-            alert('📞 Supporto SeaGO\n\n✅ Chiamata in corso...\n👥 Operatore disponibile\n🕒 Lun-Dom 8:00-20:00\n💬 Chat AI alternativa 24/7');
-        }
-
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize home screen
@@ -3479,11 +3367,6 @@
                     }
                 });
             });
-
-            // Initialize mooring price calculator
-            if (document.getElementById('boat-length')) {
-                calculateMooringPrice();
-            }
         });
     </script>
 </body>

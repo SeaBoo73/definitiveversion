@@ -164,6 +164,13 @@ The application follows modern web development best practices with a focus on ty
 
 ## Recent Changes (July 2025)
 
+### July 29, 2025 - Riordino Navigazione Mobile (Ore 17:26)
+- **Ordine Bottom Navigation Aggiornato:**
+  - ✅ Esperienze spostata prima di Ormeggio nella navigation
+  - ✅ Nuovo ordine: Home → Aiuto → Esperienze → Ormeggio → Servizi → Profilo
+  - ✅ Priorità alle Esperienze per migliorare user engagement
+  - ✅ Backup creato: mobile-preview-nav-reordered.html
+
 ### July 29, 2025 - Rimozione Servizi Aggiuntivi Prenotazione (Ore 17:25)
 - **Servizi Aggiuntivi Rimossi dalla Prenotazione Barche:**
   - ✅ Rimosso "Skipper (+€150/giorno)" dalla sezione prenotazione

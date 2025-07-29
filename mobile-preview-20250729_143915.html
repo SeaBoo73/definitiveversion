@@ -1654,34 +1654,25 @@
                 <div class="experience-categories" style="margin-bottom: 24px;">
                     <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #1f2937;">🌟 Categorie Esperienze</h3>
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                        <div class="category-btn" onclick="showExperienceCategory('tour-escursioni')" style="background: #eff6ff; border: 1px solid #0891b2; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                        <div class="category-btn" onclick="showExperienceCategory('tour-guidati')" style="background: #eff6ff; border: 1px solid #0891b2; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
                             <div style="font-size: 20px; margin-bottom: 4px;">🛥️</div>
-                            <div style="font-size: 14px; font-weight: 600; color: #0891b2;">Tour ed Escursioni</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #0891b2;">Tour Guidati</div>
                             <div style="font-size: 12px; color: #6b7280;">8 esperienze</div>
                         </div>
-                        <div class="category-btn" onclick="showExperienceCategory('esperienze-gourmet')" style="background: #f0fdf4; border: 1px solid #059669; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                        <div class="category-btn" onclick="showExperienceCategory('gourmet')" style="background: #f0fdf4; border: 1px solid #059669; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
                             <div style="font-size: 20px; margin-bottom: 4px;">🍽️</div>
-                            <div style="font-size: 14px; font-weight: 600; color: #059669;">Esperienze Gourmet</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #059669;">Gourmet</div>
                             <div style="font-size: 12px; color: #6b7280;">5 esperienze</div>
                         </div>
-                        <div class="category-btn" onclick="showExperienceCategory('attivita-bordo')" style="background: #fef3c7; border: 1px solid #d97706; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
+                        <div class="category-btn" onclick="showExperienceCategory('pesca')" style="background: #fef3c7; border: 1px solid #d97706; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
                             <div style="font-size: 20px; margin-bottom: 4px;">🎣</div>
-                            <div style="font-size: 14px; font-weight: 600; color: #d97706;">Attività a Bordo</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #d97706;">Pesca</div>
                             <div style="font-size: 12px; color: #6b7280;">6 esperienze</div>
                         </div>
-                        <div class="category-btn" onclick="showExperienceCategory('charter-premium')" style="background: #f3e8ff; border: 1px solid #7c3aed; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
-                            <div style="font-size: 20px; margin-bottom: 4px;">⛵</div>
-                            <div style="font-size: 14px; font-weight: 600; color: #7c3aed;">Charter Premium</div>
-                            <div style="font-size: 12px; color: #6b7280;">4 esperienze</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Seconda riga -->
-                    <div style="margin-top: 12px;">
-                        <div class="category-btn" onclick="showExperienceCategory('eventi-speciali')" style="background: #fdf2f8; border: 1px solid #db2777; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer; width: 100%; max-width: 200px; margin: 0 auto;">
+                        <div class="category-btn" onclick="showExperienceCategory('eventi')" style="background: #fdf2f8; border: 1px solid #db2777; padding: 16px; border-radius: 8px; text-align: center; cursor: pointer;">
                             <div style="font-size: 20px; margin-bottom: 4px;">🎉</div>
-                            <div style="font-size: 14px; font-weight: 600; color: #db2777;">Eventi Speciali</div>
-                            <div style="font-size: 12px; color: #6b7280;">7 esperienze</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #db2777;">Eventi</div>
+                            <div style="font-size: 12px; color: #6b7280;">4 esperienze</div>
                         </div>
                     </div>
                 </div>
@@ -1802,81 +1793,6 @@
             </div>
             <div class="content" id="experience-booking-content">
                 <!-- Contenuto prenotazione esperienza verrà inserito qui -->
-            </div>
-        </div>
-
-        <!-- Tour ed Escursioni Tematiche -->
-        <div id="tour-escursioni-page" class="screen" style="display: none;">
-            <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
-                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
-                <div style="text-align: center; flex-grow: 1;">
-                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">🛥️ Tour ed Escursioni</h1>
-                </div>
-                <div style="width: 40px;"></div>
-            </div>
-            <div class="content" id="tour-escursioni-content">
-                <!-- Contenuto tour ed escursioni verrà inserito qui -->
-            </div>
-        </div>
-
-        <!-- Esperienze Gourmet -->
-        <div id="esperienze-gourmet-page" class="screen" style="display: none;">
-            <div style="background: linear-gradient(135deg, #059669, #047857); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
-                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
-                <div style="text-align: center; flex-grow: 1;">
-                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">🍽️ Esperienze Gourmet</h1>
-                </div>
-                <div style="width: 40px;"></div>
-            </div>
-            <div class="content" id="esperienze-gourmet-content">
-                <!-- Contenuto esperienze gourmet verrà inserito qui -->
-            </div>
-        </div>
-
-        <!-- Attività a Bordo -->
-        <div id="attivita-bordo-page" class="screen" style="display: none;">
-            <div style="background: linear-gradient(135deg, #d97706, #b45309); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
-                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
-                <div style="text-align: center; flex-grow: 1;">
-                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">🎣 Attività a Bordo</h1>
-                </div>
-                <div style="width: 40px;"></div>
-            </div>
-            <div class="content" id="attivita-bordo-content">
-                <!-- Contenuto attività a bordo verrà inserito qui -->
-            </div>
-        </div>
-
-        <!-- Charter e Noleggi Premium -->
-        <div id="charter-premium-page" class="screen" style="display: none;">
-            <div style="background: linear-gradient(135deg, #7c3aed, #6d28d9); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
-                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
-                <div style="text-align: center; flex-grow: 1;">
-                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">⛵ Charter Premium</h1>
-                </div>
-                <div style="width: 40px;"></div>
-            </div>
-            <div class="content" id="charter-premium-content">
-                <!-- Contenuto charter premium verrà inserito qui -->
-            </div>
-        </div>
-
-        <!-- Eventi Speciali -->
-        <div id="eventi-speciali-page" class="screen" style="display: none;">
-            <div style="background: linear-gradient(135deg, #db2777, #be185d); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
-                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
-                <div style="text-align: center; flex-grow: 1;">
-                    <div style="font-size: 18px; font-weight: 600;">SeaGO</div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">🎉 Eventi Speciali</h1>
-                </div>
-                <div style="width: 40px;"></div>
-            </div>
-            <div class="content" id="eventi-speciali-content">
-                <!-- Contenuto eventi speciali verrà inserito qui -->
             </div>
         </div>
 
@@ -2553,120 +2469,6 @@
 
         function showExperienceSearch() {
             showMessage('🔍 Ricerca Esperienze', 'Utilizza i filtri per categoria, durata, prezzo e località per trovare l\'esperienza perfetta per te!');
-        }
-
-        function showExperienceCategory(categoryType) {
-            const categories = {
-                'tour-escursioni': {
-                    page: 'tour-escursioni-page',
-                    title: 'Tour ed Escursioni Tematiche',
-                    icon: '🛥️',
-                    subcategories: [
-                        { name: 'Tour Costiera Amalfitana', icon: '🌅', experiences: ['Tramonto a Positano', 'Tour completo Amalfi'], price: 'da €145/persona' },
-                        { name: 'Escursioni Isole Pontine', icon: '🏝️', experiences: ['Ponza e Palmarola', 'Tour 3 isole'], price: 'da €89/persona' },
-                        { name: 'Tour Arcipelago Toscano', icon: '⛵', experiences: ['Elba e Giglio', 'Capraia Explorer'], price: 'da €120/persona' },
-                        { name: 'Escursioni Cinque Terre', icon: '🏘️', experiences: ['Tour via mare', 'Trekking+Mare'], price: 'da €95/persona' }
-                    ]
-                },
-                'esperienze-gourmet': {
-                    page: 'esperienze-gourmet-page', 
-                    title: 'Esperienze Gourmet',
-                    icon: '🍽️',
-                    subcategories: [
-                        { name: 'Cene al Tramonto', icon: '🌅', experiences: ['Chef a bordo', 'Menu degustazione'], price: 'da €195/persona' },
-                        { name: 'Degustazioni Vini', icon: '🍷', experiences: ['Vini locali', 'Sommelier incluso'], price: 'da €125/persona' },
-                        { name: 'Aperitivi Esclusivi', icon: '🥂', experiences: ['Champagne cruise', 'Cocktail sunset'], price: 'da €85/persona' },
-                        { name: 'Pranzi Tematici', icon: '🐟', experiences: ['Pesce fresco', 'Cucina regionale'], price: 'da €110/persona' }
-                    ]
-                },
-                'attivita-bordo': {
-                    page: 'attivita-bordo-page',
-                    title: 'Attività a Bordo',
-                    icon: '🎣',
-                    subcategories: [
-                        { name: 'Pesca Sportiva', icon: '🎣', experiences: ['Pesca altura', 'Pesca costiera'], price: 'da €75/persona' },
-                        { name: 'Snorkeling & Diving', icon: '🤿', experiences: ['Immersioni guidate', 'Snorkeling'], price: 'da €55/persona' },
-                        { name: 'Yoga & Wellness', icon: '🧘', experiences: ['Yoga al tramonto', 'Meditazione'], price: 'da €65/persona' },
-                        { name: 'Fotografia Marina', icon: '📸', experiences: ['Workshop foto', 'Servizio fotografico'], price: 'da €90/persona' }
-                    ]
-                },
-                'charter-premium': {
-                    page: 'charter-premium-page',
-                    title: 'Charter e Noleggi Premium',
-                    icon: '⛵',
-                    subcategories: [
-                        { name: 'Yacht di Lusso', icon: '🛥️', experiences: ['Azimut 80', 'Ferretti 720'], price: 'da €2,500/giorno' },
-                        { name: 'Charter con Equipaggio', icon: '👨‍✈️', experiences: ['Skipper+Hostess', 'Servizio completo'], price: 'da €1,800/giorno' },
-                        { name: 'Barche a Vela Premium', icon: '⛵', experiences: ['Bavaria 50', 'Jeanneau 54'], price: 'da €1,200/giorno' },
-                        { name: 'Catamarani Luxury', icon: '🏖️', experiences: ['Lagoon 52', 'Fountaine Pajot'], price: 'da €1,950/giorno' }
-                    ]
-                },
-                'eventi-speciali': {
-                    page: 'eventi-speciali-page',
-                    title: 'Eventi Speciali',
-                    icon: '🎉',
-                    subcategories: [
-                        { name: 'Matrimoni in Mare', icon: '💒', experiences: ['Cerimonia a bordo', 'Ricevimento esclusivo'], price: 'da €3,500/evento' },
-                        { name: 'Compleanni VIP', icon: '🎂', experiences: ['Festa personalizzata', 'Animazione inclusa'], price: 'da €1,200/evento' },
-                        { name: 'Eventi Aziendali', icon: '🏢', experiences: ['Team building', 'Meeting esclusivi'], price: 'da €2,800/evento' },
-                        { name: 'Addii al Celibato/Nubilato', icon: '🥳', experiences: ['Party esclusivo', 'Pacchetto completo'], price: 'da €850/evento' }
-                    ]
-                }
-            };
-            
-            const category = categories[categoryType];
-            if (!category) return;
-            
-            // Popola il contenuto della categoria
-            const contentId = category.page.replace('-page', '-content');
-            const contentElement = document.getElementById(contentId);
-            
-            if (contentElement) {
-                contentElement.innerHTML = `
-                    <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 12px; color: #1f2937;">${category.icon} ${category.title}</h3>
-                        <p style="color: #6b7280; margin-bottom: 16px;">Scopri le nostre esperienze esclusive progettate per offrirti momenti indimenticabili in mare.</p>
-                        
-                        <div style="display: grid; gap: 16px;">
-                            ${category.subcategories.map(sub => `
-                                <div style="background: #f8fafc; border-radius: 12px; padding: 16px; border: 1px solid #e5e7eb;">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                        <div style="font-size: 24px;">${sub.icon}</div>
-                                        <div>
-                                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">${sub.name}</h4>
-                                            <p style="margin: 0; font-size: 14px; color: #6b7280;">${sub.experiences.join(' • ')}</p>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div style="font-size: 16px; font-weight: bold; color: #0891b2;">${sub.price}</div>
-                                        <button onclick="showExperienceBooking('${categoryType}-${sub.name.toLowerCase().replace(/\s+/g, '-')}')" style="background: #0891b2; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Prenota</button>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-            
-            // Naviga alla pagina della categoria
-            currentPage = category.page;
-            pageHistory.push('esperienze');
-            
-            // Nascondi tutte le schermate
-            document.querySelectorAll('.screen').forEach(screen => {
-                screen.style.display = 'none';
-                screen.classList.remove('active');
-            });
-            
-            // Mostra la pagina della categoria
-            const targetPage = document.getElementById(category.page);
-            if (targetPage) {
-                targetPage.style.display = 'block';
-                targetPage.classList.add('active');
-            }
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
         }
 
         function bookBoat(boatId) {

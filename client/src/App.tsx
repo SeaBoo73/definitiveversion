@@ -70,6 +70,7 @@ import EsperienzaDettaglio from "@/pages/esperienza-dettaglio";
 import PrenotaEsperienza from "@/pages/prenota-esperienza";
 import CheckoutEsperienza from "@/pages/checkout-esperienza";
 import PaymentSuccessEsperienza from "@/pages/payment-success-esperienza";
+import DiventaSeaHostPage from "@/pages/diventa-sea-host";
 
 function Router() {
   return (
@@ -105,6 +106,7 @@ function Router() {
       <Route path="/privacy-policy" component={PrivacyPolicyPage} />
       <Route path="/contatti" component={ContattiPage} />
       <Route path="/diventa-noleggiatore" component={DiventaNoleggiatorePage} />
+      <Route path="/diventa-sea-host" component={DiventaSeaHostPage} />
       <Route path="/modifica-prenotazione" component={ModificaPrenotazionePage} />
       <Route path="/documenti" component={DocumentiPage} />
       <Route path="/assicurazione" component={AssicurazionePage} />

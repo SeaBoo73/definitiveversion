@@ -1446,7 +1446,10 @@
 
                     </div>
                     
-                    <button class="registration-button">🌟 Inizia a Guadagnare</button>
+                    <button class="registration-button" onclick="showSeaHostPage()">
+                        <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">⚓ Diventa Sea Host</div>
+                        <div style="font-size: 13px; opacity: 0.9;">Inizia a guadagnare con la tua imbarcazione</div>
+                    </button>
                 </div>
 
                 <!-- Footer -->
@@ -3524,6 +3527,18 @@
                 suggestions.style.display = 'none';
             }
         });
+
+        // Funzione per aprire la pagina Sea Host
+        function showSeaHostPage() {
+            // Simula l'apertura della pagina in una nuova finestra
+            alert('🚀 Reindirizzamento a pagina registrazione Sea Host...\n\n⚓ Diventa Sea Host SeaGO\n💰 Inizia a guadagnare con la tua imbarcazione\n\n✓ Commissione 15%\n✓ Assicurazione inclusa\n✓ Pagamenti sicuri\n✓ Supporto 24/7');
+            
+            // Log per debugging
+            console.log('SeaGO: Apertura pagina registrazione Sea Host');
+            
+            // In un'app reale, questo aprirebbe /diventa-sea-host
+            // window.open('/diventa-sea-host', '_blank');
+        }
 
         // Funzioni per la sezione Ormeggio - 48 porti
         function showMooringPortSuggestions(value = '') {

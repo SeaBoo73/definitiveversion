@@ -2518,103 +2518,160 @@
         <!-- Sezione Servizi -->
         <div id="servizi" class="screen" style="display: none;">
             <div class="content">
-                <div style="background: linear-gradient(135deg, #059669, #047857); padding: 24px; color: white; text-align: center; margin: 0 -16px 24px; border-radius: 0 0 20px 20px;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">⚙️</div>
-                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">Servizi SeaGO</h2>
-                    <p style="margin: 0; opacity: 0.9; font-size: 16px;">Tutto quello che serve per navigare in sicurezza</p>
+                <div style="background: linear-gradient(135deg, #0891b2, #0284c7); padding: 24px; color: white; text-align: center; margin: 0 -16px 24px; border-radius: 0 0 20px 20px;">
+                    <div style="font-size: 32px; margin-bottom: 12px;">☁️</div>
+                    <h2 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 600;">Servizi Esterni</h2>
+                    <p style="margin: 0; opacity: 0.9; font-size: 16px;">Informazioni in tempo reale per una navigazione sicura e conveniente</p>
                 </div>
 
-                <!-- Meteo e Condizioni Marine -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🌊 Meteo e Condizioni Marine</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Condizioni meteo marine in tempo reale per navigazione sicura</p>
-                    
-                    <!-- Meteo Attuale Roma/Fiumicino -->
-                    <div style="background: #f0f9ff; border-radius: 12px; padding: 16px; margin-bottom: 16px; border-left: 4px solid #0891b2;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Roma/Fiumicino - Ora</h4>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">OTTIME</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: center;">
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">☀️</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">22°C</div>
-                                <div style="font-size: 12px; color: #6b7280;">Sereno</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">💨</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">12 km/h</div>
-                                <div style="font-size: 12px; color: #6b7280;">Vento NE</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">🌊</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">0.5m</div>
-                                <div style="font-size: 12px; color: #6b7280;">Onde</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 20px; margin-bottom: 4px;">👁️</div>
-                                <div style="font-size: 14px; font-weight: 600; color: #1f2937;">10+ km</div>
-                                <div style="font-size: 12px; color: #6b7280;">Visibilità</div>
-                            </div>
-                        </div>
+                <!-- Grid delle 5 categorie di servizi -->
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
+                    <!-- Meteo Marine -->
+                    <div onclick="openServiceCategory('meteo')" style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                        <div style="font-size: 24px; margin-bottom: 8px; color: #0891b2;">☁️</div>
+                        <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1f2937;">Meteo Marine</h3>
+                        <p style="margin: 0; font-size: 12px; color: #6b7280;">Condizioni attuali</p>
                     </div>
 
-                    <!-- Previsioni 48h -->
-                    <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 16px;">
-                        <h5 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 600; color: #1f2937;">📅 Previsioni 48 ore</h5>
-                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 12px;">
-                            <div style="text-align: center;">
-                                <div style="font-weight: 600;">Oggi</div>
-                                <div>☀️ 24°C</div>
-                                <div style="color: #10b981;">Mare calmo</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-weight: 600;">Domani</div>
-                                <div>⛅ 21°C</div>
-                                <div style="color: #fbbf24;">Mare mosso</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-weight: 600;">Dopodom.</div>
-                                <div>🌧️ 18°C</div>
-                                <div style="color: #ef4444;">Sconsigliato</div>
-                            </div>
-                        </div>
+                    <!-- Prezzi Carburante -->
+                    <div onclick="openServiceCategory('carburante')" style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                        <div style="font-size: 24px; margin-bottom: 8px; color: #059669;">⛽</div>
+                        <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1f2937;">Prezzi Carburante</h3>
+                        <p style="margin: 0; font-size: 12px; color: #6b7280;">Stazioni vicine</p>
                     </div>
 
-                    <button onclick="openWeatherDetails()" style="width: 100%; background: #0891b2; color: white; border: none; padding: 12px; border-radius: 6px; font-weight: 600;">🌊 Dettagli Meteo Marine</button>
+                    <!-- Servizi Portuali -->
+                    <div onclick="openServiceCategory('porti')" style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border: 2px solid transparent; transition: all 0.2s;">
+                        <div style="font-size: 24px; margin-bottom: 8px; color: #d97706;">⚓</div>
+                        <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1f2937;">Servizi Portuali</h3>
+                        <p style="margin: 0; font-size: 12px; color: #6b7280;">Porti e marine</p>
+                    </div>
+
+                    <!-- Condizioni Marine -->
+                    <div onclick="openServiceCategory('condizioni')" style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border: 2px solid #0891b2; background: #f0f9ff;">
+                        <div style="font-size: 24px; margin-bottom: 8px; color: #0891b2;">🌊</div>
+                        <h3 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 600; color: #1f2937;">Condizioni Marine</h3>
+                        <p style="margin: 0; font-size: 12px; color: #6b7280;">Onde e sicurezza</p>
+                    </div>
                 </div>
 
-                <!-- Prezzi Carburante -->
-                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">⛽ Prezzi Carburante Nautico</h3>
-                    <p style="margin: 0 0 16px 0; color: #6b7280; font-size: 14px;">Distributori di carburante marino nel Lazio aggiornati oggi</p>
-                    
-                    <!-- Distributore Civitavecchia -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #059669;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina Civitavecchia</h4>
-                            <div style="background: #10b981; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">APERTO</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #059669;">€1.65/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Gasolio marino</div>
-                            </div>
-                            <div>
-                                <div style="font-size: 18px; font-weight: bold; color: #059669;">€1.89/L</div>
-                                <div style="font-size: 12px; color: #6b7280;">Benzina</div>
-                            </div>
-                        </div>
-                        <div style="font-size: 12px; color: #6b7280;">📍 Porto di Civitavecchia • ⏰ 7:00-19:00</div>
-                    </div>
+                <!-- Partner -->
+                <div onclick="openServiceCategory('partner')" style="background: white; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border: 2px solid transparent; transition: all 0.2s; margin-bottom: 24px;">
+                    <div style="font-size: 24px; margin-bottom: 8px; color: #7c3aed;">👥</div>
+                    <h3 style="margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Partner</h3>
+                    <p style="margin: 0; font-size: 14px; color: #6b7280;">Servizi verificati</p>
+                </div>
 
-                    <!-- Distributore Gaeta -->
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #d97706;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">Marina di Gaeta</h4>
-                            <div style="background: #fbbf24; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">SELF 24H</div>
+                <!-- Sezione Località e Aggiorna -->
+                <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="font-size: 16px;">📍</div>
+                            <span style="font-size: 14px; font-weight: 600; color: #374151;">Località:</span>
+                            <select onchange="changeServiceLocation(this.value)" style="border: 1px solid #d1d5db; border-radius: 6px; padding: 4px 8px; font-size: 14px; background: white;">
+                                <option value="roma">Roma / Fiumicino</option>
+                                <option value="civitavecchia">Civitavecchia</option>
+                                <option value="gaeta">Gaeta</option>
+                                <option value="napoli">Napoli</option>
+                                <option value="amalfi">Amalfi</option>
+                            </select>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px;">
+                        <button onclick="refreshAllServices()" style="background: #0891b2; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer;">
+                            🔄 Aggiorna Tutto
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tab Navigation per Servizi -->
+                <div style="background: white; border-radius: 12px; padding: 0; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden;">
+                    <div style="display: flex; border-bottom: 1px solid #e5e7eb;">
+                        <button onclick="showServiceTab('meteo')" id="tab-meteo" style="flex: 1; padding: 12px 8px; border: none; background: #0891b2; color: white; font-size: 12px; font-weight: 600; cursor: pointer;">Meteo</button>
+                        <button onclick="showServiceTab('carburante')" id="tab-carburante" style="flex: 1; padding: 12px 8px; border: none; background: #f8fafc; color: #6b7280; font-size: 12px; font-weight: 600; cursor: pointer;">Carburante</button>
+                        <button onclick="showServiceTab('porti')" id="tab-porti" style="flex: 1; padding: 12px 8px; border: none; background: #f8fafc; color: #6b7280; font-size: 12px; font-weight: 600; cursor: pointer;">Porti</button>
+                        <button onclick="showServiceTab('condizioni')" id="tab-condizioni" style="flex: 1; padding: 12px 8px; border: none; background: #f8fafc; color: #6b7280; font-size: 12px; font-weight: 600; cursor: pointer;">Condizioni Marine</button>
+                        <button onclick="showServiceTab('partner')" id="tab-partner" style="flex: 1; padding: 12px 8px; border: none; background: #f8fafc; color: #6b7280; font-size: 12px; font-weight: 600; cursor: pointer;">Partner</button>
+                    </div>
+                    
+                    <!-- Contenuto Meteo -->
+                    <div id="service-meteo" style="display: block; padding: 16px;">
+                        <h4 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Condizioni Meteo Marine</h4>
+                        <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; text-align: center; font-size: 12px;">
+                                <div><div>☀️</div><div>22°C</div><div>Sereno</div></div>
+                                <div><div>💨</div><div>12 km/h</div><div>Vento NE</div></div>
+                                <div><div>🌊</div><div>0.5m</div><div>Onde</div></div>
+                                <div><div>👁️</div><div>10+ km</div><div>Visibilità</div></div>
+                            </div>
+                        </div>
+                        <div style="background: #10b981; color: white; padding: 8px; border-radius: 6px; text-align: center; font-size: 12px; font-weight: 600;">✅ Condizioni ottime per la navigazione</div>
+                    </div>
+                    
+                    <!-- Contenuto Carburante -->
+                    <div id="service-carburante" style="display: none; padding: 16px;">
+                        <h4 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Prezzi Carburante Marino</h4>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <span style="font-weight: 600; font-size: 14px;">Marina Civitavecchia</span>
+                                <span style="background: #10b981; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px;">APERTO</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+                                <div><strong>€1.65/L</strong> Gasolio</div>
+                                <div><strong>€1.89/L</strong> Benzina</div>
+                            </div>
+                        </div>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <span style="font-weight: 600; font-size: 14px;">Marina di Gaeta</span>
+                                <span style="background: #fbbf24; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px;">24H</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+                                <div><strong>€1.62/L</strong> Gasolio</div>
+                                <div><strong>€1.85/L</strong> Benzina</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenuto Porti -->
+                    <div id="service-porti" style="display: none; padding: 16px;">
+                        <h4 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Servizi Portuali</h4>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                            <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">Porto di Civitavecchia</div>
+                            <div style="font-size: 12px; color: #6b7280;">⚓ Ormeggi disponibili • 🔧 Servizi tecnici • ⛽ Rifornimento</div>
+                        </div>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px;">
+                            <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">Marina di Gaeta</div>
+                            <div style="font-size: 12px; color: #6b7280;">⚓ Posto barca • 🚿 Servizi igienici • 🔌 Elettricità</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contenuto Condizioni Marine -->
+                    <div id="service-condizioni" style="display: none; padding: 16px;">
+                        <h4 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Condizioni Marine</h4>
+                        <div style="background: #f0f9ff; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; font-size: 12px;">
+                                <div><div>🌊</div><div style="font-weight: 600;">Onde 0.5m</div><div>Basse</div></div>
+                                <div><div>🧭</div><div style="font-weight: 600;">Correnti</div><div>Deboli</div></div>
+                                <div><div>⚠️</div><div style="font-weight: 600;">Allerte</div><div>Nessuna</div></div>
+                            </div>
+                        </div>
+                        <div style="background: #10b981; color: white; padding: 8px; border-radius: 6px; text-align: center; font-size: 12px; font-weight: 600;">🌊 Mare calmo - Navigazione sicura</div>
+                    </div>
+                    
+                    <!-- Contenuto Partner -->
+                    <div id="service-partner" style="display: none; padding: 16px;">
+                        <h4 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: #1f2937;">Partner Verificati</h4>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 8px;">
+                            <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">Servizi Nautici</div>
+                            <div style="font-size: 12px; color: #6b7280;">🔧 Assistenza tecnica • 🛡️ Assicurazioni • 📋 Pratiche burocratiche</div>
+                        </div>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px;">
+                            <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px;">Partner Commerciali</div>
+                            <div style="font-size: 12px; color: #6b7280;">🏪 Negozi nautici • 🍽️ Ristorazione • 🏨 Alloggi</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>>
                             <div>
                                 <div style="font-size: 18px; font-weight: bold; color: #d97706;">€1.62/L</div>
                                 <div style="font-size: 12px; color: #6b7280;">Gasolio marino</div>
@@ -3942,6 +3999,61 @@
         function callSupport() {
             console.log('SeaGO: Chiamata supporto clienti');
             alert('📞 Supporto SeaGO\n\n✅ Chiamata in corso...\n👥 Operatore disponibile\n🕒 Lun-Dom 8:00-20:00\n💬 Chat AI alternativa 24/7');
+        }
+
+        // Nuove funzioni per Servizi Esterni
+        function openServiceCategory(category) {
+            console.log('SeaGO: Apertura categoria servizio', category);
+            const categoryNames = {
+                'meteo': 'Meteo Marine',
+                'carburante': 'Prezzi Carburante',
+                'porti': 'Servizi Portuali',
+                'condizioni': 'Condizioni Marine',
+                'partner': 'Partner Verificati'
+            };
+            alert(`📋 ${categoryNames[category]}\n\n✅ Sezione disponibile\n📊 Dati aggiornati in tempo reale\n🔄 Ultimo aggiornamento: ora`);
+        }
+
+        function showServiceTab(tabName) {
+            // Reset tutti i tab
+            const tabs = ['meteo', 'carburante', 'porti', 'condizioni', 'partner'];
+            tabs.forEach(tab => {
+                const tabButton = document.getElementById(`tab-${tab}`);
+                const tabContent = document.getElementById(`service-${tab}`);
+                if (tabButton && tabContent) {
+                    tabButton.style.background = '#f8fafc';
+                    tabButton.style.color = '#6b7280';
+                    tabContent.style.display = 'none';
+                }
+            });
+
+            // Attiva il tab selezionato
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            const activeContent = document.getElementById(`service-${tabName}`);
+            if (activeTab && activeContent) {
+                activeTab.style.background = '#0891b2';
+                activeTab.style.color = 'white';
+                activeContent.style.display = 'block';
+            }
+
+            console.log(`SeaGO: Visualizzazione tab ${tabName}`);
+        }
+
+        function changeServiceLocation(location) {
+            console.log('SeaGO: Cambio località servizi', location);
+            const locationNames = {
+                'roma': 'Roma/Fiumicino',
+                'civitavecchia': 'Civitavecchia',
+                'gaeta': 'Gaeta',
+                'napoli': 'Napoli',
+                'amalfi': 'Amalfi'
+            };
+            alert(`📍 Località cambiata: ${locationNames[location]}\n\n🔄 Aggiornamento dati in corso...\n📊 Servizi locali caricati\n✅ Pronto per la navigazione`);
+        }
+
+        function refreshAllServices() {
+            console.log('SeaGO: Aggiornamento tutti i servizi');
+            alert('🔄 Aggiornamento Servizi\n\n☁️ Meteo aggiornato\n⛽ Prezzi carburante verificati\n⚓ Servizi portuali controllati\n🌊 Condizioni marine attuali\n👥 Partner sincronizzati\n\n✅ Tutto aggiornato!');
         }
 
         // Initialize the app

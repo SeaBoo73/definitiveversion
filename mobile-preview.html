@@ -1568,14 +1568,151 @@
                     <!-- Dove vuoi ormeggiare -->
                     <div style="margin-bottom: 16px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">📍 Dove vuoi ormeggiare?</label>
-                        <input 
-                            type="text" 
-                            placeholder="Inserisci località (es. Civitavecchia, Gaeta, Ponza...)" 
-                            style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;"
-                            onkeyup="showPortSuggestions(this.value)"
-                            onclick="showPortSuggestions(this.value)"
-                        >
-                        <div id="port-suggestions" style="display: none; background: white; border: 1px solid #d1d5db; border-top: none; border-radius: 0 0 8px 8px; max-height: 200px; overflow-y: auto;"></div>
+                        <div style="position: relative;">
+                            <input 
+                                type="text" 
+                                id="mooringPortSearch"
+                                placeholder="Cerca tra 48 porti italiani..." 
+                                style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;"
+                                oninput="showMooringPortSuggestions(this.value)"
+                                onclick="showMooringPortSuggestions(this.value)"
+                            >
+                            
+                            <div id="mooringPortSuggestions" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; margin-top: 4px; max-height: 300px; overflow-y: auto;">
+                                <div style="padding: 12px; border-bottom: 1px solid #e5e7eb; background: #f8fafc; font-weight: 600; color: #374151; font-size: 14px;">
+                                    48 porti disponibili per ormeggi
+                                </div>
+                                
+                                <!-- Lazio Ports -->
+                                <div style="padding: 8px 12px; background: #dbeafe; color: #1e40af; font-weight: 600; font-size: 12px;">Lazio (15 porti)</div>
+                                <div onclick="selectMooringPort('Civitavecchia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Civitavecchia</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🚢 Marina principale</span>
+                                </div>
+                                <div onclick="selectMooringPort('Ponza')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Ponza</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏝️ Isola pontina</span>
+                                </div>
+                                <div onclick="selectMooringPort('Gaeta')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Gaeta</span>
+                                    <span style="font-size: 12px; color: #6b7280;">⛵ Porto turistico</span>
+                                </div>
+                                <div onclick="selectMooringPort('Anzio')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Anzio</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏖️ Costa romana</span>
+                                </div>
+                                <div onclick="selectMooringPort('Fiumicino')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Fiumicino</span>
+                                    <span style="font-size: 12px; color: #6b7280;">✈️ Vicino aeroporto</span>
+                                </div>
+                                <div onclick="selectMooringPort('Terracina')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Terracina</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🌅 Costa del sole</span>
+                                </div>
+                                <div onclick="selectMooringPort('Ostia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Ostia</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏛️ Lido di Roma</span>
+                                </div>
+                                <div onclick="selectMooringPort('San Felice Circeo')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>San Felice Circeo</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏔️ Promontorio</span>
+                                </div>
+                                <div onclick="selectMooringPort('Formia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Formia</span>
+                                    <span style="font-size: 12px; color: #6b7280;">⚓ Porto storico</span>
+                                </div>
+                                <div onclick="selectMooringPort('Nettuno')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Nettuno</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏛️ Porto antico</span>
+                                </div>
+                                <div onclick="selectMooringPort('Santa Marinella')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Santa Marinella</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🌊 Costa tirrenica</span>
+                                </div>
+                                <div onclick="selectMooringPort('Ventotene')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Ventotene</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏝️ Isola pontina</span>
+                                </div>
+                                <div onclick="selectMooringPort('Ladispoli')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Ladispoli</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏖️ Spiagge sabbiose</span>
+                                </div>
+                                <div onclick="selectMooringPort('Sperlonga')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Sperlonga</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏰 Borgo medievale</span>
+                                </div>
+                                <div onclick="selectMooringPort('Montalto di Castro')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Montalto di Castro</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🌿 Costa naturale</span>
+                                </div>
+                                
+                                <!-- Campania Ports -->
+                                <div style="padding: 8px 12px; background: #fed7aa; color: #ea580c; font-weight: 600; font-size: 12px;">Campania (33 porti)</div>
+                                <div onclick="selectMooringPort('Napoli')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Napoli</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🌋 Golfo partenopeo</span>
+                                </div>
+                                <div onclick="selectMooringPort('Salerno')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Salerno</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏛️ Porto principale</span>
+                                </div>
+                                <div onclick="selectMooringPort('Sorrento')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Sorrento</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🍋 Penisola sorrentina</span>
+                                </div>
+                                <div onclick="selectMooringPort('Amalfi')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Amalfi</span>
+                                    <span style="font-size: 12px; color: #6b7280;">⛰️ Costiera amalfitana</span>
+                                </div>
+                                <div onclick="selectMooringPort('Positano')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Positano</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🌺 Perla della costiera</span>
+                                </div>
+                                <div onclick="selectMooringPort('Capri')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Capri</span>
+                                    <span style="font-size: 12px; color: #6b7280;">💎 Isola del lusso</span>
+                                </div>
+                                <div onclick="selectMooringPort('Ischia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Ischia</span>
+                                    <span style="font-size: 12px; color: #6b7280;">♨️ Isola verde</span>
+                                </div>
+                                <div onclick="selectMooringPort('Procida')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Procida</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🎨 Isola colorata</span>
+                                </div>
+                                <div onclick="selectMooringPort('Pozzuoli')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Pozzuoli</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🔥 Campi flegrei</span>
+                                </div>
+                                <div onclick="selectMooringPort('Castellammare di Stabia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                                    <span>Castellammare di Stabia</span>
+                                    <span style="font-size: 12px; color: #6b7280;">🏰 Porto storico</span>
+                                </div>
+                                <div onclick="selectMooringPort('Torre del Greco')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Torre del Greco</div>
+                                <div onclick="selectMooringPort('Bagnoli')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Bagnoli</div>
+                                <div onclick="selectMooringPort('Marina di Stabia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Marina di Stabia</div>
+                                <div onclick="selectMooringPort('Casamicciola')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Casamicciola</div>
+                                <div onclick="selectMooringPort('Forio d\'Ischia')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Forio d'Ischia</div>
+                                <div onclick="selectMooringPort('Cetara')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Cetara</div>
+                                <div onclick="selectMooringPort('Maiori')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Maiori</div>
+                                <div onclick="selectMooringPort('Minori')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Minori</div>
+                                <div onclick="selectMooringPort('Conca dei Marini')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Conca dei Marini</div>
+                                <div onclick="selectMooringPort('Furore')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Furore</div>
+                                <div onclick="selectMooringPort('Agropoli')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Agropoli</div>
+                                <div onclick="selectMooringPort('Palinuro')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Palinuro</div>
+                                <div onclick="selectMooringPort('Marina di Camerota')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Marina di Camerota</div>
+                                <div onclick="selectMooringPort('Sapri')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Sapri</div>
+                                <div onclick="selectMooringPort('Scario')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Scario</div>
+                                <div onclick="selectMooringPort('Pisciotta')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Pisciotta</div>
+                                <div onclick="selectMooringPort('Vico Equense')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Vico Equense</div>
+                                <div onclick="selectMooringPort('Piano di Sorrento')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Piano di Sorrento</div>
+                                <div onclick="selectMooringPort('Massa Lubrense')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Massa Lubrense</div>
+                                <div onclick="selectMooringPort('Atrani')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Atrani</div>
+                                <div onclick="selectMooringPort('Marina del Cantone')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Marina del Cantone</div>
+                                <div onclick="selectMooringPort('Lacco Ameno')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Lacco Ameno</div>
+                                <div onclick="selectMooringPort('Sant\'Angelo')" style="padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f3f4f6; color: #374151; font-size: 14px;">Sant'Angelo</div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Date Check-in/out -->
@@ -3443,6 +3580,57 @@
         document.addEventListener('click', function(event) {
             const input = document.getElementById('experiencePortSearch');
             const suggestions = document.getElementById('experiencePortSuggestions');
+            
+            if (input && suggestions && !input.contains(event.target) && !suggestions.contains(event.target)) {
+                suggestions.style.display = 'none';
+            }
+        });
+
+        // Funzioni per la sezione Ormeggio - 48 porti
+        function showMooringPortSuggestions(value = '') {
+            const suggestions = document.getElementById('mooringPortSuggestions');
+            if (!suggestions) return;
+            
+            suggestions.style.display = 'block';
+            
+            if (value && value.length > 0) {
+                // Filter based on search value
+                filterMooringPorts(value);
+            }
+        }
+
+        function selectMooringPort(portName) {
+            const input = document.getElementById('mooringPortSearch');
+            const suggestions = document.getElementById('mooringPortSuggestions');
+            
+            if (input) input.value = portName;
+            if (suggestions) suggestions.style.display = 'none';
+            
+            // Show confirmation message
+            setTimeout(() => {
+                alert('⚓ Porto selezionato: ' + portName + '\nRicerca ormeggi disponibili...');
+                console.log('SeaGO: Ricerca ormeggi a', portName);
+            }, 300);
+        }
+
+        function filterMooringPorts(searchTerm) {
+            const suggestions = document.getElementById('mooringPortSuggestions');
+            if (!suggestions) return;
+            
+            const lowerTerm = searchTerm.toLowerCase();
+            const portElements = suggestions.querySelectorAll('[onclick^="selectMooringPort"]');
+            
+            portElements.forEach(element => {
+                const portName = element.textContent.toLowerCase();
+                const isVisible = portName.includes(lowerTerm);
+                element.style.display = isVisible ? 'block' : 'none';
+            });
+        }
+
+        // Click outside to close mooring port suggestions
+        document.addEventListener('click', function(event) {
+            const input = document.getElementById('mooringPortSearch');
+            const suggestions = document.getElementById('mooringPortSuggestions');
             
             if (input && suggestions && !input.contains(event.target) && !suggestions.contains(event.target)) {
                 suggestions.style.display = 'none';

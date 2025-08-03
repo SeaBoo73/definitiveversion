@@ -3821,32 +3821,9 @@
             }
         };
 
-        function updateServicesLocation(locationName) {
-            // Se non viene passato un parametro, prova a leggere dall'input
-            let selectedLocation = locationName;
-            if (!selectedLocation) {
-                const input = document.getElementById('servicesLocationInput');
-                selectedLocation = input ? input.value.toLowerCase() : 'civitavecchia';
-            } else {
-                selectedLocation = selectedLocation.toLowerCase();
-            }
-            
-            // Mappa nomi località per compatibilità con servicesData
-            const locationMapping = {
-                'civitavecchia': 'civitavecchia',
-                'roma': 'roma',
-                'fiumicino': 'roma',
-                'gaeta': 'gaeta',
-                'ponza': 'ponza',
-                'napoli': 'napoli',
-                'sorrento': 'sorrento',
-                'amalfi': 'amalfi',
-                'capri': 'capri',
-                'ischia': 'ischia'
-            };
-            
-            const mappedLocation = locationMapping[selectedLocation] || 'civitavecchia';
-            const locationData = servicesData[mappedLocation] || servicesData['civitavecchia'];
+        function updateServicesLocation() {
+            const selectedLocation = document.getElementById('locationSelect').value;
+            const locationData = servicesData[selectedLocation] || servicesData['roma'];
             
             console.log('SeaGO: Aggiornamento servizi per località', selectedLocation);
             
@@ -3886,10 +3863,7 @@
                 fuelStations.innerHTML = fuelHTML;
             }
             
-            // Mostra notifica solo se viene chiamata esplicitamente dall'utente
-            if (locationName) {
-                alert('Servizi aggiornati per ' + locationName + '\n\nMeteo locale\nDistributori zona\nCondizioni marine specifiche');
-            }
+            alert('Servizi aggiornati per ' + selectedLocation.charAt(0).toUpperCase() + selectedLocation.slice(1) + '\n\nMeteo locale\nDistributori zona\nCondizioni marine specifiche');
         }
 
         // Database esperienze per località

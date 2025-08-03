@@ -73,6 +73,15 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 
 ## Recent Changes (July 2025)
 
+### July 30, 2025 - Navigazione Mobile Riordinata (Ore 12:45)
+- **ORDINE NAVIGAZIONE AGGIORNATO per ottimizzare UX:**
+  - ✅ Nuovo ordine bottom navigation: Home → Ormeggio → Esperienze → Servizi → Aiuto → Profilo
+  - ✅ Layout più logico con Ormeggio come seconda priorità dopo Home
+  - ✅ Esperienze posizionate centralmente per maggior visibilità
+  - ✅ Aiuto spostato prima del Profilo per accesso rapido all'assistenza
+  - ✅ Mantenute tutte le icone e funzionalità esistenti
+  - ✅ UX migliorata seguendo principi di information architecture
+
 ### July 30, 2025 - Partner Ufficiale Capuano Trasporti Aggiunto (Ore 12:36)
 - **NUOVO PARTNER: Capuano Trasporti Integrato nell'App:**
   - ✅ Sezione "Partner Ufficiali SeaGO" aggiunta nel footer della homepage

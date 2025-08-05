@@ -71,6 +71,7 @@ import PrenotaEsperienza from "@/pages/prenota-esperienza";
 import CheckoutEsperienza from "@/pages/checkout-esperienza";
 import PaymentSuccessEsperienza from "@/pages/payment-success-esperienza";
 import DiventaSeaHostPage from "@/pages/diventa-sea-host";
+import ProfiloDatiBancariPage from "@/pages/profilo-dati-bancari";
 
 function Router() {
   return (
@@ -112,6 +113,7 @@ function Router() {
       <Route path="/assicurazione" component={AssicurazionePage} />
       <Route path="/recensioni-user" component={ReviewsPage} />
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
+      <ProtectedRoute path="/profilo/dati-bancari" component={ProfiloDatiBancariPage} />
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
       <Route path="/fatturazione" component={FatturazionePage} />
       <Route path="/commissioni" component={CommissioniGuadagniPage} />

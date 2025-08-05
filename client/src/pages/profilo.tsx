@@ -100,6 +100,12 @@ export default function ProfiloPage() {
       subtitle: "Carte e metodi di pagamento",
       href: "/metodi-pagamento"
     },
+    ...(user?.role === "owner" ? [{
+      icon: CreditCard,
+      title: "Dati Bancari",
+      subtitle: "IBAN e informazioni pagamento",
+      href: "/profilo/dati-bancari"
+    }] : []),
     {
       icon: Bell,
       title: "Notifiche",

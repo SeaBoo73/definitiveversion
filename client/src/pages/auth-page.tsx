@@ -71,6 +71,16 @@ export default function AuthPage() {
       firstName: urlParams.get('firstName') || "",
       lastName: urlParams.get('lastName') || "",
       phone: urlParams.get('phone') || "",
+      iban: "",
+      bankName: "",
+      accountHolderName: "",
+      paymentPreference: "stripe",
+      taxCode: "",
+      vatNumber: "",
+      address: "",
+      city: "",
+      postalCode: "",
+      country: "Italy",
       acceptTerms: false,
     };
   };
@@ -318,6 +328,130 @@ export default function AuthPage() {
                           </p>
                         </div>
                       )}
+                    </div>
+
+                    {/* Banking Information Section - Only for Owners */}
+                    {registerForm.watch("role") === "owner" && (
+                      <div className="space-y-4 border-t pt-4">
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="font-medium text-blue-900 mb-2">📋 Informazioni per Pagamenti</h3>
+                          <p className="text-sm text-blue-800">
+                            Come proprietario, inserisci i tuoi dati bancari per ricevere i pagamenti dai noleggi.
+                          </p>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="iban">IBAN *</Label>
+                            <Input
+                              id="iban"
+                              placeholder="IT60 X054 2811 1010 0000 0123 456"
+                              {...registerForm.register("iban")}
+                            />
+                            {registerForm.formState.errors.iban && (
+                              <p className="text-sm text-red-500">
+                                {registerForm.formState.errors.iban.message}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="bankName">Nome Banca</Label>
+                            <Input
+                              id="bankName"
+                              placeholder="Es. UniCredit, Intesa Sanpaolo"
+                              {...registerForm.register("bankName")}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="accountHolderName">Intestatario Conto</Label>
+                            <Input
+                              id="accountHolderName"
+                              placeholder="Nome e cognome del titolare"
+                              {...registerForm.register("accountHolderName")}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="taxCode">Codice Fiscale *</Label>
+                            <Input
+                              id="taxCode"
+                              placeholder="RSSMRA80A01H501X"
+                              {...registerForm.register("taxCode")}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="vatNumber">Partita IVA (opzionale)</Label>
+                            <Input
+                              id="vatNumber"
+                              placeholder="12345678901"
+                              {...registerForm.register("vatNumber")}
+                            />
+                          </div>
+                        </div>
+                        
+                        <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                          <p className="text-sm text-amber-800">
+                            💡 Puoi sempre aggiornare questi dati nel tuo profilo dopo la registrazione.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Basic Address Information for all users */}
+                    <div className="space-y-4 border-t pt-4">
+                      <h3 className="font-medium text-gray-900">Indirizzo</h3>
+                      <div className="grid grid-cols-1 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="address">Indirizzo</Label>
+                          <Input
+                            id="address"
+                            placeholder="Via Roma 123"
+                            {...registerForm.register("address")}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="city">Città</Label>
+                            <Input
+                              id="city"
+                              placeholder="Milano"
+                              {...registerForm.register("city")}
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="postalCode">CAP</Label>
+                            <Input
+                              id="postalCode"
+                              placeholder="20100"
+                              {...registerForm.register("postalCode")}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="country">Paese</Label>
+                          <Select
+                            value={registerForm.watch("country") || "Italy"}
+                            onValueChange={(value) => registerForm.setValue("country", value)}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Seleziona paese" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Italy">Italia</SelectItem>
+                              <SelectItem value="Switzerland">Svizzera</SelectItem>
+                              <SelectItem value="France">Francia</SelectItem>
+                              <SelectItem value="Austria">Austria</SelectItem>
+                              <SelectItem value="Germany">Germania</SelectItem>
+                              <SelectItem value="Spain">Spagna</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
                     </div>
 
                     <div className="space-y-2">

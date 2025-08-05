@@ -35,6 +35,17 @@ export const users = pgTable("users", {
   totalBookings: integer("total_bookings").default(0),
   totalSpent: decimal("total_spent", { precision: 10, scale: 2 }).default("0.00"),
   loyaltyPoints: integer("loyalty_points").default(0),
+  // Banking information fields
+  iban: text("iban"),
+  bankName: text("bank_name"),
+  accountHolderName: text("account_holder_name"),
+  paymentPreference: text("payment_preference").default("stripe"), // "stripe" or "bank_transfer"
+  taxCode: text("tax_code"), // Codice fiscale italiano
+  vatNumber: text("vat_number"), // Partita IVA per proprietari
+  address: text("address"),
+  city: text("city"),
+  postalCode: text("postal_code"),
+  country: text("country").default("Italy"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -592,6 +603,16 @@ export const insertUserSchema = createInsertSchema(users).pick({
   firstName: true,
   lastName: true,
   phone: true,
+  iban: true,
+  bankName: true,
+  accountHolderName: true,
+  paymentPreference: true,
+  taxCode: true,
+  vatNumber: true,
+  address: true,
+  city: true,
+  postalCode: true,
+  country: true,
 });
 
 export const insertBoatSchema = createInsertSchema(boats).omit({

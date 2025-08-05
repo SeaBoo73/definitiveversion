@@ -73,6 +73,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update user banking information
+  app.patch("/api/users/:id/banking", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+
+    const userId = parseInt(req.params.id);
+    
+    // Check if user is updating their own data or has admin permissions
+    if (req.user.id !== userId && req.user.role !== "admin") {
+      return res.status(403).json({ message: "Forbidden: Cannot update other user's data" });
+    }
+
+    try {
+      const bankingData = req.body;
+      
+      // Validate banking data fields
+      const allowedFields = [
+        'iban', 'bankName', 'accountHolderName', 'paymentPreference',
+        'taxCode', 'vatNumber', 'address', 'city', 'postalCode', 'country'
+      ];
+      
+      const filteredData = Object.keys(bankingData)
+        .filter(key => allowedFields.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = bankingData[key];
+          return obj;
+        }, {} as any);
+
+      const updatedUser = await storage.updateUser(userId, filteredData);
+      
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({ success: true, message: "Banking information updated successfully" });
+    } catch (error) {
+      console.error("Error updating banking information:", error);
+      res.status(500).json({ message: "Error updating banking information" });
+    }
+  });
+
 
 
   // Boats endpoints

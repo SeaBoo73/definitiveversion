@@ -71,7 +71,33 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 - **zod**: Schema validation.
 - **date-fns**: Date manipulation utilities.
 
-## Recent Changes (July 2025)
+## Recent Changes (August 2025)
+
+### August 5, 2025 - Separazione Completa Clienti/Proprietari per Apple Store (Ore 7:47)
+- **SISTEMA PAGAMENTI DIFFERENZIATO PER RUOLI:**
+  - ✅ **CLIENTI (Pagano servizi):** Metodi pagamento digitali (Stripe)
+    - Carte di credito/debito (Visa, Mastercard, American Express)
+    - Apple Pay con Touch ID/Face ID per iOS
+    - Google Pay per Android
+    - PayPal per transazioni sicure
+    - Pagina dedicata mobile-first `/metodi-pagamento-mobile`
+  - ✅ **PROPRIETARI (Ricevono pagamenti):** Dati bancari per bonifici
+    - IBAN per ricevere pagamenti dai noleggi
+    - Nome banca e titolare conto
+    - Codice fiscale obbligatorio
+    - Partita IVA opzionale per aziende
+    - Indirizzo completo per fatturazione
+    - Pagina dedicata `/profilo/dati-bancari`
+  - ✅ **API sicure implementate:**
+    - Endpoint PATCH `/api/users/:id/banking` per dati bancari proprietari
+    - Validazione campi con autorizzazione rigorosa
+    - Crittografia SSL/TLS per tutti i dati sensibili
+
+- **FORM REGISTRAZIONE AGGIORNATI:**
+  - ✅ Proprietari: sezione dati bancari IBAN durante registrazione
+  - ✅ Clienti: info metodi pagamento disponibili (carte, digital wallet)
+  - ✅ Separazione chiara tra chi paga e chi riceve pagamenti
+  - ✅ UX ottimizzata per compliance Apple Store
 
 ### July 30, 2025 - Navigazione Mobile Riordinata (Ore 12:45)
 - **ORDINE NAVIGAZIONE AGGIORNATO per ottimizzare UX:**

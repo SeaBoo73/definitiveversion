@@ -44,6 +44,7 @@ import DocumentiPage from "@/pages/documenti";
 import AssicurazionePage from "@/pages/assicurazione";
 import RecensioniPage from "@/pages/recensioni";
 import MetodiPagamentoPage from "@/pages/metodi-pagamento";
+import MetodiPagamentoMobile from "@/pages/metodi-pagamento-mobile";
 import SicurezzaPagamentiPage from "@/pages/sicurezza-pagamenti";
 import FatturazionePage from "@/pages/fatturazione";
 import CommissioniGuadagniPage from "@/pages/commissioni-guadagni";
@@ -113,6 +114,7 @@ function Router() {
       <Route path="/assicurazione" component={AssicurazionePage} />
       <Route path="/recensioni-user" component={ReviewsPage} />
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
+      <Route path="/metodi-pagamento-mobile" component={MetodiPagamentoMobile} />
       <ProtectedRoute path="/profilo/dati-bancari" component={ProfiloDatiBancariPage} />
       <Route path="/sicurezza-pagamenti" component={SicurezzaPagamentiPage} />
       <Route path="/fatturazione" component={FatturazionePage} />

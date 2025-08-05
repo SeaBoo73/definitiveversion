@@ -96,16 +96,10 @@ export default function ProfiloPage() {
     },
     {
       icon: CreditCard,
-      title: "Pagamenti",
-      subtitle: "Carte e metodi di pagamento",
-      href: "/metodi-pagamento"
+      title: user?.role === "owner" ? "Dati Bancari" : "Metodi di Pagamento",
+      subtitle: user?.role === "owner" ? "IBAN per ricevere pagamenti" : "Carte e metodi di pagamento",
+      href: user?.role === "owner" ? "/profilo/dati-bancari" : "/metodi-pagamento-mobile"
     },
-    ...(user?.role === "owner" ? [{
-      icon: CreditCard,
-      title: "Dati Bancari",
-      subtitle: "IBAN e informazioni pagamento",
-      href: "/profilo/dati-bancari"
-    }] : []),
     {
       icon: Bell,
       title: "Notifiche",

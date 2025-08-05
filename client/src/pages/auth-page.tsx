@@ -334,9 +334,9 @@ export default function AuthPage() {
                     {registerForm.watch("role") === "owner" && (
                       <div className="space-y-4 border-t pt-4">
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h3 className="font-medium text-blue-900 mb-2">📋 Informazioni per Pagamenti</h3>
+                          <h3 className="font-medium text-blue-900 mb-2">🏦 Dati Bancari per Ricevere Pagamenti</h3>
                           <p className="text-sm text-blue-800">
-                            Come proprietario, inserisci i tuoi dati bancari per ricevere i pagamenti dai noleggi.
+                            Come proprietario, inserisci i tuoi dati bancari per ricevere i pagamenti dai clienti che noleggiano le tue barche.
                           </p>
                         </div>
                         
@@ -395,6 +395,39 @@ export default function AuthPage() {
                         <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                           <p className="text-sm text-amber-800">
                             💡 Puoi sempre aggiornare questi dati nel tuo profilo dopo la registrazione.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Payment Methods Info for Customers */}
+                    {registerForm.watch("role") === "customer" && (
+                      <div className="space-y-4 border-t pt-4">
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                          <h3 className="font-medium text-green-900 mb-2">💳 Metodi di Pagamento</h3>
+                          <p className="text-sm text-green-800 mb-3">
+                            Come cliente, potrai pagare i tuoi noleggi con diversi metodi sicuri:
+                          </p>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-1">✓</span>
+                              <span>Carte di credito</span>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-1">✓</span>
+                              <span>Apple Pay</span>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-1">✓</span>
+                              <span>Google Pay</span>
+                            </div>
+                            <div className="flex items-center">
+                              <span className="text-green-600 mr-1">✓</span>
+                              <span>PayPal</span>
+                            </div>
+                          </div>
+                          <p className="text-xs text-green-700 mt-2">
+                            Aggiungerai i tuoi metodi di pagamento al momento della prenotazione.
                           </p>
                         </div>
                       </div>

@@ -161,7 +161,7 @@ select option {
   --card-foreground: hsl(20, 14.3%, 4.1%);
   --border: hsl(20, 5.9%, 90%);
   --input: hsl(20, 5.9%, 90%);
-  --primary: hsl(205, 85%, 65%);
+  --primary: #0C9FE2;
   --primary-foreground: hsl(211, 100%, 99%);
   --secondary: hsl(60, 4.8%, 95.9%);
   --secondary-foreground: hsl(24, 9.8%, 10%);
@@ -172,14 +172,14 @@ select option {
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
   
-  /* SeaGO brand colors - elegant navy theme */
-  --ocean-blue: hsl(205, 85%, 65%);
+  /* SeaBoo brand colors - pantone blue theme */
+  --ocean-blue: #0C9FE2;
   --deep-navy: hsl(215, 85%, 35%);
   --seafoam: hsl(158, 64%, 52%);
   --coral: hsl(22, 93%, 54%);
   --sea-gray: hsl(215, 16%, 47%);
-  --logo-light-blue: hsl(205, 85%, 65%);
-  --seago-navy: #022237;
+  --logo-light-blue: #0C9FE2;
+  --seaboo-blue: #0C9FE2;
 }
 
 .dark {
@@ -193,7 +193,7 @@ select option {
   --card-foreground: hsl(0, 0%, 98%);
   --border: hsl(240, 3.7%, 15.9%);
   --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(205, 85%, 65%);
+  --primary: #0C9FE2;
   --primary-foreground: hsl(211, 100%, 99%);
   --secondary: hsl(240, 3.7%, 15.9%);
   --secondary-foreground: hsl(0, 0%, 98%);

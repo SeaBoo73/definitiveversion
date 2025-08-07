@@ -211,7 +211,7 @@ export function EsperienzePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white pb-20 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20 md:pb-0">
       <SEOHead {...seoConfigs.esperienze} />
       <StructuredData type="esperienze" />
       <Header />

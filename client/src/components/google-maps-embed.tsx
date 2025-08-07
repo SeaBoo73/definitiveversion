@@ -73,7 +73,7 @@ export function GoogleMapsEmbed() {
             {
               featureType: "water",
               elementType: "geometry",
-              stylers: [{ color: "#0ea5e9" }]
+              stylers: [{ color: "#0C9FE2" }]
             }
           ]
         });
@@ -87,7 +87,7 @@ export function GoogleMapsEmbed() {
             icon: {
               url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
                 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="16" cy="16" r="14" fill="#0ea5e9" stroke="#ffffff" stroke-width="2"/>
+                  <circle cx="16" cy="16" r="14" fill="#0C9FE2" stroke="#ffffff" stroke-width="2"/>
                   <path d="M10 16 L16 12 L22 16 L16 20 Z" fill="#ffffff"/>
                 </svg>
               `),
@@ -104,7 +104,7 @@ export function GoogleMapsEmbed() {
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px;">
                   <span style="font-weight: bold; color: #f97316; font-size: 16px;">${boat.price}/giorno</span>
                   <button onclick="window.location.href='/boats/${boat.id}'" 
-                          style="background: #0ea5e9; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+                          style="background: #0C9FE2; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px;">
                     Vedi dettagli
                   </button>
                 </div>

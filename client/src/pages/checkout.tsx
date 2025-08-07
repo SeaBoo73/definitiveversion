@@ -101,7 +101,7 @@ export default function Checkout() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 to-white pb-20 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20 md:pb-0">
       <Header />
       
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

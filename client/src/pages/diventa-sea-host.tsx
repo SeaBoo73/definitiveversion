@@ -107,7 +107,7 @@ export default function DiventaSeaHostPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 to-blue-50 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-50 py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">

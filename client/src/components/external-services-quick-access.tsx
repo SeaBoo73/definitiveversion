@@ -15,7 +15,7 @@ export function ExternalServicesQuickAccess() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Weather Card */}
-      <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-sky-100 border-blue-200">
+      <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
         <CardContent className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <Cloud className="h-8 w-8 text-blue-600" />

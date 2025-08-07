@@ -165,7 +165,7 @@ export function CategoryGallery() {
                 <Button 
                   variant="outline" 
                   size="sm" 
-                  className="w-full bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100 hover:border-sky-300"
+                  className="w-full bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300"
                   asChild
                 >
                   <Link href={`/search?boatTypes=${category.id}`}>

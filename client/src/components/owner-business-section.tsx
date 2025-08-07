@@ -19,7 +19,7 @@ import { Link } from 'wouter';
 
 export function OwnerBusinessSection() {
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-50 to-sky-100">
+    <section className="py-16 bg-gradient-to-br from-blue-50 to-blue-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <Badge className="bg-blue-600 text-white px-4 py-2 mb-4">
@@ -158,7 +158,7 @@ export function OwnerBusinessSection() {
 
         {/* Call to Action */}
         <div className="text-center">
-          <div className="bg-gradient-to-r from-blue-600 to-sky-600 text-white rounded-2xl p-8 mb-8">
+          <div className="bg-gradient-to-r from-blue-600 to-blue-600 text-white rounded-2xl p-8 mb-8">
             <h3 className="text-2xl font-bold mb-4">⚓ Trova il Tuo Ormeggio Ideale</h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
               Scopri i migliori posti barca del Lazio con servizi completi e sicurezza garantita. Prenota online in pochi click.

@@ -24,7 +24,7 @@ export function SEOHead({
   const defaultTitle = "SeaBoo - Piattaforma Marittima per Noleggio Barche e Servizi Nautici in Italia";
   const defaultDescription = "Scopri la migliore piattaforma per noleggio barche, charter nautici e ormeggi in Italia. Esperienze maritime uniche, servizi professionali e la più ampia selezione di imbarcazioni.";
   const defaultKeywords = "noleggio barche Italia, charter nautico, ormeggi marittimi, barche a noleggio, servizi nautici, esperienze maritime, yacht charter, boat rental Italy";
-  const defaultImage = "/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
+  const defaultImage = "/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png";
   
   const finalTitle = title || defaultTitle;
   const finalDescription = description || defaultDescription;

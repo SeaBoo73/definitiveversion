@@ -26,7 +26,7 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
               <img 
-                src="/seaboo-logo.png" 
+                src="/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png" 
                 alt="SeaBoo Logo" 
                 className="h-10 w-auto"
               />

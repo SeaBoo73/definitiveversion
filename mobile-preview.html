@@ -3194,21 +3194,42 @@
                         <p style="color: #6b7280; margin-bottom: 16px;">Scopri le nostre esperienze esclusive progettate per offrirti momenti indimenticabili in mare.</p>
                         
                         <div style="display: grid; gap: 16px;">
-                            ${category.subcategories.map(sub => `
-                                <div style="background: #f8fafc; border-radius: 12px; padding: 16px; border: 1px solid #e5e7eb;">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
-                                        <div style="font-size: 24px;">${sub.icon}</div>
-                                        <div>
-                                            <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">${sub.name}</h4>
-                                            <p style="margin: 0; font-size: 14px; color: #6b7280;">${sub.experiences.join(' • ')}</p>
+                            ${category.subcategories.map((sub, index) => {
+                                // Definiamo le immagini per le esperienze gourmet
+                                const gourmetImages = {
+                                    'Cene al Tramonto': '/attached_assets/barca_ormeggiata_in_una_baia_segreta_acqua_trasparente_coppia_che_guarda_il_tramonto_vibes_romantic_9x0pjxoxsnrxqi3n6ke2_2_1754550983450.png',
+                                    'Degustazioni Vini': '/attached_assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_zdfwhthbfa54fqve3fyq_1_1754550983452.png',
+                                    'Aperitivi Esclusivi': '/attached_assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_x94via1sagly3xj655zr_0_1754550983452.png',
+                                    'Pranzi Tematici': '/attached_assets/esperienze_indimenticabili_in_barca-_una_barca_elegante_che_galleggia_su_acque_cristalline_turchesi_i5sr1hx6nzibq1kgs326_0_1754550983453.png'
+                                };
+                                
+                                const imageUrl = categoryType === 'esperienze-gourmet' ? gourmetImages[sub.name] || '' : '';
+                                
+                                return `
+                                <div style="background: white; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                                    ${imageUrl ? `
+                                        <div style="height: 120px; background-image: url('${imageUrl}'); background-size: cover; background-position: center; position: relative;">
+                                            <div style="position: absolute; top: 8px; right: 8px;">
+                                                <span style="background: #059669; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">GOURMET</span>
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    <div style="padding: 16px;">
+                                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                            <div style="font-size: 24px;">${sub.icon}</div>
+                                            <div>
+                                                <h4 style="margin: 0; font-size: 16px; font-weight: 600; color: #1f2937;">${sub.name}</h4>
+                                                <p style="margin: 0; font-size: 14px; color: #6b7280;">${sub.experiences.join(' • ')}</p>
+                                            </div>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                                            <div style="font-size: 16px; font-weight: bold; color: #0C9FE2;">${sub.price}</div>
+                                            <button onclick="showExperienceBooking('${categoryType}-${sub.name.toLowerCase().replace(/\s+/g, '-')}')" style="background: #0C9FE2; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Prenota</button>
                                         </div>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <div style="font-size: 16px; font-weight: bold; color: #0C9FE2;">${sub.price}</div>
-                                        <button onclick="showExperienceBooking('${categoryType}-${sub.name.toLowerCase().replace(/\s+/g, '-')}')" style="background: #0C9FE2; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 14px;">Prenota</button>
-                                    </div>
                                 </div>
-                            `).join('')}
+                                `;
+                            }).join('')}
                         </div>
                     </div>
                 `;

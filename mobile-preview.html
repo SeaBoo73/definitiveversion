@@ -3208,6 +3208,12 @@
                                         'Escursioni Isole Pontine': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_494ofant2z15l54mior4_2_1754589988345.png',
                                         'Tour Arcipelago Toscano': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_ms9dml5qd5orsbth0zve_1_1754589988346.png',
                                         'Escursioni Cinque Terre': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_l714nyonlju1nbr6ndrb_0_1754589988348.png'
+                                    },
+                                    'attivita-bordo': {
+                                        'Pesca Sportiva': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_odqntx1b4xs55xx1tcug_0_1754590427324.png',
+                                        'Snorkeling & Diving': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_v60eh6ukzr1tedwaoosg_1_1754590427323.png',
+                                        'Yoga & Wellness': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_zi2pljxhjovh0tgsr7nu_3_1754590427322.png',
+                                        'Fotografia Marina': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_dfcota0az9n07a01og43_2_1754590427321.png'
                                     }
                                 };
                                 
@@ -3219,7 +3225,7 @@
                                     ${imageUrl ? `
                                         <div style="height: 120px; background-image: url('${imageUrl}'); background-size: cover; background-position: center; position: relative;">
                                             <div style="position: absolute; top: 8px; right: 8px;">
-                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : 'TOUR'}</span>
+                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : categoryType === 'attivita-bordo' ? '#d97706' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : categoryType === 'attivita-bordo' ? 'ATTIVITÀ' : 'TOUR'}</span>
                                             </div>
                                         </div>
                                     ` : ''}

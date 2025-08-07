@@ -7,7 +7,7 @@ import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
 import { useState } from "react";
-import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png";
+// Logo SeaBoo da public folder
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -26,7 +26,7 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
               <img 
-                src={seabooLogo} 
+                src="/seaboo-logo.png" 
                 alt="SeaBoo Logo" 
                 className="h-10 w-auto"
               />

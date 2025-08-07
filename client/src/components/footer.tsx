@@ -21,7 +21,7 @@ export function Footer() {
               </h3>
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
-              La piattaforma leader per il noleggio di imbarcazioni in Italia. 
+              La piattaforma leader per il noleggio barche e servizi ormeggi. 
               Scopri il mare come mai prima d'ora.
             </p>
             <div className="flex space-x-4">

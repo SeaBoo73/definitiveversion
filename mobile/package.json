@@ -1,5 +1,5 @@
 {
-  "name": "seago-mobile",
+  "name": "seaboo-mobile",
   "version": "1.0.0",
   "main": "App.tsx",
   "scripts": {
@@ -36,8 +36,8 @@
     "typescript": "^5.1.3"
   },
   "expo": {
-    "name": "SeaGO",
-    "slug": "seago-mobile",
+    "name": "SeaBoo",
+    "slug": "seaboo-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -52,12 +52,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.seago.mobile",
+      "bundleIdentifier": "com.seaboo.mobile",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "SeaGO usa la tua posizione per trovare barche vicine a te.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "SeaGO usa la tua posizione per trovare barche vicine a te.",
-        "NSCameraUsageDescription": "SeaGO usa la fotocamera per caricare foto delle barche.",
-        "NSPhotoLibraryUsageDescription": "SeaGO accede alla galleria per selezionare foto delle barche."
+        "NSLocationWhenInUseUsageDescription": "SeaBoo usa la tua posizione per trovare barche vicine a te.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "SeaBoo usa la tua posizione per trovare barche vicine a te.",
+        "NSCameraUsageDescription": "SeaBoo usa la fotocamera per caricare foto delle barche.",
+        "NSPhotoLibraryUsageDescription": "SeaBoo accede alla galleria per selezionare foto delle barche."
       }
     },
     "android": {
@@ -65,7 +65,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0066CC"
       },
-      "package": "com.seago.mobile",
+      "package": "com.seaboo.mobile",
       "permissions": [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",

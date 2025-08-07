@@ -22,56 +22,56 @@ const EsploraScreen = () => {
     { 
       id: 'gommone', 
       name: 'Gommoni', 
-      image: 'https://seagorentalboat.com/api/images/gommone%20senza%20patente_1752875806367.webp',
+      image: 'https://seaboorentalboat.com/api/images/gommone%20senza%20patente_1752875806367.webp',
       count: '200+',
       description: 'Imbarcazioni pneumatiche versatili e sicure'
     },
     { 
       id: 'barche-senza-patente', 
       name: 'Barche senza patente', 
-      image: 'https://seagorentalboat.com/api/images/OIP%20(1)_1752921317486.webp',
+      image: 'https://seaboorentalboat.com/api/images/OIP%20(1)_1752921317486.webp',
       count: '150+',
       description: 'Facili da guidare, perfette per principianti'
     },
     { 
       id: 'yacht', 
       name: 'Yacht', 
-      image: 'https://seagorentalboat.com/api/images/R%20(1)_1752920495156.jpg',
+      image: 'https://seaboorentalboat.com/api/images/R%20(1)_1752920495156.jpg',
       count: '85+',
       description: 'Lusso e comfort per una navigazione esclusiva'
     },
     { 
       id: 'sailboat', 
       name: 'Barche a vela', 
-      image: 'https://seagorentalboat.com/api/images/barca%20a%20vela%20ludovica_1752876195081.jpg',
+      image: 'https://seaboorentalboat.com/api/images/barca%20a%20vela%20ludovica_1752876195081.jpg',
       count: '60+',
       description: 'L\'esperienza autentica della navigazione'
     },
     { 
       id: 'jetski', 
       name: 'Moto d\'acqua', 
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.38.19_1752875703213.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.38.19_1752875703213.jpeg',
       count: '90+',
       description: 'Adrenalina e velocità sull\'acqua'
     },
     { 
       id: 'catamarano', 
       name: 'Catamarani', 
-      image: 'https://seagorentalboat.com/api/images/catamarano%20ludovica_1752876117442.jpg',
+      image: 'https://seaboorentalboat.com/api/images/catamarano%20ludovica_1752876117442.jpg',
       count: '45+',
       description: 'Spazio e stabilità per gruppi numerosi'
     },
     { 
       id: 'charter', 
       name: 'Charter', 
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2020.22.10_1752876155096.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2020.22.10_1752876155096.jpeg',
       count: '70+',
       description: 'Esperienza completa con skipper professionista'
     },
     { 
       id: 'houseboat', 
       name: 'Houseboat', 
-      image: 'https://seagorentalboat.com/api/images/OIP_1752919948843.webp',
+      image: 'https://seaboorentalboat.com/api/images/OIP_1752919948843.webp',
       count: '25+',
       description: 'La tua casa galleggiante per vacanze uniche'
     }
@@ -85,7 +85,7 @@ const EsploraScreen = () => {
       price: '€850',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://seagorentalboat.com/api/images/OIP%20(1)_1752921317486.webp',
+      image: 'https://seaboorentalboat.com/api/images/OIP%20(1)_1752921317486.webp',
       isPopular: true,
       capacity: 12,
       features: ['Skipper incluso', 'Carburante incluso']
@@ -97,7 +97,7 @@ const EsploraScreen = () => {
       price: '€280',
       rating: 4.8,
       category: 'gommone',
-      image: 'https://seagorentalboat.com/api/images/gommone%20senza%20patente_1752875806367.webp',
+      image: 'https://seaboorentalboat.com/api/images/gommone%20senza%20patente_1752875806367.webp',
       isPopular: true,
       capacity: 8,
       features: ['Senza patente', 'GPS incluso']
@@ -109,7 +109,7 @@ const EsploraScreen = () => {
       price: '€420',
       rating: 4.7,
       category: 'sailboat',
-      image: 'https://seagorentalboat.com/api/images/barca%20a%20vela%20ludovica_1752876195081.jpg',
+      image: 'https://seaboorentalboat.com/api/images/barca%20a%20vela%20ludovica_1752876195081.jpg',
       isPopular: true,
       capacity: 6,
       features: ['Esperienza autentica', 'Vento incluso']

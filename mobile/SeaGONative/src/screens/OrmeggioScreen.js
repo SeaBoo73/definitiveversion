@@ -199,7 +199,7 @@ const OrmeggioScreen = () => {
 
       {/* Info Section */}
       <View style={styles.infoSection}>
-        <Text style={styles.infoTitle}>Vantaggi SeaGO</Text>
+        <Text style={styles.infoTitle}>Vantaggi SeaBoo</Text>
         <View style={styles.infoList}>
           <View style={styles.infoItem}>
             <Icon name="verified" size={20} color="#059669" />

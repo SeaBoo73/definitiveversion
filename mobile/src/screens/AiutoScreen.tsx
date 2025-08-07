@@ -29,7 +29,7 @@ const faqData = [
   {
     id: 4,
     question: "È inclusa l'assicurazione?",
-    answer: "Tutte le imbarcazioni su SeaGO sono coperte da assicurazione di base. Puoi aggiungere coperture extra durante la prenotazione."
+    answer: "Tutte le imbarcazioni su SeaBoo sono coperte da assicurazione di base. Puoi aggiungere coperture extra durante la prenotazione."
   },
 ];
 
@@ -37,10 +37,10 @@ const contactOptions = [
   {
     id: 1,
     title: "Email",
-    subtitle: "support@seago.it",
+    subtitle: "support@seaboo.it",
     icon: "mail",
     color: "#0ea5e9",
-    action: () => Linking.openURL('mailto:support@seago.it')
+    action: () => Linking.openURL('mailto:support@seaboo.it')
   },
   {
     id: 2,
@@ -83,7 +83,7 @@ export default function AiutoScreen() {
 
   const handleRateApp = () => {
     // Placeholder per la valutazione dell'app
-    handleOpenWebLink('https://apps.apple.com/app/seago');
+    handleOpenWebLink('https://apps.apple.com/app/seaboo');
   };
 
   return (
@@ -150,14 +150,14 @@ export default function AiutoScreen() {
           <View style={styles.quickActionsContainer}>
             <TouchableOpacity 
               style={styles.quickAction}
-              onPress={() => handleOpenWebLink('https://seago.it/condizioni-servizio')}
+              onPress={() => handleOpenWebLink('https://seaboo.it/condizioni-servizio')}
             >
               <Icon name="document-text" size={24} color="#0ea5e9" />
               <Text style={styles.quickActionText}>Termini di Servizio</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style={styles.quickAction}
-              onPress={() => handleOpenWebLink('https://seago.it/privacy-policy')}
+              onPress={() => handleOpenWebLink('https://seaboo.it/privacy-policy')}
             >
               <Icon name="shield-checkmark" size={24} color="#10b981" />
               <Text style={styles.quickActionText}>Privacy Policy</Text>

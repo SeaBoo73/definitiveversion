@@ -54,9 +54,9 @@ class NotificationServiceClass {
       // Crea canale di notifica per Android
       PushNotification.createChannel(
         {
-          channelId: "seago_general",
-          channelName: "SeaGO Notifiche",
-          channelDescription: "Notifiche generali di SeaGO",
+          channelId: "seaboo_general",
+          channelName: "SeaBoo Notifiche",
+          channelDescription: "Notifiche generali di SeaBoo",
           playSound: true,
           soundName: "default",
           importance: 4,
@@ -202,7 +202,7 @@ class NotificationServiceClass {
     }
   }
 
-  // Notifiche specifiche per SeaGO
+  // Notifiche specifiche per SeaBoo
   async notifyBookingConfirmed(bookingId: number, boatName: string) {
     await this.sendLocalNotification({
       title: 'Prenotazione Confermata!',

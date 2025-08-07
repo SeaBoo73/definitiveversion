@@ -54,7 +54,7 @@ const ProfileScreen = () => {
       title: 'Supporto',
       icon: 'help',
       subtitle: 'Contatti e assistenza',
-      action: () => Alert.alert('Supporto', 'Per assistenza contatta:\n📧 support@seago.it\n📞 +39 06 1234 5678')
+      action: () => Alert.alert('Supporto', 'Per assistenza contatta:\n📧 support@seaboo.it\n📞 +39 06 1234 5678')
     },
   ];
 
@@ -106,7 +106,7 @@ const ProfileScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity style={styles.quickAction}>
           <Icon name="loyalty" size={24} color="#f59e0b" />
-          <Text style={styles.quickActionText}>SeaGO Premium</Text>
+          <Text style={styles.quickActionText}>SeaBoo Premium</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.quickAction}>
           <Icon name="share" size={24} color="#10b981" />
@@ -150,7 +150,7 @@ const ProfileScreen = () => {
 
       {/* App Version */}
       <View style={styles.versionContainer}>
-        <Text style={styles.versionText}>SeaGO Mobile v1.0.0</Text>
+        <Text style={styles.versionText}>SeaBoo Mobile v1.0.0</Text>
       </View>
     </ScrollView>
   );

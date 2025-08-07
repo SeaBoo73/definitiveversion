@@ -168,7 +168,7 @@ const ServiziScreen = () => {
     { name: 'Capitaneria di Porto Roma', number: '+39 06 59084409', type: 'port', description: 'Capitaneria principale Lazio' },
     { name: 'Capitaneria Civitavecchia', number: '+39 0766 366200', type: 'port', description: 'Controllo traffico marittimo' },
     { name: 'Capitaneria Gaeta', number: '+39 0771 469837', type: 'port', description: 'Servizi portuali Golfo di Gaeta' },
-    { name: 'Assistenza SeaGO 24/7', number: '+39 06 8937 4562', type: 'support', description: 'Supporto tecnico piattaforma' },
+    { name: 'Assistenza SeaBoo 24/7', number: '+39 06 8937 4562', type: 'support', description: 'Supporto tecnico piattaforma' },
     { name: 'Assistenza Meccanica Mobile', number: '+39 335 1847592', type: 'technical', description: 'Riparazioni in acqua e porto' },
     { name: 'Rimorchio Nautico', number: '+39 347 2951874', type: 'towing', description: 'Recupero imbarcazioni in avaria' }
   ];

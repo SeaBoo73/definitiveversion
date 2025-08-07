@@ -35,7 +35,7 @@ const OrmeggioScreen = () => {
       reviews: 87,
       available: true,
       featured: true,
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-07-21%20at%2016.20.47_1753107683462.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-07-21%20at%2016.20.47_1753107683462.jpeg',
       contact: { name: 'Marina Premium Civitavecchia', phone: '+39 0766 123456', vhf: 'Canale 09' },
       description: 'Pontile esclusivo per yacht e imbarcazioni di lusso. Servizi premium inclusi.'
     },
@@ -54,7 +54,7 @@ const OrmeggioScreen = () => {
       reviews: 156,
       available: true,
       featured: false,
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2018.53.09_1752873223407.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2018.53.09_1752873223407.jpeg',
       contact: { name: 'Campo Boe Gaeta', phone: '+39 0771 987654', vhf: 'Canale 12' },
       description: 'Boa sicura nel campo boe di Gaeta. Ideale per soste brevi e medie.'
     },
@@ -73,7 +73,7 @@ const OrmeggioScreen = () => {
       reviews: 73,
       available: true,
       featured: false,
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-07-21%20at%2012.54.16_1753095763473.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-07-21%20at%2012.54.16_1753095763473.jpeg',
       contact: { name: 'Porto di Anzio', phone: '+39 06 9876543', vhf: 'Canale 16' },
       description: 'Ormeggio comodo nel centro di Anzio con facile accesso ai servizi cittadini.'
     },
@@ -92,7 +92,7 @@ const OrmeggioScreen = () => {
       reviews: 92,
       available: true,
       featured: true,
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.36.59_1752875633742.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.36.59_1752875633742.jpeg',
       contact: { name: 'Marina di Formia', phone: '+39 0771 456789', vhf: 'Canale 08' },
       description: 'Marina moderna con tutti i servizi nel cuore del Golfo di Gaeta.'
     },
@@ -111,7 +111,7 @@ const OrmeggioScreen = () => {
       reviews: 48,
       available: false,
       featured: false,
-      image: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.37.00%20(1)_1752875876213.jpeg',
+      image: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-06-15%20at%2023.37.00%20(1)_1752875876213.jpeg',
       contact: { name: 'Servizi Marittimi Terracina', phone: '+39 0773 123789', vhf: 'Canale 14' },
       description: 'Boa economica per soste brevi davanti al litorale di Terracina.'
     },
@@ -130,7 +130,7 @@ const OrmeggioScreen = () => {
       reviews: 134,
       available: true,
       featured: true,
-      image: 'https://seagorentalboat.com/api/images/image_1753208188327.png',
+      image: 'https://seaboorentalboat.com/api/images/image_1753208188327.png',
       contact: { name: 'Marina di Ponza', phone: '+39 0771 987321', vhf: 'Canale 06' },
       description: 'Ormeggio esclusivo sull\'isola di Ponza con vista mozzafiato e servizi di lusso.'
     }
@@ -270,7 +270,7 @@ const OrmeggioScreen = () => {
 
       {/* Info Section */}
       <View style={styles.infoSection}>
-        <Text style={styles.infoTitle}>Perché scegliere SeaGO Ormeggio?</Text>
+        <Text style={styles.infoTitle}>Perché scegliere SeaBoo Ormeggio?</Text>
         
         <View style={styles.benefitsList}>
           <View style={styles.benefitItem}>
@@ -298,7 +298,7 @@ const OrmeggioScreen = () => {
             <View style={styles.benefitContent}>
               <Text style={styles.benefitTitle}>Tariffe Vantaggiose</Text>
               <Text style={styles.benefitDescription}>
-                20% di sconto per utenti SeaGO
+                20% di sconto per utenti SeaBoo
               </Text>
             </View>
           </View>

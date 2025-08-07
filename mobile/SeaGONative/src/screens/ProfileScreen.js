@@ -24,7 +24,7 @@ const ProfileScreen = () => {
     totalBookings: 8,
     rating: 4.9,
     level: 'Gold',
-    avatar: 'https://seagorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2018.53.09_1752873223407.jpeg'
+    avatar: 'https://seaboorentalboat.com/api/images/WhatsApp%20Image%202025-06-12%20at%2018.53.09_1752873223407.jpeg'
   };
 
   const menuItems = [
@@ -66,7 +66,7 @@ const ProfileScreen = () => {
         Alert.alert('Le Mie Prenotazioni', 'Funzione in arrivo');
         break;
       case 'help':
-        Alert.alert('Centro Assistenza', 'Per supporto contatta: supporto@seago.it');
+        Alert.alert('Centro Assistenza', 'Per supporto contatta: supporto@seaboo.it');
         break;
       case 'support':
         Alert.alert('Supporto', 'Chat in arrivo - Contatta: +39 123 456 789');
@@ -78,7 +78,7 @@ const ProfileScreen = () => {
 
   const handleLogin = () => {
     setIsLoggedIn(true);
-    Alert.alert('Accesso Effettuato', 'Benvenuto in SeaGO!');
+    Alert.alert('Accesso Effettuato', 'Benvenuto in SeaBoo!');
   };
 
   const handleLogout = () => {
@@ -95,7 +95,7 @@ const ProfileScreen = () => {
   const renderLoginSection = () => (
     <View style={styles.loginSection}>
       <Icon name="account-circle" size={80} color="#e2e8f0" />
-      <Text style={styles.loginTitle}>Accedi a SeaGO</Text>
+      <Text style={styles.loginTitle}>Accedi a SeaBoo</Text>
       <Text style={styles.loginSubtitle}>
         Accedi per gestire le tue prenotazioni e scoprire offerte esclusive
       </Text>
@@ -198,8 +198,8 @@ const ProfileScreen = () => {
 
       {/* App Info */}
       <View style={styles.appInfo}>
-        <Text style={styles.appInfoText}>SeaGO v1.0.0</Text>
-        <Text style={styles.appInfoText}>© 2025 SeaGO. Tutti i diritti riservati.</Text>
+        <Text style={styles.appInfoText}>SeaBoo v1.0.0</Text>
+        <Text style={styles.appInfoText}>© 2025 SeaBoo. Tutti i diritti riservati.</Text>
       </View>
     </ScrollView>
   );

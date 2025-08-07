@@ -7,7 +7,7 @@ import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
 import { useState } from "react";
-// Nuovo logo SeaBoo con vela turchese
+import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -25,52 +25,11 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              {/* Nuovo Logo SeaBoo - Vela Turchese */}
-              <svg 
-                className="w-8 h-8" 
-                viewBox="0 0 100 100" 
-                fill="none" 
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Vela principale */}
-                <path 
-                  d="M30 20 L30 70 L70 45 Z" 
-                  fill="#14b8a6" 
-                  stroke="#0f766e" 
-                  strokeWidth="1"
-                />
-                {/* Vela secondaria */}
-                <path 
-                  d="M30 45 L30 70 L15 60 Z" 
-                  fill="#22d3ee" 
-                  stroke="#0891b2" 
-                  strokeWidth="1"
-                />
-                {/* Scafo */}
-                <ellipse 
-                  cx="45" 
-                  cy="75" 
-                  rx="25" 
-                  ry="4" 
-                  fill="#1e293b"
-                />
-                {/* Albero */}
-                <line 
-                  x1="30" 
-                  y1="20" 
-                  x2="30" 
-                  y2="75" 
-                  stroke="#374151" 
-                  strokeWidth="2"
-                />
-                {/* Onde */}
-                <path 
-                  d="M10 80 Q25 85 40 80 T70 80 T90 80" 
-                  stroke="#22d3ee" 
-                  strokeWidth="2" 
-                  fill="none"
-                />
-              </svg>
+              <img 
+                src={seabooLogo} 
+                alt="SeaBoo Logo" 
+                className="h-10 w-auto"
+              />
               <span className="text-xl font-bold" style={{ color: '#022237' }}>SeaBoo</span>
             </Link>
           </div>

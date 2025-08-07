@@ -7,7 +7,7 @@ import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
 import { useState } from "react";
-import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
+import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();

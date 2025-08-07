@@ -9,7 +9,7 @@ import {
   MapPin,
   Users
 } from 'lucide-react';
-import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
+import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -48,7 +48,7 @@ export function InstallPrompt() {
         <div className="bg-ocean-blue text-white p-6 rounded-t-xl text-center">
           <div className="mb-3">
             <img 
-              src="/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg" 
+              src="/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png" 
               alt="SeaBoo Logo" 
               className="h-16 w-16 mx-auto rounded-lg object-cover bg-white p-1"
             />

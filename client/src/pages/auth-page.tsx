@@ -13,7 +13,7 @@ import { insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 import { Redirect, Link, useLocation } from "wouter";
 import { Anchor, ArrowLeft } from "lucide-react";
-import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
+import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
 
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),

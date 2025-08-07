@@ -1046,6 +1046,21 @@
         .suggestions .fuel-policy-list li:before {
             color: #f59e0b;
         }
+
+        /* Quick Access Buttons */
+        .quick-access-section {
+            margin: 24px 0;
+        }
+
+        .quick-access-grid {
+            display: flex;
+            gap: 16px;
+        }
+
+        .quick-access-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body>
@@ -1350,30 +1365,20 @@
                     </div>
                 </div>
 
-                <!-- Weather Widget -->
-                <div class="weather-section">
-                    <div class="weather-card">
-                        <div class="weather-title">Condizioni Meteo Marine - Roma/Fiumicino</div>
-                        <div style="font-size: 32px; margin-bottom: 8px;">☀️</div>
-                        <div class="weather-temp">22°C</div>
-                        <div class="weather-details">
-                            <div class="weather-detail">
-                                <div class="weather-detail-label">Vento</div>
-                                <div class="weather-detail-value">12 km/h NE</div>
-                            </div>
-                            <div class="weather-detail">
-                                <div class="weather-detail-label">Onde</div>
-                                <div class="weather-detail-value">0.5m</div>
-                            </div>
-                            <div class="weather-detail">
-                                <div class="weather-detail-label">Visibilità</div>
-                                <div class="weather-detail-value">Ottima</div>
-                            </div>
-                            <div class="weather-detail">
-                                <div class="weather-detail-label">Mare</div>
-                                <div class="weather-detail-value">Calmo</div>
-                            </div>
-                        </div>
+                <!-- Quick Access Buttons -->
+                <div class="quick-access-section">
+                    <div class="quick-access-grid">
+                        <button class="quick-access-button" onclick="showScreen('ormeggio')" style="background: linear-gradient(135deg, #7c3aed, #a855f7); color: white; border: none; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); flex: 1;">
+                            <div style="font-size: 32px; margin-bottom: 12px;">⚓</div>
+                            <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Servizi Ormeggio</div>
+                            <div style="font-size: 14px; opacity: 0.9;">Prenota il tuo posto barca</div>
+                        </button>
+                        
+                        <button class="quick-access-button" onclick="showScreen('esperienze')" style="background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3); flex: 1;">
+                            <div style="font-size: 32px; margin-bottom: 12px;">🌊</div>
+                            <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">Esperienze Marine</div>
+                            <div style="font-size: 14px; opacity: 0.9;">Scopri le nostre avventure</div>
+                        </button>
                     </div>
                 </div>
 

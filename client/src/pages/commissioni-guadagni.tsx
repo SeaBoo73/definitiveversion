@@ -154,7 +154,7 @@ export default function CommissioniGuadagniPage() {
           <div className="bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl p-8">
             <h2 className="text-2xl font-semibold mb-4">Inizia a Guadagnare Oggi</h2>
             <p className="text-lg mb-6">
-              Registra la tua imbarcazione e inizia a generare reddito passivo con SeaGO.
+              Registra la tua imbarcazione e inizia a generare reddito passivo con SeaBoo.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>

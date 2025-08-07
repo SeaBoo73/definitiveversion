@@ -94,7 +94,7 @@ export function BoatDetail() {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${boatData.name} - SeaGO`,
+          title: `${boatData.name} - SeaBoo`,
           text: `Scopri questa fantastica imbarcazione: ${boatData.name}`,
           url: window.location.href,
         });
@@ -330,7 +330,7 @@ export function BoatDetail() {
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span>Commissione SeaGO (15%)</span>
+                    <span>Commissione SeaBoo (15%)</span>
                     <span>Inclusa nel prezzo</span>
                   </div>
                   <div className="flex justify-between">

@@ -14,7 +14,7 @@ export default function MetodiPagamentoPage() {
             Metodi di Pagamento
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Tutti i modi sicuri per pagare il tuo noleggio su SeaGO
+            Tutti i modi sicuri per pagare il tuo noleggio su SeaBoo
           </p>
         </div>
 

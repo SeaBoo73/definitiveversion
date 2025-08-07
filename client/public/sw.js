@@ -1,4 +1,4 @@
-// Service Worker per PWA SeaGO
+// Service Worker per PWA SeaBoo
 const CACHE_NAME = 'seaboo-v1';
 const urlsToCache = [
   '/',

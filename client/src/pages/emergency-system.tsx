@@ -207,7 +207,7 @@ export default function EmergencySystem() {
                 onClick={() => handleQuickEmergency('weather', 'high')}
                 className="flex items-center gap-2"
               >
-                <img src={seabooLogo} alt="SeaGO" className="h-4 w-4 object-contain" />
+                <img src={seabooLogo} alt="SeaBoo" className="h-4 w-4 object-contain" />
                 Meteo Avverso
               </Button>
             </div>

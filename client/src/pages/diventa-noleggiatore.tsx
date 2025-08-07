@@ -69,10 +69,10 @@ export default function DiventaNoleggiatorePage() {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Diventa Noleggiatore SeaGO
+            Diventa Noleggiatore SeaBoo
           </h1>
           <p className="text-gray-600 text-lg">
-            Trasforma la tua imbarcazione in una fonte di reddito. Unisciti alla community di noleggiatori SeaGO.
+            Trasforma la tua imbarcazione in una fonte di reddito. Unisciti alla community di noleggiatori SeaBoo.
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export default function DiventaNoleggiatorePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CheckCircle className="h-6 w-6 text-green-600" />
-              Vantaggi del Noleggiatore SeaGO
+              Vantaggi del Noleggiatore SeaBoo
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -129,11 +129,11 @@ export default function DiventaNoleggiatorePage() {
           <CardContent>
             <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-gray-700 font-medium">Commissione SeaGO</span>
+                <span className="text-gray-700 font-medium">Commissione SeaBoo</span>
                 <Badge variant="secondary" className="bg-blue-100 text-blue-800">15%</Badge>
               </div>
               <p className="text-gray-600 text-sm mb-3">
-                SeaGO trattiene il 15% del valore di ogni prenotazione per coprire:
+                SeaBoo trattiene il 15% del valore di ogni prenotazione per coprire:
               </p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li>• Marketing e promozione della tua imbarcazione</li>
@@ -175,7 +175,7 @@ export default function DiventaNoleggiatorePage() {
                   <ul className="text-gray-600 text-sm mt-2 space-y-1">
                     <li>• Imbarcazione in buone condizioni di sicurezza</li>
                     <li>• Equipaggiamenti di sicurezza conformi</li>
-                    <li>• Ormeggio presso porti partner SeaGO</li>
+                    <li>• Ormeggio presso porti partner SeaBoo</li>
                     <li>• Disponibilità minima 30 giorni/anno</li>
                   </ul>
                 </div>
@@ -205,7 +205,7 @@ export default function DiventaNoleggiatorePage() {
                 <Link href="/privacy-policy" className="text-blue-600 hover:underline">
                   Privacy Policy
                 </Link>
-                {" "}di SeaGO
+                {" "}di SeaBoo
               </label>
             </div>
             

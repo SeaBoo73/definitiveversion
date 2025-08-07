@@ -91,7 +91,7 @@ export default function RimborsiPage() {
             Politica Rimborsi
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Informazioni complete sui rimborsi SeaGO. La nostra priorità è garantire un servizio trasparente e giusto per tutti i nostri utenti.
+            Informazioni complete sui rimborsi SeaBoo. La nostra priorità è garantire un servizio trasparente e giusto per tutti i nostri utenti.
           </p>
         </div>
 
@@ -228,9 +228,9 @@ export default function RimborsiPage() {
                 </div>
                 
                 <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <h4 className="font-medium text-green-800 mb-2">Credito SeaGO</h4>
+                  <h4 className="font-medium text-green-800 mb-2">Credito SeaBoo</h4>
                   <p className="text-sm text-green-700">
-                    Scegli il credito SeaGO per rimborsi immediati e ottieni 
+                    Scegli il credito SeaBoo per rimborsi immediati e ottieni 
                     un bonus del 5% sull'importo per future prenotazioni.
                   </p>
                 </div>

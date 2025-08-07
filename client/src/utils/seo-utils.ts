@@ -66,8 +66,8 @@ export const maritimeKeywords = {
 
 // Generate SEO-optimized content
 export const generateMaritimeMeta = (pageType: string, location?: string, boatType?: string) => {
-  const baseTitle = "SeaGO - Piattaforma Marittima";
-  const baseDescription = "Scopri SeaGO, la piattaforma leader per servizi nautici in Italia";
+  const baseTitle = "SeaBoo - Piattaforma Marittima";
+  const baseDescription = "Scopri SeaBoo, la piattaforma leader per servizi nautici in Italia";
   
   switch (pageType) {
     case 'boat-listing':
@@ -126,7 +126,7 @@ export const generateBoatSchema = (boat: any) => ({
   "category": "Boat Rental",
   "brand": {
     "@type": "Brand", 
-    "name": boat.manufacturer || "SeaGO"
+    "name": boat.manufacturer || "SeaBoo"
   },
   "offers": {
     "@type": "Offer",
@@ -137,7 +137,7 @@ export const generateBoatSchema = (boat: any) => ({
     "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
     "seller": {
       "@type": "Organization",
-      "name": "SeaGO"
+      "name": "SeaBoo"
     }
   },
   "image": boat.images?.[0] || "/attached_assets/default-boat.jpg",
@@ -215,9 +215,9 @@ export const maritimeMetaTags = {
   social: [
     { property: 'og:type', content: 'website' },
     { property: 'og:locale', content: 'it_IT' },
-    { property: 'og:site_name', content: 'SeaGO' },
+    { property: 'og:site_name', content: 'SeaBoo' },
     { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'twitter:site', content: '@SeaGO_Italia' }
+    { name: 'twitter:site', content: '@SeaBoo_Italia' }
   ]
 };
 

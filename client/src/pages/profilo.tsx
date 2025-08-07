@@ -73,7 +73,7 @@ export default function ProfiloPage() {
     },
     {
       icon: HelpCircle,
-      title: "Come funziona SeaGO",
+      title: "Come funziona SeaBoo",
       subtitle: "Guida completa in 3 passaggi",
       href: "/come-funziona",
       color: "text-purple-600"

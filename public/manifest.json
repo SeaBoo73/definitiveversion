@@ -1,6 +1,6 @@
 {
-  "name": "SeaGO - Piattaforma Marittima per Noleggio Barche",
-  "short_name": "SeaGO",
+  "name": "SeaBoo - Piattaforma Marittima per Noleggio Barche",
+  "short_name": "SeaBoo",
   "version": "2.1.1",
   "description": "La piattaforma leader per noleggio barche, charter nautici e servizi marittimi in Italia. Oltre 1000 imbarcazioni disponibili per le tue avventure sul mare.",
   "start_url": "/",
@@ -87,14 +87,14 @@
       "sizes": "1280x720",
       "type": "image/jpeg",
       "platform": "wide",
-      "label": "Homepage SeaGO con ricerca barche"
+      "label": "Homepage SeaBoo con ricerca barche"
     },
     {
       "src": "/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg",
       "sizes": "750x1334",
       "type": "image/jpeg",
       "platform": "narrow",
-      "label": "App mobile SeaGO"
+      "label": "App mobile SeaBoo"
     }
   ],
   "prefer_related_applications": false,

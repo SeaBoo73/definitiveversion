@@ -73,12 +73,12 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 
 ## Recent Changes (August 2025)
 
-### August 7, 2025 - Rebranding Completo da SeaGO a SeaBoo + Logo Aggiornato (Ore 5:50)
+### August 7, 2025 - Rebranding Completo da SeaBoo a SeaBoo + Logo Aggiornato (Ore 5:50)
 - **REBRANDING COMPLETO IMPLEMENTATO:**
-  - ✅ Aggiornamento completo di tutti i riferimenti testuali da "SeaGO" a "SeaBoo" in frontend, backend e mobile
+  - ✅ Aggiornamento completo di tutti i riferimenti testuali da "SeaBoo" a "SeaBoo" in frontend, backend e mobile
   - ✅ **LOGO PROFESSIONALE:** Nuovo logo SeaBoo con vela turchese su sfondo navy implementato in tutti i componenti
   - ✅ **APP MOBILE NATIVA:** Tutti i file TypeScript/React Native aggiornati con nuovo branding
-  - ✅ **CONFIGURAZIONI APP:** mobile/app.json e mobile/SeaGONative/app.json aggiornati con bundle ID e naming SeaBoo
+  - ✅ **CONFIGURAZIONI APP:** mobile/app.json e mobile/SeaBooNative/app.json aggiornati con bundle ID e naming SeaBoo
   - ✅ **EMAIL E SUPPORTO:** Aggiornati tutti gli indirizzi da support@seago.it a support@seaboo.it
   - ✅ **URL E DOMINI:** Aggiornati link privacy policy, terms of service da seago.it a seaboo.it
   - ✅ **CANALI NOTIFICA:** Aggiornato notification service da seago_general a seaboo_general

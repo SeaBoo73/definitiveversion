@@ -15,7 +15,7 @@ export default function ModificaPrenotazionePage() {
             Modificare una Prenotazione
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Scopri come modificare le tue prenotazioni esistenti su SeaGO
+            Scopri come modificare le tue prenotazioni esistenti su SeaBoo
           </p>
         </div>
 

@@ -1524,7 +1524,7 @@ export default function OwnerDashboard() {
                       <h4 className="font-semibold text-green-800">Come funzionano i pagamenti</h4>
                       <p className="text-sm text-green-700 mt-1">
                         I tuoi guadagni vengono accreditati automaticamente ogni 7 giorni sul conto corrente che indicherai.
-                        La commissione SeaGO del 15% viene trattenuta automaticamente.
+                        La commissione SeaBoo del 15% viene trattenuta automaticamente.
                       </p>
                     </div>
                   </div>

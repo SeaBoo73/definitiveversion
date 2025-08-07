@@ -14,7 +14,7 @@ export default function ComePrenotarePage() {
             Come Prenotare una Barca
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Guida passo-passo per prenotare la tua imbarcazione ideale su SeaGO
+            Guida passo-passo per prenotare la tua imbarcazione ideale su SeaBoo
           </p>
         </div>
 

@@ -6,7 +6,7 @@ export function CleanApp() {
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            🚢 SeaGO - Piattaforma Completa
+            🚢 SeaBoo - Piattaforma Completa
           </h1>
           <p className="text-xl text-gray-600 mb-8">
             Sistema di prenotazione barche completamente implementato
@@ -51,7 +51,7 @@ export function CleanApp() {
             </h3>
             <p className="text-yellow-700">
               L'overlay di errore rosso è del plugin di debug di Vite in ambiente sviluppo.
-              L'applicazione SeaGO funziona perfettamente per tutti i casi d'uso richiesti.
+              L'applicazione SeaBoo funziona perfettamente per tutti i casi d'uso richiesti.
               <br /><br />
               <strong>Credenziali di test:</strong><br />
               Owner: owner@test.com / password123<br />
@@ -65,7 +65,7 @@ export function CleanApp() {
             href="/home" 
             className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            App Completa SeaGO
+            App Completa SeaBoo
           </a>
           <a 
             href="/auth" 

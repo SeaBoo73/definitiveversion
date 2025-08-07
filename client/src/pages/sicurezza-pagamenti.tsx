@@ -14,7 +14,7 @@ export default function SicurezzaPagamentiPage() {
             Sicurezza dei Pagamenti
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Come proteggiamo i tuoi dati e le tue transazioni su SeaGO
+            Come proteggiamo i tuoi dati e le tue transazioni su SeaBoo
           </p>
         </div>
 
@@ -222,7 +222,7 @@ export default function SicurezzaPagamentiPage() {
                 </p>
                 <ul className="text-xs text-red-600 space-y-1">
                   <li>• Cambia immediatamente la password</li>
-                  <li>• Contatta il supporto SeaGO</li>
+                  <li>• Contatta il supporto SeaBoo</li>
                   <li>• Avvisa la tua banca</li>
                 </ul>
               </div>

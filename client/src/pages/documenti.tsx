@@ -14,7 +14,7 @@ export default function DocumentiPage() {
             Documenti Necessari
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Scopri quali documenti servono per noleggiare un'imbarcazione su SeaGO
+            Scopri quali documenti servono per noleggiare un'imbarcazione su SeaBoo
           </p>
         </div>
 

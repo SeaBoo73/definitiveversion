@@ -125,7 +125,7 @@ export default function AuthPage() {
             <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-4">
               <Anchor className="h-8 w-8 text-ocean-blue mr-2" />
-              <h1 className="text-3xl font-bold text-ocean-blue">SeaGO</h1>
+              <h1 className="text-3xl font-bold text-ocean-blue">SeaBoo</h1>
             </div>
             <p className="text-gray-600">Naviga verso l'avventura</p>
           </div>
@@ -203,7 +203,7 @@ export default function AuthPage() {
                 <CardHeader>
                   <CardTitle>Crea un nuovo account</CardTitle>
                   <CardDescription>
-                    Unisciti a SeaGO e inizia la tua avventura
+                    Unisciti a SeaBoo e inizia la tua avventura
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -266,7 +266,7 @@ export default function AuthPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <Label className="text-base font-medium">Come vuoi usare SeaGO?</Label>
+                      <Label className="text-base font-medium">Come vuoi usare SeaBoo?</Label>
                       <div className="grid grid-cols-1 gap-3">
                         {/* Cliente Option */}
                         <div 
@@ -574,9 +574,9 @@ export default function AuthPage() {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-ocean-blue/80 to-deep-navy/80"></div>
           <div className="relative text-center text-white p-8">
-            <img src={seabooLogo} alt="SeaGO" className="h-16 w-16 mx-auto mb-6 object-contain" />
+            <img src={seabooLogo} alt="SeaBoo" className="h-16 w-16 mx-auto mb-6 object-contain" />
             <h2 className="text-4xl font-bold mb-4">
-              Benvenuto in SeaGO
+              Benvenuto in SeaBoo
             </h2>
             <p className="text-xl text-blue-100 max-w-md">
               La piattaforma leader per il noleggio di imbarcazioni in Italia.

@@ -30,7 +30,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         <div className="min-h-screen bg-white flex items-center justify-center p-8">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              App SeaGO - Sistema Funzionante
+              App SeaBoo - Sistema Funzionante
             </h1>
             <p className="text-gray-600 mb-4">
               Il sistema di prenotazione è completamente operativo.

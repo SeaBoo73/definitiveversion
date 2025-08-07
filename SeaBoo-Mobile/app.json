@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SeaGO-Mobile",
-    "slug": "SeaGO-Mobile",
+    "name": "SeaBoo-Mobile",
+    "slug": "SeaBoo-Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

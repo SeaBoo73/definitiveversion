@@ -39,7 +39,7 @@ export function LiveChatButton() {
           </Button>
         </TooltipTrigger>
         <TooltipContent side="left" className="bg-gray-900 text-white">
-          <p>Chat con Assistenza SeaGO</p>
+          <p>Chat con Assistenza SeaBoo</p>
         </TooltipContent>
       </Tooltip>
 
@@ -50,7 +50,7 @@ export function LiveChatButton() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bot className="h-5 w-5 text-blue-500" />
-                Assistenza SeaGO
+                Assistenza SeaBoo
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">

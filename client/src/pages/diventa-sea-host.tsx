@@ -79,7 +79,7 @@ export default function DiventaSeaHostPage() {
     onSuccess: () => {
       toast({
         title: "Registrazione completata!",
-        description: "Benvenuto nella community SeaGO. Riceverai una conferma via email.",
+        description: "Benvenuto nella community SeaBoo. Riceverai una conferma via email.",
       });
       setTimeout(() => {
         setLocation("/owner-dashboard");
@@ -116,7 +116,7 @@ export default function DiventaSeaHostPage() {
               <Anchor className="h-8 w-8" />
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Diventa Sea Host SeaGO</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">Diventa Sea Host SeaBoo</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Trasforma la tua passione per il mare in un'opportunità di guadagno. 
             Unisciti alla community di proprietari più grande d'Italia.
@@ -383,14 +383,14 @@ export default function DiventaSeaHostPage() {
                     <CardHeader>
                       <CardTitle className="text-amber-800 flex items-center gap-2">
                         <Euro className="h-5 w-5" />
-                        Commissioni SeaGO
+                        Commissioni SeaBoo
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="text-amber-700">
                       <div className="mb-4">
                         <div className="text-2xl font-bold mb-2">15% di commissione</div>
                         <p className="text-sm">
-                          SeaGO trattiene il 15% su ogni prenotazione per coprire:
+                          SeaBoo trattiene il 15% su ogni prenotazione per coprire:
                         </p>
                         <ul className="list-disc list-inside text-sm mt-2 space-y-1">
                           <li>Assicurazione completa della tua imbarcazione</li>
@@ -413,7 +413,7 @@ export default function DiventaSeaHostPage() {
                       />
                       <Label htmlFor="acceptTerms" className="text-sm leading-relaxed">
                         Accetto i <Button variant="link" className="p-0 h-auto text-blue-600">termini di servizio</Button> e la 
-                        <Button variant="link" className="p-0 h-auto text-blue-600 ml-1">privacy policy</Button> di SeaGO
+                        <Button variant="link" className="p-0 h-auto text-blue-600 ml-1">privacy policy</Button> di SeaBoo
                       </Label>
                     </div>
                     {form.formState.errors.acceptTerms && (
@@ -427,7 +427,7 @@ export default function DiventaSeaHostPage() {
                         onCheckedChange={(checked) => form.setValue("acceptCommission", checked as boolean)}
                       />
                       <Label htmlFor="acceptCommission" className="text-sm leading-relaxed">
-                        Accetto la commissione del 15% su ogni prenotazione e comprendo che verrà trattenuta automaticamente da SeaGO
+                        Accetto la commissione del 15% su ogni prenotazione e comprendo che verrà trattenuta automaticamente da SeaBoo
                       </Label>
                     </div>
                     {form.formState.errors.acceptCommission && (

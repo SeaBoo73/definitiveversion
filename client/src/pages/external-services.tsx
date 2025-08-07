@@ -195,7 +195,7 @@ export default function ExternalServices() {
   };
 
   const servicesPageSEO = {
-    title: "Servizi Nautici Esterni - Meteo, Carburante, Porti | SeaGO",
+    title: "Servizi Nautici Esterni - Meteo, Carburante, Porti | SeaBoo",
     description: "Servizi marittimi completi: meteo marino in tempo reale, prezzi carburante nautico, disponibilità porti e condizioni marine per la tua navigazione sicura.",
     keywords: "meteo marino, carburante nautico, servizi portuali, condizioni marine, assistenza marittima, porti Italia"
   };
@@ -340,7 +340,7 @@ export default function ExternalServices() {
             onClick={() => setActiveTab('marine')}
           >
             <CardContent className="p-4 text-center">
-              <img src={seabooLogo} alt="SeaGO" className="h-8 w-8 mx-auto mb-2 object-contain" />
+              <img src={seabooLogo} alt="SeaBoo" className="h-8 w-8 mx-auto mb-2 object-contain" />
               <h3 className="font-medium text-sm">Condizioni Marine</h3>
               <p className="text-xs text-gray-500 mt-1">Onde e sicurezza</p>
             </CardContent>
@@ -472,7 +472,7 @@ export default function ExternalServices() {
                     </div>
                     
                     <div className="text-center">
-                      <img src={seabooLogo} alt="SeaGO" className="h-8 w-8 mx-auto mb-2 object-contain" />
+                      <img src={seabooLogo} alt="SeaBoo" className="h-8 w-8 mx-auto mb-2 object-contain" />
                       <div className="text-2xl font-bold">{weatherData.waves.height} m</div>
                       <div className="text-sm text-gray-600">
                         {getWaveCondition(weatherData.waves.height).text}
@@ -742,14 +742,14 @@ export default function ExternalServices() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <img src={seabooLogo} alt="SeaGO" className="h-5 w-5 object-contain" />
+                    <img src={seabooLogo} alt="SeaBoo" className="h-5 w-5 object-contain" />
                     Condizioni Marine Attuali
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div className="text-center">
-                      <img src={seabooLogo} alt="SeaGO" className="h-12 w-12 mx-auto mb-3 object-contain" />
+                      <img src={seabooLogo} alt="SeaBoo" className="h-12 w-12 mx-auto mb-3 object-contain" />
                       <div className="text-3xl font-bold">{weatherData.waves.height} m</div>
                       <div className="text-sm text-gray-600">Altezza Onde</div>
                       <Badge 
@@ -826,19 +826,19 @@ export default function ExternalServices() {
                         <CardContent>
                           <ul className="space-y-1 text-sm">
                             <li className="flex items-center gap-2">
-                              <img src={seabooLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              <img src={seabooLogo} alt="SeaBoo" className="h-3 w-3 object-contain" />
                               Giubbotto di salvataggio
                             </li>
                             <li className="flex items-center gap-2">
-                              <img src={seabooLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              <img src={seabooLogo} alt="SeaBoo" className="h-3 w-3 object-contain" />
                               VHF nautico
                             </li>
                             <li className="flex items-center gap-2">
-                              <img src={seabooLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              <img src={seabooLogo} alt="SeaBoo" className="h-3 w-3 object-contain" />
                               Kit di primo soccorso
                             </li>
                             <li className="flex items-center gap-2">
-                              <img src={seabooLogo} alt="SeaGO" className="h-3 w-3 object-contain" />
+                              <img src={seabooLogo} alt="SeaBoo" className="h-3 w-3 object-contain" />
                               Ancora di emergenza
                             </li>
                           </ul>

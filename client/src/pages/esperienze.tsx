@@ -96,7 +96,7 @@ export function EsperienzePage() {
     },
     {
       category: "Attività a Bordo",
-      icon: <img src={seabooLogo} alt="SeaGO" className="h-6 w-6 object-contain" />,
+      icon: <img src={seabooLogo} alt="SeaBoo" className="h-6 w-6 object-contain" />,
       items: [
         {
           title: "Snorkeling e immersioni",

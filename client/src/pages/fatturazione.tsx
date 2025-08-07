@@ -15,7 +15,7 @@ export default function FatturazionePage() {
             Fatturazione e Ricevute
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Gestione completa delle tue fatture e documenti fiscali su SeaGO
+            Gestione completa delle tue fatture e documenti fiscali su SeaBoo
           </p>
         </div>
 
@@ -150,7 +150,7 @@ export default function FatturazionePage() {
                   <div className="flex items-start">
                     <CheckCircle className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
                     <div>
-                      <h5 className="font-medium">Dati Fiscali SeaGO</h5>
+                      <h5 className="font-medium">Dati Fiscali SeaBoo</h5>
                       <p className="text-sm text-gray-600">P.IVA, Codice Fiscale, indirizzo sede</p>
                     </div>
                   </div>

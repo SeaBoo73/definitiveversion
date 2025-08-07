@@ -16,7 +16,7 @@ export default function InserisciBarcaPage() {
             Come Inserire la Tua Barca
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Guida completa per pubblicare la tua imbarcazione su SeaGO e iniziare a guadagnare
+            Guida completa per pubblicare la tua imbarcazione su SeaBoo e iniziare a guadagnare
           </p>
         </div>
 
@@ -168,7 +168,7 @@ export default function InserisciBarcaPage() {
         <div className="text-center bg-gradient-to-r from-blue-600 to-orange-500 rounded-lg p-8 text-white">
           <h3 className="text-2xl font-bold mb-4">Pronto a Iniziare?</h3>
           <p className="mb-6 opacity-90">
-            Unisciti a centinaia di proprietari che hanno già scelto SeaGO per massimizzare i loro guadagni.
+            Unisciti a centinaia di proprietari che hanno già scelto SeaBoo per massimizzare i loro guadagni.
           </p>
           <div className="space-x-4">
             <Link to="/auth?tab=register&role=owner">

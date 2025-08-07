@@ -15,7 +15,7 @@ export default function AssistenzaProprietariPage() {
             Assistenza Proprietari
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Supporto dedicato per i proprietari di imbarcazioni su SeaGO
+            Supporto dedicato per i proprietari di imbarcazioni su SeaBoo
           </p>
         </div>
 
@@ -180,7 +180,7 @@ export default function AssistenzaProprietariPage() {
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white text-center">
           <h3 className="text-2xl font-bold mb-4">Hai Bisogno di Aiuto Personalizzato?</h3>
           <p className="mb-6 opacity-90">
-            Il nostro Account Manager dedicato può aiutarti a ottimizzare la tua presenza su SeaGO.
+            Il nostro Account Manager dedicato può aiutarti a ottimizzare la tua presenza su SeaBoo.
           </p>
           <Button className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3">
             Richiedi Consulenza Gratuita

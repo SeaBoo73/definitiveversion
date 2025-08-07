@@ -3344,39 +3344,39 @@
                 // Mostra interfaccia login/registrazione
                 profileSection.innerHTML = `
                     <div class="content">
-                        <div class="auth-header" style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 32px 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
+                        <div class="auth-header" style="background: #0C9FE2; padding: 32px 24px; text-align: center; color: white; border-radius: 12px; margin: 0 -16px 24px;">
                             <div style="font-size: 32px; margin-bottom: 16px;">🔐</div>
                             <h2 style="margin: 0 0 12px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px;">Accedi o Registrati</h2>
                             <p style="margin: 0; opacity: 0.95; font-size: 16px; line-height: 1.4;">Entra in SeaBoo per prenotare le tue barche</p>
                         </div>
                         
-                        <div class="auth-options" style="padding: 20px;">
-                            <button onclick="handleLogin()" style="background: #0C9FE2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                        <div class="auth-options" style="padding: 0 16px 20px;">
+                            <button onclick="handleLogin()" style="background: #0C9FE2; color: white; padding: 18px 24px; border: none; border-radius: 12px; width: 100%; font-weight: 600; margin-bottom: 16px; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                                 🚪 Accedi con Email
                             </button>
                             
-                            <button onclick="handleLogin()" style="background: #059669; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 16px;">
+                            <button onclick="handleLogin()" style="background: #059669; color: white; padding: 18px 24px; border: none; border-radius: 12px; width: 100%; font-weight: 600; margin-bottom: 24px; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                                 📝 Registrati Nuovo Account
                             </button>
                             
-                            <div style="text-align: center; margin: 20px 0; color: #666;">oppure continua con</div>
+                            <div style="text-align: center; margin: 20px 0; color: #666; font-size: 14px; font-weight: 500;">oppure continua con</div>
                             
-                            <button onclick="handleLogin()" style="background: #1877f2; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 8px;">
+                            <button onclick="handleLogin()" style="background: #1877f2; color: white; padding: 16px 24px; border: none; border-radius: 10px; width: 100%; font-weight: 600; margin-bottom: 12px; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                                 📘 Facebook
                             </button>
                             
-                            <button onclick="handleLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 20px;">
+                            <button onclick="handleLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 10px; width: 100%; font-weight: 600; margin-bottom: 32px; font-size: 15px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                                 🔴 Google
                             </button>
                             
-                            <div class="menu-item" onclick="showScreen('aiuto')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; border: 1px solid #e5e7eb;">
-                                <h4 style="margin: 0 0 4px 0; color: #1f2937; font-size: 16px;">? Centro Assistenza</h4>
+                            <div class="menu-item" onclick="showScreen('aiuto')" style="background: white; padding: 18px; margin-bottom: 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); cursor: pointer; border: 1px solid #e5e7eb; text-align: center;">
+                                <h4 style="margin: 0 0 6px 0; color: #1f2937; font-size: 16px; font-weight: 600;">? Centro Assistenza</h4>
                                 <p style="margin: 0; color: #6b7280; font-size: 14px;">FAQ, chat AI e supporto clienti</p>
                             </div>
                             
-                            <p style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+                            <p style="text-align: center; margin-top: 24px; color: #6b7280; font-size: 13px; line-height: 1.4; padding: 0 8px;">
                                 Registrandoti accetti i nostri<br>
-                                <strong>Termini di Servizio</strong> e <strong>Privacy Policy</strong>
+                                <strong style="color: #374151;">Termini di Servizio</strong> e <strong style="color: #374151;">Privacy Policy</strong>
                             </p>
                         </div>
                     </div>

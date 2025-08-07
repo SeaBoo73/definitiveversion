@@ -3195,22 +3195,31 @@
                         
                         <div style="display: grid; gap: 16px;">
                             ${category.subcategories.map((sub, index) => {
-                                // Definiamo le immagini per le esperienze gourmet
-                                const gourmetImages = {
-                                    'Cene al Tramonto': '/attached_assets/barca_ormeggiata_in_una_baia_segreta_acqua_trasparente_coppia_che_guarda_il_tramonto_vibes_romantic_9x0pjxoxsnrxqi3n6ke2_2_1754550983450.png',
-                                    'Degustazioni Vini': '/attached_assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_zdfwhthbfa54fqve3fyq_1_1754550983452.png',
-                                    'Aperitivi Esclusivi': '/attached_assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_x94via1sagly3xj655zr_0_1754550983452.png',
-                                    'Pranzi Tematici': '/attached_assets/esperienze_indimenticabili_in_barca-_una_barca_elegante_che_galleggia_su_acque_cristalline_turchesi_i5sr1hx6nzibq1kgs326_0_1754550983453.png'
+                                // Definiamo le immagini per le diverse categorie di esperienze
+                                const experienceImages = {
+                                    'esperienze-gourmet': {
+                                        'Cene al Tramonto': '/attached_assets/barca_ormeggiata_in_una_baia_segreta_acqua_trasparente_coppia_che_guarda_il_tramonto_vibes_romantic_9x0pjxoxsnrxqi3n6ke2_2_1754550983450.png',
+                                        'Degustazioni Vini': '/attached_assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_zdfwhthbfa54fqve3fyq_1_1754550983452.png',
+                                        'Aperitivi Esclusivi': '/attached_assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_x94via1sagly3xj655zr_0_1754550983452.png',
+                                        'Pranzi Tematici': '/attached_assets/esperienze_indimenticabili_in_barca-_una_barca_elegante_che_galleggia_su_acque_cristalline_turchesi_i5sr1hx6nzibq1kgs326_0_1754550983453.png'
+                                    },
+                                    'tour-escursioni': {
+                                        'Tour Costiera Amalfitana': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_et5mhvfcn9mthpvglbmq_3_1754589988344.png',
+                                        'Escursioni Isole Pontine': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_494ofant2z15l54mior4_2_1754589988345.png',
+                                        'Tour Arcipelago Toscano': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_ms9dml5qd5orsbth0zve_1_1754589988346.png',
+                                        'Escursioni Cinque Terre': '/attached_assets/giro_in_barca_lungo_la_costa_italiana_passeggeri_rilassati_che_ammirano_scogliere_e_grotte_acqua_cr_l714nyonlju1nbr6ndrb_0_1754589988348.png'
+                                    }
                                 };
                                 
-                                const imageUrl = categoryType === 'esperienze-gourmet' ? gourmetImages[sub.name] || '' : '';
+                                const categoryImages = experienceImages[categoryType] || {};
+                                const imageUrl = categoryImages[sub.name] || '';
                                 
                                 return `
                                 <div style="background: white; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                                     ${imageUrl ? `
                                         <div style="height: 120px; background-image: url('${imageUrl}'); background-size: cover; background-position: center; position: relative;">
                                             <div style="position: absolute; top: 8px; right: 8px;">
-                                                <span style="background: #059669; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">GOURMET</span>
+                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : 'TOUR'}</span>
                                             </div>
                                         </div>
                                     ` : ''}

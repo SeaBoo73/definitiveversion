@@ -175,7 +175,7 @@ export default function PoliticheCancellazionePage() {
                   </li>
                   <li className="flex items-center gap-2">
                     <Euro className="h-4 w-4 text-green-600" />
-                    <span><strong>Credito SeaGO:</strong> Immediato</span>
+                    <span><strong>Credito SeaBoo:</strong> Immediato</span>
                   </li>
                 </ul>
               </div>

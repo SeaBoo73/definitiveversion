@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.seago.mobile',
-  appName: 'SeaGO',
+  appId: 'com.seaboo.mobile',
+  appName: 'SeaBoo',
   webDir: 'dist/public',
   server: {
     androidScheme: 'https'

@@ -12,7 +12,7 @@ export function LiveChatButton() {
 
 
   const handleEmailSupport = () => {
-    window.open('mailto:assistenza@seago.it?subject=Richiesta Assistenza SeaGO', '_self');
+    window.open('mailto:assistenza@seaboo.it?subject=Richiesta Assistenza SeaBoo', '_self');
     setShowOptions(false);
   };
 

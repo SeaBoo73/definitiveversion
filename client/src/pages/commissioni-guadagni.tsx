@@ -13,7 +13,7 @@ export default function CommissioniGuadagniPage() {
             Commissioni e Guadagni
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Scopri quanto puoi guadagnare noleggiando la tua imbarcazione con SeaGO
+            Scopri quanto puoi guadagnare noleggiando la tua imbarcazione con SeaBoo
           </p>
         </div>
 
@@ -21,7 +21,7 @@ export default function CommissioniGuadagniPage() {
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
             <DollarSign className="h-12 w-12 text-green-600 mx-auto mb-4" />
             <h3 className="font-semibold mb-2">15%</h3>
-            <p className="text-sm text-gray-600">Commissione SeaGO</p>
+            <p className="text-sm text-gray-600">Commissione SeaBoo</p>
           </div>
 
           <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 text-center">
@@ -50,7 +50,7 @@ export default function CommissioniGuadagniPage() {
               <div>
                 <h3 className="text-lg font-medium mb-4">Struttura Semplice</h3>
                 <p className="text-gray-600 mb-4">
-                  SeaGO applica una commissione del 15% sul prezzo di noleggio. 
+                  SeaBoo applica una commissione del 15% sul prezzo di noleggio. 
                   Questo include tutti i nostri servizi: marketing, assistenza clienti, 
                   pagamenti sicuri e assicurazione.
                 </p>
@@ -62,7 +62,7 @@ export default function CommissioniGuadagniPage() {
                       <span>€1.000</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Commissione SeaGO (15%):</span>
+                      <span>Commissione SeaBoo (15%):</span>
                       <span>€150</span>
                     </div>
                     <div className="flex justify-between font-semibold border-t pt-1">

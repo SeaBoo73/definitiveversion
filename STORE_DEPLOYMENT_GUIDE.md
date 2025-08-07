@@ -1,5 +1,5 @@
 # GUIDA DEPLOYMENT SEAGO SU APP STORE
-*Guida completa per pubblicare SeaGO su Apple App Store e Google Play Store*
+*Guida completa per pubblicare SeaBoo su Apple App Store e Google Play Store*
 
 ## 📱 PANORAMICA OPZIONI
 
@@ -34,7 +34,7 @@
 ```bash
 # Su Replit, crea nuovo progetto Expo
 # Template: Expo Blank (TypeScript)
-npx create-expo-app SeaGO-Mobile --template blank-typescript
+npx create-expo-app SeaBoo-Mobile --template blank-typescript
 ```
 
 ### STEP 2: Migrazione Componenti
@@ -50,7 +50,7 @@ npx create-expo-app SeaGO-Mobile --template blank-typescript
 ```json
 {
   "expo": {
-    "name": "SeaGO",
+    "name": "SeaBoo",
     "slug": "seago-boat-rental",
     "version": "1.0.0",
     "platforms": ["ios", "android"],
@@ -105,8 +105,8 @@ self.addEventListener('install', (event) => {
 ### STEP 2: Web App Manifest
 ```json
 {
-  "name": "SeaGO - Noleggio Barche",
-  "short_name": "SeaGO",
+  "name": "SeaBoo - Noleggio Barche",
+  "short_name": "SeaBoo",
   "description": "Piattaforma per noleggio barche in Italia",
   "start_url": "/",
   "display": "standalone",

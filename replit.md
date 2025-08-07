@@ -1,7 +1,7 @@
-# SeaGO - Boat Rental Platform
+# SeaBoo - Boat Rental Platform
 
 ## Overview
-SeaGO is a comprehensive full-stack web application, functioning as an "Airbnb for boats" with features inspired by Booking.com for date management and Glovo for user experience simplicity. It enables users to search, book, and manage boat rentals across Italy, covering various vessel types including yachts, dinghies, catamarans, jet skis, sailboats, kayaks, charters, and houseboats. The platform aims to simplify maritime rentals, offering an intuitive experience for both customers and boat owners, with integrated payment and mapping functionalities.
+SeaBoo is a comprehensive full-stack web application, functioning as an "Airbnb for boats" with features inspired by Booking.com for date management and Glovo for user experience simplicity. It enables users to search, book, and manage boat rentals across Italy, covering various vessel types including yachts, dinghies, catamarans, jet skis, sailboats, kayaks, charters, and houseboats. The platform aims to simplify maritime rentals, offering an intuitive experience for both customers and boat owners, with integrated payment and mapping functionalities.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -73,6 +73,19 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 
 ## Recent Changes (August 2025)
 
+### August 7, 2025 - Rebranding Completo da SeaBoo a SeaBoo (Ore 5:17)
+- **REBRANDING COMPLETO IMPLEMENTATO:**
+  - ✅ Aggiornamento completo di tutti i riferimenti testuali da "SeaBoo" a "SeaBoo"
+  - ✅ Frontend: aggiornati tutti i componenti, pagine e interfacce utente
+  - ✅ Backend: aggiornati servizi, API endpoints e configurazioni
+  - ✅ Mobile App: aggiornate tutte le schermate e componenti nativi
+  - ✅ SEO e metadata: aggiornati tutti i meta tags e structured data
+  - ✅ Configurazioni: voltbuilder.json, capacitor.config.ts con nuovo branding
+  - ✅ Schema database: aggiornate tutte le enumerazioni e valori di default
+  - ✅ Documentazione: replit.md aggiornato con nuovo nome piattaforma
+
+## Recent Changes (August 2025)
+
 ### August 5, 2025 - Separazione Completa Clienti/Proprietari per Apple Store (Ore 7:47)
 - **SISTEMA PAGAMENTI DIFFERENZIATO PER RUOLI:**
   - ✅ **CLIENTI (Pagano servizi):** Metodi pagamento digitali (Stripe)
@@ -110,7 +123,7 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 
 ### July 30, 2025 - Partner Ufficiale Capuano Trasporti Aggiunto (Ore 12:36)
 - **NUOVO PARTNER: Capuano Trasporti Integrato nell'App:**
-  - ✅ Sezione "Partner Ufficiali SeaGO" aggiunta nel footer della homepage
+  - ✅ Sezione "Partner Ufficiali SeaBoo" aggiunta nel footer della homepage
   - ✅ Logo SVG professionale creato per Capuano Trasporti (blu #1e40af con dettagli dorati)
   - ✅ Link diretto al sito web: https://www.capuanotrasporti.com/
   - ✅ Informazioni aziendali integrate: "Trasporti Eccezionali" dal 2012

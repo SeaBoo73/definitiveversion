@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Phone, MapPin, AlertTriangle, Shield, Anchor, Navigation, Radio, Clock, Users } from 'lucide-react';
-import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
+import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface EmergencyContact {
@@ -207,7 +207,7 @@ export default function EmergencySystem() {
                 onClick={() => handleQuickEmergency('weather', 'high')}
                 className="flex items-center gap-2"
               >
-                <img src={seagoLogo} alt="SeaGO" className="h-4 w-4 object-contain" />
+                <img src={seabooLogo} alt="SeaGO" className="h-4 w-4 object-contain" />
                 Meteo Avverso
               </Button>
             </div>

@@ -214,7 +214,7 @@ export function TestBookingPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <CheckCircle className="h-6 w-6" />
-            Test Sistema SeaGO
+            Test Sistema SeaBoo
           </CardTitle>
         </CardHeader>
         

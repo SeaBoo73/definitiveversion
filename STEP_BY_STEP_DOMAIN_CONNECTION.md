@@ -37,7 +37,7 @@ TTL: 300
 ## 4️⃣ VERIFICA COLLEGAMENTO
 
 **Attendi 5-60 minuti, poi verifica:**
-- ✅ `seagorentalboat.com` apre la piattaforma SeaGO
+- ✅ `seagorentalboat.com` apre la piattaforma SeaBoo
 - ✅ `www.seagorentalboat.com` funziona
 - ✅ HTTPS è attivo automaticamente
 - ✅ `seagorentalboat.com/sitemap.xml` mostra il sitemap

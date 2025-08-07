@@ -107,7 +107,7 @@ export function AIAssistant({ context }: AIAssistantProps) {
       <CardHeader className="text-center">
         <div className="flex items-center justify-center gap-2 mb-2">
           <Bot className="h-8 w-8 text-blue-500" />
-          <CardTitle className="text-2xl">Assistente IA SeaGO</CardTitle>
+          <CardTitle className="text-2xl">Assistente IA SeaBoo</CardTitle>
         </div>
         <p className="text-muted-foreground">
           Il tuo esperto nautici personale powered by AI

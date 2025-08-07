@@ -10,13 +10,13 @@ Hai 3 versioni dell'app mobile create durante lo sviluppo:
 - Script automatici di build
 - **QUESTA È L'APP DA PUBBLICARE**
 
-### ⚠️ `SeaGO-Mobile/` - VERSIONE SPERIMENTALE 
+### ⚠️ `SeaBoo-Mobile/` - VERSIONE SPERIMENTALE 
 - React Native 0.79.5 + Expo 53.0.20
 - Versione di test più recente
 - Solo base minima
 - **PUOI RIMUOVERE**
 
-### ⚠️ `mobile/SeaGONative/` - VERSIONE BACKUP
+### ⚠️ `mobile/SeaBooNative/` - VERSIONE BACKUP
 - React Native puro senza Expo
 - Versione semplificata
 - **PUOI RIMUOVERE**
@@ -45,12 +45,12 @@ npm start
 ### 2. Rimuovi versioni duplicate (opzionale)
 ```bash
 # Backup prima di rimuovere
-mv SeaGO-Mobile SeaGO-Mobile-backup
-mv mobile/SeaGONative mobile/SeaGONative-backup
+mv SeaBoo-Mobile SeaBoo-Mobile-backup
+mv mobile/SeaBooNative mobile/SeaBooNative-backup
 
 # O rimuovi completamente
-rm -rf SeaGO-Mobile
-rm -rf mobile/SeaGONative
+rm -rf SeaBoo-Mobile
+rm -rf mobile/SeaBooNative
 ```
 
 ### 3. Procedi con pubblicazione

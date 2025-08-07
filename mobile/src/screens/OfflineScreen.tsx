@@ -136,7 +136,7 @@ export default function OfflineScreen() {
           <Text style={styles.statusSubtitle}>
             {isOffline 
               ? 'Stai utilizzando dati memorizzati localmente'
-              : 'Connesso ai server SeaGO'
+              : 'Connesso ai server SeaBoo'
             }
           </Text>
         </View>

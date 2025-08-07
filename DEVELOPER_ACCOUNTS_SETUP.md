@@ -68,7 +68,7 @@ npx eas credentials
 ### Dopo Setup Google Play
 
 #### 1. Crea App su Play Console
-- **Nome app**: SeaGO - Noleggio Barche
+- **Nome app**: SeaBoo - Noleggio Barche
 - **Categoria**: Travel & Local
 - **Lingua**: Italiano
 - **Paese**: Italia
@@ -106,14 +106,14 @@ cd mobile
 ## 📝 METADATI STORE (GIÀ PREPARATI)
 
 ### App Store (iOS)
-- **Nome**: SeaGO - Noleggio Barche
+- **Nome**: SeaBoo - Noleggio Barche
 - **Sottotitolo**: Scopri barche in tutta Italia
 - **Parole chiave**: noleggio barche, yacht, charter, mare, vacanze
 - **Categoria**: Travel
 - **Età**: 4+ (per tutti)
 
 ### Google Play (Android)  
-- **Titolo**: SeaGO - Noleggio Barche
+- **Titolo**: SeaBoo - Noleggio Barche
 - **Descrizione breve**: La piattaforma leader per il noleggio barche in Italia
 - **Categoria**: Travel & Local
 - **Target**: Generale
@@ -213,4 +213,4 @@ Se hai problemi durante il setup:
 - [ ] Script di build testati
 - [ ] Asset e metadati preparati
 
-**Quando completi questa checklist, l'app SeaGO sarà LIVE su App Store e Google Play! 🚀**
+**Quando completi questa checklist, l'app SeaBoo sarà LIVE su App Store e Google Play! 🚀**

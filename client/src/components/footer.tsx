@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Anchor, Instagram, Globe } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
-import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
+import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Footer() {
   return (
@@ -12,12 +12,12 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center mb-6">
               <img 
-                src={seagoLogo} 
-                alt="SeaGO Logo" 
+                src={seabooLogo} 
+                alt="SeaBoo Logo" 
                 className="h-8 w-8 rounded object-cover"
               />
               <h3 className="text-2xl font-bold leading-none -mt-1 text-white">
-                SeaGO
+                SeaBoo
               </h3>
             </div>
             <p className="text-gray-400 mb-6 max-w-md">
@@ -25,10 +25,10 @@ export function Footer() {
               Scopri il mare come mai prima d'ora.
             </p>
             <div className="flex space-x-4">
-              <a href="https://instagram.com/seago_italia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://instagram.com/seaboo_italia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="https://tiktok.com/@seago_italia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
+              <a href="https://tiktok.com/@seaboo_italia" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-colors">
                 <SiTiktok size={20} />
               </a>
             </div>
@@ -84,7 +84,7 @@ export function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col md:flex-row items-center gap-4 mb-4 md:mb-0">
               <p className="text-gray-400 text-sm">
-                © 2025 SeaGO. Tutti i diritti riservati.
+                © 2025 SeaBoo. Tutti i diritti riservati.
               </p>
               <div className="flex items-center gap-4">
                 <Link to="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">

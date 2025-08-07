@@ -12,7 +12,7 @@ export function PartnersSection() {
             🤝 Partner Ufficiali
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Unisciti alla Rete SeaGO
+            Unisciti alla Rete SeaBoo
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Stiamo costruendo una rete esclusiva di partner qualificati nel settore nautico. 
@@ -25,7 +25,7 @@ export function PartnersSection() {
           <Card className="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white border-0 shadow-xl">
             <CardContent className="p-8">
               <div className="text-6xl mb-4">🚀</div>
-              <h3 className="text-2xl font-bold mb-4">Diventa Partner SeaGO</h3>
+              <h3 className="text-2xl font-bold mb-4">Diventa Partner SeaBoo</h3>
               <p className="mb-6 text-blue-100 text-lg max-w-md mx-auto">
                 Unisciti alla nostra rete di partner qualificati e fai crescere il tuo business nel settore nautico. 
                 Opportunità esclusive ti aspettano.

@@ -239,7 +239,7 @@ export default function AdminPerformancePage() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg">
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">App SeaGO</h4>
+                    <h4 className="text-lg font-semibold text-gray-900 mb-2">App SeaBoo</h4>
                     <p className="text-3xl font-bold text-blue-600 mb-2">100%</p>
                     <p className="text-sm text-gray-600">Operativa e ottimizzata</p>
                   </div>

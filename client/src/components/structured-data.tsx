@@ -10,7 +10,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
   
   const getStructuredData = () => {
     const baseUrl = typeof window !== 'undefined' ? window.location.origin : 
-                   (import.meta.env.VITE_CUSTOM_DOMAIN ? `https://${import.meta.env.VITE_CUSTOM_DOMAIN}` : 'https://seagorentalboat.com');
+                   (import.meta.env.VITE_CUSTOM_DOMAIN ? `https://${import.meta.env.VITE_CUSTOM_DOMAIN}` : 'https://seaboorentalboat.com');
     
     switch (type) {
       case 'homepage':
@@ -20,7 +20,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
             {
               "@type": "Organization",
               "@id": `${baseUrl}/#organization`,
-              "name": "SeaGO",
+              "name": "SeaBoo",
               "url": baseUrl,
               "logo": {
                 "@type": "ImageObject",
@@ -40,7 +40,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
               "@type": "WebSite",
               "@id": `${baseUrl}/#website`,
               "url": baseUrl,
-              "name": "SeaGO - Piattaforma Marittima",
+              "name": "SeaBoo - Piattaforma Marittima",
               "description": "Noleggio barche, charter nautici e servizi marittimi in Italia",
               "publisher": {
                 "@id": `${baseUrl}/#organization`
@@ -106,15 +106,15 @@ export function StructuredData({ type, data }: StructuredDataProps) {
           "@type": "WebPage",
           "@id": `${baseUrl}/esperienze`,
           "url": `${baseUrl}/esperienze`,
-          "name": "Esperienze Maritime Uniche in Italia | SeaGO",
+          "name": "Esperienze Maritime Uniche in Italia | SeaBoo",
           "description": "Vivi esperienze maritime indimenticabili: tramonti sul mare, pesca sportiva, cene a bordo, escursioni nautiche lungo le coste italiane",
           "mainEntity": {
             "@type": "TouristTrip",
-            "name": "Esperienze Maritime SeaGO",
+            "name": "Esperienze Maritime SeaBoo",
             "description": "Collezione di esperienze nautiche uniche in Italia",
             "provider": {
               "@type": "Organization",
-              "name": "SeaGO"
+              "name": "SeaBoo"
             },
             "itinerary": [
               {
@@ -142,14 +142,14 @@ export function StructuredData({ type, data }: StructuredDataProps) {
           "@type": "WebPage",
           "@id": `${baseUrl}/charter`,
           "url": `${baseUrl}/charter`,
-          "name": "Charter Nautico Professionale in Italia | SeaGO",
+          "name": "Charter Nautico Professionale in Italia | SeaBoo",
           "description": "Servizi di charter nautico professionale con skipper esperti. Yacht di lusso, barche a vela e motoscafi per le tue vacanze maritime",
           "mainEntity": {
             "@type": "Service",
             "name": "Servizi Charter Nautico",
             "provider": {
               "@type": "Organization",
-              "name": "SeaGO"
+              "name": "SeaBoo"
             },
             "serviceType": "Nautical Charter Services",
             "areaServed": {
@@ -181,14 +181,14 @@ export function StructuredData({ type, data }: StructuredDataProps) {
           "@type": "WebPage",
           "@id": `${baseUrl}/ormeggio`,
           "url": `${baseUrl}/ormeggio`,
-          "name": "Ormeggi e Porti Turistici in Italia | SeaGO",
+          "name": "Ormeggi e Porti Turistici in Italia | SeaBoo",
           "description": "Trova e prenota ormeggi sicuri nei migliori porti turistici d'Italia. Servizi portuali completi, assistenza 24/7",
           "mainEntity": {
             "@type": "Service",
             "name": "Servizi di Ormeggio",
             "provider": {
               "@type": "Organization",
-              "name": "SeaGO"
+              "name": "SeaBoo"
             },
             "serviceType": "Marina and Mooring Services",
             "areaServed": {
@@ -233,7 +233,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
           "category": "Boat Rental",
           "brand": {
             "@type": "Brand",
-            "name": data.manufacturer || "SeaGO"
+            "name": data.manufacturer || "SeaBoo"
           },
           "offers": {
             "@type": "Offer",
@@ -242,7 +242,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
             "availability": "https://schema.org/InStock",
             "seller": {
               "@type": "Organization",
-              "name": "SeaGO"
+              "name": "SeaBoo"
             }
           },
           "additionalProperty": [
@@ -270,14 +270,14 @@ export function StructuredData({ type, data }: StructuredDataProps) {
           "@type": "WebPage",
           "@id": `${baseUrl}/external-services`,
           "url": `${baseUrl}/external-services`,
-          "name": "Servizi Nautici Esterni - Meteo, Carburante, Porti | SeaGO",
+          "name": "Servizi Nautici Esterni - Meteo, Carburante, Porti | SeaBoo",
           "description": "Servizi marittimi completi: meteo marino, carburante nautico, porti e condizioni marine",
           "mainEntity": {
             "@type": "Service",
             "name": "Servizi Nautici Esterni",
             "provider": {
               "@type": "Organization",
-              "name": "SeaGO"
+              "name": "SeaBoo"
             },
             "serviceType": "External Maritime Services",
             "areaServed": {

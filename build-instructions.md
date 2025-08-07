@@ -1,4 +1,4 @@
-# SeaGO iOS Build Instructions
+# SeaBoo iOS Build Instructions
 
 ## ✅ Progetto Capacitor pronto per VoltBuilder
 
@@ -10,7 +10,7 @@
 
 ### Bundle ID configurato:
 - **App ID:** `com.seago.mobile` (corrisponde ad App Store Connect)
-- **App Name:** SeaGO
+- **App Name:** SeaBoo
 - **Version:** 1.0.0
 
 ## 🚀 Prossimi passaggi per la build VoltBuilder:

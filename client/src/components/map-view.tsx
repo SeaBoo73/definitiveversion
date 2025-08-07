@@ -85,7 +85,7 @@ interface MapViewProps {
 declare global {
   interface Window {
     google: any;
-    initSeaGOMap: () => void;
+    initSeaBooMap: () => void;
   }
 }
 
@@ -217,11 +217,11 @@ export function MapView({
     // Carica Google Maps API
     if (!window.google) {
       const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || window.ENV?.GOOGLE_MAPS_API_KEY}&callback=initSeaGOMap&libraries=places`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY || window.ENV?.GOOGLE_MAPS_API_KEY}&callback=initSeaBooMap&libraries=places`;
       script.async = true;
       script.defer = true;
       
-      window.initSeaGOMap = initMap;
+      window.initSeaBooMap = initMap;
       
       script.addEventListener('error', () => {
         console.error('Errore caricamento Google Maps');
@@ -286,7 +286,7 @@ export function MapView({
       
       {/* Overlay info */}
       <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 max-w-xs">
-        <h4 className="font-bold text-gray-900 text-sm mb-1">🗺️ SeaGO Maps</h4>
+        <h4 className="font-bold text-gray-900 text-sm mb-1">🗺️ SeaBoo Maps</h4>
         <p className="text-xs text-gray-600 mb-2">
           Navigazione mondiale come Google Maps
         </p>

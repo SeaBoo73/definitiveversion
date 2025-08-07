@@ -54,7 +54,7 @@ export default function AreaNoleggiatori({ navigation }: any) {
   const handleGetStarted = () => {
     Alert.alert(
       'Diventa Noleggiatore',
-      'Vuoi iniziare a guadagnare con le tue barche su SeaGO?',
+      'Vuoi iniziare a guadagnare con le tue barche su SeaBoo?',
       [
         { text: 'Annulla', style: 'cancel' },
         { 
@@ -94,9 +94,9 @@ export default function AreaNoleggiatori({ navigation }: any) {
           <View style={styles.heroIcon}>
             <Icon name="business" size={48} color="#0ea5e9" />
           </View>
-          <Text style={styles.heroTitle}>Guadagna con SeaGO</Text>
+          <Text style={styles.heroTitle}>Guadagna con SeaBoo</Text>
           <Text style={styles.heroText}>
-            Unisciti alla community di proprietari che hanno scelto SeaGO per noleggiare le loro imbarcazioni
+            Unisciti alla community di proprietari che hanno scelto SeaBoo per noleggiare le loro imbarcazioni
           </Text>
           <TouchableOpacity style={styles.ctaButton} onPress={handleGetStarted}>
             <Text style={styles.ctaButtonText}>Inizia Subito</Text>

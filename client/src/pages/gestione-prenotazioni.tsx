@@ -150,7 +150,7 @@ export default function GestionePrenotazioniPage() {
               <li>Problemi tecnici: informa immediatamente</li>
               <li>Modifiche last-minute: usa la chat integrata</li>
               <li>Emergenze: segui i protocolli di sicurezza</li>
-              <li>Dispute: contatta il supporto SeaGO</li>
+              <li>Dispute: contatta il supporto SeaBoo</li>
             </ul>
           </div>
         </div>
@@ -174,7 +174,7 @@ export default function GestionePrenotazioniPage() {
                 <div className="bg-orange-100 rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
                   <span className="text-lg font-bold text-orange-600">15%</span>
                 </div>
-                <h4 className="font-semibold mb-2">Commissione SeaGO</h4>
+                <h4 className="font-semibold mb-2">Commissione SeaBoo</h4>
                 <p className="text-sm text-gray-600">
                   Include assicurazione e supporto
                 </p>

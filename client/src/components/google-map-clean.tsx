@@ -231,7 +231,7 @@ export function GoogleMapClean({
       
       {/* Pannello informazioni in overlay */}
       <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-4 max-w-xs">
-        <h4 className="font-bold text-gray-900 text-sm mb-2">🧭 Mappa Navigabile SeaGO</h4>
+        <h4 className="font-bold text-gray-900 text-sm mb-2">🧭 Mappa Navigabile SeaBoo</h4>
         <p className="text-xs text-gray-600 mb-2">
           Esplora liberamente il mondo come Google Maps
         </p>

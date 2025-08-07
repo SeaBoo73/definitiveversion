@@ -1,8 +1,8 @@
 {
   "platform": "ios",
   "build": "release",
-  "appName": "SeaGO",
-  "appId": "com.seago.mobile",
+  "appName": "SeaBoo",
+  "appId": "com.seaboo.mobile",
   "version": "1.0.0",
   "capacitor": true
 }

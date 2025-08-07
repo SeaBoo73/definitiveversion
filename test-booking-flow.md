@@ -1,4 +1,4 @@
-# Test Booking Flow - SeaGO
+# Test Booking Flow - SeaBoo
 
 ## Test del Sistema di Prenotazione Completo
 

@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Send, MessageCircle, X, Bot, User, Anchor, Cloud, Fuel } from "lucide-react";
-import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
+import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { apiRequest } from "@/lib/queryClient";
 import { formatDistanceToNow } from "date-fns";
 import { it } from "date-fns/locale";
@@ -29,7 +29,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
     {
       id: '1',
       role: 'assistant',
-      content: 'Ciao! Sono l\'assistente AI di SeaGO. Posso aiutarti con informazioni su barche, porti, meteo marino, prezzi e prenotazioni. Come posso assisterti oggi?',
+      content: 'Ciao! Sono l\'assistente AI di SeaBoo. Posso aiutarti con informazioni su barche, porti, meteo marino, prezzi e prenotazioni. Come posso assisterti oggi?',
       timestamp: new Date()
     }
   ]);
@@ -40,7 +40,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
   const quickActions = [
     { icon: Anchor, text: "Trova barche vicine", action: "Mostrami le barche disponibili nella zona di Roma" },
     { icon: Cloud, text: "Meteo oggi", action: "Come sono le condizioni meteo marine oggi?" },
-    { icon: () => <img src={seagoLogo} alt="SeaGO" className="h-4 w-4 object-contain" />, text: "Condizioni marine", action: "Le condizioni del mare sono buone per navigare?" },
+    { icon: () => <img src={seabooLogo} alt="SeaBoo" className="h-4 w-4 object-contain" />, text: "Condizioni marine", action: "Le condizioni del mare sono buone per navigare?" },
     { icon: Fuel, text: "Prezzi carburante", action: "Dove posso trovare carburante nautico a buon prezzo?" }
   ];
 
@@ -49,7 +49,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
     mutationFn: async (content: string) => {
       return apiRequest("POST", "/api/ai/chat", { 
         message: content,
-        context: "SeaGO boat rental platform - Italian maritime services assistant"
+        context: "SeaBoo boat rental platform - Italian maritime services assistant"
       });
     },
     onSuccess: (data: any) => {
@@ -107,7 +107,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
   };
 
   const handleEmailSupport = () => {
-    window.open('mailto:assistenza@seago.it?subject=Richiesta Assistenza SeaGO', '_self');
+    window.open('mailto:assistenza@seaboo.it?subject=Richiesta Assistenza SeaBoo', '_self');
   };
 
   if (!isOpen) return null;
@@ -119,7 +119,7 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
           <div className="flex items-center space-x-2">
             <Bot className="h-6 w-6" />
             <div>
-              <CardTitle className="text-lg">Assistente AI SeaGO</CardTitle>
+              <CardTitle className="text-lg">Assistente AI SeaBoo</CardTitle>
               <p className="text-sm opacity-90">Assistenza marittima intelligente</p>
             </div>
           </div>

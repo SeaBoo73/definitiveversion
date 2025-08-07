@@ -184,7 +184,7 @@ export default function EmergencyPage() {
                 Problema Non Critico
               </h4>
               <ol className="text-sm text-gray-600 space-y-2">
-                <li>1. Usa il sistema di segnalazione SeaGO</li>
+                <li>1. Usa il sistema di segnalazione SeaBoo</li>
                 <li>2. Descrivi il problema dettagliatamente</li>
                 <li>3. Fornisci la tua posizione GPS</li>
                 <li>4. Attendi assistenza telefonica</li>
@@ -233,7 +233,7 @@ export default function EmergencyPage() {
             </div>
 
             <div className="bg-white p-4 rounded-lg border">
-              <h4 className="font-bold text-green-600">⚓ Assistenza SeaGO</h4>
+              <h4 className="font-bold text-green-600">⚓ Assistenza SeaBoo</h4>
               <p className="text-xl font-bold">+39 06 123456</p>
               <p className="text-sm text-gray-600">Support 24/7</p>
             </div>

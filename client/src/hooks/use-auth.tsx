@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Accesso effettuato",
-        description: "Benvenuto in SeaGO!",
+        description: "Benvenuto in SeaBoo!",
       });
     },
     onError: (error: Error) => {
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Registrazione completata",
-        description: "Benvenuto in SeaGO!",
+        description: "Benvenuto in SeaBoo!",
       });
     },
     onError: (error: Error) => {

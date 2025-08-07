@@ -58,7 +58,7 @@ const faqData = [
     id: 6,
     category: "Sicurezza",
     question: "Le barche sono assicurate?",
-    answer: "Tutte le imbarcazioni sulla piattaforma SeaGO sono coperte da assicurazione di base. Sono disponibili coperture aggiuntive durante la prenotazione."
+    answer: "Tutte le imbarcazioni sulla piattaforma SeaBoo sono coperte da assicurazione di base. Sono disponibili coperture aggiuntive durante la prenotazione."
   },
   {
     id: 7,
@@ -96,7 +96,7 @@ export default function AiutoPage() {
     {
       title: "Email",
       description: "Rispondiamo entro 24 ore",
-      contact: "support@seago.it",
+      contact: "support@seaboo.it",
       icon: Mail,
       color: "text-blue-600",
       bgColor: "bg-blue-50"

@@ -23,7 +23,7 @@ export default function ContattaciPage() {
   const contactInfo = [
     {
       title: "Email",
-      value: "support@seago.it",
+      value: "support@seaboo.it",
       description: "Rispondiamo entro 24 ore",
       icon: Mail,
       color: "text-blue-600",
@@ -199,7 +199,7 @@ export default function ContattaciPage() {
               <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
                 <div className="text-center">
                   <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-600">Mappa della sede SeaGO</p>
+                  <p className="text-gray-600">Mappa della sede SeaBoo</p>
                   <p className="text-sm text-gray-500">Via del Porto 123, 00121 Roma</p>
                 </div>
               </div>

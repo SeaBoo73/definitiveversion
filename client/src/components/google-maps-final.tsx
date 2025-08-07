@@ -198,7 +198,7 @@ export function GoogleMapsFinal() {
       
       {/* Info overlay */}
       <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3">
-        <h4 className="font-bold text-gray-900 text-sm mb-1">🗺️ Google Maps SeaGO</h4>
+        <h4 className="font-bold text-gray-900 text-sm mb-1">🗺️ Google Maps SeaBoo</h4>
         <p className="text-xs text-gray-600 mb-2">
           Navigazione mondiale abilitata
         </p>

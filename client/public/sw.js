@@ -1,5 +1,5 @@
 // Service Worker per PWA SeaGO
-const CACHE_NAME = 'seago-v1';
+const CACHE_NAME = 'seaboo-v1';
 const urlsToCache = [
   '/',
   '/manifest.json',

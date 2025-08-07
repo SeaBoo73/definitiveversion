@@ -497,7 +497,7 @@ export default function DiventaSeaHostPage() {
                 </Button>
                 <Button variant="outline" size="sm" className="border-blue-300 text-blue-700">
                   <Mail className="h-4 w-4 mr-2" />
-                  host@seago.it
+                  host@seaboo.it
                 </Button>
               </div>
             </div>

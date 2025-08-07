@@ -49,11 +49,11 @@ export function InstallPrompt() {
           <div className="mb-3">
             <img 
               src="/attached_assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg" 
-              alt="SeaGO Logo" 
+              alt="SeaBoo Logo" 
               className="h-16 w-16 mx-auto rounded-lg object-cover bg-white p-1"
             />
           </div>
-          <h2 className="text-xl font-bold mb-2">Scarica l'App SeaGO</h2>
+          <h2 className="text-xl font-bold mb-2">Scarica l'App SeaBoo</h2>
           <p className="text-sm opacity-90">
             Barche, ormeggi e servizi marittimi sempre con te
           </p>

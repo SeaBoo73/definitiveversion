@@ -1,4 +1,4 @@
-# 🌐 Collegare il Tuo Dominio Personalizzato a SeaGO
+# 🌐 Collegare il Tuo Dominio Personalizzato a SeaBoo
 
 ## Passo 1: Configurazione nel Deployment Replit
 

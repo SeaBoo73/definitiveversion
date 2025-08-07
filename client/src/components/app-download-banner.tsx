@@ -13,7 +13,7 @@ export function AppDownloadBanner() {
         <div className="flex items-center space-x-4">
           <Smartphone className="h-5 w-5 text-blue-100" />
           <span className="text-sm font-medium">
-            👉 Scarica l'app SeaGO per un'esperienza migliore
+            👉 Scarica l'app SeaBoo per un'esperienza migliore
           </span>
         </div>
         

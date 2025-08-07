@@ -244,7 +244,7 @@ export default function SicurezzaPagamentiPage() {
                 </p>
                 <ul className="text-xs text-blue-600 space-y-1">
                   <li>• Chat live 24/7</li>
-                  <li>• Email: sicurezza@seago.com</li>
+                  <li>• Email: sicurezza@seaboo.com</li>
                   <li>• Tel: +39 06 1234 5678</li>
                 </ul>
               </div>

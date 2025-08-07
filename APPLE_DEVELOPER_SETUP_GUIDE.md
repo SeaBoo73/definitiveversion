@@ -1,7 +1,7 @@
 # 🍎 GUIDA APPLE DEVELOPER ACCOUNT - SEAGO
 
 ## 🎯 OBIETTIVO
-Creare account Apple Developer per pubblicare SeaGO su App Store
+Creare account Apple Developer per pubblicare SeaBoo su App Store
 
 ## 💰 COSTO
 - **$99 USD all'anno** (circa €90)
@@ -31,7 +31,7 @@ Vedrai due opzioni:
 #### ✅ **CONSIGLIATO: Individual** 
 - Per sviluppatori singoli
 - Più veloce da approvare
-- Nome app: "SeaGO" di [Il tuo nome]
+- Nome app: "SeaBoo" di [Il tuo nome]
 
 #### **Organization** (solo se hai partita IVA)
 - Per aziende
@@ -67,7 +67,7 @@ Potrebbero chiederti:
 ### STEP 7: Attesa approvazione
 - **Tempo**: 24-48 ore (di solito meno)
 - **Email**: "Welcome to Apple Developer Program"
-- **Contenuto importante**: **TEAM ID** (fondamentale per SeaGO!)
+- **Contenuto importante**: **TEAM ID** (fondamentale per SeaBoo!)
 
 ---
 
@@ -81,7 +81,7 @@ Your Team ID: ABC123DEF4  ← QUESTO È IMPORTANTE!
 Your membership is now active.
 ```
 
-**SALVA IL TEAM ID** - lo useremo per configurare SeaGO!
+**SALVA IL TEAM ID** - lo useremo per configurare SeaBoo!
 
 ---
 
@@ -99,7 +99,7 @@ Your membership is now active.
 # Oppure nell'email di benvenuto
 ```
 
-### 3. Configurazione SeaGO
+### 3. Configurazione SeaBoo
 ```bash
 cd mobile
 ./configure-apple-account.sh
@@ -152,7 +152,7 @@ Durante la registrazione, verifica:
 - [ ] Accesso ad App Store Connect verificato
 - [ ] Account attivo nella dashboard
 
-### Pronto per SeaGO
+### Pronto per SeaBoo
 - [ ] Team ID salvato
 - [ ] Script configurazione pronti
 - [ ] Google Play account pianificato
@@ -163,7 +163,7 @@ Durante la registrazione, verifica:
 
 Dopo aver completato Apple Developer:
 
-1. **Configura SeaGO** con il tuo Team ID
+1. **Configura SeaBoo** con il tuo Team ID
 2. **Registra Google Play Console** ($25)
 3. **Build automatico** dell'app
 4. **Upload su entrambi gli store**
@@ -193,4 +193,4 @@ Dopo aver completato Apple Developer:
 
 **PRONTO? Vai su https://developer.apple.com/programs/ e inizia la registrazione!**
 
-Ti aspetto qui per configurare SeaGO appena ricevi il Team ID! 🚀
+Ti aspetto qui per configurare SeaBoo appena ricevi il Team ID! 🚀

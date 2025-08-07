@@ -243,7 +243,7 @@ export default function PaymentSuccessEsperienza() {
                     </p>
                     <p className="text-gray-600">
                       <Mail className="h-4 w-4 inline mr-1" />
-                      supporto@seago.it
+                      supporto@seaboo.it
                     </p>
                   </div>
                   

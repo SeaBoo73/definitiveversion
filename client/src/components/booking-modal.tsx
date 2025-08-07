@@ -318,7 +318,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span>Commissione SeaGO (15%)</span>
+                    <span>Commissione SeaBoo (15%)</span>
                     <span>€{platformFee.toFixed(2)}</span>
                   </div>
                   <Separator />

@@ -78,7 +78,7 @@ const boatFormSchema = insertBoatSchema.extend({
     return validateManufacturer(val.trim());
   }, "Cantiere/Marca non riconosciuto. Inserisci un cantiere nautico valido."),
   cancellationPolicy: z.enum(["flexible", "moderate", "strict", "super_strict"]).optional().default("moderate"),
-  refundMethod: z.enum(["credit_card", "bank_transfer", "paypal", "seago_credit"]).optional().default("credit_card"),
+  refundMethod: z.enum(["credit_card", "bank_transfer", "paypal", "seaboo_credit"]).optional().default("credit_card"),
 });
 
 type BoatFormData = z.infer<typeof boatFormSchema>;
@@ -950,7 +950,7 @@ export default function OwnerDashboard() {
                               <SelectItem value="credit_card">💳 Carta di credito (3-5 giorni lavorativi)</SelectItem>
                               <SelectItem value="bank_transfer">🏦 Bonifico bancario (5-7 giorni lavorativi)</SelectItem>
                               <SelectItem value="paypal">📱 PayPal (1-3 giorni lavorativi)</SelectItem>
-                              <SelectItem value="seago_credit">🌊 Credito SeaGO (Immediato)</SelectItem>
+                              <SelectItem value="seaboo_credit">🌊 Credito SeaBoo (Immediato)</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>

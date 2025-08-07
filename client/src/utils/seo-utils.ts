@@ -225,5 +225,5 @@ export const maritimeMetaTags = {
 export const getBaseUrl = () => {
   return import.meta.env.VITE_CUSTOM_DOMAIN 
     ? `https://${import.meta.env.VITE_CUSTOM_DOMAIN}`
-    : 'https://seagorentalboat.com';
+    : 'https://seaboorentalboat.com';
 };

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MapPin } from "lucide-react";
-import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
+import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 
 const lazioPortsData = [
   {
@@ -82,7 +82,7 @@ export function LazioPorts({ onPortSelect, selectedPort }: LazioPortsProps) {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <img src={seagoLogo} alt="SeaGO" className="h-4 w-4 object-contain" />
+            <img src={seabooLogo} alt="SeaBoo" className="h-4 w-4 object-contain" />
             <span className="text-sm font-medium text-ocean-blue">
               {isExpanded ? "Nascondi" : "Mostra"}
             </span>

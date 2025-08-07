@@ -126,7 +126,7 @@ export function PerformanceMetrics() {
           Qualità garantita dal 2024
         </h3>
         <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-          SeaGO mantiene i più alti standard di qualità e sicurezza nel settore del noleggio nautico, 
+          SeaBoo mantiene i più alti standard di qualità e sicurezza nel settore del noleggio nautico, 
           con oltre 5000 clienti soddisfatti e partnership consolidate.
         </p>
         <div className="flex justify-center space-x-8 text-center">

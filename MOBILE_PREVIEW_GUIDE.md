@@ -1,4 +1,4 @@
-# 📱 SeaGO Mobile - Anteprima App
+# 📱 SeaBoo Mobile - Anteprima App
 
 ## 🔍 3 MODI PER VEDERE L'APP IN ANTEPRIMA
 
@@ -18,7 +18,7 @@
 3. **Scansiona QR Code**
    - Apri Expo Go sul telefono
    - Scansiona il QR code che appare nel terminale
-   - L'app SeaGO si aprirà direttamente sul tuo dispositivo!
+   - L'app SeaBoo si aprirà direttamente sul tuo dispositivo!
 
 ### 2. 🌐 EXPO WEB (NEL BROWSER)
 **Per vedere subito nel browser**
@@ -34,7 +34,7 @@ L'app si aprirà automaticamente nel browser come PWA mobile.
 ### 3. 📋 ANTEPRIMA CODICE
 **Vedi come è strutturata l'app**
 
-L'app SeaGO mobile include:
+L'app SeaBoo mobile include:
 
 #### 🏠 **5 Schermate Principali**
 - **Esplora**: Ricerca barche con filtri
@@ -45,7 +45,7 @@ L'app SeaGO mobile include:
 
 #### 🎨 **Design Features**
 - **Navigazione bottom tab** con icone intuitive
-- **Header blu SeaGO** con logo aziendale
+- **Header blu SeaBoo** con logo aziendale
 - **Cards moderne** per barche ed esperienze
 - **Colori brand**: Blu oceano (#0ea5e9) e gradienti
 - **Font ottimizzati** per leggibilità mobile
@@ -86,7 +86,7 @@ npx expo start --ios
 ## 📱 STRUTTURA APP
 
 ```
-SeaGO Mobile
+SeaBoo Mobile
 ├── 🏠 Home (Esplora)
 │   ├── Ricerca barche
 │   ├── Categorie (yacht, gommoni, vela...)

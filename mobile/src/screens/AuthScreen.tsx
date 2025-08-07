@@ -44,7 +44,7 @@ export default function AuthScreen({ navigation }: any) {
         >
           <Icon name="chevron-back" size={24} color="#111827" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>SeaGO</Text>
+        <Text style={styles.headerTitle}>SeaBoo</Text>
       </View>
 
       <View style={styles.content}>

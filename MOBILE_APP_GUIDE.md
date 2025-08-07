@@ -1,8 +1,8 @@
-# 📱 SeaGO Mobile App - Completamente Aggiornata e Allineata
+# 📱 SeaBoo Mobile App - Completamente Aggiornata e Allineata
 
 ## ✅ App Mobile Sincronizzata con Versione Web
 
-L'app mobile SeaGO è stata completamente aggiornata per essere perfettamente allineata con la versione web professionale:
+L'app mobile SeaBoo è stata completamente aggiornata per essere perfettamente allineata con la versione web professionale:
 
 ### 🔄 Aggiornamenti Recenti (Luglio 2025)
 - **Dati Autentici**: Sostituiti tutti i placeholder con dati reali da seagorentalboat.com
@@ -63,7 +63,7 @@ mobile/src/screens/
 #### **Opzione 1: PWA (Immediata)**
 - Visita `https://seagorentalboat.com` dal telefono
 - Menu browser → "Aggiungi alla schermata home"
-- App si installa come nativa con icona SeaGO
+- App si installa come nativa con icona SeaBoo
 
 #### **Opzione 2: React Native Development**
 ```bash
@@ -116,4 +116,4 @@ L'app è completamente pronta per pubblicazione su:
 - **Google Play Store** (file Android build inclusi)
 - **File di configurazione** completi per entrambi i store
 
-L'app mobile SeaGO è ora perfettamente allineata con la versione web professionale e pronta per gli utenti finali!
+L'app mobile SeaBoo è ora perfettamente allineata con la versione web professionale e pronta per gli utenti finali!

@@ -43,7 +43,7 @@ export default function PaymentSuccess() {
           </h1>
           
           <p className="text-lg text-sea-gray mb-8 max-w-2xl mx-auto">
-            Grazie per aver scelto SeaGO! La tua prenotazione è stata confermata. 
+            Grazie per aver scelto SeaBoo! La tua prenotazione è stata confermata. 
             Riceverai a breve una email di conferma con tutti i dettagli.
           </p>
           

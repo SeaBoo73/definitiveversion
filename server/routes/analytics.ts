@@ -326,7 +326,7 @@ async function generatePDFReport(data: any, fromDate: Date, toDate: Date) {
   // This would generate a PDF report using a library like PDFKit or Puppeteer
   // For now, return a simple text buffer
   const report = `
-SEAGO - REPORT ANALYTICS
+SEABOO - REPORT ANALYTICS
 Periodo: ${format(fromDate, 'dd/MM/yyyy')} - ${format(toDate, 'dd/MM/yyyy')}
 
 RIEPILOGO PRENOTAZIONI:

@@ -1,4 +1,4 @@
-# 🌐 Collegare Dominio Personalizzato a SeaGO
+# 🌐 Collegare Dominio Personalizzato a SeaBoo
 
 ## Passo 1: Configurazione nel Deployment Replit
 
@@ -40,6 +40,6 @@ CNAME   www     your-app.replit.app
 
 ## Verifica Funzionamento:
 1. Apri il tuo dominio personalizzato
-2. Controlla che mostri la piattaforma SeaGO
+2. Controlla che mostri la piattaforma SeaBoo
 3. Verifica HTTPS funzionante
 4. Testa tutte le funzionalità

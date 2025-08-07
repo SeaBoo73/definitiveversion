@@ -5,7 +5,7 @@
 
 ### 1. IMMAGINI E ASSETS
 - ✅ **Background Hero**: HD-wallpaper-sailing-boat-beach (caricamento OK)
-- ✅ **Logo SeaGO**: Presente in header e footer
+- ✅ **Logo SeaBoo**: Presente in header e footer
 - ✅ **Categorie Barche**: 11 immagini diverse caricate
 - ✅ **Social Media Icons**: Instagram + TikTok con link funzionanti
 

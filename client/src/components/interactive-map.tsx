@@ -242,7 +242,7 @@ export function InteractiveMap() {
 
       {/* Info pannello */}
       <div className="absolute top-4 left-4 z-30 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-4 max-w-xs">
-        <h4 className="font-bold text-gray-900 text-sm mb-2">🗺️ Mappa Interattiva SeaGO</h4>
+        <h4 className="font-bold text-gray-900 text-sm mb-2">🗺️ Mappa Interattiva SeaBoo</h4>
         <p className="text-xs text-gray-600 mb-2">
           Trascina per navigare • Zoom con + / −
         </p>

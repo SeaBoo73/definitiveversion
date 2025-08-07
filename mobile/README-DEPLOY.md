@@ -1,4 +1,4 @@
-# 📱 SeaGO Mobile App - Deployment
+# 📱 SeaBoo Mobile App - Deployment
 
 ## 🚀 Avvio Immediato
 
@@ -52,11 +52,11 @@ npx eas build --platform ios --profile preview
 - Navigazione bottom tab iOS/Android
 - Icone Ionicons per esperienza nativa
 - Design responsive con SafeAreaView
-- Colori SeaGO brand (#0ea5e9)
+- Colori SeaBoo brand (#0ea5e9)
 
 ## 🔗 Integrazione con Backend
 
-L'app mobile si connette automaticamente al backend SeaGO esistente:
+L'app mobile si connette automaticamente al backend SeaBoo esistente:
 - API booking e pagamenti
 - Sistema autenticazione
 - Database PostgreSQL
@@ -81,4 +81,4 @@ npx eas build:configure
 npx eas build --platform all
 ```
 
-L'app SeaGO mobile è pronta per essere utilizzata!
+L'app SeaBoo mobile è pronta per essere utilizzata!

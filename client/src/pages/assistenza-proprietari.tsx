@@ -66,7 +66,7 @@ export default function AssistenzaProprietariPage() {
                 Invia una email per questioni non urgenti. Risposta entro 4 ore.
               </p>
               <Button className="w-full bg-orange-600 hover:bg-orange-700">
-                proprietari@seago.com
+                proprietari@seaboo.com
               </Button>
             </CardContent>
           </Card>

@@ -1,6 +1,6 @@
-# 🚀 Guida Deploy SeaGO - Aggiornato 24 Luglio 2025
+# 🚀 Guida Deploy SeaBoo - Aggiornato 24 Luglio 2025
 
-## La tua piattaforma SeaGO è PRONTA con tutte le ottimizzazioni SEO!
+## La tua piattaforma SeaBoo è PRONTA con tutte le ottimizzazioni SEO!
 
 ### ✅ Cosa è incluso:
 - Sistema SEO completo per settore marittimo
@@ -15,7 +15,7 @@
 
 **Metodo 1 - Dal progetto Replit:**
 1. Vai alla dashboard principale Replit (replit.com)
-2. Trova questo progetto SeaGO nella tua lista
+2. Trova questo progetto SeaBoo nella tua lista
 3. Clicca sui tre puntini (...) del progetto
 4. Seleziona "Deploy" o "Publish"
 5. Scegli "Autoscale Deployment"
@@ -23,7 +23,7 @@
 **Metodo 2 - Diretto:**
 1. Vai su: https://replit.com/deployments
 2. Clicca "Create new deployment"
-3. Seleziona questo progetto SeaGO
+3. Seleziona questo progetto SeaBoo
 4. Configura:
    - Build: `npm run build`
    - Start: `npm start`

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Cloud, Fuel, Anchor, ArrowRight } from 'lucide-react';
-import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
+import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753363582856.jpg";
 import { Link } from 'wouter';
 
 interface ExternalServicesButtonProps {
@@ -32,7 +32,7 @@ export function ExternalServicesButton({ variant = "default", showText = true }:
       <Button variant="outline" size="sm" asChild className="border-blue-200 text-blue-700 hover:bg-blue-50">
         <Link href="/external-services">
           <div className="flex items-center gap-2">
-            <img src={seagoLogo} alt="SeaGO" className="h-4 w-4 object-contain" />
+            <img src={seabooLogo} alt="SeaBoo" className="h-4 w-4 object-contain" />
             <span>Meteo & Servizi</span>
             <ArrowRight className="h-3 w-3" />
           </div>

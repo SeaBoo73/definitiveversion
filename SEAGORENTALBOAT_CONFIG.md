@@ -48,7 +48,7 @@ TTL: 300
 - Meta tags geografici per coste italiane
 
 ### 🔍 Verifiche Post-Collegamento:
-1. `seagorentalboat.com` → Homepage SeaGO
+1. `seagorentalboat.com` → Homepage SeaBoo
 2. `seagorentalboat.com/sitemap.xml` → Sitemap completo
 3. `seagorentalboat.com/robots.txt` → Direttive crawler
 4. HTTPS automatico attivo

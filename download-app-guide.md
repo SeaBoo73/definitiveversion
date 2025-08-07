@@ -1,20 +1,20 @@
-# 📱 Come scaricare l'app SeaGO
+# 📱 Come scaricare l'app SeaBoo
 
 ## Metodo 1: PWA (Progressive Web App) - RACCOMANDATO
 
 ### Su iPhone/iPad:
-1. Apri **Safari** e vai su il sito SeaGO
+1. Apri **Safari** e vai su il sito SeaBoo
 2. Tocca l'icona **Condividi** (quadrato con freccia verso l'alto)
 3. Scorri e tocca **"Aggiungi alla schermata Home"**
 4. Tocca **"Aggiungi"** per confermare
-5. L'app SeaGO apparirà sulla tua schermata home come un'app nativa!
+5. L'app SeaBoo apparirà sulla tua schermata home come un'app nativa!
 
 ### Su Android:
-1. Apri **Chrome** e vai sul sito SeaGO
-2. Vedrai apparire un banner **"Installa SeaGO"** - tocca **"Installa"**
+1. Apri **Chrome** e vai sul sito SeaBoo
+2. Vedrai apparire un banner **"Installa SeaBoo"** - tocca **"Installa"**
 3. Oppure tocca i **tre puntini** in alto a destra
 4. Seleziona **"Aggiungi alla schermata Home"** o **"Installa app"**
-5. L'app SeaGO sarà installata come un'app normale!
+5. L'app SeaBoo sarà installata come un'app normale!
 
 ## Caratteristiche dell'app PWA:
 

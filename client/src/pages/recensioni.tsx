@@ -27,7 +27,7 @@ export default function RecensioniPage() {
       name: "Giuseppe Verdi",
       location: "Napoli",
       rating: 5,
-      text: "SeaGO ha reso il nostro anniversario indimenticabile. Servizio impeccabile e barca stupenda.",
+      text: "SeaBoo ha reso il nostro anniversario indimenticabile. Servizio impeccabile e barca stupenda.",
       boat: "Bavaria Cruiser 46",
       date: "Agosto 2024"
     }
@@ -43,7 +43,7 @@ export default function RecensioniPage() {
             Recensioni dei Clienti
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Scopri cosa dicono i nostri clienti delle loro esperienze con SeaGO
+            Scopri cosa dicono i nostri clienti delle loro esperienze con SeaBoo
           </p>
         </div>
 
@@ -105,7 +105,7 @@ export default function RecensioniPage() {
             Condividi la Tua Esperienza
           </h2>
           <p className="text-lg mb-6">
-            Hai noleggiato con SeaGO? Lascia una recensione e aiuta altri navigatori!
+            Hai noleggiato con SeaBoo? Lascia una recensione e aiuta altri navigatori!
           </p>
           <button className="bg-white text-ocean-blue px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
             Scrivi una Recensione

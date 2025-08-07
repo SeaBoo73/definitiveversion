@@ -58,7 +58,7 @@ export default function ProfiloScreen({ navigation }: any) {
       case 4:
         Alert.alert(
           'Diventa Proprietario',
-          'Vuoi noleggiare le tue barche su SeaGO? Contattaci per maggiori informazioni.',
+          'Vuoi noleggiare le tue barche su SeaBoo? Contattaci per maggiori informazioni.',
           [
             { text: 'Annulla', style: 'cancel' },
             { text: 'Contatta', onPress: () => console.log('Contact pressed') },
@@ -111,7 +111,7 @@ export default function ProfiloScreen({ navigation }: any) {
               <Icon name="person" size={40} color="#6b7280" />
             </View>
             <View style={styles.profileText}>
-              <Text style={styles.welcomeText}>Benvenuto su SeaGO!</Text>
+              <Text style={styles.welcomeText}>Benvenuto su SeaBoo!</Text>
               <Text style={styles.loginText}>Accedi per gestire le tue prenotazioni</Text>
             </View>
           </View>
@@ -146,7 +146,7 @@ export default function ProfiloScreen({ navigation }: any) {
 
         {/* App Info */}
         <View style={styles.appInfo}>
-          <Text style={styles.appVersion}>SeaGO v1.0.0</Text>
+          <Text style={styles.appVersion}>SeaBoo v1.0.0</Text>
           <Text style={styles.appDescription}>
             La piattaforma leader per il noleggio barche in Italia
           </Text>

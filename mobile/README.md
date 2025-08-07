@@ -1,6 +1,6 @@
-# SeaGO Mobile - React Native App
+# SeaBoo Mobile - React Native App
 
-React Native mobile application for SeaGO boat rental platform with full iOS/Android native functionality.
+React Native mobile application for SeaBoo boat rental platform with full iOS/Android native functionality.
 
 ## Features
 

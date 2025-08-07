@@ -40,7 +40,7 @@ export default function PrivacyPolicyPage() {
               1. Introduzione
             </h2>
             <p className="text-gray-600 leading-relaxed">
-              SeaGO rispetta la tua privacy e si impegna a proteggere i tuoi dati personali. 
+              SeaBoo rispetta la tua privacy e si impegna a proteggere i tuoi dati personali. 
               Questa Privacy Policy spiega come raccogliamo, utilizziamo e proteggiamo 
               le tue informazioni quando utilizzi la nostra piattaforma.
             </p>
@@ -209,7 +209,7 @@ export default function PrivacyPolicyPage() {
                   <p className="text-blue-800 text-sm">
                     Per esercitare i tuoi diritti o per domande sulla privacy, contatta il nostro DPO:
                     <br />
-                    <strong>Email:</strong> privacy@seago.it
+                    <strong>Email:</strong> privacy@seaboo.it
                     <br />
                     <strong>Indirizzo:</strong> Via del Porto 123, 00121 Roma
                   </p>

@@ -36,7 +36,7 @@ interface MooringBookingEmailData {
 }
 
 export class EmailService {
-  private static readonly NOTIFICATION_EMAIL = "app.seago.italia@gmail.com";
+  private static readonly NOTIFICATION_EMAIL = "app.seaboo.italia@gmail.com";
   
   private static createTransporter() {
     return nodemailer.createTransport({
@@ -54,7 +54,7 @@ export class EmailService {
       
       console.log("=== INVIO EMAIL NOTIFICATION ===");
       console.log(`To: ${this.NOTIFICATION_EMAIL}`);
-      console.log(`Subject: Nuova Prenotazione SeaGO - ${data.bookingCode}`);
+      console.log(`Subject: Nuova Prenotazione SeaBoo - ${data.bookingCode}`);
       console.log(emailContent);
       console.log("===============================");
 
@@ -65,7 +65,7 @@ export class EmailService {
         const mailOptions = {
           from: process.env.GMAIL_USER,
           to: this.NOTIFICATION_EMAIL,
-          subject: `🚤 Nuova Prenotazione SeaGO - ${data.bookingCode}`,
+          subject: `🚤 Nuova Prenotazione SeaBoo - ${data.bookingCode}`,
           text: emailContent,
           html: this.formatBookingEmailHTML(data)
         };
@@ -94,7 +94,7 @@ export class EmailService {
       
       console.log("=== INVIO EMAIL NOTIFICATION ORMEGGIO ===");
       console.log(`To: ${this.NOTIFICATION_EMAIL}`);
-      console.log(`Subject: Nuova Prenotazione Ormeggio SeaGO - ${data.bookingCode}`);
+      console.log(`Subject: Nuova Prenotazione Ormeggio SeaBoo - ${data.bookingCode}`);
       console.log(emailContent);
       console.log("=========================================");
 
@@ -105,7 +105,7 @@ export class EmailService {
         const mailOptions = {
           from: process.env.GMAIL_USER,
           to: this.NOTIFICATION_EMAIL,
-          subject: `⚓ Nuova Prenotazione Ormeggio SeaGO - ${data.bookingCode}`,
+          subject: `⚓ Nuova Prenotazione Ormeggio SeaBoo - ${data.bookingCode}`,
           text: emailContent,
           html: this.formatMooringBookingEmailHTML(data)
         };
@@ -135,7 +135,7 @@ export class EmailService {
       const emailLog = {
         timestamp,
         to: this.NOTIFICATION_EMAIL,
-        subject: `Nuova Prenotazione SeaGO - ${data.bookingCode}`,
+        subject: `Nuova Prenotazione SeaBoo - ${data.bookingCode}`,
         content,
         data,
         status: 'logged'
@@ -149,7 +149,7 @@ export class EmailService {
 
   private static formatBookingEmail(data: BookingEmailData): string {
     return `
-🚤 NUOVA PRENOTAZIONE SEAGO 🚤
+🚤 NUOVA PRENOTAZIONE SEABOO 🚤
 
 📋 DETTAGLI PRENOTAZIONE:
 • Codice Prenotazione: ${data.bookingCode}
@@ -170,14 +170,14 @@ export class EmailService {
 Prenotazione confermata e attiva nel sistema.
 
 ---
-SeaGO Platform - ${new Date().toLocaleString('it-IT')}
+SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
     `.trim();
   }
 
   private static formatBookingEmailHTML(data: BookingEmailData): string {
     return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #1e40af; text-align: center;">🚤 NUOVA PRENOTAZIONE SEAGO</h2>
+      <h2 style="color: #1e40af; text-align: center;">🚤 NUOVA PRENOTAZIONE SEABOO</h2>
       
       <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #334155;">📋 DETTAGLI PRENOTAZIONE</h3>
@@ -213,7 +213,7 @@ SeaGO Platform - ${new Date().toLocaleString('it-IT')}
 
       <hr style="margin: 30px 0; border: 1px solid #e2e8f0;">
       <p style="text-align: center; color: #64748b; font-size: 12px;">
-        SeaGO Platform - ${new Date().toLocaleString('it-IT')}
+        SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
       </p>
     </div>
     `;
@@ -221,7 +221,7 @@ SeaGO Platform - ${new Date().toLocaleString('it-IT')}
 
   private static formatMooringBookingEmail(data: MooringBookingEmailData): string {
     return `
-⚓ NUOVA PRENOTAZIONE ORMEGGIO SEAGO ⚓
+⚓ NUOVA PRENOTAZIONE ORMEGGIO SEABOO ⚓
 
 📋 DETTAGLI PRENOTAZIONE ORMEGGIO:
 • Codice Prenotazione: ${data.bookingCode}
@@ -255,14 +255,14 @@ ${data.notes}
 Prenotazione ormeggio confermata e attiva nel sistema.
 
 ---
-SeaGO Platform - ${new Date().toLocaleString('it-IT')}
+SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
     `.trim();
   }
 
   private static formatMooringBookingEmailHTML(data: MooringBookingEmailData): string {
     return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #0c4a6e; text-align: center;">⚓ NUOVA PRENOTAZIONE ORMEGGIO SEAGO</h2>
+      <h2 style="color: #0c4a6e; text-align: center;">⚓ NUOVA PRENOTAZIONE ORMEGGIO SEABOO</h2>
       
       <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #0c4a6e;">📋 DETTAGLI PRENOTAZIONE ORMEGGIO</h3>
@@ -323,7 +323,7 @@ SeaGO Platform - ${new Date().toLocaleString('it-IT')}
 
       <hr style="margin: 30px 0; border: 1px solid #e2e8f0;">
       <p style="text-align: center; color: #64748b; font-size: 12px;">
-        SeaGO Platform - ${new Date().toLocaleString('it-IT')}
+        SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
       </p>
     </div>
     `;

@@ -1370,7 +1370,7 @@ export class DatabaseStorage implements IStorage {
       previousStatus: document.status,
       details: { fileName: document.fileName },
       ipAddress: '127.0.0.1',
-      userAgent: 'SeaGO-App'
+      userAgent: 'SeaBoo-App'
     });
 
     return true;

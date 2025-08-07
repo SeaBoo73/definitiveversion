@@ -1,4 +1,4 @@
-# 🚀 Come avviare l'app mobile SeaGO
+# 🚀 Come avviare l'app mobile SeaBoo
 
 ## Metodo 1: Expo Go (Veloce - 5 minuti)
 
@@ -44,7 +44,7 @@ npx expo build:ios
 
 ## Caratteristiche dell'app
 
-✅ **Logo integrato** - Il tuo logo SeaGO nell'header
+✅ **Logo integrato** - Il tuo logo SeaBoo nell'header
 ✅ **Navigazione nativa** - Esperienza mobile ottimizzata
 ✅ **Autenticazione** - Login con credenziali esistenti
 ✅ **Lista barche** - Visualizzazione responsive

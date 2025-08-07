@@ -108,7 +108,7 @@ export default function AdminDashboard() {
             Dashboard Amministrazione
           </h1>
           <p className="text-gray-600">
-            Pannello di controllo per la gestione della piattaforma SeaGO
+            Pannello di controllo per la gestione della piattaforma SeaBoo
           </p>
         </div>
 

@@ -4,11 +4,11 @@
 
 ### 🔧 Setup Tecnico
 - **Framework**: React Native 0.73.2 + Expo 50.0.0
-- **Nome App**: SeaGO - Noleggio Barche  
+- **Nome App**: SeaBoo - Noleggio Barche  
 - **Bundle ID**: com.seago.mobile
 - **Versione**: 1.0.0
 - **Orientamento**: Portrait
-- **Splash Color**: #0ea5e9 (blu SeaGO)
+- **Splash Color**: #0ea5e9 (blu SeaBoo)
 
 ### 📱 Asset Preparati
 - ✅ Icon.png (1024x1024)
@@ -131,7 +131,7 @@ cd mobile
 
 ## ✅ RISULTATO FINALE
 
-**L'app SeaGO mobile è completamente pronta per pubblicazione su App Store e Google Play.**
+**L'app SeaBoo mobile è completamente pronta per pubblicazione su App Store e Google Play.**
 
 Tutti i file, configurazioni e script sono preparati. Serve solo il setup degli account developer per procedere con la pubblicazione.
 

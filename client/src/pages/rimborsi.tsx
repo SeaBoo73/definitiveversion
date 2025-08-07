@@ -27,7 +27,7 @@ export default function RimborsiPage() {
       description: "Bonifico diretto sul conto corrente indicato"
     },
     {
-      method: "Credito SeaGO",
+      method: "Credito SeaBoo",
       icon: <CheckCircle className="h-6 w-6 text-green-600" />,
       time: "Immediato",
       description: "Credito utilizzabile per future prenotazioni"

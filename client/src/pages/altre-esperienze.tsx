@@ -59,7 +59,7 @@ export default function AltreEsperienzePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-purple-600" />
-                Statistiche SeaGO in Tempo Reale
+                Statistiche SeaBoo in Tempo Reale
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -212,7 +212,7 @@ export default function AltreEsperienzePage() {
               <CardContent>
                 <ExternalServicesQuickAccess />
                 <div className="mt-8 p-6 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">🛟 Servizi Integrati SeaGO</h4>
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">🛟 Servizi Integrati SeaBoo</h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="text-center p-4 bg-white rounded-lg">
                       <div className="text-2xl mb-2">⛽</div>

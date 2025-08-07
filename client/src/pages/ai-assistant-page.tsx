@@ -16,7 +16,7 @@ export function AIAssistantPage() {
             <div className="p-3 bg-blue-500 rounded-full">
               <Bot className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-3xl font-bold">Assistente IA SeaGO</h1>
+            <h1 className="text-3xl font-bold">Assistente IA SeaBoo</h1>
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Il tuo esperto nautici personale. Ottieni raccomandazioni intelligenti, 

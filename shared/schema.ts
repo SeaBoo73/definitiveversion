@@ -18,7 +18,7 @@ export const emergencyStatusEnum = pgEnum("emergency_status", ["active", "resolv
 export const mooringTypeEnum = pgEnum("mooring_type", ["pontile", "boa", "ancora", "gavitello"]);
 export const mooringBookingStatusEnum = pgEnum("mooring_booking_status", ["pending", "confirmed", "cancelled", "completed"]);
 export const cancellationPolicyEnum = pgEnum("cancellation_policy", ["flexible", "moderate", "strict", "super_strict"]);
-export const refundMethodEnum = pgEnum("refund_method", ["credit_card", "bank_transfer", "paypal", "seago_credit"]);
+export const refundMethodEnum = pgEnum("refund_method", ["credit_card", "bank_transfer", "paypal", "seaboo_credit"]);
 
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),

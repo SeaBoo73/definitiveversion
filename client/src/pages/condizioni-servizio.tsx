@@ -37,7 +37,7 @@ export default function CondizioniServizioPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Introduzione</h2>
             <p className="text-gray-600 leading-relaxed">
-              Benvenuto su SeaGO, la piattaforma italiana per il noleggio di imbarcazioni. 
+              Benvenuto su SeaBoo, la piattaforma italiana per il noleggio di imbarcazioni. 
               Utilizzando i nostri servizi, accetti di essere vincolato da questi termini e condizioni. 
               Se non accetti questi termini, non utilizzare i nostri servizi.
             </p>
@@ -46,7 +46,7 @@ export default function CondizioniServizioPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Definizioni</h2>
             <ul className="space-y-2 text-gray-600">
-              <li><strong>SeaGO:</strong> La piattaforma e il servizio fornito</li>
+              <li><strong>SeaBoo:</strong> La piattaforma e il servizio fornito</li>
               <li><strong>Utente:</strong> Qualsiasi persona che utilizza la piattaforma</li>
               <li><strong>Proprietario:</strong> Chi mette a disposizione imbarcazioni</li>
               <li><strong>Cliente:</strong> Chi prenota un'imbarcazione</li>
@@ -58,7 +58,7 @@ export default function CondizioniServizioPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">3. Utilizzo della Piattaforma</h2>
             <div className="space-y-4 text-gray-600">
               <p>
-                SeaGO fornisce una piattaforma tecnologica che connette proprietari di imbarcazioni 
+                SeaBoo fornisce una piattaforma tecnologica che connette proprietari di imbarcazioni 
                 con persone interessate a noleggiarle. Non siamo proprietari delle imbarcazioni 
                 né forniamo direttamente servizi di noleggio.
               </p>
@@ -77,7 +77,7 @@ export default function CondizioniServizioPage() {
                 I pagamenti vengono elaborati in modo sicuro tramite Stripe.
               </p>
               <p>
-                SeaGO applica una commissione del 15% su ogni transazione per mantenere 
+                SeaBoo applica una commissione del 15% su ogni transazione per mantenere 
                 e migliorare la piattaforma.
               </p>
             </div>
@@ -115,7 +115,7 @@ export default function CondizioniServizioPage() {
                 la politica specifica della prenotazione.
               </p>
               <p>
-                SeaGO si riserva il diritto di cancellare prenotazioni in caso 
+                SeaBoo si riserva il diritto di cancellare prenotazioni in caso 
                 di problemi di sicurezza o violazioni dei termini.
               </p>
             </div>
@@ -125,7 +125,7 @@ export default function CondizioniServizioPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">7. Limitazione di Responsabilità</h2>
             <div className="space-y-4 text-gray-600">
               <p>
-                SeaGO agisce come intermediario e non è responsabile per danni, 
+                SeaBoo agisce come intermediario e non è responsabile per danni, 
                 incidenti o problemi che possono verificarsi durante l'utilizzo 
                 delle imbarcazioni.
               </p>
@@ -147,7 +147,7 @@ export default function CondizioniServizioPage() {
           <section>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Modifiche ai Termini</h2>
             <p className="text-gray-600 leading-relaxed">
-              SeaGO si riserva il diritto di modificare questi termini. 
+              SeaBoo si riserva il diritto di modificare questi termini. 
               Gli utenti saranno notificati di eventuali modifiche significative 
               e dovranno accettare i nuovi termini per continuare a utilizzare il servizio.
             </p>
@@ -170,7 +170,7 @@ export default function CondizioniServizioPage() {
                   <p className="text-blue-800 text-sm">
                     Per domande sui termini e condizioni, contattaci all'indirizzo: 
                     <br />
-                    <strong>legal@seago.it</strong>
+                    <strong>legal@seaboo.it</strong>
                   </p>
                 </div>
               </div>

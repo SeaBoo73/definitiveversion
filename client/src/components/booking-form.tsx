@@ -334,7 +334,7 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
                   onCheckedChange={(checked) => form.setValue("acceptTerms", checked as boolean)}
                 />
                 <Label htmlFor="acceptTerms" className="text-sm">
-                  Accetto i <a href="/termini" className="text-ocean-blue hover:underline">termini e condizioni</a> di SeaGO *
+                  Accetto i <a href="/termini" className="text-ocean-blue hover:underline">termini e condizioni</a> di SeaBoo *
                 </Label>
               </div>
               

@@ -35,8 +35,8 @@ router.post("/chat", async (req, res) => {
       });
     }
 
-    // Create system prompt for SeaGO maritime assistant
-    const systemPrompt = `Sei l'assistente AI di SeaGO, una piattaforma italiana per il noleggio di barche nel Lazio. 
+    // Create system prompt for SeaBoo maritime assistant
+    const systemPrompt = `Sei l'assistente AI di SeaBoo, una piattaforma italiana per il noleggio di barche nel Lazio. 
     
     Le tue competenze includono:
     - Informazioni su barche disponibili (yacht, gommoni, catamarani, barche a vela, jet ski, charter, houseboat)

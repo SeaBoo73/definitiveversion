@@ -345,7 +345,7 @@ export default function BoatDetails() {
                     <span>€{boat.pricePerDay}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Commissione SeaGO</span>
+                    <span>Commissione SeaBoo</span>
                     <span>€{(Number(boat.pricePerDay) * 0.15).toFixed(2)}</span>
                   </div>
                   <Separator />

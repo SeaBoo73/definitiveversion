@@ -1,4 +1,4 @@
-# 📱 SeaGO - Configurazione Store
+# 📱 SeaBoo - Configurazione Store
 
 ## 🍎 APPLE APP STORE
 
@@ -25,11 +25,11 @@ npx eas build --platform ios --profile production
 ### Upload App Store
 1. **App Store Connect**
    - Vai su [appstoreconnect.apple.com](https://appstoreconnect.apple.com)
-   - Crea nuova app "SeaGO"
+   - Crea nuova app "SeaBoo"
    - Carica build da EAS
 
 2. **Metadati Store**
-   - **Nome**: SeaGO - Noleggio Barche
+   - **Nome**: SeaBoo - Noleggio Barche
    - **Descrizione**: La piattaforma leader per il noleggio barche in Italia
    - **Categoria**: Travel
    - **Parole chiave**: barche, noleggio, yacht, gommoni, charter
@@ -56,15 +56,15 @@ npx eas build --platform android --profile production
 
 ### Upload Google Play
 1. **Google Play Console**
-   - Crea nuova app "SeaGO"
+   - Crea nuova app "SeaBoo"
    - Carica AAB file da EAS
 
 2. **Store Listing**
-   - **Titolo**: SeaGO - Noleggio Barche
+   - **Titolo**: SeaBoo - Noleggio Barche
    - **Descrizione breve**: Prenota barche in Italia
    - **Descrizione completa**: 
      ```
-     Scopri e prenota le migliori barche in Italia con SeaGO!
+     Scopri e prenota le migliori barche in Italia con SeaBoo!
      
      🚤 Migliaia di barche disponibili
      ⭐ Yacht, gommoni, barche a vela
@@ -72,7 +72,7 @@ npx eas build --platform android --profile production
      📅 Prenotazione facile
      💬 Chat con proprietari
      
-     Naviga verso l'avventura con SeaGO!
+     Naviga verso l'avventura con SeaBoo!
      ```
    - **Categoria**: Maps & Navigation
    - **Screenshots**: Obbligatori per telefono e tablet
@@ -136,7 +136,7 @@ Scopri migliaia di barche in tutta Italia:
 2. Seleziona date
 3. Paga e naviga!
 
-Unisciti a migliaia di navigatori che hanno scelto SeaGO.
+Unisciti a migliaia di navigatori che hanno scelto SeaBoo.
 ```
 
 ## 💡 CONSIGLI PRO
@@ -153,4 +153,4 @@ Unisciti a migliaia di navigatori che hanno scelto SeaGO.
 - Influencer nautici
 - Partnership marina/porti
 
-La tua app SeaGO sarà pronta per conquistare gli store! 🚀
+La tua app SeaBoo sarà pronta per conquistare gli store! 🚀

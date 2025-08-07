@@ -7,7 +7,7 @@ import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
 import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
 import { useState } from "react";
-import seagoLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
+import seabooLogo from "@assets/Immagine WhatsApp 2025-07-23 ore 18.35.06_81ef1af0_1753289164694.jpg";
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
@@ -26,11 +26,11 @@ export function Header() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
               <img 
-                src={seagoLogo} 
-                alt="SeaGO Logo" 
+                src={seabooLogo} 
+                alt="SeaBoo Logo" 
                 className="h-8 w-8 rounded-lg object-cover"
               />
-              <span className="text-xl font-bold" style={{ color: '#022237' }}>SeaGO</span>
+              <span className="text-xl font-bold" style={{ color: '#022237' }}>SeaBoo</span>
             </Link>
           </div>
 

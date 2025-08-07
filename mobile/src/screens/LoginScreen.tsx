@@ -47,7 +47,7 @@ export default function LoginScreen({ navigation }: any) {
         style={styles.keyboardAvoidingView}
       >
         <View style={styles.content}>
-          <Text style={styles.title}>Accedi a SeaGO</Text>
+          <Text style={styles.title}>Accedi a SeaBoo</Text>
           <Text style={styles.subtitle}>
             Accedi per prenotare barche o gestire le tue imbarcazioni
           </Text>

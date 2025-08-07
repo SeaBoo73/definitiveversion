@@ -2702,10 +2702,6 @@
                 <div class="nav-icon" style="color: #0891b2;">⚙</div>
                 <span>Servizi</span>
             </a>
-            <a href="#" class="nav-item" onclick="showScreen('aiuto', this)">
-                <div class="nav-icon" style="color: #0891b2;">?</div>
-                <span>Aiuto</span>
-            </a>
             <a href="#" class="nav-item" onclick="showScreen('profilo', this)">
                 <div class="nav-icon" style="color: #0891b2;">◉</div>
                 <span>Profilo</span>
@@ -3328,6 +3324,11 @@
                                 <p>Gestisci carte di credito e pagamenti</p>
                             </div>
                             
+                            <div class="menu-item" onclick="showScreen('aiuto')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                <h4>? Centro Assistenza</h4>
+                                <p>FAQ, chat AI e supporto clienti</p>
+                            </div>
+                            
                             <div class="menu-item" onclick="showProfilePage('host')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>🏆 Diventa Sea Host</h4>
                                 <p>Affitta la tua barca su SeaBoo</p>
@@ -3364,9 +3365,14 @@
                                 📘 Facebook
                             </button>
                             
-                            <button onclick="handleLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600;">
+                            <button onclick="handleLogin()" style="background: #db4437; color: white; padding: 16px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-bottom: 20px;">
                                 🔴 Google
                             </button>
+                            
+                            <div class="menu-item" onclick="showScreen('aiuto')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer; border: 1px solid #e5e7eb;">
+                                <h4 style="margin: 0 0 4px 0; color: #1f2937; font-size: 16px;">? Centro Assistenza</h4>
+                                <p style="margin: 0; color: #6b7280; font-size: 14px;">FAQ, chat AI e supporto clienti</p>
+                            </div>
                             
                             <p style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
                                 Registrandoti accetti i nostri<br>

@@ -1562,7 +1562,7 @@
         <!-- Sezione Ormeggio -->
         <div id="ormeggio" class="screen" style="display: none;">
             <div class="content">
-                <div style="background-image: url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754633789688.png'); background-size: cover; background-position: center; padding: 32px 24px; color: white; margin: 0 -16px 24px; border-radius: 0 0 20px 20px; text-align: center; position: relative;">
+                <div style="background-image: url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754633789688.png?v=1754634000'); background-size: cover; background-position: center; padding: 32px 24px; color: white; margin: 0 -16px 24px; border-radius: 0 0 20px 20px; text-align: center; position: relative;">
                     <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(30, 64, 175, 0.3); border-radius: 0 0 20px 20px;"></div>
                     <div style="position: relative; z-index: 1;">
                         <div style="font-size: 48px; margin-bottom: 16px; color: white;">⚓</div>
@@ -4311,6 +4311,15 @@
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
+            // Force reload banner images to prevent cache issues
+            const bannerImages = document.querySelectorAll('[style*="background-image"]');
+            bannerImages.forEach(el => {
+                const style = el.style.backgroundImage;
+                if (style.includes('attached_assets')) {
+                    el.style.backgroundImage = style.replace(/\?v=\d+/, '').replace(')', '?v=' + Date.now() + ')');
+                }
+            });
+            
             // Initialize home screen
             showScreen('home');
             

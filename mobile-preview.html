@@ -3229,6 +3229,12 @@
                                         'Charter con Equipaggio': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_69lpta95ofueo3n22kjn_1_1754632540761.png',
                                         'Barche a Vela Premium': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_zzz5mq14q3b48fae9b7j_3_1754632540760.png',
                                         'Catamarani Luxury': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_dc90zut0xpz751w55lnk_0_1754632540760.png'
+                                    },
+                                    'eventi-speciali': {
+                                        'Matrimoni in Mare': '/attached_assets/festa_su_una_barca_al_tramonto_persone_che_ballano_e_brindano_luci_decorative_dj_o_musica_live_atmo_9r7y2tittd9ysstp7dhl_2_1754632664237.png',
+                                        'Compleanni VIP': '/attached_assets/festa_su_una_barca_al_tramonto_persone_che_ballano_e_brindano_luci_decorative_dj_o_musica_live_atmo_xltwz4xapgrzxtq4tzdy_0_1754632664240.png',
+                                        'Eventi Aziendali': '/attached_assets/festa_su_una_barca_al_tramonto_persone_che_ballano_e_brindano_luci_decorative_dj_o_musica_live_atmo_jru6rl070tmpaqizohxz_3_1754632664239.png',
+                                        'Addii al Celibato/Nubilato': '/attached_assets/festa_su_una_barca_al_tramonto_persone_che_ballano_e_brindano_luci_decorative_dj_o_musica_live_atmo_j94msdaqeo33z4y7uwyn_1_1754632664238.png'
                                     }
                                 };
                                 
@@ -3240,7 +3246,7 @@
                                     ${imageUrl ? `
                                         <div style="height: 120px; background-image: url('${imageUrl}'); background-size: cover; background-position: center; position: relative;">
                                             <div style="position: absolute; top: 8px; right: 8px;">
-                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : categoryType === 'attivita-bordo' ? '#d97706' : categoryType === 'charter-premium' ? '#7c3aed' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : categoryType === 'attivita-bordo' ? 'ATTIVITÀ' : categoryType === 'charter-premium' ? 'PREMIUM' : 'TOUR'}</span>
+                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : categoryType === 'attivita-bordo' ? '#d97706' : categoryType === 'charter-premium' ? '#7c3aed' : categoryType === 'eventi-speciali' ? '#db2777' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : categoryType === 'attivita-bordo' ? 'ATTIVITÀ' : categoryType === 'charter-premium' ? 'PREMIUM' : categoryType === 'eventi-speciali' ? 'EVENTI' : 'TOUR'}</span>
                                             </div>
                                         </div>
                                     ` : ''}

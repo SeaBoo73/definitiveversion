@@ -366,27 +366,8 @@ export default function OrmeggioPage() {
       <Breadcrumbs />
       
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16 overflow-hidden">
-        {/* Effetto onde animate */}
-        <div className="absolute inset-0 opacity-30">
-          <svg className="absolute bottom-0 w-full h-24" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.1)" className="animate-pulse">
-              <animate attributeName="d" dur="3s" repeatCount="indefinite" 
-                values="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z;
-                        M0,40 C300,0 900,120 1200,40 L1200,120 L0,120 Z;
-                        M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z"/>
-            </path>
-          </svg>
-          <svg className="absolute bottom-0 w-full h-20" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M0,20 C400,80 800,20 1200,80 L1200,120 L0,120 Z" fill="rgba(255,255,255,0.05)">
-              <animate attributeName="d" dur="4s" repeatCount="indefinite" 
-                values="M0,20 C400,80 800,20 1200,80 L1200,120 L0,120 Z;
-                        M0,80 C400,20 800,80 1200,20 L1200,120 L0,120 Z;
-                        M0,20 C400,80 800,20 1200,80 L1200,120 L0,120 Z"/>
-            </path>
-          </svg>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center mb-8">
             <div className="text-6xl mb-6">⚓</div>

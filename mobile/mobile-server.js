@@ -1,38 +1,15 @@
-import express, { type Request, Response, NextFunction } from "express";
-import path from "path";
-import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+const express = require('express');
+const path = require('path');
+const { createServer } = require('http');
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const PORT = 8081;
 
-// Serve static files from attached_assets
-app.use('/attached_assets', express.static('attached_assets'));
-app.use('/api/images', express.static('attached_assets'));
+// Serve React Native web build files
+app.use(express.static(path.join(__dirname, 'web-build')));
 
-// Mobile web preview route
-app.get("/app-preview", (req, res) => {
-  res.set({
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
-  });
-  res.sendFile(path.resolve("mobile-preview.html"));
-});
-
-// Native app preview route
-app.get("/native-preview", (req, res) => {
-  res.set({
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
-  });
-  res.sendFile(path.resolve("native-app-preview.html"));
-});
-
-// React Native mobile app route
-app.get("/mobile-app", (req, res) => {
+// Serve the App.tsx content as a simple React app
+app.get('*', (req, res) => {
   res.send(`
 <!DOCTYPE html>
 <html lang="it">
@@ -40,6 +17,9 @@ app.get("/mobile-app", (req, res) => {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SeaBoo Mobile App</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         .container { max-width: 414px; margin: 0 auto; background: #f8fafc; min-height: 100vh; }
@@ -49,7 +29,7 @@ app.get("/mobile-app", (req, res) => {
         .nav-item.active { color: #0ea5e9; }
         .screen { padding: 20px 16px 80px; }
         .banner { 
-            background-image: url('/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_dc90zut0xpz751w55lnk_0_1754632540760.png');
+            background-image: url('https://seaboorentalboat.com/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_dc90zut0xpz751w55lnk_0_1754632540760.png');
             background-size: cover; 
             background-position: center; 
             height: 200px; 
@@ -146,22 +126,8 @@ app.get("/mobile-app", (req, res) => {
   `);
 });
 
-(async () => {
-  const server = await registerRoutes(app);
-  
-  // Enable Vite setup for development
-  if (process.env.NODE_ENV === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+const server = createServer(app);
 
-  // Use dynamic port allocation
-  const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(port, "0.0.0.0", () => {
-    log(`🚀 Server running on port ${port}`);
-    log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
-    log(`📱 Native preview: http://localhost:${port}/native-preview`);
-    log(`🌐 Web app: http://localhost:${port}`);
-  });
-})();
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 SeaBoo Mobile app running on http://localhost:${PORT}`);
+});

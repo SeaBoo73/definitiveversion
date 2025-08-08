@@ -372,7 +372,7 @@ export default function OrmeggioPage() {
           <div className="text-center mb-8">
             <div className="text-6xl mb-6">⚓</div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Marketplace Ormeggi
+              Ormeggi
             </h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Trova il posto barca perfetto o affitta il tuo ormeggio. Mai più barche in rada!

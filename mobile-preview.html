@@ -3223,6 +3223,12 @@
                                         'Snorkeling & Diving': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_v60eh6ukzr1tedwaoosg_1_1754590427323.png',
                                         'Yoga & Wellness': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_zi2pljxhjovh0tgsr7nu_3_1754590427322.png',
                                         'Fotografia Marina': '/attached_assets/persone_che_praticano_yoga_o_fitness_su_una_barca_relax_sul_ponte_giochi_in_acqua_con_amici_snorkel_dfcota0az9n07a01og43_2_1754590427321.png'
+                                    },
+                                    'charter-premium': {
+                                        'Yacht di Lusso': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_610fl8wk0swbuh8vf6yj_2_1754632540759.png',
+                                        'Charter con Equipaggio': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_69lpta95ofueo3n22kjn_1_1754632540761.png',
+                                        'Barche a Vela Premium': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_zzz5mq14q3b48fae9b7j_3_1754632540760.png',
+                                        'Catamarani Luxury': '/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_dc90zut0xpz751w55lnk_0_1754632540760.png'
                                     }
                                 };
                                 
@@ -3234,7 +3240,7 @@
                                     ${imageUrl ? `
                                         <div style="height: 120px; background-image: url('${imageUrl}'); background-size: cover; background-position: center; position: relative;">
                                             <div style="position: absolute; top: 8px; right: 8px;">
-                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : categoryType === 'attivita-bordo' ? '#d97706' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : categoryType === 'attivita-bordo' ? 'ATTIVITÀ' : 'TOUR'}</span>
+                                                <span style="background: ${categoryType === 'esperienze-gourmet' ? '#059669' : categoryType === 'attivita-bordo' ? '#d97706' : categoryType === 'charter-premium' ? '#7c3aed' : '#0C9FE2'}; color: white; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: 600;">${categoryType === 'esperienze-gourmet' ? 'GOURMET' : categoryType === 'attivita-bordo' ? 'ATTIVITÀ' : categoryType === 'charter-premium' ? 'PREMIUM' : 'TOUR'}</span>
                                             </div>
                                         </div>
                                     ` : ''}

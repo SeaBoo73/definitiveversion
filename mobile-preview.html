@@ -259,12 +259,41 @@
         <!-- Sezione Home -->
         <div id="home" class="screen active">
             <div class="content">
-                <h1 style="text-align: center; font-size: 24px; font-weight: 700; color: #1f2937; margin-bottom: 20px;">
-                    🌊 SeaBoo Mobile
-                </h1>
-                <p style="text-align: center; color: #6b7280; margin-bottom: 30px;">
-                    La tua app per noleggio barche e ormeggi
-                </p>
+                <!-- Logo e Header principale -->
+                <div style="text-align: center; margin-bottom: 32px;">
+                    <div style="background: #1e3a8a; width: 60px; height: 60px; border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                        <div style="color: #00bcd4; font-size: 24px;">⛵</div>
+                    </div>
+                    <h1 style="font-size: 32px; font-weight: 700; color: #1f2937; margin: 0 0 8px 0;">SeaGO</h1>
+                </div>
+                
+                <!-- Banner principale -->
+                <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 40px 24px; border-radius: 16px; text-align: center; margin-bottom: 32px; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: url('/attached_assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507.jpg'); background-size: cover; background-position: center; opacity: 0.3;"></div>
+                    <div style="position: relative; z-index: 1;">
+                        <h2 style="font-size: 28px; font-weight: 700; margin: 0 0 16px 0; line-height: 1.2;">Naviga verso l'avventura</h2>
+                        <p style="font-size: 16px; line-height: 1.4; margin: 0 0 8px 0;">Prenota barche, yacht e imbarcazioni uniche in tutta Italia.</p>
+                        <p style="font-size: 16px; line-height: 1.4; margin: 0;">Vivi il mare come mai prima d'ora.</p>
+                    </div>
+                </div>
+                
+                <!-- Form di ricerca -->
+                <div style="background: white; padding: 24px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px;">Dove</label>
+                        <input type="text" placeholder="Cerca tra 48 porti italiani..." style="width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px;">Dal</label>
+                            <input type="date" style="width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; color: #374151; margin-bottom: 8px;">Al</label>
+                            <input type="date" style="width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
                     <button onclick="showScreen('ormeggio')" style="background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border: none; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer;">

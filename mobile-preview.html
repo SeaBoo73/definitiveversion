@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaBoo Mobile App Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        .mobile-container {
+            max-width: 390px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .screen {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .content {
+            padding: 16px;
+        }
+
+        /* Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 390px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 20px;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 10px;
+            padding: 8px 4px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: #1e40af;
+            background: #eff6ff;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Banner Ormeggio */
+        .ormeggio-banner {
+            background-image: url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754633789688.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 32px 24px;
+            color: white;
+            margin: 0 -16px 24px;
+            border-radius: 0 0 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .ormeggio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 64, 175, 0.3);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .ormeggio-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .anchor-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .ormeggio-title {
+            margin: 0 0 12px 0;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .ormeggio-subtitle {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .search-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .search-title {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .mooring-spots {
+            display: grid;
+            gap: 16px;
+        }
+
+        .spot-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .spot-image {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .spot-content {
+            padding: 16px;
+        }
+
+        .spot-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .spot-location {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .spot-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 8px;
+        }
+
+        .spot-features {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .feature-badge {
+            background: #eff6ff;
+            color: #1e40af;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .spacer {
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-container">
+        <!-- Sezione Home -->
+        <div id="home" class="screen active">
+            <div class="content">
+                <h1 style="text-align: center; font-size: 24px; font-weight: 700; color: #1f2937; margin-bottom: 20px;">
+                    🌊 SeaBoo Mobile
+                </h1>
+                <p style="text-align: center; color: #6b7280; margin-bottom: 30px;">
+                    La tua app per noleggio barche e ormeggi
+                </p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <button onclick="showScreen('ormeggio')" style="background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border: none; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 32px; margin-bottom: 12px;">⚓</div>
+                        <div style="font-size: 16px; font-weight: 600;">Ormeggi</div>
+                    </button>
+                    
+                    <button onclick="showScreen('esperienze')" style="background: linear-gradient(135deg, #059669, #10b981); color: white; border: none; border-radius: 16px; padding: 24px; text-align: center; cursor: pointer;">
+                        <div style="font-size: 32px; margin-bottom: 12px;">🌊</div>
+                        <div style="font-size: 16px; font-weight: 600;">Esperienze</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Ormeggio -->
+        <div id="ormeggio" class="screen">
+            <div class="content">
+                <!-- Banner Ormeggio con nuova immagine -->
+                <div class="ormeggio-banner">
+                    <div class="ormeggio-overlay"></div>
+                    <div class="ormeggio-content">
+                        <div class="anchor-icon">⚓</div>
+                        <h2 class="ormeggio-title">Trova il tuo Ormeggio Ideale</h2>
+                        <p class="ormeggio-subtitle">Scopri ormeggi esclusivi e sicuri per la tua imbarcazione nei migliori porti d'Italia</p>
+                    </div>
+                </div>
+
+                <!-- Filtri Ricerca -->
+                <div class="search-section">
+                    <h3 class="search-title">Cerca Ormeggi Disponibili</h3>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Dove vuoi ormeggiare?</label>
+                        <input type="text" class="form-input" placeholder="Inserisci località (es. Civitavecchia, Gaeta, Ponza...)">
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Check-in</label>
+                            <input type="date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Check-out</label>
+                            <input type="date" class="form-input">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tipo di ormeggio</label>
+                        <select class="form-select">
+                            <option value="">Tutti i tipi</option>
+                            <option value="pontile">Pontile fisso</option>
+                            <option value="boa">Boa di ormeggio</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-search">🔍 Cerca Ormeggi</button>
+                </div>
+
+                <!-- Ormeggi Disponibili -->
+                <div class="mooring-spots">
+                    <div class="spot-card">
+                        <div class="spot-image" style="background-image: url('/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_dc90zut0xpz751w55lnk_0_1754632540760.png');"></div>
+                        <div class="spot-content">
+                            <div class="spot-title">Marina di Civitavecchia</div>
+                            <div class="spot-location">📍 Porto Turistico, Civitavecchia</div>
+                            <div class="spot-price">€45/giorno</div>
+                            <div class="spot-features">
+                                <span class="feature-badge">Sicurezza 24h</span>
+                                <span class="feature-badge">Acqua</span>
+                                <span class="feature-badge">Elettricità</span>
+                                <span class="feature-badge">WiFi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="spot-card">
+                        <div class="spot-image" style="background-image: url('/attached_assets/yacht_di_lusso_con_arredamento_elegante_ospiti_che_sorseggiano_champagne_relax_su_lettini_equipaggi_69lpta95ofueo3n22kjn_1_1754632540761.png');"></div>
+                        <div class="spot-content">
+                            <div class="spot-title">Porto di Gaeta</div>
+                            <div class="spot-location">📍 Marina di Gaeta</div>
+                            <div class="spot-price">€38/giorno</div>
+                            <div class="spot-features">
+                                <span class="feature-badge">Carburante</span>
+                                <span class="feature-badge">Ristorante</span>
+                                <span class="feature-badge">Docce</span>
+                                <span class="feature-badge">Parcheggio</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer"></div>
+            </div>
+        </div>
+
+        <!-- Sezione Esperienze -->
+        <div id="esperienze" class="screen">
+            <div class="content">
+                <h2 style="text-align: center; font-size: 24px; font-weight: 700; color: #1f2937; margin-bottom: 20px;">
+                    🌊 Esperienze Marine
+                </h2>
+                <p style="text-align: center; color: #6b7280;">
+                    Scopri le nostre esperienze marittime uniche
+                </p>
+                <div class="spacer"></div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showScreen('home')">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="showScreen('ormeggio')">
+                <div class="nav-icon">⚓</div>
+                <span>Ormeggio</span>
+            </div>
+            <div class="nav-item" onclick="showScreen('esperienze')">
+                <div class="nav-icon">🌊</div>
+                <span>Esperienze</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Show selected screen
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+
+            // Update navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Activate corresponding nav item
+            const navMapping = {
+                'home': 0,
+                'ormeggio': 1,
+                'esperienze': 2
+            };
+
+            const activeIndex = navMapping[screenId];
+            if (activeIndex !== undefined && navItems[activeIndex]) {
+                navItems[activeIndex].classList.add('active');
+            }
+
+            console.log('SeaBoo: Navigated to', screenId);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📱SeaBoo Mobile App Preview Loaded');
+            console.log('✅ Banner Ormeggio con nuova immagine caricato');
+            showScreen('home');
+        });
+    </script>
+</body>
+</html>

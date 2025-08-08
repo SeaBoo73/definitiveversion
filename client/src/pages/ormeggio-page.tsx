@@ -366,16 +366,18 @@ export default function OrmeggioPage() {
       <Breadcrumbs />
       
       {/* Hero Section */}
-      <section 
-        className="relative text-white py-16"
-        style={{
-          backgroundImage: "url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754636134049.png')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      >
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-6">⚓</div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Marketplace Ormeggi
+            </h1>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              Trova il posto barca perfetto o affitta il tuo ormeggio. Mai più barche in rada!
+            </p>
+          </div>
           
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">

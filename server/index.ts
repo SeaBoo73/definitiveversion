@@ -31,6 +31,11 @@ app.get("/native-preview", (req, res) => {
   res.sendFile(path.resolve("native-app-preview.html"));
 });
 
+// React Native mobile app route
+app.get("/mobile-app", (req, res) => {
+  res.redirect('http://localhost:3001');
+});
+
 (async () => {
   const server = await registerRoutes(app);
   

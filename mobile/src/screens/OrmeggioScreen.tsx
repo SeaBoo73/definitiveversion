@@ -142,21 +142,12 @@ const OrmeggioScreen = () => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Banner Ormeggio */}
-      <View style={styles.bannerContainer}>
-        <Image 
-          source={{ uri: 'https://seaboorentalboat.com/attached_assets/ChatGPT%20Image%208%20ago%202025,%2008_15_06_1754633789688.png' }}
-          style={styles.bannerImage}
-          resizeMode="cover"
-        />
-        <View style={styles.bannerOverlay} />
-        <View style={styles.bannerContent}>
-          <Text style={styles.bannerIcon}>⚓</Text>
-          <Text style={styles.bannerTitle}>Trova il tuo Ormeggio Ideale</Text>
-          <Text style={styles.bannerSubtitle}>
-            Scopri ormeggi esclusivi e sicuri per la tua imbarcazione nei migliori porti d'Italia
-          </Text>
-        </View>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Servizi Ormeggio</Text>
+        <Text style={styles.headerSubtitle}>
+          Trova il posto sicuro per la tua barca
+        </Text>
       </View>
 
       {/* Quick Stats */}
@@ -321,57 +312,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8fafc',
-  },
-  bannerContainer: {
-    height: 240,
-    position: 'relative',
-  },
-  bannerImage: {
-    width: '100%',
-    height: '100%',
-  },
-  bannerOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(30, 64, 175, 0.3)',
-  },
-  bannerContent: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-  },
-  bannerIcon: {
-    fontSize: 48,
-    color: 'white',
-    marginBottom: 16,
-  },
-  bannerTitle: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: 'white',
-    textAlign: 'center',
-    marginBottom: 12,
-    textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 4,
-    letterSpacing: -0.5,
-  },
-  bannerSubtitle: {
-    fontSize: 16,
-    color: 'white',
-    textAlign: 'center',
-    lineHeight: 22,
-    textShadowColor: 'rgba(0,0,0,0.5)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
   },
   header: {
     backgroundColor: '#0ea5e9',

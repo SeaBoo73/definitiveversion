@@ -23,6 +23,11 @@ app.get("/app-preview", (req, res) => {
 
 // Native app preview route
 app.get("/native-preview", (req, res) => {
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
   res.sendFile(path.resolve("native-app-preview.html"));
 });
 

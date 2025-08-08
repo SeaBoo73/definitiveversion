@@ -369,24 +369,13 @@ export default function OrmeggioPage() {
       <section 
         className="relative text-white py-16"
         style={{
-          backgroundImage: "url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754633789688.png')",
+          backgroundImage: "url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754636134049.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="absolute inset-0 bg-blue-900/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          <div className="text-center mb-8">
-            <div className="text-6xl mb-6">⚓</div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 drop-shadow-lg">
-              Trova il tuo Ormeggio Ideale
-            </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto drop-shadow-md">
-              Scopri ormeggi esclusivi e sicuri per la tua imbarcazione nei migliori porti d'Italia
-            </p>
-          </div>
           
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">

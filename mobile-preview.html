@@ -81,7 +81,7 @@
 
         /* Banner Ormeggio */
         .ormeggio-banner {
-            background-image: url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754633789688.png');
+            background-image: url('/attached_assets/ChatGPT Image 8 ago 2025, 08_15_06_1754633789688.png?v=1754635050');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -429,8 +429,18 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📱SeaBoo Mobile App Preview Loaded');
-            console.log('✅ Banner Ormeggio con nuova immagine caricato');
+            console.log('📱SeaBoo Mobile App Preview Loaded - VERSIONE AGGIORNATA 6:37');
+            console.log('✅ Banner Ormeggio NUOVA IMMAGINE BLU caricato');
+            
+            // Force refresh of background images
+            const banners = document.querySelectorAll('.ormeggio-banner');
+            banners.forEach(banner => {
+                const currentBg = window.getComputedStyle(banner).backgroundImage;
+                if (currentBg && currentBg !== 'none') {
+                    banner.style.backgroundImage = currentBg.replace(/\?v=\d+/, '') + '?v=' + Date.now();
+                }
+            });
+            
             showScreen('home');
         });
     </script>

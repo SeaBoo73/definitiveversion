@@ -13,6 +13,11 @@ app.use('/api/images', express.static('attached_assets'));
 
 // Mobile web preview route
 app.get("/app-preview", (req, res) => {
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
   res.sendFile(path.resolve("mobile-preview.html"));
 });
 

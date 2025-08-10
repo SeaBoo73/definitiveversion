@@ -80,30 +80,82 @@ export default function HomePage() {
       <AppDownloadBanner />
       <Header />
       
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-ocean-blue to-deep-navy text-white">
+      {/* Hero Section - Design con sfondo blu oceano e palme */}
+      <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
+        {/* Background con palme e oceano */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-50"
+          className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${heroImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.7
           }}
         />
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Naviga verso l'avventura
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto font-medium">
-              Prenota barche, yacht e imbarcazioni uniche.<br/>
-              Vivi il mare come mai prima d'ora.
-            </p>
+        {/* Overlay gradiente per migliore leggibilità */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/80 via-blue-700/90 to-blue-900/95"></div>
+        
+        <div className="relative z-10 flex flex-col min-h-screen">
+          {/* Header con logo integrato nella hero */}
+          <div className="flex items-center justify-center pt-8 pb-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
+                <Anchor className="w-8 h-8 text-white" />
+              </div>
+              <span className="text-3xl font-bold text-white">SeaBoo</span>
+            </div>
           </div>
-
-          <SearchFilters />
+          
+          {/* Contenuto principale centrato */}
+          <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-4xl mx-auto">
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                Naviga verso<br/>l'avventura
+              </h1>
+              <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+                Prenota barche, yacht e imbarcazioni<br/>
+                uniche in tutta Italia.<br/>
+                Vivi il mare come mai prima d'ora.
+              </p>
+              
+              {/* Form di ricerca integrato */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-2xl mx-auto">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-left text-gray-700 font-semibold mb-2">Dove</label>
+                    <input 
+                      type="text" 
+                      placeholder="Cerca tra 48 porti italiani..." 
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    />
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-left text-gray-700 font-semibold mb-2">Dal</label>
+                      <input 
+                        type="date" 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-left text-gray-700 font-semibold mb-2">Al</label>
+                      <input 
+                        type="date" 
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-lg transition-colors">
+                    Cerca Imbarcazioni
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

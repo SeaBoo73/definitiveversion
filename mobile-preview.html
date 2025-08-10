@@ -1092,7 +1092,7 @@
                     </div>
                 </div>
 
-                <!-- Search Form -->
+                <!-- Search Form Completo -->
                 <div class="search-form">
                     <div class="form-group">
                         <label class="form-label">Dove</label>
@@ -1201,23 +1201,19 @@
                         </select>
                     </div>
                     
-
-                    
-                    <!-- Altri Filtri -->
-                    <div class="filter-options">
-                        <div class="filter-row-two">
-                            <div class="filter-option">
-                                <div class="filter-icon">👨‍✈️</div>
-                                <span>Con Skipper</span>
-                            </div>
-                            <div class="filter-option">
-                                <div class="filter-icon">⚓</div>
-                                <span>Esperienze o charter</span>
-                            </div>
-                        </div>
+                    <!-- Pulsanti Con Skipper e Esperienze -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
+                        <button type="button" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer;">
+                            👨‍✈️ Con Skipper
+                        </button>
+                        <button type="button" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer;">
+                            ⚓ Esperienze o charter
+                        </button>
                     </div>
                     
-                    <button class="search-button" onclick="performSearch()">🔍 Cerca</button>
+
+                    
+                    <button class="search-button" onclick="performSearch()" style="background: #f97316; border: none;">🔍 Cerca</button>
                 </div>
 
 

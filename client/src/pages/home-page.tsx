@@ -120,9 +120,9 @@ export default function HomePage() {
                 Vivi il mare come mai prima d'ora.
               </p>
               
-              {/* Form di ricerca integrato */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-2xl mx-auto">
-                <div className="space-y-6">
+              {/* Form di ricerca completo */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-lg mx-auto">
+                <div className="space-y-4">
                   <div>
                     <label className="block text-left text-gray-700 font-semibold mb-2">Dove</label>
                     <input 
@@ -137,6 +137,7 @@ export default function HomePage() {
                       <label className="block text-left text-gray-700 font-semibold mb-2">Dal</label>
                       <input 
                         type="date" 
+                        placeholder="gg/mm/aaaa"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
                     </div>
@@ -144,13 +145,58 @@ export default function HomePage() {
                       <label className="block text-left text-gray-700 font-semibold mb-2">Al</label>
                       <input 
                         type="date" 
+                        placeholder="gg/mm/aaaa"
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
                     </div>
                   </div>
                   
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-lg transition-colors">
-                    Cerca Imbarcazioni
+                  <div>
+                    <label className="block text-left text-gray-700 font-semibold mb-2">Ospiti</label>
+                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900">
+                      <option>2 ospiti</option>
+                      <option>1 ospite</option>
+                      <option>3 ospiti</option>
+                      <option>4 ospiti</option>
+                      <option>5 ospiti</option>
+                      <option>6 ospiti</option>
+                      <option>7 ospiti</option>
+                      <option>8 ospiti</option>
+                      <option>9 ospiti</option>
+                      <option>10+ ospiti</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-left text-gray-700 font-semibold mb-2">Tipo imbarcazione</label>
+                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900">
+                      <option>Tutte le categorie</option>
+                      <option>Barca a vela</option>
+                      <option>Yacht</option>
+                      <option>Catamarano</option>
+                      <option>Gommone</option>
+                      <option>Barca a motore</option>
+                      <option>Jet ski</option>
+                      <option>Kayak</option>
+                      <option>Charter</option>
+                      <option>Houseboat</option>
+                    </select>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <button className="flex items-center justify-center px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium hover:bg-blue-100 transition-colors">
+                      <span className="mr-2">👨‍✈️</span>
+                      Con Skipper
+                    </button>
+                    <button className="flex items-center justify-center px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium hover:bg-blue-100 transition-colors">
+                      <span className="mr-2">⚓</span>
+                      Esperienze o charter
+                    </button>
+                  </div>
+                  
+                  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 text-lg font-semibold rounded-lg transition-colors flex items-center justify-center">
+                    <span className="mr-2">🔍</span>
+                    Cerca
                   </Button>
                 </div>
               </div>

@@ -41,11 +41,11 @@ ios/App/
 
 ### 📋 **PROSSIMI PASSI PER UTENTE:**
 
-#### **STEP 1: Apple Developer Account**
+#### **STEP 1: Apple Developer Account** ✅
 ```
-Costo: $99/anno
-URL: https://developer.apple.com/programs/
-Necessario per submission App Store
+Team ID configurato: DC866Q4KQV
+Account Apple Developer attivo
+Pronto per submission App Store
 ```
 
 #### **STEP 2: Build & Upload (Su Mac con Xcode)**

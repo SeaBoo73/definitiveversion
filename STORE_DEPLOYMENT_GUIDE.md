@@ -23,11 +23,11 @@
 
 ### 📋 **PROSSIMI PASSI PER APP STORE:**
 
-#### **1. Apple Developer Account** (Richiesto)
+#### **1. Apple Developer Account** ✅ **CONFIGURATO**
 ```bash
-# Costo: $99/anno
-# Registro: https://developer.apple.com/programs/
-# Necessario per sottomettere app su App Store
+# Team ID: DC866Q4KQV
+# Account Apple Developer attivo
+# Pronto per build e submission
 ```
 
 #### **2. Build & Test**

@@ -1203,10 +1203,10 @@
                     
                     <!-- Pulsanti Con Skipper e Esperienze -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
-                        <button type="button" id="skipper-btn" class="option-button" onclick="toggleSkipperOption()" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 14px;">
+                        <button type="button" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer;">
                             👨‍✈️ Con Skipper
                         </button>
-                        <button type="button" id="experiences-btn" class="option-button" onclick="toggleExperiencesOption()" style="background: #fef3e2; border: 2px solid #f97316; border-radius: 8px; padding: 12px; text-align: center; color: #f97316; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 14px;">
+                        <button type="button" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer;">
                             ⚓ Esperienze o charter
                         </button>
                     </div>
@@ -1558,10 +1558,10 @@
         <!-- Sezione Ormeggio -->
         <div id="ormeggio" class="screen" style="display: none;">
             <div class="content">
-                <div style="background: linear-gradient(135deg, #0C9FE2, #0A85C2); padding: 24px 20px; color: white; margin: 0 -16px 16px; border-radius: 0 0 20px 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px;">⚓</div>
-                    <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2;">Trova il tuo ormeggio ideale</h2>
-                    <p style="margin: 0; font-size: 14px; line-height: 1.4; opacity: 0.9;">Trova il posto barca perfetto<br>Mai più barche in rada!</p>
+                <div style="background: linear-gradient(135deg, #0C9FE2, #0A85C2); padding: 32px 24px; color: white; margin: 0 -16px 24px; border-radius: 0 0 20px 20px; text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 16px;">⚓</div>
+                    <h2 style="margin: 0 0 12px 0; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2;">Trova il tuo ormeggio ideale</h2>
+                    <p style="margin: 0; font-size: 16px; line-height: 1.4; opacity: 0.9;">Trova il posto barca perfetto<br>Mai più barche in rada!</p>
                 </div>
 
                 <!-- Filtri Ricerca Ormeggio -->
@@ -1830,25 +1830,25 @@
         <!-- Sezione Esperienze -->
         <div id="esperienze" class="screen" style="display: none;">
             <div class="content">
-                <div style="background: #0C9FE2; padding: 24px 20px; color: white; margin: 0 -16px 16px; border-radius: 0 0 20px 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px; color: white;">★</div>
-                    <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">Vivi Esperienze Uniche</h2>
-                    <p style="margin: 0; opacity: 0.95; font-size: 14px; line-height: 1.4;">Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni</p>
-                </div>
-
-                <!-- Selettore Località Esperienze con Autofill - Fuori dal banner -->
-                <div style="background: white; border-radius: 12px; padding: 16px; margin: 0 0 24px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #374151;">Scegli dove vivere l'esperienza:</label>
-                    <div style="position: relative;">
-                        <input type="text" 
-                               id="experienceLocationInput" 
-                               placeholder="Cerca tra 48 località italiane..." 
-                               style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white; color: #1f2937;"
-                               onkeyup="showExperiencesSuggestions(this.value)"
-                               onclick="showExperiencesSuggestions(this.value)"
-                               autocomplete="off">
-                        <div id="experiencesSuggestions" 
-                             style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 200px; overflow-y: auto; z-index: 1000; display: none;">
+                <div style="background: #0C9FE2; padding: 32px 24px; color: white; margin: 0 -16px 24px; border-radius: 0 0 20px 20px; text-align: center;">
+                    <div style="font-size: 32px; margin-bottom: 16px; color: white;">★</div>
+                    <h2 style="margin: 0 0 12px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px;">Esperienze Uniche in Mare</h2>
+                    <p style="margin: 0 0 16px 0; opacity: 0.95; font-size: 16px; line-height: 1.4;">Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni</p>
+                    
+                    <!-- Selettore Località Esperienze con Autofill -->
+                    <div style="margin-top: 16px; position: relative;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 14px; opacity: 0.9;">Scegli dove vivere l'esperienza:</label>
+                        <div style="position: relative;">
+                            <input type="text" 
+                                   id="experienceLocationInput" 
+                                   placeholder="Cerca tra 48 località italiane..." 
+                                   style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; background: white; color: #1f2937;"
+                                   onkeyup="showExperiencesSuggestions(this.value)"
+                                   onclick="showExperiencesSuggestions(this.value)"
+                                   autocomplete="off">
+                            <div id="experiencesSuggestions" 
+                                 style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 200px; overflow-y: auto; z-index: 1000; display: none;">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2339,21 +2339,19 @@
         <!-- Sezione Servizi -->
         <div id="servizi" class="screen" style="display: none;">
             <div class="content">
-                <div style="background: #0C9FE2; padding: 24px 20px; color: white; margin: 0 -16px 16px; border-radius: 0 0 20px 20px; text-align: center;">
-                    <div style="font-size: 28px; margin-bottom: 12px; color: white;">⚙</div>
-                    <h2 style="margin: 0 0 10px 0; font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">Servizi SeaBoo</h2>
-                    <p style="margin: 0; opacity: 0.95; font-size: 14px; line-height: 1.4;">Tutto quello che serve per navigare in sicurezza</p>
-                </div>
-
-                <!-- Selettore Località con Autofill - Fuori dal banner -->
-                <div style="background: white; border-radius: 12px; padding: 16px; margin: 0 0 24px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
-                    <label style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #374151;">Scegli la tua località:</label>
-                    <div style="position: relative;">
+                <div style="background: #0C9FE2; padding: 32px 24px; color: white; margin: 0 -16px 24px; border-radius: 0 0 20px 20px; text-align: center;">
+                    <div style="font-size: 32px; margin-bottom: 16px; color: white;">⚙</div>
+                    <h2 style="margin: 0 0 12px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px;">Servizi SeaBoo</h2>
+                    <p style="margin: 0 0 16px 0; opacity: 0.95; font-size: 16px; line-height: 1.4;">Tutto quello che serve per navigare in sicurezza</p>
+                    
+                    <!-- Selettore Località con Autofill -->
+                    <div style="margin-top: 16px; position: relative;">
+                        <label style="display: block; margin-bottom: 8px; font-size: 14px; opacity: 0.9;">Scegli la tua località:</label>
                         <input 
                             type="text" 
                             id="servicesLocationInput"
                             placeholder="Inizia a digitare... (es. Civitavecchia, Napoli, Gaeta...)" 
-                            style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; background: white; color: #1f2937;"
+                            style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; background: white; color: #1f2937;"
                             onkeyup="showServicesLocationSuggestions(this.value)"
                             onclick="showServicesLocationSuggestions(this.value)"
                             autocomplete="off"
@@ -2995,48 +2993,6 @@
             
             if (resultDiv) {
                 resultDiv.innerHTML = `Prezzo totale: €${totalPrice} (${days} ${days === 1 ? 'giorno' : 'giorni'})`;
-            }
-        }
-
-        // Funzioni per pulsanti interattivi Con Skipper e Esperienze
-        let skipperSelected = false;
-        let experiencesSelected = false;
-
-        function toggleSkipperOption() {
-            const btn = document.getElementById('skipper-btn');
-            skipperSelected = !skipperSelected;
-            
-            if (skipperSelected) {
-                btn.style.background = '#3b82f6';
-                btn.style.color = 'white';
-                btn.style.borderColor = '#3b82f6';
-                btn.style.transform = 'scale(0.98)';
-                btn.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
-            } else {
-                btn.style.background = '#eff6ff';
-                btn.style.color = '#3b82f6';
-                btn.style.borderColor = '#3b82f6';
-                btn.style.transform = 'scale(1)';
-                btn.style.boxShadow = 'none';
-            }
-        }
-
-        function toggleExperiencesOption() {
-            const btn = document.getElementById('experiences-btn');
-            experiencesSelected = !experiencesSelected;
-            
-            if (experiencesSelected) {
-                btn.style.background = '#f97316';
-                btn.style.color = 'white';
-                btn.style.borderColor = '#f97316';
-                btn.style.transform = 'scale(0.98)';
-                btn.style.boxShadow = '0 4px 12px rgba(249, 115, 22, 0.3)';
-            } else {
-                btn.style.background = '#fef3e2';
-                btn.style.color = '#f97316';
-                btn.style.borderColor = '#f97316';
-                btn.style.transform = 'scale(1)';
-                btn.style.boxShadow = 'none';
             }
         }
 

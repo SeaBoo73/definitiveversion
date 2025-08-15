@@ -155,6 +155,7 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
   - ✅ **TITOLO AGGIORNATO:** "Vivi Esperienze Uniche" invece di "Esperienze Uniche in Mare"
   - ✅ **EMOJI RIMOSSA:** Rimossa emoji mappa da "Scegli dove vivere l'esperienza"
   - ✅ **LAYOUT SERVIZI:** Sezione "Scegli la tua località" spostata fuori dal banner blu come card separata
+  - ✅ **FONT UNIFORMATI:** Tutti i banner (Ormeggio, Esperienze, Servizi) ora usano Playfair Display 26px per titoli e Inter 16px per descrizioni
 
 ### August 10, 2025 - Homepage "Naviga verso l'avventura" Ripristinata (Ore 6:10)
 - **VERSIONE CORRETTA IMPLEMENTATA:**

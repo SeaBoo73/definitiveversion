@@ -154,6 +154,7 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
   - ✅ **READY FOR XCODE:** Tutte le modifiche pronte per build iOS con Capacitor
   - ✅ **TITOLO AGGIORNATO:** "Vivi Esperienze Uniche" invece di "Esperienze Uniche in Mare"
   - ✅ **EMOJI RIMOSSA:** Rimossa emoji mappa da "Scegli dove vivere l'esperienza"
+  - ✅ **LAYOUT SERVIZI:** Sezione "Scegli la tua località" spostata fuori dal banner blu come card separata
 
 ### August 10, 2025 - Homepage "Naviga verso l'avventura" Ripristinata (Ore 6:10)
 - **VERSIONE CORRETTA IMPLEMENTATA:**

@@ -1840,25 +1840,28 @@
         <!-- Sezione Esperienze -->
         <div id="esperienze" class="screen" style="display: none;">
             <div class="content">
+                <!-- Banner Esperienze (senza selettore località) -->
                 <div style="background: #0C9FE2; padding: 32px 24px; color: white; margin: 0 -16px 24px; border-radius: 0 0 20px 20px; text-align: center;">
                     <div style="font-size: 32px; margin-bottom: 16px; color: white;">★</div>
                     <h2 style="margin: 0 0 12px 0; font-size: 26px; font-weight: 700; letter-spacing: -0.5px;">Esperienze Uniche in Mare</h2>
-                    <p style="margin: 0 0 16px 0; opacity: 0.95; font-size: 16px; line-height: 1.4;">Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni</p>
-                    
-                    <!-- Selettore Località Esperienze con Autofill -->
-                    <div style="margin-top: 16px; position: relative;">
-                        <label style="display: block; margin-bottom: 8px; font-size: 14px; opacity: 0.9;">Scegli dove vivere l'esperienza:</label>
-                        <div style="position: relative;">
-                            <input type="text" 
-                                   id="experienceLocationInput" 
-                                   placeholder="Cerca tra 48 località italiane..." 
-                                   style="width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; background: white; color: #1f2937;"
-                                   onkeyup="showExperiencesSuggestions(this.value)"
-                                   onclick="showExperiencesSuggestions(this.value)"
-                                   autocomplete="off">
-                            <div id="experiencesSuggestions" 
-                                 style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 200px; overflow-y: auto; z-index: 1000; display: none;">
-                            </div>
+                    <p style="margin: 0; opacity: 0.95; font-size: 16px; line-height: 1.4;">Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni</p>
+                </div>
+
+                <!-- Sezione Selezione Località (FUORI dal banner blu) -->
+                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid #e5e7eb;">
+                    <h3 style="margin: 0 0 16px 0; font-size: 18px; font-weight: 600; color: #1f2937;">🗺️ Scegli dove vivere l'esperienza</h3>
+                    <div style="position: relative;">
+                        <input type="text" 
+                               id="experienceLocationInput" 
+                               placeholder="Cerca tra 48 località italiane..." 
+                               style="width: 100%; padding: 14px; border: 2px solid #d1d5db; border-radius: 10px; font-size: 16px; background: #f9fafb; color: #1f2937; transition: all 0.2s ease;"
+                               onkeyup="showExperiencesSuggestions(this.value)"
+                               onclick="showExperiencesSuggestions(this.value)"
+                               onfocus="this.style.borderColor='#0C9FE2'; this.style.background='white'"
+                               onblur="this.style.borderColor='#d1d5db'; this.style.background='#f9fafb'"
+                               autocomplete="off">
+                        <div id="experiencesSuggestions" 
+                             style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 200px; overflow-y: auto; z-index: 1000; display: none;">
                         </div>
                     </div>
                 </div>

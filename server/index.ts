@@ -21,6 +21,11 @@ app.get("/native-preview", (req, res) => {
   res.sendFile(path.resolve("native-app-preview.html"));
 });
 
+// Archived mobile preview route (temporary)
+app.get("/archived-preview", (req, res) => {
+  res.sendFile(path.resolve("mobile-preview-ARCHIVED-20250810_061034.html"));
+});
+
 (async () => {
   const server = await registerRoutes(app);
   

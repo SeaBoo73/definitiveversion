@@ -1201,12 +1201,22 @@
                         </select>
                     </div>
                     
-                    <!-- Pulsanti Con Skipper e Esperienze EVIDENZIATI -->
+                    <!-- Pulsanti Con Skipper e Esperienze EVIDENZIATI CON STATI ATTIVI -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
-                        <button type="button" style="background: linear-gradient(135deg, #0C9FE2, #0284c7); border: 2px solid #0C9FE2; border-radius: 12px; padding: 14px; text-align: center; color: white; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(12, 159, 226, 0.3); transition: all 0.2s ease; font-family: 'Inter', sans-serif;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(12, 159, 226, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(12, 159, 226, 0.3)'">
+                        <button 
+                            type="button" 
+                            id="skipperButton"
+                            onclick="toggleSkipperButton()"
+                            style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 12px; padding: 14px; text-align: center; color: #3b82f6; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2); transition: all 0.3s ease; font-family: 'Inter', sans-serif;"
+                            data-active="false">
                             👨‍✈️ Con Skipper
                         </button>
-                        <button type="button" style="background: linear-gradient(135deg, #f97316, #ea580c); border: 2px solid #f97316; border-radius: 12px; padding: 14px; text-align: center; color: white; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3); transition: all 0.2s ease; font-family: 'Inter', sans-serif;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(249, 115, 22, 0.4)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(249, 115, 22, 0.3)'">
+                        <button 
+                            type="button" 
+                            id="experienceButton"
+                            onclick="toggleExperienceButton()"
+                            style="background: #fef3e2; border: 2px solid #f97316; border-radius: 12px; padding: 14px; text-align: center; color: #f97316; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(249, 115, 22, 0.2); transition: all 0.3s ease; font-family: 'Inter', sans-serif;"
+                            data-active="false">
                             ⚓ Esperienze o charter
                         </button>
                     </div>
@@ -4368,6 +4378,57 @@
             } else {
                 content.style.display = 'none';
                 arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Funzioni per evidenziazione pulsanti Con Skipper e Esperienze
+        function toggleSkipperButton() {
+            const button = document.getElementById('skipperButton');
+            const isActive = button.getAttribute('data-active') === 'true';
+            
+            if (isActive) {
+                // Disattiva - stato normale BLU CHIARO
+                button.style.background = '#eff6ff';
+                button.style.border = '2px solid #3b82f6';
+                button.style.color = '#3b82f6';
+                button.style.boxShadow = '0 2px 8px rgba(59, 130, 246, 0.2)';
+                button.style.transform = 'translateY(0)';
+                button.setAttribute('data-active', 'false');
+                console.log('🚤 Con Skipper: DISATTIVATO');
+            } else {
+                // Attiva - stato evidenziato BLU INTENSO
+                button.style.background = 'linear-gradient(135deg, #0C9FE2, #0284c7)';
+                button.style.border = '2px solid #0C9FE2';
+                button.style.color = 'white';
+                button.style.boxShadow = '0 6px 20px rgba(12, 159, 226, 0.4)';
+                button.style.transform = 'translateY(-2px)';
+                button.setAttribute('data-active', 'true');
+                console.log('🚤 Con Skipper: ATTIVATO');
+            }
+        }
+
+        function toggleExperienceButton() {
+            const button = document.getElementById('experienceButton');
+            const isActive = button.getAttribute('data-active') === 'true';
+            
+            if (isActive) {
+                // Disattiva - stato normale ARANCIONE CHIARO
+                button.style.background = '#fef3e2';
+                button.style.border = '2px solid #f97316';
+                button.style.color = '#f97316';
+                button.style.boxShadow = '0 2px 8px rgba(249, 115, 22, 0.2)';
+                button.style.transform = 'translateY(0)';
+                button.setAttribute('data-active', 'false');
+                console.log('⚓ Esperienze: DISATTIVATO');
+            } else {
+                // Attiva - stato evidenziato ARANCIONE INTENSO
+                button.style.background = 'linear-gradient(135deg, #f97316, #ea580c)';
+                button.style.border = '2px solid #f97316';
+                button.style.color = 'white';
+                button.style.boxShadow = '0 6px 20px rgba(249, 115, 22, 0.4)';
+                button.style.transform = 'translateY(-2px)';
+                button.setAttribute('data-active', 'true');
+                console.log('⚓ Esperienze: ATTIVATO');
             }
         }
 

@@ -1203,10 +1203,10 @@
                     
                     <!-- Pulsanti Con Skipper e Esperienze -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0;">
-                        <button type="button" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer;">
+                        <button type="button" id="skipper-btn" class="option-button" onclick="toggleSkipperOption()" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 14px;">
                             👨‍✈️ Con Skipper
                         </button>
-                        <button type="button" style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 8px; padding: 12px; text-align: center; color: #3b82f6; font-weight: 600; cursor: pointer;">
+                        <button type="button" id="experiences-btn" class="option-button" onclick="toggleExperiencesOption()" style="background: #fef3e2; border: 2px solid #f97316; border-radius: 8px; padding: 12px; text-align: center; color: #f97316; font-weight: 600; cursor: pointer; transition: all 0.3s ease; font-size: 14px;">
                             ⚓ Esperienze o charter
                         </button>
                     </div>
@@ -2993,6 +2993,48 @@
             
             if (resultDiv) {
                 resultDiv.innerHTML = `Prezzo totale: €${totalPrice} (${days} ${days === 1 ? 'giorno' : 'giorni'})`;
+            }
+        }
+
+        // Funzioni per pulsanti interattivi Con Skipper e Esperienze
+        let skipperSelected = false;
+        let experiencesSelected = false;
+
+        function toggleSkipperOption() {
+            const btn = document.getElementById('skipper-btn');
+            skipperSelected = !skipperSelected;
+            
+            if (skipperSelected) {
+                btn.style.background = '#3b82f6';
+                btn.style.color = 'white';
+                btn.style.borderColor = '#3b82f6';
+                btn.style.transform = 'scale(0.98)';
+                btn.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)';
+            } else {
+                btn.style.background = '#eff6ff';
+                btn.style.color = '#3b82f6';
+                btn.style.borderColor = '#3b82f6';
+                btn.style.transform = 'scale(1)';
+                btn.style.boxShadow = 'none';
+            }
+        }
+
+        function toggleExperiencesOption() {
+            const btn = document.getElementById('experiences-btn');
+            experiencesSelected = !experiencesSelected;
+            
+            if (experiencesSelected) {
+                btn.style.background = '#f97316';
+                btn.style.color = 'white';
+                btn.style.borderColor = '#f97316';
+                btn.style.transform = 'scale(0.98)';
+                btn.style.boxShadow = '0 4px 12px rgba(249, 115, 22, 0.3)';
+            } else {
+                btn.style.background = '#fef3e2';
+                btn.style.color = '#f97316';
+                btn.style.borderColor = '#f97316';
+                btn.style.transform = 'scale(1)';
+                btn.style.boxShadow = 'none';
             }
         }
 

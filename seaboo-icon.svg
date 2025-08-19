@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient blu oceano -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0C9FE2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="sailGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#0C9FE2;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bgGradient)" rx="180"/>
+  
+  <!-- Barca stilizzata -->
+  <g transform="translate(512,512)">
+    <!-- Scafo -->
+    <path d="M-200,100 Q-180,120 -100,120 L100,120 Q180,120 200,100 Q200,80 180,80 L-180,80 Q-200,80 -200,100" 
+          fill="#1e40af" opacity="0.8"/>
+    
+    <!-- Albero -->
+    <rect x="-8" y="-200" width="16" height="300" fill="#8B4513" opacity="0.9"/>
+    
+    <!-- Vela principale -->
+    <path d="M10,-200 Q100,-180 120,-100 Q120,-20 100,60 Q80,80 10,80 Z" 
+          fill="url(#sailGradient)" stroke="#0C9FE2" stroke-width="2"/>
+    
+    <!-- Vela secondaria (fiocco) -->
+    <path d="M-10,-200 Q-80,-160 -90,-100 Q-80,-40 -10,60 Z" 
+          fill="url(#sailGradient)" opacity="0.7" stroke="#0C9FE2" stroke-width="1"/>
+    
+    <!-- Onde stilizzate -->
+    <g transform="translate(0,140)">
+      <path d="M-250,0 Q-200,-10 -150,0 Q-100,10 -50,0 Q0,-10 50,0 Q100,10 150,0 Q200,-10 250,0" 
+            stroke="#ffffff" stroke-width="4" fill="none" opacity="0.6"/>
+      <path d="M-250,20 Q-200,10 -150,20 Q-100,30 -50,20 Q0,10 50,20 Q100,30 150,20 Q200,10 250,20" 
+            stroke="#ffffff" stroke-width="3" fill="none" opacity="0.4"/>
+    </g>
+    
+    <!-- Testo SeaBoo -->
+    <text x="0" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="90" font-weight="bold" fill="white">
+      SeaBoo
+    </text>
+  </g>
+</svg>

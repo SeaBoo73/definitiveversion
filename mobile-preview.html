@@ -49,6 +49,12 @@
             overflow-y: auto;
             padding-bottom: 80px;
         }
+        
+        /* Garantisco spazio per bottom nav in tutte le sezioni */
+        .screen {
+            padding-bottom: 80px;
+            min-height: calc(100vh - 60px);
+        }
 
         /* Hero Section - identica alla versione web */
         .hero {
@@ -370,6 +376,7 @@
             justify-content: space-around;
             padding: 8px 0 12px;
             box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
 
         .nav-item {

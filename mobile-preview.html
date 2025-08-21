@@ -1104,6 +1104,28 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
+
+        /* Regole CSS per banner delle pagine di categoria */
+        body.is-category #category-page > div:first-child {
+            background-image: url("/images/banner-category.png") !important;
+            background-size: cover !important;
+            background-position: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+        }
+
+        /* Assicura che tutti i banner di categoria usino l'immagine uniformata */
+        .is-category .category-banner,
+        .is-category #category-page .banner,
+        .is-category [id*="category"] .header {
+            background-image: url("/images/banner-category.png") !important;
+            background-size: cover !important;
+            background-position: center !important;
+            margin: 0 !important;
+            padding: 8px 24px 32px 24px !important;
+            width: 100% !important;
+        }
     </style>
 </head>
 <body>
@@ -3057,10 +3079,19 @@
             document.querySelectorAll('.screen').forEach(p => p.style.display = 'none');
             document.querySelectorAll('[id$="-page"]').forEach(p => p.style.display = 'none');
             
+            // Rimuovi classe categoria da body
+            document.body.classList.remove('is-category');
+            
             // Mostra la pagina richiesta
             const pageElement = document.getElementById(page + '-page');
             if (pageElement) {
                 pageElement.style.display = 'block';
+                
+                // Aggiungi classe categoria se è una pagina di categoria
+                if (page === 'category') {
+                    document.body.classList.add('is-category');
+                }
+                
                 // Aggiorna contenuto se necessario
                 if (params.category) updateCategoryPage(params.category);
                 if (params.location) updateLocationPage(params.location);

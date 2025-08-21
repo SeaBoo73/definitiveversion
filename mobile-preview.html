@@ -43,6 +43,10 @@
             font-size: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             letter-spacing: 0.5px;
+        }
+        
+        /* Header fisso solo per sezioni diverse dalla home */
+        .screen:not(#home) ~ .header-fixed {
             position: fixed;
             top: 0;
             left: 50%;
@@ -57,16 +61,15 @@
             padding-bottom: 80px;
         }
         
-        /* Garantisco spazio per header e bottom nav in tutte le sezioni */
+        /* Garantisco spazio per bottom nav in tutte le sezioni */
         .screen {
             padding-bottom: 80px;
-            padding-top: 72px;
             min-height: calc(100vh - 60px);
         }
         
-        /* Solo homepage senza padding top */
-        .screen#home {
-            padding-top: 0;
+        /* Solo sezioni diverse dalla home hanno padding top per header fisso */
+        .screen:not(#home) {
+            padding-top: 72px;
         }
 
         /* Hero Section - identica alla versione web */
@@ -1094,8 +1097,8 @@
 </head>
 <body>
     <div class="mobile-frame">
-        <!-- Header con logo SeaBoo -->
-        <div class="header">
+        <!-- Header con logo SeaBoo - solo visibile nelle sezioni non-home -->
+        <div class="header" id="fixed-header" style="display: none;">
             <img src="/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png" alt="SeaBoo Logo" style="height: 40px; width: auto; margin-right: 12px;">
             <span>SeaBoo</span>
         </div>
@@ -3508,6 +3511,26 @@
             if (targetScreen) {
                 targetScreen.style.display = 'block';
                 targetScreen.classList.add('active');
+            }
+            
+            // Gestione header fisso in base alla sezione
+            const fixedHeader = document.getElementById('fixed-header');
+            if (fixedHeader) {
+                if (screenId === 'home') {
+                    // Homepage: nascondi header fisso
+                    fixedHeader.style.display = 'none';
+                    fixedHeader.style.position = 'static';
+                } else {
+                    // Altre sezioni: mostra header fisso
+                    fixedHeader.style.display = 'flex';
+                    fixedHeader.style.position = 'fixed';
+                    fixedHeader.style.top = '0';
+                    fixedHeader.style.left = '50%';
+                    fixedHeader.style.transform = 'translateX(-50%)';
+                    fixedHeader.style.width = '100%';
+                    fixedHeader.style.maxWidth = '375px';
+                    fixedHeader.style.zIndex = '999';
+                }
             }
             
             // Update navigation - find the right nav item for the screen

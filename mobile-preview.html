@@ -14,6 +14,11 @@
             box-sizing: border-box;
         }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
             background: #f9fafb;
@@ -2846,6 +2851,22 @@
         
         // Sistema di autenticazione simulato
         let isUserLoggedIn = false;
+        
+        // Inizializza l'app e controlla stato autenticazione
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('/api/user');
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    isAuthenticated = true;
+                    isUserLoggedIn = true; // per compatibilità con codice esistente
+                }
+            } catch (error) {
+                console.log('Nessun utente loggato');
+            }
+            updateProfileSection();
+        });
 
         // Dati delle categorie barche
         const categoryData = {
@@ -3487,15 +3508,246 @@
             }
         }
 
+        // Stato utente globale
+        let currentUser = null;
+        let isAuthenticated = false;
+
         function handleLogin() {
-            // Redirect to real authentication
-            alert('🔐 SeaBoo\n\nPer accedere al tuo account, visita seaboo.it nel tuo browser web.\n\nLì potrai creare un account e gestire le tue prenotazioni.\n\n✓ Registrazione gratuita\n✓ Accesso sicuro\n✓ Gestione prenotazioni');
+            showLoginForm();
         }
 
-        function handleLogout() {
-            isLoggedIn = false;
-            alert('👋 Logout effettuato. A presto!');
-            updateProfileSection();
+        function showLoginForm() {
+            const authOverlay = document.createElement('div');
+            authOverlay.id = 'auth-overlay';
+            authOverlay.style.cssText = `
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+                align-items: center; justify-content: center; padding: 20px;
+            `;
+            
+            authOverlay.innerHTML = `
+                <div style="background: white; border-radius: 16px; width: 100%; max-width: 400px; max-height: 90vh; overflow-y: auto;">
+                    <!-- Header -->
+                    <div style="background: linear-gradient(135deg, #0C9FE2 0%, #0284c7 100%); color: white; padding: 24px; border-radius: 16px 16px 0 0; text-align: center; position: relative;">
+                        <button onclick="closeAuthOverlay()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+                        <h2 id="auth-title" style="margin: 0; font-size: 24px; font-weight: 700;">Accedi a SeaBoo</h2>
+                        <p id="auth-subtitle" style="margin: 8px 0 0 0; opacity: 0.9;">Benvenuto! Accedi per continuare</p>
+                    </div>
+                    
+                    <!-- Contenuto form -->
+                    <div style="padding: 24px;">
+                        <div id="auth-form">
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Email</label>
+                                <input type="email" id="loginEmail" placeholder="email@esempio.com" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                            </div>
+                            <div style="margin-bottom: 20px;">
+                                <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Password</label>
+                                <input type="password" id="loginPassword" placeholder="La tua password" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                            </div>
+                            
+                            <button onclick="handleRealLogin()" style="width: 100%; background: linear-gradient(135deg, #0C9FE2 0%, #0284c7 100%); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                                Accedi
+                            </button>
+                            
+                            <div id="login-error" class="error-message" style="display: none; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;"></div>
+                            <div id="login-loading" style="display: none; text-align: center; color: #0C9FE2; margin-bottom: 16px;">
+                                <div style="display: inline-flex; align-items: center; gap: 8px;">
+                                    <div style="width: 16px; height: 16px; border: 2px solid #0C9FE2; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                                    Accesso in corso...
+                                </div>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 20px;">
+                                <div style="color: #6b7280; margin-bottom: 12px;">Non hai un account?</div>
+                                <button onclick="showRegisterForm()" style="background: none; border: 2px solid #0C9FE2; color: #0C9FE2; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#0C9FE2'; this.style.color='white'" onmouseout="this.style.background='none'; this.style.color='#0C9FE2'">
+                                    Registrati
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(authOverlay);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('auth-title').textContent = 'Registrati su SeaBoo';
+            document.getElementById('auth-subtitle').textContent = 'Crea il tuo account per iniziare';
+            
+            document.getElementById('auth-form').innerHTML = `
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Nome</label>
+                    <input type="text" id="firstName" placeholder="Il tuo nome" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Cognome</label>
+                    <input type="text" id="lastName" placeholder="Il tuo cognome" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Email</label>
+                    <input type="email" id="registerEmail" placeholder="email@esempio.com" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Telefono (opzionale)</label>
+                    <input type="tel" id="phone" placeholder="+39 123 456 7890" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Password</label>
+                    <input type="password" id="registerPassword" placeholder="Minimo 6 caratteri" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Tipo account</label>
+                    <select id="userType" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; background: white;">
+                        <option value="customer">Cliente - Voglio noleggiare</option>
+                        <option value="host">Proprietario - Voglio affittare</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px; padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px; color: #6b7280; line-height: 1.4;">
+                    Registrandoti accetti i nostri <button onclick="showTermsModal()" style="color: #0C9FE2; background: none; border: none; text-decoration: underline; cursor: pointer;">Termini di Servizio</button> e la <button onclick="showPrivacyModal()" style="color: #0C9FE2; background: none; border: none; text-decoration: underline; cursor: pointer;">Privacy Policy</button>
+                </div>
+                
+                <button onclick="handleRealRegister()" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                    Registrati
+                </button>
+                
+                <div id="register-error" class="error-message" style="display: none; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;"></div>
+                <div id="register-loading" style="display: none; text-align: center; color: #10b981; margin-bottom: 16px;">
+                    <div style="display: inline-flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border: 2px solid #10b981; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        Creazione account...
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="color: #6b7280; margin-bottom: 12px;">Hai già un account?</div>
+                    <button onclick="showLoginForm()" style="background: none; border: 2px solid #0C9FE2; color: #0C9FE2; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#0C9FE2'; this.style.color='white'" onmouseout="this.style.background='none'; this.style.color='#0C9FE2'">
+                        Accedi
+                    </button>
+                </div>
+            `;
+        }
+
+        function closeAuthOverlay() {
+            const overlay = document.getElementById('auth-overlay');
+            if (overlay) {
+                overlay.remove();
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        async function handleRealLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('login-error');
+            const loadingDiv = document.getElementById('login-loading');
+            
+            // Reset stati
+            errorDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            
+            if (!email || !password) {
+                errorDiv.textContent = 'Email e password sono obbligatori';
+                errorDiv.style.display = 'block';
+                loadingDiv.style.display = 'none';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentUser = data.user;
+                    isAuthenticated = true;
+                    closeAuthOverlay();
+                    updateProfileSection();
+                    alert('✅ Accesso effettuato con successo!\n\nBenvenuto in SeaBoo!');
+                } else {
+                    errorDiv.textContent = data.error || 'Errore durante il login';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Errore di connessione. Riprova.';
+                errorDiv.style.display = 'block';
+            }
+            
+            loadingDiv.style.display = 'none';
+        }
+
+        async function handleRealRegister() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('registerEmail').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('registerPassword').value;
+            const userType = document.getElementById('userType').value;
+            const errorDiv = document.getElementById('register-error');
+            const loadingDiv = document.getElementById('register-loading');
+            
+            // Reset stati
+            errorDiv.style.display = 'none';
+            loadingDiv.style.display = 'block';
+            
+            if (!email || !password || password.length < 6) {
+                errorDiv.textContent = 'Email richiesta e password minimo 6 caratteri';
+                errorDiv.style.display = 'block';
+                loadingDiv.style.display = 'none';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        firstName,
+                        lastName,
+                        email,
+                        phone,
+                        password,
+                        userType
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentUser = data.user;
+                    isAuthenticated = true;
+                    closeAuthOverlay();
+                    updateProfileSection();
+                    alert('🎉 Registrazione completata!\n\nBenvenuto in SeaBoo! Il tuo account è stato creato con successo.');
+                } else {
+                    errorDiv.textContent = data.error || 'Errore durante la registrazione';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Errore di connessione. Riprova.';
+                errorDiv.style.display = 'block';
+            }
+            
+            loadingDiv.style.display = 'none';
+        }
+
+        async function handleRealLogout() {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+                currentUser = null;
+                isAuthenticated = false;
+                updateProfileSection();
+                alert('👋 Logout effettuato!\n\nGrazie per aver usato SeaBoo!');
+            } catch (error) {
+                console.error('Errore logout:', error);
+            }
         }
 
         // Aggiorna la sezione profilo in base allo stato di login
@@ -3503,13 +3755,16 @@
             const profileSection = document.getElementById('profilo');
             if (!profileSection) return;
             
-            if (isUserLoggedIn) {
+            if (isAuthenticated && currentUser) {
+                const userName = currentUser.firstName ? `${currentUser.firstName}!` : 'Benvenuto!';
+                const userType = currentUser.userType === 'host' ? 'Sea Host' : 'Cliente';
                 // Mostra interfaccia utente loggato
                 profileSection.innerHTML = `
                     <div class="content">
                         <div class="profile-header" style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
-                            <h2>👋 Ciao, Marco!</h2>
-                            <p>Benvenuto nella tua area personale SeaBoo</p>
+                            <h2>👋 Ciao, ${userName}</h2>
+                            <p>Area personale SeaBoo - ${userType}</p>
+                            <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">${currentUser.email}</div>
                         </div>
                         
                         <div class="profile-menu" style="padding: 20px;">
@@ -3538,7 +3793,7 @@
                                 <p>Affitta la tua barca su SeaBoo</p>
                             </div>
                             
-                            <button onclick="handleLogout()" style="background: #ef4444; color: white; padding: 12px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-top: 20px;">
+                            <button onclick="handleRealLogout()" style="background: #ef4444; color: white; padding: 12px 24px; border: none; border-radius: 8px; width: 100%; font-weight: 600; margin-top: 20px;">
                                 🚪 Esci
                             </button>
                         </div>

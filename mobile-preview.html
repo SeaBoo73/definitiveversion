@@ -1489,7 +1489,7 @@
 
                     </div>
                     
-                    <button class="registration-button" onclick="navigateTo('diventa-sea-host')">
+                    <button class="registration-button" onclick="showLoginForm(); setTimeout(() => { showRegisterForm(); setTimeout(() => selectRole('owner'), 200); }, 100);">
                         <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">Diventa Sea Host</div>
                         <div style="font-size: 12px; opacity: 0.9;">Inizia a guadagnare con la tua imbarcazione</div>
                     </button>
@@ -2856,7 +2856,7 @@
 
                 <!-- CTA Registrazione -->
                 <div style="padding: 20px 0;">
-                    <button onclick="checkAuth('Richiesta inviata! Ti contatteremo entro 24 ore per completare la registrazione come Sea Host.')" style="width: 100%; background: linear-gradient(135deg, #f97316, #ea580c); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: 600; margin-bottom: 12px;">
+                    <button onclick="showLoginForm(); setTimeout(() => { showRegisterForm(); setTimeout(() => selectRole('owner'), 200); }, 100);" style="width: 100%; background: linear-gradient(135deg, #f97316, #ea580c); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 18px; font-weight: 600; margin-bottom: 12px;">
                         Inizia Subito
                     </button>
                     <p style="margin: 0; text-align: center; color: #6b7280; font-size: 14px;">Registrazione gratuita • Nessun costo anticipato</p>
@@ -4024,7 +4024,7 @@
                                     <p>Vedi e scrivi recensioni sulle barche</p>
                                 </div>
                                 
-                                <div class="menu-item" onclick="showProfilePage('become-owner')" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                <div class="menu-item" onclick="showLoginForm(); setTimeout(() => { showRegisterForm(); setTimeout(() => selectRole('owner'), 200); }, 100);" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                     <h4>🏆 Diventa Noleggiatore</h4>
                                     <p>Inizia ad affittare le tue barche</p>
                                 </div>
@@ -4040,7 +4040,7 @@
                                 <p>FAQ, chat AI e supporto clienti</p>
                             </div>
                             
-                            <div class="menu-item" onclick="showProfilePage('host')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                            <div class="menu-item" onclick="showLoginForm(); setTimeout(() => { showRegisterForm(); setTimeout(() => selectRole('owner'), 200); }, 100);" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>🏆 Diventa Sea Host</h4>
                                 <p>Affitta la tua barca su SeaBoo</p>
                             </div>

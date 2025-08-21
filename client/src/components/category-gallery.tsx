@@ -109,9 +109,11 @@ const charterGiornalieri = [
 ];
 
 export function CategoryGallery() {
-  const { data: boats = [], isLoading } = useQuery<Boat[]>({
+  const { data, isLoading } = useQuery<{ boats: Boat[] }>({
     queryKey: ["/api/boats"],
   });
+  
+  const boats = data?.boats || [];
 
 
 

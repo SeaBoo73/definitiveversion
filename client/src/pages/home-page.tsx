@@ -23,9 +23,11 @@ import { StructuredData } from "@/components/structured-data";
 import { QuickRegistration } from "@/components/quick-registration";
 
 export default function HomePage() {
-  const { data: boats = [], isLoading } = useQuery<Boat[]>({
+  const { data, isLoading } = useQuery<{ boats: Boat[] }>({
     queryKey: ["/api/boats"],
   });
+  
+  const boats = data?.boats || [];
 
   const [location] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string>("");

@@ -33,7 +33,6 @@ export const users = pgTable("users", {
   firstName: varchar("first_name", { length: 100 }),
   lastName: varchar("last_name", { length: 100 }),
   phone: varchar("phone", { length: 20 }),
-  dateOfBirth: timestamp("date_of_birth"),
   profileImageUrl: varchar("profile_image_url"),
   role: varchar("role", { length: 20 }).default("user"), // 'user' or 'owner'
   userType: varchar("user_type", { length: 20 }).default("customer"), // 'customer' or 'host' (legacy)
@@ -47,7 +46,6 @@ export const users = pgTable("users", {
   
   isEmailVerified: boolean("is_email_verified").default(false),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Boats table schema that matches existing database structure exactly

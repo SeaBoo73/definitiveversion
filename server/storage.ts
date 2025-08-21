@@ -1,7 +1,13 @@
 import {
   users,
+  boats,
+  bookings,
   type User,
   type InsertUser,
+  type Boat,
+  type InsertBoat,
+  type Booking,
+  type InsertBooking,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
@@ -14,6 +20,19 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   verifyPassword(email: string, password: string): Promise<User | null>;
+  
+  // Boat operations
+  getBoats(): Promise<Boat[]>;
+  getBoatsByOwner(ownerId: string): Promise<Boat[]>;
+  getBoat(id: string): Promise<Boat | undefined>;
+  createBoat(boat: InsertBoat): Promise<Boat>;
+  updateBoat(id: string, boat: Partial<InsertBoat>): Promise<Boat | undefined>;
+  deleteBoat(id: string): Promise<boolean>;
+  
+  // Booking operations
+  getBookingsByOwner(ownerId: string): Promise<Booking[]>;
+  getBookingsByCustomer(customerId: string): Promise<Booking[]>;
+  createBooking(booking: InsertBooking): Promise<Booking>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -47,6 +66,57 @@ export class DatabaseStorage implements IStorage {
 
     const isValid = await bcrypt.compare(password, user.password);
     return isValid ? user : null;
+  }
+
+  // Boat operations
+  async getBoats(): Promise<Boat[]> {
+    return await db.select().from(boats).where(eq(boats.isActive, true));
+  }
+
+  async getBoatsByOwner(ownerId: string): Promise<Boat[]> {
+    return await db.select().from(boats).where(eq(boats.hostId, parseInt(ownerId)));
+  }
+
+  async getBoat(id: string): Promise<Boat | undefined> {
+    const [boat] = await db.select().from(boats).where(eq(boats.id, parseInt(id)));
+    return boat;
+  }
+
+  async createBoat(boatData: InsertBoat): Promise<Boat> {
+    const [boat] = await db.insert(boats).values(boatData).returning();
+    return boat;
+  }
+
+  async updateBoat(id: string, boatData: Partial<InsertBoat>): Promise<Boat | undefined> {
+    const [boat] = await db
+      .update(boats)
+      .set(boatData)
+      .where(eq(boats.id, parseInt(id)))
+      .returning();
+    return boat;
+  }
+
+  async deleteBoat(id: string): Promise<boolean> {
+    const result = await db.delete(boats).where(eq(boats.id, parseInt(id)));
+    return result.rowCount > 0;
+  }
+
+  // Booking operations
+  async getBookingsByOwner(ownerId: string): Promise<Booking[]> {
+    return await db
+      .select()
+      .from(bookings)
+      .innerJoin(boats, eq(bookings.boatId, boats.id))
+      .where(eq(boats.hostId, parseInt(ownerId)));
+  }
+
+  async getBookingsByCustomer(customerId: string): Promise<Booking[]> {
+    return await db.select().from(bookings).where(eq(bookings.customerId, customerId));
+  }
+
+  async createBooking(bookingData: InsertBooking): Promise<Booking> {
+    const [booking] = await db.insert(bookings).values(bookingData).returning();
+    return booking;
   }
 }
 

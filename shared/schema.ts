@@ -7,6 +7,9 @@ import {
   varchar,
   text,
   boolean,
+  serial,
+  integer,
+  numeric,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -47,21 +50,34 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Boats table for hosts
+// Boats table schema that matches existing database structure exactly
 export const boats = pgTable("boats", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  hostId: varchar("host_id").references(() => users.id).notNull(),
-  name: varchar("name", { length: 200 }).notNull(),
+  id: serial("id").primaryKey(),
+  hostId: integer("host_id").notNull(),
+  name: text("name").notNull(),
+  manufacturer: text("manufacturer"),
+  type: text("type").notNull(),
+  year: integer("year"),
+  capacity: integer("max_persons"),
+  length: numeric("length"),
+  motorization: text("motorization"),
+  licenseRequired: boolean("license_required"),
+  skipperRequired: boolean("skipper_required"),
+  location: text("port").notNull(),
+  latitude: numeric("latitude"),
+  longitude: numeric("longitude"),
+  pricePerDay: numeric("price_per_day"),
   description: text("description"),
-  type: varchar("type", { length: 50 }).notNull(), // yacht, sailboat, catamaran, etc.
-  capacity: varchar("capacity", { length: 20 }),
-  location: varchar("location", { length: 200 }).notNull(),
-  pricePerDay: varchar("price_per_day", { length: 20 }),
   images: text("images").array(),
-  amenities: text("amenities").array(),
-  isActive: boolean("is_active").default(true),
+  documentsRequired: text("documents_required"),
+  isActive: boolean("active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  pickupTime: text("pickup_time"),
+  returnTime: text("return_time"),
+  dailyReturnRequired: boolean("daily_return_required"),
+  cancellationPolicy: text("cancellation_policy"),
+  refundMethod: text("refund_method"),
+  cancellationRules: jsonb("cancellation_rules"),
 });
 
 // Bookings table
@@ -115,7 +131,7 @@ export const insertBoatSchema = createInsertSchema(boats, {
   name: z.string().min(1, "Nome richiesto"),
   type: z.string().min(1, "Tipo richiesto"),
   location: z.string().min(1, "Località richiesta"),
-}).omit({ id: true, createdAt: true, updatedAt: true });
+}).omit({ id: true, createdAt: true });
 
 export const insertBookingSchema = createInsertSchema(bookings, {
   startDate: z.coerce.date(),

@@ -2368,6 +2368,240 @@
             </div>
         </div>
 
+        <!-- Dashboard Noleggiatore -->
+        <div id="owner-dashboard" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaBoo</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Dashboard Noleggiatore</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <!-- Statistiche veloci -->
+                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937; font-size: 18px;">📊 Le tue statistiche</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="text-align: center; padding: 12px; background: #eff6ff; border-radius: 8px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #0C9FE2;" id="total-boats">1</div>
+                            <div style="font-size: 14px; color: #6b7280;">Barche Attive</div>
+                        </div>
+                        <div style="text-align: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #059669;" id="total-bookings">3</div>
+                            <div style="font-size: 14px; color: #6b7280;">Prenotazioni</div>
+                        </div>
+                        <div style="text-align: center; padding: 12px; background: #fef3e2; border-radius: 8px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #f97316;" id="monthly-revenue">€450</div>
+                            <div style="font-size: 14px; color: #6b7280;">Ricavo Mese</div>
+                        </div>
+                        <div style="text-align: center; padding: 12px; background: #f3e8ff; border-radius: 8px;">
+                            <div style="font-size: 24px; font-weight: bold; color: #7c3aed;" id="rating">4.8</div>
+                            <div style="font-size: 14px; color: #6b7280;">Rating Medio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu azioni principali -->
+                <div style="background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937; font-size: 18px;">🚤 Gestione Flotta</h3>
+                    <div style="display: grid; gap: 12px;">
+                        <button onclick="showBoatsList()" style="width: 100%; background: #0C9FE2; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                            <span>📋 Le mie barche</span>
+                            <span>›</span>
+                        </button>
+                        <button onclick="showAddBoatForm()" style="width: 100%; background: #059669; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                            <span>➕ Aggiungi barca</span>
+                            <span>›</span>
+                        </button>
+                        <button onclick="showBookingsList()" style="width: 100%; background: #f97316; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; text-align: left; display: flex; justify-content: space-between; align-items: center;">
+                            <span>📅 Prenotazioni ricevute</span>
+                            <span>›</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Prenotazioni recenti -->
+                <div style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h3 style="margin: 0 0 16px 0; color: #1f2937; font-size: 18px;">🔔 Prenotazioni Recenti</h3>
+                    <div style="space-y: 12px;">
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                <div>
+                                    <div style="font-weight: 600; color: #1f2937;">Marco R.</div>
+                                    <div style="font-size: 14px; color: #6b7280;">Azzurra 680</div>
+                                </div>
+                                <span style="background: #059669; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">Confermata</span>
+                            </div>
+                            <div style="font-size: 14px; color: #6b7280;">25-26 Agosto 2025 • €300</div>
+                        </div>
+                        <div style="background: #f8fafc; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                <div>
+                                    <div style="font-weight: 600; color: #1f2937;">Anna M.</div>
+                                    <div style="font-size: 14px; color: #6b7280;">Azzurra 680</div>
+                                </div>
+                                <span style="background: #f97316; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">In Attesa</span>
+                            </div>
+                            <div style="font-size: 14px; color: #6b7280;">30-31 Agosto 2025 • €300</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista Barche Noleggiatore -->
+        <div id="boats-list" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaBoo</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Le mie barche</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div id="boats-list-content">
+                    <!-- Barche caricate dinamicamente -->
+                    <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                            <div>
+                                <h3 style="margin: 0 0 4px 0; color: #1f2937;">Azzurra 680</h3>
+                                <div style="font-size: 14px; color: #6b7280;">Gommone • 8 persone</div>
+                                <div style="font-size: 14px; color: #0C9FE2; font-weight: 600;">€150/giorno</div>
+                            </div>
+                            <span style="background: #059669; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">Attiva</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="editBoat(27)" style="flex: 1; background: #0C9FE2; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">✏️ Modifica</button>
+                            <button onclick="confirmDeleteBoat(27)" style="flex: 1; background: #ef4444; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">🗑️ Elimina</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button onclick="showAddBoatForm()" style="width: 100%; background: #059669; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; margin-top: 20px;">➕ Aggiungi Nuova Barca</button>
+            </div>
+        </div>
+
+        <!-- Form Aggiungi/Modifica Barca -->
+        <div id="add-boat-form" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaBoo</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;" id="boat-form-title">Aggiungi barca</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <form id="boat-form" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Nome Barca *</label>
+                        <input type="text" id="boat-name" name="name" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;" placeholder="Es. Azzurra 680">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Tipo Imbarcazione *</label>
+                        <select id="boat-type" name="type" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                            <option value="">Seleziona tipo</option>
+                            <option value="gommone">Gommone</option>
+                            <option value="yacht">Yacht</option>
+                            <option value="sailboat">Barca a vela</option>
+                            <option value="catamaran">Catamarano</option>
+                            <option value="motorboat">Motoscafo</option>
+                            <option value="jetski">Jet ski</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Capacità Massima *</label>
+                        <input type="number" id="boat-capacity" name="max_persons" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;" placeholder="Es. 8">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Porto/Località *</label>
+                        <input type="text" id="boat-location" name="port" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;" placeholder="Es. Porto di Ponza">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Prezzo al giorno (€) *</label>
+                        <input type="number" id="boat-price" name="price_per_day" required style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;" placeholder="Es. 150">
+                    </div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Descrizione</label>
+                        <textarea id="boat-description" name="description" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px; min-height: 100px;" placeholder="Descrivi la tua barca, i servizi inclusi, le caratteristiche speciali..."></textarea>
+                    </div>
+                    
+                    <div style="margin-bottom: 24px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #374151;">Foto (massimo 5)</label>
+                        <input type="file" id="boat-images" name="images" multiple accept="image/*" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;">
+                    </div>
+                    
+                    <button type="submit" style="width: 100%; background: #059669; color: white; border: none; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 16px;">Salva Barca</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista Prenotazioni Noleggiatore -->
+        <div id="bookings-list" class="screen" style="display: none;">
+            <div style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <button onclick="goBack()" style="background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; backdrop-filter: blur(10px);">←</button>
+                <div style="text-align: center; flex-grow: 1;">
+                    <div style="font-size: 18px; font-weight: 600;">SeaBoo</div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 300;">Prenotazioni ricevute</h1>
+                </div>
+                <div style="width: 40px;"></div>
+            </div>
+            <div class="content">
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <h3 style="margin: 0 0 4px 0; color: #1f2937;">Marco Rossi</h3>
+                            <div style="font-size: 14px; color: #6b7280;">marco.rossi@email.com</div>
+                            <div style="font-size: 14px; color: #6b7280;">+39 338 1234567</div>
+                        </div>
+                        <span style="background: #059669; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">Confermata</span>
+                    </div>
+                    <div style="background: #f8fafc; border-radius: 6px; padding: 12px; margin-bottom: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">Azzurra 680</div>
+                        <div style="font-size: 14px; color: #6b7280;">25-26 Agosto 2025 (2 giorni)</div>
+                        <div style="font-size: 16px; font-weight: 600; color: #059669; margin-top: 8px;">€300</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button style="flex: 1; background: #0C9FE2; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">📞 Contatta</button>
+                        <button style="flex: 1; background: #6b7280; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">📄 Dettagli</button>
+                    </div>
+                </div>
+
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <h3 style="margin: 0 0 4px 0; color: #1f2937;">Anna Martini</h3>
+                            <div style="font-size: 14px; color: #6b7280;">anna.martini@gmail.com</div>
+                            <div style="font-size: 14px; color: #6b7280;">+39 347 9876543</div>
+                        </div>
+                        <span style="background: #f97316; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">In Attesa</span>
+                    </div>
+                    <div style="background: #f8fafc; border-radius: 6px; padding: 12px; margin-bottom: 12px;">
+                        <div style="font-weight: 600; margin-bottom: 4px;">Azzurra 680</div>
+                        <div style="font-size: 14px; color: #6b7280;">30-31 Agosto 2025 (2 giorni)</div>
+                        <div style="font-size: 16px; font-weight: 600; color: #f97316; margin-top: 8px;">€300</div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button style="flex: 1; background: #059669; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">✅ Accetta</button>
+                        <button style="flex: 1; background: #ef4444; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">❌ Rifiuta</button>
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="font-size: 24px; margin-bottom: 8px;">📅</div>
+                    <h3 style="margin: 0 0 8px 0; color: #1f2937;">Nessuna altra prenotazione</h3>
+                    <p style="margin: 0; color: #6b7280; font-size: 14px;">Le nuove prenotazioni appariranno qui</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Pagina Categoria -->
         <div id="category-page" class="screen" style="display: none; margin: 0; padding: 0;">
             <!-- Banner categoria con immagine blu -->
@@ -3998,9 +4232,9 @@
                             
                             ${userRole === 'owner' ? `
                                 <!-- Menu per Noleggiatori -->
-                                <div class="menu-item" onclick="showProfilePage('my-boats')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
-                                    <h4>🚤 Le mie barche</h4>
-                                    <p>Gestisci il tuo inventario e aggiungi barche</p>
+                                <div class="menu-item" onclick="showOwnerDashboard()" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>🚤 Dashboard Noleggiatore</h4>
+                                    <p>Gestisci barche, prenotazioni e statistiche</p>
                                 </div>
                                 
                                 <div class="menu-item" onclick="showProfilePage('bookings-received')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
@@ -5130,6 +5364,194 @@
                 console.log('⚓ Esperienze: ATTIVATO');
             }
         }
+
+        // ===== DASHBOARD NOLEGGIATORE FUNCTIONS =====
+        
+        function showOwnerDashboard() {
+            navigateTo('owner-dashboard');
+        }
+        
+        function showBoatsList() {
+            loadOwnerBoats();
+            navigateTo('boats-list');
+        }
+        
+        function showBookingsList() {
+            loadOwnerBookings();
+            navigateTo('bookings-list');
+        }
+        
+        function showAddBoatForm(boatId = null) {
+            if (boatId) {
+                // Modalità modifica
+                document.getElementById('boat-form-title').textContent = 'Modifica barca';
+                loadBoatForEdit(boatId);
+            } else {
+                // Modalità aggiungi
+                document.getElementById('boat-form-title').textContent = 'Aggiungi barca';
+                clearBoatForm();
+            }
+            navigateTo('add-boat-form');
+        }
+        
+        function editBoat(boatId) {
+            showAddBoatForm(boatId);
+        }
+        
+        function confirmDeleteBoat(boatId) {
+            if (confirm('Sei sicuro di voler eliminare questa barca?\n\nTutte le prenotazioni future verranno cancellate.')) {
+                deleteBoat(boatId);
+            }
+        }
+        
+        async function loadOwnerBoats() {
+            try {
+                const response = await fetch('/api/owner/boats');
+                if (response.ok) {
+                    const data = await response.json();
+                    displayOwnerBoats(data.boats || []);
+                } else {
+                    console.error('Errore nel caricamento barche');
+                }
+            } catch (error) {
+                console.error('Errore di connessione:', error);
+            }
+        }
+        
+        function displayOwnerBoats(boats) {
+            const container = document.getElementById('boats-list-content');
+            
+            if (!boats || boats.length === 0) {
+                container.innerHTML = `
+                    <div style="background: #f8fafc; border-radius: 12px; padding: 20px; text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 16px;">🚤</div>
+                        <h3 style="margin: 0 0 8px 0; color: #1f2937;">Nessuna barca ancora</h3>
+                        <p style="margin: 0; color: #6b7280; font-size: 14px;">Aggiungi la tua prima barca per iniziare</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = boats.map(boat => `
+                <div style="background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                        <div>
+                            <h3 style="margin: 0 0 4px 0; color: #1f2937;">${boat.name}</h3>
+                            <div style="font-size: 14px; color: #6b7280;">${boat.type} • ${boat.capacity || boat.max_persons} persone</div>
+                            <div style="font-size: 14px; color: #0C9FE2; font-weight: 600;">€${boat.price_per_day || boat.pricePerDay}/giorno</div>
+                        </div>
+                        <span style="background: ${boat.active || boat.isActive ? '#059669' : '#6b7280'}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+                            ${boat.active || boat.isActive ? 'Attiva' : 'Inattiva'}
+                        </span>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="editBoat(${boat.id})" style="flex: 1; background: #0C9FE2; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">✏️ Modifica</button>
+                        <button onclick="confirmDeleteBoat(${boat.id})" style="flex: 1; background: #ef4444; color: white; border: none; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600;">🗑️ Elimina</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function loadOwnerBookings() {
+            try {
+                const response = await fetch('/api/owner/bookings');
+                if (response.ok) {
+                    const data = await response.json();
+                    displayOwnerBookings(data.bookings || []);
+                } else {
+                    console.error('Errore nel caricamento prenotazioni');
+                }
+            } catch (error) {
+                console.error('Errore di connessione:', error);
+            }
+        }
+        
+        function displayOwnerBookings(bookings) {
+            // Implementazione display prenotazioni
+            console.log('Bookings:', bookings);
+        }
+        
+        function clearBoatForm() {
+            document.getElementById('boat-form').reset();
+        }
+        
+        async function loadBoatForEdit(boatId) {
+            try {
+                const response = await fetch(`/api/boats/${boatId}`);
+                if (response.ok) {
+                    const boat = await response.json();
+                    populateBoatForm(boat);
+                } else {
+                    console.error('Errore nel caricamento barca');
+                }
+            } catch (error) {
+                console.error('Errore di connessione:', error);
+            }
+        }
+        
+        function populateBoatForm(boat) {
+            document.getElementById('boat-name').value = boat.name || '';
+            document.getElementById('boat-type').value = boat.type || '';
+            document.getElementById('boat-capacity').value = boat.max_persons || boat.capacity || '';
+            document.getElementById('boat-location').value = boat.port || boat.location || '';
+            document.getElementById('boat-price').value = boat.price_per_day || boat.pricePerDay || '';
+            document.getElementById('boat-description').value = boat.description || '';
+        }
+        
+        async function deleteBoat(boatId) {
+            try {
+                const response = await fetch(`/api/boats/${boatId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    alert('✅ Barca eliminata con successo!');
+                    loadOwnerBoats(); // Ricarica la lista
+                } else {
+                    const error = await response.json();
+                    alert('❌ Errore: ' + (error.message || 'Impossibile eliminare la barca'));
+                }
+            } catch (error) {
+                alert('❌ Errore di connessione');
+                console.error('Errore:', error);
+            }
+        }
+        
+        // Gestione submit form barca
+        document.addEventListener('DOMContentLoaded', function() {
+            const boatForm = document.getElementById('boat-form');
+            if (boatForm) {
+                boatForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const isEdit = document.getElementById('boat-form-title').textContent.includes('Modifica');
+                    
+                    try {
+                        const url = isEdit ? `/api/boats/${currentEditingBoatId}` : '/api/boats';
+                        const method = isEdit ? 'PUT' : 'POST';
+                        
+                        const response = await fetch(url, {
+                            method: method,
+                            body: formData
+                        });
+                        
+                        if (response.ok) {
+                            alert('✅ Barca salvata con successo!');
+                            showBoatsList(); // Torna alla lista barche
+                        } else {
+                            const error = await response.json();
+                            alert('❌ Errore: ' + (error.error || 'Impossibile salvare la barca'));
+                        }
+                    } catch (error) {
+                        alert('❌ Errore di connessione');
+                        console.error('Errore:', error);
+                    }
+                });
+            }
+        });
+        
+        let currentEditingBoatId = null;
 
     </script>
 </body>

@@ -32,7 +32,16 @@ export const users = pgTable("users", {
   phone: varchar("phone", { length: 20 }),
   dateOfBirth: timestamp("date_of_birth"),
   profileImageUrl: varchar("profile_image_url"),
-  userType: varchar("user_type", { length: 20 }).default("customer"), // 'customer' or 'host'
+  role: varchar("role", { length: 20 }).default("user"), // 'user' or 'owner'
+  userType: varchar("user_type", { length: 20 }).default("customer"), // 'customer' or 'host' (legacy)
+  
+  // Business fields for owners
+  businessName: varchar("business_name", { length: 200 }),
+  businessType: varchar("business_type", { length: 100 }),
+  vatNumber: varchar("vat_number", { length: 50 }),
+  website: varchar("website", { length: 255 }),
+  instagram: varchar("instagram", { length: 100 }),
+  
   isEmailVerified: boolean("is_email_verified").default(false),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -76,7 +85,26 @@ export const insertUserSchema = createInsertSchema(users, {
   firstName: z.string().min(1, "Nome richiesto").optional(),
   lastName: z.string().min(1, "Cognome richiesto").optional(),
   phone: z.string().optional(),
+  role: z.enum(["user", "owner"]).default("user"),
+  businessName: z.string().optional(),
+  businessType: z.string().optional(),
+  vatNumber: z.string().optional(),
+  website: z.string().url().optional().or(z.literal("")),
+  instagram: z.string().optional(),
 }).omit({ id: true, createdAt: true, updatedAt: true });
+
+// Schema specifico per registrazione owner
+export const insertOwnerSchema = insertUserSchema.extend({
+  role: z.literal("owner"),
+  businessName: z.string().min(1, "Nome attività richiesto"),
+  phone: z.string().min(1, "Telefono richiesto"),
+  vatNumber: z.string().min(1, "P.IVA/Codice Fiscale richiesto"),
+});
+
+// Schema specifico per registrazione user
+export const insertUserOnlySchema = insertUserSchema.extend({
+  role: z.literal("user"),
+});
 
 export const loginSchema = z.object({
   email: z.string().email("Email non valido"),

@@ -1,9 +1,24 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, loginSchema } from "@shared/schema";
+import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema } from "@shared/schema";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
+
+// Extend session type
+declare module 'express-session' {
+  interface SessionData {
+    user?: {
+      id: string;
+      email: string;
+      firstName?: string;
+      lastName?: string;
+      role: string;
+      userType: string;
+      businessName?: string;
+    };
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Session setup
@@ -30,10 +45,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     next();
   };
 
-  // Register endpoint
+  // Register endpoint with role-based validation
   app.post('/api/register', async (req, res) => {
     try {
-      const userData = insertUserSchema.parse(req.body);
+      // Determine which schema to use based on role
+      const role = req.body.role || "user";
+      let userData;
+      
+      if (role === "owner") {
+        userData = insertOwnerSchema.parse(req.body);
+      } else {
+        userData = insertUserOnlySchema.parse(req.body);
+      }
       
       // Check if user already exists
       const existingUser = await storage.getUserByEmail(userData.email);
@@ -50,6 +73,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
+        role: user.role,
         userType: user.userType
       };
 
@@ -60,8 +84,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          userType: user.userType
-        }
+          role: user.role,
+          userType: user.userType,
+          businessName: user.businessName
+        },
+        redirectTo: role === "owner" ? "/owner/dashboard" : "/home"
       });
     } catch (error: any) {
       console.error("Registration error:", error);

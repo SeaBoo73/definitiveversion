@@ -3640,46 +3640,75 @@
 
         function showRegisterForm() {
             document.getElementById('auth-title').textContent = 'Registrati su SeaBoo';
-            document.getElementById('auth-subtitle').textContent = 'Crea il tuo account per iniziare';
+            document.getElementById('auth-subtitle').textContent = 'Registrati come:';
             
             document.getElementById('auth-form').innerHTML = `
+                <!-- Schede Selezione Ruolo -->
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; border-radius: 12px; background: #f8fafc; padding: 4px; margin-bottom: 20px; border: 2px solid #e5e7eb;">
+                        <button 
+                            id="userTab" 
+                            onclick="selectRole('user')" 
+                            style="flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s ease; background: linear-gradient(135deg, #0C9FE2 0%, #0284c7 100%); color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(12,159,226,0.3);" 
+                            aria-selected="true"
+                            data-testid="tab-user">
+                            Utente
+                        </button>
+                        <button 
+                            id="ownerTab" 
+                            onclick="selectRole('owner')" 
+                            style="flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s ease; background: #f1f5f9; color: #64748b;" 
+                            aria-selected="false"
+                            data-testid="tab-owner">
+                            Noleggiatore
+                        </button>
+                    </div>
+                    
+                    <!-- Descrizione Ruolo -->
+                    <div id="roleDescription" style="text-align: center; padding: 12px; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0C9FE2; margin-bottom: 20px;">
+                        <div style="font-size: 14px; color: #1e40af; font-weight: 600;">Chi prenota barche</div>
+                        <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Cerca e prenota imbarcazioni per le tue gite</div>
+                    </div>
+                </div>
+                
+                <!-- Campi Base (sempre visibili) -->
                 <div style="margin-bottom: 16px;">
                     <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Nome</label>
-                    <input type="text" id="firstName" placeholder="Il tuo nome" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                    <input type="text" id="firstName" placeholder="Il tuo nome" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-firstName">
                 </div>
                 <div style="margin-bottom: 16px;">
                     <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Cognome</label>
-                    <input type="text" id="lastName" placeholder="Il tuo cognome" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                    <input type="text" id="lastName" placeholder="Il tuo cognome" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-lastName">
                 </div>
                 <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Email</label>
-                    <input type="email" id="registerEmail" placeholder="email@esempio.com" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Email *</label>
+                    <input type="email" id="registerEmail" placeholder="email@esempio.com" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-email" required>
                 </div>
                 <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Telefono (opzionale)</label>
-                    <input type="tel" id="phone" placeholder="+39 123 456 7890" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Password *</label>
+                    <input type="password" id="registerPassword" placeholder="Minimo 6 caratteri" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-password" required>
                 </div>
-                <div style="margin-bottom: 16px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Password</label>
-                    <input type="password" id="registerPassword" placeholder="Minimo 6 caratteri" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'">
+                
+                <!-- Campi Specifici per Ruolo (dinamici) -->
+                <div id="dynamicFields">
+                    <!-- Campi base per utenti -->
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Telefono (opzionale)</label>
+                        <input type="tel" id="phone" placeholder="+39 123 456 7890" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-phone">
+                    </div>
                 </div>
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Tipo account</label>
-                    <select id="userType" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; background: white;">
-                        <option value="customer">Cliente - Voglio noleggiare</option>
-                        <option value="host">Proprietario - Voglio affittare</option>
-                    </select>
-                </div>
+                
+                <input type="hidden" id="userRole" value="user">
                 
                 <div style="margin-bottom: 20px; padding: 12px; background: #f8fafc; border-radius: 8px; font-size: 13px; color: #6b7280; line-height: 1.4;">
                     Registrandoti accetti i nostri <button onclick="showTermsModal()" style="color: #0C9FE2; background: none; border: none; text-decoration: underline; cursor: pointer;">Termini di Servizio</button> e la <button onclick="showPrivacyModal()" style="color: #0C9FE2; background: none; border: none; text-decoration: underline; cursor: pointer;">Privacy Policy</button>
                 </div>
                 
-                <button onclick="handleRealRegister()" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'">
+                <button onclick="handleRealRegister()" style="width: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: 600; margin-bottom: 16px; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform='translateY(0)'" data-testid="button-register">
                     Registrati
                 </button>
                 
-                <div id="register-error" class="error-message" style="display: none; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;"></div>
+                <div id="register-error" class="error-message" style="display: none; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px;" data-testid="text-error"></div>
                 <div id="register-loading" style="display: none; text-align: center; color: #10b981; margin-bottom: 16px;">
                     <div style="display: inline-flex; align-items: center; gap: 8px;">
                         <div style="width: 16px; height: 16px; border: 2px solid #10b981; border-top: 2px solid transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
@@ -3689,7 +3718,7 @@
                 
                 <div style="text-align: center; margin-top: 20px;">
                     <div style="color: #6b7280; margin-bottom: 12px;">Hai già un account?</div>
-                    <button onclick="showLoginForm()" style="background: none; border: 2px solid #0C9FE2; color: #0C9FE2; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#0C9FE2'; this.style.color='white'" onmouseout="this.style.background='none'; this.style.color='#0C9FE2'">
+                    <button onclick="showLoginForm()" style="background: none; border: 2px solid #0C9FE2; color: #0C9FE2; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.background='#0C9FE2'; this.style.color='white'" onmouseout="this.style.background='none'; this.style.color='#0C9FE2'" data-testid="button-login">
                         Accedi
                     </button>
                 </div>
@@ -3701,6 +3730,98 @@
             if (overlay) {
                 overlay.remove();
                 document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Funzione per gestire la selezione del ruolo
+        function selectRole(role) {
+            const userTab = document.getElementById('userTab');
+            const ownerTab = document.getElementById('ownerTab');
+            const roleDescription = document.getElementById('roleDescription');
+            const dynamicFields = document.getElementById('dynamicFields');
+            const userRoleInput = document.getElementById('userRole');
+            
+            // Aggiorna lo stato delle schede
+            if (role === 'user') {
+                userTab.style.background = 'linear-gradient(135deg, #0C9FE2 0%, #0284c7 100%)';
+                userTab.style.color = 'white';
+                userTab.style.transform = 'translateY(-2px)';
+                userTab.style.boxShadow = '0 4px 12px rgba(12,159,226,0.3)';
+                userTab.setAttribute('aria-selected', 'true');
+                
+                ownerTab.style.background = '#f1f5f9';
+                ownerTab.style.color = '#64748b';
+                ownerTab.style.transform = 'translateY(0)';
+                ownerTab.style.boxShadow = 'none';
+                ownerTab.setAttribute('aria-selected', 'false');
+                
+                // Aggiorna descrizione
+                roleDescription.innerHTML = `
+                    <div style="font-size: 14px; color: #1e40af; font-weight: 600;">Chi prenota barche</div>
+                    <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Cerca e prenota imbarcazioni per le tue gite</div>
+                `;
+                
+                // Campi per utenti
+                dynamicFields.innerHTML = `
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Telefono (opzionale)</label>
+                        <input type="tel" id="phone" placeholder="+39 123 456 7890" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#0C9FE2'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-phone">
+                    </div>
+                `;
+                
+            } else if (role === 'owner') {
+                ownerTab.style.background = 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)';
+                ownerTab.style.color = 'white';
+                ownerTab.style.transform = 'translateY(-2px)';
+                ownerTab.style.boxShadow = '0 4px 12px rgba(249,115,22,0.3)';
+                ownerTab.setAttribute('aria-selected', 'true');
+                
+                userTab.style.background = '#f1f5f9';
+                userTab.style.color = '#64748b';
+                userTab.style.transform = 'translateY(0)';
+                userTab.style.boxShadow = 'none';
+                userTab.setAttribute('aria-selected', 'false');
+                
+                // Aggiorna descrizione
+                roleDescription.innerHTML = `
+                    <div style="font-size: 14px; color: #ea580c; font-weight: 600;">Chi pubblica e affitta barche</div>
+                    <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Monetizza le tue imbarcazioni affittandole</div>
+                `;
+                roleDescription.style.background = '#fff7ed';
+                roleDescription.style.borderLeftColor = '#f97316';
+                
+                // Campi per noleggiatori
+                dynamicFields.innerHTML = `
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Nome attività *</label>
+                        <input type="text" id="businessName" placeholder="Nome della tua attività nautica" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-businessName" required>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Telefono *</label>
+                        <input type="tel" id="phone" placeholder="+39 123 456 7890" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-phone" required>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">P.IVA / Codice Fiscale *</label>
+                        <input type="text" id="vatNumber" placeholder="01234567890" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-vatNumber" required>
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Sito web (opzionale)</label>
+                        <input type="url" id="website" placeholder="https://www.esempio.com" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-website">
+                    </div>
+                    <div style="margin-bottom: 16px;">
+                        <label style="display: block; font-size: 14px; font-weight: 500; color: #374151; margin-bottom: 6px;">Instagram (opzionale)</label>
+                        <input type="text" id="instagram" placeholder="@il_tuo_profilo" style="width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; transition: border-color 0.2s;" onfocus="this.style.borderColor='#f97316'" onblur="this.style.borderColor='#e5e7eb'" data-testid="input-instagram">
+                    </div>
+                `;
+            }
+            
+            // Aggiorna il valore nascosto del ruolo
+            userRoleInput.value = role;
+            
+            // Reset descrizione per utenti
+            if (role === 'user') {
+                roleDescription.style.background = '#f0f9ff';
+                roleDescription.style.borderLeftColor = '#0C9FE2';
             }
         }
 
@@ -3754,7 +3875,7 @@
             const email = document.getElementById('registerEmail').value;
             const phone = document.getElementById('phone').value;
             const password = document.getElementById('registerPassword').value;
-            const userType = document.getElementById('userType').value;
+            const role = document.getElementById('userRole').value;
             const errorDiv = document.getElementById('register-error');
             const loadingDiv = document.getElementById('register-loading');
             
@@ -3762,6 +3883,7 @@
             errorDiv.style.display = 'none';
             loadingDiv.style.display = 'block';
             
+            // Validazioni base
             if (!email || !password || password.length < 6) {
                 errorDiv.textContent = 'Email richiesta e password minimo 6 caratteri';
                 errorDiv.style.display = 'block';
@@ -3769,18 +3891,41 @@
                 return;
             }
             
+            // Costruisci oggetto di registrazione basato sul ruolo
+            const registrationData = {
+                firstName,
+                lastName,
+                email,
+                password,
+                role,
+                phone
+            };
+            
+            // Validazioni e campi specifici per noleggiatori
+            if (role === 'owner') {
+                const businessName = document.getElementById('businessName')?.value;
+                const vatNumber = document.getElementById('vatNumber')?.value;
+                const website = document.getElementById('website')?.value;
+                const instagram = document.getElementById('instagram')?.value;
+                
+                if (!businessName || !phone || !vatNumber) {
+                    errorDiv.textContent = 'Per i noleggiatori sono obbligatori: Nome attività, Telefono e P.IVA/CF';
+                    errorDiv.style.display = 'block';
+                    loadingDiv.style.display = 'none';
+                    return;
+                }
+                
+                registrationData.businessName = businessName;
+                registrationData.vatNumber = vatNumber;
+                registrationData.website = website;
+                registrationData.instagram = instagram;
+            }
+            
             try {
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        firstName,
-                        lastName,
-                        email,
-                        phone,
-                        password,
-                        userType
-                    })
+                    body: JSON.stringify(registrationData)
                 });
                 
                 const data = await response.json();
@@ -3790,7 +3935,18 @@
                     isAuthenticated = true;
                     closeAuthOverlay();
                     updateProfileSection();
-                    alert('🎉 Registrazione completata!\n\nBenvenuto in SeaBoo! Il tuo account è stato creato con successo.');
+                    
+                    // Redirect basato sul ruolo
+                    if (data.redirectTo) {
+                        if (data.redirectTo === '/owner/dashboard') {
+                            alert('🎉 Registrazione Noleggiatore completata!\n\nBenvenuto in SeaBoo! Ora puoi pubblicare le tue barche.');
+                            // Qui potresti navigare alla dashboard proprietari se esistesse
+                        } else {
+                            alert('🎉 Registrazione completata!\n\nBenvenuto in SeaBoo! Ora puoi prenotare barche.');
+                        }
+                    } else {
+                        alert('🎉 Registrazione completata!\n\nBenvenuto in SeaBoo!');
+                    }
                 } else {
                     errorDiv.textContent = data.error || 'Errore durante la registrazione';
                     errorDiv.style.display = 'block';
@@ -3822,13 +3978,16 @@
             
             if (isAuthenticated && currentUser) {
                 const userName = currentUser.firstName ? `${currentUser.firstName}!` : 'Benvenuto!';
-                const userType = currentUser.userType === 'host' ? 'Sea Host' : 'Cliente';
+                const userRole = currentUser.role || 'user';
+                const userType = userRole === 'owner' ? 'Noleggiatore' : 'Cliente';
+                const businessName = currentUser.businessName ? ` - ${currentUser.businessName}` : '';
+                
                 // Mostra interfaccia utente loggato
                 profileSection.innerHTML = `
                     <div class="content">
-                        <div class="profile-header" style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
+                        <div class="profile-header" style="background: linear-gradient(135deg, ${userRole === 'owner' ? '#f97316, #ea580c' : '#0C9FE2, #0284c7'}); padding: 24px; text-align: center; color: white; border-radius: 12px; margin: 16px;">
                             <h2>👋 Ciao, ${userName}</h2>
-                            <p>Area personale SeaBoo - ${userType}</p>
+                            <p>Area personale SeaBoo - ${userType}${businessName}</p>
                             <div style="font-size: 14px; opacity: 0.9; margin-top: 8px;">${currentUser.email}</div>
                         </div>
                         
@@ -3838,10 +3997,39 @@
                                 <p>Gestisci le tue prenotazioni e cronologia</p>
                             </div>
                             
-                            <div class="menu-item" onclick="showProfilePage('reviews')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
-                                <h4>Le mie recensioni</h4>
-                                <p>Vedi e scrivi recensioni sulle barche</p>
-                            </div>
+                            ${userRole === 'owner' ? `
+                                <!-- Menu per Noleggiatori -->
+                                <div class="menu-item" onclick="showProfilePage('my-boats')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>🚤 Le mie barche</h4>
+                                    <p>Gestisci il tuo inventario e aggiungi barche</p>
+                                </div>
+                                
+                                <div class="menu-item" onclick="showProfilePage('bookings-received')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>📅 Prenotazioni ricevute</h4>
+                                    <p>Gestisci le prenotazioni per le tue barche</p>
+                                </div>
+                                
+                                <div class="menu-item" onclick="showProfilePage('analytics')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>📊 Statistiche</h4>
+                                    <p>Visualizza guadagni e performance</p>
+                                </div>
+                                
+                                <div class="menu-item" onclick="showProfilePage('banking')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>🏦 Dati bancari</h4>
+                                    <p>Gestisci IBAN per ricevere pagamenti</p>
+                                </div>
+                            ` : `
+                                <!-- Menu per Clienti -->
+                                <div class="menu-item" onclick="showProfilePage('reviews')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>⭐ Le mie recensioni</h4>
+                                    <p>Vedi e scrivi recensioni sulle barche</p>
+                                </div>
+                                
+                                <div class="menu-item" onclick="showProfilePage('become-owner')" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); color: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
+                                    <h4>🏆 Diventa Noleggiatore</h4>
+                                    <p>Inizia ad affittare le tue barche</p>
+                                </div>
+                            `}
                             
                             <div class="menu-item" onclick="showProfilePage('payments')" style="background: white; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); cursor: pointer;">
                                 <h4>💳 Metodi di pagamento</h4>

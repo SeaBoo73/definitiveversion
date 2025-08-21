@@ -1105,47 +1105,50 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        /* Regole CSS per banner delle pagine di categoria - applicate solo quando URL contiene /categorie/ o /category/ */
-        body.is-category #category-page > div:first-child,
-        body.is-category .category-banner,
-        body.is-category #category-page .banner {
+        /* Regole CSS per banner delle pagine di categoria - RIMOZIONE COMPLETA SPAZI BIANCHI */
+        body.is-category #category-page {
+            margin: 0 !important;
+            padding: 0 !important;
+            margin-top: -72px !important; /* Compensa l'header fisso */
+        }
+
+        body.is-category #category-page > div:first-child {
             background-image: url("/images/banner-category.png") !important;
             background-size: cover !important;
             background-position: center !important;
             margin: 0 !important;
             margin-top: 0 !important;
-            padding: 0 !important;
-            padding-top: 0 !important;
+            padding: 72px 24px 32px 24px !important; /* Padding-top per evitare sovrapposizione header */
             width: 100% !important;
-            height: 200px !important;
+            min-height: 180px !important;
         }
 
-        /* Rimuovi spazi bianchi sopra il banner nelle pagine categoria */
-        body.is-category #category-page,
-        body.is-category .category-container {
+        /* Rimuovi spazi bianchi in tutte le sezioni categoria */
+        body.is-category .screen:not(#home) {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+
+        body.is-category .content {
             margin-top: 0 !important;
             padding-top: 0 !important;
         }
 
         /* Assicura che il contenuto del banner sia visibile sull'immagine blu */
-        body.is-category .category-banner h2,
-        body.is-category .category-banner .category-title,
         body.is-category #category-title,
-        body.is-category #category-page h2 {
+        body.is-category #category-page h1,
+        body.is-category #category-page h2,
+        body.is-category #category-page .category-title {
             color: white !important;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
             z-index: 10 !important;
             position: relative !important;
         }
 
-        /* Forza rimozione completa degli spazi sopra il banner nelle categorie */
-        body.is-category .screen:not(#home) {
-            padding-top: 0 !important;
-        }
-
-        body.is-category .content {
-            margin-top: 0 !important;
-            padding-top: 0 !important;
+        /* Logo SeaBoo nel banner categoria */
+        body.is-category #category-page div[style*="font-size: 18px"] {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
         }
     </style>
 </head>
@@ -2368,7 +2371,7 @@
         <!-- Pagina Categoria -->
         <div id="category-page" class="screen" style="display: none; margin: 0; padding: 0;">
             <!-- Banner categoria con immagine blu -->
-            <div style="background-image: url('/attached_assets/ChatGPT Image 21 ago 2025, 22_31_18_1755808287192.png'); background-size: cover; background-position: center; padding: 8px 24px 32px 24px; color: white; margin: -88px 0 0 0; border-radius: 0; text-align: center; position: relative; z-index: 1;">
+            <div style="background-image: url('/images/banner-category.png'); background-size: cover; background-position: center; padding: 72px 24px 32px 24px; color: white; margin: 0; border-radius: 0; text-align: center; position: relative; z-index: 1;">
                 <!-- Overlay per migliorare la leggibilità del testo -->
                 <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12, 159, 226, 0.2); z-index: -1;"></div>
                 
@@ -3112,7 +3115,7 @@
             // Aggiungi classe categoria se URL contiene /categorie/ o /category/
             if (currentURL.includes('/categorie/') || currentURL.includes('/category/') || page === 'category') {
                 document.body.classList.add('is-category');
-                console.log('Applied is-category class for URL:', currentURL);
+                console.log('Applied is-category class for page:', page, 'URL:', currentURL);
             }
             
             // Mostra la pagina richiesta

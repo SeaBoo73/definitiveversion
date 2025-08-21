@@ -77,8 +77,14 @@ const ProfileScreen = () => {
   };
 
   const handleLogin = () => {
-    setIsLoggedIn(true);
-    Alert.alert('Accesso Effettuato', 'Benvenuto in SeaBoo!');
+    // Redirect to real authentication system
+    Alert.alert(
+      'Accesso SeaBoo',
+      'Per accedere al tuo account SeaBoo, visita seaboo.it sul tuo browser.',
+      [
+        { text: 'OK', style: 'default' }
+      ]
+    );
   };
 
   const handleLogout = () => {

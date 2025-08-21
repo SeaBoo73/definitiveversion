@@ -1105,26 +1105,47 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.2);
         }
 
-        /* Regole CSS per banner delle pagine di categoria */
-        body.is-category #category-page > div:first-child {
+        /* Regole CSS per banner delle pagine di categoria - applicate solo quando URL contiene /categorie/ o /category/ */
+        body.is-category #category-page > div:first-child,
+        body.is-category .category-banner,
+        body.is-category #category-page .banner {
             background-image: url("/images/banner-category.png") !important;
             background-size: cover !important;
             background-position: center !important;
             margin: 0 !important;
+            margin-top: 0 !important;
             padding: 0 !important;
+            padding-top: 0 !important;
             width: 100% !important;
+            height: 200px !important;
         }
 
-        /* Assicura che tutti i banner di categoria usino l'immagine uniformata */
-        .is-category .category-banner,
-        .is-category #category-page .banner,
-        .is-category [id*="category"] .header {
-            background-image: url("/images/banner-category.png") !important;
-            background-size: cover !important;
-            background-position: center !important;
-            margin: 0 !important;
-            padding: 8px 24px 32px 24px !important;
-            width: 100% !important;
+        /* Rimuovi spazi bianchi sopra il banner nelle pagine categoria */
+        body.is-category #category-page,
+        body.is-category .category-container {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        /* Assicura che il contenuto del banner sia visibile sull'immagine blu */
+        body.is-category .category-banner h2,
+        body.is-category .category-banner .category-title,
+        body.is-category #category-title,
+        body.is-category #category-page h2 {
+            color: white !important;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+            z-index: 10 !important;
+            position: relative !important;
+        }
+
+        /* Forza rimozione completa degli spazi sopra il banner nelle categorie */
+        body.is-category .screen:not(#home) {
+            padding-top: 0 !important;
+        }
+
+        body.is-category .content {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
         }
     </style>
 </head>
@@ -3082,15 +3103,22 @@
             // Rimuovi classe categoria da body
             document.body.classList.remove('is-category');
             
+            // Simula URL per rilevamento categoria
+            let currentURL = '';
+            if (page === 'category' && params.category) {
+                currentURL = `/categorie/${params.category}`;
+            }
+            
+            // Aggiungi classe categoria se URL contiene /categorie/ o /category/
+            if (currentURL.includes('/categorie/') || currentURL.includes('/category/') || page === 'category') {
+                document.body.classList.add('is-category');
+                console.log('Applied is-category class for URL:', currentURL);
+            }
+            
             // Mostra la pagina richiesta
             const pageElement = document.getElementById(page + '-page');
             if (pageElement) {
                 pageElement.style.display = 'block';
-                
-                // Aggiungi classe categoria se è una pagina di categoria
-                if (page === 'category') {
-                    document.body.classList.add('is-category');
-                }
                 
                 // Aggiorna contenuto se necessario
                 if (params.category) updateCategoryPage(params.category);

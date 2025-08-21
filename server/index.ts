@@ -16,6 +16,11 @@ app.get("/app-preview", (req, res) => {
   res.sendFile(path.resolve("mobile-preview.html"));
 });
 
+// Direct mobile preview route
+app.get("/mobile-preview.html", (req, res) => {
+  res.sendFile(path.resolve("mobile-preview.html"));
+});
+
 // Native app preview route
 app.get("/native-preview", (req, res) => {
   res.sendFile(path.resolve("native-app-preview.html"));

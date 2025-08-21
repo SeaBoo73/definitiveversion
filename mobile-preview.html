@@ -2920,6 +2920,21 @@
             }
         };
 
+        // Funzione per aprire pagine esterne
+        function openExternalPage(url) {
+            try {
+                // Prova prima con window.open
+                const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+                if (!newWindow) {
+                    // Se bloccato, prova con location
+                    window.location.href = url;
+                }
+            } catch (e) {
+                // Fallback: naviga nella stessa finestra
+                window.location.href = url;
+            }
+        }
+
         // Funzioni di navigazione
         function navigateTo(page, params = {}) {
             if (currentPage !== 'home') {
@@ -3490,7 +3505,7 @@
                             
                             <p style="text-align: center; margin-top: 24px; color: #6b7280; font-size: 13px; line-height: 1.4; padding: 0 8px;">
                                 Registrandoti accetti i nostri<br>
-                                <a href="/terms.html" onclick="window.open(this.href, '_blank'); return false;" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Termini di Servizio</a> e <a href="/privacy.html" onclick="window.open(this.href, '_blank'); return false;" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Privacy Policy</a>
+                                <a href="#" onclick="openExternalPage('/terms.html')" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Termini di Servizio</a> e <a href="#" onclick="openExternalPage('/privacy.html')" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Privacy Policy</a>
                             </p>
                         </div>
                     </div>

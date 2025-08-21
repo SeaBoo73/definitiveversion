@@ -71,12 +71,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Store user in session (login automatically after registration)
       req.session.user = {
-        id: user.id,
+        id: user.id.toString(),
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
         role: user.role || "user",
-        userType: user.userType || "customer",
+        userType: user.role === "owner" ? "owner" : "customer",
         businessName: user.businessName || undefined
       };
 
@@ -88,7 +88,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           firstName: user.firstName,
           lastName: user.lastName,
           role: user.role,
-          userType: user.userType,
+          userType: user.role === "owner" ? "owner" : "customer",
           businessName: user.businessName
         },
         redirectTo: role === "owner" ? "/owner/dashboard" : "/home"
@@ -113,12 +113,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Store user in session
       req.session.user = {
-        id: user.id,
+        id: user.id.toString(),
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
         role: user.role || "user",
-        userType: user.userType || "customer",
+        userType: user.role === "owner" ? "owner" : "customer",
         businessName: user.businessName || undefined
       };
 
@@ -129,7 +129,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          userType: user.userType
+          userType: user.role === "owner" ? "owner" : "customer"
         }
       });
     } catch (error: any) {

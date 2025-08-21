@@ -1,7 +1,7 @@
 # SeaBoo - Boat Rental Platform
 
 ## Overview
-SeaBoo is a comprehensive full-stack web application, functioning as an "Airbnb for boats" with features inspired by Booking.com for date management and Glovo for user experience simplicity. It enables users to search, book, and manage boat rentals across Italy, covering various vessel types including yachts, dinghies, catamarans, jet skis, sailboats, kayaks, charters, and houseboats. The platform aims to simplify maritime rentals, offering an intuitive experience for both customers and boat owners, with integrated payment and mapping functionalities.
+SeaBoo is a comprehensive full-stack web application designed as an "Airbnb for boats," incorporating features inspired by Booking.com for date management and Glovo for user experience simplicity. It facilitates the search, booking, and management of boat rentals across Italy, covering various vessel types including yachts, dinghies, catamarans, jet skis, sailboats, kayaks, charters, and houseboats. The platform aims to streamline maritime rentals, offering an intuitive experience for both customers and boat owners, with integrated payment and mapping functionalities. The business vision includes simplifying maritime travel, expanding market reach in Italy, and becoming the leading platform for boat rentals.
 
 ## User Preferences
 Preferred communication style: Simple, everyday language.
@@ -19,12 +19,12 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 - **UI Components**: Radix UI primitives with custom styling
 - **Styling**: Tailwind CSS with custom design tokens and CSS variables
 - **Forms**: React Hook Form with Zod validation
-- **UI/UX Decisions**: Mobile-first design, clean and modern aesthetic, consistent branding with a specific color palette (ocean blue, coral), professional typography, and a preference for symmetrical, emoji-free layouts. Design elements include gradient effects, distinct badges, and interactive cards.
+- **UI/UX Decisions**: Mobile-first design, clean and modern aesthetic, consistent branding with a specific color palette (ocean blue, coral), professional typography (Inter for body, Playfair Display for titles), and a preference for symmetrical, emoji-free layouts. Design elements include gradient effects, distinct badges, interactive cards, dynamic button states (active/inactive with distinct visual cues), and redesigned forms for improved user experience. The homepage features a full-screen hero design with a clear search form.
 
 ### Backend Architecture
 - **Runtime**: Node.js with Express.js
 - **Language**: TypeScript with ES modules
-- **Authentication**: Passport.js with local strategy and session-based authentication
+- **Authentication**: Passport.js with local strategy and session-based authentication, supporting multi-role access (customer, owner, admin).
 - **Session Management**: Express sessions with PostgreSQL store
 - **API**: RESTful endpoints with JSON responses
 - **File Structure**: Monorepo with shared schema validation
@@ -36,18 +36,18 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 - **Connection**: Connection pooling with @neondatabase/serverless
 
 ### Key Components
-- **Authentication System**: Multi-role support (customer, owner, admin) with secure password hashing and role-based access control.
+- **Authentication System**: Secure password hashing and role-based access control.
 - **Booking System**: Real-time availability, date range selection, status management, and automatic email notifications.
-- **Payment Integration**: Secure Stripe integration supporting credit cards, Apple Pay, and Google Pay, with a 15% platform commission and automatic receipt generation.
+- **Payment Integration**: Secure Stripe integration supporting various payment methods with a 15% platform commission and automatic receipt generation. Differentiated payment handling for customers (digital methods) and owners (bank transfers via IBAN).
 - **Search & Filtering**: Interactive map with boat markers, multi-criteria filtering (type, location, dates, capacity, skipper, fuel), and real-time search results.
 - **User Management**: Dual registration (customers and boat owners), profile management, and distinct dashboard interfaces.
-- **Form Design**: Professionally redesigned forms for boat addition and experience management with color-coded sections, intuitive fields, and validation.
 - **Review System**: Comprehensive rating and review system with detailed feedback categories and authenticity verification.
 - **Analytics & Reporting**: Owner dashboard with detailed statistics on bookings, revenue, and boat performance.
 - **Emergency System**: Integrated maritime emergency protocols with Guardia Costiera contact (1530), real-time boat geolocation, and technical assistance.
 - **External Services Integration**: Real-time marine weather data, nautical fuel prices, and port services information.
-- **SEO & PWA**: Comprehensive SEO optimizations including meta tags, Schema.org, sitemap, and PWA capabilities for installable web app experience.
+- **SEO & PWA**: Comprehensive SEO optimizations including meta tags, Schema.org, sitemap, and PWA capabilities.
 - **AI Chat Assistant**: Integrated OpenAI GPT-4o for intelligent maritime assistance.
+- **Mobile Navigation**: Reordered bottom navigation for optimal UX (Home → Ormeggio → Esperienze → Servizi → Aiuto → Profilo).
 
 ## External Dependencies
 
@@ -70,142 +70,3 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 - **react-hook-form**: Form state management.
 - **zod**: Schema validation.
 - **date-fns**: Date manipulation utilities.
-
-## Recent Changes (August 2025)
-
-### August 7, 2025 - Rebranding Completo da SeaBoo a SeaBoo + Logo Aggiornato (Ore 5:50)
-- **REBRANDING COMPLETO IMPLEMENTATO:**
-  - ✅ Aggiornamento completo di tutti i riferimenti testuali da "SeaBoo" a "SeaBoo" in frontend, backend e mobile
-  - ✅ **LOGO PROFESSIONALE:** Nuovo logo SeaBoo con vela turchese su sfondo navy implementato in tutti i componenti
-  - ✅ **APP MOBILE NATIVA:** Tutti i file TypeScript/React Native aggiornati con nuovo branding
-  - ✅ **CONFIGURAZIONI APP:** mobile/app.json e mobile/SeaBooNative/app.json aggiornati con bundle ID e naming SeaBoo
-  - ✅ **EMAIL E SUPPORTO:** Aggiornati tutti gli indirizzi da support@seago.it a support@seaboo.it
-  - ✅ **URL E DOMINI:** Aggiornati link privacy policy, terms of service da seago.it a seaboo.it
-  - ✅ **CANALI NOTIFICA:** Aggiornato notification service da seago_general a seaboo_general
-  - ✅ **READY FOR APP STORE:** VoltBuilder e Capacitor configurati, app completamente rebrandata per submission iOS
-
-## Recent Changes (August 2025)
-
-### August 5, 2025 - Separazione Completa Clienti/Proprietari per Apple Store (Ore 7:47)
-- **SISTEMA PAGAMENTI DIFFERENZIATO PER RUOLI:**
-  - ✅ **CLIENTI (Pagano servizi):** Metodi pagamento digitali (Stripe)
-    - Carte di credito/debito (Visa, Mastercard, American Express)
-    - Apple Pay con Touch ID/Face ID per iOS
-    - Google Pay per Android
-    - PayPal per transazioni sicure
-    - Pagina dedicata mobile-first `/metodi-pagamento-mobile`
-  - ✅ **PROPRIETARI (Ricevono pagamenti):** Dati bancari per bonifici
-    - IBAN per ricevere pagamenti dai noleggi
-    - Nome banca e titolare conto
-    - Codice fiscale obbligatorio
-    - Partita IVA opzionale per aziende
-    - Indirizzo completo per fatturazione
-    - Pagina dedicata `/profilo/dati-bancari`
-  - ✅ **API sicure implementate:**
-    - Endpoint PATCH `/api/users/:id/banking` per dati bancari proprietari
-    - Validazione campi con autorizzazione rigorosa
-    - Crittografia SSL/TLS per tutti i dati sensibili
-
-- **FORM REGISTRAZIONE AGGIORNATI:**
-  - ✅ Proprietari: sezione dati bancari IBAN durante registrazione
-  - ✅ Clienti: info metodi pagamento disponibili (carte, digital wallet)
-  - ✅ Separazione chiara tra chi paga e chi riceve pagamenti
-  - ✅ UX ottimizzata per compliance Apple Store
-
-### July 30, 2025 - Navigazione Mobile Riordinata (Ore 12:45)
-- **ORDINE NAVIGAZIONE AGGIORNATO per ottimizzare UX:**
-  - ✅ Nuovo ordine bottom navigation: Home → Ormeggio → Esperienze → Servizi → Aiuto → Profilo
-  - ✅ Layout più logico con Ormeggio come seconda priorità dopo Home
-  - ✅ Esperienze posizionate centralmente per maggior visibilità
-  - ✅ Aiuto spostato prima del Profilo per accesso rapido all'assistenza
-  - ✅ Mantenute tutte le icone e funzionalità esistenti
-  - ✅ UX migliorata seguendo principi di information architecture
-
-### August 13, 2025 - App Store Deployment Setup Completato (Ore 10:35)
-- **READY FOR APP STORE SUBMISSION:**
-  - ✅ Capacitor iOS build completato con successo
-  - ✅ App ID configurato: com.seaboo.mobile
-  - ✅ Info.plist aggiornato con nome "SeaBoo"
-  - ✅ Logo SeaBoo integrato in Assets.xcassets
-  - ✅ Homepage "Naviga verso l'avventura" confermata funzionante
-  - ✅ STORE_DEPLOYMENT_GUIDE.md creato con procedura completa
-  - ✅ APP_STORE_READINESS_CHECK.md con checklist finale
-  - ✅ Tutti i file build iOS generati correttamente
-  - ✅ App pronta per Apple Developer Account e submission
-
-### August 20, 2025 - CORREZIONI APPLE REVIEW IMPLEMENTATE (Ore 7:57)
-- **RISOLTI TUTTI I 5 PROBLEMI APPLE:**
-  - ✅ **LOGIN FITTIZIO RIMOSSO:** Sostituito con redirect a seaboo.it per autenticazione reale
-  - ✅ **URL SUPPORTO FUNZIONANTE:** Creata pagina `/supporto.html` con contatti e FAQ
-  - ✅ **PRIVACY POLICY ATTIVA:** Creata pagina `/privacy.html` GDPR compliant
-  - ✅ **CONTENUTI PLACEHOLDER ELIMINATI:** Rimossi tutti i contenuti segnaposto
-  - ✅ **PRONTO PER RISUBMISSION:** App conforme alle linee guida Apple
-
-- **PROSSIMI STEP:**
-  - 📱 **Screenshot iPad corretti** - Da creare con dimensioni 2048x2732
-  - 🍎 **Implementare "Accedi con Apple"** per compliance completa
-  - 📦 **Nuovo Archive iOS** con tutte le correzioni
-  - 🔄 **Risubmission Apple** entro 24 ore
-
-### August 19, 2025 - APP SEABOO INVIATA AD APPLE PER REVIEW! (Ore 12:48)
-- **SUBMISSION COMPLETATA CON SUCCESSO:**
-  - ✅ **BUILD FINALE:** Version 1.0 Build 2 con export compliance automatico
-  - ✅ **CRITTOGRAFIA:** Configurata "Nessuno degli algoritmi citati sopra"
-  - ✅ **BUNDLE ID:** it.seaboo.app configurato con Apple Developer Team Stefano Di Gennaro
-  - ✅ **METADATA COMPLETO:** Nome, descrizione, keywords, categoria Travel
-  - ✅ **SCREENSHOTS:** iPhone screenshots caricati e approvati
-  - ✅ **TEAM VERIFICA:** Username/password demo configurati per Apple testing
-  - ✅ **STATUS:** "Inviata al team di verifica" - In review presso Apple
-
-- **PROSSIMI STEP:**
-  - ⏳ **REVIEW APPLE:** 24-48 ore per approvazione
-  - ⏳ **PUBBLICAZIONE:** Automatica dopo approvazione
-  - ⏳ **DISPONIBILITÀ:** App Store Italia con download gratuito
-  - 🔄 **AGGIORNAMENTI FUTURI:** Icona SeaBoo custom e ottimizzazioni UI
-
-### August 15, 2025 - Evidenziazione Pulsanti ATTIVI e Layout Esperienze (Ore 12:15)
-- **PULSANTI INTERATTIVI IMPLEMENTATI:**
-  - ✅ **TOGGLE FUNCTIONALITY:** Pulsanti "Con Skipper" e "Esperienze o Charter" con stati attivi/disattivi
-  - ✅ **STATI VISIVI DIVERSI:**
-    - Disattivo: Colori chiari con bordi (#eff6ff per blu, #fef3e2 per arancione)
-    - Attivo: Gradienti intensi con ombra e movimento (-2px translateY)
-  - ✅ **COLORI BRAND:** Blu #0C9FE2 per Skipper, Arancione #f97316 per Esperienze
-  - ✅ **EFFETTI DINAMICI:** Box-shadow e transform su click con transizioni smooth
-
-- **LAYOUT ESPERIENZE MIGLIORATO:**
-  - ✅ **SEZIONE LOCALITÀ SPOSTATA:** "Scegli dove vivere l'esperienza" ora fuori dal banner blu
-  - ✅ **DESIGN PROFESSIONALE:** Card bianca separata con ombra e bordi
-  - ✅ **INPUT MIGLIORATO:** Focus states con cambio colore bordi e background
-  - ✅ **BANNER PULITO:** Solo titolo e descrizione nel banner blu, più elegante
-
-- **UI/UX OTTIMIZZATA:**
-  - ✅ **FONT GOOGLE:** Inter per body, Playfair Display per titoli mantenuti
-  - ✅ **BRANDING CONSISTENTE:** Colore Pantone #0C9FE2 in tutto il sistema
-  - ✅ **READY FOR XCODE:** Tutte le modifiche pronte per build iOS con Capacitor
-  - ✅ **TITOLO AGGIORNATO:** "Vivi Esperienze Uniche" invece di "Esperienze Uniche in Mare"
-  - ✅ **EMOJI RIMOSSA:** Rimossa emoji mappa da "Scegli dove vivere l'esperienza"
-  - ✅ **LAYOUT SERVIZI:** Sezione "Scegli la tua località" spostata fuori dal banner blu come card separata
-  - ✅ **FONT UNIFORMATI:** Tutti i banner (Ormeggio, Esperienze, Servizi) ora usano Playfair Display 26px per titoli e Inter 16px per descrizioni
-
-### August 10, 2025 - Homepage "Naviga verso l'avventura" Ripristinata (Ore 6:10)
-- **VERSIONE CORRETTA IMPLEMENTATA:**
-  - ✅ Homepage aggiornata con design hero full-screen sfondo blu oceano
-  - ✅ Titolo principale "Naviga verso l'avventura" con line break perfetto
-  - ✅ Form di ricerca completo con tutti i campi (Dove, Date, Ospiti, Tipo imbarcazione)
-  - ✅ Pulsanti "Con Skipper" e "Esperienze o charter" integrati
-  - ✅ Pulsante "Cerca" arancione con icona lente
-  - ✅ Logo SeaBoo integrato nel header della hero section
-  - ✅ Banner ormeggi aggiornato: "Trova il tuo ormeggio ideale" con colore Pantone #0C9FE2
-  - ✅ Versione mobile-preview.html precedente archiviata per non essere più mostrata
-  - ✅ Versione nativa app mobile confermata funzionante e identica al design richiesto
-
-### July 30, 2025 - Partner Ufficiale Capuano Trasporti Aggiunto (Ore 12:36)
-- **NUOVO PARTNER: Capuano Trasporti Integrato nell'App:**
-  - ✅ Sezione "Partner Ufficiali SeaBoo" aggiunta nel footer della homepage
-  - ✅ Logo SVG professionale creato per Capuano Trasporti (blu #1e40af con dettagli dorati)
-  - ✅ Link diretto al sito web: https://www.capuanotrasporti.com/
-  - ✅ Informazioni aziendali integrate: "Trasporti Eccezionali" dal 2012
-  - ✅ Localizzazione: Pozzuoli (NA) come da informazioni sito web
-  - ✅ Design card elegante con hover effect e shadow per interattività
-  - ✅ Posizionamento strategico tra contenuti footer e social media
-  - ✅ Layout responsive mantenuto per mobile-first design

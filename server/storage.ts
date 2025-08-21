@@ -37,7 +37,7 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+    const [user] = await db.select().from(users).where(eq(users.id, parseInt(id)));
     return user;
   }
 
@@ -74,7 +74,7 @@ export class DatabaseStorage implements IStorage {
 
   // Boat operations
   async getBoats(): Promise<Boat[]> {
-    return await db.select().from(boats).where(eq(boats.isActive, true));
+    return await db.select().from(boats).where(eq(boats.active, true));
   }
 
   async getBoatsByOwner(ownerId: string): Promise<Boat[]> {
@@ -102,16 +102,28 @@ export class DatabaseStorage implements IStorage {
 
   async deleteBoat(id: string): Promise<boolean> {
     const result = await db.delete(boats).where(eq(boats.id, parseInt(id)));
-    return result.rowCount > 0;
+    return (result.rowCount ?? 0) > 0;
   }
 
   // Booking operations
   async getBookingsByOwner(ownerId: string): Promise<Booking[]> {
-    return await db
-      .select()
+    const results = await db
+      .select({
+        id: bookings.id,
+        createdAt: bookings.createdAt,
+        customerId: bookings.customerId,
+        boatId: bookings.boatId,
+        startDate: bookings.startDate,
+        endDate: bookings.endDate,
+        totalPrice: bookings.totalPrice,
+        status: bookings.status,
+        specialRequests: bookings.specialRequests,
+        updatedAt: bookings.updatedAt,
+      })
       .from(bookings)
       .innerJoin(boats, eq(bookings.boatId, boats.id))
       .where(eq(boats.hostId, parseInt(ownerId)));
+    return results;
   }
 
   async getBookingsByCustomer(customerId: string): Promise<Booking[]> {

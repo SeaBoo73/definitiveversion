@@ -73,7 +73,7 @@ export const boats = pgTable("boats", {
   description: text("description"),
   images: text("images").array(),
   documentsRequired: text("documents_required"),
-  isActive: boolean("active").default(true),
+  active: boolean("active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
   pickupTime: text("pickup_time"),
   returnTime: text("return_time"),

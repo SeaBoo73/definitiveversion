@@ -200,7 +200,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Boat management endpoints
   app.get('/api/boats', async (req, res) => {
     try {
+      console.log("Fetching boats...");
       const boats = await storage.getBoats();
+      console.log("Boats fetched:", boats?.length || 0, "boats");
       res.json({ boats });
     } catch (error) {
       console.error("Get boats error:", error);

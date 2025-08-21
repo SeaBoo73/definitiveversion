@@ -101,6 +101,7 @@ export const bookings = pgTable("bookings", {
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email non valido"),
   password: z.string().min(6, "Password deve essere almeno 6 caratteri"),
+  username: z.string().optional(), // Username is generated automatically from email
   firstName: z.string().min(1, "Nome richiesto").optional(),
   lastName: z.string().min(1, "Cognome richiesto").optional(),
   phone: z.string().optional(),
@@ -110,7 +111,7 @@ export const insertUserSchema = createInsertSchema(users, {
   vatNumber: z.string().optional(),
   website: z.string().url().optional().or(z.literal("")),
   instagram: z.string().optional(),
-}).omit({ id: true, createdAt: true, updatedAt: true });
+}).omit({ id: true, createdAt: true });
 
 // Schema specifico per registrazione owner
 export const insertOwnerSchema = insertUserSchema.extend({

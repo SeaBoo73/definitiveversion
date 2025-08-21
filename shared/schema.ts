@@ -25,17 +25,25 @@ export const sessions = pgTable(
   (table) => [index("IDX_session_expire").on(table.expire)],
 );
 
-// User storage table.
+// User storage table matching existing database structure
 export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: serial("id").primaryKey(), // Existing database uses serial ID
+  username: varchar("username", { length: 100 }),
   email: varchar("email", { length: 255 }).unique().notNull(),
   password: varchar("password", { length: 255 }).notNull(),
+  role: varchar("role", { length: 20 }).default("user"), // 'user' or 'owner'
   firstName: varchar("first_name", { length: 100 }),
   lastName: varchar("last_name", { length: 100 }),
   phone: varchar("phone", { length: 20 }),
-  profileImageUrl: varchar("profile_image_url"),
-  role: varchar("role", { length: 20 }).default("user"), // 'user' or 'owner'
-  userType: varchar("user_type", { length: 20 }).default("customer"), // 'customer' or 'host' (legacy)
+  verified: boolean("verified").default(false),
+  stripeCustomerId: varchar("stripe_customer_id", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow(),
+  
+  // Customer fields
+  customerLevel: varchar("customer_level", { length: 50 }),
+  totalBookings: integer("total_bookings").default(0),
+  totalSpent: numeric("total_spent").default("0"),
+  loyaltyPoints: integer("loyalty_points").default(0),
   
   // Business fields for owners
   businessName: varchar("business_name", { length: 200 }),
@@ -43,9 +51,6 @@ export const users = pgTable("users", {
   vatNumber: varchar("vat_number", { length: 50 }),
   website: varchar("website", { length: 255 }),
   instagram: varchar("instagram", { length: 100 }),
-  
-  isEmailVerified: boolean("is_email_verified").default(false),
-  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // Boats table schema that matches existing database structure exactly

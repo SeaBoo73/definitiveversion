@@ -2011,6 +2011,66 @@
             <!-- Il contenuto verrà inserito dinamicamente dalla funzione updateProfileSection() -->
         </div>
 
+        <!-- Modal Termini di Servizio -->
+        <div id="terms-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
+            <div style="background: white; margin: 20px; border-radius: 12px; max-height: 90vh; overflow-y: auto;">
+                <div style="background: #0C9FE2; color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 20px;">Termini di Servizio</h2>
+                        <button onclick="closeModal('terms-modal')" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+                    </div>
+                </div>
+                <div style="padding: 20px; line-height: 1.6;">
+                    <p><strong>Ultimo aggiornamento:</strong> 21 Agosto 2025</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">1. Accettazione dei Termini</h3>
+                    <p>Utilizzando SeaBoo, accetti integralmente i presenti Termini di Servizio.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">2. Descrizione del Servizio</h3>
+                    <p>SeaBoo è una piattaforma che facilita il noleggio di imbarcazioni tra proprietari e clienti.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">3. Responsabilità dell'Utente</h3>
+                    <p>Gli utenti sono responsabili per fornire informazioni accurate e rispettare le normative nautiche vigenti.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">4. Pagamenti e Commissioni</h3>
+                    <p>SeaBoo applica una commissione del 15% su ogni prenotazione tramite Stripe.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">5. Contatti</h3>
+                    <p>Per domande: <strong>legal@seaboo.it</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Privacy Policy -->
+        <div id="privacy-modal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
+            <div style="background: white; margin: 20px; border-radius: 12px; max-height: 90vh; overflow-y: auto;">
+                <div style="background: #0C9FE2; color: white; padding: 20px; border-radius: 12px 12px 0 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 20px;">Privacy Policy</h2>
+                        <button onclick="closeModal('privacy-modal')" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
+                    </div>
+                </div>
+                <div style="padding: 20px; line-height: 1.6;">
+                    <p><strong>Ultimo aggiornamento:</strong> 21 Agosto 2025</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">1. Raccolta Dati</h3>
+                    <p>Raccogliamo solo i dati necessari per fornire i nostri servizi di noleggio imbarcazioni.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">2. Utilizzo Dati</h3>
+                    <p>I dati vengono utilizzati per elaborare prenotazioni, pagamenti e comunicazioni.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">3. Sicurezza</h3>
+                    <p>Utilizziamo crittografia SSL e standard di sicurezza bancari per proteggere i tuoi dati.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">4. Cookie</h3>
+                    <p>Utilizziamo cookie essenziali per il funzionamento del servizio.</p>
+                    
+                    <h3 style="color: #0C9FE2; margin-top: 20px;">5. Contatti</h3>
+                    <p>Per richieste sulla privacy: <strong>privacy@seaboo.it</strong></p>
+                </div>
+            </div>
+        </div>
+
         <!-- Pagina Dettaglio Barca -->
         <div id="boat-details" class="screen" style="display: none;">
             <div style="background: linear-gradient(135deg, #0C9FE2, #0284c7); padding: 20px; color: white; margin: 0 -16px 20px; display: flex; align-items: center; justify-content: space-between;">
@@ -2922,6 +2982,34 @@
 
 
 
+        // Funzioni per i modali
+        function showTermsModal() {
+            document.getElementById('terms-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function showPrivacyModal() {
+            document.getElementById('privacy-modal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Chiudi modal cliccando fuori
+        window.onclick = function(event) {
+            const termsModal = document.getElementById('terms-modal');
+            const privacyModal = document.getElementById('privacy-modal');
+            if (event.target === termsModal) {
+                closeModal('terms-modal');
+            }
+            if (event.target === privacyModal) {
+                closeModal('privacy-modal');
+            }
+        }
+
         // Funzioni di navigazione
         function navigateTo(page, params = {}) {
             if (currentPage !== 'home') {
@@ -3492,7 +3580,7 @@
                             
                             <p style="text-align: center; margin-top: 24px; color: #6b7280; font-size: 13px; line-height: 1.4; padding: 0 8px;">
                                 Registrandoti accetti i nostri<br>
-                                <a href="#" onclick="alert('Termini di Servizio: Reindirizzamento a seaboo.it per visualizzare i termini completi')" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Termini di Servizio</a> e <a href="#" onclick="alert('Privacy Policy: Reindirizzamento a seaboo.it per visualizzare la privacy policy completa')" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Privacy Policy</a>
+                                <a href="#" onclick="showTermsModal()" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Termini di Servizio</a> e <a href="#" onclick="showPrivacyModal()" style="color: #0C9FE2; text-decoration: none; font-weight: 600;">Privacy Policy</a>
                             </p>
                         </div>
                     </div>

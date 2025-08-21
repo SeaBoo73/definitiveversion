@@ -28,7 +28,7 @@ export const sessions = pgTable(
 // User storage table matching existing database structure
 export const users = pgTable("users", {
   id: serial("id").primaryKey(), // Existing database uses serial ID
-  username: varchar("username", { length: 100 }),
+  username: varchar("username", { length: 100 }).notNull(),
   email: varchar("email", { length: 255 }).unique().notNull(),
   password: varchar("password", { length: 255 }).notNull(),
   role: varchar("role", { length: 20 }).default("user"), // 'user' or 'owner'

@@ -50,10 +50,14 @@ export class DatabaseStorage implements IStorage {
     // Hash password before storing
     const hashedPassword = await bcrypt.hash(userData.password, 12);
     
+    // Generate username from email if not provided
+    const username = userData.username || userData.email.split('@')[0];
+    
     const [user] = await db
       .insert(users)
       .values({
         ...userData,
+        username,
         password: hashedPassword,
       })
       .returning();

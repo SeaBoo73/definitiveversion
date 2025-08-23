@@ -119,20 +119,25 @@ export default function ProfiloPage() {
       <div className="min-h-screen bg-gray-50 pb-20 md:pb-0">
         <Header />
         
-        <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <User className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
-              Accedi al tuo profilo
-            </h1>
-            <p className="text-gray-600 mb-8">
-              Effettua l'accesso per gestire le tue prenotazioni e preferenze
-            </p>
-            <Link href="/auth">
-              <Button className="w-full bg-ocean-blue hover:bg-ocean-blue/90">
-                Accedi
-              </Button>
-            </Link>
+        {/* Banner ottimizzato senza spazi e testo leggibile */}
+        <div className="bg-gradient-to-r from-ocean-blue to-deep-navy text-white">
+          <div className="max-w-md mx-auto px-4 py-12">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                <User className="h-10 w-10 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-white mb-4 leading-tight">
+                Accedi a SeaBoo
+              </h1>
+              <p className="text-blue-100 mb-8 text-lg leading-relaxed">
+                Gestisci prenotazioni, barche preferite e le tue esperienze di navigazione
+              </p>
+              <Link href="/auth">
+                <Button className="w-full bg-white text-ocean-blue hover:bg-gray-100 font-semibold py-3 text-lg shadow-lg">
+                  Accedi al tuo profilo
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
 

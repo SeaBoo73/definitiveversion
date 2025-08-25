@@ -73,6 +73,7 @@ import CheckoutEsperienza from "@/pages/checkout-esperienza";
 import PaymentSuccessEsperienza from "@/pages/payment-success-esperienza";
 import DiventaSeaHostPage from "@/pages/diventa-sea-host";
 import ProfiloDatiBancariPage from "@/pages/profilo-dati-bancari";
+import SupportoPage from "@/pages/supporto";
 
 function Router() {
   return (
@@ -107,6 +108,7 @@ function Router() {
       <Route path="/condizioni-servizio" component={CondizioniServizioPage} />
       <Route path="/privacy-policy" component={PrivacyPolicyPage} />
       <Route path="/contatti" component={ContattiPage} />
+      <Route path="/supporto" component={SupportoPage} />
       <Route path="/diventa-noleggiatore" component={DiventaNoleggiatorePage} />
       <Route path="/diventa-sea-host" component={DiventaSeaHostPage} />
       <Route path="/modifica-prenotazione" component={ModificaPrenotazionePage} />

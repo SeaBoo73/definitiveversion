@@ -32,6 +32,141 @@ app.get("/native-preview", (req, res) => {
   res.sendFile(path.resolve("native-app-preview.html"));
 });
 
+// Mobile app route - show the real React Native app code
+app.get("/mobile-app", (req, res) => {
+  const fs = require('fs');
+  // Disable cache to ensure fresh content
+  res.set({
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
+  
+  // Read the actual mobile app files that were modified
+  const authScreen = fs.readFileSync(path.resolve("mobile/src/screens/AuthScreen.tsx"), 'utf8');
+  const bookingScreen = fs.readFileSync(path.resolve("mobile/src/screens/BookingScreen.tsx"), 'utf8');
+  const homeScreen = fs.readFileSync(path.resolve("mobile/src/screens/HomeScreen.tsx"), 'utf8');
+  
+  const html = `
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaBoo Mobile - Codice Reale React Native</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #0ea5e9, #1e40af); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; text-align: center; }
+        .fixes-banner { background: #10b981; color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+        .code-section { background: white; border-radius: 8px; margin-bottom: 30px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .code-header { background: #1f2937; color: white; padding: 15px; font-weight: 600; }
+        .code-content { padding: 20px; max-height: 400px; overflow-y: auto; }
+        pre { background: #f8f9fa; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 12px; line-height: 1.4; }
+        .highlight { background: #fef3cd; padding: 2px 4px; border-radius: 3px; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .nav-tab { padding: 10px 20px; background: #e5e7eb; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+        .nav-tab.active { background: #0ea5e9; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📱 SeaBoo Mobile App - Codice Reale React Native</h1>
+            <p>I file della tua app mobile con tutte le correzioni Apple implementate</p>
+        </div>
+        
+        <div class="fixes-banner">
+            <h2>🎉 Correzioni Apple Implementate</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
+                <div>✅ Login reale in AuthScreen.tsx</div>
+                <div>✅ Apple Sign In aggiunto</div>
+                <div>✅ Pagamento funzionante in BookingScreen.tsx</div>
+                <div>✅ Immagini reali sostituite</div>
+                <div>✅ Pagina supporto creata</div>
+            </div>
+        </div>
+        
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showTab('auth')">🔐 AuthScreen.tsx (Login + Apple)</div>
+            <div class="nav-tab" onclick="showTab('booking')">💳 BookingScreen.tsx (Pagamenti)</div>
+            <div class="nav-tab" onclick="showTab('home')">🏠 HomeScreen.tsx (Immagini Reali)</div>
+        </div>
+        
+        <div id="auth" class="tab-content active">
+            <div class="code-section">
+                <div class="code-header">mobile/src/screens/AuthScreen.tsx - Con Login Reale + Apple Sign In</div>
+                <div class="code-content">
+                    <div style="margin-bottom: 15px; padding: 10px; background: #d1fae5; border-radius: 6px;">
+                        <strong>🍎 Apple Sign In:</strong> Implementato pulsante "Continua con Apple" per conformità linea guida 4.8
+                    </div>
+                    <div style="margin-bottom: 15px; padding: 10px; background: #dbeafe; border-radius: 6px;">
+                        <strong>🔐 Login Reale:</strong> Sostituita simulazione con vera autenticazione
+                    </div>
+                    <pre>${authScreen.replace(/</g, '&lt;').replace(/>/g, '&gt;').substring(0, 2000)}...</pre>
+                </div>
+            </div>
+        </div>
+        
+        <div id="booking" class="tab-content">
+            <div class="code-section">
+                <div class="code-header">mobile/src/screens/BookingScreen.tsx - Con Pagamento Funzionante</div>
+                <div class="code-content">
+                    <div style="margin-bottom: 15px; padding: 10px; background: #dcfce7; border-radius: 6px;">
+                        <strong>💳 Pagamento Reale:</strong> Implementato processo di pagamento completo con gestione errori
+                    </div>
+                    <pre>${bookingScreen.replace(/</g, '&lt;').replace(/>/g, '&gt;').substring(0, 2000)}...</pre>
+                </div>
+            </div>
+        </div>
+        
+        <div id="home" class="tab-content">
+            <div class="code-section">
+                <div class="code-header">mobile/src/screens/HomeScreen.tsx - Con Immagini Reali</div>
+                <div class="code-content">
+                    <div style="margin-bottom: 15px; padding: 10px; background: #fef3cd; border-radius: 6px;">
+                        <strong>🖼️ Immagini Sostituite:</strong> Tutte le immagini placeholder sostituite con foto reali da Unsplash
+                    </div>
+                    <pre>${homeScreen.replace(/</g, '&lt;').replace(/>/g, '&gt;').substring(0, 2000)}...</pre>
+                </div>
+            </div>
+        </div>
+        
+        <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center;">
+            <h3>🚀 La Tua App è Pronta per l'App Store</h3>
+            <p style="margin: 10px 0;">Tutti i problemi segnalati da Apple sono stati risolti nei file React Native reali</p>
+            <div style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 6px;">
+                <strong>Per testare l'app mobile completa:</strong><br>
+                <code>cd mobile && npm install && npx expo start --web</code>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
+  `;
+  
+  res.send(html);
+});
+
 // Archived mobile preview route (temporary)
 app.get("/archived-preview", (req, res) => {
   res.sendFile(path.resolve("mobile-preview-ARCHIVED-20250810_061034.html"));

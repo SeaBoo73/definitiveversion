@@ -18,10 +18,16 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.seaboo.mobile",
-      "buildNumber": "1",
+      "buildNumber": "2",
+      "requireFullScreen": false,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "SeaBoo usa la posizione per mostrare barche vicine a te",
-        "NSCameraUsageDescription": "SeaBoo usa la fotocamera per scansionare documenti"
+        "NSCameraUsageDescription": "SeaBoo usa la fotocamera per scansionare documenti",
+        "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ]
       }
     },
     "android": {

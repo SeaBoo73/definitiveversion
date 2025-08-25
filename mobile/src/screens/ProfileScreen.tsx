@@ -17,7 +17,7 @@ const ProfileScreen = () => {
     memberSince: 'Marzo 2024',
     totalBookings: 8,
     verified: true,
-    avatar: 'https://via.placeholder.com/100x100?text=MR'
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face'
   };
 
   const menuItems = [

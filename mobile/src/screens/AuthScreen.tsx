@@ -9,30 +9,83 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useAuth } from '../services/AuthContext';
 
 export default function AuthScreen({ navigation }: any) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { login, register } = useAuth();
 
-  const handleAuth = () => {
+  const handleAppleSignIn = async () => {
+    try {
+      setLoading(true);
+      // In una vera implementazione, qui useresti @react-native-apple-authentication
+      Alert.alert(
+        'Apple Sign In',
+        'Questa funzionalità sarà disponibile nella prossima versione dell\'app.',
+        [
+          {
+            text: 'OK',
+            style: 'default'
+          }
+        ]
+      );
+    } catch (error) {
+      console.error('Apple Sign In error:', error);
+      Alert.alert('Errore', 'Errore con Apple Sign In. Riprova più tardi.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAuth = async () => {
     if (!email || !password || (!isLogin && !name)) {
       Alert.alert('Errore', 'Compila tutti i campi');
       return;
     }
 
-    // Simulated authentication
-    Alert.alert(
-      'Successo',
-      isLogin ? 'Login effettuato con successo!' : 'Registrazione completata!',
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.goBack()
-        }
-      ]
-    );
+    setLoading(true);
+    try {
+      let success = false;
+      
+      if (isLogin) {
+        success = await login(email, password);
+      } else {
+        success = await register({
+          email,
+          password,
+          username: name.toLowerCase().replace(/\s/g, ''),
+          role: 'customer',
+          firstName: name.split(' ')[0],
+          lastName: name.split(' ').slice(1).join(' ') || undefined
+        });
+      }
+
+      if (success) {
+        Alert.alert(
+          'Successo',
+          isLogin ? 'Login effettuato con successo!' : 'Registrazione completata!',
+          [
+            {
+              text: 'OK',
+              onPress: () => navigation.goBack()
+            }
+          ]
+        );
+      } else {
+        Alert.alert(
+          'Errore',
+          isLogin ? 'Email o password non validi' : 'Errore durante la registrazione'
+        );
+      }
+    } catch (error: any) {
+      Alert.alert('Errore', error.message || 'Si è verificato un errore');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,10 +148,20 @@ export default function AuthScreen({ navigation }: any) {
             />
           </View>
 
-          <TouchableOpacity style={styles.authButton} onPress={handleAuth}>
+          <TouchableOpacity 
+            style={[styles.authButton, loading && styles.authButtonDisabled]} 
+            onPress={handleAuth}
+            disabled={loading}
+          >
             <Text style={styles.authButtonText}>
-              {isLogin ? 'Accedi' : 'Registrati'}
+              {loading ? 'Attendere...' : isLogin ? 'Accedi' : 'Registrati'}
             </Text>
+          </TouchableOpacity>
+
+          {/* Apple Sign In Button */}
+          <TouchableOpacity style={styles.appleButton} onPress={handleAppleSignIn}>
+            <Icon name="logo-apple" size={20} color="#000" style={styles.appleIcon} />
+            <Text style={styles.appleButtonText}>Continua con Apple</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -192,10 +255,33 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     marginTop: 8,
-    marginBottom: 24,
+    marginBottom: 16,
+  },
+  authButtonDisabled: {
+    backgroundColor: '#94a3b8',
   },
   authButtonText: {
     color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  appleButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#000',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 24,
+  },
+  appleIcon: {
+    marginRight: 8,
+  },
+  appleButtonText: {
+    color: '#000',
     fontSize: 16,
     fontWeight: '600',
   },

@@ -31,7 +31,7 @@ const EsperienzeScreen = () => {
       rating: 4.9,
       participants: 'Max 12 persone',
       includes: ['Pranzo a bordo', 'Attrezzatura snorkeling', 'Guida esperta'],
-      image: 'https://via.placeholder.com/300x200?text=Tour+Isole+Pontine'
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 2,
@@ -43,7 +43,7 @@ const EsperienzeScreen = () => {
       rating: 4.8,
       participants: 'Max 8 persone',
       includes: ['Skipper professionale', 'Aperitivo', 'Carburante'],
-      image: 'https://via.placeholder.com/300x200?text=Charter+Lusso'
+      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 3,
@@ -55,7 +55,7 @@ const EsperienzeScreen = () => {
       rating: 4.7,
       participants: 'Max 6 persone',
       includes: ['Teoria', 'Pratica in mare', 'Materiale didattico'],
-      image: 'https://via.placeholder.com/300x200?text=Corso+Nautica'
+      image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 4,
@@ -67,7 +67,7 @@ const EsperienzeScreen = () => {
       rating: 4.9,
       participants: 'Max 15 persone',
       includes: ['Decorazioni', 'Catering', 'Musica'],
-      image: 'https://via.placeholder.com/300x200?text=Festa+Barca'
+      image: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8b25?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 5,
@@ -79,7 +79,7 @@ const EsperienzeScreen = () => {
       rating: 4.8,
       participants: 'Max 10 persone',
       includes: ['Aperitivo al tramonto', 'Foto ricordo'],
-      image: 'https://via.placeholder.com/300x200?text=Tramonto+Mare'
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 6,
@@ -91,7 +91,7 @@ const EsperienzeScreen = () => {
       rating: 4.9,
       participants: 'Max 6 persone',
       includes: ['Cabine private', 'Tutti i pasti', 'Skipper'],
-      image: 'https://via.placeholder.com/300x200?text=Weekend+Elba'
+      image: 'https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=300&h=200&fit=crop&crop=center'
     },
   ];
 

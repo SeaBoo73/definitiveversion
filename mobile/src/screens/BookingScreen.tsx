@@ -6,19 +6,23 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useAuth } from '../services/AuthContext';
 
 export default function BookingScreen({ navigation, route }: any) {
   const { boat } = route.params;
   const [selectedDates, setSelectedDates] = useState('15-17 Luglio 2025');
   const [guests, setGuests] = useState(4);
+  const [paymentLoading, setPaymentLoading] = useState(false);
   const [extras, setExtras] = useState({
     skipper: false,
     fuel: true,
     insurance: true,
   });
+  const { user, isAuthenticated } = useAuth();
 
   const calculateTotal = () => {
     let total = parseInt(boat.pricePerDay) * 2; // 2 giorni
@@ -28,17 +32,76 @@ export default function BookingScreen({ navigation, route }: any) {
     return total;
   };
 
-  const handleBooking = () => {
-    Alert.alert(
-      'Prenotazione Confermata!',
-      `La tua prenotazione per ${boat.name} è stata confermata per il ${selectedDates}.`,
-      [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('Main')
-        }
-      ]
-    );
+  const handleBooking = async () => {
+    // Verifica autenticazione
+    if (!isAuthenticated) {
+      Alert.alert(
+        'Login Richiesto',
+        'Devi effettuare il login per completare la prenotazione.',
+        [
+          {
+            text: 'Annulla',
+            style: 'cancel',
+          },
+          {
+            text: 'Login',
+            onPress: () => navigation.navigate('Auth'),
+          },
+        ]
+      );
+      return;
+    }
+
+    setPaymentLoading(true);
+    
+    try {
+      // Simula un vero processo di pagamento
+      const bookingData = {
+        boatId: boat.id,
+        userId: user?.id,
+        dates: selectedDates,
+        guests,
+        extras,
+        totalAmount: calculateTotal(),
+      };
+
+      // In una vera implementazione, qui faresti:
+      // 1. Chiamata API per creare la prenotazione
+      // 2. Inizializzare Stripe Payment Sheet
+      // 3. Processare il pagamento
+      
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simula processing
+
+      // Mostra schermata di successo realistica
+      Alert.alert(
+        'Pagamento Riuscito',
+        `Pagamento di €${calculateTotal()} elaborato con successo.\n\nRiceverai una conferma via email con i dettagli della prenotazione.`,
+        [
+          {
+            text: 'Visualizza Prenotazioni',
+            onPress: () => navigation.navigate('Bookings'),
+          },
+          {
+            text: 'Home',
+            onPress: () => navigation.navigate('Main'),
+            style: 'default',
+          },
+        ]
+      );
+    } catch (error) {
+      Alert.alert(
+        'Errore Pagamento',
+        'Si è verificato un errore durante il pagamento. Riprova più tardi.',
+        [
+          {
+            text: 'OK',
+            style: 'default',
+          },
+        ]
+      );
+    } finally {
+      setPaymentLoading(false);
+    }
   };
 
   return (
@@ -167,8 +230,21 @@ export default function BookingScreen({ navigation, route }: any) {
       </ScrollView>
 
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.bookButton} onPress={handleBooking}>
-          <Text style={styles.bookButtonText}>Conferma Prenotazione</Text>
+        <TouchableOpacity 
+          style={[styles.bookButton, paymentLoading && styles.bookButtonDisabled]} 
+          onPress={handleBooking}
+          disabled={paymentLoading}
+        >
+          {paymentLoading ? (
+            <View style={styles.loadingRow}>
+              <ActivityIndicator size="small" color="#fff" />
+              <Text style={[styles.bookButtonText, { marginLeft: 10 }]}>
+                Elaborando pagamento...
+              </Text>
+            </View>
+          ) : (
+            <Text style={styles.bookButtonText}>Conferma Prenotazione</Text>
+          )}
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -341,6 +417,15 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bookButtonDisabled: {
+    backgroundColor: '#94a3b8',
+  },
+  loadingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   bookButtonText: {
     color: 'white',

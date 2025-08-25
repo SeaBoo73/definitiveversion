@@ -29,7 +29,7 @@ const SearchScreen = () => {
       price: '€850',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://via.placeholder.com/300x200?text=Yacht'
+      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 2,
@@ -38,7 +38,7 @@ const SearchScreen = () => {
       price: '€320',
       rating: 4.8,
       category: 'sailing',
-      image: 'https://via.placeholder.com/300x200?text=Sailboat'
+      image: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 3,
@@ -47,7 +47,7 @@ const SearchScreen = () => {
       price: '€180',
       rating: 4.7,
       category: 'dinghy',
-      image: 'https://via.placeholder.com/300x200?text=Dinghy'
+      image: 'https://images.unsplash.com/photo-1558618047-fcd95c85cd64?w=300&h=200&fit=crop&crop=center'
     },
     {
       id: 4,
@@ -56,7 +56,7 @@ const SearchScreen = () => {
       price: '€950',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://via.placeholder.com/300x200?text=Princess'
+      image: 'https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=300&h=200&fit=crop&crop=center'
     },
   ];
 

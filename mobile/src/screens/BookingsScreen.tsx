@@ -21,7 +21,7 @@ const BookingsScreen = () => {
       endDate: '17 Jul 2025',
       price: '€1,700',
       status: 'confirmed',
-      image: 'https://via.placeholder.com/100x80?text=Yacht'
+      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100&h=80&fit=crop&crop=center'
     },
     {
       id: 2,
@@ -31,7 +31,7 @@ const BookingsScreen = () => {
       endDate: '27 Jul 2025',
       price: '€640',
       status: 'pending',
-      image: 'https://via.placeholder.com/100x80?text=Sailboat'
+      image: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=100&h=80&fit=crop&crop=center'
     },
   ];
 
@@ -44,7 +44,7 @@ const BookingsScreen = () => {
       endDate: '6 Jun 2025',
       price: '€180',
       status: 'completed',
-      image: 'https://via.placeholder.com/100x80?text=Dinghy'
+      image: 'https://images.unsplash.com/photo-1558618047-fcd95c85cd64?w=100&h=80&fit=crop&crop=center'
     },
     {
       id: 4,
@@ -54,7 +54,7 @@ const BookingsScreen = () => {
       endDate: '22 May 2025',
       price: '€1,900',
       status: 'completed',
-      image: 'https://via.placeholder.com/100x80?text=Princess'
+      image: 'https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=100&h=80&fit=crop&crop=center'
     },
   ];
 

@@ -102,14 +102,6 @@ export default function SupportoPage() {
 
   const contactOptions = [
     {
-      title: "Email Supporto",
-      description: "Rispondiamo entro 24 ore",
-      contact: "support@seaboo.it",
-      icon: Mail,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50"
-    },
-    {
       title: "Chat Live",
       description: "Assistenza immediata",
       contact: "Avvia chat",
@@ -205,27 +197,6 @@ export default function SupportoPage() {
           </div>
         </div>
 
-        {/* Company Information */}
-        <div className="mb-12">
-          <Card>
-            <CardHeader>
-              <CardTitle>Informazioni Aziendali</CardTitle>
-              <CardDescription>
-                SeaBoo - Piattaforma di noleggio barche leader in Italia
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Sede Legale</h4>
-                <p className="text-gray-600">Via del Porto 123<br />00121 Roma, Italia</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Orari di Supporto</h4>
-                <p className="text-gray-600">Lunedì - Venerdì: 9:00 - 18:00<br />Weekend: Supporto via email</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* FAQ Section */}
         <div className="mb-12">

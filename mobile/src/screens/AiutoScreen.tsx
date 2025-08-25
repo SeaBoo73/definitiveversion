@@ -36,27 +36,19 @@ const faqData = [
 const contactOptions = [
   {
     id: 1,
-    title: "Email",
-    subtitle: "support@seaboo.it",
-    icon: "mail",
+    title: "Centro Supporto Completo",
+    subtitle: "Visita la pagina web",
+    icon: "help-circle",
     color: "#0ea5e9",
-    action: () => Linking.openURL('mailto:support@seaboo.it')
+    action: () => Linking.openURL('https://seaboo.it/supporto')
   },
   {
     id: 2,
-    title: "Telefono",
-    subtitle: "+39 06 1234 5678",
-    icon: "call",
-    color: "#10b981",
-    action: () => Linking.openURL('tel:+390612345678')
-  },
-  {
-    id: 3,
-    title: "WhatsApp",
-    subtitle: "Chat dal vivo",
-    icon: "logo-whatsapp",
-    color: "#25d366",
-    action: () => Linking.openURL('https://wa.me/390612345678')
+    title: "Emergenze Mare",
+    subtitle: "Guardia Costiera: 1530",
+    icon: "warning",
+    color: "#ef4444",
+    action: () => Linking.openURL('tel:1530')
   },
 ];
 

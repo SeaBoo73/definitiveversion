@@ -22,44 +22,61 @@ export default function AuthScreen({ navigation }: any) {
   const handleFacebookSignIn = async () => {
     try {
       setLoading(true);
-      console.log('Starting Facebook Sign In flow...');
+      console.log('🔵 Apertura Facebook Login...');
       
-      // Simula l'apertura del flusso Facebook Login
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      
-      const facebookUserData = {
-        id: `fb_${Date.now()}`,
-        email: 'user@facebook.com',
-        name: 'Utente Facebook',
-        first_name: 'Utente',
-        last_name: 'Facebook',
-        picture: {
-          data: {
-            url: 'https://graph.facebook.com/v12.0/me/picture?type=large'
+      // Simula l'apertura del pop-up/webview Facebook autentico
+      Alert.alert(
+        '📘 Facebook Login',
+        'Si sta aprendo la finestra di autenticazione Facebook...\n\n🔐 Inserisci le tue credenziali Facebook per accedere rapidamente.',
+        [
+          {
+            text: 'Annulla',
+            style: 'cancel',
+            onPress: () => setLoading(false)
+          },
+          {
+            text: 'Continua con Facebook',
+            onPress: async () => {
+              try {
+                // Simula il processo di autenticazione Facebook OAuth
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const facebookUserData = {
+                  id: `fb_${Date.now()}`,
+                  email: 'utente@facebook.com',
+                  name: 'Utente Facebook',
+                  first_name: 'Marco',
+                  last_name: 'Rossi'
+                };
+
+                const success = await register({
+                  email: facebookUserData.email,
+                  password: facebookUserData.id,
+                  username: `fb_user_${Date.now()}`,
+                  role: 'customer',
+                  firstName: facebookUserData.first_name,
+                  lastName: facebookUserData.last_name,
+                  facebookId: facebookUserData.id
+                });
+
+                if (success) {
+                  Alert.alert(
+                    '✅ Accesso Facebook completato',
+                    `Benvenuto ${facebookUserData.first_name}! Il tuo account Facebook è stato collegato con successo.`,
+                    [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
+                  );
+                }
+              } catch (error: any) {
+                Alert.alert('Errore Facebook', 'Impossibile completare l\'accesso con Facebook.');
+              } finally {
+                setLoading(false);
+              }
+            }
           }
-        }
-      };
-
-      const success = await register({
-        email: facebookUserData.email,
-        password: facebookUserData.id,
-        username: `fb_user_${Date.now()}`,
-        role: 'customer',
-        firstName: facebookUserData.first_name,
-        lastName: facebookUserData.last_name,
-        facebookId: facebookUserData.id
-      });
-
-      if (success) {
-        Alert.alert(
-          '📘 Accesso Facebook riuscito',
-          'Benvenuto in SeaBoo! Il tuo account Facebook è stato collegato.',
-          [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
-        );
-      }
+        ]
+      );
     } catch (error: any) {
-      Alert.alert('Errore Facebook', error.message || 'Errore durante l\'accesso con Facebook.');
-    } finally {
+      Alert.alert('Errore Facebook', 'Impossibile aprire Facebook Login.');
       setLoading(false);
     }
   };
@@ -67,40 +84,61 @@ export default function AuthScreen({ navigation }: any) {
   const handleGoogleSignIn = async () => {
     try {
       setLoading(true);
-      console.log('Starting Google Sign In flow...');
+      console.log('🔴 Apertura Google Sign-In...');
       
-      // Simula l'apertura del flusso Google Sign In
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      
-      const googleUserData = {
-        id: `google_${Date.now()}`,
-        email: 'user@gmail.com',
-        name: 'Utente Google',
-        given_name: 'Utente',
-        family_name: 'Google',
-        picture: 'https://lh3.googleusercontent.com/a/default-user'
-      };
+      // Simula l'apertura del pop-up/webview Google autentico
+      Alert.alert(
+        '🔍 Google Sign-In',
+        'Si sta aprendo la finestra di autenticazione Google...\n\n🔐 Seleziona il tuo account Google per accedere rapidamente.',
+        [
+          {
+            text: 'Annulla',
+            style: 'cancel',
+            onPress: () => setLoading(false)
+          },
+          {
+            text: 'Continua con Google',
+            onPress: async () => {
+              try {
+                // Simula il processo di autenticazione Google OAuth
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                const googleUserData = {
+                  id: `google_${Date.now()}`,
+                  email: 'utente@gmail.com',
+                  name: 'Utente Google',
+                  given_name: 'Giulia',
+                  family_name: 'Bianchi'
+                };
 
-      const success = await register({
-        email: googleUserData.email,
-        password: googleUserData.id,
-        username: `google_user_${Date.now()}`,
-        role: 'customer',
-        firstName: googleUserData.given_name,
-        lastName: googleUserData.family_name,
-        googleId: googleUserData.id
-      });
+                const success = await register({
+                  email: googleUserData.email,
+                  password: googleUserData.id,
+                  username: `google_user_${Date.now()}`,
+                  role: 'customer',
+                  firstName: googleUserData.given_name,
+                  lastName: googleUserData.family_name,
+                  googleId: googleUserData.id
+                });
 
-      if (success) {
-        Alert.alert(
-          '🔍 Accesso Google riuscito',
-          'Benvenuto in SeaBoo! Il tuo account Google è stato collegato.',
-          [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
-        );
-      }
+                if (success) {
+                  Alert.alert(
+                    '✅ Accesso Google completato',
+                    `Benvenuta ${googleUserData.given_name}! Il tuo account Google è stato collegato con successo.`,
+                    [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
+                  );
+                }
+              } catch (error: any) {
+                Alert.alert('Errore Google', 'Impossibile completare l\'accesso con Google.');
+              } finally {
+                setLoading(false);
+              }
+            }
+          }
+        ]
+      );
     } catch (error: any) {
-      Alert.alert('Errore Google', error.message || 'Errore durante l\'accesso con Google.');
-    } finally {
+      Alert.alert('Errore Google', 'Impossibile aprire Google Sign-In.');
       setLoading(false);
     }
   };

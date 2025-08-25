@@ -35,9 +35,9 @@ export default function LoginScreen({ navigation }: any) {
     }
   };
 
-  const fillTestCredentials = () => {
-    setEmail('owner@test.com');
-    setPassword('password123');
+  const fillDemoCredentials = () => {
+    setEmail('demo@seaboo.it');
+    setPassword('demo2025');
   };
 
   return (
@@ -55,7 +55,7 @@ export default function LoginScreen({ navigation }: any) {
           <View style={styles.form}>
             <TextInput
               style={styles.input}
-              placeholder="Email"
+              placeholder="Il tuo indirizzo email"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -63,7 +63,7 @@ export default function LoginScreen({ navigation }: any) {
             />
             <TextInput
               style={styles.input}
-              placeholder="Password"
+              placeholder="La tua password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -80,11 +80,11 @@ export default function LoginScreen({ navigation }: any) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={styles.testButton}
-              onPress={fillTestCredentials}
+              style={styles.demoButton}
+              onPress={fillDemoCredentials}
             >
-              <Text style={styles.testButtonText}>
-                Usa credenziali di test
+              <Text style={styles.demoButtonText}>
+                Account Demo
               </Text>
             </TouchableOpacity>
           </View>
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  testButton: {
+  demoButton: {
     backgroundColor: '#f1f5f9',
     padding: 16,
     borderRadius: 12,
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#e2e8f0',
   },
-  testButtonText: {
+  demoButtonText: {
     color: '#0ea5e9',
     fontSize: 16,
     fontWeight: '600',

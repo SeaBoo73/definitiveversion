@@ -29,7 +29,7 @@ const SearchScreen = () => {
       price: '€850',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop&crop=center'
+      image: require('../../../attached_assets/generated_images/luxury_yacht_charter_boat_7d39103e.png')
     },
     {
       id: 2,
@@ -38,7 +38,7 @@ const SearchScreen = () => {
       price: '€320',
       rating: 4.8,
       category: 'sailing',
-      image: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=300&h=200&fit=crop&crop=center'
+      image: require('../../../attached_assets/generated_images/sailing_catamaran_rental_boat_f1915fa6.png')
     },
     {
       id: 3,
@@ -47,7 +47,7 @@ const SearchScreen = () => {
       price: '€180',
       rating: 4.7,
       category: 'dinghy',
-      image: 'https://images.unsplash.com/photo-1558618047-fcd95c85cd64?w=300&h=200&fit=crop&crop=center'
+      image: require('../../../attached_assets/generated_images/speedboat_racing_action_shot_700286c1.png')
     },
     {
       id: 4,
@@ -56,7 +56,7 @@ const SearchScreen = () => {
       price: '€950',
       rating: 4.9,
       category: 'yacht',
-      image: 'https://images.unsplash.com/photo-1540946485063-a40da27545f8?w=300&h=200&fit=crop&crop=center'
+      image: require('../../../attached_assets/generated_images/sailing_yacht_golden_hour_200a06c5.png')
     },
   ];
 
@@ -75,7 +75,7 @@ const SearchScreen = () => {
           <Icon name="search" size={20} color="#6b7280" />
           <TextInput
             style={styles.searchInput}
-            placeholder="Cerca barche, località..."
+            placeholder="Cerca yacht, destinazioni, porti..."
             value={searchText}
             onChangeText={setSearchText}
           />

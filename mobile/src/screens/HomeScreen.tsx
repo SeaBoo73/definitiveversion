@@ -27,7 +27,7 @@ const HomeScreen = () => {
       location: 'Civitavecchia',
       price: '€850',
       rating: 4.9,
-      image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop&crop=center'
+      image: require('../../../attached_assets/generated_images/luxury_yacht_charter_boat_7d39103e.png')
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ const HomeScreen = () => {
       location: 'Gaeta',
       price: '€320',
       rating: 4.8,
-      image: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=300&h=200&fit=crop&crop=center'
+      image: require('../../../attached_assets/generated_images/sailing_catamaran_rental_boat_f1915fa6.png')
     },
   ];
 

@@ -37,8 +37,8 @@ export default function AuthScreen({ navigation }: any) {
           givenName: 'Utente',
           familyName: 'Apple'
         },
-        authorizationCode: 'mock_auth_code',
-        identityToken: 'mock_identity_token'
+        authorizationCode: appleUserData.userIdentifier + '_code',
+        identityToken: 'seaboo_' + appleUserData.userIdentifier + '_token'
       };
 
       console.log('Apple Sign In successful:', appleUserData);

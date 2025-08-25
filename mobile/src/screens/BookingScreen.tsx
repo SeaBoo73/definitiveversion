@@ -71,12 +71,8 @@ export default function BookingScreen({ navigation, route }: any) {
       // Simula processo di pagamento più realistico e iPad-compatibile
       await new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
-          // Simula 90% di successo per testing
-          if (Math.random() > 0.1) {
-            resolve(true);
-          } else {
-            reject(new Error('Payment processing failed'));
-          }
+          // Processo di pagamento completato con successo
+          resolve(true);
         }, 1500); // Ridotto da 2000ms per migliore UX
         
         // Cleanup timer se il componente viene smontato

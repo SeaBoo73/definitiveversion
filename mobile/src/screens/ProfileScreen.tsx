@@ -67,7 +67,6 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Profile Header */}
         <View style={styles.profileHeader}>
         <View style={styles.profileInfo}>
           <Image source={{ uri: user.avatar }} style={styles.avatar} />
@@ -89,7 +88,6 @@ const ProfileScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Stats */}
       <View style={styles.statsContainer}>
         {stats.map((stat, index) => (
           <View key={index} style={styles.statItem}>
@@ -99,7 +97,6 @@ const ProfileScreen = () => {
         ))}
       </View>
 
-      {/* Quick Actions */}
       <View style={styles.quickActions}>
         <TouchableOpacity style={styles.quickAction}>
           <Icon name="add-circle" size={24} color="#0ea5e9" />
@@ -115,7 +112,6 @@ const ProfileScreen = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Menu Items */}
       <View style={styles.menuContainer}>
         {menuItems.map((item) => (
           <TouchableOpacity
@@ -137,7 +133,6 @@ const ProfileScreen = () => {
         ))}
       </View>
 
-      {/* Logout Button */}
       <TouchableOpacity 
         style={styles.logoutButton}
         onPress={() => Alert.alert('Logout', 'Sei sicuro di voler uscire?', [
@@ -149,7 +144,6 @@ const ProfileScreen = () => {
         <Text style={styles.logoutText}>Esci dall'Account</Text>
       </TouchableOpacity>
 
-      {/* App Version */}
         <View style={styles.versionContainer}>
           <Text style={styles.versionText}>SeaBoo Mobile v1.0.0</Text>
         </View>

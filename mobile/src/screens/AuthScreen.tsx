@@ -271,7 +271,8 @@ export default function AuthScreen({ navigation }: any) {
 
           {/* Sezione Accesso Rapido */}
           <View style={styles.socialContainer}>
-            <Text style={styles.socialTitle}>Accesso Rapido</Text>
+            <View style={styles.socialFrame}>
+              <Text style={styles.socialTitle}>Accesso Rapido</Text>
             
             {/* Facebook Sign In Button */}
             <TouchableOpacity 
@@ -308,6 +309,7 @@ export default function AuthScreen({ navigation }: any) {
                 {loading ? 'Connessione...' : 'Continua con Apple'}
               </Text>
             </TouchableOpacity>
+            </View>
           </View>
 
           <TouchableOpacity 
@@ -429,6 +431,18 @@ const styles = StyleSheet.create({
   },
   socialContainer: {
     marginBottom: 20,
+  },
+  socialFrame: {
+    backgroundColor: '#f8fafc',
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
   socialTitle: {
     fontSize: 18,

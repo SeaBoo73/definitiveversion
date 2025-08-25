@@ -71,7 +71,10 @@ export default function AuthScreen({ navigation }: any) {
           [
             {
               text: 'OK',
-              onPress: () => navigation.goBack()
+              onPress: () => {
+                // Naviga alla dashboard/profilo dopo login
+                navigation.navigate('Main', { screen: 'Profile' });
+              }
             }
           ]
         );

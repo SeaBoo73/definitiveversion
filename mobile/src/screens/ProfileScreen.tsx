@@ -103,8 +103,8 @@ const ProfileScreen = () => {
           <Text style={styles.quickActionText}>Diventa Noleggiatore</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.quickAction}>
-          <Icon name="loyalty" size={24} color="#f59e0b" />
-          <Text style={styles.quickActionText}>SeaBoo Premium</Text>
+          <Icon name="logo-apple" size={24} color="#000" />
+          <Text style={styles.quickActionText}>Account Apple</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.quickAction}>
           <Icon name="share" size={24} color="#10b981" />

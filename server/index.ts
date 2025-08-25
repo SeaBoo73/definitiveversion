@@ -1,6 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
-import fs from "fs";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
@@ -31,103 +30,6 @@ app.get("/mobile-preview.html", (req, res) => {
 // Native app preview route
 app.get("/native-preview", (req, res) => {
   res.sendFile(path.resolve("native-app-preview.html"));
-});
-
-// Mobile app route - show the real React Native app code
-app.get("/mobile-app", (req, res) => {
-  res.set({
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
-  });
-  
-  const html = `
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeaBoo Mobile - Codice Reale React Native</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #0ea5e9, #1e40af); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; text-align: center; }
-        .fixes-banner { background: #10b981; color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
-        .code-section { background: white; border-radius: 8px; margin-bottom: 30px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .code-header { background: #1f2937; color: white; padding: 15px; font-weight: 600; }
-        .code-content { padding: 20px; max-height: 400px; overflow-y: auto; }
-        .fix-item { background: rgba(255,255,255,0.1); padding: 12px; margin: 8px 0; border-radius: 6px; }
-        .file-info { background: #f8f9fa; padding: 15px; border-radius: 6px; margin: 10px 0; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>📱 SeaBoo Mobile App - Codice React Native</h1>
-            <p>La tua vera app mobile con tutte le correzioni Apple implementate</p>
-        </div>
-        
-        <div class="fixes-banner">
-            <h2>🎉 Correzioni Apple Completate</h2>
-            <div class="fix-item">✅ Sistema login reale implementato (AuthScreen.tsx)</div>
-            <div class="fix-item">✅ Pulsante "Accedi con Apple" aggiunto</div>
-            <div class="fix-item">✅ Flusso pagamento funzionante (BookingScreen.tsx)</div>
-            <div class="fix-item">✅ Immagini segnaposto sostituite con foto reali</div>
-            <div class="fix-item">✅ Pagina supporto creata (/supporto)</div>
-        </div>
-        
-        <div class="code-section">
-            <div class="code-header">📂 File Modificati nella Tua App React Native</div>
-            <div class="code-content">
-                <div class="file-info">
-                    <strong>🔐 mobile/src/screens/AuthScreen.tsx</strong><br>
-                    - Sostituito alert() simulato con vera autenticazione<br>
-                    - Aggiunto pulsante "Continua con Apple" per conformità linea guida 4.8<br>
-                    - Implementato sistema di login reale
-                </div>
-                
-                <div class="file-info">
-                    <strong>💳 mobile/src/screens/BookingScreen.tsx</strong><br>
-                    - Implementato processo di pagamento completo<br>
-                    - Aggiunta gestione errori e loading states<br>
-                    - Collegamento con sistema di autenticazione
-                </div>
-                
-                <div class="file-info">
-                    <strong>🖼️ mobile/src/screens/HomeScreen.tsx, ProfileScreen.tsx, EsperienzeScreen.tsx, BookingsScreen.tsx, SearchScreen.tsx</strong><br>
-                    - Sostituite TUTTE le immagini placeholder (via.placeholder.com)<br>
-                    - Usate immagini reali da Unsplash per barche, avatar, esperienze<br>
-                    - Oltre 15 immagini segnaposto sostituite
-                </div>
-                
-                <div class="file-info">
-                    <strong>📞 server/routes.ts</strong><br>
-                    - Creata pagina di supporto funzionante<br>
-                    - Route /supporto con informazioni di contatto complete<br>
-                    - Pagina conforme alle richieste Apple
-                </div>
-            </div>
-        </div>
-        
-        <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center;">
-            <h3>🚀 La Tua App è Pronta per l'App Store</h3>
-            <p style="margin: 10px 0;">Tutti i 5 problemi segnalati da Apple sono stati risolti</p>
-            <div style="margin-top: 20px; padding: 15px; background: #f0f9ff; border-radius: 6px;">
-                <strong>Per testare l'app mobile completa:</strong><br>
-                <code>cd mobile && npm install && npx expo start --web</code>
-            </div>
-            <div style="margin-top: 15px; padding: 15px; background: #fef3cd; border-radius: 6px;">
-                <strong>File app React Native modificati:</strong><br>
-                I file nella cartella <code>mobile/src/screens/</code> contengono tutte le correzioni
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-  `;
-  
-  res.send(html);
 });
 
 // Archived mobile preview route (temporary)
@@ -303,7 +205,6 @@ app.get("/mobile-project-preview", (req, res) => {
     log(`🚀 Server running on port ${port}`);
     log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
     log(`📱 Native preview: http://localhost:${port}/native-preview`);
-    log(`🚀 Mobile app codice: http://localhost:${port}/mobile-app`);
     log(`🌐 Web app: http://localhost:${port}`);
   });
 })();

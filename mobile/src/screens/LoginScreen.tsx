@@ -27,7 +27,8 @@ export default function LoginScreen({ navigation }: any) {
     setLoading(true);
     try {
       await login(email, password);
-      navigation.goBack();
+      // Naviga alla dashboard utente dopo login riuscito
+      navigation.navigate('Main', { screen: 'Profile' });
     } catch (error) {
       Alert.alert('Errore', 'Email o password non validi');
     } finally {

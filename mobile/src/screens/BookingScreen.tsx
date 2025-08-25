@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -23,6 +24,37 @@ export default function BookingScreen({ navigation, route }: any) {
     insurance: true,
   });
   const { user, isAuthenticated } = useAuth();
+
+  // Simula un vero flusso di pagamento con Apple Pay/Stripe
+  const simulatePaymentFlow = async (amount: number) => {
+    try {
+      // Simula la selezione del metodo di pagamento
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Simula l'elaborazione del pagamento
+      console.log(`Processing payment of €${amount} with Apple Pay/Stripe...`);
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      // Simula la risposta del gateway di pagamento
+      const paymentResponse = {
+        success: true,
+        transactionId: `txn_${Date.now()}`,
+        paymentMethod: Platform.OS === 'ios' ? 'Apple Pay' : 'Google Pay',
+        amount: amount,
+        currency: 'EUR',
+        timestamp: new Date().toISOString()
+      };
+      
+      console.log('Payment processed successfully:', paymentResponse);
+      return paymentResponse;
+      
+    } catch (error) {
+      return {
+        success: false,
+        error: 'Errore di connessione con il gateway di pagamento'
+      };
+    }
+  };
 
   const calculateTotal = () => {
     let total = parseInt(boat.pricePerDay) * 2; // 2 giorni
@@ -68,16 +100,12 @@ export default function BookingScreen({ navigation, route }: any) {
 
       console.log('Processing payment for booking:', bookingData);
       
-      // Simula processo di pagamento più realistico e iPad-compatibile
-      await new Promise((resolve, reject) => {
-        const timer = setTimeout(() => {
-          // Processo di pagamento completato con successo
-          resolve(true);
-        }, 1500); // Ridotto da 2000ms per migliore UX
-        
-        // Cleanup timer se il componente viene smontato
-        return () => clearTimeout(timer);
-      });
+      // Simula integrazione con Apple Pay e Stripe per iPad
+      const paymentResult = await simulatePaymentFlow(bookingData.totalAmount);
+      
+      if (!paymentResult.success) {
+        throw new Error(paymentResult.error || 'Pagamento fallito');
+      }
 
       // Salva la prenotazione localmente per testing
       console.log('Payment successful! Booking saved:', bookingData);
@@ -85,7 +113,7 @@ export default function BookingScreen({ navigation, route }: any) {
       // Mostra schermata di successo con migliore UX
       Alert.alert(
         '✅ Pagamento Riuscito',
-        `Il pagamento di €${calculateTotal()} è stato elaborato con successo!\n\n📧 Conferma inviata a: ${user?.email || email}\n📱 ID Prenotazione: ${bookingData.boatId}${Date.now().toString().slice(-4)}`,
+        `Il pagamento di €${calculateTotal()} è stato elaborato con successo tramite ${paymentResult.paymentMethod}!\n\n📧 Conferma inviata a: ${user?.email}\n📱 ID Transazione: ${paymentResult.transactionId}\n📋 ID Prenotazione: ${bookingData.boatId}${Date.now().toString().slice(-4)}`,
         [
           {
             text: '📋 Le Mie Prenotazioni',

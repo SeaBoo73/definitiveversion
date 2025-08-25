@@ -298,6 +298,75 @@ export async function registerRoutes(app: Express): Promise<Server> {
     next();
   });
 
+  // Support page for App Store requirement
+  app.get('/supporto', (req, res) => {
+    res.send(`
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supporto - SeaBoo</title>
+    <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; margin: 0; padding: 20px; background: #f8fafc; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #0ea5e9; margin-bottom: 30px; }
+        h2 { color: #374151; margin-top: 30px; }
+        .contact-info { background: #f1f5f9; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .faq { margin: 20px 0; }
+        .faq-item { margin-bottom: 15px; padding: 15px; border: 1px solid #e5e7eb; border-radius: 8px; }
+        a { color: #0ea5e9; text-decoration: none; }
+        .logo { text-align: center; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🚤 SeaBoo - Centro Supporto</h1>
+        </div>
+        
+        <h2>📞 Contattaci</h2>
+        <div class="contact-info">
+            <p><strong>Email Supporto:</strong> <a href="mailto:supporto@seaboo.it">supporto@seaboo.it</a></p>
+            <p><strong>Orari:</strong> Lunedì - Venerdì 9:00-18:00</p>
+            <p><strong>Emergenze in mare:</strong> <a href="tel:1530">1530 (Guardia Costiera)</a></p>
+        </div>
+
+        <h2>❓ Domande Frequenti</h2>
+        <div class="faq">
+            <div class="faq-item">
+                <strong>Come prenotare una barca?</strong><br>
+                Usa la ricerca, seleziona date e completa il pagamento.
+            </div>
+            <div class="faq-item">
+                <strong>Posso modificare la prenotazione?</strong><br>
+                Modifiche possibili fino a 48h prima della partenza.
+            </div>
+            <div class="faq-item">
+                <strong>Che documenti servono?</strong><br>
+                Documento d'identità e patente nautica (se richiesta).
+            </div>
+            <div class="faq-item">
+                <strong>Metodi di pagamento?</strong><br>
+                Carte di credito, Apple Pay, Google Pay tramite Stripe.
+            </div>
+        </div>
+
+        <h2>🔐 Privacy e Sicurezza</h2>
+        <p>I tuoi dati sono protetti secondo il GDPR. Le transazioni sono sicure tramite Stripe.</p>
+        
+        <h2>📱 App Mobile</h2>
+        <p>Scarica l'app SeaBoo dall'App Store per un'esperienza ottimizzata su mobile.</p>
+        
+        <p style="text-align: center; margin-top: 40px; color: #6b7280;">
+            © 2025 SeaBoo. Tutti i diritti riservati.
+        </p>
+    </div>
+</body>
+</html>
+    `);
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

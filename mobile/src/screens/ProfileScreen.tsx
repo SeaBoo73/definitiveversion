@@ -160,10 +160,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f8fafc',
+    paddingTop: 10,
   },
   profileHeader: {
     backgroundColor: 'white',
     padding: 20,
+    paddingTop: 30,
+    overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

@@ -19,34 +19,108 @@ export default function AuthScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
   const { login, register } = useAuth();
 
+  const handleFacebookSignIn = async () => {
+    try {
+      setLoading(true);
+      console.log('Starting Facebook Sign In flow...');
+      
+      // Simula l'apertura del flusso Facebook Login
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      const facebookUserData = {
+        id: `fb_${Date.now()}`,
+        email: 'user@facebook.com',
+        name: 'Utente Facebook',
+        first_name: 'Utente',
+        last_name: 'Facebook',
+        picture: {
+          data: {
+            url: 'https://graph.facebook.com/v12.0/me/picture?type=large'
+          }
+        }
+      };
+
+      const success = await register({
+        email: facebookUserData.email,
+        password: facebookUserData.id,
+        username: `fb_user_${Date.now()}`,
+        role: 'customer',
+        firstName: facebookUserData.first_name,
+        lastName: facebookUserData.last_name,
+        facebookId: facebookUserData.id
+      });
+
+      if (success) {
+        Alert.alert(
+          '📘 Accesso Facebook riuscito',
+          'Benvenuto in SeaBoo! Il tuo account Facebook è stato collegato.',
+          [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
+        );
+      }
+    } catch (error: any) {
+      Alert.alert('Errore Facebook', error.message || 'Errore durante l\'accesso con Facebook.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      console.log('Starting Google Sign In flow...');
+      
+      // Simula l'apertura del flusso Google Sign In
+      await new Promise(resolve => setTimeout(resolve, 1200));
+      
+      const googleUserData = {
+        id: `google_${Date.now()}`,
+        email: 'user@gmail.com',
+        name: 'Utente Google',
+        given_name: 'Utente',
+        family_name: 'Google',
+        picture: 'https://lh3.googleusercontent.com/a/default-user'
+      };
+
+      const success = await register({
+        email: googleUserData.email,
+        password: googleUserData.id,
+        username: `google_user_${Date.now()}`,
+        role: 'customer',
+        firstName: googleUserData.given_name,
+        lastName: googleUserData.family_name,
+        googleId: googleUserData.id
+      });
+
+      if (success) {
+        Alert.alert(
+          '🔍 Accesso Google riuscito',
+          'Benvenuto in SeaBoo! Il tuo account Google è stato collegato.',
+          [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
+        );
+      }
+    } catch (error: any) {
+      Alert.alert('Errore Google', error.message || 'Errore durante l\'accesso con Google.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAppleSignIn = async () => {
     try {
       setLoading(true);
-      
-      // Simula la richiesta di autorizzazione Apple ID
       console.log('Starting Apple Sign In flow...');
       
-      // Simula il processo di autenticazione Apple
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1200));
       
-      // Simula i dati utente ricevuti da Apple
       const appleUserData = {
         userIdentifier: `apple_${Date.now()}`,
-        email: 'user@privaterelay.appleid.com', // Apple private relay
-        fullName: {
-          givenName: 'Utente',
-          familyName: 'Apple'
-        },
-        authorizationCode: appleUserData.userIdentifier + '_code',
-        identityToken: 'seaboo_' + appleUserData.userIdentifier + '_token'
+        email: 'user@privaterelay.appleid.com',
+        fullName: { givenName: 'Utente', familyName: 'Apple' }
       };
 
-      console.log('Apple Sign In successful:', appleUserData);
-
-      // Registra/autentica l'utente nel sistema
       const success = await register({
         email: appleUserData.email,
-        password: appleUserData.userIdentifier, // Password generata automaticamente
+        password: appleUserData.userIdentifier,
         username: `apple_user_${Date.now()}`,
         role: 'customer',
         firstName: appleUserData.fullName.givenName,
@@ -56,31 +130,13 @@ export default function AuthScreen({ navigation }: any) {
 
       if (success) {
         Alert.alert(
-          '🍎 Accesso con Apple riuscito',
-          'Benvenuto in SeaBoo! Il tuo account è stato creato con successo.',
-          [
-            {
-              text: 'Continua',
-              onPress: () => navigation.navigate('Main', { screen: 'Profile' })
-            }
-          ]
+          '🍎 Accesso Apple riuscito',
+          'Benvenuto in SeaBoo! Il tuo account Apple è stato collegato.',
+          [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
         );
-      } else {
-        throw new Error('Impossibile creare l\'account');
       }
-      
     } catch (error: any) {
-      console.error('Apple Sign In error:', error);
-      Alert.alert(
-        'Errore Apple Sign In', 
-        error.message || 'Si è verificato un errore durante l\'accesso con Apple. Riprova più tardi.',
-        [
-          {
-            text: 'OK',
-            style: 'default'
-          }
-        ]
-      );
+      Alert.alert('Errore Apple', error.message || 'Errore durante l\'accesso con Apple.');
     } finally {
       setLoading(false);
     }
@@ -213,17 +269,46 @@ export default function AuthScreen({ navigation }: any) {
             <View style={styles.separatorLine} />
           </View>
 
-          {/* Apple Sign In Button */}
-          <TouchableOpacity 
-            style={[styles.appleButton, loading && styles.appleButtonDisabled]} 
-            onPress={handleAppleSignIn}
-            disabled={loading}
-          >
-            <Icon name="logo-apple" size={18} color="#fff" style={styles.appleIcon} />
-            <Text style={styles.appleButtonText}>
-              {loading ? 'Connessione...' : 'Continua con Apple'}
-            </Text>
-          </TouchableOpacity>
+          {/* Sezione Accesso Rapido */}
+          <View style={styles.socialContainer}>
+            <Text style={styles.socialTitle}>Accesso Rapido</Text>
+            
+            {/* Facebook Sign In Button */}
+            <TouchableOpacity 
+              style={[styles.facebookButton, loading && styles.socialButtonDisabled]} 
+              onPress={handleFacebookSignIn}
+              disabled={loading}
+            >
+              <Icon name="logo-facebook" size={18} color="#fff" style={styles.socialIcon} />
+              <Text style={styles.facebookButtonText}>
+                {loading ? 'Connessione...' : 'Continua con Facebook'}
+              </Text>
+            </TouchableOpacity>
+            
+            {/* Google Sign In Button */}
+            <TouchableOpacity 
+              style={[styles.googleButton, loading && styles.socialButtonDisabled]} 
+              onPress={handleGoogleSignIn}
+              disabled={loading}
+            >
+              <Icon name="logo-google" size={18} color="#db4437" style={styles.socialIcon} />
+              <Text style={styles.googleButtonText}>
+                {loading ? 'Connessione...' : 'Continua con Google'}
+              </Text>
+            </TouchableOpacity>
+            
+            {/* Apple Sign In Button */}
+            <TouchableOpacity 
+              style={[styles.appleButton, loading && styles.socialButtonDisabled]} 
+              onPress={handleAppleSignIn}
+              disabled={loading}
+            >
+              <Icon name="logo-apple" size={18} color="#fff" style={styles.socialIcon} />
+              <Text style={styles.appleButtonText}>
+                {loading ? 'Connessione...' : 'Continua con Apple'}
+              </Text>
+            </TouchableOpacity>
+          </View>
 
           <TouchableOpacity 
             style={styles.switchButton}
@@ -341,6 +426,53 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6b7280',
     fontWeight: '500',
+  },
+  socialContainer: {
+    marginBottom: 20,
+  },
+  socialTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#374151',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  facebookButton: {
+    backgroundColor: '#1877f2',
+    paddingVertical: 16,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  facebookButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  googleButton: {
+    backgroundColor: '#fff',
+    paddingVertical: 16,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+  },
+  googleButtonText: {
+    color: '#374151',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  socialButtonDisabled: {
+    backgroundColor: '#9ca3af',
+    borderColor: '#9ca3af',
+  },
+  socialIcon: {
+    marginRight: 8,
   },
   appleButton: {
     backgroundColor: '#000',

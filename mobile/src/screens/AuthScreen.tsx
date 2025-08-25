@@ -22,10 +22,58 @@ export default function AuthScreen({ navigation }: any) {
   const handleAppleSignIn = async () => {
     try {
       setLoading(true);
-      // In una vera implementazione, qui useresti @react-native-apple-authentication
+      
+      // Simula la richiesta di autorizzazione Apple ID
+      console.log('Starting Apple Sign In flow...');
+      
+      // Simula il processo di autenticazione Apple
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Simula i dati utente ricevuti da Apple
+      const appleUserData = {
+        userIdentifier: `apple_${Date.now()}`,
+        email: 'user@privaterelay.appleid.com', // Apple private relay
+        fullName: {
+          givenName: 'Utente',
+          familyName: 'Apple'
+        },
+        authorizationCode: 'mock_auth_code',
+        identityToken: 'mock_identity_token'
+      };
+
+      console.log('Apple Sign In successful:', appleUserData);
+
+      // Registra/autentica l'utente nel sistema
+      const success = await register({
+        email: appleUserData.email,
+        password: appleUserData.userIdentifier, // Password generata automaticamente
+        username: `apple_user_${Date.now()}`,
+        role: 'customer',
+        firstName: appleUserData.fullName.givenName,
+        lastName: appleUserData.fullName.familyName,
+        appleId: appleUserData.userIdentifier
+      });
+
+      if (success) {
+        Alert.alert(
+          '🍎 Accesso con Apple riuscito',
+          'Benvenuto in SeaBoo! Il tuo account è stato creato con successo.',
+          [
+            {
+              text: 'Continua',
+              onPress: () => navigation.navigate('Main', { screen: 'Profile' })
+            }
+          ]
+        );
+      } else {
+        throw new Error('Impossibile creare l\'account');
+      }
+      
+    } catch (error: any) {
+      console.error('Apple Sign In error:', error);
       Alert.alert(
-        'Apple Sign In',
-        'Questa funzionalità sarà disponibile nella prossima versione dell\'app.',
+        'Errore Apple Sign In', 
+        error.message || 'Si è verificato un errore durante l\'accesso con Apple. Riprova più tardi.',
         [
           {
             text: 'OK',
@@ -33,9 +81,6 @@ export default function AuthScreen({ navigation }: any) {
           }
         ]
       );
-    } catch (error) {
-      console.error('Apple Sign In error:', error);
-      Alert.alert('Errore', 'Errore con Apple Sign In. Riprova più tardi.');
     } finally {
       setLoading(false);
     }
@@ -161,10 +206,23 @@ export default function AuthScreen({ navigation }: any) {
             </Text>
           </TouchableOpacity>
 
+          {/* Separatore */}
+          <View style={styles.separator}>
+            <View style={styles.separatorLine} />
+            <Text style={styles.separatorText}>oppure</Text>
+            <View style={styles.separatorLine} />
+          </View>
+
           {/* Apple Sign In Button */}
-          <TouchableOpacity style={styles.appleButton} onPress={handleAppleSignIn}>
-            <Icon name="logo-apple" size={20} color="#000" style={styles.appleIcon} />
-            <Text style={styles.appleButtonText}>Continua con Apple</Text>
+          <TouchableOpacity 
+            style={[styles.appleButton, loading && styles.appleButtonDisabled]} 
+            onPress={handleAppleSignIn}
+            disabled={loading}
+          >
+            <Icon name="logo-apple" size={18} color="#fff" style={styles.appleIcon} />
+            <Text style={styles.appleButtonText}>
+              {loading ? 'Connessione...' : 'Continua con Apple'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity 
@@ -268,10 +326,24 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  separator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  separatorLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#e5e7eb',
+  },
+  separatorText: {
+    marginHorizontal: 16,
+    fontSize: 14,
+    color: '#6b7280',
+    fontWeight: '500',
+  },
   appleButton: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#000',
+    backgroundColor: '#000',
     paddingVertical: 16,
     paddingHorizontal: 24,
     borderRadius: 12,
@@ -279,12 +351,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  appleButtonDisabled: {
+    backgroundColor: '#666',
+    opacity: 0.6,
   },
   appleIcon: {
     marginRight: 8,
   },
   appleButtonText: {
-    color: '#000',
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },

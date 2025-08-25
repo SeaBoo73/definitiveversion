@@ -65,9 +65,10 @@ const ProfileScreen = () => {
   ];
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Profile Header */}
-      <View style={styles.profileHeader}>
+    <View style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Profile Header */}
+        <View style={styles.profileHeader}>
         <View style={styles.profileInfo}>
           <Image source={{ uri: user.avatar }} style={styles.avatar} />
           <View style={styles.userInfo}>
@@ -149,10 +150,11 @@ const ProfileScreen = () => {
       </TouchableOpacity>
 
       {/* App Version */}
-      <View style={styles.versionContainer}>
-        <Text style={styles.versionText}>SeaBoo Mobile v1.0.0</Text>
-      </View>
-    </ScrollView>
+        <View style={styles.versionContainer}>
+          <Text style={styles.versionText}>SeaBoo Mobile v1.0.0</Text>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -161,12 +163,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8fafc',
     paddingTop: 10,
+    zIndex: 1000,
+    position: 'relative',
   },
   profileHeader: {
     backgroundColor: 'white',
     padding: 20,
-    paddingTop: 30,
+    paddingTop: 40,
     overflow: 'hidden',
+    zIndex: 1001,
+    position: 'relative',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

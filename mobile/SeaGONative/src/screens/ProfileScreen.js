@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [locationEnabled, setLocationEnabled] = useState(true);
@@ -77,12 +77,13 @@ const ProfileScreen = () => {
   };
 
   const handleLogin = () => {
-    // Redirect to real authentication system
+    // Apri l'AuthScreen con le modifiche più recenti
     Alert.alert(
-      'Accesso SeaBoo',
-      'Per accedere al tuo account SeaBoo, visita seaboo.it sul tuo browser.',
+      '🔐 Accesso SeaBoo',
+      'Scegli il metodo di accesso che preferisci',
       [
-        { text: 'OK', style: 'default' }
+        { text: 'Accesso Smart', onPress: () => navigation.navigate('Auth') },
+        { text: 'Annulla', style: 'cancel' }
       ]
     );
   };

@@ -10,6 +10,7 @@ import OrmeggioScreen from './src/screens/OrmeggioScreen';
 import EsperienzeScreen from './src/screens/EsperienzeScreen';
 import ServiziScreen from './src/screens/ServiziScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import AuthScreen from './src/screens/AuthScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,6 +76,15 @@ function MainTabs() {
         name="Profilo" 
         component={ProfileScreen} 
         options={{ title: 'Profilo' }}
+      />
+      <Tab.Screen 
+        name="Auth" 
+        component={AuthScreen} 
+        options={{ 
+          title: 'Accesso',
+          tabBarButton: () => null, // Nasconde dall'elenco tab
+          headerShown: false 
+        }}
       />
     </Tab.Navigator>
   );

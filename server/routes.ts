@@ -298,6 +298,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     next();
   });
 
+  // Serve mobile native preview
+  app.get('/mobile-native-preview', (req, res) => {
+    res.sendFile(path.join(__dirname, '../mobile-native-preview.html'));
+  });
+
   // Support page for App Store requirement
   app.get('/supporto', (req, res) => {
     res.send(`

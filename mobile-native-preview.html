@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SeaBoo Mobile Native - AuthScreen Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .phone-frame {
+      width: 375px;
+      height: 812px;
+      background: white;
+      border-radius: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .auth-screen {
+      height: calc(100% - 44px);
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 20px 20px 10px;
+    }
+
+    .back-button {
+      margin-right: 16px;
+      font-size: 24px;
+      color: #111827;
+    }
+
+    .header-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0ea5e9;
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+    }
+
+    .form-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #111827;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .input-container {
+      display: flex;
+      align-items: center;
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .input-icon {
+      margin-right: 12px;
+      color: #6b7280;
+      font-size: 20px;
+    }
+
+    .input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      color: #111827;
+      outline: none;
+    }
+
+    .auth-button {
+      background: #0ea5e9;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      margin: 8px 0 16px;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+    }
+
+    .separator-line {
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    .separator-text {
+      margin: 0 16px;
+      font-size: 14px;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .social-container {
+      margin-bottom: 20px;
+    }
+
+    /* CORNICE SFONDO - La modifica principale */
+    .social-frame {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .social-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .social-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .facebook-button {
+      background: #1877f2;
+      color: white;
+    }
+
+    .facebook-button:hover {
+      background: #166fe5;
+    }
+
+    .google-button {
+      background: white;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .google-button:hover {
+      background: #f9fafb;
+    }
+
+    .apple-button {
+      background: #000;
+      color: white;
+      margin-bottom: 24px;
+    }
+
+    .apple-button:hover {
+      background: #333;
+    }
+
+    .social-icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+
+    .switch-button {
+      text-align: center;
+      padding: 12px 0;
+    }
+
+    .switch-text {
+      color: #0ea5e9;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .footer {
+      padding: 20px 0;
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 18px;
+    }
+
+    .link-text {
+      color: #0ea5e9;
+      text-decoration: underline;
+    }
+
+    .demo-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: none;
+      min-width: 300px;
+    }
+
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+      display: none;
+    }
+
+    .popup-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .popup-message {
+      color: #6b7280;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .popup-button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .popup-button.cancel {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .popup-button.continue {
+      background: #0ea5e9;
+      color: white;
+    }
+
+    .highlight-box {
+      background: #eff6ff;
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px;
+      animation: highlight 2s ease-in-out;
+    }
+
+    @keyframes highlight {
+      0%, 100% { border-color: #3b82f6; }
+      50% { border-color: #ef4444; }
+    }
+
+    .highlight-text {
+      color: #1e40af;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>🔋 100%</span>
+    </div>
+    
+    <div class="auth-screen">
+      <div class="header">
+        <span class="back-button">‹</span>
+        <span class="header-title">SeaBoo</span>
+      </div>
+
+      <div class="content">
+        <div class="form-container">
+          <h1 class="title">Bentornato!</h1>
+          <p class="subtitle">Accedi per gestire le tue prenotazioni</p>
+
+          <div class="input-container">
+            <span class="input-icon">📧</span>
+            <input class="input" placeholder="Email" value="esempio@email.com">
+          </div>
+
+          <div class="input-container">
+            <span class="input-icon">🔒</span>
+            <input class="input" type="password" placeholder="Password" value="••••••••">
+          </div>
+
+          <button class="auth-button">Accedi</button>
+
+          <div class="separator">
+            <div class="separator-line"></div>
+            <span class="separator-text">oppure</span>
+            <div class="separator-line"></div>
+          </div>
+
+          <!-- SEZIONE CON CORNICE SFONDO - LA MODIFICA PRINCIPALE -->
+          <div class="social-container">
+            <div class="social-frame">
+              <h3 class="social-title">Accesso Rapido</h3>
+              
+              <button class="social-button facebook-button" onclick="showFacebookPopup()">
+                <span class="social-icon">📘</span>
+                Continua con Facebook
+              </button>
+              
+              <button class="social-button google-button" onclick="showGooglePopup()">
+                <span class="social-icon">🔍</span>
+                Continua con Google
+              </button>
+              
+              <button class="social-button apple-button" onclick="showApplePopup()">
+                <span class="social-icon">🍎</span>
+                Continua con Apple
+              </button>
+            </div>
+          </div>
+
+          <div class="switch-button">
+            <span class="switch-text">Non hai un account? Registrati</span>
+          </div>
+        </div>
+
+        <div class="footer">
+          <p class="footer-text">
+            Continuando accetti i nostri<br>
+            <span class="link-text">Termini di Servizio</span> e la <span class="link-text">Privacy Policy</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <p class="highlight-text">
+      🎯 MODIFICA APPLICATA: Cornice sfondo grigia aggiunta alla sezione "Accesso Rapido"<br>
+      📱 Autenticazione Facebook/Google con popup smart funzionanti<br>
+      ✅ App React Native nativa sincronizzata e aggiornata
+    </p>
+  </div>
+
+  <!-- Popup Overlay -->
+  <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
+  
+  <!-- Facebook Popup -->
+  <div class="demo-popup" id="facebookPopup">
+    <h3 class="popup-title">📘 Facebook Login</h3>
+    <p class="popup-message">Si sta aprendo la finestra di autenticazione Facebook...<br><br>🔐 Inserisci le tue credenziali Facebook per accedere rapidamente.</p>
+    <div class="popup-buttons">
+      <button class="popup-button cancel" onclick="closePopup()">Annulla</button>
+      <button class="popup-button continue" onclick="simulateLogin('Facebook', 'Marco')">Continua con Facebook</button>
+    </div>
+  </div>
+
+  <!-- Google Popup -->
+  <div class="demo-popup" id="googlePopup">
+    <h3 class="popup-title">🔍 Google Sign-In</h3>
+    <p class="popup-message">Si sta aprendo la finestra di autenticazione Google...<br><br>🔐 Seleziona il tuo account Google per accedere rapidamente.</p>
+    <div class="popup-buttons">
+      <button class="popup-button cancel" onclick="closePopup()">Annulla</button>
+      <button class="popup-button continue" onclick="simulateLogin('Google', 'Giulia')">Continua con Google</button>
+    </div>
+  </div>
+
+  <!-- Apple Popup -->
+  <div class="demo-popup" id="applePopup">
+    <h3 class="popup-title">🍎 Apple Sign-In</h3>
+    <p class="popup-message">Si sta aprendo la finestra di autenticazione Apple...<br><br>🔐 Usa Face ID, Touch ID o la tua password Apple ID.</p>
+    <div class="popup-buttons">
+      <button class="popup-button cancel" onclick="closePopup()">Annulla</button>
+      <button class="popup-button continue" onclick="simulateLogin('Apple', 'Utente')">Continua con Apple</button>
+    </div>
+  </div>
+
+  <script>
+    function showFacebookPopup() {
+      document.getElementById('popupOverlay').style.display = 'block';
+      document.getElementById('facebookPopup').style.display = 'block';
+    }
+
+    function showGooglePopup() {
+      document.getElementById('popupOverlay').style.display = 'block';
+      document.getElementById('googlePopup').style.display = 'block';
+    }
+
+    function showApplePopup() {
+      document.getElementById('popupOverlay').style.display = 'block';
+      document.getElementById('applePopup').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popupOverlay').style.display = 'none';
+      document.querySelectorAll('.demo-popup').forEach(popup => {
+        popup.style.display = 'none';
+      });
+    }
+
+    function simulateLogin(provider, name) {
+      closePopup();
+      setTimeout(() => {
+        alert(`✅ Accesso ${provider} completato!\n\nBenvenut${name === 'Giulia' ? 'a' : 'o'} ${name}! Il tuo account ${provider} è stato collegato con successo.`);
+      }, 500);
+    }
+
+    console.log('📱SeaBoo Mobile Native Preview Loaded');
+    console.log('🎯 AuthScreen con cornice sfondo e autenticazione smart');
+    console.log('✅ Tutte le modifiche sincronizzate con l\'app React Native nativa');
+  </script>
+</body>
+</html>

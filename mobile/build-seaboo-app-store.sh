@@ -13,8 +13,8 @@ fi
 echo "📱 App da buildare:"
 echo "- Nome: SeaBoo - Noleggio Barche"
 echo "- Bundle ID: com.seaboo.mobile" 
-echo "- Versione: 1.0.0"
-echo "- Build Number: 2"
+echo "- Versione: 1.0.1"
+echo "- Build Number: 3"
 echo ""
 
 # Controllo EAS Login

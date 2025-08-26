@@ -2,7 +2,7 @@
   "expo": {
     "name": "SeaBoo - Noleggio Barche",
     "slug": "seaboo-mobile",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "La piattaforma leader per il noleggio barche in Italia. Scopri yacht, gommoni, barche a vela e charter con SeaBoo.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.seaboo.mobile",
-      "buildNumber": "2",
+      "buildNumber": "3",
       "requireFullScreen": false,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "SeaBoo usa la posizione per mostrare barche vicine a te",

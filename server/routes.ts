@@ -6,6 +6,9 @@ import session from "express-session";
 import connectPg from "connect-pg-simple";
 import multer from "multer";
 import path from "path";
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Extend session type
 declare module 'express-session' {
@@ -301,6 +304,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve mobile native preview
   app.get('/mobile-native-preview', (req, res) => {
     res.sendFile(path.join(__dirname, '../mobile-native-preview.html'));
+  });
+
+  // Serve mobile native app viewer
+  app.get('/mobile-native-app', (req, res) => {
+    res.sendFile(path.join(__dirname, '../mobile-native-app-viewer.html'));
   });
 
   // Support page for App Store requirement

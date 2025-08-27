@@ -1,0 +1,16 @@
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Sailboat icon centered and enlarged -->
+  <g transform="translate(50, 50) scale(1.5)">
+    <!-- Boat hull -->
+    <path d="M-18 5 L18 5 L15 12 L-15 12 Z" fill="#4ade80" stroke="#22c55e" stroke-width="1.2"/>
+    
+    <!-- Main sail with Pantone blue -->
+    <path d="M0 5 L0 -20 L16 -2 Z" fill="#1e40af" stroke="#1e3a8a" stroke-width="0.8"/>
+    
+    <!-- Jib sail with Pantone blue -->
+    <path d="M0 5 L0 -15 L-12 -5 Z" fill="#1e40af" stroke="#1e3a8a" stroke-width="0.8"/>
+    
+    <!-- Mast -->
+    <line x1="0" y1="5" x2="0" y2="-20" stroke="#6b7280" stroke-width="2"/>
+  </g>
+</svg>

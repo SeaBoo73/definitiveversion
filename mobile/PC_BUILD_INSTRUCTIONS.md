@@ -1,13 +1,13 @@
 # 💻 BUILD SU PC - SeaBoo v1.0.1
 
-## 📦 PACCHETTO AGGIORNATO
-Scarica: `seaboo-mobile-v1.0.1-updated.tar.gz`
+## 📦 PACCHETTO AGGIORNATO - VERSIONE NATIVE TYPESCRIPT
+Scarica: `seaboo-mobile-native-complete-v1.0.1.tar.gz`
 
 ## 🚀 SETUP SUL TUO PC
 
 ### 1. Estrai il progetto
 ```bash
-tar -xzf seaboo-mobile-v1.0.1-updated.tar.gz
+tar -xzf seaboo-mobile-native-complete-v1.0.1.tar.gz
 cd mobile
 ```
 

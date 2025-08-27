@@ -1,13 +1,14 @@
-# 📥 SCARICA VERSIONE AGGIORNATA SeaBoo v1.0.1
+# 📥 VERSIONE MOBILE NATIVE TYPESCRIPT - SeaBoo v1.0.1
 
-## 🎯 VERSIONE CORRENTE
+## 🎯 VERSIONE MOBILE NATIVE 
 - **Version:** 1.0.1
 - **Build:** 3  
-- **Data aggiornamento:** 27 Agosto 2025
+- **TypeScript:** React Native nativo
+- **AuthScreen:** mobile/src/screens/AuthScreen.tsx (con sfondo barca a vela)
 - **Bundle ID:** com.seaboo.mobile
 
 ## 📦 FILE DA SCARICARE
-`seaboo-mobile-v1.0.1-updated.tar.gz`
+`seaboo-mobile-native-complete-v1.0.1.tar.gz`
 
 ## ✅ NOVITÀ IN QUESTA VERSIONE
 - AuthScreen con cornice grigia per "Accesso Rapido"

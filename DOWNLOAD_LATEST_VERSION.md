@@ -1,14 +1,14 @@
-# 📥 VERSIONE MOBILE NATIVE TYPESCRIPT - SeaBoo v1.0.1
+# 📥 VERSIONE WEB MOBILE-RESPONSIVE - SeaBoo v1.0.1
 
-## 🎯 VERSIONE MOBILE NATIVE 
+## 🎯 VERSIONE WEB APP MOBILE
 - **Version:** 1.0.1
-- **Build:** 3  
-- **TypeScript:** React Native nativo
-- **AuthScreen:** mobile/src/screens/AuthScreen.tsx (con sfondo barca a vela)
-- **Bundle ID:** com.seaboo.mobile
+- **Type:** Web App Mobile-Responsive
+- **Background:** Sfondo barca a vela con palme tropicali
+- **Homepage:** "Naviga verso l'avventura"
+- **Tech:** React + TypeScript + PWA Ready
 
-## 📦 FILE DA SCARICARE
-`seaboo-mobile-native-complete-v1.0.1.tar.gz`
+## 📦 FILE DA SCARICARE  
+`seaboo-web-mobile-v1.0.1-appstore.tar.gz`
 
 ## ✅ NOVITÀ IN QUESTA VERSIONE
 - AuthScreen con cornice grigia per "Accesso Rapido"

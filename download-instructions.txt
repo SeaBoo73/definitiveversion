@@ -1,0 +1,34 @@
+ISTRUZIONI DOWNLOAD SeaBoo v1.0.1
+
+METODO GITHUB:
+1. Vai su replit.com
+2. Vai al tuo progetto SeaBoo
+3. Clicca su "Version control" (icona Git)  
+4. Se non hai GitHub collegato:
+   - Clicca "Connect to GitHub"
+   - Autorizza il collegamento
+   - Crea un nuovo repository "seaboo-mobile"
+5. Dopo il collegamento:
+   - Clicca "Commit & push"
+   - Vai su github.com/[tuo-account]/seaboo-mobile
+   - Clicca "Code" > "Download ZIP"
+
+METODO CLONE DIRETTO (Mac Terminal):
+git clone https://github.com/[tuo-account]/seaboo-mobile.git
+cd seaboo-mobile
+
+METODO COPIA FILE:
+1. Crea cartella "seaboo-mobile" sul Mac
+2. Copia manualmente i file principali:
+   - package.json
+   - vite.config.ts  
+   - tsconfig.json
+   - cartella client/
+   - cartella server/
+   - cartella shared/
+
+DOPO QUALSIASI METODO:
+cd seaboo-mobile
+npm install
+npm install @capacitor/core @capacitor/cli @capacitor/ios
+npx cap init "SeaBoo" "com.seaboo.mobile"

@@ -9,6 +9,16 @@ Mobile app development: React Native for native mobile experience.
 **IMPORTANTE:** Salvare sempre tutte le versioni e aggiornamenti - mai perdere il lavoro svolto.
 Version control: Sistema di backup automatico attivato per preservare ogni modifica.
 
+## Recent Changes (28 Agosto 2025)
+**iOS App Build Success:** Risolto problema schermata bianca nel simulatore iOS
+- Rimosse dipendenze TypeScript problematiche che causavano errori di build
+- Creata versione semplificata e stabile dell'app (App-simple.tsx) 
+- Build completato con successo dopo pulizia errori TypeScript
+- App sincronizzata con Capacitor iOS e pronta per App Store
+- **Download:** Versione iOS Ready disponibile come `SeaBoo-iOS-Ready-3`
+- Contenuto: Homepage "Naviga verso l'avventura", ricerca barche, navigation mobile
+- Status: App testata e funzionante su simulatore, pronta per pubblicazione App Store
+
 ## System Architecture
 
 ### Frontend Architecture

@@ -1,0 +1,25 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="200" height="200" fill="#1F2937"/>
+  
+  <!-- Sailboat Icon -->
+  <g transform="translate(100, 60)">
+    <!-- Main Sail -->
+    <path d="M0 0 L-25 45 L20 45 Z" fill="#5EEAD4" stroke="#0F766E" stroke-width="2"/>
+    <!-- Jib Sail -->
+    <path d="M0 0 L-35 25 L-15 35 Z" fill="#5EEAD4" stroke="#0F766E" stroke-width="2"/>
+    <!-- Mast -->
+    <line x1="0" y1="0" x2="0" y2="50" stroke="#1F2937" stroke-width="3"/>
+    <!-- Hull -->
+    <ellipse cx="0" cy="50" rx="30" ry="8" fill="#5EEAD4" stroke="#0F766E" stroke-width="2"/>
+    <!-- Waves -->
+    <path d="M-40 58 Q-30 55 -20 58 Q-10 61 0 58 Q10 55 20 58 Q30 61 40 58" 
+          fill="none" stroke="#5EEAD4" stroke-width="3"/>
+    <path d="M-40 65 Q-30 62 -20 65 Q-10 68 0 65 Q10 62 20 65 Q30 68 40 65" 
+          fill="none" stroke="#5EEAD4" stroke-width="2"/>
+  </g>
+  
+  <!-- SeaGO Text -->
+  <text x="100" y="140" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="32" font-weight="bold" fill="#F9FAFB">SeaGO</text>
+</svg>

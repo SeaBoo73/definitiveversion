@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaBoo - Naviga verso l'avventura</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><path d="M0,300 Q300,100 600,300 T1200,300 L1200,600 L0,600 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+            background-position: bottom;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 400px;
+        }
+
+        .search-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #374151;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        select.form-control {
+            background: white;
+            cursor: pointer;
+        }
+
+        .search-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            text-align: center;
+            opacity: 0.9;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.5rem;
+            }
+            
+            .search-form {
+                padding: 1.5rem;
+                margin: 0 10px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="logo">SeaBoo</div>
+        <div class="tagline">Naviga verso l'avventura</div>
+        <div class="subtitle">Prenota barche, yacht e imbarcazioni ovunque in Italia. Vivi il mare come mai prima d'ora.</div>
+        
+        <form class="search-form" onsubmit="handleSearch(event)">
+            <div class="form-group">
+                <label for="location">Dove</label>
+                <input type="text" id="location" class="form-control" placeholder="Cerca fra 48 porti italiani..." />
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="checkin">Dal</label>
+                    <input type="date" id="checkin" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="checkout">Al</label>
+                    <input type="date" id="checkout" class="form-control" />
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="guests">Ospiti</label>
+                <select id="guests" class="form-control">
+                    <option value="2">2 ospiti</option>
+                    <option value="4">4 ospiti</option>
+                    <option value="6">6 ospiti</option>
+                    <option value="8">8 ospiti</option>
+                    <option value="10">10+ ospiti</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="boat-type">Tipo imbarcazione</label>
+                <select id="boat-type" class="form-control">
+                    <option value="">Tutti i tipi</option>
+                    <option value="yacht">Yacht</option>
+                    <option value="sailboat">Barca a vela</option>
+                    <option value="catamaran">Catamarano</option>
+                    <option value="dinghy">Gommone</option>
+                    <option value="jetski">Jet ski</option>
+                    <option value="kayak">Kayak</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="search-btn">🔍 Cerca Imbarcazioni</button>
+        </form>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">⚓</div>
+                <div>48 Porti</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛥️</div>
+                <div>500+ Barche</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⭐</div>
+                <div>Recensioni Verificate</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💳</div>
+                <div>Pagamento Sicuro</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleSearch(event) {
+            event.preventDefault();
+            
+            const location = document.getElementById('location').value;
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            const guests = document.getElementById('guests').value;
+            const boatType = document.getElementById('boat-type').value;
+            
+            alert(`Ricerca per: ${location || 'Tutti i porti'}\nDal: ${checkin}\nAl: ${checkout}\nOspiti: ${guests}\nTipo: ${boatType || 'Tutti'}`);
+        }
+        
+        // Set default dates (today + 1 week)
+        const today = new Date();
+        const nextWeek = new Date(today);
+        nextWeek.setDate(today.getDate() + 7);
+        
+        document.getElementById('checkin').value = today.toISOString().split('T')[0];
+        document.getElementById('checkout').value = nextWeek.toISOString().split('T')[0];
+    </script>
+</body>
+</html>

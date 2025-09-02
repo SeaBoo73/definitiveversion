@@ -1,0 +1,35 @@
+
+shared/schema.ts:141:3 - error TS2322: Type 'ZodDate' is not assignable to type 'ZodType<unknown, unknown, $ZodTypeInternals<unknown, unknown>> | ((schema: ZodDate) => ZodType<unknown, unknown, $ZodTypeInternals<unknown, unknown>>) | undefined'.
+  Type 'ZodDate' is missing the following properties from type 'ZodType<unknown, unknown, $ZodTypeInternals<unknown, unknown>>': def, type, check, clone, and 6 more.
+
+141   startDate: z.coerce.date(),
+      ~~~~~~~~~
+
+shared/schema.ts:142:3 - error TS2322: Type 'ZodDate' is not assignable to type 'ZodType<unknown, unknown, $ZodTypeInternals<unknown, unknown>> | ((schema: ZodDate) => ZodType<unknown, unknown, $ZodTypeInternals<unknown, unknown>>) | undefined'.
+  Type 'ZodDate' is missing the following properties from type 'ZodType<unknown, unknown, $ZodTypeInternals<unknown, unknown>>': def, type, check, clone, and 6 more.
+
+142   endDate: z.coerce.date(),
+      ~~~~~~~
+
+shared/schema.ts:149:34 - error TS2344: Type 'ZodObject<{ username: ZodString; email: ZodString; password: ZodString; role: ZodOptional<ZodNullable<ZodString>>; ... 13 more ...; instagram: ZodOptional<...>; }, { ...; }>' does not satisfy the constraint 'ZodType<any, any, any>'.
+  Type 'ZodObject<{ username: ZodString; email: ZodString; password: ZodString; role: ZodOptional<ZodNullable<ZodString>>; ... 13 more ...; instagram: ZodOptional<...>; }, { ...; }>' is missing the following properties from type 'ZodType<any, any, any>': _type, _parse, _getType, _getOrReturnCtx, and 7 more.
+
+149 export type InsertUser = z.infer<typeof insertUserSchema>;
+                                     ~~~~~~~~~~~~~~~~~~~~~~~
+
+shared/schema.ts:150:34 - error TS2344: Type 'ZodObject<{ length: ZodOptional<ZodNullable<ZodString>>; name: ZodString; hostId: ZodInt; manufacturer: ZodOptional<ZodNullable<ZodString>>; ... 19 more ...; cancellationRules: ZodOptional<...>; }, { ...; }>' does not satisfy the constraint 'ZodType<any, any, any>'.
+  Type 'ZodObject<{ length: ZodOptional<ZodNullable<ZodString>>; name: ZodString; hostId: ZodInt; manufacturer: ZodOptional<ZodNullable<ZodString>>; ... 19 more ...; cancellationRules: ZodOptional<...>; }, { ...; }>' is missing the following properties from type 'ZodType<any, any, any>': _type, _parse, _getType, _getOrReturnCtx, and 7 more.
+
+150 export type InsertBoat = z.infer<typeof insertBoatSchema>;
+                                     ~~~~~~~~~~~~~~~~~~~~~~~
+
+shared/schema.ts:151:37 - error TS2344: Type 'ZodObject<{ customerId: ZodString; boatId: ZodString; startDate: ZodDate; endDate: ZodDate; totalPrice: ZodOptional<ZodNullable<ZodString>>; status: ZodOptional<...>; specialRequests: ZodOptional<...>; }, { ...; }>' does not satisfy the constraint 'ZodType<any, any, any>'.
+  Type 'ZodObject<{ customerId: ZodString; boatId: ZodString; startDate: ZodDate; endDate: ZodDate; totalPrice: ZodOptional<ZodNullable<ZodString>>; status: ZodOptional<...>; specialRequests: ZodOptional<...>; }, { ...; }>' is missing the following properties from type 'ZodType<any, any, any>': _type, _parse, _getType, _getOrReturnCtx, and 7 more.
+
+151 export type InsertBooking = z.infer<typeof insertBookingSchema>;
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Found 25 errors.
+
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready-3 % 

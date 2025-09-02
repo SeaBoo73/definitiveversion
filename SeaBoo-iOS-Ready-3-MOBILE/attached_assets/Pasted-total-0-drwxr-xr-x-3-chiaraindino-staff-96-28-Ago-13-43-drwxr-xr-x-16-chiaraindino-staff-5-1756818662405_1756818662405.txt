@@ -1,0 +1,37 @@
+total 0
+drwxr-xr-x@  3 chiaraindino  staff   96 28 Ago 13:43 .
+drwxr-xr-x@ 16 chiaraindino  staff  512  2 Set 15:08 ..
+drwxr-xr-x@  8 chiaraindino  staff  256  2 Set 15:08 public
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready-3 % ls -la src
+ls: src: No such file or directory
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready-3 % ls -la
+total 360
+drwxr-xr-x@  16 chiaraindino  staff     512  2 Set 15:08 .
+drwx------@ 251 chiaraindino  staff    8032  2 Set 14:58 ..
+-rw-r--r--@   1 chiaraindino  staff    1495 27 Ago 06:54 ISTRUZIONI.md
+-rw-r--r--@   1 chiaraindino  staff     254  2 Set 14:41 capacitor.config.ts
+-rw-------    1 chiaraindino  staff     294  2 Set 14:39 capacitor.config.ts.save
+drwxr-xr-x@   8 chiaraindino  staff     256 28 Ago 13:42 client
+drwxr-xr-x@   3 chiaraindino  staff      96 28 Ago 13:43 dist
+drwxr-xr-x@   5 chiaraindino  staff     160 28 Ago 15:50 ios
+drwxr-xr-x  197 chiaraindino  staff    6304  2 Set 15:06 node_modules
+-rw-r--r--    1 chiaraindino  staff  154571  2 Set 15:06 package-lock.json
+-rw-r--r--@   1 chiaraindino  staff    1203  2 Set 15:06 package.json
+drwxr-xr-x@   5 chiaraindino  staff     160 27 Ago 06:54 shared
+-rw-r--r--    1 chiaraindino  staff     125  2 Set 15:07 tsconfig.build.json
+-rw-r--r--@   1 chiaraindino  staff     657 27 Ago 06:54 tsconfig.json
+-rw-r--r--@   1 chiaraindino  staff     971 27 Ago 06:54 vite.config.ts
+drwxr-xr-x@   3 chiaraindino  staff      96 28 Ago 13:05 www
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready-3 % ls -la *.html
+zsh: no matches found: *.html
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready-3 % ls -la client
+total 40
+drwxr-xr-x@  8 chiaraindino  staff   256 28 Ago 13:42 .
+drwxr-xr-x@ 16 chiaraindino  staff   512  2 Set 15:08 ..
+-rw-r--r--@  1 chiaraindino  staff  4576 27 Ago 06:54 index.html
+drwxr-xr-x@  6 chiaraindino  staff   192 27 Ago 06:54 public
+drwxr-xr-x@  6 chiaraindino  staff   192 28 Ago 13:43 src
+-rw-r--r--@  1 chiaraindino  staff   181 28 Ago 13:42 tailwind.config.js
+-rw-r--r--@  1 chiaraindino  staff   729 28 Ago 13:41 tsconfig.json
+-rw-r--r--@  1 chiaraindino  staff   482 28 Ago 13:41 tsconfig.node.json
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready-3 % 

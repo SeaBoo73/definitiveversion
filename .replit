@@ -54,4 +54,3 @@ localPort = 8083
 externalPort = 3002
 
 [agent]
-integrations = ["javascript_log_in_with_replit==1.0.0", "javascript_paypal==1.0.0", "javascript_stripe==1.0.0", "javascript_sendgrid==1.0.0", "javascript_websocket==1.0.0", "javascript_database==1.0.0"]

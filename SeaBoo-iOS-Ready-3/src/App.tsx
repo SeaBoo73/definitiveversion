@@ -1,4 +1,3 @@
-import React from 'react'
 import { Router, Route, Link, useLocation } from 'wouter'
 import { Home, Anchor, Compass, Settings, HelpCircle, User } from 'lucide-react'
 

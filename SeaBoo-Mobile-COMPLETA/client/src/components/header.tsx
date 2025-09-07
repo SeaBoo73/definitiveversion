@@ -25,11 +25,9 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2">
-              <img 
-                src="/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png" 
-                alt="SeaBoo Logo" 
-                className="h-10 w-auto"
-              />
+              <div className="flex items-center justify-center h-10 w-10 bg-blue-600 rounded-lg">
+                <span className="text-white font-bold text-lg">⚓</span>
+              </div>
               <span className="text-xl font-bold" style={{ color: '#022237' }}>SeaBoo</span>
             </Link>
           </div>

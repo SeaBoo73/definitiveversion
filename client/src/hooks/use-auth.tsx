@@ -46,6 +46,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Accesso effettuato",
         description: "Benvenuto in SeaBoo!",
       });
+      // Trigger page refresh to redirect
+      window.location.href = "/";
     },
     onError: (error: Error) => {
       toast({
@@ -67,6 +69,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Registrazione completata",
         description: "Benvenuto in SeaBoo!",
       });
+      // Trigger page refresh to redirect
+      window.location.href = "/";
     },
     onError: (error: Error) => {
       toast({

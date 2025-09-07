@@ -159,7 +159,7 @@ export function BookingForm({ boat, booking, onBookingComplete }: BookingFormPro
             <div className="space-y-4">
               <div className="flex gap-4">
                 <img
-                  src={boat.images?.[0] || "/api/placeholder/100/80"}
+                  src={boat.images?.[0] || "/attached_assets/luxury_yacht_charter_boat_7d39103e.png"}
                   alt={boat.name}
                   className="w-20 h-16 object-cover rounded-lg"
                 />

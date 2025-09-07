@@ -12,37 +12,56 @@ import {
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+import session from "express-session";
+import connectPg from "connect-pg-simple";
+import { pool } from "./db";
 
 // Interface for storage operations
 export interface IStorage {
   // User operations
-  getUser(id: string): Promise<User | undefined>;
+  getUser(id: number): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   verifyPassword(email: string, password: string): Promise<User | null>;
+  sessionStore: session.Store;
   
   // Boat operations
   getBoats(): Promise<Boat[]>;
-  getBoatsByOwner(ownerId: string): Promise<Boat[]>;
-  getBoat(id: string): Promise<Boat | undefined>;
+  getBoatsByOwner(ownerId: number): Promise<Boat[]>;
+  getBoat(id: number): Promise<Boat | undefined>;
   createBoat(boat: InsertBoat): Promise<Boat>;
-  updateBoat(id: string, boat: Partial<InsertBoat>): Promise<Boat | undefined>;
-  deleteBoat(id: string): Promise<boolean>;
+  updateBoat(id: number, boat: Partial<InsertBoat>): Promise<Boat | undefined>;
+  deleteBoat(id: number): Promise<boolean>;
   
   // Booking operations
-  getBookingsByOwner(ownerId: string): Promise<Booking[]>;
-  getBookingsByCustomer(customerId: string): Promise<Booking[]>;
+  getBookingsByOwner(ownerId: number): Promise<Booking[]>;
+  getBookingsByCustomer(customerId: number): Promise<Booking[]>;
   createBooking(booking: InsertBooking): Promise<Booking>;
 }
 
 export class DatabaseStorage implements IStorage {
-  async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, parseInt(id)));
+  public sessionStore: session.Store;
+
+  constructor() {
+    const PgStore = connectPg(session);
+    this.sessionStore = new PgStore({
+      pool: pool,
+      tableName: 'sessions',
+    });
+  }
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
     const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
     return user;
   }
 
@@ -77,12 +96,12 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(boats).where(eq(boats.active, true));
   }
 
-  async getBoatsByOwner(ownerId: string): Promise<Boat[]> {
-    return await db.select().from(boats).where(eq(boats.hostId, parseInt(ownerId)));
+  async getBoatsByOwner(ownerId: number): Promise<Boat[]> {
+    return await db.select().from(boats).where(eq(boats.hostId, ownerId));
   }
 
-  async getBoat(id: string): Promise<Boat | undefined> {
-    const [boat] = await db.select().from(boats).where(eq(boats.id, parseInt(id)));
+  async getBoat(id: number): Promise<Boat | undefined> {
+    const [boat] = await db.select().from(boats).where(eq(boats.id, id));
     return boat;
   }
 
@@ -91,22 +110,22 @@ export class DatabaseStorage implements IStorage {
     return boat;
   }
 
-  async updateBoat(id: string, boatData: Partial<InsertBoat>): Promise<Boat | undefined> {
+  async updateBoat(id: number, boatData: Partial<InsertBoat>): Promise<Boat | undefined> {
     const [boat] = await db
       .update(boats)
       .set(boatData)
-      .where(eq(boats.id, parseInt(id)))
+      .where(eq(boats.id, id))
       .returning();
     return boat;
   }
 
-  async deleteBoat(id: string): Promise<boolean> {
-    const result = await db.delete(boats).where(eq(boats.id, parseInt(id)));
+  async deleteBoat(id: number): Promise<boolean> {
+    const result = await db.delete(boats).where(eq(boats.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 
   // Booking operations
-  async getBookingsByOwner(ownerId: string): Promise<Booking[]> {
+  async getBookingsByOwner(ownerId: number): Promise<Booking[]> {
     const results = await db
       .select({
         id: bookings.id,
@@ -122,11 +141,11 @@ export class DatabaseStorage implements IStorage {
       })
       .from(bookings)
       .innerJoin(boats, eq(bookings.boatId, boats.id))
-      .where(eq(boats.hostId, parseInt(ownerId)));
+      .where(eq(boats.hostId, ownerId));
     return results;
   }
 
-  async getBookingsByCustomer(customerId: string): Promise<Booking[]> {
+  async getBookingsByCustomer(customerId: number): Promise<Booking[]> {
     return await db.select().from(bookings).where(eq(bookings.customerId, customerId));
   }
 

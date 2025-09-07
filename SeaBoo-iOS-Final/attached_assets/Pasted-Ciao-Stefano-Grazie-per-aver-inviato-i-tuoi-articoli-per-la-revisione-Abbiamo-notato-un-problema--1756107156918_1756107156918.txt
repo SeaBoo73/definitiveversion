@@ -1,0 +1,135 @@
+Ciao Stefano,
+
+Grazie per aver inviato i tuoi articoli per la revisione. Abbiamo notato un problema con il tuo invio che richiede la tua attenzione.
+ID invio: 7b4acb82-9c8d-41cb-a632-43eecb641f97
+Nome dell'app: SeaBoo
+
+Non vediamo l'ora di collaborare con voi per risolvere i problemi relativi ai seguenti articoli:
+Versione dell'app
+1.0 per iOS
+
+Ambiente di revisione
+
+ID invio: 7b4acb82-9c8d-41cb-a632-43eecb641f97
+Data di revisione: 20 agosto 2025
+Versione recensita: 1.0
+
+
+Linea guida 2.3.3 - Prestazioni - Metadati accurati
+
+Descrizione del problema
+
+Gli screenshot dell'iPad da 13 pollici mostrano la cornice di un dispositivo iPhone e mostrano un'immagine dell'iPhone modificata o allungata per sembrare un'immagine dell'iPad. Gli screenshot dovrebbero evidenziare il concetto principale dell'app per aiutare gli utenti a comprenderne le funzionalità e il valore.
+
+Prossimi passi
+
+Carica nuovi screenshot che risolvano i problemi identificati sopra e che riflettano accuratamente l'app in uso su ciascuno dei dispositivi supportati.
+
+Nota: alcuni screenshot possono essere visualizzati e aggiornati solo selezionando "Visualizza tutte le dimensioni in Media Manager" nella sezione Anteprime e screenshot di App Store Connect.
+
+Risorse
+
+Quando aggiungi o aggiorni screenshot, segui questi requisiti generali:
+
+- I materiali di marketing o promozionali che non riflettono l'interfaccia utente dell'app non sono adatti per gli screenshot.
+- La maggior parte degli screenshot dovrebbe evidenziare le caratteristiche e le funzionalità principali dell'app. Tieni presente che le schermate iniziali e di accesso non sono generalmente considerate schermate che mostrano l'app in uso.
+- Verifica che gli screenshot siano identici all'app in tutte le lingue e su tutti i dispositivi supportati. Ad esempio, gli screenshot possono includere i controlli, l'interfaccia o i menu presenti nell'app.
+- Assicurati che gli screenshot mostrino l'app in uso sul dispositivo corretto. Ad esempio, gli screenshot di iPhone dovrebbero mostrare l'app così come appare su iPhone, non su iPad. È possibile includere screenshot dell'app su più piattaforme Apple per dimostrare la compatibilità.
+
+Scopri di più su come creare screenshot di qualità per la pagina del tuo prodotto sull'App Store o su come caricare screenshot in App Store Connect .
+
+
+Linea guida 2.1 - Prestazioni - Completezza dell'app
+
+Descrizione del problema
+
+L'app presentava uno o più bug che avrebbero avuto un impatto negativo sugli utenti.
+
+Descrizione del bug:
+
+- quando abbiamo toccato un pulsante di accesso e registrazione, è apparso un messaggio che diceva "accesso riuscito", ma non è stato avviato alcun modulo o processo di accesso o registrazione.
+- non è stato possibile avviare alcun flusso di pagamento nella tua app.
+
+Esamina i dettagli del dispositivo:
+
+- Tipo di dispositivo: iPad Air (5a generazione)
+- Versione del sistema operativo: iPadOS 18.6
+
+Prossimi passi
+
+Testare l'app sui dispositivi supportati per identificare e risolvere bug e problemi di stabilità prima di inviarla per la revisione.
+
+Se il bug non può essere riprodotto, prova quanto segue:
+
+- Per le nuove app, disinstalla tutte le versioni precedenti dell'app dal dispositivo, quindi installale e segui i passaggi per riprodurle.
+- Per gli aggiornamenti dell'app, installa la nuova versione come aggiornamento della versione precedente, quindi segui i passaggi per riprodurla.
+
+Risorse
+
+- Per informazioni su come testare le app e prepararle per la revisione, vedere Test di una build di rilascio .
+- Per informazioni sulla risoluzione dei problemi di rete, vedere Panoramica sulla rete .
+
+
+
+Linea guida 4.8 - Progettazione - Servizi di accesso
+
+
+L'app utilizza un servizio di accesso di terze parti, ma non sembra offrire come opzione di accesso equivalente un altro servizio di accesso con tutte le seguenti funzionalità:
+
+- L'opzione di accesso limita la raccolta dei dati al nome e all'indirizzo e-mail dell'utente.
+- L'opzione di accesso consente agli utenti di mantenere privato il proprio indirizzo e-mail da tutte le parti durante la configurazione del proprio account.
+- L'opzione di accesso non raccoglie interazioni con l'app per scopi pubblicitari senza consenso.
+
+Prossimi passi
+
+Rivedere l'app per offrire come opzione di accesso equivalente un altro servizio di accesso che soddisfi tutti i requisiti di cui sopra.
+
+Se l'app include già un altro servizio di accesso che soddisfa tutti i requisiti sopra indicati, rispondi alla recensione dell'app in App Store Connect, identifica quale servizio di accesso soddisfa tutti i requisiti e spiega perché li soddisfa tutti.
+
+Si noti che Accedi con Apple è un servizio di accesso che soddisfa tutti i requisiti specificati nella linea guida 4.8 .
+
+Risorse
+
+Scopri i vantaggi di Accedi con Apple .
+
+
+Linea guida 2.1 - Prestazioni - Completezza dell'app
+
+
+Descrizione del problema
+
+L'invio include contenuti non completi e definitivi.
+
+Nello specifico, l'app include immagini segnaposto.
+
+Gli utenti si aspettano che le app che scaricano siano pronte per l'uso pubblico e non debbano includere contenuti incompleti o segnaposto. Le app non devono includere contenuti o informazioni segnaposto o incompleti.
+
+Prossimi passi
+
+Revisionare l'app e i metadati in modo che tutti i suoi contenuti siano completi e definitivi.
+
+Risorse
+
+Per informazioni sui requisiti di completezza dell'app, consultarela linea guida 2.1(a) .
+
+
+
+Linea guida 1.5 - Sicurezza
+
+Descrizione del problema
+
+L'URL di supporto fornito in App Store Connect, https://seaboo.it/supporto , al momento non è funzionante e/o visualizza un errore.
+
+Prossimi passi
+
+Aggiorna l'URL di supporto specificato per indirizzare gli utenti a una pagina web funzionale con informazioni di supporto.
+
+Risorse
+
+Scopri gli URL di supporto e altre informazioni sulla versione della piattaforma nella Guida di App Store Connect .
+
+Supporto
+
+- Rispondi a questo messaggio nella tua lingua preferita se hai bisogno di assistenza. Per ulteriore supporto, utilizza il modulo Contattaci .
+- Consulta altri sviluppatori e ingegneri Apple sui forum degli sviluppatori Apple .
+- Fornisci un feedback su questo messaggio e sulla tua esperienza di recensione compilando un breve sondaggio .

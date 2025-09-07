@@ -5,7 +5,12 @@ import { X, Download, Smartphone } from "lucide-react";
 export function AppDownloadBanner() {
   const [isVisible, setIsVisible] = useState(true);
 
-  if (!isVisible) return null;
+  // Nascondi il banner se siamo in un'app mobile (Capacitor)
+  const isNativeApp = window.location.protocol === 'capacitor:' || 
+                      window.navigator.userAgent.includes('CapacitorWebView') ||
+                      window.matchMedia('(display-mode: standalone)').matches;
+
+  if (!isVisible || isNativeApp) return null;
 
   return (
     <div className="bg-gradient-to-r from-ocean-blue to-deep-navy text-white px-4 py-3 relative">

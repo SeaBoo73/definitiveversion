@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Cloud, Fuel, Anchor, ArrowRight } from 'lucide-react';
-import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png";
+import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757233141259.jpeg";
 import { Link } from 'wouter';
 
 interface ExternalServicesButtonProps {

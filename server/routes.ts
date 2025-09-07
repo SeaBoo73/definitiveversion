@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema } from "@shared/schema";
@@ -7,8 +8,14 @@ import connectPg from "connect-pg-simple";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from 'url';
+import Stripe from "stripe";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Initialize Stripe
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2024-10-28.acacia',
+});
 
 // Extend session type
 declare module 'express-session' {
@@ -378,6 +385,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
 </body>
 </html>
     `);
+  });
+
+  // Payment Intent Creation Endpoint
+  app.post('/api/create-payment-intent', async (req, res) => {
+    try {
+      const { amount, bookingId, currency = 'eur' } = req.body;
+
+      if (!amount || amount <= 0) {
+        return res.status(400).json({ error: 'Invalid amount' });
+      }
+
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency: currency,
+        metadata: {
+          bookingId: bookingId ? bookingId.toString() : '',
+          platform: 'seaboo'
+        },
+        automatic_payment_methods: {
+          enabled: true,
+        },
+      });
+
+      res.json({
+        clientSecret: paymentIntent.client_secret
+      });
+    } catch (error: any) {
+      console.error('Payment Intent creation error:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Stripe Webhook Endpoint
+  app.post('/api/stripe/webhook', express.raw({type: 'application/json'}), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig!, process.env.STRIPE_WEBHOOK_SECRET!);
+    } catch (err: any) {
+      console.error('Webhook signature verification failed:', err.message);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+
+    // Handle the event
+    switch (event.type) {
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object;
+        console.log('Payment succeeded:', paymentIntent.id);
+        // Update booking status in database
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.json({received: true});
   });
 
   const httpServer = createServer(app);

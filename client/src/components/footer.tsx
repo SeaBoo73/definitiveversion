@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { Anchor, Instagram, Globe } from "lucide-react";
 import { SiTiktok } from "react-icons/si";
-import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
+import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757233141259.jpeg";
 
 export function Footer() {
   return (

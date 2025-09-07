@@ -28,13 +28,13 @@ import {
 const faqData = [
   {
     id: 1,
-    category: "App Store",
-    question: "Come scaricare l'app SeaBoo?",
-    answer: "L'app SeaBoo è disponibile su App Store per iOS e Google Play per Android. Cerca 'SeaBoo' negli store e scarica l'app ufficiale con il nostro logo."
+    category: "App",
+    question: "Come utilizzare l'app SeaBoo?",
+    answer: "Stai già utilizzando l'app SeaBoo! Puoi prenotare barche, gestire i tuoi ormeggi e accedere a tutti i servizi marittimi direttamente dall'interfaccia che stai vedendo."
   },
   {
     id: 2,
-    category: "App Store", 
+    category: "App", 
     question: "L'app è gratuita?",
     answer: "Sì, l'app SeaBoo è completamente gratuita da scaricare. Paghi solo quando effettui una prenotazione attraverso la piattaforma."
   },
@@ -76,7 +76,7 @@ const faqData = [
   }
 ];
 
-const categories = ["Tutte", "App Store", "Account", "Prenotazioni", "Pagamenti", "Sicurezza", "Supporto Tecnico"];
+const categories = ["Tutte", "App", "Account", "Prenotazioni", "Pagamenti", "Sicurezza", "Supporto Tecnico"];
 
 export default function SupportoPage() {
   const [location, setLocation] = useLocation();

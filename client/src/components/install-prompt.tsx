@@ -3,43 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Download, X, Smartphone } from "lucide-react";
 
 export function InstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [showPrompt, setShowPrompt] = useState(false);
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      setShowPrompt(true);
-    };
-
-    window.addEventListener('beforeinstallprompt', handler);
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handler);
-    };
-  }, []);
-
-  const handleInstall = async () => {
-    if (!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    
-    if (outcome === 'accepted') {
-      setDeferredPrompt(null);
-    }
-    setShowPrompt(false);
-  };
-
-  const handleDismiss = () => {
-    setShowPrompt(false);
-    localStorage.setItem('installPromptDismissed', 'true');
-  };
-
-  // Non mostrare se già dismisso o se non supportato
-  const isDismissed = localStorage.getItem('installPromptDismissed');
-  if (!showPrompt || isDismissed) return null;
+  // Non mostrare mai il prompt dato che siamo già nell'app
+  return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">

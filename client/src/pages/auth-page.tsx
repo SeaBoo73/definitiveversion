@@ -14,6 +14,7 @@ import { z } from "zod";
 import { Redirect, Link, useLocation } from "wouter";
 import { Anchor, ArrowLeft } from "lucide-react";
 import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757233141259.jpeg";
+import { useToast } from "@/hooks/use-toast";
 
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),
@@ -37,6 +38,7 @@ type RegisterData = z.infer<typeof registerSchema>;
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [location, setLocation] = useLocation();
+  const { toast } = useToast();
   
   // Check URL parameters for initial tab
   const getInitialTab = () => {

@@ -62,7 +62,7 @@ export default function AuthPage() {
     const urlParams = new URLSearchParams(window.location.search);
     // Get role from URL parameter, defaulting to "customer"
     const roleParam = urlParams.get('role');
-    const role = (roleParam === 'owner') ? "owner" as const : "customer" as const;
+    const role = (roleParam === 'owner') ? "owner" as const : "user" as const;
     
     return {
       username: "",
@@ -73,16 +73,11 @@ export default function AuthPage() {
       firstName: urlParams.get('firstName') || "",
       lastName: urlParams.get('lastName') || "",
       phone: urlParams.get('phone') || "",
-      iban: "",
-      bankName: "",
-      accountHolderName: "",
-      paymentPreference: "stripe",
-      taxCode: "",
+      businessName: "",
+      businessType: "",
       vatNumber: "",
-      address: "",
-      city: "",
-      postalCode: "",
-      country: "Italy",
+      website: "",
+      instagram: "",
       acceptTerms: false,
     };
   };
@@ -299,19 +294,19 @@ export default function AuthPage() {
                         {/* Cliente Option */}
                         <div 
                           className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                            registerForm.watch("role") === "customer" 
+                            registerForm.watch("role") === "user" 
                               ? "border-ocean-blue bg-blue-50" 
                               : "border-gray-200 hover:border-gray-300"
                           }`}
-                          onClick={() => registerForm.setValue("role", "customer")}
+                          onClick={() => registerForm.setValue("role", "user")}
                         >
                           <div className="flex items-center space-x-3">
                             <div className={`w-4 h-4 rounded-full border-2 ${
-                              registerForm.watch("role") === "customer" 
+                              registerForm.watch("role") === "user" 
                                 ? "border-ocean-blue bg-ocean-blue" 
                                 : "border-gray-300"
                             }`}>
-                              {registerForm.watch("role") === "customer" && (
+                              {registerForm.watch("role") === "user" && (
                                 <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
                               )}
                             </div>
@@ -358,64 +353,59 @@ export default function AuthPage() {
                       )}
                     </div>
 
-                    {/* Banking Information Section - Only for Owners */}
+                    {/* Business Information Section - Only for Owners */}
                     {registerForm.watch("role") === "owner" && (
                       <div className="space-y-4 border-t pt-4">
                         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                          <h3 className="font-medium text-blue-900 mb-2">🏦 Dati Bancari per Ricevere Pagamenti</h3>
+                          <h3 className="font-medium text-blue-900 mb-2">🏢 Informazioni Attività</h3>
                           <p className="text-sm text-blue-800">
-                            Come proprietario, inserisci i tuoi dati bancari per ricevere i pagamenti dai clienti che noleggiano le tue barche.
+                            Come proprietario, inserisci le informazioni della tua attività.
                           </p>
                         </div>
                         
                         <div className="grid grid-cols-1 gap-4">
                           <div className="space-y-2">
-                            <Label htmlFor="iban">IBAN *</Label>
+                            <Label htmlFor="businessName">Nome Attività</Label>
                             <Input
-                              id="iban"
-                              placeholder="IT60 X054 2811 1010 0000 0123 456"
-                              {...registerForm.register("iban")}
-                            />
-                            {registerForm.formState.errors.iban && (
-                              <p className="text-sm text-red-500">
-                                {registerForm.formState.errors.iban.message}
-                              </p>
-                            )}
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label htmlFor="bankName">Nome Banca</Label>
-                            <Input
-                              id="bankName"
-                              placeholder="Es. UniCredit, Intesa Sanpaolo"
-                              {...registerForm.register("bankName")}
+                              id="businessName"
+                              placeholder="Es. Marina del Porto"
+                              {...registerForm.register("businessName")}
                             />
                           </div>
 
                           <div className="space-y-2">
-                            <Label htmlFor="accountHolderName">Intestatario Conto</Label>
+                            <Label htmlFor="businessType">Tipo Attività</Label>
                             <Input
-                              id="accountHolderName"
-                              placeholder="Nome e cognome del titolare"
-                              {...registerForm.register("accountHolderName")}
+                              id="businessType"
+                              placeholder="Es. Noleggio barche"
+                              {...registerForm.register("businessType")}
                             />
                           </div>
 
                           <div className="space-y-2">
-                            <Label htmlFor="taxCode">Codice Fiscale *</Label>
-                            <Input
-                              id="taxCode"
-                              placeholder="RSSMRA80A01H501X"
-                              {...registerForm.register("taxCode")}
-                            />
-                          </div>
-
-                          <div className="space-y-2">
-                            <Label htmlFor="vatNumber">Partita IVA (opzionale)</Label>
+                            <Label htmlFor="vatNumber">Partita IVA / Codice Fiscale</Label>
                             <Input
                               id="vatNumber"
-                              placeholder="12345678901"
+                              placeholder="12345678901 o RSSMRA80A01H501X"
                               {...registerForm.register("vatNumber")}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="website">Sito Web (opzionale)</Label>
+                            <Input
+                              id="website"
+                              placeholder="https://www.tuosito.it"
+                              {...registerForm.register("website")}
+                            />
+                          </div>
+
+                          <div className="space-y-2">
+                            <Label htmlFor="instagram">Instagram (opzionale)</Label>
+                            <Input
+                              id="instagram"
+                              placeholder="@tuoinstagram"
+                              {...registerForm.register("instagram")}
                             />
                           </div>
                         </div>
@@ -429,7 +419,7 @@ export default function AuthPage() {
                     )}
 
                     {/* Payment Methods Info for Customers */}
-                    {registerForm.watch("role") === "customer" && (
+                    {registerForm.watch("role") === "user" && (
                       <div className="space-y-4 border-t pt-4">
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <h3 className="font-medium text-green-900 mb-2">💳 Metodi di Pagamento</h3>
@@ -461,59 +451,6 @@ export default function AuthPage() {
                       </div>
                     )}
 
-                    {/* Basic Address Information for all users */}
-                    <div className="space-y-4 border-t pt-4">
-                      <h3 className="font-medium text-gray-900">Indirizzo</h3>
-                      <div className="grid grid-cols-1 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="address">Indirizzo</Label>
-                          <Input
-                            id="address"
-                            placeholder="Via Roma 123"
-                            {...registerForm.register("address")}
-                          />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-2">
-                            <Label htmlFor="city">Città</Label>
-                            <Input
-                              id="city"
-                              placeholder="Milano"
-                              {...registerForm.register("city")}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label htmlFor="postalCode">CAP</Label>
-                            <Input
-                              id="postalCode"
-                              placeholder="20100"
-                              {...registerForm.register("postalCode")}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="country">Paese</Label>
-                          <Select
-                            value={registerForm.watch("country") || "Italy"}
-                            onValueChange={(value) => registerForm.setValue("country", value)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Seleziona paese" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Italy">Italia</SelectItem>
-                              <SelectItem value="Switzerland">Svizzera</SelectItem>
-                              <SelectItem value="France">Francia</SelectItem>
-                              <SelectItem value="Austria">Austria</SelectItem>
-                              <SelectItem value="Germany">Germania</SelectItem>
-                              <SelectItem value="Spain">Spagna</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </div>
-                    </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="registerPassword">Password</Label>

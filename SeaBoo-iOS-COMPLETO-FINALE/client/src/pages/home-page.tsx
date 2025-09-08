@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SearchFilters } from "@/components/search-filters";
-import { AppDownloadBanner } from "@/components/app-download-banner";
+// AppDownloadBanner rimosso per compliance Apple Store
 import { Anchor } from "lucide-react";
 
 import { BoatCard } from "@/components/boat-card";
@@ -79,7 +79,7 @@ export default function HomePage() {
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 overflow-x-hidden">
       <SEOHead {...seoConfigs.home} />
       <StructuredData type="homepage" />
-      <AppDownloadBanner />
+      {/* AppDownloadBanner rimosso per compliance Apple Store */}
       <Header />
       
       {/* Hero Section - Design con sfondo blu oceano e palme */}

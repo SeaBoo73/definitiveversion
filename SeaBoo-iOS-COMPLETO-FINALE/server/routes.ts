@@ -376,7 +376,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <p>I tuoi dati sono protetti secondo il GDPR. Le transazioni sono sicure tramite Stripe.</p>
         
         <h2>📱 App Mobile</h2>
-        <p>Scarica l'app SeaBoo dall'App Store per un'esperienza ottimizzata su mobile.</p>
+        <p>Benvenuto su SeaBoo - La piattaforma per il noleggio barche in Italia.</p>
         
         <p style="text-align: center; margin-top: 40px; color: #6b7280;">
             © 2025 SeaBoo. Tutti i diritti riservati.

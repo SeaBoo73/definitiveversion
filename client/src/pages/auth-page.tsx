@@ -13,7 +13,7 @@ import { insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 import { Redirect, Link, useLocation } from "wouter";
 import { Anchor, ArrowLeft } from "lucide-react";
-import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757233141259.jpeg";
+import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757318764148.jpeg";
 import { useToast } from "@/hooks/use-toast";
 
 const loginSchema = z.object({

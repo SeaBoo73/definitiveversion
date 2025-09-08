@@ -1,0 +1,193 @@
+iao. Sto creando SeaGO, una piattaforma per il noleggio di imbarcazioni.
+
+Obiettivo:
+
+Un’app professionale, veloce e intuitiva per prenotare barche, gommoni, yacht, moto d’acqua, catamarani, houseboat, charter, caiacco.
+Deve funzionare come:
+– Airbnb per il sistema prenotazioni
+– Booking per il calendario e la gestione date
+– Glovo per la semplicità e velocità
+
+⸻
+
+FUNZIONI OBBLIGATORIE:
+
+Homepage con mappa e filtri
+
+– Mappa interattiva con marker per le barche
+– Filtro: tipo imbarcazione (gommone, yacht, catamarano, ecc.)
+– Filtro: città o porto
+– Filtro: date da / a (con calendario)
+– Filtro: numero di persone
+– Filtro: skipper sì/no
+– Filtro: carburante incluso sì/no
+– Pulsante “Cerca”
+
+Galleria categorie (da homepage)
+
+– Immagini cliccabili: Gommone, Yacht, Catamarano, Moto d’acqua, Barca a vela, Kayak, Charter, Houseboat
+– Cliccando su un’immagine si apre la ricerca già filtrata per quella categoria
+
+Sistema di prenotazione
+
+– Scelta imbarcazione > visualizza dettagli > seleziona date > prenota ora
+– Le date già prenotate devono essere bloccate automaticamente
+– Dopo la prenotazione il noleggiatore riceve conferma
+– Email di riepilogo automatica al cliente e al noleggiatore
+
+Pagamenti online (Stripe)
+
+– Integrazione completa con Stripe
+– Pagamento con:
+Carta di credito
+Apple Pay
+Google Pay
+– Commissione del 15% trattenuta da SeaGO
+– Ricevute generate automaticamente
+
+Registrazione utenti
+
+– Modalità cliente e modalità noleggiatore
+– Accesso con:
+Email
+Google
+Apple
+– Possibilità di navigare da ospite, ma richiesta registrazione prima della prenotazione
+– Obbligo di accettare Termini e Condizioni e Privacy Policy
+
+Dashboard noleggiatori
+
+– Aggiunta nuova imbarcazione (nome, descrizione, foto, prezzo, località, disponibilità)
+– Blocco date
+– Modifica prezzi e descrizioni
+– Visualizzazione prenotazioni ricevute
+– Gestione messaggi
+
+Messaggistica cliente-noleggiatore
+
+– Sistema di chat interna (anche solo testo)
+– Notifiche via email o push
+
+Sistema recensioni
+
+– I clienti possono lasciare recensioni sulle imbarcazioni
+– I noleggiatori possono recensire i clienti
+– Moderazione attiva
+
+Dashboard admin (per me)
+
+– Visualizzazione e gestione di: utenti, barche, transazioni, messaggi
+– Possibilità di disattivare utenti o barche
+– Statistiche base (es. n. prenotazioni, guadagni giornalieri)
+
+Responsive
+
+– Sito web responsive mobile
+– App nativa iOS e Android (anche via wrapper tipo Nativator.io)
+
+Brand
+
+– Nome: SeaGO
+– Design moderno, minimale, veloce
+– Font pulito, pulsanti grandi, colori coerenti
+
+Sistema premi e incentivi
+	•	I clienti che prenotano spesso o ricevono buone recensioni ottengono:
+Sconti esclusivi
+Accesso anticipato alle migliori barche
+Badge fedeltà (es. “Top Explorer”, “Cliente Premium”)
+	•	I noleggiatori con ottime recensioni ricevono:
+Posizionamento più alto nei risultati
+Badge visibili (es. “Host Affidabile”, “Super Noleggiatore”)
+Bonus o visibilità extra all’interno dell’app
+	•	Tutti i premi sono gestiti dall’admin, visibili nei profili, e stimolano la qualità del servizio.
+Codici sconto e referral
+	•	Ogni cliente ha un codice personale da condividere
+	•	Chi invita guadagna credito (es. 15 € sulla prossima prenotazione)
+	•	Il nuovo iscritto ottiene uno sconto (es. 10%)
+	•	Gestione dei codici dal pannello admin
+💸 Effetto virale assicurato
+
+⸻
+
+Assicurazione automatica
+	•	Possibilità di aggiungere (o includere) un’assicurazione viaggio/noleggio
+	•	Calcolo automatico nel checkout
+	•	Può coprire: danni, annullamento, meteo
+✔️ Valore aggiunto reale e più fiducia
+
+⸻
+
+Traduzione automatica delle descrizioni
+	•	Sistema che traduce le schede delle barche nella lingua dell’utente
+🌍 Internazionalizzazione reale, perfetta per turisti stranieri
+
+⸻
+
+Intelligenza Artificiale: ricerca intelligente
+	•	Suggerimento automatico delle barche migliori in base alle ricerche precedenti, periodo, prezzo e meteo
+🧠 Come “Consigliati per te” su Netflix
+
+⸻
+
+Profilo verificato (KYC) per i noleggiatori
+	•	Upload documento + selfie
+	•	Badge “Verificato”
+🔒 Maggiore sicurezza e fiducia da parte degli utenti
+⸻
+
+Notifiche push personalizzate
+	•	Esempi:
+“C’è un nuovo catamarano disponibile a Ponza”
+“La barca che ti piace ha uno sconto oggi”
+📲 Aumenta conversioni e coinvolgimento
+
+⸻
+
+Preferiti / Wishlist
+	•	L’utente può salvare le barche preferite e ricevere alert su sconti o disponibilità
+❤️ Perfetto per chi sta valutando prima di prenotare
+
+⸻
+
+Analisi meteo integrate
+	•	Prima di prenotare, l’app mostra una previsione meteo per le date selezionate
+🌤 Utile, moderno, professionale
+
+⸻
+
+Calendario dinamico anche per multiporto
+	•	Il noleggiatore può gestire più barche in più porti da un’unica dashboard
+	•	Ogni barca ha il proprio calendario separato
+⚓ Adatto a chi ha flotte o lavora su più isole
+
+⸻
+
+Piattaforma B2B (opzionale)
+	•	Area per tour operator, hotel, agenzie
+	•	Possono prenotare per conto dei clienti con account business
+💼 Canale di guadagno parallelo extra
+
+🔧 Dashboard Noleggiatori – Inserimento barche
+
+I noleggiatori registrati devono avere un’area privata dove possono aggiungere, modificare e gestire ogni imbarcazione con campi semplici e intuitivi.
+
+Campi da compilare per ogni barca:
+	•	✅ Nome dell’imbarcazione
+	•	✅ Cantiere (marca)
+	•	✅ Tipologia (Gommone, Yacht, Barca a vela, ecc.)
+	•	✅ Anno di costruzione
+	•	✅ Numero massimo persone
+	•	✅ Lunghezza (in metri)
+	•	✅ Motorizzazione
+	•	✅ Patente richiesta (Sì/No)
+	•	✅ Skipper obbligatorio (Sì/No)
+	•	✅ Porto di partenza (es. Ponza)
+	•	✅ Prezzo giornaliero
+	•	✅ Disponibilità (calendario dinamico)
+	•	✅ Carburante sempre escluso (campo fisso, non modificabile)
+	•	✅ Immagini (caricamento multiplo)
+	•	✅ Descrizione
+	•	✅ Documenti richiesti (es. licenza, assicurazione, ecc.)
+
+Tutti i dati devono essere salvati, modificabili in qualsiasi momento e accessibili nella dashboard.

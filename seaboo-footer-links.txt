@@ -1,0 +1,16 @@
+// SOSTITUISCI le righe 90-98 in client/src/components/footer.tsx con:
+
+<Link to="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
+  Privacy Policy
+</Link>
+<Link to="/condizioni-servizio" className="text-gray-400 hover:text-white text-sm transition-colors">
+  Termini di Servizio
+</Link>
+<Link to="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
+  Cookie Policy
+</Link>
+
+// ASSICURATI che i link siano esattamente:
+// /privacy-policy (non /privacy)
+// /condizioni-servizio (non /termini)
+// /cookie-policy (nuovo)

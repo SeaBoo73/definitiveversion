@@ -1,0 +1,7 @@
+// AGGIUNGI QUESTO IMPORT IN App.tsx (intorno alla linea 40):
+import CookiePolicyPage from "@/pages/cookie-policy";
+
+// AGGIUNGI QUESTA ROUTE IN App.tsx (intorno alla linea 111):
+<Route path="/cookie-policy" component={CookiePolicyPage} />
+
+// POSIZIONE ESATTA: dopo la linea con privacy-policy e prima di /contatti

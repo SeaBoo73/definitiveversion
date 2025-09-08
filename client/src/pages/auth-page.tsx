@@ -208,7 +208,7 @@ export default function AuthPage() {
                     onClick={() => {
                       toast({
                         title: "Sign in with Apple",
-                        description: "Disponibile nella versione App Store",
+                        description: "Accedi alla piattaforma completa",
                       });
                     }}
                   >

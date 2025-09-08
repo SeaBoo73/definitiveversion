@@ -87,13 +87,13 @@ export function Footer() {
                 © 2025 SeaBoo. Tutti i diritti riservati.
               </p>
               <div className="flex items-center gap-4">
-                <Link to="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
+                <Link to="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
                   Privacy Policy
                 </Link>
-                <Link to="/termini" className="text-gray-400 hover:text-white text-sm transition-colors">
+                <Link to="/condizioni-servizio" className="text-gray-400 hover:text-white text-sm transition-colors">
                   Termini di Servizio
                 </Link>
-                <Link to="/cookie" className="text-gray-400 hover:text-white text-sm transition-colors">
+                <Link to="/cookie-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
                   Cookie Policy
                 </Link>
               </div>

@@ -37,6 +37,7 @@ import RimborsiPage from "@/pages/rimborsi";
 import CondizioniServizioPage from "@/pages/condizioni-servizio";
 import ContattiPage from "@/pages/contatti";
 import PrivacyPolicyPage from "@/pages/privacy-policy";
+import CookiePolicyPage from "@/pages/cookie-policy";
 import PaymentSuccess from "@/pages/payment-success";
 import DiventaNoleggiatorePage from "@/pages/diventa-noleggiatore";
 import ModificaPrenotazionePage from "@/pages/modifica-prenotazione";
@@ -107,6 +108,7 @@ function Router() {
       <Route path="/rimborsi" component={RimborsiPage} />
       <Route path="/condizioni-servizio" component={CondizioniServizioPage} />
       <Route path="/privacy-policy" component={PrivacyPolicyPage} />
+      <Route path="/cookie-policy" component={CookiePolicyPage} />
       <Route path="/contatti" component={ContattiPage} />
       <Route path="/supporto" component={SupportoPage} />
       <Route path="/diventa-noleggiatore" component={DiventaNoleggiatorePage} />

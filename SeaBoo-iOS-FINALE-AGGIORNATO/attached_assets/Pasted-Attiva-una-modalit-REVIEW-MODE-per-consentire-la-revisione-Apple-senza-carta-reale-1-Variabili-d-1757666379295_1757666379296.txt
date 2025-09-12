@@ -1,0 +1,110 @@
+Attiva una modalità REVIEW_MODE per consentire la revisione Apple senza carta reale.
+
+1) Variabili d’ambiente
+
+Imposta REVIEW_MODE=true in Secrets.
+
+2) Server: middleware e rotte mock pagamento
+Apri il file del server (index.js/server.js) e aggiungi:
+
+// --- REVIEW MODE TOGGLE ---
+const REVIEW_MODE = process.env.REVIEW_MODE === 'true';
+
+// helper: risposta standard pagamento riuscito (mock)
+function mockPaymentSuccess(amount, currency = 'EUR') {
+  return {
+    ok: true,
+    mode: 'review',
+    payment: {
+      status: 'succeeded',
+      provider: 'mock',
+      amount,
+      currency,
+      id: 'pm_mock_' + Date.now()
+    }
+  };
+}
+
+// Health per pagamenti
+app.get('/payments/health', (_req, res) => {
+  res.json({ ok: true, reviewMode: REVIEW_MODE });
+});
+
+// Crea un "intent" di pagamento (mock in review)
+app.post('/payments/intents', (req, res) => {
+  const { amount, currency = 'EUR' } = req.body || {};
+  if (REVIEW_MODE) {
+    return res.json(mockPaymentSuccess(amount, currency));
+  }
+  // TODO: qui codice reale PSP (Stripe/PayPal) quando REVIEW_MODE=false
+  return res.status(501).json({ ok: false, error: 'provider_not_implemented' });
+});
+
+// Conferma pagamento (mock in review)
+app.post('/payments/confirm', (req, res) => {
+  const { paymentMethodId, amount, currency = 'EUR' } = req.body || {};
+  if (REVIEW_MODE) {
+    return res.json(mockPaymentSuccess(amount, currency));
+  }
+  // TODO: qui conferma reale col PSP
+  return res.status(501).json({ ok: false, error: 'provider_not_implemented' });
+});
+
+// Endpoint prenotazione che accetta pagamento mock se review
+app.post('/bookings/create', async (req, res) => {
+  try {
+    const { boatId, startDate, endDate, amount, currency = 'EUR' } = req.body || {};
+    if (!boatId || !startDate || !endDate) {
+      return res.status(400).json({ ok: false, error: 'missing_fields' });
+    }
+    let paymentResult = null;
+    if (REVIEW_MODE) {
+      paymentResult = mockPaymentSuccess(amount, currency);
+    } else {
+      // In produzione richiedi prima /payments/intents o /payments/confirm con PSP reale
+      return res.status(402).json({ ok: false, error: 'payment_required' });
+    }
+    // TODO: salva prenotazione nel DB
+    res.json({
+      ok: true,
+      booking: {
+        id: 'bk_' + Date.now(),
+        boatId, startDate, endDate,
+        amount, currency,
+        paymentStatus: 'paid_demo'
+      },
+      paymentResult
+    });
+  } catch (e) {
+    console.error('booking error', e);
+    res.status(500).json({ ok: false, error: 'booking_failed' });
+  }
+});
+
+
+3) Logging chiaro
+Se non già presente, abilita logger:
+
+const morgan = require('morgan');
+app.use(morgan('combined'));
+app.use(express.json({ limit: '1mb' }));
+
+
+4) Riavvio + verifica
+
+Riavvia il server.
+
+Controlla GET /payments/health → { ok: true, reviewMode: true }.
+
+Facoltativo: prova POST /bookings/create con JSON di esempio:
+
+{
+  "boatId": "demo-boat-1",
+  "startDate": "2025-09-20",
+  "endDate": "2025-09-21",
+  "amount": 15000,
+  "currency": "EUR"
+}
+
+
+Deve tornare ok: true e paymentStatus: "paid_demo".

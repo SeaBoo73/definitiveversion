@@ -1,0 +1,41 @@
+[vite] connecting...
+[vite] connected.
+Warning: validateDOMNesting(...): <a> cannot appear as a descendant of &lt;a&gt;.
+    at a
+    at a
+    at https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b20cf6f7:337:18
+    at li
+    at ol
+    at div
+    at nav
+    at Breadcrumbs (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/components/breadcrumbs.tsx:20:31)
+    at div
+    at ExternalServices (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/pages/external-services.tsx:55:51)
+    at Route (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b20cf6f7:323:16)
+    at Switch (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b20cf6f7:379:17)
+    at Router
+    at AuthProvider (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/hooks/use-auth.tsx:26:32)
+    at QueryClientProvider (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=b20cf6f7:2805:3)
+    at ErrorBoundary (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/error-boundary.tsx:7:5)
+    at App
+at a
+at a
+at https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b20cf6f7:337:18
+at li
+at ol
+at div
+at nav
+at Breadcrumbs (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/components/breadcrumbs.tsx:20:31)
+at div
+at ExternalServices (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/pages/external-services.tsx:55:51)
+at Route (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b20cf6f7:323:16)
+at Switch (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=b20cf6f7:379:17)
+at Router
+at AuthProvider (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/hooks/use-auth.tsx:26:32)
+at QueryClientProvider (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=b20cf6f7:2805:3)
+at ErrorBoundary (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/src/error-boundary.tsx:7:5)
+at App
+at t.value (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:17465)
+at new t (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:12630)
+at t.value (https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:32766)
+at https://a3dac1fb-3964-4fef-85b1-2870a8c6ce84-00-67b16wtsvwza.worf.replit.dev/__replco/static/devtools/eruda/3.2.3/eruda.js:2:34400

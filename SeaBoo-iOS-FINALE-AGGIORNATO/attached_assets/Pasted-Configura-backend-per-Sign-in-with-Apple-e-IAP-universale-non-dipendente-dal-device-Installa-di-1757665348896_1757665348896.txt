@@ -1,0 +1,145 @@
+Configura backend per Sign in with Apple e IAP (universale, non dipendente dal device).
+
+Installa dipendenze: aggiungi jose@5, cross-fetch@4, morgan@1.
+
+Abilita JSON & logging nel server: dopo la creazione di app, aggiungi
+
+const morgan = require('morgan');
+app.use(morgan('combined'));
+app.use(express.json({ limit: '1mb' }));
+
+
+Crea appleAuth.js con verifica ID token Apple:
+
+// appleAuth.js
+const { createRemoteJWKSet, jwtVerify } = require('jose');
+const appleJWKS = createRemoteJWKSet(new URL('https://appleid.apple.com/auth/keys'));
+
+async function verifyAppleIdToken(idToken, audience) {
+  if (!idToken) throw new Error('missing id_token');
+  const { payload } = await jwtVerify(idToken, appleJWKS, {
+    issuer: 'https://appleid.apple.com',
+    audience // APPLE_CLIENT_ID (Service ID) o il Bundle ID se usiamo native audience
+  });
+  return payload; // contiene sub (ID univoco), email (solo alla prima autorizzazione)
+}
+
+module.exports = { verifyAppleIdToken };
+
+
+Crea iap.js per validare ricevute StoreKit:
+
+// iap.js
+const fetch = require('cross-fetch');
+const APPLE_VERIFY_PROD = 'https://buy.itunes.apple.com/verifyReceipt';
+const APPLE_VERIFY_SANDBOX = 'https://sandbox.itunes.apple.com/verifyReceipt';
+
+async function verifyReceipt({ base64Receipt, password, useSandbox }) {
+  if (!base64Receipt) throw new Error('missing receipt');
+  const body = {
+    'receipt-data': base64Receipt,
+    password, // App-Specific Shared Secret per abbonamenti
+    'exclude-old-transactions': true
+  };
+  const endpoint = useSandbox ? APPLE_VERIFY_SANDBOX : APPLE_VERIFY_PROD;
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const json = await res.json();
+  // Se mandiamo a prod una ricevuta sandbox, Apple risponde 21007: ritenta su sandbox
+  if (json.status === 21007 && !useSandbox) {
+    return verifyReceipt({ base64Receipt: base64Receipt, password, useSandbox: true });
+  }
+  return json;
+}
+
+module.exports = { verifyReceipt };
+
+
+Aggiorna il file server (index.js o server.js): importa i moduli e aggiungi le rotte.
+
+// in alto:
+const express = require('express');
+const app = express();
+const { verifyAppleIdToken } = require('./appleAuth');
+const { verifyReceipt } = require('./iap');
+const morgan = require('morgan');
+
+// middlewares (se non già presenti, una sola volta):
+app.use(morgan('combined'));
+app.use(express.json({ limit: '1mb' }));
+
+// Health generico
+app.get('/health', (_req, res) => {
+  res.json({ ok: true, services: { siwa: true, iap: true } });
+});
+
+// ---- Sign in with Apple ----
+app.get('/auth/apple/health', (_req, res) => {
+  res.status(200).json({ ok: true, service: 'apple-login' });
+});
+
+app.post('/auth/apple/callback', async (req, res) => {
+  try {
+    const { id_token } = req.body || {};
+    const audience = process.env.APPLE_CLIENT_ID || process.env.BUNDLE_ID;
+    const payload = await verifyAppleIdToken(id_token, audience);
+    // TODO: upsert utente per payload.sub; l'email può mancare dopo il primo consenso
+    res.json({ ok: true, sub: payload.sub, email: payload.email ?? null });
+  } catch (e) {
+    console.error('Apple auth error:', e);
+    res.status(401).json({ ok: false, error: 'invalid_apple_token' });
+  }
+});
+
+// ---- In-App Purchases / StoreKit ----
+app.get('/iap/health', (_req, res) => {
+  res.status(200).json({ ok: true, service: 'iap' });
+});
+
+app.post('/iap/verify', async (req, res) => {
+  try {
+    const { receiptBase64 } = req.body || {};
+    const result = await verifyReceipt({
+      base64Receipt: receiptBase64,
+      password: process.env.APPLE_SHARED_SECRET,
+      useSandbox: process.env.IAP_USE_SANDBOX === 'true'
+    });
+    res.json({ ok: true, result });
+  } catch (e) {
+    console.error('IAP verify error:', e);
+    res.status(400).json({ ok: false, error: 'iap_verify_failed' });
+  }
+});
+
+// App Store Server Notifications (minimo: logging)
+app.post('/appstore/notifications', async (req, res) => {
+  try {
+    console.log('ASSN incoming:', JSON.stringify(req.body));
+    res.status(200).json({ ok: true });
+  } catch (e) {
+    console.error('ASSN error:', e);
+    res.status(200).json({ ok: true });
+  }
+});
+
+// Ascolto su PORT fornita da Replit (non cambiare)
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log('Server listening on', port));
+
+
+Imposta le variabili d’ambiente (segreti) del progetto (senza stamparle in log):
+
+APPLE_CLIENT_ID oppure BUNDLE_ID (audience per SIWA)
+
+APPLE_SHARED_SECRET (shared secret abbonamenti, da App Store Connect)
+
+IAP_USE_SANDBOX = true in test / false in produzione
+
+Riavvia e verifica che:
+
+GET /auth/apple/health → { ok: true, service: 'apple-login' }
+
+GET /iap/health → { ok: true, service: 'iap' }

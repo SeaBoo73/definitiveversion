@@ -209,6 +209,11 @@ app.get("/mobile-project-preview", (req, res) => {
     log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
     log(`📱 Native preview: http://localhost:${port}/native-preview`);
     log(`🌐 Web app: http://localhost:${port}`);
-    log(`🔒 Security: Apple services properly configured`);
+    
+    // Safe logging without secret values
+    const REVIEW_MODE = process.env.REVIEW_MODE === 'true';
+    console.log('[SeaBoo] READY | reviewMode=', REVIEW_MODE,
+      '| APPLE_CLIENT_ID:', !!process.env.APPLE_CLIENT_ID,
+      '| BUNDLE_ID:', !!process.env.BUNDLE_ID);
   });
 })();

@@ -451,6 +451,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ ok: true, services: { siwa: true, iap: true } });
   });
 
+  // ---- REVIEW SELF-CHECK ----
+  app.get('/review/info', (_req, res) => {
+    res.json({
+      ok: true,
+      reviewMode: REVIEW_MODE,
+      env: [
+        safeFlag('APPLE_CLIENT_ID', !!process.env.APPLE_CLIENT_ID),
+        safeFlag('BUNDLE_ID', !!process.env.BUNDLE_ID),
+        safeFlag('APPLE_SHARED_SECRET', !!process.env.APPLE_SHARED_SECRET)
+      ],
+      services: {
+        support: true,
+        siwa: true,
+        iap: true,
+        payments: true
+      }
+    });
+  });
+
   // ---- Sign in with Apple ----
   app.get('/auth/apple/health', (_req, res) => {
     res.status(200).json({ ok: true, service: 'apple-login' });
@@ -502,6 +521,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // --- REVIEW MODE TOGGLE ---
   const REVIEW_MODE = process.env.REVIEW_MODE === 'true';
+  
+  // Safe flag helper
+  function safeFlag(name: string, present: boolean) { 
+    return { name, present: !!present }; 
+  }
 
   // helper: risposta standard pagamento riuscito (mock)
   function mockPaymentSuccess(amount: number, currency = 'EUR') {

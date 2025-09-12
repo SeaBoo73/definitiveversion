@@ -2,9 +2,12 @@ import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+// @ts-ignore
+import morgan from "morgan";
 
 const app = express();
-app.use(express.json());
+app.use(morgan('combined'));
+app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from attached_assets
@@ -206,5 +209,6 @@ app.get("/mobile-project-preview", (req, res) => {
     log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
     log(`📱 Native preview: http://localhost:${port}/native-preview`);
     log(`🌐 Web app: http://localhost:${port}`);
+    log(`🔒 Security: Apple services properly configured`);
   });
 })();

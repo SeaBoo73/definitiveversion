@@ -215,5 +215,8 @@ app.get("/mobile-project-preview", (req, res) => {
     console.log('[SeaBoo] READY | reviewMode=', REVIEW_MODE,
       '| APPLE_CLIENT_ID:', !!process.env.APPLE_CLIENT_ID,
       '| BUNDLE_ID:', !!process.env.BUNDLE_ID);
+    
+    // Build version confirmation log
+    console.log('[SeaBoo] BUILD ACTIVE = ultima versione aggiornata (supporto + login Apple + pagamenti review mode)');
   });
 })();

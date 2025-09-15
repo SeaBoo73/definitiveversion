@@ -1,0 +1,83 @@
+Non modificare la build attiva. Non fare rollback. Non aggiornare dipendenze.
+Voglio soltanto un controllo finale e un pacchetto con i file cambiati oggi rispetto all’ultima build buona.
+
+1) Riferimento build
+
+Identifica l’ultima build funzionante (quella attiva ora o l’ultimo tag/commit di deploy stabile). Chiamala LAST_GOOD_BUILD.
+
+Non toccarla.
+
+2) Verifica funzionale (senza cambiare nulla)
+
+Esegui questi check e riportami status code + JSON:
+
+GET /version (se esiste) → deve mostrare la versione attuale.
+
+Support URL: conferma che l’URL ufficiale è https://www.seaboo.it/aiuto
+ (non usare più Replit).
+
+GET /auth/apple/health → { ok:true, service:"apple-login" }.
+
+GET /payments/health → { ok:true, reviewMode:true }.
+
+POST /bookings/create con un JSON di test:
+
+{ "boatId":"demo-boat-1", "startDate":"2025-09-20", "endDate":"2025-09-21", "amount":15000, "currency":"EUR" }
+
+
+Deve restituire ok:true e paymentStatus:"paid_demo".
+
+GET /review/info → reviewMode:true e flag present:true per APPLE_CLIENT_ID (o BUNDLE_ID) e per eventuali variabili richieste.
+
+(Se presente) GET /iap/health → ok (anche se non usiamo IAP, deve rispondere).
+
+3) Differenze di oggi (diff)
+
+Calcola il diff tra lo stato attuale e LAST_GOOD_BUILD.
+
+Mostra solo i file effettivamente cambiati oggi, in particolare relativi a:
+
+Login con Apple (appleAuth.js e rotte /auth/apple/*)
+
+Pagamenti per servizi reali in review mode (rotte /payments/*, /bookings/create)
+
+Endpoint di stato (/review/info, eventuale /version)
+
+Non includere modifiche a Stripe/IAP/client se non fanno parte degli aggiornamenti odierni.
+
+4) Esporta aggiornamenti di oggi in una nuova cartella
+
+Crea una cartella: export_updates_$(date +%Y%m%d_%H%M) (es.: export_updates_20250915_1730/).
+
+Copia mantenendo la struttura di cartelle tutti i file risultanti dal diff odierno dentro questa cartella (solo quelli aggiornati oggi).
+
+Aggiungi un README.txt con:
+
+elenco file inclusi;
+
+dove collocarli nel progetto locale (stesso path);
+
+comandi curl per i check (quelli sopra);
+
+nota: “nessuna dipendenza nuova / nessun cambio versione API”.
+
+Aggiungi DIFF.txt con il diff completo (unified).
+
+(Se utile) aggiungi checks.sh con i curl già pronti (non inserire secrets).
+
+Comprimi in export_updates_<timestamp>.zip.
+
+5) Output richiesto
+
+Fornisci il link per scaricare lo ZIP export_updates_<timestamp>.zip.
+
+Incolla qui anche:
+
+l’elenco dei file inclusi con percorso completo;
+
+l’esito dei check (status + snippet JSON);
+
+la riga di versione letta da /version (se disponibile).
+
+Importante: non toccare file non inclusi nel diff di oggi, non cambiare server/routes.ts, server/index.ts, versioni API (Stripe, ecc.) o file client se non fanno parte degli aggiornamenti odierni.
+L’obiettivo è solo esportare i file aggiornati oggi, lasciando intatta la build attuale.

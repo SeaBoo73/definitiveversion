@@ -1,0 +1,54 @@
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready % ls -la
+total 336
+drwxr-xr-x@  12 chiaraindino  staff     384 27 Ago 09:02 .
+drwx------@ 251 chiaraindino  staff    8032 27 Ago 08:56 ..
+-rw-r--r--@   1 chiaraindino  staff    1495 27 Ago 06:54 ISTRUZIONI.md
+-rw-r--r--    1 chiaraindino  staff     181 27 Ago 09:01 capacitor.config.ts
+drwxr-xr-x@   5 chiaraindino  staff     160 27 Ago 06:54 client
+drwxr-xr-x    4 chiaraindino  staff     128 27 Ago 09:02 ios
+drwxr-xr-x  192 chiaraindino  staff    6144 27 Ago 08:58 node_modules
+-rw-r--r--    1 chiaraindino  staff  149298 27 Ago 08:58 package-lock.json
+-rw-r--r--@   1 chiaraindino  staff    1037 27 Ago 08:58 package.json
+drwxr-xr-x@   5 chiaraindino  staff     160 27 Ago 06:54 shared
+-rw-r--r--@   1 chiaraindino  staff     657 27 Ago 06:54 tsconfig.json
+-rw-r--r--@   1 chiaraindino  staff     971 27 Ago 06:54 vite.config.ts
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready % cat package.json
+{
+  "name": "seaboo-mobile",
+  "private": true,
+  "version": "1.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx server/index.ts",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "ios:build": "npm run build && npx cap sync ios && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/cli": "^6.2.1",
+    "@capacitor/core": "^6.2.1",
+    "@capacitor/ios": "^6.2.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.2",
+    "@tanstack/react-query": "^5.59.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.456.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^2.5.4",
+    "tailwindcss": "^3.4.14",
+    "wouter": "^3.3.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "typescript": "~5.6.3",
+    "vite": "^5.4.10"
+  }
+}
+chiaraindino@MacBook-Pro-di-chiara SeaBoo-iOS-Ready % 

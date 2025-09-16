@@ -1,0 +1,41 @@
+La chiave: l’app non contiene il codice di Replit
+La tua app iOS parla al backend via URL (HTTP/HTTPS).
+Quando aggiorni Replit, stai aggiornando il server. L’app, a runtime, fa richieste verso quell’URL e “vede” automaticamente i cambiamenti senza che tu debba copiare file di Replit dentro Xcode.
+Immagina: l’app è un telecomando, Replit è la TV. Se cambi canale sulla TV (Replit), il telecomando (app) non va aggiornato: continua a inviare i comandi allo stesso televisore.
+Quindi… perché rifare la build in Xcode?
+Non per “prendere” il codice di Replit (non serve).
+Ma Apple spesso chiede una nuova build per riprocessare la review dopo i fix, anche se i fix sono lato server.
+La nuova build è identica (o quasi), solo con Build Number incrementato: quando gira, chiamerà lo stesso URL del backend e dunque userà i fix che hai pubblicato su Replit.
+Cosa devi solo controllare (importantissimo)
+Verifica che l’app stia puntando al giusto URL di produzione del backend.
+Di solito è in uno di questi punti del codice iOS:
+Constants.swift, Config.swift o simile
+uno Info.plist con chiave tipo API_BASE_URL
+file di configurazione ambiente (es. Production.xcconfig)
+Checklist rapida
+Trova la costante dell’endpoint (esempio):
+enum API {
+    static let baseURL = "https://seaboo-2.replit.app" // o il tuo dominio
+}
+Conferma che sia l’URL corretto (quello dove hai appena messo i fix).
+Se è corretto → non devi toccare altro in Xcode per “prendere” i fix.
+Se NON è corretto (es. punta a un vecchio dev URL) → cambia la costante, poi sì che serve una nuova build per far puntare l’app al backend giusto.
+Come procedere adesso (passi semplici)
+Backend ok? Apri dal browser:
+https://<tuo-backend>/auth/apple/health
+https://<tuo-backend>/payments/health
+Devono rispondere ok:true (così sai che i fix sono live).
+App punta lì? In Xcode verifica la tua baseURL.
+Se è la stessa dell’URL testato sopra → perfetto.
+Nuova build per Apple (se richiesta)
+In Xcode incrementa Build Number (solo quello).
+Product → Clean Build Folder (⇧⌘K)
+Product → Archive → Distribute App → App Store Connect → Upload
+Note per la review (consigliato)
+Scrivi ad Apple che i bug erano server-side e sono stati corretti; l’app ora chiama lo stesso endpoint con i fix già attivi.
+Specifica che i pagamenti sono per servizi reali (noleggio barche), non IAP, e che hai una review mode attiva.
+Quando avresti dovuto “importare” file in Xcode?
+Quasi mai per fix di backend. Lo fai solo se:
+cambi l’URL in app → allora modifichi la costante e ricompili;
+aggiungi nuove schermate/SDK lato iOS → allora sì, cambi codice iOS.
+Per tutto il resto (login con Apple lato server, pagamenti lato server, support URL web), basta aggiornare Replit: l’app userà quei fix a runtime.

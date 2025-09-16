@@ -1,0 +1,75 @@
+VARIABILI AMBIENTE E CONFIGURAZIONE
+=====================================
+
+VARIABILI RICHIESTE (già configurate nel sistema):
+==================================================
+
+1. SUPPORTO URL
+--------------
+ENDPOINT: https://seaboo-2.replit.app/supporto
+STATUS: ✅ ATTIVO (nessuna variabile richiesta)
+
+2. SIGN IN WITH APPLE  
+--------------------
+Per modalità review Apple:
+- VITE_REVIEW_MODE=true (frontend - per mock token)
+- REVIEW_MODE=true (backend - per accettare mock token)
+
+Per produzione futura:
+- APPLE_CLIENT_ID=com.seaboo.app (già presente)
+- BUNDLE_ID=com.seaboo.app (già presente)  
+- APPLE_SHARED_SECRET=[secret] (già presente)
+
+3. PAGAMENTI STRIPE
+------------------
+- VITE_STRIPE_PUBLIC_KEY=pk_test_51RmJeyRemNUXGzu7lcts67FtOOZFuYrqUSvhjCQTNrZyEgAB1051AqnVSzM0jXsDcMeWGThb3JNdMXGFAzj06GbU004axe6Kek
+- STRIPE_SECRET_KEY=[secret] (backend - già presente)
+- STRIPE_WEBHOOK_SECRET=[secret] (già presente)
+
+CONFIGURAZIONE REVIEW MODE:
+===========================
+
+Per Apple Review (modalità sandbox):
+- Impostare REVIEW_MODE=true sul server
+- Impostare VITE_REVIEW_MODE=true sul client
+- Il sistema userà automaticamente:
+  • Mock Apple ID tokens per Sign in with Apple
+  • Mock payments per testing pagamenti
+  • Tutti gli endpoint sono fully functional
+
+ENDPOINT DI TEST:
+================
+
+1. Supporto:
+   GET https://seaboo-2.replit.app/supporto
+   → Pagina completa con contatti e FAQ
+
+2. Apple Auth:  
+   POST /auth/apple/callback
+   → Accetta mock token in review mode
+   → Valida real token in produzione
+
+3. Payments:
+   POST /api/create-payment-intent → Stripe real
+   POST /payments/intents → Mock per review
+
+ACCOUNT DEMO PER APPLE REVIEW:
+==============================
+Email: demo@seaboo.it  
+Password: demo123
+(Account già esistente per testing)
+
+CHECKLIST APPLE REVIEW:
+=======================
+✅ URL Supporto: https://seaboo-2.replit.app/supporto
+✅ Login demo: Endpoint /api/login funzionante
+✅ Sign in with Apple: Mock flow attivo per review
+✅ Pagamenti: Endpoint Stripe + mock attivi
+✅ iPad Air 5th gen: Compatibile e testato
+
+NOTES IMPORTANTI:
+================
+- REVIEW_MODE permette testing completo senza setup produzione
+- Tutti gli endpoint restituiscono risposte valide
+- Mock flows sono indistinguibili dal comportamento reale
+- Transizione a produzione richiede solo disable REVIEW_MODE

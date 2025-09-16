@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# iOS/Xcode (keep ios/ folder but ignore build artifacts)
+ios/App/App/public/assets/
+ios/App/build/
+ios/App/DerivedData/
+ios/App/*.xcworkspace/xcuserdata/
+ios/App/*.xcodeproj/xcuserdata/
+ios/App/*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Capacitor
+.capacitor/
+android/
+
+# Package locks (optional, you can keep this if you want)
+# package-lock.json

@@ -15,6 +15,12 @@ type AuthContextType = {
   loginMutation: UseMutationResult<SelectUser, Error, LoginData>;
   logoutMutation: UseMutationResult<void, Error, void>;
   registerMutation: UseMutationResult<SelectUser, Error, InsertUser>;
+  appleLoginMutation: UseMutationResult<SelectUser, Error, AppleLoginData>;
+};
+
+type AppleLoginData = {
+  id_token: string;
+  user_info?: any;
 };
 
 type LoginData = {
@@ -81,6 +87,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  const appleLoginMutation = useMutation({
+    mutationFn: async (appleData: AppleLoginData) => {
+      const res = await apiRequest("POST", "/auth/apple/callback", appleData);
+      return await res.json();
+    },
+    onSuccess: (user: SelectUser) => {
+      queryClient.setQueryData(["/api/user"], user);
+      toast({
+        title: "Accesso con Apple effettuato",
+        description: "Benvenuto in SeaBoo!",
+      });
+      // Reindirizza automaticamente alla homepage
+      window.location.href = "/";
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Errore accesso Apple",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   const logoutMutation = useMutation({
     mutationFn: async () => {
       await apiRequest("POST", "/api/logout");
@@ -110,6 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginMutation,
         logoutMutation,
         registerMutation,
+        appleLoginMutation,
       }}
     >
       {children}

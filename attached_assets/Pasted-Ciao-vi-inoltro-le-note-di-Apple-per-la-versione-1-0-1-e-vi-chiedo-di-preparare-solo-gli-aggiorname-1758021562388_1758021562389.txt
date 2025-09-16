@@ -1,0 +1,24 @@
+Ciao, vi inoltro le note di Apple per la versione 1.0.1 e vi chiedo di preparare solo gli aggiornamenti di file, senza rigenerare una nuova build completa.
+Issue Apple da risolvere
+Guideline 1.5 – Safety: l’URL di supporto indicato in App Store Connect (https://seaboo-2.replit.app/supporto) non è funzionante.
+Guideline 2.1 – Performance – App Completeness:
+errore in login usando l’account demo e Sign in with Apple;
+errore quando si tappa il bottone di pagamento.
+Dispositivo usato da Apple: iPad Air (5th gen), iPadOS 26.0.
+Cosa vi chiedo di fare (senza nuova build):
+Sistemare gli aspetti sopra (Support URL, login + Sign in with Apple, bottone pagamento).
+Prepararmi una cartella pronta da scaricare con solo i file aggiornati rispetto alla mia build precedente che già funziona. Non voglio un progetto nuovo, ma solo i file modificati.
+Formato consegna (obbligatorio):
+Un archivio .zip chiamato AGGIORNAMENTI-COMPLETO-FINALE-<YYYYMMDD> che contenga:
+web app: eventuali file aggiornati in src/, public/, assets/.
+se e solo se ci sono modifiche native iOS: includete i singoli file aggiornati di ios/app/... (es. Info.plist, config Sign in with Apple, pagamento, ecc.) e NON l’intero progetto.
+un file CHANGELOG.txt con elenco puntuale di: percorso file, cosa è cambiato, perché (riferimento alla guideline Apple).
+un file ENV-NOTE.txt con le variabili/chiavi richieste (es. endpoint supporto, credenziali sandbox pagamento, Apple service ID) e i valori di esempio.
+opzionale ma utile: screenshot o breve video che provi il funzionamento (Support URL ok, login + Sign in with Apple ok, pagamento senza errori).
+Requisiti/Accettazione (checklist):
+https://seaboo-2.replit.app/supporto risponde 200 e mostra una pagina di supporto funzionante (contatti, policy, link email).
+Login con account demo e Sign in with Apple completano senza errori.
+Tapp su bottone pagamento → flusso aperto correttamente (sandbox), nessun crash/errore.
+Tutti i file consegnati sono completi e aggiornati: confermate che includono TUTTI gli aggiornamenti necessari per queste fix.
+Nota importante: non sovrascrivete né rigenerate la build completa. Mi basta il pacchetto .zip con soltanto i file aggiornati da copiare nella mia build esistente.
+Appena pronto, inviatemi il link allo .zip e conferma che i punti della checklist sono stati verificati su simulatore iPad Air (5th gen).

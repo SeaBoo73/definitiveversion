@@ -6,8 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'dist/public',
   server: {
     androidScheme: 'https',
-    // Per development locale - il simulatore iOS raggiungerà il server web
-    url: 'https://seaboo-2.replit.app',
+    // Per development locale - usa server locale per testing immediato
+    url: 'http://127.0.0.1:5000',
     cleartext: true
   },
   ios: {

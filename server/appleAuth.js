@@ -19,6 +19,11 @@ export async function verifyAppleIdToken(idToken, audience) {
   if (!audience) {
     throw new Error('APPLE_AUTH_ERROR: audience (APPLE_CLIENT_ID or BUNDLE_ID) is mandatory for security');
   }
+  
+  // For development/testing, allow fallback audience
+  if (audience === 'com.seaboo.app' && (!process.env.APPLE_CLIENT_ID && !process.env.BUNDLE_ID)) {
+    console.log('⚠️  Using fallback audience for development/testing');
+  }
 
   try {
     const { payload } = await jwtVerify(idToken, appleJWKS, {

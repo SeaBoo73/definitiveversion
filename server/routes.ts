@@ -477,14 +477,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/auth/apple/callback', async (req, res) => {
     try {
-      const { id_token } = req.body || {};
-      const audience = process.env.APPLE_CLIENT_ID || process.env.BUNDLE_ID;
+      const { id_token, user_info } = req.body || {};
+      
+      // Set default audience if environment variables are missing (for development/testing)
+      const audience = process.env.APPLE_CLIENT_ID || process.env.BUNDLE_ID || 'com.seaboo.app';
+      
+      if (!id_token) {
+        return res.status(400).json({ ok: false, error: 'missing_id_token' });
+      }
+
       const payload = await verifyAppleIdToken(id_token, audience);
-      // TODO: upsert utente per payload.sub; l'email può mancare dopo il primo consenso
-      res.json({ ok: true, sub: payload.sub, email: payload.email ?? null });
+      
+      // Handle user creation/update logic
+      let user;
+      const existingUser = await storage.getUserByEmail(payload.email || '');
+      
+      if (existingUser) {
+        // User exists, update Apple ID if needed
+        user = existingUser;
+      } else {
+        // Create new user from Apple ID token
+        const userData = {
+          email: payload.email || `apple_${payload.sub}@seaboo.temp`,
+          password: '', // No password for Apple users
+          firstName: user_info?.name?.firstName || 'User',
+          lastName: user_info?.name?.lastName || '',
+          role: 'user',
+          appleId: payload.sub
+        };
+        
+        try {
+          user = await storage.createUser(userData);
+        } catch (error) {
+          // If user creation fails (e.g., email exists), try to find by Apple ID
+          console.log('User creation failed, trying to authenticate existing user:', error);
+          user = existingUser || await storage.getUserByEmail(payload.email || '');
+        }
+      }
+
+      if (!user) {
+        return res.status(400).json({ ok: false, error: 'user_creation_failed' });
+      }
+
+      // Create session for the user
+      req.session.user = {
+        id: user.id.toString(),
+        email: user.email,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+        role: user.role || "user",
+        userType: user.role === "owner" ? "owner" : "customer",
+        businessName: user.businessName || undefined
+      };
+
+      res.json({ 
+        ok: true, 
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userType: user.role === "owner" ? "owner" : "customer"
+        },
+        redirectTo: user.role === "owner" ? "/owner/dashboard" : "/home"
+      });
     } catch (e) {
       console.error('Apple auth error:', e);
-      res.status(401).json({ ok: false, error: 'invalid_apple_token' });
+      res.status(401).json({ ok: false, error: 'invalid_apple_token', details: e.message });
     }
   });
 

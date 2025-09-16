@@ -1,0 +1,73 @@
+BUG E COSE DA SISTEMARE SU SEAGO (VERSIONE MOBILE)
+
+1. Chat live – pulsante “Avvia chat” non funziona
+	•	✅ Deve aprire una finestra di chat (WhatsApp, live chat o interno).
+	•	📱 Da telefono il tap non attiva nulla → da controllare link o evento associato al bottone.
+
+⸻
+
+2. Finestra “Scarica l’app” tagliata
+	•	🔴 Su mobile si vede solo fino alla parola “Conti”
+	•	✍️ Va sistemata l’altezza del pop-up o il padding interno (es. min-height, overflow-y, scroll per contenuto lungo)
+
+⸻
+
+3. Pulsante “Continua sul web”
+	•	🔄 Va rinominato così:
+“Continua sul sito” oppure “Naviga senza scaricare”
+
+⸻
+
+4. Pulsante “Diventa noleggiatore” non funziona
+	•	✅ Deve portare a una schermata dove si:
+	•	inseriscono i dati
+	•	caricano le barche
+	•	si accetta la clausola del 15%
+	•	si sblocca l’area noleggiatore
+
+⸻
+
+5. In basso a destra appare “EUR” ma senza simbolo €
+	•	✅ Correggere visualizzazione: deve mostrare “€ EUR” oppure direttamente solo il simbolo “€”
+	•	Es. text: "€ EUR" o utilizzare una libreria di localizzazione se presente.
+
+⸻
+
+🧠 Gestione logica clienti/noleggiatori
+
+6. Registrazione – 2 opzioni
+	•	✅ Alla registrazione, devono comparire 2 scelte:
+	•	“Mi registro come cliente”
+	•	“Mi registro come noleggiatore”
+
+7. Un noleggiatore può essere anche cliente
+	•	✔️ Se uno si registra come noleggiatore, può usare l’app anche come cliente, quindi deve:
+	•	Poter prenotare barche
+	•	Accedere all’area clienti
+	•	Avere la sua area noleggiatore sbloccata in più
+
+⸻
+
+8. Il cliente deve poter diventare noleggiatore in un secondo momento
+	•	✅ Aggiungere un pulsante tipo:
+“Vuoi diventare noleggiatore?”
+Che apre il modulo per:
+
+	•	Inserire dati
+	•	Accettare condizioni
+	•	Sbloccare la dashboard noleggiatore
+
+⸻
+
+Vuoi che ti preparo i testi per:
+	•	Pagina “Diventa Noleggiatore”
+	•	Pagina “Scarica l’app”
+	•	Testo della chat live
+	•	Modulo di registrazione
+
+Fammi sapere e ti do tutto pronto.
+Quando sistemiamo questi punti, SeaGO inizia a volare 🚀
+
+
+Al noleggiatore si specifica che il 15 % lo paga il cliente 
+Quindi se il noleggiatore mette 300 uscirà 345

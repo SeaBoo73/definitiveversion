@@ -1,0 +1,879 @@
+                                ~~~~~
+
+client/src/components/owner-availability-manager.tsx:269:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+269                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/components/owner-availability-manager.tsx:283:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+283                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/components/owner-availability-manager.tsx:301:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+301                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:319:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+319                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:337:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+337                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:358:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+358                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:376:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+376                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:425:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+425                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:438:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+438                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:454:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+454                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:476:34 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+476                       render={({ field }) => (
+                                     ~~~~~
+
+client/src/components/owner-availability-manager.tsx:497:32 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+497                     render={({ field }) => (
+                                   ~~~~~
+
+client/src/components/owner-availability-manager.tsx:533:60 - error TS2339: Property 'length' does not exist on type 'Response | never[]'.
+  Property 'length' does not exist on type 'Response'.
+
+533           <TabsTrigger value="rules">Regole ({bookingRules.length})</TabsTrigger>
+                                                               ~~~~~~
+
+client/src/components/owner-availability-manager.tsx:544:27 - error TS2339: Property 'map' does not exist on type 'Response | never[]'.
+  Property 'map' does not exist on type 'Response'.
+
+544             {bookingRules.map((rule: any) => (
+                              ~~~
+
+client/src/components/owner-availability-manager.tsx:604:61 - error TS2339: Property 'pricePerDay' does not exist on type 'Response'.
+
+604                 <div className="text-2xl font-bold">€{boat?.pricePerDay || 0}/giorno</div>
+                                                                ~~~~~~~~~~~
+
+client/src/components/owner-availability-manager.tsx:616:33 - error TS2339: Property 'filter' does not exist on type 'Response | never[]'.
+  Property 'filter' does not exist on type 'Response'.
+
+616                   {bookingRules.filter((rule: any) => rule.active).length}
+                                    ~~~~~~
+
+client/src/components/owner-availability-manager.tsx:619:36 - error TS2339: Property 'length' does not exist on type 'Response | never[]'.
+  Property 'length' does not exist on type 'Response'.
+
+619                   Su {bookingRules.length} totali
+                                       ~~~~~~
+
+client/src/components/owner-availability-manager.tsx:631:33 - error TS2339: Property 'length' does not exist on type 'Response | never[]'.
+  Property 'length' does not exist on type 'Response'.
+
+631                   {bookingRules.length > 0
+                                    ~~~~~~
+
+client/src/components/owner-availability-manager.tsx:632:48 - error TS2339: Property 'map' does not exist on type 'Response | never[]'.
+  Property 'map' does not exist on type 'Response'.
+
+632                     ? Math.max(...bookingRules.map((r: any) => r.discountPercentage))
+                                                   ~~~
+
+client/src/components/owner-availability-manager.tsx:645:31 - error TS2339: Property 'length' does not exist on type 'Response | never[]'.
+  Property 'length' does not exist on type 'Response'.
+
+645               {pricingHistory.length > 0 ? (
+                                  ~~~~~~
+
+client/src/components/owner-availability-manager.tsx:647:35 - error TS2339: Property 'slice' does not exist on type 'Response | never[]'.
+  Property 'slice' does not exist on type 'Response'.
+
+647                   {pricingHistory.slice(0, 10).map((history: any) => (
+                                      ~~~~~
+
+client/src/components/promotions-system.tsx:9:10 - error TS2305: Module '"@shared/schema"' has no exported member 'Promotion'.
+
+9 import { Promotion } from "@shared/schema";
+           ~~~~~~~~~
+
+client/src/components/quick-registration.tsx:2:25 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+2 import { useForm } from "react-hook-form";
+                          ~~~~~~~~~~~~~~~~~
+
+client/src/components/quick-registration.tsx:3:29 - error TS2307: Cannot find module '@hookform/resolvers/zod' or its corresponding type declarations.
+
+3 import { zodResolver } from "@hookform/resolvers/zod";
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/quick-registration.tsx:74:28 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+74                 render={({ field }) => (
+                              ~~~~~
+
+client/src/components/quick-registration.tsx:88:28 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+88                 render={({ field }) => (
+                              ~~~~~
+
+client/src/components/quick-registration.tsx:103:26 - error TS7031: Binding element 'field' implicitly has an 'any' type.
+
+103               render={({ field }) => (
+                             ~~~~~
+
+client/src/components/reviews-system.tsx:10:10 - error TS2305: Module '"@shared/schema"' has no exported member 'Review'.
+
+10 import { Review } from "@shared/schema";
+            ~~~~~~
+
+client/src/components/reviews-system.tsx:260:29 - error TS2339: Property 'id' does not exist on type 'ReviewWithReviewer'.
+
+260           <Card key={review.id}>
+                                ~~
+
+client/src/components/reviews-system.tsx:281:48 - error TS2339: Property 'rating' does not exist on type 'ReviewWithReviewer'.
+
+281                                 star <= review.rating
+                                                   ~~~~~~
+
+client/src/components/reviews-system.tsx:289:48 - error TS2339: Property 'createdAt' does not exist on type 'ReviewWithReviewer'.
+
+289                         <span>{new Date(review.createdAt!).toLocaleDateString('it-IT')}</span>
+                                                   ~~~~~~~~~
+
+client/src/components/reviews-system.tsx:298:27 - error TS2339: Property 'comment' does not exist on type 'ReviewWithReviewer'.
+
+298                   {review.comment && (
+                              ~~~~~~~
+
+client/src/components/reviews-system.tsx:299:68 - error TS2339: Property 'comment' does not exist on type 'ReviewWithReviewer'.
+
+299                     <p className="text-sm leading-relaxed">{review.comment}</p>
+                                                                       ~~~~~~~
+
+client/src/components/search-filters.tsx:12:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+12 import { format } from "date-fns";
+                          ~~~~~~~~~~
+
+client/src/components/search-filters.tsx:13:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+13 import { it } from "date-fns/locale";
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/components/search-filters.tsx:115:28 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+115                 onSelect={(date) => {
+                               ~~~~
+
+client/src/components/search-filters.tsx:127:28 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+127                 disabled={(date) => date < new Date(Date.now() - 24 * 60 * 60 * 1000)}
+                               ~~~~
+
+client/src/components/search-filters.tsx:160:28 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+160                 onSelect={(date) => {
+                               ~~~~
+
+client/src/components/search-filters.tsx:168:28 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+168                 disabled={(date) => {
+                               ~~~~
+
+client/src/components/search-filters.tsx:184:35 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+184           <Select onValueChange={(value) => updateFilter("guests", parseInt(value))}>
+                                      ~~~~~
+
+client/src/components/ui/accordion.tsx:2:37 - error TS2307: Cannot find module '@radix-ui/react-accordion' or its corresponding type declarations.
+
+2 import * as AccordionPrimitive from "@radix-ui/react-accordion"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/alert-dialog.tsx:2:39 - error TS2307: Cannot find module '@radix-ui/react-alert-dialog' or its corresponding type declarations.
+
+2 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/aspect-ratio.tsx:1:39 - error TS2307: Cannot find module '@radix-ui/react-aspect-ratio' or its corresponding type declarations.
+
+1 import * as AspectRatioPrimitive from "@radix-ui/react-aspect-ratio"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/avatar.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-avatar' or its corresponding type declarations.
+
+4 import * as AvatarPrimitive from "@radix-ui/react-avatar"
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/calendar.tsx:3:27 - error TS2307: Cannot find module 'react-day-picker' or its corresponding type declarations.
+
+3 import { DayPicker } from "react-day-picker"
+                            ~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/carousel.tsx:4:8 - error TS2307: Cannot find module 'embla-carousel-react' or its corresponding type declarations.
+
+4 } from "embla-carousel-react"
+         ~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/chart.tsx:4:36 - error TS2307: Cannot find module 'recharts' or its corresponding type declarations.
+
+4 import * as RechartsPrimitive from "recharts"
+                                     ~~~~~~~~~~
+
+client/src/components/ui/chart.tsx:188:25 - error TS7006: Parameter 'item' implicitly has an 'any' type.
+
+188           {payload.map((item, index) => {
+                            ~~~~
+
+client/src/components/ui/chart.tsx:188:31 - error TS7006: Parameter 'index' implicitly has an 'any' type.
+
+188           {payload.map((item, index) => {
+                                  ~~~~~
+
+client/src/components/ui/chart.tsx:288:23 - error TS7006: Parameter 'item' implicitly has an 'any' type.
+
+288         {payload.map((item) => {
+                          ~~~~
+
+client/src/components/ui/checkbox.tsx:2:36 - error TS2307: Cannot find module '@radix-ui/react-checkbox' or its corresponding type declarations.
+
+2 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/collapsible.tsx:4:39 - error TS2307: Cannot find module '@radix-ui/react-collapsible' or its corresponding type declarations.
+
+4 import * as CollapsiblePrimitive from "@radix-ui/react-collapsible"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/command.tsx:2:34 - error TS2307: Cannot find module '@radix-ui/react-dialog' or its corresponding type declarations.
+
+2 import { type DialogProps } from "@radix-ui/react-dialog"
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/command.tsx:3:45 - error TS2307: Cannot find module 'cmdk' or its corresponding type declarations.
+
+3 import { Command as CommandPrimitive } from "cmdk"
+                                              ~~~~~~
+
+client/src/components/ui/context-menu.tsx:2:39 - error TS2307: Cannot find module '@radix-ui/react-context-menu' or its corresponding type declarations.
+
+2 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/dialog.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-dialog' or its corresponding type declarations.
+
+4 import * as DialogPrimitive from "@radix-ui/react-dialog"
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/drawer.tsx:4:43 - error TS2307: Cannot find module 'vaul' or its corresponding type declarations.
+
+4 import { Drawer as DrawerPrimitive } from "vaul"
+                                            ~~~~~~
+
+client/src/components/ui/dropdown-menu.tsx:2:40 - error TS2307: Cannot find module '@radix-ui/react-dropdown-menu' or its corresponding type declarations.
+
+2 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/form.tsx:4:33 - error TS2307: Cannot find module '@radix-ui/react-label' or its corresponding type declarations.
+
+4 import * as LabelPrimitive from "@radix-ui/react-label"
+                                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/form.tsx:13:8 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+13 } from "react-hook-form"
+          ~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/hover-card.tsx:4:37 - error TS2307: Cannot find module '@radix-ui/react-hover-card' or its corresponding type declarations.
+
+4 import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:2:43 - error TS2307: Cannot find module 'input-otp' or its corresponding type declarations.
+
+2 import { OTPInput, OTPInputContext } from "input-otp"
+                                            ~~~~~~~~~~~
+
+client/src/components/ui/input-otp.tsx:36:44 - error TS18046: 'inputOTPContext' is of type 'unknown'.
+
+36   const { char, hasFakeCaret, isActive } = inputOTPContext.slots[index]
+                                              ~~~~~~~~~~~~~~~
+
+client/src/components/ui/label.tsx:2:33 - error TS2307: Cannot find module '@radix-ui/react-label' or its corresponding type declarations.
+
+2 import * as LabelPrimitive from "@radix-ui/react-label"
+                                  ~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/menubar.tsx:4:35 - error TS2307: Cannot find module '@radix-ui/react-menubar' or its corresponding type declarations.
+
+4 import * as MenubarPrimitive from "@radix-ui/react-menubar"
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/navigation-menu.tsx:2:42 - error TS2307: Cannot find module '@radix-ui/react-navigation-menu' or its corresponding type declarations.
+
+2 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/popover.tsx:2:35 - error TS2307: Cannot find module '@radix-ui/react-popover' or its corresponding type declarations.
+
+2 import * as PopoverPrimitive from "@radix-ui/react-popover"
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/progress.tsx:2:36 - error TS2307: Cannot find module '@radix-ui/react-progress' or its corresponding type declarations.
+
+2 import * as ProgressPrimitive from "@radix-ui/react-progress"
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/radio-group.tsx:2:38 - error TS2307: Cannot find module '@radix-ui/react-radio-group' or its corresponding type declarations.
+
+2 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/resizable.tsx:4:37 - error TS2307: Cannot find module 'react-resizable-panels' or its corresponding type declarations.
+
+4 import * as ResizablePrimitive from "react-resizable-panels"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/scroll-area.tsx:2:38 - error TS2307: Cannot find module '@radix-ui/react-scroll-area' or its corresponding type declarations.
+
+2 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/select.tsx:4:34 - error TS2307: Cannot find module '@radix-ui/react-select' or its corresponding type declarations.
+
+4 import * as SelectPrimitive from "@radix-ui/react-select"
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/separator.tsx:2:37 - error TS2307: Cannot find module '@radix-ui/react-separator' or its corresponding type declarations.
+
+2 import * as SeparatorPrimitive from "@radix-ui/react-separator"
+                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/sheet.tsx:4:33 - error TS2307: Cannot find module '@radix-ui/react-dialog' or its corresponding type declarations.
+
+4 import * as SheetPrimitive from "@radix-ui/react-dialog"
+                                  ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/sheet.tsx:59:22 - error TS2339: Property 'className' does not exist on type 'SheetContentProps'.
+
+59 >(({ side = "right", className, children, ...props }, ref) => (
+                        ~~~~~~~~~
+
+client/src/components/ui/sheet.tsx:59:33 - error TS2339: Property 'children' does not exist on type 'SheetContentProps'.
+
+59 >(({ side = "right", className, children, ...props }, ref) => (
+                                   ~~~~~~~~
+
+client/src/components/ui/sidebar.tsx:202:12 - error TS2322: Type '{ children: Element[]; "data-sidebar": string; "data-mobile": string; className: string; style: CSSProperties; side: "left" | "right"; }' is not assignable to type 'IntrinsicAttributes & SheetContentProps & RefAttributes<any>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & SheetContentProps & RefAttributes<any>'.
+
+202           <SheetContent
+               ~~~~~~~~~~~~
+
+client/src/components/ui/slider.tsx:2:34 - error TS2307: Cannot find module '@radix-ui/react-slider' or its corresponding type declarations.
+
+2 import * as SliderPrimitive from "@radix-ui/react-slider"
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/switch.tsx:2:35 - error TS2307: Cannot find module '@radix-ui/react-switch' or its corresponding type declarations.
+
+2 import * as SwitchPrimitives from "@radix-ui/react-switch"
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/tabs.tsx:2:32 - error TS2307: Cannot find module '@radix-ui/react-tabs' or its corresponding type declarations.
+
+2 import * as TabsPrimitive from "@radix-ui/react-tabs"
+                                 ~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/toggle-group.tsx:4:39 - error TS2307: Cannot find module '@radix-ui/react-toggle-group' or its corresponding type declarations.
+
+4 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/toggle.tsx:2:34 - error TS2307: Cannot find module '@radix-ui/react-toggle' or its corresponding type declarations.
+
+2 import * as TogglePrimitive from "@radix-ui/react-toggle"
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/components/ui/tooltip.tsx:4:35 - error TS2307: Cannot find module '@radix-ui/react-tooltip' or its corresponding type declarations.
+
+4 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/analytics-dashboard.tsx:11:153 - error TS2307: Cannot find module 'recharts' or its corresponding type declarations.
+
+11 import { LineChart, Line, AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+                                                                                                                                                           ~~~~~~~~~~
+
+client/src/pages/analytics-dashboard.tsx:13:83 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+13 import { format, subDays, startOfMonth, endOfMonth, startOfYear, endOfYear } from 'date-fns';
+                                                                                     ~~~~~~~~~~
+
+client/src/pages/analytics-dashboard.tsx:14:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+14 import { it } from 'date-fns/locale';
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/pages/analytics-dashboard.tsx:274:33 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+274                     formatter={(value, name) => [
+                                    ~~~~~
+
+client/src/pages/analytics-dashboard.tsx:274:40 - error TS7006: Parameter 'name' implicitly has an 'any' type.
+
+274                     formatter={(value, name) => [
+                                           ~~~~
+
+client/src/pages/analytics-dashboard.tsx:378:42 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+378                     <Tooltip formatter={(value) => [`€${value}`, 'Ricavi']} />
+                                             ~~~~~
+
+client/src/pages/auth-page.tsx:10:25 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+10 import { useForm } from "react-hook-form";
+                           ~~~~~~~~~~~~~~~~~
+
+client/src/pages/auth-page.tsx:11:29 - error TS2307: Cannot find module '@hookform/resolvers/zod' or its corresponding type declarations.
+
+11 import { zodResolver } from "@hookform/resolvers/zod";
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/auth-page.tsx:26:12 - error TS7006: Parameter 'data' implicitly has an 'any' type.
+
+26 }).refine((data) => data.password === data.confirmPassword, {
+              ~~~~
+
+client/src/pages/auth-page.tsx:29:12 - error TS7006: Parameter 'data' implicitly has an 'any' type.
+
+29 }).refine((data) => data.acceptTerms, {
+              ~~~~
+
+client/src/pages/auth-page.tsx:472:45 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+472                             onValueChange={(value) => registerForm.setValue("country", value)}
+                                                ~~~~~
+
+client/src/pages/auth-page.tsx:524:45 - error TS7006: Parameter 'checked' implicitly has an 'any' type.
+
+524                           onCheckedChange={(checked) =>
+                                                ~~~~~~~
+
+client/src/pages/availability-management.tsx:18:20 - error TS2554: Expected 2-3 arguments, but got 1.
+
+18     queryFn: () => apiRequest(`/api/boats/${boatId}`),
+                      ~~~~~~~~~~
+
+  client/src/lib/queryClient.ts:19:3
+    19   url: string,
+         ~~~~~~~~~~~
+    An argument for 'url' was not provided.
+
+client/src/pages/availability-management.tsx:24:20 - error TS2554: Expected 2-3 arguments, but got 1.
+
+24     queryFn: () => apiRequest('/api/user'),
+                      ~~~~~~~~~~
+
+  client/src/lib/queryClient.ts:19:3
+    19   url: string,
+         ~~~~~~~~~~~
+    An argument for 'url' was not provided.
+
+client/src/pages/availability-management.tsx:68:40 - error TS2339: Property 'ownerId' does not exist on type 'Response'.
+
+68   const isOwner = user && boat && boat.ownerId === user.id;
+                                          ~~~~~~~
+
+client/src/pages/availability-management.tsx:68:57 - error TS2339: Property 'id' does not exist on type 'Response'.
+
+68   const isOwner = user && boat && boat.ownerId === user.id;
+                                                           ~~
+
+client/src/pages/availability-management.tsx:89:53 - error TS2339: Property 'name' does not exist on type 'Response'.
+
+89                 <p className="text-gray-600">{boat?.name || "Caricamento..."} - {boat?.location || ""}</p>
+                                                       ~~~~
+
+client/src/pages/availability-management.tsx:89:88 - error TS2339: Property 'location' does not exist on type 'Response'.
+
+89                 <p className="text-gray-600">{boat?.name || "Caricamento..."} - {boat?.location || ""}</p>
+                                                                                          ~~~~~~~~
+
+client/src/pages/availability-management.tsx:138:61 - error TS2339: Property 'pricePerDay' does not exist on type 'Response'.
+
+138                     <span className="font-semibold">€{boat?.pricePerDay || 0}/giorno</span>
+                                                                ~~~~~~~~~~~
+
+client/src/pages/availability-management.tsx:142:60 - error TS2339: Property 'maxPersons' does not exist on type 'Response'.
+
+142                     <span className="font-semibold">{boat?.maxPersons || 0}</span>
+                                                               ~~~~~~~~~~
+
+client/src/pages/availability-management.tsx:147:30 - error TS2339: Property 'skipperRequired' does not exist on type 'Response'.
+
+147                       {boat?.skipperRequired ? "Richiesto" : "Opzionale"}
+                                 ~~~~~~~~~~~~~~~
+
+client/src/pages/availability-management.tsx:153:30 - error TS2339: Property 'fuelIncluded' does not exist on type 'Response'.
+
+153                       {boat?.fuelIncluded ? "Incluso" : "Non incluso"}
+                                 ~~~~~~~~~~~~
+
+client/src/pages/boat-booking.tsx:254:13 - error TS2741: Property 'type' is missing in type '{ id: any; name: any; port: any; pricePerDay: any; maxPersons: any; images: any; skipperRequired: false; fuelIncluded: true; }' but required in type '{ id: number; name: string; port: string; pricePerDay: number; maxPersons: number; type: string; images?: string[] | undefined; skipperRequired?: boolean | undefined; fuelIncluded?: boolean | undefined; }'.
+
+254             boat={{
+                ~~~~
+
+  client/src/components/booking-form.tsx:53:5
+    53     type: string;
+           ~~~~
+    'type' is declared here.
+  client/src/components/booking-form.tsx:47:3
+    47   boat: {
+         ~~~~
+    The expected type comes from property 'boat' which is declared here on type 'IntrinsicAttributes & BookingFormProps'
+
+client/src/pages/checkout-esperienza.tsx:1:66 - error TS2307: Cannot find module '@stripe/react-stripe-js' or its corresponding type declarations.
+
+1 import { useStripe, Elements, PaymentElement, useElements } from '@stripe/react-stripe-js';
+                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/checkout-esperienza.tsx:2:28 - error TS2307: Cannot find module '@stripe/stripe-js' or its corresponding type declarations.
+
+2 import { loadStripe } from '@stripe/stripe-js';
+                             ~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/checkout.tsx:1:66 - error TS2307: Cannot find module '@stripe/react-stripe-js' or its corresponding type declarations.
+
+1 import { useStripe, Elements, PaymentElement, useElements } from '@stripe/react-stripe-js';
+                                                                   ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/checkout.tsx:2:28 - error TS2307: Cannot find module '@stripe/stripe-js' or its corresponding type declarations.
+
+2 import { loadStripe } from '@stripe/stripe-js';
+                             ~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/customer-dashboard.tsx:12:25 - error TS2305: Module '"@shared/schema"' has no exported member 'Favorite'.
+
+12 import { Booking, Boat, Favorite } from "@shared/schema";
+                           ~~~~~~~~
+
+client/src/pages/customer-dashboard.tsx:13:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+13 import { format } from "date-fns";
+                          ~~~~~~~~~~
+
+client/src/pages/customer-dashboard.tsx:14:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+14 import { it } from "date-fns/locale";
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/pages/customer-dashboard.tsx:143:16 - error TS2304: Cannot find name 'Link'.
+
+143               <Link href="/diventa-noleggiatore">Vuoi diventare noleggiatore?</Link>
+                   ~~~~
+
+client/src/pages/customer-dashboard.tsx:143:80 - error TS2304: Cannot find name 'Link'.
+
+143               <Link href="/diventa-noleggiatore">Vuoi diventare noleggiatore?</Link>
+                                                                                   ~~~~
+
+client/src/pages/diventa-noleggiatore.tsx:197:35 - error TS7006: Parameter 'checked' implicitly has an 'any' type.
+
+197                 onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+                                      ~~~~~~~
+
+client/src/pages/diventa-noleggiatore.tsx:216:35 - error TS7006: Parameter 'checked' implicitly has an 'any' type.
+
+216                 onCheckedChange={(checked) => setAcceptedCommission(checked === true)}
+                                      ~~~~~~~
+
+client/src/pages/diventa-noleggiatore.tsx:227:35 - error TS7006: Parameter 'checked' implicitly has an 'any' type.
+
+227                 onCheckedChange={(checked) => setAcceptedRequirements(checked === true)}
+                                      ~~~~~~~
+
+client/src/pages/diventa-sea-host.tsx:2:25 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+2 import { useForm } from "react-hook-form";
+                          ~~~~~~~~~~~~~~~~~
+
+client/src/pages/diventa-sea-host.tsx:3:29 - error TS2307: Cannot find module '@hookform/resolvers/zod' or its corresponding type declarations.
+
+3 import { zodResolver } from "@hookform/resolvers/zod";
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/diventa-sea-host.tsx:412:43 - error TS7006: Parameter 'checked' implicitly has an 'any' type.
+
+412                         onCheckedChange={(checked) => form.setValue("acceptTerms", checked as boolean)}
+                                              ~~~~~~~
+
+client/src/pages/diventa-sea-host.tsx:427:43 - error TS7006: Parameter 'checked' implicitly has an 'any' type.
+
+427                         onCheckedChange={(checked) => form.setValue("acceptCommission", checked as boolean)}
+                                              ~~~~~~~
+
+client/src/pages/document-management.tsx:90:30 - error TS2554: Expected 2-3 arguments, but got 1.
+
+90       const response = await apiRequest("/api/documents/user/1"); // Replace with actual user ID
+                                ~~~~~~~~~~
+
+  client/src/lib/queryClient.ts:19:3
+    19   url: string,
+         ~~~~~~~~~~~
+    An argument for 'url' was not provided.
+
+client/src/pages/document-management.tsx:99:30 - error TS2554: Expected 2-3 arguments, but got 1.
+
+99       const response = await apiRequest("/api/documents/pending");
+                                ~~~~~~~~~~
+
+  client/src/lib/queryClient.ts:19:3
+    19   url: string,
+         ~~~~~~~~~~~
+    An argument for 'url' was not provided.
+
+client/src/pages/document-management.tsx:109:30 - error TS2554: Expected 2-3 arguments, but got 1.
+
+109       const response = await apiRequest("/api/documents/expiring?days=30");
+                                 ~~~~~~~~~~
+
+  client/src/lib/queryClient.ts:19:3
+    19   url: string,
+         ~~~~~~~~~~~
+    An argument for 'url' was not provided.
+
+client/src/pages/messaging.tsx:69:13 - error TS2322: Type 'number | null' is not assignable to type 'number | undefined'.
+  Type 'null' is not assignable to type 'number | undefined'.
+
+69             selectedConversationId={selectedConversationId}
+               ~~~~~~~~~~~~~~~~~~~~~~
+
+  client/src/components/messaging/conversation-list.tsx:42:3
+    42   selectedConversationId?: number;
+         ~~~~~~~~~~~~~~~~~~~~~~
+    The expected type comes from property 'selectedConversationId' which is declared here on type 'IntrinsicAttributes & ConversationListProps'
+
+client/src/pages/ormeggio-booking.tsx:12:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+12 import { format } from 'date-fns';
+                          ~~~~~~~~~~
+
+client/src/pages/ormeggio-booking.tsx:13:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+13 import { it } from 'date-fns/locale';
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/pages/owner-dashboard.tsx:17:25 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+17 import { useForm } from "react-hook-form";
+                           ~~~~~~~~~~~~~~~~~
+
+client/src/pages/owner-dashboard.tsx:18:29 - error TS2307: Cannot find module '@hookform/resolvers/zod' or its corresponding type declarations.
+
+18 import { zodResolver } from "@hookform/resolvers/zod";
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/owner-dashboard.tsx:25:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+25 import { format } from "date-fns";
+                          ~~~~~~~~~~
+
+client/src/pages/owner-dashboard.tsx:26:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+26 import { it } from "date-fns/locale";
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/pages/owner-dashboard.tsx:534:51 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+534                           <Select onValueChange={(value) => form.setValue("type", value as any)}>
+                                                      ~~~~~
+
+client/src/pages/owner-dashboard.tsx:647:51 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+647                           <Select onValueChange={(value) => form.setValue("port", value)}>
+                                                      ~~~~~
+
+client/src/pages/owner-dashboard.tsx:923:45 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+923                             onValueChange={(value) => form.setValue("cancellationPolicy", value as any)}
+                                                ~~~~~
+
+client/src/pages/owner-dashboard.tsx:944:45 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+944                             onValueChange={(value) => form.setValue("refundMethod", value as any)}
+                                                ~~~~~
+
+client/src/pages/prenota-esperienza.tsx:13:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+13 import { format } from "date-fns";
+                          ~~~~~~~~~~
+
+client/src/pages/prenota-esperienza.tsx:14:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+14 import { it } from "date-fns/locale";
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/pages/prenota-esperienza.tsx:199:40 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+199                             disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
+                                           ~~~~
+
+client/src/pages/profilo-dati-bancari.tsx:10:25 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+10 import { useForm } from "react-hook-form";
+                           ~~~~~~~~~~~~~~~~~
+
+client/src/pages/profilo-dati-bancari.tsx:11:29 - error TS2307: Cannot find module '@hookform/resolvers/zod' or its corresponding type declarations.
+
+11 import { zodResolver } from "@hookform/resolvers/zod";
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/profilo-dati-bancari.tsx:286:43 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+286                           onValueChange={(value) => form.setValue("country", value)}
+                                              ~~~~~
+
+client/src/pages/profilo-dati-bancari.tsx:312:41 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+312                         onValueChange={(value) => form.setValue("paymentPreference", value)}
+                                            ~~~~~
+
+client/src/pages/search-results.tsx:11:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+11 import { format } from "date-fns";
+                          ~~~~~~~~~~
+
+client/src/pages/search-results.tsx:12:20 - error TS2307: Cannot find module 'date-fns/locale' or its corresponding type declarations.
+
+12 import { it } from "date-fns/locale";
+                      ~~~~~~~~~~~~~~~~~
+
+client/src/pages/test-booking-page.tsx:108:13 - error TS18046: 'boats' is of type 'unknown'.
+
+108         if (boats.length === 0) {
+                ~~~~~
+
+client/src/pages/test-booking-page.tsx:116:19 - error TS18046: 'boats' is of type 'unknown'.
+
+116           boatId: boats[0].id,
+                      ~~~~~
+
+client/src/pages/test-booking-page.tsx:224:66 - error TS18046: 'boats' is of type 'unknown'.
+
+224               <div className="text-2xl font-bold text-blue-600">{boats.length}</div>
+                                                                     ~~~~~
+
+client/src/pages/test-booking-page.tsx:229:67 - error TS18046: 'userBookings' is of type 'unknown'.
+
+229               <div className="text-2xl font-bold text-green-600">{userBookings.length}</div>
+                                                                      ~~~~~~~~~~~~
+
+client/src/pages/test-booking-page.tsx:298:8 - error TS18046: 'userBookings' is of type 'unknown'.
+
+298       {userBookings.length > 0 && (
+           ~~~~~~~~~~~~
+
+client/src/pages/test-booking-page.tsx:306:16 - error TS18046: 'userBookings' is of type 'unknown'.
+
+306               {userBookings.slice(0, 3).map((booking: any) => (
+                   ~~~~~~~~~~~~
+
+client/src/pages/test-moorings.tsx:3:25 - error TS2307: Cannot find module 'react-hook-form' or its corresponding type declarations.
+
+3 import { useForm } from "react-hook-form";
+                          ~~~~~~~~~~~~~~~~~
+
+client/src/pages/test-moorings.tsx:4:29 - error TS2307: Cannot find module '@hookform/resolvers/zod' or its corresponding type declarations.
+
+4 import { zodResolver } from "@hookform/resolvers/zod";
+                              ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/test-moorings.tsx:28:24 - error TS2307: Cannot find module 'date-fns' or its corresponding type declarations.
+
+28 import { format } from "date-fns";
+                          ~~~~~~~~~~
+
+client/src/pages/test-moorings.tsx:33:28 - error TS2307: Cannot find module '@stripe/stripe-js' or its corresponding type declarations.
+
+33 import { loadStripe } from "@stripe/stripe-js";
+                              ~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/test-moorings.tsx:34:63 - error TS2307: Cannot find module '@stripe/react-stripe-js' or its corresponding type declarations.
+
+34 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+                                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+client/src/pages/test-moorings.tsx:248:62 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+248                 <Select value={filters.type} onValueChange={(value) => setFilters({...filters, type: value})}>
+                                                                 ~~~~~
+
+client/src/pages/test-moorings.tsx:390:45 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+390                     <Select onValueChange={(value) => addMooringForm.setValue("type", value as any)}>
+                                                ~~~~~
+
+client/src/pages/test-moorings.tsx:549:43 - error TS7006: Parameter 'value' implicitly has an 'any' type.
+
+549                   <Select onValueChange={(value) => bookMooringForm.setValue("mooringId", Number(value))}>
+                                              ~~~~~
+
+client/src/pages/test-moorings.tsx:580:38 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+580                           onSelect={(date) => date && bookMooringForm.setValue("startDate", date)}
+                                         ~~~~
+
+client/src/pages/test-moorings.tsx:602:38 - error TS7006: Parameter 'date' implicitly has an 'any' type.
+
+602                           onSelect={(date) => date && bookMooringForm.setValue("endDate", date)}
+                                         ~~~~
+
+shared/schema.ts:1:21 - error TS2307: Cannot find module 'drizzle-orm' or its corresponding type declarations.
+
+1 import { sql } from 'drizzle-orm';
+                      ~~~~~~~~~~~~~
+
+shared/schema.ts:13:8 - error TS2307: Cannot find module 'drizzle-orm/pg-core' or its corresponding type declarations.
+
+13 } from "drizzle-orm/pg-core";
+          ~~~~~~~~~~~~~~~~~~~~~
+
+shared/schema.ts:14:36 - error TS2307: Cannot find module 'drizzle-zod' or its corresponding type declarations.
+
+14 import { createInsertSchema } from "drizzle-zod";
+                                      ~~~~~~~~~~~~~
+
+shared/schema.ts:25:4 - error TS7006: Parameter 'table' implicitly has an 'any' type.
+
+25   (table) => [index("IDX_session_expire").on(table.expire)],
+      ~~~~~
+
+
+Found 268 errors.
+

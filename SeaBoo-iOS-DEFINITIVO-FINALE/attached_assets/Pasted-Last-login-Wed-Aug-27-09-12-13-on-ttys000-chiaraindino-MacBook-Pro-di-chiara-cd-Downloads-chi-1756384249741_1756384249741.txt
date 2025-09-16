@@ -1,0 +1,254 @@
+Last login: Wed Aug 27 09:12:13 on ttys000
+chiaraindino@MacBook-Pro-di-chiara ~ % cd ~/Downloads
+chiaraindino@MacBook-Pro-di-chiara Downloads % ls -la
+total 24909600
+-rw-r--r--@   1 chiaraindino  staff       65753 14 Feb  2025  -2.jpg
+-rw-r--r--@   1 chiaraindino  staff       63648 14 Feb  2025  -3.jpg
+-rw-r--r--@   1 chiaraindino  staff       54437 14 Feb  2025  -4.jpg
+-rw-r--r--@   1 chiaraindino  staff       90916 14 Feb  2025  .jpg
+drwx------@ 249 chiaraindino  staff        7968 28 Ago 14:27 .
+drwxr-x---+  23 chiaraindino  staff         736 28 Ago 14:29 ..
+-rw-r--r--@   1 chiaraindino  staff       16388 27 Ago 10:01 .DS_Store
+-rw-r--r--    1 chiaraindino  staff           0  9 Mar  2022 .localized
+-rw-r--r--@   1 chiaraindino  staff    11331126  3 Mag  2024 01_Design Management.pdf
+-rw-r--r--@   1 chiaraindino  staff     2208725  3 Mag  2024 02_COMPETITOR.pdf
+-rw-r--r--@   1 chiaraindino  staff      660838  3 Mag  2024 03_Brand identity. re branding.pdf
+-rw-r--r--@   1 chiaraindino  staff      363662  3 Mag  2024 04_Brand extencion e Co-branding.pdf
+-rw-r--r--@   1 chiaraindino  staff     1742967  3 Mag  2024 05_Colori e loghi.pdf
+-rw-r--r--@   1 chiaraindino  staff     1014761  3 Mag  2024 06_Mappa dell'empatia.pdf
+-rw-r--r--@   1 chiaraindino  staff     1268574  3 Mag  2024 07_Packaging.pdf
+-rw-r--r--@   1 chiaraindino  staff      159568  3 Mag  2024 08_SOCIAL MEDIA.pdf
+drwx------@  11 chiaraindino  staff         352  1 Mar  2023 114359
+-rw-r--r--@   1 chiaraindino  staff     3955323  9 Gen  2023 1325 Dove 2D.zip
+drwx------@   4 chiaraindino  staff         128  8 Mag 20:39 16 luglio 2026
+drwxr-xr-x@   3 chiaraindino  staff          96 16 Gen  2017 20 People Silhouette PS Brushes vol.5
+-rw-r--r--@   1 chiaraindino  staff      200478 18 Gen  2023 2023_01_18 18_08 Office Lens.pdf
+-rw-r--r--@   1 chiaraindino  staff    12289170 12 Giu  2020 211.3DS
+-rw-r--r--@   1 chiaraindino  staff     4834983 12 Giu  2020 300P.3DS
+-rw-r--r--@   1 chiaraindino  staff       69122 20 Giu  2023 5d9f2daf-4eb3-45e6-a42a-8ddb8571976e.pdf
+-rw-r--r--@   1 chiaraindino  staff       12024 10 Mar  2023 AUTORIZZAZIONE DEMOLIZIONE.docx
+-rw-r--r--@   1 chiaraindino  staff       38751 20 Giu  2023 Abstract.pdf
+-rw-r--r--@   1 chiaraindino  staff   875343952 29 Ott  2023 Adobe Photoshop Lightroom CC 2019 v2.3 macOS [FileCR].dmg
+-rw-r--r--@   1 chiaraindino  staff     1331859  8 Mag 19:49 Aurora boreale.png
+-rw-r--r--@   1 chiaraindino  staff    23453658  6 Mar  2023 BAGNO.tif
+drwx------@   7 chiaraindino  staff         224  6 Dic  2022 Big_Shoulders_Display
+-rw-r--r--@   1 chiaraindino  staff     1422282 17 Apr  2023 Brief VVF-EN.pdf
+-rw-r--r--@   1 chiaraindino  staff     1402332 21 Ago 22:31 ChatGPT Image 21 ago 2025, 22_31_18.png
+-rw-r--r--@   1 chiaraindino  staff     1539573 21 Ago 23:31 ChatGPT Image 21 ago 2025, 23_31_02.png
+-rw-r--r--@   1 chiaraindino  staff      140155  9 Mar  2023 Chiara Indino-2.pdf
+drwxr-xr-x@   7 chiaraindino  staff         224  4 Mag  2023 Cirka - Free for Personal Use
+-rw-r--r--@   1 chiaraindino  staff       18140 14 Feb  2025 Colori-caldi-e-freddi.jpg.webp
+-rw-r--r--@   1 chiaraindino  staff      563202 27 Dic  2024 DALL·E 2024-12-27 20.07.52 - A seamless and dense photorealistic lavender-inspired texture, featuring closely packed lavender sprigs and blossoms with natural green stems and leav.webp
+-rw-r--r--@   1 chiaraindino  staff      569684 27 Dic  2024 DALL·E 2024-12-27 20.08.07 - A seamless and dense photorealistic texture inspired by doTERRA's Deep Blue essential oil blend. The design features elements like eucalyptus leaves, .webp
+-rw-r--r--@   1 chiaraindino  staff      563202 29 Dic  2024 DALL·E 2024-12-29 12.46.06 - A seamless and dense photorealistic lavender-inspired texture, featuring closely packed lavender sprigs and blossoms with natural green stems and leav.webp
+-rw-r--r--@   1 chiaraindino  staff      589176 29 Dic  2024 DALL·E 2024-12-29 12.47.04 - A seamless and dense photorealistic oregano-inspired texture, featuring clusters of oregano leaves and small delicate flowers in natural green tones. .webp
+-rw-r--r--@   1 chiaraindino  staff      305314 29 Dic  2024 DALL·E 2024-12-29 12.51.08 - A serene and calming still life composition representing a relaxing essential oil blend. The image features a small glass bottle filled with oil, surr.webp
+-rw-r--r--@   1 chiaraindino  staff      373610 29 Dic  2024 DALL·E 2024-12-29 12.59.56 - A photorealistic composition symbolizing the connection between essential oils and emotions. The image features a glass bottle of essential oil placed.webp
+-rw-r--r--@   1 chiaraindino  staff      444770 31 Dic  2024 DALL·E 2024-12-31 13.41.19 - A seamless texture featuring realistic oregano plants, with small, oval, and slightly fuzzy green leaves, arranged in a natural and organic pattern. T.webp
+-rw-r--r--@   1 chiaraindino  staff      547182 18 Gen  2025 DALL·E 2025-01-18 19.03.54 - A seamless pattern background featuring only natural elements that compose the Balance blend by doTERRA. Include elements like spruce, ho wood, franki.webp
+-rw-r--r--@   1 chiaraindino  staff    91698402 21 Gen  2023 DESIGN 3 ALEANDRI.pdf
+-rw-r--r--@   1 chiaraindino  staff      462709 12 Apr  2023 DESIGNER_Manager_Interior_graphic_renderist_IndinoChiara.pdf
+-rw-r--r--@   1 chiaraindino  staff     1232908 13 Mag  2024 DeWatermark.ai_1715599920807.png
+-rw-r--r--@   1 chiaraindino  staff     1618470 13 Mag  2024 DeWatermark.ai_1715600243000.png
+-rw-r--r--@   1 chiaraindino  staff      703633 13 Mag  2024 DeWatermark.ai_1715600336802.png
+-rw-r--r--@   1 chiaraindino  staff     1507063 13 Mag  2024 DeWatermark.ai_1715600430094.png
+-rw-r--r--@   1 chiaraindino  staff        3465  7 Apr 19:59 Deserto_Rosso_Architettura_Presentazione.pdf
+-rw-r--r--@   1 chiaraindino  staff       91691 24 Feb  2023 Dining_table_round_for_4_people-3ds.rar
+-rw-r--r--@   1 chiaraindino  staff      248431 24 Feb  2023 Dining_table_round_for_4_people-max.rar
+-rw-r--r--@   1 chiaraindino  staff   296411199 31 Mag  2023 FRECCIA PERCORSO.psd
+-rw-r--r--@   1 chiaraindino  staff      307938  9 Giu  2023 Forniture_interior designer_CV_Federico_Antonazzo_SPN.pdf
+-rw-r--r--@   1 chiaraindino  staff    41872192  1 Mar  2017 Free Painter Photoshop Brushes 3.abr
+-rw-r--r--@   1 chiaraindino  staff    76297760 31 Ago  2016 Free Sunshine Photoshop Brushes 1.abr
+drwxr-xr-x   87 chiaraindino  staff        2784  4 Mag  2023 GT-America
+-rw-r--r--@   1 chiaraindino  staff      324224 21 Gen  2023 IMG_1466.HEIC
+-rw-r--r--@   1 chiaraindino  staff      310890 21 Gen  2023 IMG_1467.HEIC
+-rw-r--r--@   1 chiaraindino  staff      314737 21 Gen  2023 IMG_1468.HEIC
+-rw-r--r--@   1 chiaraindino  staff      546693 21 Gen  2023 IMG_1469.HEIC
+-rw-r--r--@   1 chiaraindino  staff      569745 21 Gen  2023 IMG_1470.HEIC
+-rw-r--r--@   1 chiaraindino  staff      383043 21 Gen  2023 IMG_1471.HEIC
+-rw-r--r--@   1 chiaraindino  staff      379964 21 Gen  2023 IMG_1472.HEIC
+-rw-r--r--@   1 chiaraindino  staff      696193 21 Gen  2023 IMG_1473.HEIC
+-rw-r--r--@   1 chiaraindino  staff      451314 21 Gen  2023 IMG_1475.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1539025 13 Dic  2022 IMG_6742.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1721237 13 Dic  2022 IMG_6743.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1606508 13 Dic  2022 IMG_6744.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1491510 13 Dic  2022 IMG_6745.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1479297 13 Dic  2022 IMG_6746.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1729192 13 Dic  2022 IMG_6747.HEIC
+-rw-r--r--@   1 chiaraindino  staff     2064234 13 Dic  2022 IMG_6748.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1676423 13 Dic  2022 IMG_6749.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1439049 13 Dic  2022 IMG_6750.HEIC
+-rw-r--r--@   1 chiaraindino  staff     3532215 13 Dic  2022 IMG_6756.HEIC
+-rw-r--r--@   1 chiaraindino  staff     2038823 13 Dic  2022 IMG_6758.HEIC
+-rw-r--r--@   1 chiaraindino  staff     2894262 13 Dic  2022 IMG_6760.HEIC
+-rw-r--r--@   1 chiaraindino  staff     2224899 13 Dic  2022 IMG_6762.HEIC
+-rw-r--r--@   1 chiaraindino  staff     2435752 13 Dic  2022 IMG_6763.HEIC
+-rw-r--r--@   1 chiaraindino  staff     3161191 13 Dic  2022 IMG_6766.HEIC
+-rw-r--r--@   1 chiaraindino  staff     2641768 13 Dic  2022 IMG_6768.HEIC
+-rw-r--r--@   1 chiaraindino  staff     1763065 13 Dic  2022 IMG_6769.HEIC
+-rw-r--r--@   1 chiaraindino  staff      750175 22 Gen  2023 IMG_7606.PNG
+-rw-r--r--@   1 chiaraindino  staff     3851948 13 Mag  2023 INDINO CHIARA-incaricato Alle Vendite A Domicilio Modulo Di Richiesta E Contratto.pdf
+-rw-r--r--@   1 chiaraindino  staff   211009383 30 Nov  2022 INDINO CHIARA_PORTFOLIO A3.pdf
+drwxr-xr-x@   4 chiaraindino  staff         128  5 Set  2021 Lausanne-Regular
+-rw-r--r--@   1 chiaraindino  staff   193926468 28 Gen  2023 MODELLO 3D.3dm
+drwxr-xr-x    3 chiaraindino  staff          96 28 Gen  2023 MODELLO 3D_embedded_files
+-rw-r--r--@   1 chiaraindino  staff    21467595  4 Feb  2025 Mappa Concettuale Aziendale in Stile Elegante in Marrone Chiaro e Nero.pdf
+-rw-r--r--@   1 chiaraindino  staff      254621 24 Mar  2023 PHOTO-2023-03-24-11-16-36.jpg
+-rw-r--r--@   1 chiaraindino  staff      267442  2 Mag  2023 PHOTO-2023-05-02-14-36-38.jpg
+-rw-r--r--@   1 chiaraindino  staff      134738  2 Mag  2023 PHOTO-2023-05-02-16-12-46.jpg
+-rw-r--r--@   1 chiaraindino  staff      238841  2 Mag  2023 PHOTO-2023-05-02-16-14-11.jpg
+-rw-r--r--@   1 chiaraindino  staff      159570  2 Mag  2023 PHOTO-2023-05-02-16-38-31.jpg
+-rw-r--r--@   1 chiaraindino  staff     2294086 31 Mag  2023 PIANTA 2.ai
+-rw-r--r--@   1 chiaraindino  staff   149984156  9 Gen  2023 PORTFOLIO 23_01_09.pdf
+-rw-r--r--@   1 chiaraindino  staff   147165149  6 Dic  2022 PRESENTAZIONE DESIGN2_ INDINO DELAN.pdf
+-rw-r--r--@   1 chiaraindino  staff      121478 20 Giu  2023 Posta di IED Istituto Europeo di Design S.p.A. - Le tue risposte all'indagine: QUESTIONARIO FINE TRIENNIO 2023 CORSI TRIENNALI ITA (DIPLOMANDI): ROMA, 3° ANNO, INTERIOR DESIGN sez. A.pdf
+drwxr-xr-x@   9 chiaraindino  staff         288  4 Mag  2023 ROMIE
+drwx------@   9 chiaraindino  staff         288  4 Mag  2023 Roslindale
+drwx------@   4 chiaraindino  staff         128 28 Feb 11:43 SCANSIONAMI!
+-rw-r--r--@   1 chiaraindino  staff     9843208 28 Feb 11:40 SCANSIONAMI!.pdf
+-rw-r--r--@   1 chiaraindino  staff     1820787 28 Feb 11:40 SCANSIONAMI!.zip
+-rw-r--r--@   1 chiaraindino  staff     2844249 31 Mag  2023 SEZIONE ORIZZONTALE.ai
+-rw-r--r--@   1 chiaraindino  staff     3097258 31 Mag  2023 SEZIONE VCERTICALE.ai
+-rw-r--r--@   1 chiaraindino  staff       64115  9 Gen  2023 Schermata 2023-01-09 alle 17.41.58.png
+-rw-r--r--@   1 chiaraindino  staff      523591 31 Dic  2024 Screenshot 2024-12-31 alle 17.15.07-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      589539 31 Dic  2024 Screenshot 2024-12-31 alle 17.17.08-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      449325 31 Dic  2024 Screenshot 2024-12-31 alle 17.22.16-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      546255 20 Gen  2025 Screenshot 2025-01-20 alle 19.14.51-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       63459 20 Gen  2025 Screenshot 2025-01-20 alle 19.18.38-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      610107 23 Gen  2025 Screenshot 2025-01-23 alle 10.37.30-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      239061 23 Gen  2025 Screenshot 2025-01-23 alle 10.40.56-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      675819 23 Gen  2025 Screenshot 2025-01-23 alle 10.41.06-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      223681 23 Gen  2025 Screenshot 2025-01-23 alle 11.04.23-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      280495 23 Gen  2025 Screenshot 2025-01-23 alle 11.10.18-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      107797 23 Gen  2025 Screenshot 2025-01-23 alle 11.10.44-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      475152 29 Gen  2025 Screenshot 2025-01-29 alle 10.46.54-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      420998 30 Gen  2025 Screenshot 2025-01-30 alle 13.01.58-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       78736 30 Gen  2025 Screenshot 2025-01-30 alle 21.17.19-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      210965 10 Feb  2025 Screenshot 2025-02-10 alle 13.04.12-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      136934 10 Feb  2025 Screenshot 2025-02-10 alle 13.05.57-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      176884 10 Feb  2025 Screenshot 2025-02-10 alle 19.55.49-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      867099 10 Feb  2025 Screenshot 2025-02-10 alle 20.13.05-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      350432 14 Feb  2025 Screenshot 2025-02-14 alle 13.32.57-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      317943 14 Feb  2025 Screenshot 2025-02-14 alle 13.49.59-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      418691 14 Feb  2025 Screenshot 2025-02-14 alle 14.00.44-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      357419 14 Feb  2025 Screenshot 2025-02-14 alle 14.02.19-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      205026 14 Feb  2025 Screenshot 2025-02-14 alle 20.15.32-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      338841 14 Feb  2025 Screenshot 2025-02-14 alle 20.21.01-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      384397 17 Feb  2025 Screenshot 2025-02-17 alle 13.36.56-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      404082 17 Feb  2025 Screenshot 2025-02-17 alle 13.37.57-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      418679 17 Feb  2025 Screenshot 2025-02-17 alle 13.38.20-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      450452 17 Feb  2025 Screenshot 2025-02-17 alle 13.44.07-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       59079 25 Feb  2025 Screenshot 2025-02-25 alle 11.31.30-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       57504 25 Feb  2025 Screenshot 2025-02-25 alle 11.53.43-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      421188  3 Mar 13:38 Screenshot 2025-03-03 alle 13.37.50-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       74951  3 Mar 15:41 Screenshot 2025-03-03 alle 15.41.31-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      682224 10 Mar 15:09 Screenshot 2025-03-10 alle 15.08.00-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      441307 10 Mar 15:11 Screenshot 2025-03-10 alle 15.08.14-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      355429  4 Apr 13:18 Screenshot 2025-04-04 alle 13.17.50-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      568758  4 Apr 13:20 Screenshot 2025-04-04 alle 13.20.44-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff      770184  7 Apr 14:45 Screenshot 2025-04-07 alle 14.43.49-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       10620 25 Ago 15:07 SeaGo.xlsx
+drwxr-xr-x   89 chiaraindino  staff        2848 10 Mag  2023 Shooting Chiara
+drwx------@   8 chiaraindino  staff         256 29 Mar  2023 Simulazioni esame Spoken e Written-20230329
+drwxr-xr-x    9 chiaraindino  staff         288  9 Feb  2023 Sketch piu calcati
+drwx------@   4 chiaraindino  staff         128  4 Mag  2023 Suisse Int'l UltraLight
+-rw-r--r--@   1 chiaraindino  staff   653742139 31 Mag  2023 TAV INTRO.psd
+-rw-r--r--@   1 chiaraindino  staff    34058266 17 Gen  2023 TAVOLA A1 INFO.pdf
+-rw-r--r--@   1 chiaraindino  staff    77334957 31 Mag  2023 TOP.psd
+drwx------@  14 chiaraindino  staff         448  4 Mag  2023 Tiempos-Font
+-rw-r--r--@   1 chiaraindino  staff    55943177 31 Mag  2023 VERTICALE1.1.psd
+-rw-r--r--@   1 chiaraindino  staff       63720 14 Feb  2025 Variations in light colour temperature reveal the impact on object and paint colour as well as ambience in interior design_ Image credit_ Sunco Lighting.jpg
+-rw-r--r--@   1 chiaraindino  staff      262183 20 Gen  2025 WhatsApp Image 2025-01-20 at 09.10.13.jpeg
+-rw-r--r--@   1 chiaraindino  staff       88676  8 Mag 15:32 WhatsApp Image 2025-05-08 at 15.29.36.jpeg
+-rw-r--r--@   1 chiaraindino  staff      207469  8 Mag 15:47 WhatsApp Image 2025-05-08 at 15.47.01.jpeg
+-rw-r--r--@   1 chiaraindino  staff       92136  8 Mag 16:00 WhatsApp Image 2025-05-08 at 15.58.09.jpeg
+-rw-r--r--@   1 chiaraindino  staff      138515  8 Mag 16:10 WhatsApp Image 2025-05-08 at 16.10.49.jpeg
+-rw-r--r--@   1 chiaraindino  staff      127127  8 Mag 16:19 WhatsApp Image 2025-05-08 at 16.19.26.jpeg
+-rw-r--r--@   1 chiaraindino  staff      138702  8 Mag 16:28 WhatsApp Image 2025-05-08 at 16.28.04.jpeg
+-rw-r--r--@   1 chiaraindino  staff      197677  8 Mag 16:32 WhatsApp Image 2025-05-08 at 16.32.39.jpeg
+-rw-r--r--@   1 chiaraindino  staff       95475  8 Mag 16:47 WhatsApp Image 2025-05-08 at 16.47.07.jpeg
+-rw-r--r--@   1 chiaraindino  staff      156652  8 Mag 17:03 WhatsApp Image 2025-05-08 at 17.02.59.jpeg
+-rw-r--r--@   1 chiaraindino  staff      106507  8 Mag 17:10 WhatsApp Image 2025-05-08 at 17.10.50.jpeg
+-rw-r--r--@   1 chiaraindino  staff      133596  8 Mag 19:14 WhatsApp Image 2025-05-08 at 19.14.22 (1).jpeg
+-rw-r--r--@   1 chiaraindino  staff      161383  8 Mag 19:14 WhatsApp Image 2025-05-08 at 19.14.22.jpeg
+-rw-r--r--@   1 chiaraindino  staff       58102  8 Mag 19:25 WhatsApp Image 2025-05-08 at 19.25.08.jpeg
+-rw-r--r--@   1 chiaraindino  staff      152985  8 Mag 19:34 WhatsApp Image 2025-05-08 at 19.33.59.jpeg
+-rw-r--r--@   1 chiaraindino  staff      151456 19 Ago 11:54 WhatsApp Image 2025-08-19 at 11.53.34-2.jpeg
+-rw-r--r--@   1 chiaraindino  staff      175254 19 Ago 11:54 WhatsApp Image 2025-08-19 at 11.53.34-3.jpeg
+-rw-r--r--@   1 chiaraindino  staff      167411 19 Ago 11:54 WhatsApp Image 2025-08-19 at 11.53.34.jpeg
+-rw-r--r--@   1 chiaraindino  staff      150411 19 Ago 11:54 WhatsApp Image 2025-08-19 at 11.53.35.jpeg
+-rw-r--r--@   1 chiaraindino  staff      151456 19 Ago 12:02 WhatsApp Image 2025-08-19 at 12.01.35.jpeg
+-rw-r--r--@   1 chiaraindino  staff      165941 19 Ago 12:08 WhatsApp Image 2025-08-19 at 12.07.49.jpeg
+-rw-r--r--@   1 chiaraindino  staff      165941 19 Ago 12:18 WhatsApp Image 2025-08-19 at 12.18.16.jpeg
+-rw-r--r--@   1 chiaraindino  staff      119510 19 Ago 12:21 WhatsApp Image 2025-08-19 at 12.21.50.jpeg
+-rw-r--r--@   1 chiaraindino  staff       60593 19 Ago 12:38 WhatsApp Image 2025-08-19 at 12.38.33.jpeg
+-rw-r--r--@   1 chiaraindino  staff  5751797760 13 Mar  2022 Win10_21H1_Italian_x64.iso
+-rw-r--r--@   1 chiaraindino  staff  2937846093 15 Ago 11:19 Xcode_16.xip
+-rw-r--r--@   1 chiaraindino  staff      269588  3 Mar 22:14 a573a0937ddace600a74a89585ca3020.png
+drwx------@   9 chiaraindino  staff         288  3 Mar 22:14 antistaminico
+-rw-r--r--@   1 chiaraindino  staff     3221676  3 Mar 22:13 antistaminico.zip
+-rw-r--r--@   1 chiaraindino  staff      260223  8 Mag 19:53 aurora boreale-Photoroom-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       17741  8 Mag 19:53 aurora boreale-Photoroom.jpeg
+-rw-r--r--@   1 chiaraindino  staff      136144  8 Mag 19:52 aurora boreale-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       93947  8 Mag 19:51 aurora boreale.jpeg
+drwx------@  13 chiaraindino  staff         416 21 Apr  2022 cabin
+-rw-r--r--@   1 chiaraindino  staff    24886884  6 Mar  2023 camera.tif
+-rw-r--r--@   1 chiaraindino  staff    31183778 26 Gen  2023 casa fabrizio salone_terrazo.3dm
+drwxr-xr-x    7 chiaraindino  staff         224 26 Gen  2023 casa fabrizio salone_terrazo_embedded_files
+-rw-r--r--@   1 chiaraindino  staff     1188751 23 Gen  2023 concept map.dwg
+-rw-r--r--@   1 chiaraindino  staff     1282743  7 Apr 18:16 create_an_image_of_a_couple_struggling_to_sleep_tossing_and_turning_in_bed_one_of_them_is_snoring_l_hpcvtej1p3aeatjz7z5z_0.png
+-rw-r--r--@   1 chiaraindino  staff     1452291  7 Apr 17:01 create_an_image_of_a_happy_child_playing_in_a_flowering_meadow_surrounded_by_colorful_pollen_and_pl_hgbmzcjmth415ng2h5jf_0.png
+-rw-r--r--@   1 chiaraindino  staff     1515887  7 Apr 17:01 create_an_image_of_a_happy_child_playing_in_a_flowering_meadow_surrounded_by_colorful_pollen_and_pl_ipd2mpdrmr2emleqgea7_3.png
+-rw-r--r--@   1 chiaraindino  staff     1368772  7 Apr 17:01 create_an_image_of_a_happy_child_playing_in_a_flowering_meadow_surrounded_by_colorful_pollen_and_pl_tjwr2sgl53furzx0y1np_1.png
+-rw-r--r--@   1 chiaraindino  staff        1105 14 Nov  2023 cv VALERIA-2.docx
+-rw-r--r--@   1 chiaraindino  staff      625593 14 Nov  2023 cv VALERIA.docx
+-rw-r--r--@   1 chiaraindino  staff      866254 24 Gen  2025 downloadedImage-2.png
+-rw-r--r--@   1 chiaraindino  staff      910009 24 Gen  2025 downloadedImage-3.png
+-rw-r--r--@   1 chiaraindino  staff      478128 24 Gen  2025 downloadedImage-4.png
+-rw-r--r--@   1 chiaraindino  staff      918593 24 Gen  2025 downloadedImage.png
+drwx------@   3 chiaraindino  staff          96 10 Gen  2023 drive-download-20230109T075306Z-001
+drwx------@   3 chiaraindino  staff          96 22 Gen  2023 drive-download-20230122T160939Z-001
+drwx------@   3 chiaraindino  staff          96  6 Mar  2023 drive-download-20230306T172201Z-001
+-rw-r--r--@   1 chiaraindino  staff      119526 25 Feb  2025 essenza_natura-1024-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff       47333 25 Feb  2025 essenza_natura-1024.png
+-rw-r--r--@   1 chiaraindino  staff      395530 14 Feb  2025 example.com
+-rw-r--r--@   1 chiaraindino  staff   149876083  8 Feb  2023 fluxus 4.5.pptx
+drwx------@  22 chiaraindino  staff         704 12 Dic  2022 futura
+drwx------@   6 chiaraindino  staff         192 19 Ago 12:29 iloveimg-resized
+drwx------@   6 chiaraindino  staff         192 19 Ago 12:31 iloveimg-resized-2
+drwx------@   6 chiaraindino  staff         192 19 Ago 12:33 iloveimg-resized-3
+-rw-r--r--@   1 chiaraindino  staff       28274 28 Feb 14:45 images-Photoroom.png
+-rw-r--r--@   1 chiaraindino  staff        6308 28 Feb 14:44 images.png
+-rw-r--r--@   1 chiaraindino  staff      104902 23 Gen  2023 istockphoto-91389655-1024x1024.jpg
+-rw-r--r--@   1 chiaraindino  staff      399207 28 Feb 14:46 lettura della bagua.png
+-rw-r--r--@   1 chiaraindino  staff     1437556 18 Gen  2023 mappa concettuale Tesi.ai
+drwx------@   6 chiaraindino  staff         192  3 Mar 15:22 marzo
+-rw-r--r--@   1 chiaraindino  staff     1914356  3 Mar 15:22 marzo.zip
+-rw-r--r--@   1 chiaraindino  staff     1922623  3 Mar 15:20 mazo in fiore.png
+-rw-r--r--@   1 chiaraindino  staff     1102088 21 Ago 10:38 minimalist_background_of_a_calm_sea_at_sunrise_soft_blue_and_turquoise_gradients_a_single_anchor_re_037jb8zjp1n0p08bdelb_2.png
+-rw-r--r--@   1 chiaraindino  staff      703488 21 Ago 10:38 minimalist_background_of_a_calm_sea_at_sunrise_soft_blue_and_turquoise_gradients_a_single_anchor_re_ye6i2p1g1j874k3a14q5_3.png
+-rw-r--r--@   1 chiaraindino  staff     1255970 21 Ago 10:47 minimalist_background_of_a_calm_sea_with_a_soft_horizon_warm_sky_tones_at_sunset_a_hot_air_balloon__8bic1ucv0jvdjwlt3mx7_0.png
+-rw-r--r--@   1 chiaraindino  staff      690973 10 Mar 15:05 mirra.png
+-rw-r--r--@   1 chiaraindino  staff      256328 15 Ago 13:03 mobile-preview.html
+-rw-r--r--@   1 chiaraindino  staff     3259928  8 Mag 20:41 moodboard matrimonio giulia.pdf
+-rw-r--r--@   1 chiaraindino  staff    85478282 17 Ago 18:50 node-v22.18.0.pkg
+-rw-r--r--@   1 chiaraindino  staff      689517 10 Mar 15:05 patchouli.png
+-rw-r--r--@   1 chiaraindino  staff     1221914 12 Dic  2022 pianta coin.3dm
+-rw-r--r--@   1 chiaraindino  staff     2335064 12 Dic  2022 pianta coin.dwg
+-rw-r--r--@   1 chiaraindino  staff      592084  7 Feb  2025 pompelmo.png
+-rw-r--r--@   1 chiaraindino  staff    22653248  5 Apr  2023 presentazione_Antonazzo_Frascella.pdf
+-rw-r--r--@   1 chiaraindino  staff    88995240 31 Mag  2023 prova - Copia.psd
+-rw-r--r--@   1 chiaraindino  staff     1060930 31 Mag  2023 rete.png
+-rw-r--r--@   1 chiaraindino  staff   402669088 13 Mar  2022 rhino_7.16.22067.13002.dmg
+-rw-r--r--@   1 chiaraindino  staff      155991  3 Apr 17:14 ruota da stampare.pdf
+-rw-r--r--@   1 chiaraindino  staff      696430 10 Mar 15:05 salvia slcarea.png
+-rw-r--r--@   1 chiaraindino  staff    24886884 14 Mar  2023 scale duplex d.tif
+-rw-r--r--@   1 chiaraindino  staff     2234634 14 Mar  2023 sezione prosp duplex d.png
+-rw-r--r--@   1 chiaraindino  staff    32741652 14 Mar  2023 sezione prosp duplex d.tif
+-rw-r--r--@   1 chiaraindino  staff     1605115 14 Mar  2023 top 1 duplex d.png
+-rw-r--r--@   1 chiaraindino  staff    10321584 14 Mar  2023 top 1 duplex d.tif
+-rw-r--r--@   1 chiaraindino  staff     1305903 14 Mar  2023 top 2 duplex d.png
+-rw-r--r--@   1 chiaraindino  staff     9553760 14 Mar  2023 top 2 duplex d.tif
+-rw-r--r--@   1 chiaraindino  staff     7422352 14 Mar  2023 top app c.png
+-rw-r--r--@   1 chiaraindino  staff    44251488 14 Mar  2023 top app c.tif
+chiaraindino@MacBook-Pro-di-chiara Downloads % 

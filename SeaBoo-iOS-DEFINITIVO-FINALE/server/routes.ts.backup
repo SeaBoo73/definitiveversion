@@ -9,15 +9,12 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from 'url';
 import Stripe from "stripe";
-// Convertiti in ES modules
-import { verifyAppleIdToken } from './appleAuth.js';
-import { verifyReceipt } from './iap.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-08-27.basil',
+  apiVersion: '2024-10-28.acacia',
 });
 
 // Extend session type
@@ -379,7 +376,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         <p>I tuoi dati sono protetti secondo il GDPR. Le transazioni sono sicure tramite Stripe.</p>
         
         <h2>📱 App Mobile</h2>
-        <p>Scarica l'app SeaBoo dall'App Store per un'esperienza ottimizzata su mobile.</p>
+        <p>Benvenuto su SeaBoo - La piattaforma per il noleggio barche in Italia.</p>
         
         <p style="text-align: center; margin-top: 40px; color: #6b7280;">
             © 2025 SeaBoo. Tutti i diritti riservati.
@@ -444,158 +441,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     res.json({received: true});
-  });
-
-  // Health generico
-  app.get('/health', (_req, res) => {
-    res.json({ ok: true, services: { siwa: true, iap: true } });
-  });
-
-  // ---- REVIEW SELF-CHECK ----
-  app.get('/review/info', (_req, res) => {
-    res.json({
-      ok: true,
-      reviewMode: REVIEW_MODE,
-      env: [
-        safeFlag('APPLE_CLIENT_ID', !!process.env.APPLE_CLIENT_ID),
-        safeFlag('BUNDLE_ID', !!process.env.BUNDLE_ID),
-        safeFlag('APPLE_SHARED_SECRET', !!process.env.APPLE_SHARED_SECRET)
-      ],
-      services: {
-        support: true,
-        siwa: true,
-        iap: true,
-        payments: true
-      }
-    });
-  });
-
-  // ---- Sign in with Apple ----
-  app.get('/auth/apple/health', (_req, res) => {
-    res.status(200).json({ ok: true, service: 'apple-login' });
-  });
-
-  app.post('/auth/apple/callback', async (req, res) => {
-    try {
-      const { id_token } = req.body || {};
-      const audience = process.env.APPLE_CLIENT_ID || process.env.BUNDLE_ID;
-      const payload = await verifyAppleIdToken(id_token, audience);
-      // TODO: upsert utente per payload.sub; l'email può mancare dopo il primo consenso
-      res.json({ ok: true, sub: payload.sub, email: payload.email ?? null });
-    } catch (e) {
-      console.error('Apple auth error:', e);
-      res.status(401).json({ ok: false, error: 'invalid_apple_token' });
-    }
-  });
-
-  // ---- In-App Purchases / StoreKit ----
-  app.get('/iap/health', (_req, res) => {
-    res.status(200).json({ ok: true, service: 'iap' });
-  });
-
-  app.post('/iap/verify', async (req, res) => {
-    try {
-      const { receiptBase64 } = req.body || {};
-      const result = await verifyReceipt({
-        base64Receipt: receiptBase64,
-        password: process.env.APPLE_SHARED_SECRET,
-        useSandbox: process.env.IAP_USE_SANDBOX === 'true'
-      });
-      res.json({ ok: true, result });
-    } catch (e) {
-      console.error('IAP verify error:', e);
-      res.status(400).json({ ok: false, error: 'iap_verify_failed' });
-    }
-  });
-
-  // App Store Server Notifications (minimo: logging)
-  app.post('/appstore/notifications', async (req, res) => {
-    try {
-      console.log('ASSN incoming:', JSON.stringify(req.body));
-      res.status(200).json({ ok: true });
-    } catch (e) {
-      console.error('ASSN error:', e);
-      res.status(200).json({ ok: true });
-    }
-  });
-
-  // --- REVIEW MODE TOGGLE ---
-  const REVIEW_MODE = process.env.REVIEW_MODE === 'true';
-  
-  // Safe flag helper
-  function safeFlag(name: string, present: boolean) { 
-    return { name, present: !!present }; 
-  }
-
-  // helper: risposta standard pagamento riuscito (mock)
-  function mockPaymentSuccess(amount: number, currency = 'EUR') {
-    return {
-      ok: true,
-      mode: 'review',
-      payment: {
-        status: 'succeeded',
-        provider: 'mock',
-        amount,
-        currency,
-        id: 'pm_mock_' + Date.now()
-      }
-    };
-  }
-
-  // Health per pagamenti
-  app.get('/payments/health', (_req, res) => {
-    res.json({ ok: true, reviewMode: REVIEW_MODE });
-  });
-
-  // Crea un "intent" di pagamento (mock in review)
-  app.post('/payments/intents', (req, res) => {
-    const { amount, currency = 'EUR' } = req.body || {};
-    if (REVIEW_MODE) {
-      return res.json(mockPaymentSuccess(amount, currency));
-    }
-    // TODO: qui codice reale PSP (Stripe/PayPal) quando REVIEW_MODE=false
-    return res.status(501).json({ ok: false, error: 'provider_not_implemented' });
-  });
-
-  // Conferma pagamento (mock in review)
-  app.post('/payments/confirm', (req, res) => {
-    const { paymentMethodId, amount, currency = 'EUR' } = req.body || {};
-    if (REVIEW_MODE) {
-      return res.json(mockPaymentSuccess(amount, currency));
-    }
-    // TODO: qui conferma reale col PSP
-    return res.status(501).json({ ok: false, error: 'provider_not_implemented' });
-  });
-
-  // Endpoint prenotazione che accetta pagamento mock se review
-  app.post('/bookings/create', async (req, res) => {
-    try {
-      const { boatId, startDate, endDate, amount, currency = 'EUR' } = req.body || {};
-      if (!boatId || !startDate || !endDate) {
-        return res.status(400).json({ ok: false, error: 'missing_fields' });
-      }
-      let paymentResult = null;
-      if (REVIEW_MODE) {
-        paymentResult = mockPaymentSuccess(amount, currency);
-      } else {
-        // In produzione richiedi prima /payments/intents o /payments/confirm con PSP reale
-        return res.status(402).json({ ok: false, error: 'payment_required' });
-      }
-      // TODO: salva prenotazione nel DB
-      res.json({
-        ok: true,
-        booking: {
-          id: 'bk_' + Date.now(),
-          boatId, startDate, endDate,
-          amount, currency,
-          paymentStatus: 'paid_demo'
-        },
-        paymentResult
-      });
-    } catch (e) {
-      console.error('booking error', e);
-      res.status(500).json({ ok: false, error: 'booking_failed' });
-    }
   });
 
   const httpServer = createServer(app);

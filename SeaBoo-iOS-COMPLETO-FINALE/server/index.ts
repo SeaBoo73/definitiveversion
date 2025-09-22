@@ -3,9 +3,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-process.env.REVIEW_MODE = "false";
+process.env.REVIEW_MODE = "";
 process.env.PAYMENTS_MODE = "";
-
 const app = express();
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());

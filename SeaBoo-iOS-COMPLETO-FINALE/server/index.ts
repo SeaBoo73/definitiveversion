@@ -1,45 +1,49 @@
+import cors from "cors";
 import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+process.env.REVIEW_MODE = "false";
+process.env.PAYMENTS_MODE = "";
 
 const app = express();
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from attached_assets
-app.use('/attached_assets', express.static('attached_assets'));
-app.use('/api/images', express.static('attached_assets'));
+app.use("/attached_assets", express.static("attached_assets"));
+app.use("/api/images", express.static("attached_assets"));
 
 // Mobile web preview route
 app.get("/app-preview", (req, res) => {
-  // Disable cache to ensure fresh content
-  res.set({
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
-  });
-  res.sendFile(path.resolve("mobile-preview.html"));
+    // Disable cache to ensure fresh content
+    res.set({
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+    });
+    res.sendFile(path.resolve("mobile-preview.html"));
 });
 
 // Direct mobile preview route
 app.get("/mobile-preview.html", (req, res) => {
-  res.sendFile(path.resolve("mobile-preview.html"));
+    res.sendFile(path.resolve("mobile-preview.html"));
 });
 
 // Native app preview route
 app.get("/native-preview", (req, res) => {
-  res.sendFile(path.resolve("native-app-preview.html"));
+    res.sendFile(path.resolve("native-app-preview.html"));
 });
 
 // Archived mobile preview route (temporary)
 app.get("/archived-preview", (req, res) => {
-  res.sendFile(path.resolve("mobile-preview-ARCHIVED-20250810_061034.html"));
+    res.sendFile(path.resolve("mobile-preview-ARCHIVED-20250810_061034.html"));
 });
 
 // Mobile project preview route (temporary)
 app.get("/mobile-project-preview", (req, res) => {
-  const html = `
+    const html = `
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -186,25 +190,25 @@ app.get("/mobile-project-preview", (req, res) => {
     </script>
 </body>
 </html>`;
-  res.send(html);
+    res.send(html);
 });
 
 (async () => {
-  const server = await registerRoutes(app);
-  
-  // Enable Vite setup for development
-  if (process.env.NODE_ENV === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+    const server = await registerRoutes(app);
 
-  // Use dynamic port allocation
-  const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(port, "0.0.0.0", () => {
-    log(`🚀 Server running on port ${port}`);
-    log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
-    log(`📱 Native preview: http://localhost:${port}/native-preview`);
-    log(`🌐 Web app: http://localhost:${port}`);
-  });
+    // Enable Vite setup for development
+    if (process.env.NODE_ENV === "development") {
+        await setupVite(app, server);
+    } else {
+        serveStatic(app);
+    }
+
+    // Use dynamic port allocation
+    const port = parseInt(process.env.PORT || "5000", 10);
+    server.listen(port, "0.0.0.0", () => {
+        log(`🚀 Server running on port ${port}`);
+        log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
+        log(`📱 Native preview: http://localhost:${port}/native-preview`);
+        log(`🌐 Web app: http://localhost:${port}`);
+    });
 })();

@@ -6,43 +6,43 @@ import { setupVite, serveStatic, log } from "./vite";
 import morgan from "morgan";
 
 const app = express();
-app.use(morgan('combined'));
-app.use(express.json({ limit: '1mb' }));
+app.use(morgan("combined"));
+app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: false }));
 
 // Serve static files from attached_assets
-app.use('/attached_assets', express.static('attached_assets'));
-app.use('/api/images', express.static('attached_assets'));
+app.use("/attached_assets", express.static("attached_assets"));
+app.use("/api/images", express.static("attached_assets"));
 
 // Mobile web preview route
 app.get("/app-preview", (req, res) => {
-  // Disable cache to ensure fresh content
-  res.set({
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
-  });
-  res.sendFile(path.resolve("mobile-preview.html"));
+    // Disable cache to ensure fresh content
+    res.set({
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+    });
+    res.sendFile(path.resolve("mobile-preview.html"));
 });
 
 // Direct mobile preview route
 app.get("/mobile-preview.html", (req, res) => {
-  res.sendFile(path.resolve("mobile-preview.html"));
+    res.sendFile(path.resolve("mobile-preview.html"));
 });
 
 // Native app preview route
 app.get("/native-preview", (req, res) => {
-  res.sendFile(path.resolve("native-app-preview.html"));
+    res.sendFile(path.resolve("native-app-preview.html"));
 });
 
 // Archived mobile preview route (temporary)
 app.get("/archived-preview", (req, res) => {
-  res.sendFile(path.resolve("mobile-preview-ARCHIVED-20250810_061034.html"));
+    res.sendFile(path.resolve("mobile-preview-ARCHIVED-20250810_061034.html"));
 });
 
 // Mobile project preview route (temporary)
 app.get("/mobile-project-preview", (req, res) => {
-  const html = `
+    const html = `
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -189,34 +189,73 @@ app.get("/mobile-project-preview", (req, res) => {
     </script>
 </body>
 </html>`;
-  res.send(html);
+    res.send(html);
+});
+// --- Apple web callback: risponde con HTML che posta l'id_token al backend ---
+app.get("/auth/apple/callback", (_req, res) => {
+    res.set("Content-Type", "text/html; charset=utf-8");
+    res.send(`<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>Apple Callback</title></head>
+  <body>
+    <script>
+      (function () {
+        // Legge parametri dalla query (?...) o dal fragment (#...)
+        var qs = location.search || location.hash.replace(/^#/, "");
+        var params = new URLSearchParams(qs);
+        var idToken = params.get("id_token");
+
+        if (idToken) {
+          fetch("/api/auth/apple", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify({ id_token: idToken })
+          }).finally(function () {
+            location.replace("/");
+          });
+        } else {
+          // Se non c'è id_token, torna comunque alla home
+          location.replace("/");
+        }
+      })();
+    </script>
+  </body>
+</html>`);
 });
 
 (async () => {
-  const server = await registerRoutes(app);
-  
-  // Enable Vite setup for development
-  if (process.env.NODE_ENV === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
+    const server = await registerRoutes(app);
 
-  // Use dynamic port allocation
-  const port = parseInt(process.env.PORT || "5000", 10);
-  server.listen(port, "0.0.0.0", () => {
-    log(`🚀 Server running on port ${port}`);
-    log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
-    log(`📱 Native preview: http://localhost:${port}/native-preview`);
-    log(`🌐 Web app: http://localhost:${port}`);
-    
-    // Safe logging without secret values
-    const REVIEW_MODE = process.env.REVIEW_MODE === 'true';
-    console.log('[SeaBoo] READY | reviewMode=', REVIEW_MODE,
-      '| APPLE_CLIENT_ID:', !!process.env.APPLE_CLIENT_ID,
-      '| BUNDLE_ID:', !!process.env.BUNDLE_ID);
-    
-    // Build version confirmation log
-    console.log('[SeaBoo] BUILD ACTIVE = ultima versione aggiornata (supporto + login Apple + pagamenti review mode)');
-  });
+    // Enable Vite setup for development
+    if (process.env.NODE_ENV === "development") {
+        await setupVite(app, server);
+    } else {
+        serveStatic(app);
+    }
+
+    // Use dynamic port allocation
+    const port = parseInt(process.env.PORT || "5000", 10);
+    server.listen(port, "0.0.0.0", () => {
+        log(`🚀 Server running on port ${port}`);
+        log(`📱 Mobile preview: http://localhost:${port}/app-preview`);
+        log(`📱 Native preview: http://localhost:${port}/native-preview`);
+        log(`🌐 Web app: http://localhost:${port}`);
+
+        // Safe logging without secret values
+        const REVIEW_MODE = process.env.REVIEW_MODE === "true";
+        console.log(
+            "[SeaBoo] READY | reviewMode=",
+            REVIEW_MODE,
+            "| APPLE_CLIENT_ID:",
+            !!process.env.APPLE_CLIENT_ID,
+            "| BUNDLE_ID:",
+            !!process.env.BUNDLE_ID,
+        );
+
+        // Build version confirmation log
+        console.log(
+            "[SeaBoo] BUILD ACTIVE = ultima versione aggiornata (supporto + login Apple + pagamenti review mode)",
+        );
+    });
 })();

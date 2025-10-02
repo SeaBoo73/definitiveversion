@@ -31,7 +31,7 @@ export const users = pgTable("users", {
   username: varchar("username", { length: 100 }).notNull(),
   email: varchar("email", { length: 255 }).unique().notNull(),
   password: varchar("password", { length: 255 }).notNull(),
-  role: varchar("role", { length: 20 }).default("user"), // 'user' or 'owner'
+  role: varchar("role", { length: 20 }).default("customer"), // 'customer', 'owner', or 'admin'
   firstName: varchar("first_name", { length: 100 }),
   lastName: varchar("last_name", { length: 100 }),
   phone: varchar("phone", { length: 20 }),
@@ -105,7 +105,7 @@ export const insertUserSchema = createInsertSchema(users, {
   firstName: z.string().min(1, "Nome richiesto").optional(),
   lastName: z.string().min(1, "Cognome richiesto").optional(),
   phone: z.string().optional(),
-  role: z.enum(["user", "owner"]).default("user"),
+  role: z.enum(["customer", "owner", "admin"]).default("customer"),
   businessName: z.string().optional(),
   businessType: z.string().optional(),
   vatNumber: z.string().optional(),
@@ -121,9 +121,9 @@ export const insertOwnerSchema = insertUserSchema.extend({
   vatNumber: z.string().min(1, "P.IVA/Codice Fiscale richiesto"),
 });
 
-// Schema specifico per registrazione user
+// Schema specifico per registrazione customer
 export const insertUserOnlySchema = insertUserSchema.extend({
-  role: z.literal("user"),
+  role: z.literal("customer"),
 });
 
 export const loginSchema = z.object({

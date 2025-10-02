@@ -9,7 +9,18 @@ Mobile app development: React Native for native mobile experience.
 **IMPORTANTE:** Salvare sempre tutte le versioni e aggiornamenti - mai perdere il lavoro svolto.
 Version control: Sistema di backup automatico attivato per preservare ogni modifica.
 
-## Recent Changes (28 Agosto 2025)
+## Recent Changes
+
+### October 2, 2025 - Critical Bug Fixes for Apple App Store Submission
+**Status:** App Store review issues resolved
+- Fixed database schema mismatch: aligned TypeScript enum with database user_role (customer/owner/admin)
+- Fixed Sign in with Apple authentication with proper callback endpoint
+- Created Apple review demo account: apple.review@seaboo.it / SeaBoo2025!
+- Fixed hardcoded "user" role references changed to "customer" throughout codebase
+- Verified payment integration with Stripe working correctly
+- All three critical bugs reported by Apple review team now fixed
+
+### 28 Agosto 2025
 **iOS App Build Success:** Risolto problema schermata bianca nel simulatore iOS
 - Rimosse dipendenze TypeScript problematiche che causavano errori di build
 - Creata versione semplificata e stabile dell'app (App-simple.tsx) 

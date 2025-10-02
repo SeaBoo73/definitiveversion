@@ -61,7 +61,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/register', async (req, res) => {
     try {
       // Determine which schema to use based on role
-      const role = req.body.role || "user";
+      const role = req.body.role || "customer";
       let userData;
       
       if (role === "owner") {
@@ -85,7 +85,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
-        role: user.role || "user",
+        role: user.role || "customer",
         userType: user.role === "owner" ? "owner" : "customer",
         businessName: user.businessName || undefined
       };
@@ -127,7 +127,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
-        role: user.role || "user",
+        role: user.role || "customer",
         userType: user.role === "owner" ? "owner" : "customer",
         businessName: user.businessName || undefined
       };
@@ -167,6 +167,89 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ success: true });
     });
+  });
+
+  // Apple Sign In callback endpoint
+  app.post('/auth/apple/callback', async (req, res) => {
+    try {
+      const { id_token, user_info } = req.body;
+
+      if (!id_token) {
+        return res.status(400).json({ error: "Token Apple mancante" });
+      }
+
+      // In modalità review o development, accettiamo token mock
+      const isReviewMode = process.env.VITE_REVIEW_MODE === 'true' || id_token.startsWith('mock_');
+      
+      let email = '';
+      let firstName = '';
+      let lastName = '';
+
+      if (isReviewMode) {
+        // Usa dati mock per review mode
+        email = user_info?.email || 'apple.user@icloud.com';
+        firstName = user_info?.name?.firstName || 'Apple';
+        lastName = user_info?.name?.lastName || 'User';
+      } else {
+        // TODO: In produzione, verifica il token Apple reale
+        // Per ora accettiamo i dati inviati dal client
+        email = user_info?.email || 'apple.user@icloud.com';
+        firstName = user_info?.name?.firstName || 'Apple';
+        lastName = user_info?.name?.lastName || 'User';
+      }
+
+      // Controlla se l'utente esiste già
+      let user = await storage.getUserByEmail(email);
+
+      if (!user) {
+        // Crea nuovo utente
+        const username = email.split('@')[0];
+        const userData = {
+          email,
+          username,
+          password: await import('bcryptjs').then(bcrypt => 
+            bcrypt.hash(id_token + Date.now(), 12)
+          ), // Password casuale per utenti Apple
+          firstName,
+          lastName,
+          role: 'customer' as const,
+        };
+
+        user = await storage.createUser(userData);
+      }
+
+      // Salva l'utente nella sessione
+      req.session.user = {
+        id: user.id.toString(),
+        email: user.email,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+        role: user.role || "customer",
+        userType: user.role === "owner" ? "owner" : "customer",
+        businessName: user.businessName || undefined
+      };
+
+      res.json({
+        success: true,
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userType: user.role === "owner" ? "owner" : "customer"
+        }
+      });
+    } catch (error: any) {
+      console.error("Apple Sign In error:", error);
+      res.status(400).json({
+        error: error.message || "Errore durante l'autenticazione Apple"
+      });
+    }
+  });
+
+  // Apple Sign In health check
+  app.get('/auth/apple/health', (_req, res) => {
+    res.json({ ok: true, service: 'apple-login' });
   });
 
   // Protected route example

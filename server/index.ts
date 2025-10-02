@@ -35,11 +35,15 @@ const ALLOWED_ORIGINS = [
   "capacitor://localhost",
   "http://localhost",
   "http://localhost:5173",
+  "http://localhost:5000",
+  "http://127.0.0.1:5000",
 ];
 
 app.use(cors({
   origin: (origin, cb) => {
-    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    if (!origin) return cb(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    if (origin.includes('.replit.dev')) return cb(null, true);
     return cb(new Error(`CORS blocked: ${origin}`));
   },
   credentials: true,

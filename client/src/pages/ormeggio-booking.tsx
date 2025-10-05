@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { PortSelector } from '@/components/port-selector';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { 
@@ -249,15 +250,11 @@ export default function OrmeggioBookingPage() {
                 {/* Destinazione */}
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Destinazione</label>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                    <Input
-                      placeholder="Dove vuoi ormeggiare?"
-                      value={destination}
-                      onChange={(e) => setDestination(e.target.value)}
-                      className="pl-10"
-                    />
-                  </div>
+                  <PortSelector
+                    value={destination}
+                    onChange={setDestination}
+                    placeholder="Dove vuoi ormeggiare?"
+                  />
                 </div>
 
                 {/* Check-in */}

@@ -3,6 +3,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { SearchFilters } from "@/components/search-filters";
 import { AppDownloadBanner } from "@/components/app-download-banner";
+import { PortSelector } from "@/components/port-selector";
 import { Anchor } from "lucide-react";
 
 import { BoatCard } from "@/components/boat-card";
@@ -127,10 +128,10 @@ export default function HomePage() {
                 <div className="space-y-4">
                   <div>
                     <label className="block text-left text-gray-700 font-semibold mb-2">Dove</label>
-                    <input 
-                      type="text" 
-                      placeholder="Cerca tra 48 porti italiani..." 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    <PortSelector
+                      value={selectedPort}
+                      onChange={setSelectedPort}
+                      placeholder="Cerca tra 48 porti italiani..."
                     />
                   </div>
                   

@@ -77,21 +77,33 @@ app.post(
   "/api/create-experience-payment",
   async (req: Request, res: Response) => {
     try {
+      console.log("[PAYMENT] Received experience payment request:", req.body);
+      
       // Frontend invia prezzoTotale in euro, convertiamo in centesimi
       const prezzoTotale = Number(req.body?.prezzoTotale || req.body?.amount);
       const currency = String(req.body?.currency || "eur");
       
-      if (!process.env.STRIPE_SECRET_KEY)
+      console.log("[PAYMENT] prezzoTotale:", prezzoTotale, "currency:", currency);
+      
+      if (!process.env.STRIPE_SECRET_KEY) {
+        console.error("[PAYMENT] Missing Stripe secret key");
         return res.status(500).json({ error: "missing_secret" });
-      if (!Number.isFinite(prezzoTotale) || prezzoTotale <= 0)
+      }
+      
+      if (!Number.isFinite(prezzoTotale) || prezzoTotale <= 0) {
+        console.error("[PAYMENT] Invalid amount:", prezzoTotale);
         return res.status(400).json({ error: "bad_amount" });
+      }
 
       // Converti euro in centesimi per Stripe (es. 178 € -> 17800 centesimi)
       const amountInCents = Math.round(prezzoTotale * 100);
+      console.log("[PAYMENT] Converting €", prezzoTotale, "to", amountInCents, "cents");
       
       // Genera un ID univoco per la prenotazione
       const bookingId = `exp_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+      console.log("[PAYMENT] Generated booking ID:", bookingId);
 
+      console.log("[PAYMENT] Creating Stripe payment intent...");
       const intent = await stripe.paymentIntents.create({
         amount: amountInCents,
         currency,
@@ -103,13 +115,16 @@ app.post(
         }
       });
 
+      console.log("[PAYMENT] Payment intent created successfully:", intent.id);
       return res.json({ 
         clientSecret: intent.client_secret,
         bookingId 
       });
     } catch (e: any) {
-      console.error("[PAY][SERVER-ERR]", e?.message || e);
-      return res.status(500).json({ error: "stripe_failed" });
+      console.error("[PAYMENT][ERROR] Full error:", e);
+      console.error("[PAYMENT][ERROR] Message:", e?.message);
+      console.error("[PAYMENT][ERROR] Stack:", e?.stack);
+      return res.status(500).json({ error: "stripe_failed", message: e?.message });
     }
   },
 );

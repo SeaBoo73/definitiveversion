@@ -33,6 +33,8 @@ export default function HomePage() {
   const [location] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
+  const [withSkipper, setWithSkipper] = useState<boolean>(false);
+  const [isExperience, setIsExperience] = useState<boolean>(false);
 
   // Gestisci parametri URL per il filtro categorie
   useEffect(() => {
@@ -187,11 +189,27 @@ export default function HomePage() {
                   </div>
                   
                   <div className="grid grid-cols-2 gap-3">
-                    <button className="flex items-center justify-center px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium hover:bg-blue-100 transition-colors">
+                    <button 
+                      onClick={() => setWithSkipper(!withSkipper)}
+                      className={`flex items-center justify-center px-4 py-3 rounded-lg font-medium transition-colors ${
+                        withSkipper 
+                          ? 'bg-blue-600 border-2 border-blue-700 text-white shadow-lg' 
+                          : 'bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100'
+                      }`}
+                      data-testid="button-with-skipper"
+                    >
                       <span className="mr-2">👨‍✈️</span>
                       Con Skipper
                     </button>
-                    <button className="flex items-center justify-center px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 font-medium hover:bg-blue-100 transition-colors">
+                    <button 
+                      onClick={() => setIsExperience(!isExperience)}
+                      className={`flex items-center justify-center px-4 py-3 rounded-lg font-medium transition-colors ${
+                        isExperience 
+                          ? 'bg-blue-600 border-2 border-blue-700 text-white shadow-lg' 
+                          : 'bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100'
+                      }`}
+                      data-testid="button-experiences"
+                    >
                       <span className="mr-2">⚓</span>
                       Esperienze o charter
                     </button>

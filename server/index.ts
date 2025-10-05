@@ -68,7 +68,7 @@ app.use((req, _res, next) => {
 
 // Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2022-11-15",
+  apiVersion: "2025-08-27.basil",
 });
 
 // OpenAI

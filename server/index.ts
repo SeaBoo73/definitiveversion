@@ -77,21 +77,36 @@ app.post(
   "/api/create-experience-payment",
   async (req: Request, res: Response) => {
     try {
-      const amount = Number(req.body?.amount);
+      // Frontend invia prezzoTotale in euro, convertiamo in centesimi
+      const prezzoTotale = Number(req.body?.prezzoTotale || req.body?.amount);
       const currency = String(req.body?.currency || "eur");
+      
       if (!process.env.STRIPE_SECRET_KEY)
         return res.status(500).json({ error: "missing_secret" });
-      if (!Number.isFinite(amount) || amount <= 0)
+      if (!Number.isFinite(prezzoTotale) || prezzoTotale <= 0)
         return res.status(400).json({ error: "bad_amount" });
 
+      // Converti euro in centesimi per Stripe (es. 178 € -> 17800 centesimi)
+      const amountInCents = Math.round(prezzoTotale * 100);
+      
+      // Genera un ID univoco per la prenotazione
+      const bookingId = `exp_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+
       const intent = await stripe.paymentIntents.create({
-        amount, // es. 1000 = €10,00
-        currency, // es. 'eur'
+        amount: amountInCents,
+        currency,
         automatic_payment_methods: { enabled: true },
-        description: "SeaBoo experience",
+        description: "SeaBoo experience booking",
+        metadata: {
+          bookingId,
+          experienceType: req.body?.tipo || "esperienza",
+        }
       });
 
-      return res.json({ clientSecret: intent.client_secret });
+      return res.json({ 
+        clientSecret: intent.client_secret,
+        bookingId 
+      });
     } catch (e: any) {
       console.error("[PAY][SERVER-ERR]", e?.message || e);
       return res.status(500).json({ error: "stripe_failed" });

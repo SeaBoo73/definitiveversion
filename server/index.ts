@@ -4,6 +4,7 @@ import cors from "cors";
 import express, { type Request, Response } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import OpenAI from "openai";
 
 const app = express();
 app.enable("trust proxy");
@@ -70,6 +71,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2022-11-15",
 });
 
+// OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
 // === API (PRIMA di registerRoutes/serveStatic) ===
 app.get("/api/healthz", (_req, res) => res.json({ ok: true })); // test veloce
 
@@ -128,6 +134,65 @@ app.post(
     }
   },
 );
+
+// AI Chat Endpoint
+app.post('/api/ai/chat', async (req: Request, res: Response) => {
+  try {
+    const { message } = req.body;
+
+    if (!message || typeof message !== 'string') {
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('[AI CHAT] Missing OpenAI API key');
+      return res.status(503).json({ 
+        error: 'AI service not configured',
+        response: 'Mi dispiace, il servizio di assistenza AI non è al momento disponibile. Puoi contattarci via email per assistenza.'
+      });
+    }
+
+    console.log('[AI CHAT] Received message:', message);
+
+    const systemPrompt = `Sei l'assistente virtuale di SeaBoo, una piattaforma italiana di noleggio barche e servizi marittimi. 
+      
+Il tuo ruolo è aiutare gli utenti con:
+- Informazioni su barche disponibili per il noleggio
+- Condizioni meteo marine in tempo reale
+- Prezzi e disponibilità
+- Porti e località marittime in Lazio e Campania
+- Prenotazioni e servizi
+- Esperienze nautiche (tramonti, tour delle isole, charter)
+- Servizi di ormeggio
+
+Rispondi sempre in italiano in modo cordiale e professionale. Se non conosci una risposta specifica, indirizza l'utente a contattare il supporto via email (assistenza@seaboo.it) o telefono.
+
+Ricorda: SeaBoo opera principalmente nelle regioni Lazio e Campania, con porti come Civitavecchia, Gaeta, Ponza, Napoli, Capri, Ischia, Amalfi, Positano.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: message }
+      ],
+      max_tokens: 500,
+      temperature: 0.7,
+    });
+
+    const response = completion.choices[0]?.message?.content || 
+      'Mi dispiace, non sono riuscito a elaborare la tua richiesta. Prova a riformulare la domanda.';
+
+    console.log('[AI CHAT] Response sent successfully');
+    res.json({ response });
+
+  } catch (error: any) {
+    console.error('[AI CHAT] Error:', error.message);
+    res.status(500).json({ 
+      error: 'AI service error',
+      response: 'Mi dispiace, al momento non riesco a rispondere. Il servizio potrebbe essere temporaneamente non disponibile. Prova più tardi o contattaci via email.'
+    });
+  }
+});
 
 // routing/statici DOPO le API
 (async () => {

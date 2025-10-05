@@ -105,7 +105,8 @@ export default function AuthPage() {
     try {
       // Check if we're in review mode or development mode
       const isReviewMode = import.meta.env.VITE_REVIEW_MODE === 'true' || 
-                          window.location.hostname.includes('replit.app');
+                          window.location.hostname.includes('replit') ||
+                          window.location.hostname.includes('localhost');
 
       console.log('🚀 handleAppleSignIn avviato isReview =', isReviewMode, 'VITE_REVIEW_MODE =', import.meta.env.VITE_REVIEW_MODE);
 

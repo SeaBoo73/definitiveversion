@@ -35,12 +35,20 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             <p className="text-gray-600 mb-4">
               Il sistema di prenotazione è completamente operativo.
             </p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="bg-ocean-blue text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Ricarica Pagina
-            </button>
+                        <div className="flex gap-3 justify-center">
+              <button 
+                onClick={() => window.location.href = '/'} 
+                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              >
+                Torna alla Home
+              </button>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="bg-ocean-blue text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Ricarica Pagina
+              </button>
+            </div>
           </div>
         </div>
       );

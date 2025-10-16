@@ -26,13 +26,13 @@ interface Message {
 
 interface Conversation {
   id: number;
-  bookingId: number;
+  bookingId: string;
   createdAt: string;
   lastMessageAt: string;
 }
 
 interface ChatWindowProps {
-  bookingId: number;
+  bookingId: string;
   onClose: () => void;
   isOpen: boolean;
 }

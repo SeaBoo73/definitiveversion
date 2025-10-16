@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { ChatWindow } from "./chat-window";
 
 interface ChatButtonProps {
-  bookingId: number;
+  bookingId: string;
   className?: string;
 }
 

@@ -104,7 +104,11 @@ export default function PrenotaEsperienza() {
       };
 
       // Create Stripe payment intent for experience
-      const response = await fetch('/api/create-experience-payment', {
+      const apiUrl = 'https://boat-rental-stefanoconsulti.replit.app/api/create-experience-payment';
+      console.log('[BOOKING] Calling API:', apiUrl);
+      console.log('[BOOKING] Data:', bookingData);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -112,20 +116,29 @@ export default function PrenotaEsperienza() {
         body: JSON.stringify(bookingData)
       });
 
+      console.log('[BOOKING] Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Errore nella creazione del pagamento');
+        const errorText = await response.text();
+        console.error('[BOOKING] Error response:', errorText);
+        throw new Error(`Errore API: ${response.status} - ${errorText}`);
       }
 
-      const { clientSecret, bookingId } = await response.json();
+      const result = await response.json();
+      console.log('[BOOKING] Success:', result);
+      
+      const { clientSecret, bookingId } = result;
 
       // Redirect to payment page with booking details
       navigate(`/checkout-esperienza?client_secret=${clientSecret}&booking_id=${bookingId}`);
 
-    } catch (error) {
-      console.error('Errore prenotazione:', error);
+    } catch (error: any) {
+      console.error('[BOOKING] Full error:', error);
+      console.error('[BOOKING] Error message:', error?.message);
+      console.error('[BOOKING] Error stack:', error?.stack);
       toast({
         title: "Errore prenotazione",
-        description: "Si è verificato un errore. Riprova più tardi.",
+        description: error?.message || "Si è verificato un errore. Riprova più tardi.",
         variant: "destructive"
       });
     } finally {

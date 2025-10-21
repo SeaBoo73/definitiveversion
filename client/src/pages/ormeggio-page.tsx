@@ -688,9 +688,9 @@ export default function OrmeggioPage() {
               <p className="text-gray-600 mb-6">Prova a modificare i filtri di ricerca</p>
               <Button variant="outline" onClick={() => {
                 setSearchLocation("");
-                setMaxLength("");
-                setPriceRange("");
-                setServices("");
+                setMaxLength("all");
+                setPriceRange("all");
+                setServices("all");
               }}>
                 Resetta Filtri
               </Button>

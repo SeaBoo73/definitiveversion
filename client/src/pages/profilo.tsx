@@ -6,7 +6,21 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { 
   User, 
   Settings, 
@@ -28,9 +42,37 @@ import {
 export default function ProfiloPage() {
   console.log("PROFILO VERSION 2.0");
   const { user, logoutMutation } = useAuth();
+  const [, navigate] = useLocation();
+  const { toast } = useToast();
+
+  const deleteAccountMutation = useMutation({
+    mutationFn: async () => {
+      return await apiRequest("/api/user/delete-account", {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Account eliminato",
+        description: "Il tuo account è stato eliminato con successo",
+      });
+      navigate("/");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Impossibile eliminare l'account",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleLogout = () => {
     logoutMutation.mutate();
+  };
+
+  const handleDeleteAccount = () => {
+    deleteAccountMutation.mutate();
   };
 
   const menuItems = [
@@ -294,7 +336,7 @@ export default function ProfiloPage() {
         </Card>
 
         {/* Logout */}
-        <Card>
+        <Card className="mb-6">
           <CardContent className="pt-6">
             <Button
               variant="outline"
@@ -304,6 +346,65 @@ export default function ProfiloPage() {
               <LogOut className="h-4 w-4 mr-2" />
               Esci dall'account
             </Button>
+          </CardContent>
+        </Card>
+
+        {/* Delete Account */}
+        <Card className="border-red-200">
+          <CardHeader>
+            <CardTitle className="text-red-600">Zona pericolosa</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="text-sm text-gray-600">
+                <p className="mb-2">
+                  L'eliminazione del tuo account è permanente e irreversibile.
+                </p>
+                <p>
+                  Verranno eliminati tutti i tuoi dati, incluse prenotazioni, barche e informazioni personali.
+                </p>
+              </div>
+              
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    className="w-full"
+                    data-testid="button-delete-account"
+                  >
+                    Elimina il mio account
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>
+                    <AlertDialogDescription className="space-y-2">
+                      <p>
+                        Questa azione non può essere annullata. Eliminerà permanentemente il tuo
+                        account e rimuoverà tutti i tuoi dati dai nostri server.
+                      </p>
+                      <p className="font-semibold text-red-600">
+                        Tutte le tue prenotazioni, barche (se sei proprietario) e dati personali
+                        verranno eliminati definitivamente.
+                      </p>
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel data-testid="button-cancel-delete">
+                      Annulla
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDeleteAccount}
+                      className="bg-red-600 hover:bg-red-700"
+                      data-testid="button-confirm-delete"
+                      disabled={deleteAccountMutation.isPending}
+                    >
+                      {deleteAccountMutation.isPending ? "Eliminazione..." : "Sì, elimina il mio account"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
           </CardContent>
         </Card>
       </div>

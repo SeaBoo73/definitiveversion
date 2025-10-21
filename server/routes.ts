@@ -169,6 +169,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // Delete account endpoint
+  app.delete('/api/user/delete-account', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const deleted = await storage.deleteUser(userId);
+      
+      if (!deleted) {
+        return res.status(500).json({ error: "Errore durante la cancellazione dell'account" });
+      }
+
+      req.session.destroy((err) => {
+        if (err) {
+          console.error("Error destroying session:", err);
+        }
+        res.json({ success: true, message: "Account eliminato con successo" });
+      });
+    } catch (error) {
+      console.error("Delete account error:", error);
+      res.status(500).json({ error: "Errore durante la cancellazione dell'account" });
+    }
+  });
+
   // Apple Sign In callback endpoint
   app.post('/auth/apple/callback', async (req, res) => {
     try {

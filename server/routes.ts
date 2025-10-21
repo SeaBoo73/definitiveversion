@@ -206,18 +206,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let email = '';
       let firstName = '';
       let lastName = '';
+      let appleUserId = '';
 
       if (isReviewMode) {
         // Usa dati mock per review mode
-        email = user_info?.email || 'apple.user@icloud.com';
+        email = user_info?.email || 'apple.review@seaboo.it';
         firstName = user_info?.name?.firstName || 'Apple';
-        lastName = user_info?.name?.lastName || 'User';
+        lastName = user_info?.name?.lastName || 'Reviewer';
+        appleUserId = 'mock_' + Date.now();
+        console.log('🔍 Review Mode: Using mock Apple data', { email, firstName, lastName });
       } else {
-        // TODO: In produzione, verifica il token Apple reale
-        // Per ora accettiamo i dati inviati dal client
-        email = user_info?.email || 'apple.user@icloud.com';
-        firstName = user_info?.name?.firstName || 'Apple';
-        lastName = user_info?.name?.lastName || 'User';
+        // Verifica il token Apple reale usando jose
+        try {
+          const jose = await import('jose');
+          const JWKS = jose.createRemoteJWKSet(new URL('https://appleid.apple.com/auth/keys'));
+          
+          const { payload } = await jose.jwtVerify(id_token, JWKS, {
+            issuer: 'https://appleid.apple.com',
+            audience: process.env.APPLE_CLIENT_ID || 'it.seaboo.app',
+          });
+
+          // Estrai i dati dal token verificato
+          email = payload.email as string;
+          appleUserId = payload.sub as string;
+          
+          // I nomi sono forniti solo al primo login e tramite user_info
+          if (user_info?.name) {
+            firstName = user_info.name.firstName || '';
+            lastName = user_info.name.lastName || '';
+          }
+          
+          if (!email) {
+            throw new Error('Email mancante nel token Apple');
+          }
+
+          console.log('✅ Apple token verified successfully', { email, appleUserId });
+        } catch (verifyError: any) {
+          console.error('❌ Apple token verification failed:', verifyError);
+          return res.status(401).json({ 
+            error: 'Token Apple non valido',
+            details: verifyError.message 
+          });
+        }
       }
 
       // Controlla se l'utente esiste già

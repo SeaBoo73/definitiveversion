@@ -45,13 +45,8 @@ export default function DiventaNoleggiatorePage() {
 
   const upgradeToOwnerMutation = useMutation({
     mutationFn: async (data: any) => {
-      return await apiRequest("/api/user/upgrade-to-owner", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
+      const response = await apiRequest("POST", "/api/user/upgrade-to-owner", data);
+      return await response.json();
     },
     onSuccess: () => {
       toast({

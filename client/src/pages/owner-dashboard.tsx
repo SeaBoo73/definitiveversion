@@ -97,17 +97,19 @@ export default function OwnerDashboard() {
   const initialTab = tabFromUrl || 'boats';
   const [activeTab, setActiveTab] = useState(initialTab);
 
-  // Fetch owner's boats
-  const { data: boatsData, isLoading: boatsLoading } = useQuery<{ boats: Boat[] }>({
+  // Fetch owner's boats - let the backend handle authorization
+  const { data: boatsData, isLoading: boatsLoading, error: boatsQueryError } = useQuery<{ boats: Boat[] }>({
     queryKey: ["/api/owner/boats"],
-    enabled: !!user && user.role === 'owner',
+    enabled: !!user,
+    retry: false, // Don't retry if unauthorized
   });
   const boats = boatsData?.boats || [];
 
-  // Fetch owner's bookings
+  // Fetch owner's bookings - let the backend handle authorization
   const { data: bookingsData, isLoading: bookingsLoading } = useQuery<{ bookings: Booking[] }>({
     queryKey: ["/api/owner/bookings"],
-    enabled: !!user && user.role === 'owner',
+    enabled: !!user,
+    retry: false, // Don't retry if unauthorized
   });
   const bookings = bookingsData?.bookings || [];
 
@@ -301,13 +303,34 @@ export default function OwnerDashboard() {
     return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear();
   }).length;
 
-  if (!user || user.role !== "owner") {
+  // Check if user is logged in
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Accesso negato</h1>
+          <p className="text-gray-600 mt-2">Devi effettuare l'accesso per accedere a questa pagina.</p>
+          <Button onClick={() => setLocation("/auth")} className="mt-4">
+            Vai al login
+          </Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Check if boats query failed (means user is not an owner)
+  if (boatsQueryError && !boatsLoading) {
     return (
       <div className="min-h-screen bg-gray-50">
         <Header />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900">Accesso negato</h1>
           <p className="text-gray-600 mt-2">Devi essere un proprietario per accedere a questa pagina.</p>
+          <Button onClick={() => setLocation("/diventa-noleggiatore")} className="mt-4">
+            Diventa Sea Host
+          </Button>
         </div>
         <Footer />
       </div>

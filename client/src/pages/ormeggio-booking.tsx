@@ -263,7 +263,8 @@ export default function OrmeggioBookingPage() {
       <Header />
       <Breadcrumbs />
       
-      {/* Hero Search Section - Stile Booking.com */}
+      {/* Hero Search Section - Stile Booking.com - Nascondi se c'è un mooring selezionato */}
+      {!selectedMooring && (
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
@@ -360,11 +361,13 @@ export default function OrmeggioBookingPage() {
           </Card>
         </div>
       </section>
+      )}
 
       {/* Filters and Results */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
+          {/* Sidebar Filters - Nascondi se c'è un mooring selezionato */}
+          {!selectedMooring && (
           <div className="lg:w-80 space-y-6">
             <Card>
               <CardContent className="p-6">
@@ -426,6 +429,7 @@ export default function OrmeggioBookingPage() {
               </CardContent>
             </Card>
           </div>
+          )}
 
           {/* Results */}
           <div className="flex-1 space-y-6">

@@ -456,7 +456,13 @@ export default function CustomerDashboard() {
                 </div>
                 
                 <div className="pt-4 space-y-3">
-                  <Button variant="outline" className="w-full">Modifica profilo</Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => setLocation('/profilo')}
+                  >
+                    Modifica profilo
+                  </Button>
                   
                   <AlertDialog>
                     <AlertDialogTrigger asChild>

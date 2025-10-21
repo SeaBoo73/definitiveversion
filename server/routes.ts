@@ -281,15 +281,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         businessName: user.businessName || undefined
       };
 
-      res.json({
-        success: true,
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          userType: user.role === "owner" ? "owner" : "customer"
+      // Salva esplicitamente la sessione prima di rispondere
+      req.session.save((err) => {
+        if (err) {
+          console.error('❌ Session save error:', err);
+          return res.status(500).json({ error: 'Errore nel salvataggio della sessione' });
         }
+
+        console.log('✅ Session saved successfully for user:', email);
+        res.json({
+          success: true,
+          user: {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            userType: user.role === "owner" ? "owner" : "customer"
+          }
+        });
       });
     } catch (error: any) {
       console.error("Apple Sign In error:", error);

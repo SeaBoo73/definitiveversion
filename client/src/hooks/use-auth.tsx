@@ -100,12 +100,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     onSuccess: (user: SelectUser) => {
       console.log('✅ Apple login success:', user);
       queryClient.setQueryData(["/api/user"], user);
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       toast({
         title: "Accesso con Apple effettuato",
         description: "Benvenuto in SeaBoo!",
       });
-      // Reindirizza automaticamente alla homepage
-      window.location.href = "/";
+      // Aspetta un attimo per far salvare la sessione, poi redirect
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
     },
     onError: (error: Error) => {
       console.error('❌ Apple login error:', error);

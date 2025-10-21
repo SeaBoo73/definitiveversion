@@ -53,6 +53,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Auth middleware
   const requireAuth = (req: any, res: any, next: any) => {
+    console.log('🔐 Auth check - Session ID:', req.sessionID, 'User:', req.session?.user ? 'present' : 'missing', 'Cookies:', req.headers.cookie);
     if (!req.session?.user) {
       return res.status(401).json({ error: "Non autenticato" });
     }

@@ -98,16 +98,18 @@ export default function OwnerDashboard() {
   const [activeTab, setActiveTab] = useState(initialTab);
 
   // Fetch owner's boats
-  const { data: boats = [], isLoading: boatsLoading } = useQuery<Boat[]>({
-    queryKey: ["/api/boats", { ownerId: user?.id }],
-    enabled: !!user,
+  const { data: boatsData, isLoading: boatsLoading } = useQuery<{ boats: Boat[] }>({
+    queryKey: ["/api/owner/boats"],
+    enabled: !!user && user.role === 'owner',
   });
+  const boats = boatsData?.boats || [];
 
   // Fetch owner's bookings
-  const { data: bookings = [], isLoading: bookingsLoading } = useQuery<Booking[]>({
-    queryKey: ["/api/bookings", { ownerId: user?.id }],
-    enabled: !!user,
+  const { data: bookingsData, isLoading: bookingsLoading } = useQuery<{ bookings: Booking[] }>({
+    queryKey: ["/api/owner/bookings"],
+    enabled: !!user && user.role === 'owner',
   });
+  const bookings = bookingsData?.bookings || [];
 
   const form = useForm<BoatFormData>({
     resolver: zodResolver(boatFormSchema),
@@ -140,7 +142,7 @@ export default function OwnerDashboard() {
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/boats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/boats"] });
       setShowAddBoatModal(false);
       setEditingBoat(null);
       form.reset();
@@ -165,7 +167,7 @@ export default function OwnerDashboard() {
       return await res.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/boats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/boats"] });
       setEditingBoat(null);
       toast({
         title: "Imbarcazione aggiornata",
@@ -179,7 +181,7 @@ export default function OwnerDashboard() {
       await apiRequest("DELETE", `/api/boats/${id}`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/boats"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/boats"] });
       toast({
         title: "Imbarcazione eliminata",
         description: "L'imbarcazione è stata rimossa",

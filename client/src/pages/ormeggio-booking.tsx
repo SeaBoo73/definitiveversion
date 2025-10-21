@@ -541,9 +541,11 @@ export default function OrmeggioBookingPage() {
                           {spot.contact.vhf}
                         </Button>
                       </div>
-                      <Button className="bg-blue-600 hover:bg-blue-700">
-                        Prenota Ora
-                        <ArrowRight className="h-4 w-4 ml-1" />
+                      <Button className="bg-blue-600 hover:bg-blue-700" asChild>
+                        <Link href={`/checkout?type=mooring&id=${spot.id}`}>
+                          Prenota Ora
+                          <ArrowRight className="h-4 w-4 ml-1" />
+                        </Link>
                       </Button>
                     </div>
                   </div>

@@ -102,6 +102,7 @@ export default function AuthPage() {
   };
 
   const handleAppleSignIn = async () => {
+    alert('✅ Pulsante Apple cliccato! Sto processando...');
     try {
       // Check if we're in review mode or development mode
       const isReviewMode = import.meta.env.VITE_REVIEW_MODE === 'true' || 

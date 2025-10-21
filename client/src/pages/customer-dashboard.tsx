@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -9,6 +9,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { Booking, Boat } from "@shared/schema";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
@@ -35,6 +48,7 @@ export default function CustomerDashboard() {
   const { user } = useAuth();
   const [location, setLocation] = useLocation();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const { toast } = useToast();
 
   // Get tab from URL parameter
   const urlParams = new URLSearchParams(window.location.search);
@@ -56,6 +70,35 @@ export default function CustomerDashboard() {
     queryKey: ["/api/bookings", { customerId: user?.id }],
     enabled: !!user,
   });
+
+  // Delete account mutation
+  const deleteAccountMutation = useMutation({
+    mutationFn: async () => {
+      return await apiRequest("/api/user/delete-account", {
+        method: "DELETE",
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Account eliminato",
+        description: "Il tuo account è stato eliminato con successo",
+      });
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+    },
+    onError: () => {
+      toast({
+        title: "Errore",
+        description: "Si è verificato un errore durante l'eliminazione dell'account",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDeleteAccount = () => {
+    deleteAccountMutation.mutate();
+  };
 
   // TODO: Fetch user's favorites (table not yet created)
   const favorites: any[] = [];
@@ -412,8 +455,48 @@ export default function CustomerDashboard() {
                   </div>
                 </div>
                 
-                <div className="pt-4">
-                  <Button variant="outline">Modifica profilo</Button>
+                <div className="pt-4 space-y-3">
+                  <Button variant="outline" className="w-full">Modifica profilo</Button>
+                  
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="destructive"
+                        className="w-full"
+                        data-testid="button-delete-account"
+                      >
+                        Elimina account
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>
+                        <AlertDialogDescription className="space-y-2">
+                          <p>
+                            Questa azione non può essere annullata. Eliminerà permanentemente il tuo
+                            account e rimuoverà tutti i tuoi dati dai nostri server.
+                          </p>
+                          <p className="font-semibold text-red-600">
+                            Tutte le tue prenotazioni e dati personali
+                            verranno eliminati definitivamente.
+                          </p>
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel data-testid="button-cancel-delete">
+                          Annulla
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeleteAccount}
+                          className="bg-red-600 hover:bg-red-700"
+                          data-testid="button-confirm-delete"
+                          disabled={deleteAccountMutation.isPending}
+                        >
+                          {deleteAccountMutation.isPending ? "Eliminazione..." : "Sì, elimina il mio account"}
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardContent>
             </Card>

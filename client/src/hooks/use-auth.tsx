@@ -44,7 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/api/login", credentials);
-      return await res.json();
+      const data = await res.json();
+      return data.user || data;
     },
     onSuccess: (user: SelectUser) => {
       queryClient.setQueryData(["/api/user"], user);
@@ -67,7 +68,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const registerMutation = useMutation({
     mutationFn: async (credentials: InsertUser) => {
       const res = await apiRequest("POST", "/api/register", credentials);
-      return await res.json();
+      const data = await res.json();
+      return data.user || data;
     },
     onSuccess: (user: SelectUser) => {
       queryClient.setQueryData(["/api/user"], user);
@@ -89,10 +91,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const appleLoginMutation = useMutation({
     mutationFn: async (appleData: AppleLoginData) => {
+      console.log('📤 Sending Apple login request:', appleData);
       const res = await apiRequest("POST", "/auth/apple/callback", appleData);
-      return await res.json();
+      const data = await res.json();
+      console.log('📥 Apple login response:', data);
+      return data.user || data;
     },
     onSuccess: (user: SelectUser) => {
+      console.log('✅ Apple login success:', user);
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Accesso con Apple effettuato",
@@ -102,6 +108,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       window.location.href = "/";
     },
     onError: (error: Error) => {
+      console.error('❌ Apple login error:', error);
       toast({
         title: "Errore accesso Apple",
         description: error.message,

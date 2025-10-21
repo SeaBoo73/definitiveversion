@@ -281,6 +281,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         businessName: user.businessName || undefined
       };
 
+      console.log('💾 Attempting to save session for user:', email, 'Session ID:', req.sessionID);
+
       // Salva esplicitamente la sessione prima di rispondere
       req.session.save((err) => {
         if (err) {
@@ -288,7 +290,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(500).json({ error: 'Errore nel salvataggio della sessione' });
         }
 
-        console.log('✅ Session saved successfully for user:', email);
+        console.log('✅ Session saved successfully for user:', email, 'Session ID:', req.sessionID);
         res.json({
           success: true,
           user: {

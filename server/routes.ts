@@ -53,7 +53,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Auth middleware
   const requireAuth = (req: any, res: any, next: any) => {
-    console.log('🔐 Auth check - Session ID:', req.sessionID, 'User:', req.session?.user ? 'present' : 'missing', 'Cookies:', req.headers.cookie);
     if (!req.session?.user) {
       return res.status(401).json({ error: "Non autenticato" });
     }
@@ -284,8 +283,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         businessName: user.businessName || undefined
       };
 
-      console.log('💾 Attempting to save session for user:', email, 'Session ID:', req.sessionID);
-
       // Salva esplicitamente la sessione prima di rispondere
       req.session.save((err) => {
         if (err) {
@@ -293,7 +290,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(500).json({ error: 'Errore nel salvataggio della sessione' });
         }
 
-        console.log('✅ Session saved successfully for user:', email, 'Session ID:', req.sessionID);
         res.json({
           success: true,
           user: {

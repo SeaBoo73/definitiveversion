@@ -297,9 +297,9 @@ const portsWithRegion = [
 
 export default function OrmeggioPage() {
   const [searchLocation, setSearchLocation] = useState("");
-  const [maxLength, setMaxLength] = useState("");
-  const [priceRange, setPriceRange] = useState("");
-  const [services, setServices] = useState("");
+  const [maxLength, setMaxLength] = useState("all");
+  const [priceRange, setPriceRange] = useState("all");
+  const [services, setServices] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredPorts, setFilteredPorts] = useState<{ name: string; region: string }[]>([]);
@@ -343,8 +343,8 @@ export default function OrmeggioPage() {
 
   const filteredSpots = mooringSpots.filter(spot => {
     if (searchLocation && !spot.location.toLowerCase().includes(searchLocation.toLowerCase())) return false;
-    if (maxLength && spot.specs.maxLength < parseInt(maxLength)) return false;
-    if (priceRange) {
+    if (maxLength && maxLength !== "all" && spot.specs.maxLength < parseInt(maxLength)) return false;
+    if (priceRange && priceRange !== "all") {
       const price = spot.pricing.daily;
       if (priceRange === "0-30" && price > 30) return false;
       if (priceRange === "30-50" && (price < 30 || price > 50)) return false;
@@ -480,7 +480,7 @@ export default function OrmeggioPage() {
                 <SelectValue placeholder="Lunghezza barca" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tutte le lunghezze</SelectItem>
+                <SelectItem value="all">Tutte le lunghezze</SelectItem>
                 <SelectItem value="8">Fino a 8m</SelectItem>
                 <SelectItem value="12">Fino a 12m</SelectItem>
                 <SelectItem value="15">Fino a 15m</SelectItem>
@@ -494,7 +494,7 @@ export default function OrmeggioPage() {
                 <SelectValue placeholder="Prezzo/giorno" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tutti i prezzi</SelectItem>
+                <SelectItem value="all">Tutti i prezzi</SelectItem>
                 <SelectItem value="0-30">€0 - €30</SelectItem>
                 <SelectItem value="30-50">€30 - €50</SelectItem>
                 <SelectItem value="50+">€50+</SelectItem>
@@ -506,7 +506,7 @@ export default function OrmeggioPage() {
                 <SelectValue placeholder="Servizi" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tutti i servizi</SelectItem>
+                <SelectItem value="all">Tutti i servizi</SelectItem>
                 <SelectItem value="wifi">WiFi</SelectItem>
                 <SelectItem value="fuel">Carburante</SelectItem>
                 <SelectItem value="restaurant">Ristorante</SelectItem>
@@ -555,7 +555,12 @@ export default function OrmeggioPage() {
             </h2>
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Filter className="h-4 w-4" />
-              <span>Filtri attivi: {[searchLocation, maxLength, priceRange, services].filter(Boolean).length}</span>
+              <span>Filtri attivi: {[
+                searchLocation, 
+                maxLength !== "all" ? maxLength : "", 
+                priceRange !== "all" ? priceRange : "", 
+                services !== "all" ? services : ""
+              ].filter(Boolean).length}</span>
             </div>
           </div>
 

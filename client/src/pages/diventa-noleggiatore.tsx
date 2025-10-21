@@ -55,8 +55,8 @@ export default function DiventaNoleggiatorePage() {
       });
       // Forza un hard reload per aggiornare completamente la sessione
       setTimeout(() => {
-        window.location.href = "/owner-dashboard";
-      }, 1000);
+        window.location.href = "/owner-dashboard?upgraded=true";
+      }, 1500);
     },
     onError: () => {
       toast({

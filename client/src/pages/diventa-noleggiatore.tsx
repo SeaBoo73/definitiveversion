@@ -6,8 +6,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import { Link, useLocation } from "wouter";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Ship, 
   Euro, 
@@ -26,19 +31,79 @@ import {
 export default function DiventaNoleggiatorePage() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [acceptedCommission, setAcceptedCommission] = useState(false);
   const [acceptedRequirements, setAcceptedRequirements] = useState(false);
+  const [businessName, setBusinessName] = useState("");
+  const [businessType, setBusinessType] = useState("");
+  const [vatNumber, setVatNumber] = useState("");
+  const [phone, setPhone] = useState("");
+
+  const isAlreadyOwner = user?.role === 'owner';
+  const needsUpgrade = user && user.role !== 'owner';
+
+  const upgradeToOwnerMutation = useMutation({
+    mutationFn: async (data: any) => {
+      return await apiRequest("/api/user/upgrade-to-owner", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+    },
+    onSuccess: () => {
+      toast({
+        title: "Upgrade completato!",
+        description: "Ora sei un noleggiatore SeaBoo",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      setTimeout(() => {
+        setLocation("/owner-dashboard");
+      }, 1500);
+    },
+    onError: () => {
+      toast({
+        title: "Errore",
+        description: "Si è verificato un errore durante l'upgrade",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleProceed = () => {
-    if (acceptedTerms && acceptedCommission && acceptedRequirements) {
-      if (user) {
-        // User logged in, redirect to owner dashboard
-        setLocation("/owner-dashboard");
-      } else {
-        // User not logged in, redirect to registration
-        setLocation("/auth?tab=register&role=owner");
+    if (!acceptedTerms || !acceptedCommission || !acceptedRequirements) {
+      toast({
+        title: "Attenzione",
+        description: "Devi accettare tutti i termini per procedere",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isAlreadyOwner) {
+      // Already owner, go to dashboard
+      setLocation("/owner-dashboard");
+    } else if (needsUpgrade) {
+      // Upgrade existing customer account
+      if (!businessName || !phone) {
+        toast({
+          title: "Campi mancanti",
+          description: "Compila tutti i campi obbligatori",
+          variant: "destructive",
+        });
+        return;
       }
+      upgradeToOwnerMutation.mutate({
+        businessName,
+        businessType,
+        vatNumber,
+        phone
+      });
+    } else {
+      // Not logged in, redirect to registration
+      setLocation("/auth?tab=register&role=owner");
     }
   };
 
@@ -233,18 +298,86 @@ export default function DiventaNoleggiatorePage() {
           </CardContent>
         </Card>
 
+        {/* Business Info Form - Only shown if user needs to upgrade */}
+        {needsUpgrade && (
+          <Card className="mb-8 border-blue-200 bg-blue-50">
+            <CardHeader>
+              <CardTitle>Informazioni Aziendali</CardTitle>
+              <p className="text-sm text-gray-600 mt-2">
+                Completa i tuoi dati per diventare un noleggiatore SeaBoo
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="businessName">Nome attività/azienda *</Label>
+                  <Input
+                    id="businessName"
+                    type="text"
+                    placeholder="es. Noleggio Barche Azzurro"
+                    value={businessName}
+                    onChange={(e) => setBusinessName(e.target.value)}
+                    data-testid="input-business-name"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="businessType">Tipo attività</Label>
+                  <Input
+                    id="businessType"
+                    type="text"
+                    placeholder="es. Ditta individuale, SRL, ecc."
+                    value={businessType}
+                    onChange={(e) => setBusinessType(e.target.value)}
+                    data-testid="input-business-type"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="vatNumber">Partita IVA</Label>
+                  <Input
+                    id="vatNumber"
+                    type="text"
+                    placeholder="es. IT12345678901"
+                    value={vatNumber}
+                    onChange={(e) => setVatNumber(e.target.value)}
+                    data-testid="input-vat-number"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Telefono *</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="es. +39 333 1234567"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    data-testid="input-phone"
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* CTA Button */}
         <div className="text-center">
           <Button
             onClick={handleProceed}
-            disabled={!canProceed}
+            disabled={!canProceed || upgradeToOwnerMutation.isPending}
             className={`px-8 py-3 text-lg font-semibold rounded-lg transition-all ${
-              canProceed
+              canProceed && !upgradeToOwnerMutation.isPending
                 ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg"
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
+            data-testid="button-proceed"
           >
-            {user ? "Accedi alla Dashboard" : "Registrati come Noleggiatore"}
+            {upgradeToOwnerMutation.isPending 
+              ? "Elaborazione..." 
+              : isAlreadyOwner 
+                ? "Accedi alla Dashboard"
+                : needsUpgrade
+                  ? "Diventa Noleggiatore"
+                  : "Registrati come Noleggiatore"
+            }
           </Button>
           <p className="text-gray-500 text-sm mt-3">
             {user 

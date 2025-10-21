@@ -193,6 +193,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upgrade to owner endpoint
+  app.post('/api/user/upgrade-to-owner', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const { businessName, businessType, vatNumber, phone } = req.body;
+      
+      // Update user role to owner
+      const updatedUser = await storage.updateUser(userId, {
+        role: 'owner',
+        businessName,
+        businessType,
+        vatNumber,
+        phone
+      });
+
+      if (!updatedUser) {
+        return res.status(500).json({ error: "Errore durante l'aggiornamento dell'account" });
+      }
+
+      // Update session
+      req.session.user = {
+        ...req.session.user,
+        role: 'owner',
+        userType: 'owner',
+        businessName: updatedUser.businessName || undefined
+      };
+
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+          return res.status(500).json({ error: 'Errore nel salvataggio della sessione' });
+        }
+
+        res.json({
+          success: true,
+          user: {
+            id: updatedUser.id,
+            email: updatedUser.email,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            role: updatedUser.role,
+            userType: 'owner',
+            businessName: updatedUser.businessName
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Upgrade to owner error:", error);
+      res.status(500).json({ error: "Errore durante l'aggiornamento dell'account" });
+    }
+  });
+
   // Apple Sign In callback endpoint
   app.post('/auth/apple/callback', async (req, res) => {
     try {

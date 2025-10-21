@@ -102,17 +102,46 @@ export default function AuthPage() {
   };
 
   const handleAppleSignIn = async () => {
-    alert('✅ Pulsante Apple cliccato! Sto processando...');
     try {
-      // Check if we're in review mode or development mode
-      const isReviewMode = import.meta.env.VITE_REVIEW_MODE === 'true' || 
-                          window.location.hostname.includes('replit') ||
-                          window.location.hostname.includes('localhost');
-
-      console.log('🚀 handleAppleSignIn avviato isReview =', isReviewMode, 'VITE_REVIEW_MODE =', import.meta.env.VITE_REVIEW_MODE);
-
-      if (isReviewMode) {
-        // For Apple Review or development testing: simulate Apple ID token
+      console.log('🚀 handleAppleSignIn started');
+      
+      // Try real Apple Sign In first
+      if (typeof window !== 'undefined' && window.AppleID) {
+        console.log('🔄 Apple SDK available, attempting real Apple Sign In...');
+        
+        try {
+          // Initialize Apple Sign In if not already done
+          if (!window.AppleID.auth) {
+            console.log('📝 Initializing Apple SDK...');
+            await window.AppleID.auth.init({
+              clientId: 'it.seaboo.web',
+              scope: 'name email',
+              redirectURI: window.location.origin + '/auth/apple/callback',
+              usePopup: true
+            });
+          }
+          
+          const response = await window.AppleID.auth.signIn();
+          
+          console.log('✅ Apple Sign In successful, processing...');
+          appleLoginMutation.mutate({
+            id_token: response.authorization.id_token,
+            user_info: response.user
+          });
+          return;
+        } catch (sdkError) {
+          console.error('❌ Apple SDK error:', sdkError);
+          // Continue to fallback
+        }
+      }
+      
+      // Fallback: use mock for development/testing only
+      const isDevelopment = window.location.hostname.includes('replit') || 
+                           window.location.hostname.includes('localhost');
+      
+      if (isDevelopment) {
+        console.log('⚠️ Using mock Apple Sign In (development fallback)');
+        
         const mockAppleData = {
           id_token: 'mock_apple_id_token_' + Date.now(),
           user_info: {
@@ -124,32 +153,14 @@ export default function AuthPage() {
           }
         };
         
-        console.log('✅ Using mock Apple Sign In for review/development mode');
-        
-        // Aggiungi un piccolo delay per simulare la rete
         await new Promise(resolve => setTimeout(resolve, 500));
-        
         appleLoginMutation.mutate(mockAppleData);
       } else {
-        // Real Apple Sign In for production
-        console.log('🔄 Attempting real Apple Sign In...');
-        
-        if (typeof window !== 'undefined' && window.AppleID) {
-          const response = await window.AppleID.auth.signIn();
-          
-          console.log('✅ Apple Sign In successful, processing...');
-          appleLoginMutation.mutate({
-            id_token: response.authorization.id_token,
-            user_info: response.user
-          });
-        } else {
-          console.warn('⚠️ Apple ID SDK not available');
-          toast({
-            title: "Apple Sign In non disponibile",
-            description: "L'SDK Apple non è caricato. Prova con email e password.",
-            variant: "destructive",
-          });
-        }
+        toast({
+          title: "Apple Sign In non disponibile",
+          description: "L'SDK Apple non è caricato correttamente. Prova con email e password.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error('❌ Apple Sign In error:', error);

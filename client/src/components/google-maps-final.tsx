@@ -71,7 +71,7 @@ const realPorts = [
 declare global {
   interface Window {
     google: any;
-    initSeaGoMap: () => void;
+    initSeaBooMap: () => void;
   }
 }
 
@@ -94,10 +94,10 @@ export function GoogleMapsFinal() {
 
         // Carica Google Maps script
         const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&callback=initSeaGoMap`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${config.googleMapsApiKey}&callback=initSeaBooMap`;
         script.async = true;
 
-        window.initSeaGoMap = () => {
+        window.initSeaBooMap = () => {
           if (!mapRef.current || !window.google) return;
 
           const map = new window.google.maps.Map(mapRef.current, {

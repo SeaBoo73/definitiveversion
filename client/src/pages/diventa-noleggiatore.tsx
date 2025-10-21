@@ -48,18 +48,15 @@ export default function DiventaNoleggiatorePage() {
       const response = await apiRequest("POST", "/api/user/upgrade-to-owner", data);
       return await response.json();
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       toast({
         title: "Upgrade completato!",
-        description: "Ora sei un noleggiatore SeaBoo",
+        description: "Ora sei un noleggiatore SeaBoo. Reindirizzamento...",
       });
-      // Invalida e aspetta che la query si aggiorni
-      await queryClient.invalidateQueries({ queryKey: ["/api/user"] });
-      await queryClient.refetchQueries({ queryKey: ["/api/user"] });
-      // Piccolo delay per assicurarsi che tutto sia aggiornato
+      // Forza un hard reload per aggiornare completamente la sessione
       setTimeout(() => {
-        setLocation("/owner-dashboard");
-      }, 500);
+        window.location.href = "/owner-dashboard";
+      }, 1000);
     },
     onError: () => {
       toast({

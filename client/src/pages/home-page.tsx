@@ -351,10 +351,10 @@ export default function HomePage() {
             <div className="text-center lg:text-left">
               <h3 className="text-2xl font-bold mb-4">Registrazione immediata</h3>
               <p className="text-blue-100 mb-6">
-                Clicca qui per procedere direttamente alla registrazione senza compilare i dati.
+                Scopri i vantaggi di diventare un noleggiatore SeaBoo e inizia a guadagnare.
               </p>
               <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg" asChild>
-                <Link href="/auth?tab=register">Diventa noleggiatore</Link>
+                <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
               </Button>
             </div>
             

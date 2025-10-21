@@ -45,6 +45,7 @@ app.use(cors({
     if (!origin) return cb(null, true);
     if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
     if (origin.includes('.replit.dev')) return cb(null, true);
+    if (origin.includes('.replit.app')) return cb(null, true);
     return cb(new Error(`CORS blocked: ${origin}`));
   },
   credentials: true,

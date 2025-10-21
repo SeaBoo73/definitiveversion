@@ -17,7 +17,6 @@ import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
 import { TrendingDestinations } from "@/components/trending-destinations";
 import { WeatherWidget } from "@/components/weather-widget";
-import { GoogleMapsLazio } from "@/components/google-maps-lazio";
 import { CategoryGallery } from "@/components/category-gallery";
 import { SEOHead, seoConfigs } from "@/components/seo-head";
 import { StructuredData } from "@/components/structured-data";
@@ -284,21 +283,6 @@ export default function HomePage() {
       {/* Contenuto homepage normale - mostra solo se non è selezionata una categoria */}
       {!selectedCategory && (
         <>
-          {/* Interactive Map */}
-          <section className="py-16 bg-gradient-to-b from-blue-50 to-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">Esplora il Mare di Lazio e Campania</h2>
-                <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                  Scopri le imbarcazioni disponibili nei porti più belli di Lazio e Campania. 
-                  14 porti principali da Civitavecchia a Capri con prezzi in tempo reale.
-                </p>
-              </div>
-              
-              <GoogleMapsLazio />
-            </div>
-          </section>
-
           {/* Ormeggio - Solo Desktop */}
           <section className="py-16 bg-gray-50 hidden md:block">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -86,9 +86,11 @@ const categoryMapping = [
 
 export default function CategoriesPage() {
   const [location, setLocation] = useLocation();
-  const { data: boats = [], isLoading } = useQuery<Boat[]>({
+  const { data, isLoading } = useQuery<{ boats: Boat[] }>({
     queryKey: ["/api/boats"],
   });
+
+  const boats = data?.boats || [];
 
   // Scroll to top when component mounts or location changes
   useEffect(() => {
@@ -157,8 +159,7 @@ export default function CategoriesPage() {
             {categories.map((category) => (
               <Card 
                 key={category.id} 
-                className="group cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
-                onClick={() => handleCategoryClick(category.id)}
+                className="group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden"
               >
                 <div className="relative">
                   <div className="aspect-[4/3] overflow-hidden">
@@ -208,9 +209,12 @@ export default function CategoriesPage() {
 
                   <Button 
                     className="w-full bg-gradient-to-r from-ocean-blue to-deep-navy hover:from-deep-navy hover:to-ocean-blue transition-all duration-300"
+                    asChild
                   >
-                    <Search className="h-4 w-4 mr-2" />
-                    Esplora {category.name}
+                    <Link href={`/search?boatTypes=${category.id}`} data-testid={`button-explore-${category.id}`}>
+                      <Search className="h-4 w-4 mr-2" />
+                      Esplora {category.name}
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>

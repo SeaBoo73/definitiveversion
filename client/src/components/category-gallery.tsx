@@ -138,7 +138,7 @@ export function CategoryGallery() {
             <p className="text-lg text-gray-600">Trova l'imbarcazione perfetta per la tua avventura</p>
             <div className="mt-6">
               <Button asChild size="lg" className="bg-gradient-to-r from-ocean-blue to-deep-navy">
-                <Link href="/categories">
+                <Link href="/categories" data-testid="button-view-all-categories">
                   Vedi Tutte le Categorie
                 </Link>
               </Button>
@@ -170,7 +170,7 @@ export function CategoryGallery() {
                   className="w-full bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 hover:border-blue-300"
                   asChild
                 >
-                  <Link href={`/search?boatTypes=${category.id}`}>
+                  <Link href={`/search?boatTypes=${category.id}`} data-testid={`button-explore-${category.id}`}>
                     Esplora
                   </Link>
                 </Button>

@@ -82,7 +82,10 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
         throw new Error("Utente non autenticato");
       }
       const bookingData = {
-        ...data,
+        startDate: data.startDate.toISOString(),
+        endDate: data.endDate.toISOString(),
+        notes: data.notes,
+        skipperRequested: data.skipperRequested,
         customerId: Number(user.id),
         boatId: Number(boat.id),
         totalPrice: totalPrice.toString(),

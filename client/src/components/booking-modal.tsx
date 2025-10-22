@@ -36,7 +36,8 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
-const bookingFormSchema = insertBookingSchema.extend({
+// Form schema without customerId and boatId (added later in mutation)
+const bookingFormSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   notes: z.string().optional(),
@@ -58,7 +59,6 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
-      boatId: boat.id,
       startDate: new Date(),
       endDate: addDays(new Date(), 1),
       skipperRequested: boat.skipperRequired || false,
@@ -78,8 +78,13 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
 
   const createBookingMutation = useMutation({
     mutationFn: async (data: BookingFormData) => {
+      if (!user?.id) {
+        throw new Error("Utente non autenticato");
+      }
       const bookingData = {
         ...data,
+        customerId: user.id,
+        boatId: boat.id,
         totalPrice: totalPrice.toString(),
       };
       const res = await apiRequest("POST", "/api/bookings", bookingData);

@@ -83,18 +83,24 @@ export const boats = pgTable("boats", {
   cancellationRules: jsonb("cancellation_rules"),
 });
 
-// Bookings table
+// Bookings table matching the actual database structure
 export const bookings = pgTable("bookings", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  customerId: varchar("customer_id").references(() => users.id).notNull(),
-  boatId: varchar("boat_id").references(() => boats.id).notNull(),
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").references(() => users.id).notNull(),
+  boatId: integer("boat_id").references(() => boats.id).notNull(),
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
-  totalPrice: varchar("total_price", { length: 20 }),
-  status: varchar("status", { length: 20 }).default("pending"), // pending, confirmed, cancelled
-  specialRequests: text("special_requests"),
+  totalPrice: numeric("total_price"),
+  commission: numeric("commission"),
+  status: varchar("status", { length: 20 }).default("pending"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  skipperRequested: boolean("skipper_requested"),
+  notes: text("notes"),
+  originalPrice: numeric("original_price"),
+  discountCode: text("discount_code"),
+  discountAmount: numeric("discount_amount"),
+  loyaltyPointsEarned: integer("loyalty_points_earned"),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Zod schemas for validation
@@ -140,7 +146,9 @@ export const insertBoatSchema = createInsertSchema(boats, {
 export const insertBookingSchema = createInsertSchema(bookings, {
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-}).omit({ id: true, createdAt: true, updatedAt: true });
+  customerId: z.number(),
+  boatId: z.number(),
+}).omit({ id: true, createdAt: true });
 
 // Legacy exports for compatibility
 export const insertMooringSchema = insertBoatSchema;

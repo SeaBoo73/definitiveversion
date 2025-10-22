@@ -620,15 +620,13 @@ export default function AuthPage() {
                         />
                         <label htmlFor="acceptTerms" className="text-sm leading-5">
                           Accetto i{" "}
-                          <Link href="/condizioni-servizio">
-                            <a className="text-ocean-blue hover:underline font-medium" target="_blank">
-                              Termini e Condizioni d'uso
-                            </a>
+                          <Link href="/condizioni-servizio" className="text-ocean-blue hover:underline font-medium" target="_blank">
+                            Termini e Condizioni d'uso
                           </Link>
                           {" "}e confermo di aver letto la{" "}
-                          <a href="/privacy-policy" className="text-ocean-blue hover:underline font-medium" target="_blank">
+                          <Link href="/privacy-policy" className="text-ocean-blue hover:underline font-medium" target="_blank">
                             Privacy Policy
-                          </a>
+                          </Link>
                         </label>
                       </div>
                       {registerForm.formState.errors.acceptTerms && (

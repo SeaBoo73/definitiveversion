@@ -479,6 +479,7 @@ export default function OwnerDashboard() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList>
             <TabsTrigger value="boats">Le mie imbarcazioni</TabsTrigger>
+            <TabsTrigger value="moorings">I miei ormeggi</TabsTrigger>
             <TabsTrigger value="experiences">Le mie esperienze</TabsTrigger>
             <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
             <TabsTrigger value="messages">Messaggi</TabsTrigger>
@@ -1124,6 +1125,84 @@ export default function OwnerDashboard() {
                         variant="outline"
                         onClick={() => deleteBoatMutation.mutate(boat.id)}
                       >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="moorings" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">I miei ormeggi</h2>
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700"
+                onClick={() => navigate("/owner-dashboard?tab=boats")}
+                data-testid="button-addMooring"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Aggiungi ormeggio
+              </Button>
+            </div>
+
+            <Card className="bg-blue-50 border-blue-200">
+              <CardContent className="p-8 text-center">
+                <Anchor className="h-16 w-16 text-blue-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Gestisci i tuoi posti barca</h3>
+                <p className="text-gray-600 mb-4">
+                  Metti a disposizione i tuoi ormeggi per altre barche. Inizia ad aggiungere i tuoi posti barca disponibili.
+                </p>
+                <div className="bg-white rounded-lg p-4 text-left max-w-md mx-auto space-y-2">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm text-gray-700">Specifica porto e posizione</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Ruler className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm text-gray-700">Indica lunghezza massima barca</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Euro className="h-4 w-4 text-blue-600" />
+                    <span className="text-sm text-gray-700">Imposta tariffa giornaliera</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Placeholder per ormeggi - da implementare con API dedicata */}
+              {[].map((mooring: any) => (
+                <Card key={mooring.id} className="hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="font-semibold text-lg text-gray-900">{mooring.name}</h3>
+                        <p className="text-sm text-gray-600">{mooring.location}</p>
+                      </div>
+                      <Badge className="bg-blue-100 text-blue-800">
+                        <Anchor className="h-3 w-3 mr-1" />
+                        Ormeggio
+                      </Badge>
+                    </div>
+
+                    <div className="space-y-2 text-sm text-gray-600 mb-4">
+                      <div className="flex items-center">
+                        <Ruler className="h-4 w-4 mr-1" />
+                        Max {mooring.length}m
+                      </div>
+                      <div className="flex items-center">
+                        <Euro className="h-4 w-4 mr-1" />
+                        €{mooring.pricePerDay}/giorno
+                      </div>
+                    </div>
+
+                    <div className="flex space-x-2">
+                      <Button size="sm" variant="outline">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button size="sm" variant="outline">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>

@@ -302,6 +302,13 @@ button[data-state="active"].auth-tab-trigger {
   color: white !important;
 }
 
+/* Dashboard tabs active state - evidenzia le sezioni attive */
+button[data-state="active"][role="tab"] {
+  background-color: #0C9FE2 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
 /* Calendar fix - ensure calendar days are clickable */
 .calendar {
   pointer-events: auto !important;

@@ -1,0 +1,24 @@
+Failed to resolve host network app id to config: bundleID: com.apple.WebKit.Networking instance ID: Optional([_EXExtensionInstanceIdentifier: 941E8B9D-45B8-4C77-A30C-724DB6D04218])
+⚡️  Loading app at capacitor://localhost...
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  WebView loaded
+⚡️  [log] - 🚀 handleAppleSignIn started
+⚡️  [log] - 📱 Running in Capacitor, using native Apple Sign In...
+⚡️  To Native ->  SignInWithApple authorize 71439975
+⚡️  TO JS {"response":{"user":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","identityToken":"eyJraWQiOiJZUXJxZE1ENGJxIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiaXQuc2VhYm9vLmFwcCIsImV4cCI6MTc2MTIzNDY0MSwiaWF0IjoxNzYxMTQ4MjQxLCJzd
+⚡️  [log] - ✅ Native Apple Sign In successful
+⚡️  [log] - 🍎 Apple data: {"appleUserId":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","givenName":"","familyName":""}
+⚡️  [log] - 🔵 About to call registerMutation with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - ✅ registerMutation.mutate called successfully
+⚡️  [log] - 🔷 registerMutation.mutationFn called with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - 🌐 API Request: {"method":"POST","url":"/api/register","fullUrl":"capacitor://localhost/api/register","API_BASE_URL":"capacitor://localhost","data":{"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}}
+⚡️  [log] - 🌐 API Response: {"status":200,"statusText":"","url":"capacitor://localhost/api/register"}
+⚡️  [log] - 🔷 API response received: 200
+⚡️  [error] - 🔷❌ Error in registerMutation.mutationFn: {"line":638,"column":23922,"sourceURL":"capacitor://localhost/assets/index-ltkzaZuc.js"}
+⚡️  [error] - ❌ registerMutation.onError called with: {"line":638,"column":23922,"sourceURL":"capacitor://localhost/assets/index-ltkzaZuc.js"}
+⚡️  [error] - ❌ Error message: The string did not match the expected pattern.
+⚡️  [error] - ❌ Error stack: json@[native code]
+@capacitor://localhost/assets/index-ltkzaZuc.js:638:23922

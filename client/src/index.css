@@ -296,6 +296,12 @@ select option {
   }
 }
 
+/* Tab active state fix */
+button[data-state="active"].auth-tab-trigger {
+  background-color: #0C9FE2 !important;
+  color: white !important;
+}
+
 /* Calendar fix - ensure calendar days are clickable */
 .calendar {
   pointer-events: auto !important;

@@ -683,10 +683,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         period: 5
       },
       forecast: [
-        { time: '12:00', temperature: 23, description: 'Soleggiato', windSpeed: 10, waves: 0.7 },
-        { time: '15:00', temperature: 24, description: 'Parzialmente nuvoloso', windSpeed: 14, waves: 0.9 },
-        { time: '18:00', temperature: 21, description: 'Nuvoloso', windSpeed: 16, waves: 1.1 },
-        { time: '21:00', temperature: 19, description: 'Sereno', windSpeed: 12, waves: 0.8 }
+        { time: new Date(Date.now() + 0 * 3600000).toISOString(), temperature: 23, description: 'Soleggiato', windSpeed: 10, waves: 0.7 },
+        { time: new Date(Date.now() + 3 * 3600000).toISOString(), temperature: 24, description: 'Parzialmente nuvoloso', windSpeed: 14, waves: 0.9 },
+        { time: new Date(Date.now() + 6 * 3600000).toISOString(), temperature: 21, description: 'Nuvoloso', windSpeed: 16, waves: 1.1 },
+        { time: new Date(Date.now() + 9 * 3600000).toISOString(), temperature: 19, description: 'Sereno', windSpeed: 12, waves: 0.8 }
       ]
     };
     

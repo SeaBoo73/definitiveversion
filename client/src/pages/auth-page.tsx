@@ -130,21 +130,26 @@ export default function AuthPage() {
           
           // Extract data from Apple authentication
           const appleUserId = result.response.user || '';
-          const email = result.response.email || `${appleUserId}@privaterelay.appleid.com`;
+          const rawEmail = result.response.email;
           const givenName = result.response.givenName || '';
           const familyName = result.response.familyName || '';
-          
-          console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
           
           if (!appleUserId) {
             throw new Error('ID Apple non fornito');
           }
           
+          // Generate a valid email if Apple doesn't provide one
+          // Use a hash of the Apple ID to create a clean email address
+          const cleanAppleId = appleUserId.replace(/[^a-z0-9]/gi, '').substring(0, 30);
+          const email = rawEmail || `apple${cleanAppleId}@seaboo.app`;
+          
+          console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
+          
           // Register/login with Apple data
           registerMutation.mutate({
             email: email,
             password: appleUserId,
-            username: `apple_${appleUserId.substring(0, 10)}`,
+            username: `apple_${cleanAppleId}`,
             role: 'customer',
             firstName: givenName || 'Utente',
             lastName: familyName || 'Apple',

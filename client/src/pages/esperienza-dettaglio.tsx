@@ -109,7 +109,7 @@ export default function EsperienzaDettaglio() {
           <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
             <Link href="/esperienze">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              ← Torna alle esperienze
+              Torna alle esperienze
             </Link>
           </Button>
         </div>

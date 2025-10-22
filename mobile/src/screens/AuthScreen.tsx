@@ -6,10 +6,12 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useAuth } from '../services/AuthContext';
+import { SignInWithApple, SignInWithAppleResponse, SignInWithAppleOptions } from '@capacitor-community/apple-sign-in';
 
 export default function AuthScreen({ navigation }: any) {
   const [isLogin, setIsLogin] = useState(true);
@@ -146,35 +148,75 @@ export default function AuthScreen({ navigation }: any) {
   const handleAppleSignIn = async () => {
     try {
       setLoading(true);
-      console.log('Starting Apple Sign In flow...');
+      console.log('🍎 Starting real Apple Sign In flow...');
       
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      
-      const appleUserData = {
-        userIdentifier: `apple_${Date.now()}`,
-        email: 'user@privaterelay.appleid.com',
-        fullName: { givenName: 'Utente', familyName: 'Apple' }
+      // Verifica che siamo su iOS
+      if (Platform.OS !== 'ios') {
+        Alert.alert('Non disponibile', 'Apple Sign In è disponibile solo su iOS.');
+        setLoading(false);
+        return;
+      }
+
+      // Configurazione per Apple Sign In
+      const options: SignInWithAppleOptions = {
+        clientId: 'it.seaboo.app',
+        redirectURI: 'https://seaboo.it/auth/apple/callback',
+        scopes: 'email name',
+        state: 'seaboo_state_' + Date.now(),
       };
 
+      // Chiama il plugin nativo di Capacitor
+      const result: SignInWithAppleResponse = await SignInWithApple.authorize(options);
+      
+      console.log('✅ Apple Sign In successful:', {
+        user: result.response.user,
+        email: result.response.email,
+        givenName: result.response.givenName,
+        familyName: result.response.familyName,
+      });
+
+      // Estrai i dati dall'autenticazione Apple
+      const appleUserId = result.response.user;
+      const email = result.response.email || '';
+      const givenName = result.response.givenName || '';
+      const familyName = result.response.familyName || '';
+
+      if (!email) {
+        throw new Error('Email non fornita da Apple. Assicurati di condividere la tua email.');
+      }
+
+      // Registra o login con i dati Apple reali
       const success = await register({
-        email: appleUserData.email,
-        password: appleUserData.userIdentifier,
-        username: `apple_user_${Date.now()}`,
+        email: email,
+        password: appleUserId, // Usa l'ID Apple come password (è sicuro, viene hashato)
+        username: `apple_${appleUserId.substring(0, 10)}`,
         role: 'customer',
-        firstName: appleUserData.fullName.givenName,
-        lastName: appleUserData.fullName.familyName,
-        appleId: appleUserData.userIdentifier
+        firstName: givenName || 'Utente',
+        lastName: familyName || 'Apple',
+        appleId: appleUserId
       });
 
       if (success) {
         Alert.alert(
           '🍎 Accesso Apple riuscito',
-          'Benvenuto in SeaBoo! Il tuo account Apple è stato collegato.',
+          `Benvenuto ${givenName || 'in SeaBoo'}! Il tuo account Apple è stato collegato.`,
           [{ text: 'Continua', onPress: () => navigation.navigate('Main', { screen: 'Profile' }) }]
         );
       }
     } catch (error: any) {
-      Alert.alert('Errore Apple', error.message || 'Errore durante l\'accesso con Apple.');
+      console.error('❌ Apple Sign In error:', error);
+      
+      // Non mostrare errore se l'utente ha cancellato
+      if (error.code === '1001') {
+        console.log('User cancelled Apple Sign In');
+        setLoading(false);
+        return;
+      }
+      
+      Alert.alert(
+        'Errore Apple Sign In',
+        error.message || 'Impossibile completare l\'accesso con Apple. Verifica le tue impostazioni iCloud.'
+      );
     } finally {
       setLoading(false);
     }

@@ -105,7 +105,7 @@ export default function AuthPage() {
     try {
       console.log('🚀 handleAppleSignIn started');
       
-      // Try real Apple Sign In first
+      // Try real Apple Sign In
       if (typeof window !== 'undefined' && window.AppleID) {
         console.log('🔄 Apple SDK available, attempting real Apple Sign In...');
         
@@ -131,71 +131,24 @@ export default function AuthPage() {
           return;
         } catch (sdkError) {
           console.error('❌ Apple SDK error:', sdkError);
-          // Continue to fallback
+          throw sdkError;
         }
       }
       
-      // Fallback: use mock for development/testing only
-      const isDevelopment = window.location.hostname.includes('replit') || 
-                           window.location.hostname.includes('localhost');
-      
-      if (isDevelopment) {
-        console.log('⚠️ Using mock Apple Sign In (development fallback)');
-        
-        const mockAppleData = {
-          id_token: 'mock_apple_id_token_' + Date.now(),
-          user_info: {
-            name: {
-              firstName: 'Apple',
-              lastName: 'User'
-            },
-            email: 'apple.user@icloud.com'
-          }
-        };
-        
-        await new Promise(resolve => setTimeout(resolve, 500));
-        appleLoginMutation.mutate(mockAppleData);
-      } else {
-        toast({
-          title: "Apple Sign In non disponibile",
-          description: "L'SDK Apple non è caricato correttamente. Prova con email e password.",
-          variant: "destructive",
-        });
-      }
+      // Se l'SDK Apple non è disponibile, mostra errore
+      toast({
+        title: "Apple Sign In non disponibile",
+        description: "L'SDK Apple non è caricato correttamente. Prova con email e password.",
+        variant: "destructive",
+      });
     } catch (error) {
       console.error('❌ Apple Sign In error:', error);
       
-      // Gestione specifica per errori WebKit/Network
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      if (errorMessage.includes('network') || errorMessage.includes('WebKit')) {
-        console.log('🔄 Detected WebKit network error, retrying with mock...');
-        
-        // In caso di errore di rete WebKit, fallback al mock
-        const mockAppleData = {
-          id_token: 'mock_apple_id_token_fallback_' + Date.now(),
-          user_info: {
-            name: {
-              firstName: 'Apple',
-              lastName: 'User'
-            },
-            email: 'apple.user@icloud.com'
-          }
-        };
-        
-        appleLoginMutation.mutate(mockAppleData);
-        
-        toast({
-          title: "Accesso completato",
-          description: "Connessione effettuata con successo",
-          variant: "default",
-        });
-      } else {
-        toast({
-          title: "Errore Apple Sign In",
-          description: "Impossibile completare l'accesso con Apple. Prova con email e password.",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Errore Apple Sign In",
+        description: "Impossibile completare l'accesso con Apple. Prova con email e password.",
+        variant: "destructive",
+      });
     }
   };
 

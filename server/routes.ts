@@ -663,6 +663,182 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({received: true});
   });
 
+  // External Services API Endpoints
+  app.get('/api/external/weather', (req, res) => {
+    const location = req.query.location || 'Roma';
+    
+    // Mock weather data
+    const weatherData = {
+      location: location,
+      temperature: 22,
+      description: 'Soleggiato',
+      windSpeed: 12,
+      windDirection: 180,
+      humidity: 65,
+      pressure: 1013,
+      visibility: 10,
+      waves: {
+        height: 0.8,
+        direction: 170,
+        period: 5
+      },
+      forecast: [
+        { time: '12:00', temperature: 23, description: 'Soleggiato', windSpeed: 10, waves: 0.7 },
+        { time: '15:00', temperature: 24, description: 'Parzialmente nuvoloso', windSpeed: 14, waves: 0.9 },
+        { time: '18:00', temperature: 21, description: 'Nuvoloso', windSpeed: 16, waves: 1.1 },
+        { time: '21:00', temperature: 19, description: 'Sereno', windSpeed: 12, waves: 0.8 }
+      ]
+    };
+    
+    res.json(weatherData);
+  });
+
+  app.get('/api/external/fuel-prices', (req, res) => {
+    // Mock fuel prices data
+    const fuelPrices = [
+      {
+        station: 'Marina di Gaeta',
+        location: 'Gaeta, LT',
+        gasoline: 1.89,
+        diesel: 1.72,
+        lastUpdated: new Date().toISOString(),
+        distance: 2.5,
+        services: ['Rifornimento 24/7', 'Acqua', 'Elettricità']
+      },
+      {
+        station: 'Porto di Civitavecchia',
+        location: 'Civitavecchia, RM',
+        gasoline: 1.92,
+        diesel: 1.75,
+        lastUpdated: new Date().toISOString(),
+        distance: 5.8,
+        services: ['Rifornimento', 'Officina', 'Bar']
+      },
+      {
+        station: 'Porto di Anzio',
+        location: 'Anzio, RM',
+        gasoline: 1.85,
+        diesel: 1.69,
+        lastUpdated: new Date().toISOString(),
+        distance: 8.2,
+        services: ['Rifornimento', 'Acqua']
+      }
+    ];
+    
+    res.json(fuelPrices);
+  });
+
+  app.get('/api/external/port-services', (req, res) => {
+    // Mock port services data
+    const portServices = [
+      {
+        id: 'port-1',
+        name: 'Marina di Gaeta',
+        location: 'Gaeta, Lazio',
+        coordinates: { lat: 41.2119, lng: 13.5704 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: true,
+          restaurant: true,
+          repair: true,
+          security: true
+        },
+        pricing: {
+          mooring: 3.5,
+          fuel: 1.89,
+          water: 0.5,
+          electricity: 0.3
+        },
+        contact: {
+          phone: '+39 0771 123456',
+          email: 'info@marinadigaeta.it',
+          website: 'www.marinadigaeta.it',
+          vhf: 'Canale 16'
+        },
+        availability: {
+          total: 500,
+          available: 45,
+          reserved: 455
+        },
+        rating: 4.5,
+        reviews: 128
+      },
+      {
+        id: 'port-2',
+        name: 'Porto di Civitavecchia',
+        location: 'Civitavecchia, Lazio',
+        coordinates: { lat: 42.0922, lng: 11.7950 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: false,
+          restaurant: true,
+          repair: true,
+          security: true
+        },
+        pricing: {
+          mooring: 4.0,
+          fuel: 1.92,
+          water: 0.6,
+          electricity: 0.35
+        },
+        contact: {
+          phone: '+39 0766 987654',
+          email: 'info@portocivitavecchia.it',
+          vhf: 'Canale 12'
+        },
+        availability: {
+          total: 800,
+          available: 120,
+          reserved: 680
+        },
+        rating: 4.2,
+        reviews: 256
+      },
+      {
+        id: 'port-3',
+        name: 'Porto di Anzio',
+        location: 'Anzio, Lazio',
+        coordinates: { lat: 41.4511, lng: 12.6230 },
+        services: {
+          mooring: true,
+          fuel: true,
+          water: true,
+          electricity: true,
+          wifi: true,
+          restaurant: false,
+          repair: false,
+          security: true
+        },
+        pricing: {
+          mooring: 3.0,
+          fuel: 1.85,
+          water: 0.4,
+          electricity: 0.25
+        },
+        contact: {
+          phone: '+39 06 123 4567',
+          email: 'info@portoanзio.it',
+          vhf: 'Canale 9'
+        },
+        availability: {
+          total: 300,
+          available: 28,
+          reserved: 272
+        },
+        rating: 4.0,
+        reviews: 89
+      }
+    ];
+    
+    res.json(portServices);
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

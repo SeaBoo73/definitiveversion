@@ -117,11 +117,9 @@ export default function AuthPage() {
         try {
           const { SignInWithApple } = await import('@capacitor-community/apple-sign-in');
           
+          // For iOS native, only scopes are needed - no clientId or redirectURI
           const options = {
-            clientId: 'it.seaboo.app',
-            redirectURI: 'https://seaboo.it/auth/apple/callback',
             scopes: 'email name',
-            state: 'seaboo_state_' + Date.now(),
           };
           
           const result = await SignInWithApple.authorize(options);

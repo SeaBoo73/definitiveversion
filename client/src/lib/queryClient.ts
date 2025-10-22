@@ -33,6 +33,8 @@ export async function apiRequest(
   // Aggiungi base URL solo se l'URL inizia con /
   const fullUrl = url.startsWith('/') ? `${API_BASE_URL}${url}` : url;
   
+  console.log('🌐 API Request:', { method, url, fullUrl, API_BASE_URL, data });
+  
   const res = await fetch(fullUrl, {
     method,
     headers: data ? { "Content-Type": "application/json" } : {},
@@ -40,6 +42,8 @@ export async function apiRequest(
     credentials: "include",
   });
 
+  console.log('🌐 API Response:', { status: res.status, statusText: res.statusText, url: fullUrl });
+  
   await throwIfResNotOk(res);
   return res;
 }

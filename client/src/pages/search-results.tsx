@@ -39,9 +39,11 @@ export function SearchResults() {
     skipperRequired: urlParams.get("skipperRequired") || undefined,
   };
 
-  const { data: boats = [], isLoading } = useQuery<Boat[]>({
+  const { data, isLoading } = useQuery<{ boats: Boat[] }>({
     queryKey: ["/api/boats"],
   });
+
+  const boats = data?.boats || [];
 
   // Scroll to top when component mounts or search parameters change
   useEffect(() => {
@@ -50,12 +52,12 @@ export function SearchResults() {
 
   // Filter boats based on search parameters
   const filteredBoats = boats.filter((boat: Boat) => {
-    if (searchParams.location && boat.port !== searchParams.location) return false;
+    if (searchParams.location && boat.location !== searchParams.location) return false;
     if (searchParams.boatTypes) {
       const selectedTypes = searchParams.boatTypes.split(",");
       if (!selectedTypes.includes(boat.type)) return false;
     }
-    if (searchParams.guests && boat.maxPersons && boat.maxPersons < parseInt(searchParams.guests)) return false;
+    if (searchParams.guests && boat.capacity && boat.capacity < parseInt(searchParams.guests)) return false;
     if (searchParams.skipperRequired === "true" && !boat.skipperRequired) return false;
     // Note: fuelIncluded is not in the current boat schema, we'll skip this filter for now
     return true;
@@ -266,12 +268,12 @@ export function SearchResults() {
                       
                       <div className="flex items-center text-sm text-gray-600 mb-2">
                         <MapPin className="h-4 w-4 mr-1" />
-                        {boat.port}
+                        {boat.location}
                       </div>
                       
                       <div className="flex items-center text-sm text-gray-600 mb-3">
                         <Users className="h-4 w-4 mr-1" />
-                        Fino a {boat.maxPersons} ospiti
+                        Fino a {boat.capacity} ospiti
                       </div>
                       
                       <div className="flex flex-wrap gap-1 mb-3">

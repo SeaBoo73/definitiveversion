@@ -252,6 +252,19 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                   <CardTitle>Dettagli prenotazione</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {/* Login Warning */}
+                  {!user && (
+                    <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                      <div className="flex items-start">
+                        <AlertCircle className="h-5 w-5 text-yellow-600 mr-2 mt-0.5" />
+                        <div className="text-sm text-yellow-800">
+                          <p className="font-medium mb-1">Accesso richiesto</p>
+                          <p>Devi effettuare l'accesso per completare la prenotazione.</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Skipper */}
                   {boat.skipperRequired ? (
                     <div className="bg-yellow-50 p-4 rounded-lg">
@@ -346,9 +359,11 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                 type="submit" 
                 className="flex-1 bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:transform-none disabled:hover:scale-100"
                 disabled={createBookingMutation.isPending}
+                data-testid="button-continue-booking"
               >
                 {step === "dates" && "Continua"}
-                {step === "details" && (createBookingMutation.isPending ? "Creazione..." : "Procedi al pagamento")}
+                {step === "details" && !user && "Accedi per continuare"}
+                {step === "details" && user && (createBookingMutation.isPending ? "Creazione..." : "Procedi al pagamento")}
               </Button>
             </div>
           </form>

@@ -89,6 +89,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
         customerId: Number(user.id),
         boatId: Number(boat.id),
         totalPrice: totalPrice.toString(),
+        commission: platformFee.toString(),
       };
       const res = await apiRequest("POST", "/api/bookings", bookingData);
       return await res.json();

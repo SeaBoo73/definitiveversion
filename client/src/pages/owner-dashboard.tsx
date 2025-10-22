@@ -277,6 +277,9 @@ export default function OwnerDashboard() {
     bio: "",
   });
 
+  // Profile photo state
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+
   // Profile Photo Upload Handler
   const handlePhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -301,11 +304,18 @@ export default function OwnerDashboard() {
         return;
       }
 
-      // For now, just show success toast - later we'll implement actual upload
-      toast({
-        title: "Foto caricata",
-        description: `${file.name} è stata caricata con successo`,
-      });
+      // Read file and create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        setProfilePhoto(dataUrl);
+        
+        toast({
+          title: "Foto caricata",
+          description: `${file.name} è stata caricata con successo`,
+        });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -1874,8 +1884,16 @@ export default function OwnerDashboard() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <User className="h-16 w-16 text-gray-400" />
+                  <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden">
+                    {profilePhoto ? (
+                      <img 
+                        src={profilePhoto} 
+                        alt="Foto profilo" 
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <User className="h-16 w-16 text-gray-400" />
+                    )}
                   </div>
                   <input
                     type="file"
@@ -1892,7 +1910,7 @@ export default function OwnerDashboard() {
                     onClick={() => document.getElementById('photo-upload')?.click()}
                   >
                     <Camera className="h-4 w-4 mr-2" />
-                    Carica foto
+                    {profilePhoto ? 'Cambia foto' : 'Carica foto'}
                   </Button>
                   <p className="text-xs text-gray-500">
                     Formati: JPG, PNG<br />

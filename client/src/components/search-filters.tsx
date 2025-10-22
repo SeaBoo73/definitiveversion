@@ -209,6 +209,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           >
             <Ship className="mr-2 h-4 w-4" />
             <span className="text-gray-900">Tipo imbarcazione</span>
+            {showAdvanced ? <ChevronDown className="ml-2 h-4 w-4" /> : <ChevronRight className="ml-2 h-4 w-4" />}
           </Button>
           <Button
             variant="outline"
@@ -231,12 +232,12 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
           </Button>
         </div>
 
-        {showAdvanced && (
-          <div className="bg-gray-50 rounded-lg p-4 mt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
+          <CollapsibleContent className="transition-all data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+            <div className="bg-gray-50 rounded-lg p-4 mt-2 border border-gray-200">
               <div className="space-y-3">
-                <Label className="text-sm font-semibold text-gray-900">Tipo di imbarcazione</Label>
-                <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+                <Label className="text-sm font-semibold text-gray-900">Seleziona tipologia</Label>
+                <div className={`grid ${onSearch ? "grid-cols-1" : "grid-cols-2 md:grid-cols-3"} gap-2 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100`}>
                   {[
                     { value: "kayak", label: "Caiacco" },
                     { value: "jetski", label: "Moto d'acqua" },
@@ -252,7 +253,7 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                   ].map((type) => (
                     <label
                       key={type.value}
-                      className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded border border-gray-200 bg-white"
+                      className="flex items-center space-x-2 cursor-pointer hover:bg-white p-2 rounded border border-gray-200 bg-white transition-colors"
                     >
                       <input
                         type="checkbox"
@@ -275,9 +276,8 @@ export function SearchFilters({ onSearch }: SearchFiltersProps) {
                 </div>
               </div>
             </div>
-            
-          </div>
-        )}
+          </CollapsibleContent>
+        </Collapsible>
       
         {/* Selected Boat Types Display - Outside of advanced filters */}
         {filters.boatTypes && filters.boatTypes.length > 0 && (

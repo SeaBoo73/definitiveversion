@@ -21,6 +21,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -98,7 +99,7 @@ export default function OwnerDashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [location, setLocation] = useLocation();
+  const [location, navigate] = useLocation();
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   

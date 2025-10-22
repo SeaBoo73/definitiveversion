@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema } from "@shared/schema";
+import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema } from "@shared/schema";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 import multer from "multer";
@@ -485,6 +485,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Delete boat error:", error);
       res.status(500).json({ error: "Errore nell'eliminazione della barca" });
+    }
+  });
+
+  // Create booking endpoint
+  app.post('/api/bookings', requireAuth, async (req, res) => {
+    try {
+      const bookingData = insertBookingSchema.parse(req.body);
+      const booking = await storage.createBooking(bookingData);
+      res.json(booking);
+    } catch (error: any) {
+      console.error("Create booking error:", error);
+      res.status(400).json({ error: error.message || "Errore nella creazione della prenotazione" });
+    }
+  });
+
+  // Get customer bookings endpoint
+  app.get('/api/bookings', requireAuth, async (req: any, res) => {
+    try {
+      const bookings = await storage.getBookingsByCustomer(req.session.user.id);
+      res.json({ bookings });
+    } catch (error) {
+      console.error("Get customer bookings error:", error);
+      res.status(500).json({ error: "Errore nel recupero delle prenotazioni" });
     }
   });
 

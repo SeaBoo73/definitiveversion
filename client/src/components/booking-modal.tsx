@@ -83,8 +83,8 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
       }
       const bookingData = {
         ...data,
-        customerId: user.id,
-        boatId: boat.id,
+        customerId: Number(user.id),
+        boatId: Number(boat.id),
         totalPrice: totalPrice.toString(),
       };
       const res = await apiRequest("POST", "/api/bookings", bookingData);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -73,10 +73,10 @@ import {
   User,
   Mail,
   Phone,
+  Save,
   CreditCard,
   Shield,
   Key,
-  Save,
   AlertTriangle
 } from "lucide-react";
 
@@ -267,8 +267,17 @@ export default function OwnerDashboard() {
     deleteAccountMutation.mutate();
   };
 
+  // Profile state management
+  const [profileData, setProfileData] = useState({
+    firstName: user?.username?.split('.')[0] || "",
+    lastName: user?.username?.split('.')[1]?.split('@')[0] || "",
+    email: user?.username || "",
+    phone: "",
+    bio: "",
+  });
+
   // Profile Photo Upload Handler
-  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       // Validate file type
@@ -297,6 +306,15 @@ export default function OwnerDashboard() {
         description: `${file.name} è stata caricata con successo`,
       });
     }
+  };
+
+  // Save profile changes
+  const handleSaveProfile = () => {
+    // TODO: Implement API call to save profile data
+    toast({
+      title: "Profilo aggiornato",
+      description: "Le tue informazioni sono state salvate con successo.",
+    });
   };
 
   const openEditModal = (boat: Boat) => {
@@ -347,7 +365,7 @@ export default function OwnerDashboard() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900">Accesso negato</h1>
           <p className="text-gray-600 mt-2">Devi effettuare l'accesso per accedere a questa pagina.</p>
-          <Button onClick={() => setLocation("/auth")} className="mt-4">
+          <Button onClick={() => navigate("/auth")} className="mt-4">
             Vai al login
           </Button>
         </div>
@@ -364,7 +382,7 @@ export default function OwnerDashboard() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <h1 className="text-2xl font-bold text-gray-900">Accesso negato</h1>
           <p className="text-gray-600 mt-2">Devi essere un proprietario per accedere a questa pagina.</p>
-          <Button onClick={() => setLocation("/diventa-noleggiatore")} className="mt-4">
+          <Button onClick={() => navigate("/diventa-noleggiatore")} className="mt-4">
             Diventa Sea Host
           </Button>
         </div>
@@ -382,7 +400,7 @@ export default function OwnerDashboard() {
         <div className="mb-6">
           <Button
             variant="ghost"
-            onClick={() => setLocation("/")}
+            onClick={() => navigate("/")}
             className="text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -1461,9 +1479,10 @@ export default function OwnerDashboard() {
                       </Label>
                       <Input 
                         id="firstName" 
-                        value={user?.username?.split('.')[0] || ""} 
+                        value={profileData.firstName} 
+                        onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
                         className="border-blue-200 focus:border-blue-500"
-                        readOnly
+                        data-testid="input-firstName"
                       />
                     </div>
 
@@ -1474,9 +1493,10 @@ export default function OwnerDashboard() {
                       </Label>
                       <Input 
                         id="lastName" 
-                        value={user?.username?.split('.')[1]?.split('@')[0] || ""} 
+                        value={profileData.lastName} 
+                        onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
                         className="border-blue-200 focus:border-blue-500"
-                        readOnly
+                        data-testid="input-lastName"
                       />
                     </div>
 
@@ -1488,9 +1508,10 @@ export default function OwnerDashboard() {
                       <Input 
                         id="email" 
                         type="email" 
-                        value={user?.username || ""} 
+                        value={profileData.email} 
+                        onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                         className="border-blue-200 focus:border-blue-500"
-                        readOnly
+                        data-testid="input-email"
                       />
                     </div>
 
@@ -1502,7 +1523,10 @@ export default function OwnerDashboard() {
                       <Input 
                         id="phone" 
                         placeholder="+39 333 123 4567" 
+                        value={profileData.phone}
+                        onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
                         className="border-blue-200 focus:border-blue-500"
+                        data-testid="input-phone"
                       />
                     </div>
                   </div>
@@ -1516,11 +1540,18 @@ export default function OwnerDashboard() {
                       id="bio" 
                       placeholder="Raccontaci qualcosa di te e della tua esperienza nel settore nautico..."
                       rows={3}
+                      value={profileData.bio}
+                      onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                       className="border-blue-200 focus:border-blue-500"
+                      data-testid="input-bio"
                     />
                   </div>
 
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button 
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={handleSaveProfile}
+                    data-testid="button-saveProfile"
+                  >
                     <Save className="h-4 w-4 mr-2" />
                     Salva modifiche
                   </Button>

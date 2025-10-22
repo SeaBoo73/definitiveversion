@@ -10,7 +10,7 @@ import {
   type InsertBooking,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
@@ -104,7 +104,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteUser(id: number): Promise<boolean> {
     try {
-      await db.delete(bookings).where(eq(bookings.customerId, id.toString()));
+      await db.delete(bookings).where(eq(bookings.customerId, id));
       await db.delete(boats).where(eq(boats.hostId, id));
       const result = await db.delete(users).where(eq(users.id, id));
       return (result.rowCount ?? 0) > 0;
@@ -149,27 +149,31 @@ export class DatabaseStorage implements IStorage {
 
   // Booking operations
   async getBookingsByOwner(ownerId: number): Promise<Booking[]> {
-    const results = await db
-      .select({
-        id: bookings.id,
-        createdAt: bookings.createdAt,
-        customerId: bookings.customerId,
-        boatId: bookings.boatId,
-        startDate: bookings.startDate,
-        endDate: bookings.endDate,
-        totalPrice: bookings.totalPrice,
-        status: bookings.status,
-        specialRequests: bookings.specialRequests,
-        updatedAt: bookings.updatedAt,
-      })
-      .from(bookings)
-      .innerJoin(boats, eq(bookings.boatId, boats.id))
+    // First get all boats owned by this owner
+    const ownerBoats = await db
+      .select({ id: boats.id })
+      .from(boats)
       .where(eq(boats.hostId, ownerId));
+    
+    if (ownerBoats.length === 0) {
+      return [];
+    }
+    
+    const boatIds = ownerBoats.map(b => b.id);
+    
+    // Then get all bookings for those boats
+    const results = await db
+      .select()
+      .from(bookings)
+      .where(
+        sql`${bookings.boatId} IN (${sql.join(boatIds.map(id => sql`${id}`), sql`, `)})`
+      );
+    
     return results;
   }
 
   async getBookingsByCustomer(customerId: number): Promise<Booking[]> {
-    return await db.select().from(bookings).where(eq(bookings.customerId, customerId.toString()));
+    return await db.select().from(bookings).where(eq(bookings.customerId, customerId));
   }
 
   async createBooking(bookingData: InsertBooking): Promise<Booking> {

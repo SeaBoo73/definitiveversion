@@ -125,7 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Store user in session
       req.session.user = {
-        id: user.id.toString(),
+        id: user.id,
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
@@ -155,7 +155,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get current user endpoint
   app.get('/api/user', (req, res) => {
     if (req.session?.user) {
-      res.json({ user: req.session.user });
+      res.json(req.session.user);
     } else {
       res.status(401).json({ error: "Non autenticato" });
     }
@@ -174,7 +174,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Delete account endpoint
   app.delete('/api/user/delete-account', requireAuth, async (req, res) => {
     try {
-      const userId = parseInt(req.session.user!.id);
+      const userId = req.session.user!.id;
       const deleted = await storage.deleteUser(userId);
       
       if (!deleted) {
@@ -196,7 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Upgrade to owner endpoint
   app.post('/api/user/upgrade-to-owner', requireAuth, async (req, res) => {
     try {
-      const userId = parseInt(req.session.user!.id);
+      const userId = req.session.user!.id;
       const { businessName, businessType, vatNumber, phone } = req.body;
       
       // Update user role to owner
@@ -431,7 +431,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const boatData = insertBoatSchema.parse({
         ...req.body,
-        hostId: parseInt(req.session.user.id),
+        hostId: req.session.user.id,
         images: req.files ? req.files.map((file: any) => `/uploads/${file.filename}`) : []
       });
 
@@ -449,7 +449,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Verify boat ownership
       const existingBoat = await storage.getBoat(id);
-      if (!existingBoat || existingBoat.hostId !== parseInt(req.session.user.id)) {
+      if (!existingBoat || existingBoat.hostId !== req.session.user.id) {
         return res.status(404).json({ error: "Barca non trovata" });
       }
 
@@ -472,7 +472,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Verify boat ownership
       const existingBoat = await storage.getBoat(id);
-      if (!existingBoat || existingBoat.hostId !== parseInt(req.session.user.id)) {
+      if (!existingBoat || existingBoat.hostId !== req.session.user.id) {
         return res.status(404).json({ error: "Barca non trovata" });
       }
 

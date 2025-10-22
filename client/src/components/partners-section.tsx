@@ -48,6 +48,8 @@ export function PartnersSection() {
                 variant="secondary" 
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3"
+                onClick={() => window.location.href = 'mailto:app.seago.italia@gmail.com?subject=Richiesta Partnership SeaBoo&body=Salve,%0D%0A%0D%0ASono interessato a diventare un partner ufficiale di SeaBoo.%0D%0A%0D%0ANome azienda:%0D%0AContatto:%0D%0ATelefono:%0D%0ASettore di attività:%0D%0A%0D%0ACordiali saluti'}
+                data-testid="button-candidati-partner"
               >
                 Candidati Come Partner
               </Button>

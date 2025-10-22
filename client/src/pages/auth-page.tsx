@@ -97,19 +97,9 @@ export default function AuthPage() {
   };
 
   const onRegister = (data: RegisterData) => {
-    console.log('📝 onRegister called with data:', data);
-    console.log('📝 Form errors:', registerForm.formState.errors);
-    console.log('📝 Form is valid:', registerForm.formState.isValid);
     const { confirmPassword, acceptTerms, ...registerData } = data;
-    console.log('📝 Sending to API:', registerData);
     registerMutation.mutate(registerData);
   };
-  
-  // Log form errors on every change (for debugging)
-  const formErrors = registerForm.formState.errors;
-  if (Object.keys(formErrors).length > 0) {
-    console.log('🚨 Current form errors:', formErrors);
-  }
 
   const handleAppleSignIn = async () => {
     try {
@@ -553,7 +543,7 @@ export default function AuthPage() {
                     )}
 
                     {/* Payment Methods Info for Customers */}
-                    {registerForm.watch("role") === "user" && (
+                    {registerForm.watch("role") === "customer" && (
                       <div className="space-y-4 border-t pt-4">
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                           <h3 className="font-medium text-green-900 mb-2">💳 Metodi di Pagamento</h3>
@@ -647,11 +637,7 @@ export default function AuthPage() {
                       type="submit"
                       className="w-full bg-ocean-blue hover:bg-blue-600"
                       disabled={registerMutation.isPending}
-                      onClick={() => {
-                        console.log('🔵 Button clicked!');
-                        console.log('🔵 Form errors:', registerForm.formState.errors);
-                        console.log('🔵 Form values:', registerForm.getValues());
-                      }}
+                      data-testid="button-register"
                     >
                       {registerMutation.isPending ? "Registrazione in corso..." : "Registrati"}
                     </Button>

@@ -133,6 +133,13 @@ export default function ProfiloPage() {
 
   const settingsItems = [
     {
+      icon: AlertTriangle,
+      title: "⚠️ Elimina account",
+      subtitle: "Rimuovi permanentemente il tuo account",
+      action: () => setShowDeleteDialog(true),
+      danger: true
+    },
+    {
       icon: User,
       title: "Informazioni personali",
       subtitle: "Nome, email, telefono",
@@ -155,13 +162,6 @@ export default function ProfiloPage() {
       title: "Privacy e sicurezza",
       subtitle: "Impostazioni account",
       href: "/privacy-policy"
-    },
-    {
-      icon: AlertTriangle,
-      title: "Elimina account",
-      subtitle: "Rimuovi permanentemente il tuo account",
-      action: () => setShowDeleteDialog(true),
-      danger: true
     }
   ];
 

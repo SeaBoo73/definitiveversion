@@ -146,14 +146,18 @@ export default function AuthPage() {
           console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
           
           // Register/login with Apple data
-          registerMutation.mutate({
+          const userData: any = {
             email: email,
             password: appleUserId,
             username: `apple_${cleanAppleId}`,
             role: 'customer',
-            firstName: givenName || 'Utente',
-            lastName: familyName || 'Apple',
-          });
+          };
+          
+          // Add name fields only if provided by Apple
+          if (givenName) userData.firstName = givenName;
+          if (familyName) userData.lastName = familyName;
+          
+          registerMutation.mutate(userData);
           
           return;
         } catch (nativeError: any) {

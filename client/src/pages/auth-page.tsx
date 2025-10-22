@@ -157,7 +157,14 @@ export default function AuthPage() {
           if (givenName) userData.firstName = givenName;
           if (familyName) userData.lastName = familyName;
           
-          registerMutation.mutate(userData);
+          console.log('🔵 About to call registerMutation with:', userData);
+          
+          try {
+            registerMutation.mutate(userData);
+            console.log('✅ registerMutation.mutate called successfully');
+          } catch (err) {
+            console.error('❌ registerMutation.mutate error:', err);
+          }
           
           return;
         } catch (nativeError: any) {

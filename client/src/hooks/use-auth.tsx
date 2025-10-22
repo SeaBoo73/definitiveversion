@@ -67,11 +67,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const registerMutation = useMutation({
     mutationFn: async (credentials: InsertUser) => {
-      const res = await apiRequest("POST", "/api/register", credentials);
-      const data = await res.json();
-      return data.user || data;
+      console.log('🔷 registerMutation.mutationFn called with:', credentials);
+      try {
+        const res = await apiRequest("POST", "/api/register", credentials);
+        console.log('🔷 API response received:', res.status);
+        const data = await res.json();
+        console.log('🔷 Response data:', data);
+        return data.user || data;
+      } catch (err) {
+        console.error('🔷❌ Error in registerMutation.mutationFn:', err);
+        throw err;
+      }
     },
     onSuccess: (user: SelectUser) => {
+      console.log('✅ registerMutation.onSuccess called with:', user);
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Registrazione completata",
@@ -81,6 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       window.location.href = "/";
     },
     onError: (error: Error) => {
+      console.error('❌ registerMutation.onError called with:', error);
+      console.error('❌ Error message:', error.message);
+      console.error('❌ Error stack:', error.stack);
       toast({
         title: "Errore di registrazione",
         description: error.message,

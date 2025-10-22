@@ -1139,7 +1139,7 @@ export default function OwnerDashboard() {
               <h2 className="text-2xl font-bold text-gray-900">I miei ormeggi</h2>
               <Button 
                 className="bg-blue-600 hover:bg-blue-700"
-                onClick={() => navigate("/owner-dashboard?tab=boats")}
+                onClick={() => navigate("/ormeggio")}
                 data-testid="button-addMooring"
               >
                 <Plus className="h-4 w-4 mr-2" />

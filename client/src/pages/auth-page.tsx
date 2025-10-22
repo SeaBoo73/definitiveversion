@@ -130,12 +130,14 @@ export default function AuthPage() {
           
           // Extract data from Apple authentication
           const appleUserId = result.response.user || '';
-          const email = result.response.email || '';
+          const email = result.response.email || `${appleUserId}@privaterelay.appleid.com`;
           const givenName = result.response.givenName || '';
           const familyName = result.response.familyName || '';
           
-          if (!email) {
-            throw new Error('Email non fornita da Apple');
+          console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
+          
+          if (!appleUserId) {
+            throw new Error('ID Apple non fornito');
           }
           
           // Register/login with Apple data

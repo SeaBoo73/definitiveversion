@@ -1,0 +1,40 @@
+Failed to resolve host network app id to config: bundleID: com.apple.WebKit.Networking instance ID: Optional([_EXExtensionInstanceIdentifier: E97A01B6-8CFB-4B9C-93CD-4BF054E0063C])
+⚡️  Loading app at capacitor://localhost...
+⚡️  [log] - Current state - selectedCategory:  URL: 
+nw_connection_copy_connected_local_endpoint_block_invoke [C1] Connection has no local endpoint
+nw_connection_copy_connected_local_endpoint_block_invoke [C1] Connection has no local endpoint
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  WebView loaded
+⚡️  [log] - 🚀 handleAppleSignIn started
+⚡️  [log] - 📱 Running in Capacitor, using native Apple Sign In...
+⚡️  To Native ->  SignInWithApple authorize 118703841
+⚡️  TO JS {"response":{"email":null,"givenName":null,"identityToken":"eyJraWQiOiJhVmVIRmFXeEFaIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiaXQuc2VhYm9vLmFwcCIsImV4cCI6MTc2MTIzNTgxNiwiaWF0IjoxNzYxMTQ5NDE2LCJzdWIiOiIwMDExNzUuMDlkN2ZkN
+⚡️  [log] - ✅ Native Apple Sign In successful
+⚡️  [log] - 🍎 Apple data: {"appleUserId":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","givenName":"","familyName":""}
+⚡️  [log] - 🔵 Trying to register with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - 🔷 registerMutation.mutationFn called with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - 🌐 API Request: {"method":"POST","url":"/api/register","fullUrl":"https://boat-rental-stefanoconsulti.replit.app/api/register","API_BASE_URL":"https://boat-rental-stefanoconsulti.replit.app","data":{"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}}
+⚡️  To Native ->  CapacitorHttp request 118703842
+⚡️  TO JS {"status":400,"url":"https:\/\/boat-rental-stefanoconsulti.replit.app\/api\/register","headers":{"x-powered-by":"Express","etag":"W\/\"21-YiIw\/3LB90l3pQnXRxGsX9V35NI\"","x-cloud-trace-context":"f88aa8e2bfc447ecc10e51db4b685111;o=1","content-type":"applica
+⚡️  [log] - 🌐 API Response: {"status":400,"statusText":"","url":"https://boat-rental-stefanoconsulti.replit.app/api/register"}
+⚡️  [error] - 🔷❌ Error in registerMutation.mutationFn: {}
+⚡️  [error] - ❌ registerMutation.onError called with: {}
+⚡️  [error] - ❌ Error message: 
+⚡️  [error] - ❌ Error stack: @capacitor://localhost/assets/index-CZuihUE-.js:48:44044
+⚡️  [log] - 🚀 handleAppleSignIn started
+⚡️  To Native ->  SignInWithApple authorize 118703843
+⚡️  [log] - 📱 Running in Capacitor, using native Apple Sign In...
+⚡️  TO JS {"response":{"identityToken":"eyJraWQiOiJiRnd6bGVSOHRmIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiaXQuc2VhYm9vLmFwcCIsImV4cCI6MTc2MTIzNTgzMSwiaWF0IjoxNzYxMTQ5NDMxLCJzdWIiOiIwMDExNzUuMDlkN2ZkNDQyNjhkNDQzM2E1ZjliYTBiOGExNzk
+⚡️  [log] - ✅ Native Apple Sign In successful
+⚡️  [log] - 🍎 Apple data: {"appleUserId":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","givenName":"","familyName":""}
+⚡️  To Native ->  CapacitorHttp request 118703844
+⚡️  [log] - 🔵 Trying to register with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - 🔷 registerMutation.mutationFn called with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - 🌐 API Request: {"method":"POST","url":"/api/register","fullUrl":"https://boat-rental-stefanoconsulti.replit.app/api/register","API_BASE_URL":"https://boat-rental-stefanoconsulti.replit.app","data":{"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}}
+⚡️  TO JS {"url":"https:\/\/boat-rental-stefanoconsulti.replit.app\/api\/register","status":400,"data":{"error":"Email già registrata"},"headers":{"etag":"W\/\"21-YiIw\/3LB90l3pQnXRxGsX9V35NI\"","via":"1.1 google","access-control-allow-credentials":"true","alt-svc":
+⚡️  [log] - 🌐 API Response: {"status":400,"statusText":"","url":"https://boat-rental-stefanoconsulti.replit.app/api/register"}
+⚡️  [error] - 🔷❌ Error in registerMutation.mutationFn: {}
+⚡️  [error] - ❌ registerMutation.onError called with: {}
+⚡️  [error] - ❌ Error message: 
+⚡️  [error] - ❌ Error stack: @capacitor://localhost/assets/index-CZuihUE-.js:48:44044

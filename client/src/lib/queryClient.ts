@@ -22,7 +22,7 @@ async function throwIfResNotOk(res: Response) {
     let message: string;
     try {
       const data = await clonedRes.json();
-      message = data.message || res.statusText;
+      message = data.error || data.message || res.statusText;
     } catch {
       message = await res.text() || res.statusText;
     }

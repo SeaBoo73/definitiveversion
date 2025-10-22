@@ -1,7 +1,12 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
-// API base URL - usa il server corrente (stesso dominio)
-const API_BASE_URL = import.meta.env.VITE_API_URL || window.location.origin;
+// Detect if we're in Capacitor (iOS/Android native app)
+const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
+
+// API base URL - for Capacitor use hardcoded Replit URL, otherwise use env var or current domain
+const API_BASE_URL = isCapacitor 
+  ? 'https://boat-rental-stefanoconsulti.replit.app'
+  : (import.meta.env.VITE_API_URL || window.location.origin);
 
 // Helper function to get full API URL
 export function getApiUrl(path: string): string {

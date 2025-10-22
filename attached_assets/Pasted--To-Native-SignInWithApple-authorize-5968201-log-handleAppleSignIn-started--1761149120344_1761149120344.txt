@@ -1,0 +1,23 @@
+⚡️  To Native ->  SignInWithApple authorize 5968201
+⚡️  [log] - 🚀 handleAppleSignIn started
+⚡️  [log] - 📱 Running in Capacitor, using native Apple Sign In...
+⚡️  TO JS {"response":{"givenName":null,"user":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","identityToken":"eyJraWQiOiJhVmVIRmFXeEFaIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwiYXVkIjoiaXQuc2VhYm9vLmFwcCIsImV4cCI6MTc2MTIzNTQ5MywiaWF0Ijox
+⚡️  [log] - ✅ Native Apple Sign In successful
+⚡️  [log] - 🍎 Apple data: {"appleUserId":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","givenName":"","familyName":""}
+⚡️  [log] - 🔵 About to call registerMutation with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - ✅ registerMutation.mutate called successfully
+⚡️  [log] - 🔷 registerMutation.mutationFn called with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}
+⚡️  [log] - 🌐 API Request: {"method":"POST","url":"/api/register","fullUrl":"https://boat-rental-stefanoconsulti.replit.app/api/register","API_BASE_URL":"https://boat-rental-stefanoconsulti.replit.app","data":{"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","password":"001175.09d7fd44268d4433a5f9ba0b8a1797c4.1127","username":"apple_00117509d7fd44268d4433a5f9ba0b","role":"customer"}}
+⚡️  To Native ->  CapacitorHttp request 5968202
+⚡️  TO JS {"data":{"user":{"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","businessName":null,"role":"customer","id":32,"lastName":null,"userType":"customer","firstName":null},"redirectTo":"\/home","success":true},"status":200,"headers":{"alt-svc":"h3=\":4
+⚡️  [log] - 🌐 API Response: {"status":200,"statusText":"","url":"https://boat-rental-stefanoconsulti.replit.app/api/register"}
+⚡️  [log] - 🔷 API response received: 200
+⚡️  [log] - 🔷 Response data: {"user":{"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","businessName":null,"role":"customer","id":32,"lastName":null,"userType":"customer","firstName":null},"redirectTo":"/home","success":true}
+⚡️  [log] - ✅ registerMutation.onSuccess called with: {"email":"apple00117509d7fd44268d4433a5f9ba0b@seaboo.app","businessName":null,"role":"customer","id":32,"lastName":null,"userType":"customer","firstName":null}
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  WebView loaded
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 
+⚡️  [log] - Current state - selectedCategory:  URL: 

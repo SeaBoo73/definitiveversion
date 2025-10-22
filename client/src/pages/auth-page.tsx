@@ -143,7 +143,7 @@ export default function AuthPage() {
           
           console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
           
-          // Register/login with Apple data
+          // Try to register first, if user exists try login
           const userData: any = {
             email: email,
             password: appleUserId,
@@ -155,14 +155,22 @@ export default function AuthPage() {
           if (givenName) userData.firstName = givenName;
           if (familyName) userData.lastName = familyName;
           
-          console.log('🔵 About to call registerMutation with:', userData);
+          console.log('🔵 Trying to register with:', userData);
           
-          try {
-            registerMutation.mutate(userData);
-            console.log('✅ registerMutation.mutate called successfully');
-          } catch (err) {
-            console.error('❌ registerMutation.mutate error:', err);
-          }
+          // Try register first
+          registerMutation.mutate(userData, {
+            onError: (error: any) => {
+              // If user already exists, try login instead
+              if (error.message?.includes('già registrata') || error.message?.includes('already')) {
+                console.log('🔄 User exists, trying login instead...');
+                loginMutation.mutate({
+                  email: email,
+                  password: appleUserId,
+                });
+              }
+              // Otherwise the error will be shown by the mutation's onError handler
+            }
+          });
           
           return;
         } catch (nativeError: any) {

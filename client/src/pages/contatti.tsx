@@ -22,14 +22,13 @@ export default function ContattaciPage() {
 
   const contactInfo = [
     {
-      title: "Email",
-      value: "support@seaboo.it",
-      description: "Rispondiamo entro 24 ore",
-      icon: Mail,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50"
+      title: "Chat Live",
+      value: "Assistenza immediata",
+      description: "Avvia chat con il nostro assistente AI",
+      icon: MessageCircle,
+      color: "text-green-600",
+      bgColor: "bg-green-50"
     },
-
     {
       title: "Indirizzo",
       value: "Via del Porto 123, 00121 Roma",

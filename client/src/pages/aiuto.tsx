@@ -94,21 +94,12 @@ export default function AiutoPage() {
 
   const contactOptions = [
     {
-      title: "Email",
-      description: "Rispondiamo entro 24 ore",
-      contact: "support@seaboo.it",
-      icon: Mail,
-      color: "text-blue-600",
-      bgColor: "bg-blue-50"
-    },
-
-    {
       title: "Chat Live",
-      description: "Assistenza immediata",
+      description: "Assistenza immediata 24/7",
       contact: "Avvia chat",
       icon: MessageCircle,
-      color: "text-purple-600",
-      bgColor: "bg-purple-50"
+      color: "text-green-600",
+      bgColor: "bg-green-50"
     }
   ];
 

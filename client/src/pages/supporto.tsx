@@ -42,7 +42,7 @@ const faqData = [
     id: 3,
     category: "Supporto Tecnico",
     question: "Ho problemi con l'app, cosa faccio?",
-    answer: "Contatta il nostro supporto tecnico via email a support@seaboo.it o utilizza la chat integrata nell'app. Il nostro team risponde entro 24 ore."
+    answer: "Utilizza la chat di assistenza integrata nell'app per ricevere supporto immediato. Il nostro assistente AI è disponibile 24/7 per aiutarti con qualsiasi problema."
   },
   {
     id: 4,

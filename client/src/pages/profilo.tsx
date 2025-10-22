@@ -36,7 +36,8 @@ import {
   Star,
   MapPin,
   Bot,
-  MessageCircle
+  MessageCircle,
+  AlertTriangle
 } from "lucide-react";
 
 export default function ProfiloPage() {
@@ -47,9 +48,7 @@ export default function ProfiloPage() {
 
   const deleteAccountMutation = useMutation({
     mutationFn: async () => {
-      return await apiRequest("/api/user/delete-account", {
-        method: "DELETE",
-      });
+      return await apiRequest("DELETE", "/api/user/delete-account");
     },
     onSuccess: () => {
       toast({
@@ -130,6 +129,8 @@ export default function ProfiloPage() {
     }
   ];
 
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
   const settingsItems = [
     {
       icon: User,
@@ -154,6 +155,13 @@ export default function ProfiloPage() {
       title: "Privacy e sicurezza",
       subtitle: "Impostazioni account",
       href: "/privacy-policy"
+    },
+    {
+      icon: AlertTriangle,
+      title: "Elimina account",
+      subtitle: "Rimuovi permanentemente il tuo account",
+      action: () => setShowDeleteDialog(true),
+      danger: true
     }
   ];
 
@@ -314,15 +322,27 @@ export default function ProfiloPage() {
             {settingsItems.map((item, index) => {
               const Icon = item.icon;
               const content = (
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <Icon className="h-5 w-5 mr-3 text-gray-600" />
+                <div className={`flex items-center p-3 rounded-lg transition-colors ${
+                  item.danger 
+                    ? 'hover:bg-red-50 cursor-pointer' 
+                    : 'hover:bg-gray-50'
+                }`}>
+                  <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : 'text-gray-600'}`} />
                   <div className="flex-1">
-                    <div className="font-medium text-gray-900">{item.title}</div>
-                    <div className="text-sm text-gray-500">{item.subtitle}</div>
+                    <div className={`font-medium ${item.danger ? 'text-red-600' : 'text-gray-900'}`}>{item.title}</div>
+                    <div className={`text-sm ${item.danger ? 'text-red-500' : 'text-gray-500'}`}>{item.subtitle}</div>
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                  <ChevronRight className={`h-5 w-5 ${item.danger ? 'text-red-400' : 'text-gray-400'}`} />
                 </div>
               );
+              
+              if (item.action) {
+                return (
+                  <div key={index} onClick={item.action}>
+                    {content}
+                  </div>
+                );
+              }
               
               return item.href ? (
                 <Link key={index} href={item.href}>
@@ -408,6 +428,38 @@ export default function ProfiloPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Delete Account Dialog - Controllato dal menu */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>
+            <AlertDialogDescription className="space-y-2">
+              <p>
+                Questa azione non può essere annullata. Eliminerà permanentemente il tuo
+                account e rimuoverà tutti i tuoi dati dai nostri server.
+              </p>
+              <p className="font-semibold text-red-600">
+                Tutte le tue prenotazioni, barche (se sei proprietario) e dati personali
+                verranno eliminati definitivamente.
+              </p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel data-testid="button-cancel-delete-menu">
+              Annulla
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteAccount}
+              className="bg-red-600 hover:bg-red-700"
+              data-testid="button-confirm-delete-menu"
+              disabled={deleteAccountMutation.isPending}
+            >
+              {deleteAccountMutation.isPending ? "Eliminazione..." : "Sì, elimina il mio account"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Footer />
     </div>

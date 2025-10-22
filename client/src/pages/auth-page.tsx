@@ -97,7 +97,10 @@ export default function AuthPage() {
   };
 
   const onRegister = (data: RegisterData) => {
+    console.log('📝 onRegister called with data:', data);
+    console.log('📝 Form errors:', registerForm.formState.errors);
     const { confirmPassword, acceptTerms, ...registerData } = data;
+    console.log('📝 Sending to API:', registerData);
     registerMutation.mutate(registerData);
   };
 

@@ -101,6 +101,7 @@ export default function OwnerDashboard() {
   const queryClient = useQueryClient();
   const [location, navigate] = useLocation();
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
+  const [showAddMooringModal, setShowAddMooringModal] = useState(false);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
   // Get tab from URL parameter and manage active tab
@@ -1137,14 +1138,241 @@ export default function OwnerDashboard() {
           <TabsContent value="moorings" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900">I miei ormeggi</h2>
-              <Button 
-                className="bg-blue-600 hover:bg-blue-700"
-                onClick={() => navigate("/ormeggio")}
-                data-testid="button-addMooring"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Aggiungi ormeggio
-              </Button>
+              <Dialog open={showAddMooringModal} onOpenChange={setShowAddMooringModal}>
+                <DialogTrigger asChild>
+                  <Button 
+                    className="bg-blue-600 hover:bg-blue-700"
+                    data-testid="button-addMooring"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Aggiungi ormeggio
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader className="text-center pb-6">
+                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mb-4">
+                      <Anchor className="h-8 w-8 text-white" />
+                    </div>
+                    <DialogTitle className="text-2xl font-bold text-gray-900">
+                      ⚓ Aggiungi un nuovo ormeggio
+                    </DialogTitle>
+                    <p className="text-gray-600 mt-2">
+                      Metti a disposizione il tuo posto barca per altre imbarcazioni
+                    </p>
+                  </DialogHeader>
+
+                  <form className="space-y-8">
+                    {/* Informazioni Base */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                          <Info className="h-5 w-5 text-white" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900">Informazioni Base</h3>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-name">Nome Ormeggio *</Label>
+                          <Input
+                            id="mooring-name"
+                            placeholder="es. Ormeggio A12 - Porto di Napoli"
+                            required
+                            data-testid="input-mooringName"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-port">Porto *</Label>
+                          <Select required>
+                            <SelectTrigger id="mooring-port" data-testid="select-mooringPort">
+                              <SelectValue placeholder="Seleziona il porto" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="napoli">Porto di Napoli</SelectItem>
+                              <SelectItem value="salerno">Porto di Salerno</SelectItem>
+                              <SelectItem value="amalfi">Porto di Amalfi</SelectItem>
+                              <SelectItem value="capri">Marina Grande Capri</SelectItem>
+                              <SelectItem value="sorrento">Porto di Sorrento</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2 md:col-span-2">
+                          <Label htmlFor="mooring-location">Posizione esatta</Label>
+                          <Input
+                            id="mooring-location"
+                            placeholder="es. Molo C, Posto 45"
+                            data-testid="input-mooringLocation"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Specifiche Tecniche */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                          <Ruler className="h-5 w-5 text-white" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900">Specifiche Tecniche</h3>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-maxLength">Lunghezza massima (m) *</Label>
+                          <Input
+                            id="mooring-maxLength"
+                            type="number"
+                            placeholder="es. 12"
+                            required
+                            data-testid="input-mooringMaxLength"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-maxBeam">Larghezza massima (m)</Label>
+                          <Input
+                            id="mooring-maxBeam"
+                            type="number"
+                            placeholder="es. 4"
+                            data-testid="input-mooringMaxBeam"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-depth">Profondità (m)</Label>
+                          <Input
+                            id="mooring-depth"
+                            type="number"
+                            step="0.1"
+                            placeholder="es. 3.5"
+                            data-testid="input-mooringDepth"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Prezzi */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                          <Euro className="h-5 w-5 text-white" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900">Tariffe</h3>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-dailyPrice">Tariffa giornaliera (€) *</Label>
+                          <Input
+                            id="mooring-dailyPrice"
+                            type="number"
+                            placeholder="es. 50"
+                            required
+                            data-testid="input-mooringDailyPrice"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-weeklyPrice">Tariffa settimanale (€)</Label>
+                          <Input
+                            id="mooring-weeklyPrice"
+                            type="number"
+                            placeholder="es. 300"
+                            data-testid="input-mooringWeeklyPrice"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-monthlyPrice">Tariffa mensile (€)</Label>
+                          <Input
+                            id="mooring-monthlyPrice"
+                            type="number"
+                            placeholder="es. 1000"
+                            data-testid="input-mooringMonthlyPrice"
+                          />
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-seasonalPrice">Tariffa stagionale (€)</Label>
+                          <Input
+                            id="mooring-seasonalPrice"
+                            type="number"
+                            placeholder="es. 5000"
+                            data-testid="input-mooringSeasonalPrice"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Servizi Disponibili */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                          <Settings className="h-5 w-5 text-white" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900">Servizi Disponibili</h3>
+                      </div>
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-security" />
+                          <span className="text-sm">🔒 Sorveglianza</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-water" />
+                          <span className="text-sm">💧 Acqua</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-electricity" />
+                          <span className="text-sm">⚡ Elettricità</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-fuel" />
+                          <span className="text-sm">⛽ Carburante</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-wifi" />
+                          <span className="text-sm">📶 WiFi</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-parking" />
+                          <span className="text-sm">🅿️ Parcheggio</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-shower" />
+                          <span className="text-sm">🚿 Docce</span>
+                        </label>
+                        <label className="flex items-center space-x-2 cursor-pointer">
+                          <input type="checkbox" className="rounded" data-testid="checkbox-restaurant" />
+                          <span className="text-sm">🍴 Ristorante</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Buttons */}
+                    <div className="flex justify-end gap-4 pt-6 border-t">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowAddMooringModal(false)}
+                        data-testid="button-cancelMooring"
+                      >
+                        Annulla
+                      </Button>
+                      <Button
+                        type="submit"
+                        className="bg-blue-600 hover:bg-blue-700"
+                        data-testid="button-submitMooring"
+                      >
+                        <Anchor className="h-4 w-4 mr-2" />
+                        Pubblica ormeggio
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
             </div>
 
             <Card className="bg-blue-50 border-blue-200">

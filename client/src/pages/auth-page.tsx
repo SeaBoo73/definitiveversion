@@ -105,9 +105,62 @@ export default function AuthPage() {
     try {
       console.log('🚀 handleAppleSignIn started');
       
-      // Try real Apple Sign In
+      // Check if we're in Capacitor (native iOS app)
+      const isCapacitor = (window as any).Capacitor !== undefined;
+      
+      if (isCapacitor) {
+        console.log('📱 Running in Capacitor, using native Apple Sign In...');
+        
+        try {
+          const { SignInWithApple } = await import('@capacitor-community/apple-sign-in');
+          
+          const options = {
+            clientId: 'it.seaboo.app',
+            redirectURI: 'https://seaboo.it/auth/apple/callback',
+            scopes: 'email name',
+            state: 'seaboo_state_' + Date.now(),
+          };
+          
+          const result = await SignInWithApple.authorize(options);
+          
+          console.log('✅ Native Apple Sign In successful');
+          
+          // Extract data from Apple authentication
+          const appleUserId = result.response.user || '';
+          const email = result.response.email || '';
+          const givenName = result.response.givenName || '';
+          const familyName = result.response.familyName || '';
+          
+          if (!email) {
+            throw new Error('Email non fornita da Apple');
+          }
+          
+          // Register/login with Apple data
+          registerMutation.mutate({
+            email: email,
+            password: appleUserId,
+            username: `apple_${appleUserId.substring(0, 10)}`,
+            role: 'customer',
+            firstName: givenName || 'Utente',
+            lastName: familyName || 'Apple',
+          });
+          
+          return;
+        } catch (nativeError: any) {
+          console.error('❌ Native Apple Sign In error:', nativeError);
+          
+          // Don't show error if user cancelled
+          if (nativeError.code === '1001' || nativeError.message?.includes('cancel')) {
+            return;
+          }
+          
+          throw nativeError;
+        }
+      }
+      
+      // Web: Try web Apple Sign In
       if (typeof window !== 'undefined' && window.AppleID) {
-        console.log('🔄 Apple SDK available, attempting real Apple Sign In...');
+        console.log('🔄 Apple SDK available, attempting web Apple Sign In...');
         
         try {
           // Initialize Apple Sign In if not already done

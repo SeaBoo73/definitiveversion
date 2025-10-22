@@ -12,6 +12,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
@@ -65,7 +75,8 @@ import {
   CreditCard,
   Shield,
   Key,
-  Save
+  Save,
+  AlertTriangle
 } from "lucide-react";
 
 const boatFormSchema = insertBoatSchema.extend({
@@ -229,6 +240,30 @@ export default function OwnerDashboard() {
       title: "Gestione Notifiche",
       description: "Preferenze notifiche aggiornate. Riceverai aggiornamenti importanti via email.",
     });
+  };
+
+  const deleteAccountMutation = useMutation({
+    mutationFn: async () => {
+      return await apiRequest("DELETE", "/api/user/delete-account");
+    },
+    onSuccess: () => {
+      toast({
+        title: "Account eliminato",
+        description: "Il tuo account è stato eliminato con successo",
+      });
+      navigate("/");
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Impossibile eliminare l'account",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleDeleteAccount = () => {
+    deleteAccountMutation.mutate();
   };
 
   // Profile Photo Upload Handler
@@ -1676,6 +1711,52 @@ export default function OwnerDashboard() {
                   <Button variant="outline" size="sm" onClick={handleManageNotifications}>
                     Gestisci
                   </Button>
+                </div>
+
+                <Separator />
+
+                <div className="flex items-center justify-between p-4 border-2 border-red-200 bg-red-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                    <div>
+                      <p className="font-medium text-red-700">Elimina account</p>
+                      <p className="text-sm text-red-600">Rimuovi permanentemente il tuo account</p>
+                    </div>
+                  </div>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="destructive" size="sm" data-testid="button-delete-account-owner">
+                        Elimina
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>
+                        <AlertDialogDescription className="space-y-2">
+                          <p>
+                            Questa azione non può essere annullata. Eliminerà permanentemente il tuo
+                            account e rimuoverà tutti i tuoi dati dai nostri server.
+                          </p>
+                          <p className="font-semibold text-red-600">
+                            Tutte le tue barche, prenotazioni, guadagni e dati personali
+                            verranno eliminati definitivamente.
+                          </p>
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel data-testid="button-cancel-delete-owner">
+                          Annulla
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeleteAccount}
+                          className="bg-red-600 hover:bg-red-700"
+                          data-testid="button-confirm-delete-owner"
+                        >
+                          Sì, elimina il mio account
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardContent>
             </Card>

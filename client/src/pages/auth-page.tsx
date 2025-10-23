@@ -15,6 +15,7 @@ import { Redirect, Link, useLocation } from "wouter";
 import { Anchor, ArrowLeft } from "lucide-react";
 import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757318764148.jpeg";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),
@@ -149,9 +150,6 @@ export default function AuthPage() {
           };
           
           console.log('🔵 Calling /api/auth/apple with:', appleAuthData);
-          
-          // Use the apiRequest from queryClient
-          const { apiRequest } = await import('@/lib/queryClient');
           
           try {
             const response = await apiRequest('POST', '/api/auth/apple', appleAuthData);

@@ -140,34 +140,45 @@ export default function AuthPage() {
           
           console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
           
-          // Try to register first, if user exists try login
-          const userData: any = {
-            email: email,
-            password: appleUserId,
-            username: `apple_${cleanAppleId}`,
-            role: 'customer',
+          // Call dedicated Apple Sign In endpoint
+          const appleAuthData = {
+            email,
+            appleUserId,
+            firstName: givenName || undefined,
+            lastName: familyName || undefined,
           };
           
-          // Add name fields only if provided by Apple
-          if (givenName) userData.firstName = givenName;
-          if (familyName) userData.lastName = familyName;
+          console.log('🔵 Calling /api/auth/apple with:', appleAuthData);
           
-          console.log('🔵 Trying to register with:', userData);
+          // Use the apiRequest from queryClient
+          const { apiRequest } = await import('@/lib/queryClient');
           
-          // Try register first
-          registerMutation.mutate(userData, {
-            onError: (error: any) => {
-              // If user already exists, try login instead
-              if (error.message?.includes('già registrata') || error.message?.includes('already')) {
-                console.log('🔄 User exists, trying login instead...');
-                loginMutation.mutate({
-                  email: email,
-                  password: appleUserId,
-                });
-              }
-              // Otherwise the error will be shown by the mutation's onError handler
-            }
-          });
+          try {
+            const response = await apiRequest('/api/auth/apple', {
+              method: 'POST',
+              body: JSON.stringify(appleAuthData),
+            });
+            
+            console.log('✅ Apple auth successful:', response);
+            
+            // Refresh user data
+            await refetch();
+            
+            // Show success message
+            toast({
+              title: "Accesso effettuato!",
+              description: "Benvenuto su SeaBoo",
+            });
+            
+            // Redirect will happen automatically via useAuth
+          } catch (error: any) {
+            console.error('❌ Apple auth failed:', error);
+            toast({
+              title: "Errore Apple Sign In",
+              description: error.message || "Impossibile completare l'accesso con Apple",
+              variant: "destructive",
+            });
+          }
           
           return;
         } catch (nativeError: any) {

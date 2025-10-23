@@ -152,6 +152,96 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Apple Sign In endpoint - handles both registration and login
+  app.post('/api/auth/apple', async (req, res) => {
+    try {
+      const { email, appleUserId, firstName, lastName } = req.body;
+      
+      if (!email || !appleUserId) {
+        return res.status(400).json({ error: "Dati Apple mancanti" });
+      }
+      
+      // Check if user already exists by email
+      let user = await storage.getUserByEmail(email);
+      
+      if (user) {
+        // User exists - login
+        console.log('Apple Sign In: User exists, logging in');
+        
+        // Store user in session
+        req.session.user = {
+          id: user.id.toString(),
+          email: user.email,
+          firstName: user.firstName || undefined,
+          lastName: user.lastName || undefined,
+          role: user.role || "customer",
+          userType: user.role === "owner" ? "owner" : "customer",
+          businessName: user.businessName || undefined
+        };
+        
+        return res.json({ 
+          success: true, 
+          user: {
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+            userType: user.role === "owner" ? "owner" : "customer"
+          },
+          redirectTo: "/home"
+        });
+      }
+      
+      // User doesn't exist - create new account
+      console.log('Apple Sign In: Creating new user');
+      
+      // Generate unique username based on email
+      const emailPrefix = email.split('@')[0].replace(/[^a-z0-9]/gi, '').substring(0, 20);
+      const randomSuffix = Math.random().toString(36).substring(2, 8);
+      const username = `${emailPrefix}_${randomSuffix}`;
+      
+      const userData = {
+        email,
+        password: appleUserId, // Use Apple ID as password
+        username,
+        role: 'customer' as const,
+        firstName: firstName || undefined,
+        lastName: lastName || undefined
+      };
+      
+      user = await storage.createUser(userData);
+      
+      // Store user in session
+      req.session.user = {
+        id: user.id.toString(),
+        email: user.email,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+        role: user.role || "customer",
+        userType: "customer",
+      };
+      
+      res.json({ 
+        success: true, 
+        user: {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          userType: "customer"
+        },
+        redirectTo: "/home"
+      });
+    } catch (error: any) {
+      console.error("Apple Sign In error:", error);
+      res.status(400).json({ 
+        error: error.message || "Errore durante l'autenticazione Apple" 
+      });
+    }
+  });
+
   // Get current user endpoint
   app.get('/api/user', (req, res) => {
     if (req.session?.user) {

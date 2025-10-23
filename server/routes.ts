@@ -14,7 +14,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-10-28.acacia',
+  apiVersion: '2025-08-27.basil',
 });
 
 // Extend session type
@@ -125,7 +125,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Store user in session
       req.session.user = {
-        id: user.id,
+        id: user.id.toString(),
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
@@ -264,7 +264,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Delete account endpoint
   app.delete('/api/user/delete-account', requireAuth, async (req, res) => {
     try {
-      const userId = req.session.user!.id;
+      const userId = parseInt(req.session.user!.id);
       const deleted = await storage.deleteUser(userId);
       
       if (!deleted) {
@@ -286,7 +286,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Upgrade to owner endpoint
   app.post('/api/user/upgrade-to-owner', requireAuth, async (req, res) => {
     try {
-      const userId = req.session.user!.id;
+      const userId = parseInt(req.session.user!.id);
       const { businessName, businessType, vatNumber, phone } = req.body;
       
       // Update user role to owner
@@ -304,7 +304,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Update session
       req.session.user = {
-        ...req.session.user,
+        id: req.session.user!.id,
+        email: req.session.user!.email,
+        firstName: req.session.user!.firstName,
+        lastName: req.session.user!.lastName,
         role: 'owner',
         userType: 'owner',
         businessName: updatedUser.businessName || undefined

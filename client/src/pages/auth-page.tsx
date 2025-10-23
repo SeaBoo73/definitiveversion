@@ -154,15 +154,10 @@ export default function AuthPage() {
           const { apiRequest } = await import('@/lib/queryClient');
           
           try {
-            const response = await apiRequest('/api/auth/apple', {
-              method: 'POST',
-              body: JSON.stringify(appleAuthData),
-            });
+            const response = await apiRequest('POST', '/api/auth/apple', appleAuthData);
+            const data = await response.json();
             
-            console.log('✅ Apple auth successful:', response);
-            
-            // Refresh user data
-            await refetch();
+            console.log('✅ Apple auth successful:', data);
             
             // Show success message
             toast({
@@ -170,7 +165,8 @@ export default function AuthPage() {
               description: "Benvenuto su SeaBoo",
             });
             
-            // Redirect will happen automatically via useAuth
+            // Reload page to update auth state
+            window.location.href = '/';
           } catch (error: any) {
             console.error('❌ Apple auth failed:', error);
             toast({

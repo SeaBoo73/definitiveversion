@@ -67,7 +67,7 @@ export default function HomePage() {
   // Filtra barche per categoria e porto
   const filteredBoats = boats.filter(boat => {
     if (selectedCategory && boat.type !== selectedCategory) return false;
-    if (selectedPort && selectedPort !== "tutti" && boat.port !== selectedPort) return false;
+    if (selectedPort && selectedPort !== "tutti" && boat.location !== selectedPort) return false;
     return true;
   });
 
@@ -117,25 +117,43 @@ export default function HomePage() {
           {/* Contenuto principale centrato */}
           <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 leading-tight">
                 Naviga verso<br/>l'avventura
               </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+              <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-8 md:mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
                 Prenota barche, yacht e imbarcazioni<br/>
                 uniche in tutta Italia.<br/>
                 Vivi il mare come mai prima d'ora.
               </p>
               
               {/* Form di ricerca completo */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-lg mx-auto">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-left text-gray-700 font-semibold mb-2">Dove</label>
-                    <PortSelector
-                      value={selectedPort}
-                      onChange={setSelectedPort}
-                      placeholder="Cerca tra 48 porti italiani..."
-                    />
+              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
+                <div className="space-y-4 md:space-y-5">
+                  <div className="md:grid md:grid-cols-2 md:gap-4 space-y-4 md:space-y-0">
+                    <div>
+                      <label className="block text-left text-gray-700 font-semibold mb-2">Dove</label>
+                      <PortSelector
+                        value={selectedPort}
+                        onChange={setSelectedPort}
+                        placeholder="Cerca tra 48 porti italiani..."
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-left text-gray-700 font-semibold mb-2">Ospiti</label>
+                      <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900">
+                        <option>2 ospiti</option>
+                        <option>1 ospite</option>
+                        <option>3 ospiti</option>
+                        <option>4 ospiti</option>
+                        <option>5 ospiti</option>
+                        <option>6 ospiti</option>
+                        <option>7 ospiti</option>
+                        <option>8 ospiti</option>
+                        <option>9 ospiti</option>
+                        <option>10+ ospiti</option>
+                      </select>
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -155,22 +173,6 @@ export default function HomePage() {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
                     </div>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-left text-gray-700 font-semibold mb-2">Ospiti</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900">
-                      <option>2 ospiti</option>
-                      <option>1 ospite</option>
-                      <option>3 ospiti</option>
-                      <option>4 ospiti</option>
-                      <option>5 ospiti</option>
-                      <option>6 ospiti</option>
-                      <option>7 ospiti</option>
-                      <option>8 ospiti</option>
-                      <option>9 ospiti</option>
-                      <option>10+ ospiti</option>
-                    </select>
                   </div>
                   
                   <div>

@@ -139,7 +139,9 @@ export default function AuthPage() {
           const cleanAppleId = appleUserId.replace(/[^a-z0-9]/gi, '').substring(0, 30);
           const email = rawEmail || `apple${cleanAppleId}@seaboo.app`;
           
-          console.log('🍎 Apple data:', { appleUserId, email, givenName, familyName });
+          console.log('🍎 Apple raw data:', { appleUserId, rawEmail, cleanAppleId });
+          console.log('🍎 Generated email:', email);
+          console.log('🍎 Names:', { givenName, familyName });
           
           // Call dedicated Apple Sign In endpoint
           const appleAuthData = {

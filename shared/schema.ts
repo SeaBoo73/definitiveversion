@@ -115,7 +115,7 @@ export const insertUserSchema = createInsertSchema(users, {
   businessName: z.string().optional(),
   businessType: z.string().optional(),
   vatNumber: z.string().optional(),
-  website: z.string().url().optional().or(z.literal("")),
+  website: z.string().optional(),
   instagram: z.string().optional(),
 }).omit({ id: true, createdAt: true });
 

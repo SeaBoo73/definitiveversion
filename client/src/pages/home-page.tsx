@@ -117,10 +117,10 @@ export default function HomePage() {
           {/* Contenuto principale centrato */}
           <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 md:mb-8 leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
                 Naviga verso<br/>l'avventura
               </h1>
-              <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-8 md:mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+              <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
                 Prenota barche, yacht e imbarcazioni<br/>
                 uniche in tutta Italia.<br/>
                 Vivi il mare come mai prima d'ora.

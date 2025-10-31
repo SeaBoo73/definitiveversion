@@ -115,7 +115,7 @@ export default function HomePage() {
           </div>
           
           {/* Contenuto principale centrato */}
-          <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-24 md:pb-32">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
                 Naviga verso<br/>l'avventura

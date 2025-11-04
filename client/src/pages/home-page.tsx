@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/luxury_boat_lifestyle_in_crystal-clear_waters_mediterranean_coast_people_enjoying_the_sea_snorkelin_x94via1sagly3xj655zr_0_1761909370440.png";
+import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507_1762246754482.jpg";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";

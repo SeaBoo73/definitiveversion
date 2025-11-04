@@ -37,11 +37,17 @@ export function AIAssistant({ context }: AIAssistantProps) {
       const response = await fetch(getApiUrl(`/api/ai/${request.feature}`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           input: request.input,
           context: request.context
         })
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
       return await response.json();
     },
     onSuccess: (response, variables) => {

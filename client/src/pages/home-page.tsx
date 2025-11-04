@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507_1762246754482.jpg";
+import heroImage from "@assets/wide_panoramic_hero_background_of_a_peaceful_marina_at_sunrise_sailboats_and_yachts_gently_moored_t_o2ca8ymo0bouf0phcz2b_1_1762247904175.png";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
@@ -88,26 +88,20 @@ export default function HomePage() {
       
       {/* Hero Section - Design con sfondo blu oceano e palme */}
       <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
-        {/* Background con palme e oceano - Massima nitidezza */}
+        {/* Background con palme e oceano - Rendering naturale */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${heroImage})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center bottom',
+            backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
-            opacity: 1,
-            filter: 'contrast(1.15) brightness(1.1) saturate(1.1) sharpen(1)',
-            imageRendering: 'crisp-edges',
-            WebkitBackfaceVisibility: 'hidden',
-            backfaceVisibility: 'hidden',
-            transform: 'translateZ(0)',
-            willChange: 'transform'
+            opacity: 1
           }}
         />
         
-        {/* Overlay minimale solo per il testo */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-blue-900/30"></div>
+        {/* Overlay leggero per leggibilità testo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-blue-900/15 to-blue-900/35"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}

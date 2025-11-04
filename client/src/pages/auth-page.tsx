@@ -197,7 +197,7 @@ export default function AuthPage() {
           // Initialize Apple Sign In
           console.log('📝 Initializing Apple SDK...');
           await window.AppleID.auth.init({
-            clientId: 'it.seaboo.app',
+            clientId: 'it.seaboo.web',
             scope: 'name email',
             redirectURI: window.location.origin + '/auth/apple/callback',
             usePopup: true

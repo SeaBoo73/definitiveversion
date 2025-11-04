@@ -39,13 +39,8 @@ type RegisterData = z.infer<typeof registerSchema>;
 export default function AuthPage() {
   const { user, loginMutation, registerMutation, appleLoginMutation } = useAuth();
   
-  // Check if we're running in Capacitor (native app)
+  // Check if we're running in Capacitor (native iOS app)
   const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
-  
-  // Get platform (ios, android, or web)
-  const platform = isCapacitor ? (window as any).Capacitor.getPlatform() : 'web';
-  const isIOS = platform === 'ios';
-  const isAndroid = platform === 'android';
   const [location, setLocation] = useLocation();
   const { toast } = useToast();
   

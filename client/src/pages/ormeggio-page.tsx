@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import marinaBackground from "@assets/wide_panoramic_hero_background_of_a_peaceful_marina_at_sunrise_sailboats_and_yachts_gently_moored_t_o2ca8ymo0bouf0phcz2b_1_1762247904175.png";
 
 interface MooringSpot {
   id: string;
@@ -366,9 +367,19 @@ export default function OrmeggioPage() {
       <Breadcrumbs />
       
       {/* Hero Section */}
-      <section className="text-white py-16" style={{ background: 'linear-gradient(135deg, #0C9FE2, #0A85C2)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+      <section className="relative text-white py-16 overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${marinaBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/50 via-blue-800/60 to-blue-900/70"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <div className="text-6xl mb-6">⚓</div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -377,26 +388,6 @@ export default function OrmeggioPage() {
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Trova il posto barca perfetto o affitta il tuo ormeggio. Mai più barche in rada!
             </p>
-          </div>
-          
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold">{mooringSpots.length}</div>
-              <div className="text-blue-200">Posti Disponibili</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">5</div>
-              <div className="text-blue-200">Porti Partner</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">€32+</div>
-              <div className="text-blue-200">Da /giorno</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold">4.7★</div>
-              <div className="text-blue-200">Rating Medio</div>
-            </div>
           </div>
         </div>
       </section>

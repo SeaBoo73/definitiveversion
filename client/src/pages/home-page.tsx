@@ -127,7 +127,7 @@ export default function HomePage() {
               </p>
               
               {/* Form di ricerca completo */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
+              <div className="bg-white/75 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-2xl max-w-lg md:max-w-2xl lg:max-w-3xl mx-auto">
                 <div className="space-y-4 md:space-y-5">
                   <div className="md:grid md:grid-cols-2 md:gap-4 space-y-4 md:space-y-0">
                     <div>

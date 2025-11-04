@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/upscalemedia-transformed_1762251125394.jpeg";
+import heroImage from "@assets/wide_panoramic_hero_image_of_a_single_white_sailboat_seen_from_a_distance_sailing_freely_across_a_c_m64t0hf1ao2ukwo1pigi_2_1762251801537.png";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
@@ -88,13 +88,13 @@ export default function HomePage() {
       
       {/* Hero Section - Design con sfondo blu oceano e palme */}
       <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
-        {/* Background con palme e oceano - Rendering naturale */}
+        {/* Background con barca a vela - Rendering naturale */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: `url(${heroImage})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center 20%',
+            backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
             opacity: 1
           }}

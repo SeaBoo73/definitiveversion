@@ -18,6 +18,7 @@ try {
 
 // AI Chat endpoint
 router.post("/chat", async (req, res) => {
+  console.log('[AI] Chat endpoint called with:', { message: req.body?.message, hasContext: !!req.body?.context });
   try {
     const { message, context } = req.body;
 
@@ -110,6 +111,7 @@ router.post("/chat", async (req, res) => {
 
 // AI Recommendations endpoint
 router.post("/recommendations", async (req, res) => {
+  console.log('[AI] Recommendations endpoint called with:', { input: req.body?.input, hasContext: !!req.body?.context });
   try {
     const { input, context } = req.body;
 
@@ -191,6 +193,7 @@ router.post("/recommendations", async (req, res) => {
 
 // AI Pricing Analysis endpoint
 router.post("/pricing", async (req, res) => {
+  console.log('[AI] Pricing endpoint called with:', { input: req.body?.input, hasContext: !!req.body?.context });
   try {
     const { input, context } = req.body;
 
@@ -263,6 +266,7 @@ router.post("/pricing", async (req, res) => {
 
 // AI Weather Advice endpoint
 router.post("/weather", async (req, res) => {
+  console.log('[AI] Weather endpoint called with:', { input: req.body?.input, hasContext: !!req.body?.context });
   try {
     const { input, context } = req.body;
 
@@ -335,6 +339,7 @@ router.post("/weather", async (req, res) => {
 
 // AI Itinerary Planning endpoint
 router.post("/itinerary", async (req, res) => {
+  console.log('[AI] Itinerary endpoint called with:', { input: req.body?.input, hasContext: !!req.body?.context });
   try {
     const { input, context } = req.body;
 

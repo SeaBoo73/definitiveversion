@@ -72,6 +72,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Register AI Chat router FIRST (before other routes)
+  app.use('/api/ai', aiChatRouter);
+
   // Google OAuth Strategy
   passport.use(new GoogleStrategy({
       clientID: process.env.GOOGLE_CLIENT_ID!,
@@ -1007,9 +1010,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     res.json(portServices);
   });
-
-  // Register AI Chat router
-  app.use('/api/ai', aiChatRouter);
 
   const httpServer = createServer(app);
   return httpServer;

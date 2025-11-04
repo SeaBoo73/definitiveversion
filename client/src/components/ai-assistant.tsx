@@ -6,7 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Send, Loader2, Sparkles, MapPin, DollarSign, Cloud } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, getApiUrl } from "@/lib/queryClient";
 
 interface AIAssistantProps {
   context?: {
@@ -34,7 +34,7 @@ export function AIAssistant({ context }: AIAssistantProps) {
       input: string;
       context?: any;
     }) => {
-      const response = await fetch(`/api/ai/${request.feature}`, {
+      const response = await fetch(getApiUrl(`/api/ai/${request.feature}`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

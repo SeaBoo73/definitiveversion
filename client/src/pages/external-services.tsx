@@ -35,6 +35,7 @@ import { SEOHead } from '@/components/seo-head';
 import { StructuredData } from '@/components/structured-data';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PartnersSection } from '@/components/partners-section';
+import { getApiUrl } from '@/lib/queryClient';
 
 interface WeatherData {
   location: string;
@@ -115,7 +116,7 @@ export default function ExternalServices() {
   const { data: weatherData, isLoading: weatherLoading, refetch: refetchWeather } = useQuery<WeatherData>({
     queryKey: ['weather', selectedLocation],
     queryFn: async () => {
-      const response = await fetch(`/api/external/weather?location=${selectedLocation}`);
+      const response = await fetch(getApiUrl(`/api/external/weather?location=${selectedLocation}`));
       if (!response.ok) throw new Error('Failed to fetch weather data');
       return response.json();
     },
@@ -127,7 +128,7 @@ export default function ExternalServices() {
   const { data: fuelPrices, isLoading: fuelLoading, refetch: refetchFuel } = useQuery<FuelPrice[]>({
     queryKey: ['fuel-prices', selectedLocation, fuelFilter],
     queryFn: async () => {
-      const response = await fetch(`/api/external/fuel-prices?location=${selectedLocation}&filter=${fuelFilter}`);
+      const response = await fetch(getApiUrl(`/api/external/fuel-prices?location=${selectedLocation}&filter=${fuelFilter}`));
       if (!response.ok) throw new Error('Failed to fetch fuel prices');
       return response.json();
     },
@@ -139,7 +140,7 @@ export default function ExternalServices() {
   const { data: portServices, isLoading: portsLoading, refetch: refetchPorts } = useQuery<PortService[]>({
     queryKey: ['port-services', selectedLocation, portFilter],
     queryFn: async () => {
-      const response = await fetch(`/api/external/port-services?location=${selectedLocation}&filter=${portFilter}`);
+      const response = await fetch(getApiUrl(`/api/external/port-services?location=${selectedLocation}&filter=${portFilter}`));
       if (!response.ok) throw new Error('Failed to fetch port services');
       return response.json();
     },

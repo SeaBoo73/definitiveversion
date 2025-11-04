@@ -96,12 +96,12 @@ export default function HomePage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
-            opacity: 0.7
+            opacity: 1
           }}
         />
         
         {/* Overlay gradiente per migliore leggibilità */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/80 via-blue-700/90 to-blue-900/95"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/30 via-blue-700/40 to-blue-900/60"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}

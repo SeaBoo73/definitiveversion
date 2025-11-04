@@ -45,10 +45,13 @@ export function AIAssistant({ context }: AIAssistantProps) {
       return await response.json();
     },
     onSuccess: (response, variables) => {
+      // Extract the AI response - recommendations, pricing, weather, or itinerary
+      const aiContent = response.recommendations || response.pricing || response.weather || response.itinerary || response.response || 'Risposta non disponibile';
+      
       setConversation(prev => [
         ...prev,
         { type: 'user', content: variables.input, feature: variables.feature },
-        { type: 'ai', content: response.response, feature: variables.feature }
+        { type: 'ai', content: aiContent, feature: variables.feature }
       ]);
       setUserInput("");
     },

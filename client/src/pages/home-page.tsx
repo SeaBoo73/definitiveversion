@@ -358,7 +358,7 @@ export default function HomePage() {
                 <p className="text-blue-100 mb-6">
                   Scopri i vantaggi di diventare un noleggiatore SeaBoo e inizia a guadagnare.
                 </p>
-                <Button size="lg" className="bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-900 font-bold shadow-lg" asChild>
+                <Button size="lg" className="bg-orange-500 text-white hover:bg-orange-600 font-bold shadow-lg" asChild>
                   <Link href="/diventa-noleggiatore">Diventa noleggiatore</Link>
                 </Button>
               </div>

@@ -123,11 +123,14 @@ router.post("/recommendations", async (req, res) => {
 
     // Check if OpenAI is available
     if (!openai) {
+      console.log('[AI] OpenAI not initialized');
       return res.status(503).json({
         error: "AI service temporarily unavailable",
         fallbackMessage: "Mi dispiace, il servizio di raccomandazioni AI non è al momento disponibile."
       });
     }
+
+    console.log('[AI] OpenAI initialized, making API call...');
 
     // Create system prompt for boat recommendations
     const systemPrompt = `Sei l'assistente AI di SeaBoo specializzato in raccomandazioni di barche.
@@ -159,15 +162,18 @@ router.post("/recommendations", async (req, res) => {
       temperature: 0.7,
     });
 
+    console.log('[AI] OpenAI API call completed');
     const response = completion.choices[0]?.message?.content;
     
     if (!response) {
+      console.log('[AI] No response from OpenAI');
       return res.status(500).json({
         error: "No response from AI service",
         fallbackMessage: "Mi dispiace, non sono riuscito a elaborare la tua richiesta."
       });
     }
 
+    console.log('[AI] Sending response to client');
     res.json({ 
       recommendations: response,
       model: "gpt-4o",
@@ -176,6 +182,7 @@ router.post("/recommendations", async (req, res) => {
 
   } catch (error) {
     console.error("AI Recommendations error:", error);
+    console.error("Error details:", error instanceof Error ? error.message : 'Unknown error');
     
     if (error instanceof Error && error.message.includes('quota')) {
       return res.status(429).json({

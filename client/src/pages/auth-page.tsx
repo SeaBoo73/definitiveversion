@@ -105,6 +105,11 @@ export default function AuthPage() {
     registerMutation.mutate(registerData);
   };
 
+  const handleGoogleSignIn = () => {
+    // Redirect to Google OAuth endpoint
+    window.location.href = '/api/auth/google';
+  };
+
   const handleAppleSignIn = async () => {
     try {
       console.log('🚀 handleAppleSignIn started');
@@ -356,12 +361,7 @@ export default function AuthPage() {
                       type="button"
                       variant="outline"
                       className="w-full border-gray-300 hover:bg-gray-50"
-                      onClick={() => {
-                        toast({
-                          title: "Google Sign In",
-                          description: "Funzionalità in arrivo presto!",
-                        });
-                      }}
+                      onClick={handleGoogleSignIn}
                       data-testid="button-google-signin"
                     >
                       <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">

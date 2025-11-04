@@ -26,6 +26,7 @@ import {
   Search
 } from "lucide-react";
 import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
+import heroBackground from "@assets/wide_panoramic_hero_background_of_a_calm_sea_at_golden_hour_gentle_waves_clear_sky_with_a_few_elega_4bmjnxqbdt1ij8b47362_2_1762247776290.png";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
@@ -219,7 +220,16 @@ export function EsperienzePage() {
       <Breadcrumbs />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-deep-navy to-ocean-blue">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-blue-800/50 to-blue-900/60"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/wide_panoramic_hero_background_of_a_peaceful_marina_at_sunrise_sailboats_and_yachts_gently_moored_t_o2ca8ymo0bouf0phcz2b_1_1762247904175.png";
+import heroImage from "@assets/upscalemedia-transformed_1762251125394.jpeg";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";

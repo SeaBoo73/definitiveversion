@@ -194,16 +194,14 @@ export default function AuthPage() {
         console.log('🔄 Apple SDK available, attempting web Apple Sign In...');
         
         try {
-          // Initialize Apple Sign In if not already done
-          if (!window.AppleID.auth) {
-            console.log('📝 Initializing Apple SDK...');
-            await window.AppleID.auth.init({
-              clientId: 'it.seaboo.web',
-              scope: 'name email',
-              redirectURI: window.location.origin + '/auth/apple/callback',
-              usePopup: true
-            });
-          }
+          // Initialize Apple Sign In
+          console.log('📝 Initializing Apple SDK...');
+          await window.AppleID.auth.init({
+            clientId: 'it.seaboo.web',
+            scope: 'name email',
+            redirectURI: window.location.origin + '/auth/apple/callback',
+            usePopup: true
+          });
           
           const response = await window.AppleID.auth.signIn();
           

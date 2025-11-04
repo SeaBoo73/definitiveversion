@@ -88,7 +88,7 @@ export default function HomePage() {
       
       {/* Hero Section - Design con sfondo blu oceano e palme */}
       <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
-        {/* Background con palme e oceano */}
+        {/* Background con palme e oceano - Nitidezza migliorata */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -96,12 +96,14 @@ export default function HomePage() {
             backgroundSize: 'cover',
             backgroundPosition: 'center bottom',
             backgroundRepeat: 'no-repeat',
-            opacity: 1
+            opacity: 1,
+            filter: 'contrast(1.1) brightness(1.05)',
+            imageRendering: '-webkit-optimize-contrast'
           }}
         />
         
-        {/* Overlay gradiente per migliore leggibilità */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/30 via-blue-700/40 to-blue-900/60"></div>
+        {/* Overlay gradiente ridotto per mantenere nitidezza */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/20 via-blue-700/25 to-blue-900/40"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}

@@ -146,21 +146,26 @@ router.post("/recommendations", async (req, res) => {
     
     Rispondi sempre in italiano con raccomandazioni concrete e motivate.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        {
-          role: "system",
-          content: systemPrompt
-        },
-        {
-          role: "user", 
-          content: `Richiesta: ${input}\nContesto: ${JSON.stringify(context || {})}`
-        }
-      ],
-      max_tokens: 800,
-      temperature: 0.7,
-    });
+    const completion = await Promise.race([
+      openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: systemPrompt
+          },
+          {
+            role: "user", 
+            content: `Richiesta: ${input}\nContesto: ${JSON.stringify(context || {})}`
+          }
+        ],
+        max_tokens: 800,
+        temperature: 0.7,
+      }),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('OpenAI request timeout')), 30000)
+      )
+    ]) as any;
 
     console.log('[AI] OpenAI API call completed');
     const response = completion.choices[0]?.message?.content;

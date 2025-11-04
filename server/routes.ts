@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import Stripe from "stripe";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import aiChatRouter from "./routes/ai-chat";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -1006,6 +1007,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     res.json(portServices);
   });
+
+  // Register AI Chat router
+  app.use('/api/ai', aiChatRouter);
 
   const httpServer = createServer(app);
   return httpServer;

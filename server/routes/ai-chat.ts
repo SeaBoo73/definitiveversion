@@ -108,6 +108,87 @@ router.post("/chat", async (req, res) => {
   }
 });
 
+// AI Recommendations endpoint
+router.post("/recommendations", async (req, res) => {
+  try {
+    const { input, context } = req.body;
+
+    if (!input || typeof input !== 'string') {
+      return res.status(400).json({ 
+        error: "Input is required and must be a string" 
+      });
+    }
+
+    // Check if OpenAI is available
+    if (!openai) {
+      return res.status(503).json({
+        error: "AI service temporarily unavailable",
+        fallbackMessage: "Mi dispiace, il servizio di raccomandazioni AI non è al momento disponibile."
+      });
+    }
+
+    // Create system prompt for boat recommendations
+    const systemPrompt = `Sei l'assistente AI di SeaBoo specializzato in raccomandazioni di barche.
+    
+    Analizza la richiesta dell'utente e fornisci raccomandazioni specifiche per barche disponibili nel Lazio.
+    
+    Considera:
+    - Budget e tipo di barca richiesta
+    - Destinazione e porto di partenza
+    - Numero di persone
+    - Durata del noleggio
+    - Preferenze speciali (lusso, sport acquatici, pesca, ecc.)
+    
+    Rispondi sempre in italiano con raccomandazioni concrete e motivate.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content: systemPrompt
+        },
+        {
+          role: "user", 
+          content: `Richiesta: ${input}\nContesto: ${JSON.stringify(context || {})}`
+        }
+      ],
+      max_tokens: 800,
+      temperature: 0.7,
+    });
+
+    const response = completion.choices[0]?.message?.content;
+    
+    if (!response) {
+      return res.status(500).json({
+        error: "No response from AI service",
+        fallbackMessage: "Mi dispiace, non sono riuscito a elaborare la tua richiesta."
+      });
+    }
+
+    res.json({ 
+      recommendations: response,
+      model: "gpt-4o",
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error("AI Recommendations error:", error);
+    
+    if (error instanceof Error && error.message.includes('quota')) {
+      return res.status(429).json({
+        error: "API quota exceeded", 
+        fallbackMessage: "Il servizio AI ha raggiunto il limite di utilizzo. Riprova più tardi."
+      });
+    }
+
+    res.status(500).json({
+      error: "Internal server error",
+      fallbackMessage: "Mi dispiace, c'è stato un errore tecnico. Riprova più tardi."
+    });
+  }
+});
+
 // Health check endpoint for AI service
 router.get("/status", (req, res) => {
   res.json({

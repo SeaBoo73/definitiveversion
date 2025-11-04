@@ -88,7 +88,7 @@ export default function HomePage() {
       
       {/* Hero Section - Design con sfondo blu oceano e palme */}
       <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
-        {/* Background con palme e oceano - Nitidezza migliorata */}
+        {/* Background con palme e oceano - Massima nitidezza */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -97,13 +97,17 @@ export default function HomePage() {
             backgroundPosition: 'center bottom',
             backgroundRepeat: 'no-repeat',
             opacity: 1,
-            filter: 'contrast(1.1) brightness(1.05)',
-            imageRendering: '-webkit-optimize-contrast'
+            filter: 'contrast(1.15) brightness(1.1) saturate(1.1) sharpen(1)',
+            imageRendering: 'crisp-edges',
+            WebkitBackfaceVisibility: 'hidden',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(0)',
+            willChange: 'transform'
           }}
         />
         
-        {/* Overlay gradiente ridotto per mantenere nitidezza */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-600/20 via-blue-700/25 to-blue-900/40"></div>
+        {/* Overlay minimale solo per il testo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-blue-900/30"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}
@@ -119,10 +123,10 @@ export default function HomePage() {
           {/* Contenuto principale centrato */}
           <div className="flex-1 flex items-end justify-center px-4 sm:px-6 lg:px-8 pb-8 md:pb-16">
             <div className="text-center max-w-4xl mx-auto mb-12 md:mb-20">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3), 0 0 20px rgba(0,0,0,0.2)' }}>
                 Naviga verso<br/>l'avventura
               </h1>
-              <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+              <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                 Prenota barche, yacht e imbarcazioni<br/>
                 uniche in tutta Italia.<br/>
                 Vivi il mare come mai prima d'ora.

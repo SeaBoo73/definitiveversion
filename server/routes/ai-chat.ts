@@ -189,6 +189,224 @@ router.post("/recommendations", async (req, res) => {
   }
 });
 
+// AI Pricing Analysis endpoint
+router.post("/pricing", async (req, res) => {
+  try {
+    const { input, context } = req.body;
+
+    if (!input || typeof input !== 'string') {
+      return res.status(400).json({ 
+        error: "Input is required and must be a string" 
+      });
+    }
+
+    if (!openai) {
+      return res.status(503).json({
+        error: "AI service temporarily unavailable",
+        fallbackMessage: "Mi dispiace, il servizio di analisi prezzi non è al momento disponibile."
+      });
+    }
+
+    const systemPrompt = `Sei l'assistente AI di SeaBoo specializzato nell'analisi dei prezzi di noleggio barche.
+    
+    Analizza se il prezzo richiesto è equo considerando:
+    - Tipo di barca e caratteristiche
+    - Stagionalità (alta stagione estiva vs bassa stagione)
+    - Durata del noleggio
+    - Servizi inclusi (skipper, carburante, assicurazione)
+    - Località e porto di partenza
+    
+    Fornisci un'analisi dettagliata del prezzo e suggerimenti per il cliente.
+    Rispondi sempre in italiano.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `Richiesta: ${input}\nContesto: ${JSON.stringify(context || {})}` }
+      ],
+      max_tokens: 600,
+      temperature: 0.7,
+    });
+
+    const response = completion.choices[0]?.message?.content;
+    
+    if (!response) {
+      return res.status(500).json({
+        error: "No response from AI service",
+        fallbackMessage: "Mi dispiace, non sono riuscito a elaborare la tua richiesta."
+      });
+    }
+
+    res.json({ 
+      pricing: response,
+      model: "gpt-4o",
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error("AI Pricing error:", error);
+    
+    if (error instanceof Error && error.message.includes('quota')) {
+      return res.status(429).json({
+        error: "API quota exceeded", 
+        fallbackMessage: "Il servizio AI ha raggiunto il limite di utilizzo. Riprova più tardi."
+      });
+    }
+
+    res.status(500).json({
+      error: "Internal server error",
+      fallbackMessage: "Mi dispiace, c'è stato un errore tecnico. Riprova più tardi."
+    });
+  }
+});
+
+// AI Weather Advice endpoint
+router.post("/weather", async (req, res) => {
+  try {
+    const { input, context } = req.body;
+
+    if (!input || typeof input !== 'string') {
+      return res.status(400).json({ 
+        error: "Input is required and must be a string" 
+      });
+    }
+
+    if (!openai) {
+      return res.status(503).json({
+        error: "AI service temporarily unavailable",
+        fallbackMessage: "Mi dispiace, il servizio meteo non è al momento disponibile."
+      });
+    }
+
+    const systemPrompt = `Sei l'assistente AI di SeaBoo specializzato in consigli meteorologici per la navigazione.
+    
+    Fornisci consigli basati su:
+    - Condizioni meteo marine previste
+    - Sicurezza della navigazione
+    - Migliori periodi per navigare
+    - Precauzioni da prendere
+    - Destinazioni consigliate in base al meteo
+    
+    Dai sempre priorità alla sicurezza dei naviganti.
+    Rispondi sempre in italiano in modo chiaro e professionale.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `Richiesta: ${input}\nContesto: ${JSON.stringify(context || {})}` }
+      ],
+      max_tokens: 600,
+      temperature: 0.7,
+    });
+
+    const response = completion.choices[0]?.message?.content;
+    
+    if (!response) {
+      return res.status(500).json({
+        error: "No response from AI service",
+        fallbackMessage: "Mi dispiace, non sono riuscito a elaborare la tua richiesta."
+      });
+    }
+
+    res.json({ 
+      weather: response,
+      model: "gpt-4o",
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error("AI Weather error:", error);
+    
+    if (error instanceof Error && error.message.includes('quota')) {
+      return res.status(429).json({
+        error: "API quota exceeded", 
+        fallbackMessage: "Il servizio AI ha raggiunto il limite di utilizzo. Riprova più tardi."
+      });
+    }
+
+    res.status(500).json({
+      error: "Internal server error",
+      fallbackMessage: "Mi dispiace, c'è stato un errore tecnico. Riprova più tardi."
+    });
+  }
+});
+
+// AI Itinerary Planning endpoint
+router.post("/itinerary", async (req, res) => {
+  try {
+    const { input, context } = req.body;
+
+    if (!input || typeof input !== 'string') {
+      return res.status(400).json({ 
+        error: "Input is required and must be a string" 
+      });
+    }
+
+    if (!openai) {
+      return res.status(503).json({
+        error: "AI service temporarily unavailable",
+        fallbackMessage: "Mi dispiace, il servizio di pianificazione itinerari non è al momento disponibile."
+      });
+    }
+
+    const systemPrompt = `Sei l'assistente AI di SeaBoo specializzato nella pianificazione di itinerari nautici nel Lazio e Campania.
+    
+    Crea itinerari dettagliati considerando:
+    - Porti e località di partenza/arrivo
+    - Distanze nautiche e tempi di navigazione
+    - Punti di interesse lungo il percorso
+    - Baie e ancoraggi consigliati
+    - Ristoranti e servizi disponibili
+    - Condizioni meteo e mare previste
+    - Livello di esperienza dei naviganti
+    
+    Fornisci itinerari pratici e dettagliati con tappe, orari e consigli utili.
+    Rispondi sempre in italiano.`;
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: `Richiesta: ${input}\nContesto: ${JSON.stringify(context || {})}` }
+      ],
+      max_tokens: 1000,
+      temperature: 0.7,
+    });
+
+    const response = completion.choices[0]?.message?.content;
+    
+    if (!response) {
+      return res.status(500).json({
+        error: "No response from AI service",
+        fallbackMessage: "Mi dispiace, non sono riuscito a elaborare la tua richiesta."
+      });
+    }
+
+    res.json({ 
+      itinerary: response,
+      model: "gpt-4o",
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error("AI Itinerary error:", error);
+    
+    if (error instanceof Error && error.message.includes('quota')) {
+      return res.status(429).json({
+        error: "API quota exceeded", 
+        fallbackMessage: "Il servizio AI ha raggiunto il limite di utilizzo. Riprova più tardi."
+      });
+    }
+
+    res.status(500).json({
+      error: "Internal server error",
+      fallbackMessage: "Mi dispiace, c'è stato un errore tecnico. Riprova più tardi."
+    });
+  }
+});
+
 // Health check endpoint for AI service
 router.get("/status", (req, res) => {
   res.json({

@@ -9,6 +9,8 @@ import multer from "multer";
 import path from "path";
 import { fileURLToPath } from 'url';
 import Stripe from "stripe";
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -50,6 +52,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
       maxAge: 24 * 60 * 60 * 1000
     }
   }));
+
+  // Passport initialization
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  // Passport serialization
+  passport.serializeUser((user: any, done) => {
+    done(null, user.id);
+  });
+
+  passport.deserializeUser(async (id: number, done) => {
+    try {
+      const user = await storage.getUser(id);
+      done(null, user);
+    } catch (error) {
+      done(error);
+    }
+  });
+
+  // Google OAuth Strategy
+  passport.use(new GoogleStrategy({
+      clientID: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      callbackURL: "/api/auth/google/callback",
+      scope: ["profile", "email"]
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        const email = profile.emails?.[0]?.value;
+        if (!email) {
+          return done(new Error("Email non disponibile da Google"));
+        }
+
+        // Check if user exists
+        let user = await storage.getUserByEmail(email);
+
+        if (!user) {
+          // Create new user
+          const emailPrefix = email.split('@')[0].replace(/[^a-z0-9]/gi, '').substring(0, 20);
+          const randomSuffix = Math.random().toString(36).substring(2, 8);
+          const username = `${emailPrefix}_${randomSuffix}`;
+
+          const userData = {
+            email,
+            password: profile.id, // Use Google ID as password
+            username,
+            role: 'customer' as const,
+            firstName: profile.name?.givenName || undefined,
+            lastName: profile.name?.familyName || undefined
+          };
+
+          user = await storage.createUser(userData);
+        }
+
+        return done(null, user);
+      } catch (error) {
+        return done(error as Error);
+      }
+    }
+  ));
 
   // Auth middleware
   const requireAuth = (req: any, res: any, next: any) => {
@@ -151,6 +213,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+
+  // Google OAuth routes
+  app.get('/api/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+  );
+
+  app.get('/api/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/auth?tab=login' }),
+    (req, res) => {
+      // Store user in session
+      const user = req.user as any;
+      req.session.user = {
+        id: user.id.toString(),
+        email: user.email,
+        firstName: user.firstName || undefined,
+        lastName: user.lastName || undefined,
+        role: user.role || "customer",
+        userType: user.role === "owner" ? "owner" : "customer",
+        businessName: user.businessName || undefined
+      };
+
+      // Redirect to home page
+      res.redirect('/');
+    }
+  );
 
   // Apple Sign In endpoint - handles both registration and login
   app.post('/api/auth/apple', async (req, res) => {

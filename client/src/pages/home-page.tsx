@@ -156,13 +156,13 @@ export default function HomePage() {
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-2 md:gap-4">
                     <div>
                       <label className="block text-left text-gray-700 font-semibold mb-2">Dal</label>
                       <input 
                         type="date" 
                         placeholder="gg/mm/aaaa"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        className="w-full px-2 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
                     </div>
                     <div>
@@ -170,7 +170,7 @@ export default function HomePage() {
                       <input 
                         type="date" 
                         placeholder="gg/mm/aaaa"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        className="w-full px-2 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
                     </div>
                   </div>

@@ -386,7 +386,8 @@ export default function OrmeggioPage() {
               Trova il tuo ormeggio ideale
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto opacity-90">
-              Trova il posto barca perfetto o affitta il tuo ormeggio. Mai più barche in rada!
+              Trova il posto barca perfetto o affitta il tuo ormeggio.<br/>
+              Mai più barche in rada!
             </p>
           </div>
         </div>

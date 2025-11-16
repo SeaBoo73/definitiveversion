@@ -97,12 +97,12 @@ export default function HomePage() {
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
             opacity: 1,
-            filter: 'brightness(0.85) saturate(1.2) hue-rotate(-5deg)'
+            filter: 'brightness(0.7) saturate(1.3) hue-rotate(-8deg)'
           }}
         />
         
         {/* Overlay blu per contrasto testo */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-800/25 via-blue-900/30 to-blue-950/45"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-800/40 via-blue-900/50 to-blue-950/65"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}

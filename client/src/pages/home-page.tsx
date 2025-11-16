@@ -123,7 +123,7 @@ export default function HomePage() {
               </h1>
               <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                 Prenota barche, yacht e imbarcazioni<br/>
-                uniche in tutta Italia.<br/>
+                uniche.<br/>
                 Vivi il mare come mai prima d'ora.
               </p>
               

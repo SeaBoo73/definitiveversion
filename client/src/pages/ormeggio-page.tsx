@@ -382,7 +382,7 @@ export default function OrmeggioPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <div className="text-6xl mb-6">⚓</div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4">
               Trova il tuo ormeggio ideale
             </h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">

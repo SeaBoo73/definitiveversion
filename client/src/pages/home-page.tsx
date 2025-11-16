@@ -119,7 +119,7 @@ export default function HomePage() {
           <div className="flex-1 flex items-end justify-center px-4 sm:px-6 lg:px-8 pb-8 md:pb-16">
             <div className="text-center max-w-4xl mx-auto mb-12 md:mb-20">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3), 0 0 20px rgba(0,0,0,0.2)' }}>
-                Naviga verso<br/>l'avventura
+                il booking delle barche
               </h1>
               <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-3xl mx-auto font-medium leading-relaxed" style={{ textShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                 Prenota barche, yacht e imbarcazioni<br/>

@@ -31,11 +31,15 @@ export default function HomePage() {
   
   const boats = data?.boats || [];
 
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedPort, setSelectedPort] = useState<string>("");
   const [withSkipper, setWithSkipper] = useState<boolean>(false);
   const [isExperience, setIsExperience] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [guests, setGuests] = useState<string>("2");
+  const [boatType, setBoatType] = useState<string>("");
 
   // Gestisci parametri URL per il filtro categorie
   useEffect(() => {
@@ -78,6 +82,19 @@ export default function HomePage() {
   }
 
   const featuredBoats = filteredBoats.slice(0, 8);
+
+  const handleSearch = () => {
+    const searchParams = new URLSearchParams();
+    
+    if (selectedPort && selectedPort !== "tutti") searchParams.set("location", selectedPort);
+    if (startDate) searchParams.set("startDate", startDate);
+    if (endDate) searchParams.set("endDate", endDate);
+    if (guests) searchParams.set("guests", guests);
+    if (boatType && boatType !== "Tutte le categorie") searchParams.set("boatTypes", boatType);
+    if (withSkipper) searchParams.set("skipperRequired", "true");
+    
+    setLocation(`/search?${searchParams.toString()}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 md:pb-0 overflow-x-hidden">
@@ -141,17 +158,21 @@ export default function HomePage() {
                     
                     <div>
                       <label className="block text-left text-gray-700 font-semibold mb-2">Ospiti</label>
-                      <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900">
-                        <option>2 ospiti</option>
-                        <option>1 ospite</option>
-                        <option>3 ospiti</option>
-                        <option>4 ospiti</option>
-                        <option>5 ospiti</option>
-                        <option>6 ospiti</option>
-                        <option>7 ospiti</option>
-                        <option>8 ospiti</option>
-                        <option>9 ospiti</option>
-                        <option>10+ ospiti</option>
+                      <select 
+                        value={guests}
+                        onChange={(e) => setGuests(e.target.value)}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      >
+                        <option value="1">1 ospite</option>
+                        <option value="2">2 ospiti</option>
+                        <option value="3">3 ospiti</option>
+                        <option value="4">4 ospiti</option>
+                        <option value="5">5 ospiti</option>
+                        <option value="6">6 ospiti</option>
+                        <option value="7">7 ospiti</option>
+                        <option value="8">8 ospiti</option>
+                        <option value="9">9 ospiti</option>
+                        <option value="10">10+ ospiti</option>
                       </select>
                     </div>
                   </div>
@@ -161,6 +182,8 @@ export default function HomePage() {
                       <label className="block text-left text-gray-700 font-semibold mb-2">Dal</label>
                       <input 
                         type="date" 
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
                         placeholder="gg/mm/aaaa"
                         className="w-full px-2 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
@@ -169,6 +192,8 @@ export default function HomePage() {
                       <label className="block text-left text-gray-700 font-semibold mb-2">Al</label>
                       <input 
                         type="date" 
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
                         placeholder="gg/mm/aaaa"
                         className="w-full px-2 md:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                       />
@@ -177,17 +202,21 @@ export default function HomePage() {
                   
                   <div>
                     <label className="block text-left text-gray-700 font-semibold mb-2">Tipo imbarcazione</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900">
-                      <option>Tutte le categorie</option>
-                      <option>Barca a vela</option>
-                      <option>Yacht</option>
-                      <option>Catamarano</option>
-                      <option>Gommone</option>
-                      <option>Barca a motore</option>
-                      <option>Jet ski</option>
-                      <option>Kayak</option>
-                      <option>Charter</option>
-                      <option>Houseboat</option>
+                    <select 
+                      value={boatType}
+                      onChange={(e) => setBoatType(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    >
+                      <option value="">Tutte le categorie</option>
+                      <option value="sailboat">Barca a vela</option>
+                      <option value="yacht">Yacht</option>
+                      <option value="catamarano">Catamarano</option>
+                      <option value="gommone">Gommone</option>
+                      <option value="motorboat">Barca a motore</option>
+                      <option value="jetski">Jet ski</option>
+                      <option value="kayak">Kayak</option>
+                      <option value="charter">Charter</option>
+                      <option value="houseboat">Houseboat</option>
                     </select>
                   </div>
                   
@@ -218,7 +247,11 @@ export default function HomePage() {
                     </button>
                   </div>
                   
-                  <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 text-lg font-semibold rounded-lg transition-colors flex items-center justify-center">
+                  <Button 
+                    onClick={handleSearch}
+                    className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 text-lg font-semibold rounded-lg transition-colors flex items-center justify-center"
+                    data-testid="button-search"
+                  >
                     <span className="mr-2">🔍</span>
                     Cerca
                   </Button>

@@ -693,21 +693,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete('/api/boats/:id', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const boatId = parseInt(req.params.id);
+      const userId = parseInt(req.session.user.id);
+      console.log('DELETE /api/boats/:id - boatId:', boatId, 'userId:', userId);
       
       // Verify boat ownership
       const existingBoat = await storage.getBoat(boatId);
-      if (!existingBoat || existingBoat.hostId !== req.session.user.id) {
+      console.log('Existing boat:', existingBoat);
+      
+      if (!existingBoat) {
+        console.log('Boat not found');
         return res.status(404).json({ error: "Barca non trovata" });
+      }
+      
+      if (existingBoat.hostId !== userId) {
+        console.log('Not owner - hostId:', existingBoat.hostId, 'userId:', userId);
+        return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
       }
 
       const success = await storage.deleteBoat(boatId);
+      console.log('Delete result:', success);
+      
       if (success) {
         res.json({ success: true });
       } else {
         res.status(404).json({ error: "Barca non trovata" });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Delete boat error:", error);
+      // Check if it's a foreign key constraint error
+      if (error.code === '23503') {
+        return res.status(400).json({ 
+          error: "Impossibile eliminare la barca: ci sono prenotazioni attive. Cancella prima le prenotazioni." 
+        });
+      }
       res.status(500).json({ error: "Errore nell'eliminazione della barca" });
     }
   });

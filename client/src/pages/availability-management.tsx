@@ -89,13 +89,7 @@ export default function AvailabilityManagement() {
     );
   }
 
-  const isOwner = user && boat && boat.hostId === user.id;
-  
-  console.log("🚢 isOwner check:");
-  console.log("  - user exists:", !!user);
-  console.log("  - user.id:", user?.id);
-  console.log("  - boat.hostId:", boat?.hostId);
-  console.log("  - isOwner result:", isOwner);
+  const isOwner = user && boat && boat.hostId === parseInt(String(user.id));
 
   const handleDateSelection = (startDate: Date, endDate: Date) => {
     setSelectedDates({ startDate, endDate });

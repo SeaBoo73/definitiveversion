@@ -635,10 +635,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put('/api/boats/:id', requireAuth, requireOwner, upload.array('images', 5), async (req: any, res) => {
     try {
-      const { id } = req.params;
+      const boatId = parseInt(req.params.id);
       
       // Verify boat ownership
-      const existingBoat = await storage.getBoat(id);
+      const existingBoat = await storage.getBoat(boatId);
       if (!existingBoat || existingBoat.hostId !== req.session.user.id) {
         return res.status(404).json({ error: "Barca non trovata" });
       }
@@ -648,7 +648,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         updateData.images = req.files.map((file: any) => `/uploads/${file.filename}`);
       }
 
-      const boat = await storage.updateBoat(id, updateData);
+      const boat = await storage.updateBoat(boatId, updateData);
       res.json({ success: true, boat });
     } catch (error: any) {
       console.error("Update boat error:", error);
@@ -658,15 +658,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete('/api/boats/:id', requireAuth, requireOwner, async (req: any, res) => {
     try {
-      const { id } = req.params;
+      const boatId = parseInt(req.params.id);
       
       // Verify boat ownership
-      const existingBoat = await storage.getBoat(id);
+      const existingBoat = await storage.getBoat(boatId);
       if (!existingBoat || existingBoat.hostId !== req.session.user.id) {
         return res.status(404).json({ error: "Barca non trovata" });
       }
 
-      const success = await storage.deleteBoat(id);
+      const success = await storage.deleteBoat(boatId);
       if (success) {
         res.json({ success: true });
       } else {

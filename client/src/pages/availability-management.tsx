@@ -65,7 +65,7 @@ export default function AvailabilityManagement() {
     );
   }
 
-  const isOwner = user && boat && boat.ownerId === user.id;
+  const isOwner = user && boat && boat.hostId === user.id;
 
   const handleDateSelection = (startDate: Date, endDate: Date) => {
     setSelectedDates({ startDate, endDate });

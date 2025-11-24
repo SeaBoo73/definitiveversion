@@ -596,6 +596,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/boats/:id', async (req, res) => {
+    try {
+      const boatId = parseInt(req.params.id);
+      const boat = await storage.getBoat(boatId);
+      
+      if (!boat) {
+        return res.status(404).json({ error: "Barca non trovata" });
+      }
+      
+      // Map capacity to maxPersons for frontend compatibility
+      const mappedBoat = {
+        ...boat,
+        maxPersons: boat.capacity,
+      };
+      
+      res.json(mappedBoat);
+    } catch (error) {
+      console.error("Get boat error:", error);
+      res.status(500).json({ error: "Errore nel recupero della barca" });
+    }
+  });
+
   app.get('/api/owner/boats', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const boats = await storage.getBoatsByOwner(req.session.user.id);

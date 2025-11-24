@@ -105,7 +105,7 @@ export default function HomePage() {
       
       {/* Hero Section - Design con sfondo blu oceano e palme */}
       <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
-        {/* Background con barca a vela - Toni blu intensi */}
+        {/* Background con catamarano su acqua turchese */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -114,12 +114,12 @@ export default function HomePage() {
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
             opacity: 1,
-            filter: 'brightness(0.7) saturate(1.3) hue-rotate(-8deg)'
+            filter: 'brightness(0.9) saturate(1.1)'
           }}
         />
         
-        {/* Overlay blu per contrasto testo */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-800/40 via-blue-900/50 to-blue-950/65"></div>
+        {/* Overlay leggero per contrasto testo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-blue-900/15 to-blue-950/25"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}

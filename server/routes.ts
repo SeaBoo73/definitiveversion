@@ -601,10 +601,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/boats', requireAuth, requireOwner, upload.array('images', 5), async (req: any, res) => {
     try {
+      console.log('POST /api/boats - req.body:', JSON.stringify(req.body, null, 2));
+      
       // Convert empty strings to null ONLY for optional numeric fields
-      // maxPersons and pricePerDay are required, so don't convert them
+      // capacity is required (maps to max_persons in DB), so don't convert it
       const cleanedBody = {
         ...req.body,
+        // Map maxPersons to capacity for the schema
+        capacity: req.body.maxPersons,
         length: req.body.length === '' ? null : req.body.length,
         year: req.body.year === '' ? null : req.body.year,
         cabins: req.body.cabins === '' ? null : req.body.cabins,

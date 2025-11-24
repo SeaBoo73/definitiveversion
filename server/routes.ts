@@ -603,7 +603,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const boatData = insertBoatSchema.parse({
         ...req.body,
-        hostId: req.session.user.id,
+        hostId: parseInt(req.session.user.id),
         images: req.files ? req.files.map((file: any) => `/uploads/${file.filename}`) : []
       });
 

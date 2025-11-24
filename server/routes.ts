@@ -582,7 +582,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Fetching boats...");
       const boats = await storage.getBoats();
       console.log("Boats fetched:", boats?.length || 0, "boats");
-      res.json({ boats });
+      
+      // Map capacity to maxPersons for frontend compatibility
+      const mappedBoats = boats.map(boat => ({
+        ...boat,
+        maxPersons: boat.capacity,
+      }));
+      
+      res.json({ boats: mappedBoats });
     } catch (error) {
       console.error("Get boats error:", error);
       res.status(500).json({ error: "Errore nel recupero delle barche" });
@@ -592,7 +599,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/owner/boats', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const boats = await storage.getBoatsByOwner(req.session.user.id);
-      res.json({ boats });
+      
+      // Map capacity to maxPersons for frontend compatibility
+      const mappedBoats = boats.map(boat => ({
+        ...boat,
+        maxPersons: boat.capacity,
+      }));
+      
+      res.json({ boats: mappedBoats });
     } catch (error) {
       console.error("Get owner boats error:", error);
       res.status(500).json({ error: "Errore nel recupero delle barche" });
@@ -626,7 +640,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
 
       const boat = await storage.createBoat(boatData);
-      res.json({ success: true, boat });
+      
+      // Map capacity to maxPersons for frontend compatibility
+      const mappedBoat = {
+        ...boat,
+        maxPersons: boat.capacity,
+      };
+      
+      res.json({ success: true, boat: mappedBoat });
     } catch (error: any) {
       console.error("Create boat error:", error);
       res.status(400).json({ error: error.message || "Errore nella creazione della barca" });
@@ -655,7 +676,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       const boat = await storage.updateBoat(boatId, updateData);
-      res.json({ success: true, boat });
+      
+      // Map capacity to maxPersons for frontend compatibility
+      const mappedBoat = {
+        ...boat,
+        maxPersons: boat.capacity,
+      };
+      
+      res.json({ success: true, boat: mappedBoat });
     } catch (error: any) {
       console.error("Update boat error:", error);
       res.status(400).json({ error: error.message || "Errore nell'aggiornamento della barca" });

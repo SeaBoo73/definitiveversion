@@ -601,19 +601,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/boats', requireAuth, requireOwner, upload.array('images', 5), async (req: any, res) => {
     try {
-      // Convert empty strings to null for optional numeric fields
+      // Convert empty strings to null ONLY for optional numeric fields
+      // maxPersons and pricePerDay are required, so don't convert them
       const cleanedBody = {
         ...req.body,
         length: req.body.length === '' ? null : req.body.length,
         year: req.body.year === '' ? null : req.body.year,
-        maxPersons: req.body.maxPersons === '' ? null : req.body.maxPersons,
         cabins: req.body.cabins === '' ? null : req.body.cabins,
         bathrooms: req.body.bathrooms === '' ? null : req.body.bathrooms,
         enginePower: req.body.enginePower === '' ? null : req.body.enginePower,
         fuelConsumption: req.body.fuelConsumption === '' ? null : req.body.fuelConsumption,
         latitude: req.body.latitude === '' ? null : req.body.latitude,
         longitude: req.body.longitude === '' ? null : req.body.longitude,
-        pricePerDay: req.body.pricePerDay === '' ? null : req.body.pricePerDay,
       };
       
       const boatData = insertBoatSchema.parse({

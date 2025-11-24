@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507_1763975901063.jpg";
+import heroImage from "@assets/OIP (3)_1753081263840_1763976444263.webp";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";

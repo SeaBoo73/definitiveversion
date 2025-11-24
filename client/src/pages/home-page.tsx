@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/Blu Azzurro Estate Bentornato Agosto Post di Instagram (1)_1763975696774.png";
+import heroImage from "@assets/HD-wallpaper-sailing-boat-beach-nature-trees_1753081381507_1763975901063.jpg";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";

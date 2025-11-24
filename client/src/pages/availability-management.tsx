@@ -35,10 +35,6 @@ export default function AvailabilityManagement() {
 
   const { data: boat, isLoading, error } = useQuery({
     queryKey: ['/api/boats', boatId],
-    queryFn: () => {
-      console.log("🚢 Query function called for boatId:", boatId);
-      return apiRequest(`/api/boats/${boatId}`);
-    },
     enabled: !!boatId
   });
 

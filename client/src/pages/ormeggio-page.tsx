@@ -380,7 +380,7 @@ export default function OrmeggioPage() {
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <div className="inline-block bg-deep-navy backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
+            <div className="inline-block bg-deep-navy/70 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
               <div className="text-6xl mb-6">⚓</div>
               <h1 className="text-4xl md:text-6xl font-bold mb-4">
                 Trova il tuo ormeggio ideale

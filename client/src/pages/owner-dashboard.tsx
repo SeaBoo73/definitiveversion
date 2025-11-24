@@ -80,7 +80,7 @@ import {
   AlertTriangle
 } from "lucide-react";
 
-const boatFormSchema = insertBoatSchema.extend({
+const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({
   pricePerDay: z.string().min(1, "Prezzo richiesto"),
   maxPersons: z.string().min(1, "Numero massimo persone richiesto"),
   length: z.string().optional(),

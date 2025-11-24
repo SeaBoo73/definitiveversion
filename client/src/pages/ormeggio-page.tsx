@@ -382,10 +382,10 @@ export default function OrmeggioPage() {
           <div className="text-center mb-8">
             <div className="inline-block bg-deep-navy/85 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
               <div className="text-6xl mb-6">⚓</div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-blue-400">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-cyan-400">
                 Trova il tuo ormeggio ideale
               </h1>
-              <p className="text-xl md:text-2xl text-blue-300 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-cyan-300 max-w-3xl mx-auto">
                 Trova il posto barca perfetto o affitta il tuo ormeggio.<br/>
                 Mai più barche in rada!
               </p>

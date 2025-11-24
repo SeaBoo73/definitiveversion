@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -40,6 +40,7 @@ import {
   Plus,
   Ship,
   Calendar,
+  CalendarDays,
   Euro,
   Users,
   MessageSquare,
@@ -1141,14 +1142,20 @@ export default function OwnerDashboard() {
                       </div>
                     </div>
 
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline" onClick={() => openEditModal(boat)}>
+                    <div className="grid grid-cols-3 gap-2">
+                      <Button size="sm" variant="outline" onClick={() => openEditModal(boat)} title="Modifica">
                         <Edit className="h-4 w-4" />
                       </Button>
+                      <Link href={`/availability-management/${boat.id}`}>
+                        <Button size="sm" variant="outline" className="w-full" title="Gestione disponibilità">
+                          <CalendarDays className="h-4 w-4" />
+                        </Button>
+                      </Link>
                       <Button 
                         size="sm" 
                         variant="outline"
                         onClick={() => deleteBoatMutation.mutate(boat.id)}
+                        title="Elimina"
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

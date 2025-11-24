@@ -75,7 +75,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   const startDate = startOfMonth(currentMonth);
   const endDate = endOfMonth(currentMonth);
   
-  const { data: availabilities = [], isLoading } = useQuery<BoatAvailability[]>({
+  const { data: availabilities = [], isLoading, refetch } = useQuery<BoatAvailability[]>({
     queryKey: ['/api/boats', boatId, 'availability', startDate.toISOString(), endDate.toISOString()],
     queryFn: async () => {
       const url = `/api/boats/${boatId}/availability?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
@@ -94,12 +94,13 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
       });
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
         title: "Disponibilità creata",
         description: "La disponibilità è stata aggiunta con successo."
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/boats', boatId, 'availability'] });
+      // Force refetch to ensure calendar updates
+      await refetch();
       setShowCreateDialog(false);
       form.reset();
       setSelectedStartDate(null);
@@ -120,12 +121,13 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
       const res = await apiRequest('DELETE', `/api/availability/${id}?boatId=${boatId}`);
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
         title: "Disponibilità eliminata",
         description: "La disponibilità è stata rimossa con successo."
       });
-      queryClient.invalidateQueries({ queryKey: ['/api/boats', boatId, 'availability'] });
+      // Force refetch to ensure calendar updates
+      await refetch();
     },
     onError: (error: any) => {
       toast({

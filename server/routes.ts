@@ -601,8 +601,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/boats', requireAuth, requireOwner, upload.array('images', 5), async (req: any, res) => {
     try {
-      const boatData = insertBoatSchema.parse({
+      // Convert empty strings to null for optional numeric fields
+      const cleanedBody = {
         ...req.body,
+        length: req.body.length === '' ? null : req.body.length,
+        year: req.body.year === '' ? null : req.body.year,
+        cabins: req.body.cabins === '' ? null : req.body.cabins,
+        bathrooms: req.body.bathrooms === '' ? null : req.body.bathrooms,
+        enginePower: req.body.enginePower === '' ? null : req.body.enginePower,
+        fuelConsumption: req.body.fuelConsumption === '' ? null : req.body.fuelConsumption,
+      };
+      
+      const boatData = insertBoatSchema.parse({
+        ...cleanedBody,
         hostId: parseInt(req.session.user.id),
         images: req.files ? req.files.map((file: any) => `/uploads/${file.filename}`) : []
       });

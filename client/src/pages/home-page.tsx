@@ -105,16 +105,16 @@ export default function HomePage() {
       
       {/* Hero Section - Catamarano su acqua turchese */}
       <section className="relative min-h-screen text-white overflow-hidden">
-        {/* Background con catamarano su acqua turchese */}
+        {/* Background con barca a vela e palme */}
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-center"
           style={{
             backgroundImage: `url(${heroImage})`,
-            backgroundSize: 'cover',
+            backgroundSize: '100% auto',
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
             opacity: 1,
-            filter: 'brightness(0.95) saturate(1.15)'
+            filter: 'brightness(0.85) saturate(1.1)'
           }}
         />
         

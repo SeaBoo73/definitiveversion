@@ -103,8 +103,8 @@ export default function HomePage() {
       <AppDownloadBanner />
       <Header />
       
-      {/* Hero Section - Design con sfondo blu oceano e palme */}
-      <section className="relative min-h-screen bg-gradient-to-b from-blue-600 via-blue-700 to-blue-900 text-white overflow-hidden">
+      {/* Hero Section - Catamarano su acqua turchese */}
+      <section className="relative min-h-screen text-white overflow-hidden">
         {/* Background con catamarano su acqua turchese */}
         <div 
           className="absolute inset-0 bg-cover bg-center"

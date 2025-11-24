@@ -205,7 +205,7 @@ export default function OwnerDashboard() {
   });
 
   const onSubmit = (data: BoatFormData) => {
-    console.log("✅ Form validation passed! Submitting data:", data);
+    console.log("Form validation passed! Submitting data:", data);
     console.log("Form errors (should be empty):", form.formState.errors);
     
     const processedData = {
@@ -221,7 +221,8 @@ export default function OwnerDashboard() {
     if (editingBoat) {
       updateBoatMutation.mutate({ id: editingBoat.id, data: processedData as any });
     } else {
-      createBoatMutation.mutate({ ...processedData, ownerId: user!.id } as any });
+      const userId = user?.id || 0;
+      createBoatMutation.mutate({ ...processedData, ownerId: userId } as any);
     }
   };
 

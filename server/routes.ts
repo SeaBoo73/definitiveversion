@@ -643,7 +643,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Barca non trovata" });
       }
 
+      // Map maxPersons to capacity for the schema (same as POST)
       const updateData: any = { ...req.body };
+      if (req.body.maxPersons !== undefined) {
+        updateData.capacity = req.body.maxPersons;
+        delete updateData.maxPersons; // Remove the old field
+      }
+      
       if (req.files && req.files.length > 0) {
         updateData.images = req.files.map((file: any) => `/uploads/${file.filename}`);
       }

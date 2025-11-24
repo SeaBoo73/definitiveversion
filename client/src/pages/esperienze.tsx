@@ -232,10 +232,10 @@ export function EsperienzePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <div className="inline-block bg-deep-navy/85 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold text-sky-300 mb-6">
                 Esperienze Uniche in Mare
               </h1>
-              <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-sky-200 mb-8 max-w-3xl mx-auto">
                 Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni. 
                 Ogni esperienza è pensata per creare ricordi indimenticabili.
               </p>

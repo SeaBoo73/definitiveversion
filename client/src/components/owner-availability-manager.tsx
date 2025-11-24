@@ -76,19 +76,23 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   
   const { data: availabilities = [], isLoading } = useQuery<BoatAvailability[]>({
     queryKey: ['/api/boats', boatId, 'availability', startDate.toISOString(), endDate.toISOString()],
-    queryFn: () => fetch(`/api/boats/${boatId}/availability?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`).then(res => res.json())
+    queryFn: async () => {
+      const url = `/api/boats/${boatId}/availability?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
+      const res = await fetch(url, { credentials: 'include' });
+      if (!res.ok) throw new Error('Failed to fetch availability');
+      return res.json();
+    }
   });
 
   // Create availability mutation
   const createMutation = useMutation({
-    mutationFn: (data: any) => 
-      apiRequest('/api/availability', {
-        method: 'POST',
-        body: JSON.stringify({
-          ...data,
-          boatId
-        })
-      }),
+    mutationFn: async (data: any) => {
+      const res = await apiRequest('POST', '/api/availability', {
+        ...data,
+        boatId
+      });
+      return res.json();
+    },
     onSuccess: () => {
       toast({
         title: "Disponibilità creata",
@@ -111,10 +115,10 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   // Delete availability mutation
   const deleteMutation = useMutation({
-    mutationFn: (id: number) => 
-      apiRequest(`/api/availability/${id}?boatId=${boatId}`, {
-        method: 'DELETE'
-      }),
+    mutationFn: async (id: number) => {
+      const res = await apiRequest('DELETE', `/api/availability/${id}?boatId=${boatId}`);
+      return res.json();
+    },
     onSuccess: () => {
       toast({
         title: "Disponibilità eliminata",

@@ -56,17 +56,18 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   const { toast } = useToast();
   const queryClient = qc;
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof availabilitySchema>>({
     resolver: zodResolver(availabilitySchema),
     defaultValues: {
       status: 'available' as const,
       startDate: '',
-      endDate: ''
+      endDate: '',
+      priceOverride: undefined
     }
   });
 
   // Fetch boat info
-  const { data: boat } = useQuery({
+  const { data: boat } = useQuery<{ name: string }>({
     queryKey: ['/api/boats', boatId]
   });
 
@@ -143,9 +144,17 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   // Get availability slots that overlap with a given date
   const getAvailabilityForDate = (date: Date): BoatAvailability[] => {
     return availabilities.filter((item: BoatAvailability) => {
-      const itemStart = parseISO(item.startDate);
-      const itemEnd = parseISO(item.endDate);
-      return !isBefore(date, itemStart) && !isAfter(date, itemEnd);
+      // Skip items with invalid dates
+      if (!item.startDate || !item.endDate) return false;
+      
+      try {
+        const itemStart = parseISO(item.startDate);
+        const itemEnd = parseISO(item.endDate);
+        return !isBefore(date, itemStart) && !isAfter(date, itemEnd);
+      } catch (error) {
+        console.error('Error parsing availability dates:', error, item);
+        return false;
+      }
     });
   };
 

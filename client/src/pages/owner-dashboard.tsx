@@ -129,7 +129,6 @@ export default function OwnerDashboard() {
   const form = useForm<BoatFormData>({
     resolver: zodResolver(boatFormSchema),
     defaultValues: {
-      hostId: user?.id || 0,
       name: "",
       manufacturer: "",
       type: "gommone",
@@ -211,6 +210,7 @@ export default function OwnerDashboard() {
     
     const processedData = {
       ...data,
+      hostId: Number(user?.id) || 0,
       pricePerDay: data.pricePerDay,
       maxPersons: parseInt(data.maxPersons),
       length: data.length ? data.length : undefined,

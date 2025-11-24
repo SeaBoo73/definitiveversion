@@ -113,7 +113,7 @@ export default function HomePage() {
         />
         
         {/* Overlay semi-trasparente per contrasto */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/25 to-slate-900/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/15 via-slate-900/5 to-slate-900/20"></div>
         
         <div className="relative z-10 flex flex-col min-h-screen">
           {/* Header con logo integrato nella hero */}

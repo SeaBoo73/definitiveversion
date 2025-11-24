@@ -103,6 +103,17 @@ export const bookings = pgTable("bookings", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Boat availability table for managing rental periods
+export const boatAvailability = pgTable("boat_availability", {
+  id: serial("id").primaryKey(),
+  boatId: integer("boat_id").references(() => boats.id, { onDelete: 'cascade' }).notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  status: varchar("status", { length: 20 }).default("available"),
+  priceOverride: numeric("price_override"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Zod schemas for validation
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email non valido"),
@@ -150,6 +161,14 @@ export const insertBookingSchema = createInsertSchema(bookings, {
   boatId: z.number(),
 }).omit({ id: true, createdAt: true });
 
+export const insertBoatAvailabilitySchema = createInsertSchema(boatAvailability, {
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  boatId: z.number(),
+  status: z.enum(["available", "blocked", "booked"]).default("available"),
+  priceOverride: z.coerce.number().optional(),
+}).omit({ id: true, createdAt: true });
+
 // Legacy exports for compatibility
 export const insertMooringSchema = insertBoatSchema;
 export const insertMooringBookingSchema = insertBookingSchema;
@@ -157,6 +176,8 @@ export const insertMooringBookingSchema = insertBookingSchema;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertBoat = z.infer<typeof insertBoatSchema>;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
+export type InsertBoatAvailability = z.infer<typeof insertBoatAvailabilitySchema>;
 export type User = typeof users.$inferSelect;
 export type Boat = typeof boats.$inferSelect;
 export type Booking = typeof bookings.$inferSelect;
+export type BoatAvailability = typeof boatAvailability.$inferSelect;

@@ -2,15 +2,18 @@ import {
   users,
   boats,
   bookings,
+  boatAvailability,
   type User,
   type InsertUser,
   type Boat,
   type InsertBoat,
   type Booking,
   type InsertBooking,
+  type BoatAvailability,
+  type InsertBoatAvailability,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, and, gte, lte } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
@@ -40,6 +43,12 @@ export interface IStorage {
   getBookingsByOwner(ownerId: number): Promise<Booking[]>;
   getBookingsByCustomer(customerId: number): Promise<Booking[]>;
   createBooking(booking: InsertBooking): Promise<Booking>;
+  
+  // Boat Availability operations
+  getBoatAvailability(boatId: number, startDate?: Date, endDate?: Date): Promise<BoatAvailability[]>;
+  createAvailability(data: InsertBoatAvailability): Promise<BoatAvailability>;
+  updateAvailability(id: number, data: Partial<InsertBoatAvailability>): Promise<BoatAvailability | undefined>;
+  deleteAvailability(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -179,6 +188,47 @@ export class DatabaseStorage implements IStorage {
   async createBooking(bookingData: InsertBooking): Promise<Booking> {
     const [booking] = await db.insert(bookings).values(bookingData).returning();
     return booking;
+  }
+
+  // Boat Availability operations
+  async getBoatAvailability(boatId: number, startDate?: Date, endDate?: Date): Promise<BoatAvailability[]> {
+    const conditions = [eq(boatAvailability.boatId, boatId)];
+    
+    if (startDate && endDate) {
+      conditions.push(
+        and(
+          gte(boatAvailability.endDate, startDate),
+          lte(boatAvailability.startDate, endDate)
+        )!
+      );
+    }
+    
+    return await db
+      .select()
+      .from(boatAvailability)
+      .where(and(...conditions));
+  }
+
+  async createAvailability(data: InsertBoatAvailability): Promise<BoatAvailability> {
+    const [availability] = await db
+      .insert(boatAvailability)
+      .values(data)
+      .returning();
+    return availability;
+  }
+
+  async updateAvailability(id: number, data: Partial<InsertBoatAvailability>): Promise<BoatAvailability | undefined> {
+    const [availability] = await db
+      .update(boatAvailability)
+      .set(data)
+      .where(eq(boatAvailability.id, id))
+      .returning();
+    return availability;
+  }
+
+  async deleteAvailability(id: number): Promise<boolean> {
+    const result = await db.delete(boatAvailability).where(eq(boatAvailability.id, id));
+    return (result.rowCount ?? 0) > 0;
   }
 }
 

@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema } from "@shared/schema";
+import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema, insertBoatAvailabilitySchema } from "@shared/schema";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 import multer from "multer";
@@ -749,6 +749,113 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       res.status(500).json({ error: "Errore nell'eliminazione della barca" });
+    }
+  });
+
+  // Boat Availability endpoints
+  
+  // Get availability for a specific boat
+  app.get('/api/boats/:id/availability', async (req, res) => {
+    try {
+      const boatId = parseInt(req.params.id);
+      const startDate = req.query.startDate ? new Date(req.query.startDate as string) : undefined;
+      const endDate = req.query.endDate ? new Date(req.query.endDate as string) : undefined;
+      
+      const availability = await storage.getBoatAvailability(boatId, startDate, endDate);
+      res.json(availability);
+    } catch (error: any) {
+      console.error("Get boat availability error:", error);
+      res.status(500).json({ error: "Errore nel recupero della disponibilità" });
+    }
+  });
+
+  // Create availability (owner only)
+  app.post('/api/availability', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const availabilityData = insertBoatAvailabilitySchema.parse(req.body);
+      
+      // Verify boat ownership
+      const boat = await storage.getBoat(availabilityData.boatId);
+      if (!boat) {
+        return res.status(404).json({ error: "Barca non trovata" });
+      }
+      
+      if (boat.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
+      }
+      
+      const availability = await storage.createAvailability(availabilityData);
+      res.json(availability);
+    } catch (error: any) {
+      console.error("Create availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nella creazione della disponibilità" });
+    }
+  });
+
+  // Update availability (owner only)
+  app.patch('/api/availability/:id', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const availabilityId = parseInt(req.params.id);
+      const userId = parseInt(req.session.user.id);
+      const updateData = req.body;
+      
+      // Get existing availability to verify ownership
+      const existingAvailabilities = await storage.getBoatAvailability(updateData.boatId);
+      const existingAvailability = existingAvailabilities.find(a => a.id === availabilityId);
+      
+      if (!existingAvailability) {
+        return res.status(404).json({ error: "Disponibilità non trovata" });
+      }
+      
+      // Verify boat ownership
+      const boat = await storage.getBoat(existingAvailability.boatId);
+      if (!boat || boat.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
+      }
+      
+      const availability = await storage.updateAvailability(availabilityId, updateData);
+      res.json(availability);
+    } catch (error: any) {
+      console.error("Update availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'aggiornamento della disponibilità" });
+    }
+  });
+
+  // Delete availability (owner only)
+  app.delete('/api/availability/:id', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const availabilityId = parseInt(req.params.id);
+      const userId = parseInt(req.session.user.id);
+      
+      // We need to get the availability first to check ownership
+      // Since we don't have a direct method, we'll need to get it through the boat
+      const boatId = parseInt(req.query.boatId as string);
+      
+      if (!boatId) {
+        return res.status(400).json({ error: "boatId richiesto" });
+      }
+      
+      // Verify boat ownership
+      const boat = await storage.getBoat(boatId);
+      if (!boat) {
+        return res.status(404).json({ error: "Barca non trovata" });
+      }
+      
+      if (boat.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
+      }
+      
+      const success = await storage.deleteAvailability(availabilityId);
+      
+      if (success) {
+        res.json({ success: true });
+      } else {
+        res.status(404).json({ error: "Disponibilità non trovata" });
+      }
+    } catch (error: any) {
+      console.error("Delete availability error:", error);
+      res.status(500).json({ error: "Errore nell'eliminazione della disponibilità" });
     }
   });
 

@@ -205,6 +205,9 @@ export default function OwnerDashboard() {
   });
 
   const onSubmit = (data: BoatFormData) => {
+    console.log("✅ Form validation passed! Submitting data:", data);
+    console.log("Form errors (should be empty):", form.formState.errors);
+    
     const processedData = {
       ...data,
       pricePerDay: data.pricePerDay,
@@ -218,7 +221,7 @@ export default function OwnerDashboard() {
     if (editingBoat) {
       updateBoatMutation.mutate({ id: editingBoat.id, data: processedData as any });
     } else {
-      createBoatMutation.mutate({ ...processedData, ownerId: user!.id } as any);
+      createBoatMutation.mutate({ ...processedData, ownerId: user!.id } as any });
     }
   };
 
@@ -521,7 +524,17 @@ export default function OwnerDashboard() {
                     </p>
                   </DialogHeader>
 
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <form onSubmit={form.handleSubmit(
+                    onSubmit,
+                    (errors) => {
+                      console.error("❌ Form validation FAILED! Errors:", errors);
+                      toast({
+                        title: "Errore validazione",
+                        description: "Controlla i campi obbligatori evidenziati in rosso",
+                        variant: "destructive",
+                      });
+                    }
+                  )} className="space-y-8">
                     
                     {/* Sezione 1: Informazioni Base */}
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">

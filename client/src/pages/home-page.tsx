@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/catamarano ludovica_1752876117442.jpg";
+import heroImage from "@assets/Blu Azzurro Estate Bentornato Agosto Post di Instagram (1)_1763975696774.png";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";

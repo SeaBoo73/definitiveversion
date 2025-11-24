@@ -59,7 +59,8 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const url = queryKey.join("/") as string;
+    // Convert all queryKey elements to strings before joining
+    const url = queryKey.map(k => String(k)).join("/");
     // Aggiungi base URL solo se l'URL inizia con /
     const fullUrl = url.startsWith('/') ? `${API_BASE_URL}${url}` : url;
     

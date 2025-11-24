@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "../assets/hero-tropical-sailboat.webp";
+import heroImage from "../assets/hero-tropical-sailboat.jpg";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";

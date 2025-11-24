@@ -229,7 +229,6 @@ export function EsperienzePage() {
             backgroundRepeat: 'no-repeat'
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-blue-800/50 to-blue-900/60"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">

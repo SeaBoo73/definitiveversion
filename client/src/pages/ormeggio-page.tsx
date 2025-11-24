@@ -377,7 +377,6 @@ export default function OrmeggioPage() {
             backgroundRepeat: 'no-repeat'
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-900/50 via-blue-800/60 to-blue-900/70"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">

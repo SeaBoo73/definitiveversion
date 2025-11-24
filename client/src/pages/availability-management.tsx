@@ -13,11 +13,22 @@ export default function AvailabilityManagement() {
   const { boatId } = useParams();
   const [selectedDates, setSelectedDates] = useState<{startDate: Date, endDate: Date} | null>(null);
 
-  const { data: boat, isLoading } = useQuery({
+  console.log("🚢 AvailabilityManagement - boatId:", boatId);
+  console.log("🚢 AvailabilityManagement - boatId type:", typeof boatId);
+  console.log("🚢 AvailabilityManagement - enabled?:", !!boatId);
+
+  const { data: boat, isLoading, error } = useQuery({
     queryKey: ['/api/boats', boatId],
-    queryFn: () => apiRequest(`/api/boats/${boatId}`),
+    queryFn: () => {
+      console.log("🚢 Query function called for boatId:", boatId);
+      return apiRequest(`/api/boats/${boatId}`);
+    },
     enabled: !!boatId
   });
+
+  console.log("🚢 AvailabilityManagement - boat:", boat);
+  console.log("🚢 AvailabilityManagement - isLoading:", isLoading);
+  console.log("🚢 AvailabilityManagement - error:", error);
 
   const { data: user } = useQuery({
     queryKey: ['/api/user'],

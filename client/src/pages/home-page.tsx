@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Boat } from "@shared/schema";
 import { Link, useLocation } from "wouter";
-import heroImage from "@assets/OIP (3)_1753081263840_1763976716646.webp";
+import heroImage from "../assets/hero-tropical-sailboat.webp";
 
 import { LiveChatButton } from "@/components/live-chat-button";
 import { QuickStatsCard } from "@/components/quick-stats-card";
@@ -103,18 +103,15 @@ export default function HomePage() {
       <AppDownloadBanner />
       <Header />
       
-      {/* Hero Section - Mare al tramonto */}
-      <section className="relative min-h-screen text-white overflow-hidden bg-gradient-to-b from-blue-500 to-blue-700">
-        {/* Background con barca a vela e palme */}
-        <div 
-          className="absolute inset-0 bg-center"
+      {/* Hero Section - Catamarano */}
+      <section className="relative min-h-screen text-white overflow-hidden">
+        {/* Background con catamarano */}
+        <img 
+          src={heroImage}
+          alt="Catamarano"
+          className="absolute inset-0 w-full h-full object-cover"
           style={{
-            backgroundImage: `url(${heroImage})`,
-            backgroundSize: 'contain',
-            backgroundPosition: 'center center',
-            backgroundRepeat: 'no-repeat',
-            opacity: 1,
-            filter: 'brightness(0.85) saturate(1.1)'
+            filter: 'brightness(0.75)'
           }}
         />
         

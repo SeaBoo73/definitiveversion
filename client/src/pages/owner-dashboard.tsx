@@ -1146,7 +1146,7 @@ export default function OwnerDashboard() {
                       <Button size="sm" variant="outline" onClick={() => openEditModal(boat)} title="Modifica">
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Link href={`/availability-management/${boat.id}`}>
+                      <Link href={`/boats/${boat.id}/availability`}>
                         <Button size="sm" variant="outline" className="w-full" title="Gestione disponibilità">
                           <CalendarDays className="h-4 w-4" />
                         </Button>

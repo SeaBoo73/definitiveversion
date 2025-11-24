@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "wouter";
+import { useRoute, Link } from "wouter";
 import { ArrowLeft, Calendar, Settings, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,12 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { OwnerAvailabilityManager } from "@/components/owner-availability-manager";
 import { AdvancedAvailabilityCalendar } from "@/components/advanced-availability-calendar";
-import { Link } from "wouter";
 
 export default function AvailabilityManagement() {
-  const { boatId } = useParams();
+  const [match, params] = useRoute("/boats/:boatId/availability");
+  const boatId = params?.boatId;
   const [selectedDates, setSelectedDates] = useState<{startDate: Date, endDate: Date} | null>(null);
 
+  console.log("🚢 AvailabilityManagement - match:", match);
+  console.log("🚢 AvailabilityManagement - params:", params);
   console.log("🚢 AvailabilityManagement - boatId:", boatId);
   console.log("🚢 AvailabilityManagement - boatId type:", typeof boatId);
   console.log("🚢 AvailabilityManagement - enabled?:", !!boatId);

@@ -9,15 +9,29 @@ import { OwnerAvailabilityManager } from "@/components/owner-availability-manage
 import { AdvancedAvailabilityCalendar } from "@/components/advanced-availability-calendar";
 
 export default function AvailabilityManagement() {
+  console.log("🚢🚢🚢 PAGE RENDERED!");
+  
   const [match, params] = useRoute("/boats/:boatId/availability");
   const boatId = params?.boatId;
+  
+  console.log("🚢 match:", match);
+  console.log("🚢 params:", params);
+  console.log("🚢 boatId:", boatId);
+  
+  // Se non c'è boatId, mostra messaggio di debug
+  if (!boatId) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-7xl mx-auto">
+          <h1>DEBUG: boatId is null or undefined</h1>
+          <p>match: {String(match)}</p>
+          <p>params: {JSON.stringify(params)}</p>
+        </div>
+      </div>
+    );
+  }
+  
   const [selectedDates, setSelectedDates] = useState<{startDate: Date, endDate: Date} | null>(null);
-
-  console.log("🚢 AvailabilityManagement - match:", match);
-  console.log("🚢 AvailabilityManagement - params:", params);
-  console.log("🚢 AvailabilityManagement - boatId:", boatId);
-  console.log("🚢 AvailabilityManagement - boatId type:", typeof boatId);
-  console.log("🚢 AvailabilityManagement - enabled?:", !!boatId);
 
   const { data: boat, isLoading, error } = useQuery({
     queryKey: ['/api/boats', boatId],
@@ -28,9 +42,9 @@ export default function AvailabilityManagement() {
     enabled: !!boatId
   });
 
-  console.log("🚢 AvailabilityManagement - boat:", boat);
-  console.log("🚢 AvailabilityManagement - isLoading:", isLoading);
-  console.log("🚢 AvailabilityManagement - error:", error);
+  console.log("🚢 boat:", boat);
+  console.log("🚢 isLoading:", isLoading);
+  console.log("🚢 error:", error);
 
   const { data: user } = useQuery({
     queryKey: ['/api/user'],

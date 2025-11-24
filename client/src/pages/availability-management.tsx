@@ -44,9 +44,10 @@ export default function AvailabilityManagement() {
 
   const { data: user } = useQuery({
     queryKey: ['/api/user'],
-    queryFn: () => apiRequest('/api/user'),
     retry: false
   });
+
+  console.log("🚢 user:", user);
 
   if (isLoading) {
     return (

@@ -129,6 +129,7 @@ export default function OwnerDashboard() {
   const form = useForm<BoatFormData>({
     resolver: zodResolver(boatFormSchema),
     defaultValues: {
+      hostId: user?.id || 0,
       name: "",
       manufacturer: "",
       type: "gommone",
@@ -138,7 +139,7 @@ export default function OwnerDashboard() {
       motorization: "",
       licenseRequired: false,
       skipperRequired: false,
-      port: "",
+      location: "",
       latitude: "",
       longitude: "",
       pricePerDay: "",
@@ -221,8 +222,7 @@ export default function OwnerDashboard() {
     if (editingBoat) {
       updateBoatMutation.mutate({ id: editingBoat.id, data: processedData as any });
     } else {
-      const userId = user?.id || 0;
-      createBoatMutation.mutate({ ...processedData, ownerId: userId } as any);
+      createBoatMutation.mutate(processedData as any);
     }
   };
 
@@ -749,7 +749,7 @@ export default function OwnerDashboard() {
                             <Anchor className="h-4 w-4 text-purple-600" />
                             Porto di partenza *
                           </Label>
-                          <Select onValueChange={(value) => form.setValue("port", value)}>
+                          <Select onValueChange={(value) => form.setValue("location", value)}>
                             <SelectTrigger className="border-purple-200 focus:border-purple-500">
                               <SelectValue placeholder="Seleziona il porto di partenza" />
                             </SelectTrigger>
@@ -791,8 +791,8 @@ export default function OwnerDashboard() {
                               })()}
                             </SelectContent>
                           </Select>
-                          {form.formState.errors.port && (
-                            <p className="text-sm text-red-500">{form.formState.errors.port.message}</p>
+                          {form.formState.errors.location && (
+                            <p className="text-sm text-red-500">{form.formState.errors.location.message}</p>
                           )}
                         </div>
 

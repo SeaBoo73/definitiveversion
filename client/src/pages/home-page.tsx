@@ -110,7 +110,7 @@ export default function HomePage() {
           className="absolute inset-0 bg-center"
           style={{
             backgroundImage: `url(${heroImage})`,
-            backgroundSize: '100% auto',
+            backgroundSize: 'contain',
             backgroundPosition: 'center center',
             backgroundRepeat: 'no-repeat',
             opacity: 1,

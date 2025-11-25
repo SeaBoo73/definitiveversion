@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import marinaBackground from "@assets/ultra-realistic_wide_banner_photo_of_a_modern_marina_elegant_boats_and_yachts_docked_at_their_moori_0sebrne2pt5uhwsvwkmk_1_1764073993305.png";
+import marinaBackground from "@assets/ultra-realistic_wide_banner_photo_of_a_modern_marina_elegant_boats_and_yachts_docked_at_their_moori_tgm7ox1hs7p1aax7mn34_3_1764074136550.png";
 
 interface MooringSpot {
   id: string;
@@ -380,12 +380,12 @@ export default function OrmeggioPage() {
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <div className="inline-block bg-deep-navy/85 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
+            <div className="inline-block bg-blue-900/90 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
               <div className="text-6xl mb-6">⚓</div>
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-cyan-400">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
                 Trova il tuo ormeggio ideale
               </h1>
-              <p className="text-xl md:text-2xl text-cyan-300 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
                 Trova il posto barca perfetto o affitta il tuo ormeggio.<br/>
                 Mai più barche in rada!
               </p>

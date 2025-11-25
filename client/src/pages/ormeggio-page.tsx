@@ -32,7 +32,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import marinaBackground from "@assets/ultra-realistic_wide_banner_photo_of_a_modern_marina_elegant_boats_and_yachts_docked_at_their_moori_tgm7ox1hs7p1aax7mn34_3_1764074136550.png";
+import marinaBackground from "@assets/ultra-realistic_wide_banner_photo_of_a_luxury_marina_sleek_modern_yachts_and_refined_sailboats_dock_s7kkr4ovnfrvawy99jmg_2_1764074396924.png";
 
 interface MooringSpot {
   id: string;

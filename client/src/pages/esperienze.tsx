@@ -26,7 +26,7 @@ import {
   Search
 } from "lucide-react";
 import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
-import heroBackground from "@assets/wide_panoramic_hero_background_of_a_calm_sea_at_golden_hour_gentle_waves_clear_sky_with_a_few_elega_4bmjnxqbdt1ij8b47362_2_1762247776290.png";
+import heroBackground from "@assets/ultra-realistic_wide_banner_photo_upper_half-_real_hot_air_balloons_flying_in_a_clear_sky_with_natu_bulwsrzxfrv4rr4z3f37_3_1764073467671.png";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
@@ -231,11 +231,11 @@ export function EsperienzePage() {
         />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
-            <div className="inline-block bg-deep-navy/85 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
-              <h1 className="text-4xl md:text-6xl font-bold text-cyan-400 mb-6">
+            <div className="inline-block bg-blue-900/90 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
                 Esperienze Uniche in Mare
               </h1>
-              <p className="text-xl md:text-2xl text-cyan-300 mb-8 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
                 Scopri un mondo di avventure, relax e gusto a bordo delle nostre imbarcazioni. 
                 Ogni esperienza è pensata per creare ricordi indimenticabili.
               </p>

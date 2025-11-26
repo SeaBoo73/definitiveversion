@@ -676,7 +676,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/boats/:id', requireAuth, requireOwner, upload.array('images', 5), async (req: any, res) => {
+  app.put('/api/boats/:id', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const boatId = parseInt(req.params.id);
       
@@ -693,8 +693,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         delete updateData.maxPersons; // Remove the old field
       }
       
-      if (req.files && req.files.length > 0) {
-        updateData.images = req.files.map((file: any) => `/uploads/${file.filename}`);
+      // Handle images - can be base64 strings or existing URLs
+      if (req.body.images && Array.isArray(req.body.images)) {
+        updateData.images = req.body.images;
       }
 
       const boat = await storage.updateBoat(boatId, updateData);

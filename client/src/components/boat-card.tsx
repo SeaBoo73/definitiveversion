@@ -13,10 +13,13 @@ interface BoatCardProps {
   boat: Boat;
 }
 
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400";
+
 export function BoatCard({ boat }: BoatCardProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [isFavorite, setIsFavorite] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const favoriteMutation = useMutation({
     mutationFn: async () => {
@@ -75,12 +78,13 @@ export function BoatCard({ boat }: BoatCardProps) {
       <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
         <div className="relative">
           <img
-            src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"}
+            src={imageError ? FALLBACK_IMAGE : (boat.images?.[boat.coverImage || 0] || boat.images?.[0] || FALLBACK_IMAGE)}
             alt={boat.name}
             className="w-full h-48 object-cover"
-            onError={(e) => {
-              console.log("Image load error for boat:", boat.id, boat.name);
-              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400";
+            onError={() => {
+              if (!imageError) {
+                setImageError(true);
+              }
             }}
           />
           <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${getBadgeColor()}`}>

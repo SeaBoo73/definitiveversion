@@ -150,9 +150,16 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
       if (!item.startDate || !item.endDate) return false;
       
       try {
-        const itemStart = parseISO(item.startDate);
-        const itemEnd = parseISO(item.endDate);
-        return !isBefore(date, itemStart) && !isAfter(date, itemEnd);
+        // Handle both Date objects and strings
+        const itemStart = typeof item.startDate === 'string' ? parseISO(item.startDate) : new Date(item.startDate);
+        const itemEnd = typeof item.endDate === 'string' ? parseISO(item.endDate) : new Date(item.endDate);
+        
+        // Normalize to start of day for proper comparison
+        const normalizedStart = new Date(itemStart.getFullYear(), itemStart.getMonth(), itemStart.getDate());
+        const normalizedEnd = new Date(itemEnd.getFullYear(), itemEnd.getMonth(), itemEnd.getDate());
+        const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        
+        return normalizedDate >= normalizedStart && normalizedDate <= normalizedEnd;
       } catch (error) {
         console.error('Error parsing availability dates:', error, item);
         return false;

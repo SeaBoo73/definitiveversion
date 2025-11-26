@@ -584,11 +584,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("Boats fetched:", boats?.length || 0, "boats");
       
       // Map capacity to maxPersons and port to location for frontend compatibility
-      const mappedBoats = boats.map(boat => ({
-        ...boat,
-        maxPersons: boat.capacity,
-        location: boat.port,
-      }));
+      const mappedBoats = boats.map(boat => {
+        // Log boat 32 images for debugging
+        if (boat.id === 32) {
+          console.log("Boat 32 images type:", typeof boat.images, "isArray:", Array.isArray(boat.images), "length:", boat.images?.length);
+        }
+        return {
+          ...boat,
+          maxPersons: boat.capacity,
+          location: boat.port,
+        };
+      });
       
       res.json({ boats: mappedBoats });
     } catch (error) {

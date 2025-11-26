@@ -78,6 +78,10 @@ export function BoatCard({ boat }: BoatCardProps) {
             src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"}
             alt={boat.name}
             className="w-full h-48 object-cover"
+            onError={(e) => {
+              console.log("Image load error for boat:", boat.id, boat.name);
+              (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400";
+            }}
           />
           <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${getBadgeColor()}`}>
             {getTypeLabel()}

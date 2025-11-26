@@ -257,8 +257,12 @@ export function SearchResults() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredBoats.map((boat: Boat) => (
-                  <Card key={boat.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="aspect-[4/3] bg-gray-200">
+                  <Card 
+                    key={boat.id} 
+                    className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => setLocation(`/boats/${boat.id}`)}
+                  >
+                    <div className="aspect-[4/3] bg-gray-200 relative">
                       <img
                         src={getImageSrc(boat)}
                         alt={boat.name}
@@ -267,6 +271,11 @@ export function SearchResults() {
                           (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
                         }}
                       />
+                      {boat.images && boat.images.length > 1 && (
+                        <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                          {boat.images.length} foto
+                        </div>
+                      )}
                     </div>
                     
                     <CardContent className="p-4">
@@ -317,9 +326,12 @@ export function SearchResults() {
                       
                       <Button
                         className="bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
-                        onClick={() => setSelectedBoat(boat)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLocation(`/boats/${boat.id}`);
+                        }}
                       >
-                        Prenota ora
+                        Vedi dettagli
                       </Button>
                     </CardFooter>
                   </Card>

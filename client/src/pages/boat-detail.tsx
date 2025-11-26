@@ -21,9 +21,24 @@ import {
   Heart,
   Share2,
   UserCheck,
-  AlertTriangle
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight,
+  X
 } from "lucide-react";
 import { Link } from "wouter";
+
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600";
+
+const getValidImages = (images: string[] | undefined): string[] => {
+  if (!images || images.length === 0) return [FALLBACK_IMAGE];
+  
+  return images.map(img => {
+    if (img.startsWith('data:image/')) return img;
+    if (img.includes('seagorentalboat.com')) return FALLBACK_IMAGE;
+    return img;
+  }).filter((img, index, self) => self.indexOf(img) === index);
+};
 
 export function BoatDetail() {
   const [match, params] = useRoute("/boats/:id");
@@ -32,6 +47,7 @@ export function BoatDetail() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showFullscreenGallery, setShowFullscreenGallery] = useState(false);
 
   const { data: boat, isLoading, error } = useQuery({
     queryKey: ["/api/boats", params?.id],
@@ -78,9 +94,15 @@ export function BoatDetail() {
     );
   }
 
-  const images = boatData.images || [
-    "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-  ];
+  const images = getValidImages(boatData.images);
+  
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+  
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
 
   const handleBookNow = () => {
     if (!user) {
@@ -169,29 +191,81 @@ export function BoatDetail() {
           <div className="lg:col-span-2 space-y-6">
             {/* Image Gallery */}
             <Card className="overflow-hidden">
-              <div className="relative">
+              <div className="relative cursor-pointer" onClick={() => setShowFullscreenGallery(true)}>
                 <img
                   src={images[currentImageIndex]}
                   alt={boatData.name}
-                  className="w-full h-80 object-cover"
+                  className="w-full h-80 md:h-96 object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                  }}
                 />
                 <div className={`absolute top-4 left-4 px-3 py-1 rounded-full text-sm font-semibold ${getBadgeColor()}`}>
                   {getTypeLabel()}
                 </div>
+                
+                {/* Navigation arrows */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    >
+                      <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+                    >
+                      <ChevronRight className="h-6 w-6" />
+                    </button>
+                  </>
+                )}
+                
+                {/* Image counter */}
+                <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+                  {currentImageIndex + 1} / {images.length}
+                </div>
+                
+                {/* Dots indicator */}
                 {images.length > 1 && (
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
                     {images.map((_: any, index: number) => (
                       <button
                         key={index}
-                        onClick={() => setCurrentImageIndex(index)}
-                        className={`w-3 h-3 rounded-full ${
-                          index === currentImageIndex ? "bg-white" : "bg-white/50"
+                        onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(index); }}
+                        className={`w-3 h-3 rounded-full transition-all ${
+                          index === currentImageIndex ? "bg-white scale-110" : "bg-white/50"
                         }`}
                       />
                     ))}
                   </div>
                 )}
               </div>
+              
+              {/* Thumbnail strip */}
+              {images.length > 1 && (
+                <div className="p-3 flex gap-2 overflow-x-auto">
+                  {images.map((img: string, index: number) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
+                        index === currentImageIndex ? "border-coral" : "border-transparent opacity-70 hover:opacity-100"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`${boatData.name} - foto ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                        }}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </Card>
 
             {/* Boat Info */}
@@ -354,6 +428,72 @@ export function BoatDetail() {
           boat={boatData} 
           onClose={() => setShowBookingModal(false)} 
         />
+      )}
+      
+      {/* Fullscreen Gallery Modal */}
+      {showFullscreenGallery && (
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+          <button
+            onClick={() => setShowFullscreenGallery(false)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+          >
+            <X className="h-8 w-8" />
+          </button>
+          
+          <div className="absolute top-4 left-4 text-white text-lg">
+            {currentImageIndex + 1} / {images.length}
+          </div>
+          
+          <img
+            src={images[currentImageIndex]}
+            alt={`${boatData.name} - foto ${currentImageIndex + 1}`}
+            className="max-w-full max-h-full object-contain"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+            }}
+          />
+          
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 rounded-full p-3 transition-all"
+              >
+                <ChevronLeft className="h-8 w-8 text-white" />
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/40 rounded-full p-3 transition-all"
+              >
+                <ChevronRight className="h-8 w-8 text-white" />
+              </button>
+            </>
+          )}
+          
+          {/* Bottom thumbnails */}
+          {images.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-[90%] overflow-x-auto p-2">
+              {images.map((img: string, index: number) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                    index === currentImageIndex ? "border-white" : "border-transparent opacity-50 hover:opacity-100"
+                  }`}
+                >
+                  <img
+                    src={img}
+                    alt={`Miniatura ${index + 1}`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

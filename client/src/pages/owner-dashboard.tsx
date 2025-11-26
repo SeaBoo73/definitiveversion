@@ -1456,7 +1456,7 @@ export default function OwnerDashboard() {
                     Aggiungi ormeggio
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto pb-24 md:pb-6">
                   <DialogHeader className="text-center pb-6">
                     <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mb-4">
                       <Anchor className="h-8 w-8 text-white" />

@@ -1420,12 +1420,53 @@ export default function OwnerDashboard() {
                             <SelectTrigger id="mooring-port" data-testid="select-mooringPort">
                               <SelectValue placeholder="Seleziona il porto" />
                             </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="napoli">Porto di Napoli</SelectItem>
-                              <SelectItem value="salerno">Porto di Salerno</SelectItem>
-                              <SelectItem value="amalfi">Porto di Amalfi</SelectItem>
-                              <SelectItem value="capri">Marina Grande Capri</SelectItem>
-                              <SelectItem value="sorrento">Porto di Sorrento</SelectItem>
+                            <SelectContent className="max-h-[300px]">
+                              {/* Lazio */}
+                              <SelectItem value="civitavecchia">Civitavecchia</SelectItem>
+                              <SelectItem value="fiumicino">Fiumicino</SelectItem>
+                              <SelectItem value="ostia">Ostia</SelectItem>
+                              <SelectItem value="anzio">Anzio</SelectItem>
+                              <SelectItem value="nettuno">Nettuno</SelectItem>
+                              <SelectItem value="san-felice-circeo">San Felice Circeo</SelectItem>
+                              <SelectItem value="terracina">Terracina</SelectItem>
+                              <SelectItem value="sperlonga">Sperlonga</SelectItem>
+                              <SelectItem value="gaeta">Gaeta</SelectItem>
+                              <SelectItem value="formia">Formia</SelectItem>
+                              <SelectItem value="minturno">Minturno</SelectItem>
+                              <SelectItem value="santa-marinella">Santa Marinella</SelectItem>
+                              <SelectItem value="ladispoli">Ladispoli</SelectItem>
+                              <SelectItem value="riva-di-traiano">Riva di Traiano</SelectItem>
+                              <SelectItem value="ponza">Ponza</SelectItem>
+                              <SelectItem value="ventotene">Ventotene</SelectItem>
+                              {/* Campania */}
+                              <SelectItem value="napoli">Napoli</SelectItem>
+                              <SelectItem value="pozzuoli">Pozzuoli</SelectItem>
+                              <SelectItem value="baia">Baia</SelectItem>
+                              <SelectItem value="bacoli">Bacoli</SelectItem>
+                              <SelectItem value="ischia">Ischia</SelectItem>
+                              <SelectItem value="procida">Procida</SelectItem>
+                              <SelectItem value="capri">Capri - Marina Grande</SelectItem>
+                              <SelectItem value="sorrento">Sorrento</SelectItem>
+                              <SelectItem value="positano">Positano</SelectItem>
+                              <SelectItem value="amalfi">Amalfi</SelectItem>
+                              <SelectItem value="salerno">Salerno</SelectItem>
+                              <SelectItem value="torre-del-greco">Torre del Greco</SelectItem>
+                              <SelectItem value="torre-annunziata">Torre Annunziata</SelectItem>
+                              <SelectItem value="castellammare">Castellammare di Stabia</SelectItem>
+                              <SelectItem value="marina-di-stabia">Marina di Stabia</SelectItem>
+                              <SelectItem value="piano-di-sorrento">Piano di Sorrento</SelectItem>
+                              <SelectItem value="vico-equense">Vico Equense</SelectItem>
+                              <SelectItem value="massa-lubrense">Massa Lubrense</SelectItem>
+                              <SelectItem value="cetara">Cetara</SelectItem>
+                              <SelectItem value="maiori">Maiori</SelectItem>
+                              <SelectItem value="minori">Minori</SelectItem>
+                              <SelectItem value="atrani">Atrani</SelectItem>
+                              <SelectItem value="agropoli">Agropoli</SelectItem>
+                              <SelectItem value="palinuro">Palinuro</SelectItem>
+                              <SelectItem value="marina-di-camerota">Marina di Camerota</SelectItem>
+                              <SelectItem value="sapri">Sapri</SelectItem>
+                              <SelectItem value="acciaroli">Acciaroli</SelectItem>
+                              <SelectItem value="castellabate">Santa Maria di Castellabate</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>

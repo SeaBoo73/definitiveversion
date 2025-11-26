@@ -79,17 +79,11 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
     queryKey: ['/api/boats', boatId, 'availability', startDate.toISOString(), endDate.toISOString()],
     queryFn: async () => {
       const url = `/api/boats/${boatId}/availability?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
-      console.log('🔍 Fetching availability from:', url);
       const res = await fetch(url, { credentials: 'include' });
       if (!res.ok) throw new Error('Failed to fetch availability');
-      const data = await res.json();
-      console.log('📊 Availability data received:', JSON.stringify(data, null, 2));
-      return data;
+      return res.json();
     }
   });
-  
-  // Debug: log availabilities on every render
-  console.log('🗓️ Current availabilities state:', availabilities.length, 'items');
 
   // Create availability mutation
   const createMutation = useMutation({

@@ -10,6 +10,7 @@ import {
   serial,
   integer,
   numeric,
+  date,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -107,8 +108,8 @@ export const bookings = pgTable("bookings", {
 export const boatAvailability = pgTable("boat_availability", {
   id: serial("id").primaryKey(),
   boatId: integer("boat_id").references(() => boats.id, { onDelete: 'cascade' }).notNull(),
-  startDate: timestamp("start_date").notNull(),
-  endDate: timestamp("end_date").notNull(),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date").notNull(),
   status: varchar("status", { length: 20 }).default("available"),
   priceOverride: numeric("price_override"),
   createdAt: timestamp("created_at").defaultNow(),

@@ -583,10 +583,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const boats = await storage.getBoats();
       console.log("Boats fetched:", boats?.length || 0, "boats");
       
-      // Map capacity to maxPersons for frontend compatibility
+      // Map capacity to maxPersons and port to location for frontend compatibility
       const mappedBoats = boats.map(boat => ({
         ...boat,
         maxPersons: boat.capacity,
+        location: boat.port,
       }));
       
       res.json({ boats: mappedBoats });
@@ -605,10 +606,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Barca non trovata" });
       }
       
-      // Map capacity to maxPersons for frontend compatibility
+      // Map capacity to maxPersons and port to location for frontend compatibility
       const mappedBoat = {
         ...boat,
         maxPersons: boat.capacity,
+        location: boat.port,
       };
       
       res.json(mappedBoat);

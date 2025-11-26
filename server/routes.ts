@@ -690,7 +690,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Barca non trovata" });
       }
       
-      if (existingBoat.hostId !== req.session.user.id) {
+      if (Number(existingBoat.hostId) !== Number(req.session.user.id)) {
         console.log('Not owner - hostId:', existingBoat.hostId, 'userId:', req.session.user.id);
         return res.status(404).json({ error: "Barca non trovata" });
       }

@@ -62,9 +62,5 @@ externalPort = 4200
 localPort = 40855
 externalPort = 3003
 
-[[ports]]
-localPort = 42021
-externalPort = 5173
-
 [agent]
 integrations = ["javascript_stripe:1.0.0", "github:1.0.0"]

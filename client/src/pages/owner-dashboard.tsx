@@ -1063,6 +1063,97 @@ export default function OwnerDashboard() {
                       </div>
                     </div>
 
+                    {/* Sezione 6: Foto Imbarcazione */}
+                    <div className="bg-pink-50 border border-pink-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center">
+                          <Camera className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Foto Imbarcazione</h3>
+                          <p className="text-sm text-gray-600">Carica le foto della tua imbarcazione (max 10 foto)</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {(form.watch("images") || []).map((imageUrl: string, index: number) => (
+                            <div key={index} className="relative group">
+                              <img 
+                                src={imageUrl} 
+                                alt={`Foto ${index + 1}`}
+                                className="w-full h-24 object-cover rounded-lg border border-pink-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const currentImages = form.getValues("images") || [];
+                                  form.setValue("images", currentImages.filter((_: string, i: number) => i !== index));
+                                }}
+                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-pink-300 rounded-lg p-6 hover:border-pink-400 transition-colors">
+                          <Camera className="h-10 w-10 text-pink-400 mb-2" />
+                          <p className="text-sm text-gray-600 text-center mb-3">
+                            Inserisci gli URL delle immagini della tua imbarcazione
+                          </p>
+                          <div className="flex gap-2 w-full max-w-md">
+                            <Input 
+                              type="url"
+                              placeholder="https://esempio.com/foto-barca.jpg"
+                              id="newImageUrl"
+                              className="flex-1 border-pink-200"
+                              data-testid="input-boat-image-url"
+                            />
+                            <Button 
+                              type="button"
+                              variant="outline"
+                              className="border-pink-300 text-pink-600 hover:bg-pink-100"
+                              data-testid="button-add-boat-image"
+                              onClick={() => {
+                                const input = document.getElementById('newImageUrl') as HTMLInputElement;
+                                const url = input?.value?.trim();
+                                if (url && url.startsWith('http')) {
+                                  const currentImages = form.getValues("images") || [];
+                                  if (currentImages.length < 10) {
+                                    form.setValue("images", [...currentImages, url]);
+                                    input.value = '';
+                                    toast({
+                                      title: "Foto aggiunta",
+                                      description: "L'immagine è stata aggiunta con successo",
+                                    });
+                                  } else {
+                                    toast({
+                                      title: "Limite raggiunto",
+                                      description: "Puoi caricare massimo 10 foto",
+                                      variant: "destructive",
+                                    });
+                                  }
+                                } else {
+                                  toast({
+                                    title: "URL non valido",
+                                    description: "Inserisci un URL valido che inizia con http",
+                                    variant: "destructive",
+                                  });
+                                }
+                              }}
+                            >
+                              Aggiungi
+                            </Button>
+                          </div>
+                          <p className="text-xs text-gray-500 mt-3">
+                            💡 Suggerimento: Usa foto luminose che mostrano bene la tua imbarcazione
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Pulsanti di Azione */}
                     <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                       <Button 

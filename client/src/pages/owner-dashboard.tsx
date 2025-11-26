@@ -571,15 +571,17 @@ export default function OwnerDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="boats">Le mie imbarcazioni</TabsTrigger>
-            <TabsTrigger value="moorings">I miei ormeggi</TabsTrigger>
-            <TabsTrigger value="experiences">Le mie esperienze</TabsTrigger>
-            <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
-            <TabsTrigger value="messages">Messaggi</TabsTrigger>
-            <TabsTrigger value="profile">Il mio profilo</TabsTrigger>
-            <TabsTrigger value="analytics">Statistiche</TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
+            <TabsList className="inline-flex w-max min-w-full md:w-full">
+              <TabsTrigger value="boats" className="whitespace-nowrap">Le mie imbarcazioni</TabsTrigger>
+              <TabsTrigger value="moorings" className="whitespace-nowrap">I miei ormeggi</TabsTrigger>
+              <TabsTrigger value="experiences" className="whitespace-nowrap">Le mie esperienze</TabsTrigger>
+              <TabsTrigger value="bookings" className="whitespace-nowrap">Prenotazioni</TabsTrigger>
+              <TabsTrigger value="messages" className="whitespace-nowrap">Messaggi</TabsTrigger>
+              <TabsTrigger value="profile" className="whitespace-nowrap">Il mio profilo</TabsTrigger>
+              <TabsTrigger value="analytics" className="whitespace-nowrap">Statistiche</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="boats" className="space-y-6">
             <div className="flex justify-between items-center">

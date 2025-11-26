@@ -331,7 +331,10 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
               
               {monthDays.map(date => {
                 const availabilityInfo = getAvailabilityForDate(date);
-                const uniqueStatuses = [...new Set(availabilityInfo.map(a => a.status))];
+                const hasBlocked = availabilityInfo.some(a => a.status === 'blocked');
+                const hasBooked = availabilityInfo.some(a => a.status === 'booked');
+                const hasAvailable = availabilityInfo.some(a => a.status === 'available');
+                
                 return (
                   <div
                     key={date.toISOString()}
@@ -341,16 +344,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
                     onMouseLeave={() => setHoveredDate(null)}
                     data-testid={`calendar-day-${format(date, 'yyyy-MM-dd')}`}
                   >
-                    <div className="text-sm font-semibold mb-1">{format(date, 'd')}</div>
-                    {uniqueStatuses.length > 0 && (
-                      <div className="text-[10px] leading-tight mt-1">
-                        {uniqueStatuses.map((status) => (
-                          <div key={status} className="capitalize">
-                            {status === 'blocked' ? 'Bloccato' : status === 'booked' ? 'Prenotato' : 'Disponibile'}
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className="text-sm font-semibold">{format(date, 'd')}</div>
                   </div>
                 );
               })}

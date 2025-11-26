@@ -367,9 +367,8 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
               
               {monthDays.map(date => {
                 const availabilityInfo = getAvailabilityForDate(date);
-                const hasBlocked = availabilityInfo.some(a => a.status === 'blocked');
-                const hasBooked = availabilityInfo.some(a => a.status === 'booked');
-                const hasAvailable = availabilityInfo.some(a => a.status === 'available');
+                const availableSlot = availabilityInfo.find(a => a.status === 'available');
+                const displayPrice = availableSlot?.priceOverride || (boat as any)?.pricePerDay;
                 
                 return (
                   <div
@@ -381,6 +380,11 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
                     data-testid={`calendar-day-${format(date, 'yyyy-MM-dd')}`}
                   >
                     <div className="text-sm font-semibold">{format(date, 'd')}</div>
+                    {availableSlot && displayPrice && (
+                      <div className="text-[10px] text-green-700 font-medium mt-1">
+                        €{Number(displayPrice).toFixed(0)}
+                      </div>
+                    )}
                   </div>
                 );
               })}

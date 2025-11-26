@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useAuth } from '@/hooks/use-auth';
 import { 
   Anchor, 
   MapPin, 
@@ -28,7 +29,8 @@ import {
   Heart,
   Share2,
   Home,
-  X
+  X,
+  Plus
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -297,6 +299,7 @@ const portsWithRegion = [
 ];
 
 export default function OrmeggioPage() {
+  const { user } = useAuth();
   const [searchLocation, setSearchLocation] = useState("");
   const [maxLength, setMaxLength] = useState("all");
   const [priceRange, setPriceRange] = useState("all");
@@ -306,6 +309,8 @@ export default function OrmeggioPage() {
   const [filteredPorts, setFilteredPorts] = useState<{ name: string; region: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
+  
+  const isOwner = user?.role === 'owner';
 
   // Gestione autofill intelligente
   useEffect(() => {
@@ -531,12 +536,21 @@ export default function OrmeggioPage() {
               <h3 className="text-xl font-bold text-gray-900">Hai un posto barca libero?</h3>
               <p className="text-gray-600">Affittalo e guadagna fino a €1.500+ al mese</p>
             </div>
-            <Button className="bg-green-600 hover:bg-green-700 font-bold" asChild>
-              <Link href="/diventa-noleggiatore">
-                <Anchor className="h-4 w-4 mr-2" />
-                Affitta il Tuo Ormeggio
-              </Link>
-            </Button>
+            {isOwner ? (
+              <Button className="bg-green-600 hover:bg-green-700 font-bold" asChild>
+                <Link href="/owner-dashboard?tab=moorings">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Aggiungi Ormeggio
+                </Link>
+              </Button>
+            ) : (
+              <Button className="bg-green-600 hover:bg-green-700 font-bold" asChild>
+                <Link href="/diventa-noleggiatore">
+                  <Anchor className="h-4 w-4 mr-2" />
+                  Affitta il Tuo Ormeggio
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </section>

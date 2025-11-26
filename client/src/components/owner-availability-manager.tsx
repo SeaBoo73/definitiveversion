@@ -52,6 +52,8 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [selectedAvailability, setSelectedAvailability] = useState<BoatAvailability | null>(null);
   
   const { toast } = useToast();
   const queryClient = qc;
@@ -110,6 +112,31 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
       toast({
         title: "Errore",
         description: error.message || "Errore nella creazione della disponibilità.",
+        variant: "destructive"
+      });
+    }
+  });
+
+  // Update availability mutation
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, status }: { id: number; status: string }) => {
+      const res = await apiRequest('PATCH', `/api/availability/${id}`, {
+        status,
+        boatId
+      });
+      return res.json();
+    },
+    onSuccess: async () => {
+      toast({
+        title: "Disponibilità aggiornata",
+        description: "Lo stato è stato modificato con successo."
+      });
+      await refetch();
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'aggiornamento della disponibilità.",
         variant: "destructive"
       });
     }
@@ -203,6 +230,15 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   const handleDateClick = (date: Date) => {
     if (isBefore(date, new Date())) return;
+
+    const availabilityInfo = getAvailabilityForDate(date);
+    
+    // If there's an existing availability, open edit dialog
+    if (availabilityInfo.length > 0) {
+      setSelectedAvailability(availabilityInfo[0]);
+      setShowEditDialog(true);
+      return;
+    }
 
     if (!selectedStartDate) {
       setSelectedStartDate(date);
@@ -453,6 +489,90 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
               </div>
             </form>
           </Form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Availability Dialog */}
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Modifica Disponibilità</DialogTitle>
+          </DialogHeader>
+          {selectedAvailability && (
+            <div className="space-y-4">
+              <div className="text-sm text-gray-600">
+                <p><strong>Dal:</strong> {format(parseISO(selectedAvailability.startDate), 'd MMMM yyyy', { locale: it })}</p>
+                <p><strong>Al:</strong> {format(parseISO(selectedAvailability.endDate), 'd MMMM yyyy', { locale: it })}</p>
+                <p><strong>Stato attuale:</strong> {
+                  selectedAvailability.status === 'blocked' ? 'Bloccato' :
+                  selectedAvailability.status === 'booked' ? 'Prenotato' : 'Disponibile'
+                }</p>
+              </div>
+              
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Cambia stato:</label>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={selectedAvailability.status === 'available' ? 'default' : 'outline'}
+                    className="flex-1"
+                    onClick={() => {
+                      updateMutation.mutate({ id: selectedAvailability.id, status: 'available' });
+                      setShowEditDialog(false);
+                    }}
+                    disabled={updateMutation.isPending}
+                    data-testid="button-set-available"
+                  >
+                    Disponibile
+                  </Button>
+                  <Button
+                    variant={selectedAvailability.status === 'blocked' ? 'default' : 'outline'}
+                    className="flex-1"
+                    onClick={() => {
+                      updateMutation.mutate({ id: selectedAvailability.id, status: 'blocked' });
+                      setShowEditDialog(false);
+                    }}
+                    disabled={updateMutation.isPending}
+                    data-testid="button-set-blocked"
+                  >
+                    Bloccato
+                  </Button>
+                  <Button
+                    variant={selectedAvailability.status === 'booked' ? 'default' : 'outline'}
+                    className="flex-1"
+                    onClick={() => {
+                      updateMutation.mutate({ id: selectedAvailability.id, status: 'booked' });
+                      setShowEditDialog(false);
+                    }}
+                    disabled={updateMutation.isPending}
+                    data-testid="button-set-booked"
+                  >
+                    Prenotato
+                  </Button>
+                </div>
+              </div>
+
+              <div className="flex justify-between pt-4 border-t">
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    deleteMutation.mutate(selectedAvailability.id);
+                    setShowEditDialog(false);
+                  }}
+                  disabled={deleteMutation.isPending}
+                  data-testid="button-delete-availability"
+                >
+                  Elimina
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowEditDialog(false)}
+                  data-testid="button-close-edit"
+                >
+                  Chiudi
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </div>

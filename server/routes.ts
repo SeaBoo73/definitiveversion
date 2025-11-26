@@ -679,10 +679,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put('/api/boats/:id', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const boatId = parseInt(req.params.id);
+      console.log('PUT /api/boats/:id - boatId:', boatId, 'userId:', req.session.user.id);
       
       // Verify boat ownership
       const existingBoat = await storage.getBoat(boatId);
-      if (!existingBoat || existingBoat.hostId !== req.session.user.id) {
+      console.log('existingBoat:', existingBoat ? { id: existingBoat.id, hostId: existingBoat.hostId } : null);
+      
+      if (!existingBoat) {
+        console.log('Boat not found');
+        return res.status(404).json({ error: "Barca non trovata" });
+      }
+      
+      if (existingBoat.hostId !== req.session.user.id) {
+        console.log('Not owner - hostId:', existingBoat.hostId, 'userId:', req.session.user.id);
         return res.status(404).json({ error: "Barca non trovata" });
       }
 

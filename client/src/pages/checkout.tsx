@@ -1,4 +1,4 @@
-import { useStripe, Elements, PaymentElement, useElements } from '@stripe/react-stripe-js';
+import { useStripe, Elements, PaymentElement, useElements, ExpressCheckoutElement } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { apiRequest } from "@/lib/queryClient";
@@ -9,7 +9,8 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import { useLocation } from "wouter";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CreditCard, Smartphone, Wallet } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
@@ -20,6 +21,7 @@ const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +29,8 @@ const CheckoutForm = () => {
     if (!stripe || !elements) {
       return;
     }
+
+    setIsProcessing(true);
 
     const { error } = await stripe.confirmPayment({
       elements,
@@ -41,24 +45,93 @@ const CheckoutForm = () => {
         description: error.message,
         variant: "destructive",
       });
+      setIsProcessing(false);
     } else {
       toast({
         title: "Pagamento Completato",
         description: "Grazie per la tua prenotazione!",
       });
     }
-  }
+  };
+
+  const onExpressCheckoutConfirm = async () => {
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: window.location.origin + "/payment-success",
+      },
+    });
+
+    if (error) {
+      toast({
+        title: "Pagamento Fallito",
+        description: error.message,
+        variant: "destructive",
+      });
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <PaymentElement />
+      <PaymentElement 
+        options={{
+          layout: {
+            type: 'accordion',
+            defaultCollapsed: false,
+            radios: true,
+            spacedAccordionItems: true,
+          },
+          paymentMethodOrder: [
+            'card',
+            'apple_pay',
+            'google_pay',
+            'paypal',
+            'klarna',
+            'amazon_pay',
+            'bancontact',
+            'eps',
+            'ideal',
+            'sepa_debit',
+          ],
+        }}
+      />
+      
       <Button 
         type="submit" 
-        className="w-full bg-coral hover:bg-orange-600 text-white"
-        disabled={!stripe || !elements}
+        className="w-full bg-coral hover:bg-orange-600 text-white h-12 text-lg"
+        disabled={!stripe || !elements || isProcessing}
       >
-        Completa Pagamento
+        {isProcessing ? (
+          <span className="flex items-center gap-2">
+            <div className="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full" />
+            Elaborazione...
+          </span>
+        ) : (
+          "Completa Pagamento"
+        )}
       </Button>
+      
+      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+        <p className="text-xs text-gray-500 text-center mb-3">
+          Metodi di pagamento accettati
+        </p>
+        <div className="flex flex-wrap justify-center gap-2">
+          <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded font-semibold">VISA</span>
+          <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded font-semibold">Mastercard</span>
+          <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded font-semibold">AMEX</span>
+          <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded">Apple Pay</span>
+          <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded">Google Pay</span>
+          <span className="text-xs text-blue-600 bg-white px-2 py-1 rounded font-semibold">PayPal</span>
+          <span className="text-xs text-pink-500 bg-white px-2 py-1 rounded font-semibold">Klarna</span>
+        </div>
+      </div>
     </form>
   );
 };

@@ -1151,14 +1151,36 @@ export default function OwnerDashboard() {
                           <CalendarDays className="h-4 w-4" />
                         </Button>
                       </Link>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => deleteBoatMutation.mutate(boat.id)}
-                        title="Elimina"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            title="Elimina"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Conferma eliminazione</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Sei sicuro di voler eliminare l'imbarcazione "{boat.name}"?
+                              <br /><br />
+                              <strong className="text-red-600">Attenzione: questa azione è definitiva e non può essere annullata.</strong>
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Annulla</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={() => deleteBoatMutation.mutate(boat.id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Sì, elimina definitivamente
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </CardContent>
                 </Card>

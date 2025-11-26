@@ -1101,54 +1101,73 @@ export default function OwnerDashboard() {
                         <div className="flex flex-col items-center justify-center border-2 border-dashed border-pink-300 rounded-lg p-6 hover:border-pink-400 transition-colors">
                           <Camera className="h-10 w-10 text-pink-400 mb-2" />
                           <p className="text-sm text-gray-600 text-center mb-3">
-                            Inserisci gli URL delle immagini della tua imbarcazione
+                            Carica le foto della tua imbarcazione dal tuo dispositivo
                           </p>
-                          <div className="flex gap-2 w-full max-w-md">
-                            <Input 
-                              type="url"
-                              placeholder="https://esempio.com/foto-barca.jpg"
-                              id="newImageUrl"
-                              className="flex-1 border-pink-200"
-                              data-testid="input-boat-image-url"
-                            />
-                            <Button 
-                              type="button"
-                              variant="outline"
-                              className="border-pink-300 text-pink-600 hover:bg-pink-100"
-                              data-testid="button-add-boat-image"
-                              onClick={() => {
-                                const input = document.getElementById('newImageUrl') as HTMLInputElement;
-                                const url = input?.value?.trim();
-                                if (url && url.startsWith('http')) {
-                                  const currentImages = form.getValues("images") || [];
-                                  if (currentImages.length < 10) {
-                                    form.setValue("images", [...currentImages, url]);
-                                    input.value = '';
-                                    toast({
-                                      title: "Foto aggiunta",
-                                      description: "L'immagine è stata aggiunta con successo",
-                                    });
-                                  } else {
-                                    toast({
-                                      title: "Limite raggiunto",
-                                      description: "Puoi caricare massimo 10 foto",
-                                      variant: "destructive",
-                                    });
-                                  }
-                                } else {
+                          <input 
+                            type="file"
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                            multiple
+                            id="boatImageUpload"
+                            className="hidden"
+                            data-testid="input-boat-image-file"
+                            onChange={(e) => {
+                              const files = e.target.files;
+                              if (!files) return;
+                              
+                              const currentImages = form.getValues("images") || [];
+                              const remainingSlots = 10 - currentImages.length;
+                              
+                              if (remainingSlots <= 0) {
+                                toast({
+                                  title: "Limite raggiunto",
+                                  description: "Puoi caricare massimo 10 foto",
+                                  variant: "destructive",
+                                });
+                                return;
+                              }
+                              
+                              const filesToProcess = Array.from(files).slice(0, remainingSlots);
+                              
+                              filesToProcess.forEach((file) => {
+                                if (file.size > 5 * 1024 * 1024) {
                                   toast({
-                                    title: "URL non valido",
-                                    description: "Inserisci un URL valido che inizia con http",
+                                    title: "File troppo grande",
+                                    description: `${file.name} supera i 5MB`,
                                     variant: "destructive",
                                   });
+                                  return;
                                 }
-                              }}
-                            >
-                              Aggiungi
-                            </Button>
-                          </div>
+                                
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  const base64 = event.target?.result as string;
+                                  const updatedImages = form.getValues("images") || [];
+                                  if (updatedImages.length < 10) {
+                                    form.setValue("images", [...updatedImages, base64]);
+                                    toast({
+                                      title: "Foto caricata",
+                                      description: `${file.name} aggiunta con successo`,
+                                    });
+                                  }
+                                };
+                                reader.readAsDataURL(file);
+                              });
+                              
+                              e.target.value = '';
+                            }}
+                          />
+                          <Button 
+                            type="button"
+                            variant="outline"
+                            className="border-pink-300 text-pink-600 hover:bg-pink-100"
+                            data-testid="button-upload-boat-image"
+                            onClick={() => document.getElementById('boatImageUpload')?.click()}
+                          >
+                            <Camera className="h-4 w-4 mr-2" />
+                            Scegli foto dal dispositivo
+                          </Button>
                           <p className="text-xs text-gray-500 mt-3">
-                            💡 Suggerimento: Usa foto luminose che mostrano bene la tua imbarcazione
+                            💡 Formati: JPG, PNG, WebP (max 5MB per foto)
                           </p>
                         </div>
                       </div>

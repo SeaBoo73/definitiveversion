@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from "react";
+import { useState, useRef, useEffect, type ChangeEvent } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation, Link } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -105,6 +105,80 @@ export default function OwnerDashboard() {
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
   const [showAddMooringModal, setShowAddMooringModal] = useState(false);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
+  
+  // Mooring port autofill state
+  const [mooringPortSearch, setMooringPortSearch] = useState("");
+  const [showMooringPortSuggestions, setShowMooringPortSuggestions] = useState(false);
+  const mooringPortInputRef = useRef<HTMLInputElement>(null);
+  const mooringPortSuggestionsRef = useRef<HTMLDivElement>(null);
+  
+  // Lista completa dei porti Lazio e Campania
+  const allMooringPorts = [
+    // Lazio
+    { name: "Civitavecchia", region: "Lazio" },
+    { name: "Fiumicino", region: "Lazio" },
+    { name: "Ostia", region: "Lazio" },
+    { name: "Anzio", region: "Lazio" },
+    { name: "Nettuno", region: "Lazio" },
+    { name: "San Felice Circeo", region: "Lazio" },
+    { name: "Terracina", region: "Lazio" },
+    { name: "Sperlonga", region: "Lazio" },
+    { name: "Gaeta", region: "Lazio" },
+    { name: "Formia", region: "Lazio" },
+    { name: "Minturno", region: "Lazio" },
+    { name: "Santa Marinella", region: "Lazio" },
+    { name: "Ladispoli", region: "Lazio" },
+    { name: "Riva di Traiano", region: "Lazio" },
+    { name: "Ponza", region: "Lazio" },
+    { name: "Ventotene", region: "Lazio" },
+    // Campania
+    { name: "Napoli", region: "Campania" },
+    { name: "Pozzuoli", region: "Campania" },
+    { name: "Baia", region: "Campania" },
+    { name: "Bacoli", region: "Campania" },
+    { name: "Ischia", region: "Campania" },
+    { name: "Procida", region: "Campania" },
+    { name: "Capri - Marina Grande", region: "Campania" },
+    { name: "Sorrento", region: "Campania" },
+    { name: "Positano", region: "Campania" },
+    { name: "Amalfi", region: "Campania" },
+    { name: "Salerno", region: "Campania" },
+    { name: "Torre del Greco", region: "Campania" },
+    { name: "Torre Annunziata", region: "Campania" },
+    { name: "Castellammare di Stabia", region: "Campania" },
+    { name: "Marina di Stabia", region: "Campania" },
+    { name: "Piano di Sorrento", region: "Campania" },
+    { name: "Vico Equense", region: "Campania" },
+    { name: "Massa Lubrense", region: "Campania" },
+    { name: "Cetara", region: "Campania" },
+    { name: "Maiori", region: "Campania" },
+    { name: "Minori", region: "Campania" },
+    { name: "Atrani", region: "Campania" },
+    { name: "Agropoli", region: "Campania" },
+    { name: "Palinuro", region: "Campania" },
+    { name: "Marina di Camerota", region: "Campania" },
+    { name: "Sapri", region: "Campania" },
+    { name: "Acciaroli", region: "Campania" },
+    { name: "Santa Maria di Castellabate", region: "Campania" },
+  ];
+  
+  const filteredMooringPorts = mooringPortSearch.trim().length > 0 
+    ? allMooringPorts.filter(port => 
+        port.name.toLowerCase().includes(mooringPortSearch.toLowerCase())
+      ).slice(0, 8)
+    : [];
+  
+  // Chiudi suggerimenti quando si clicca fuori
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (mooringPortSuggestionsRef.current && !mooringPortSuggestionsRef.current.contains(event.target as Node) &&
+          mooringPortInputRef.current && !mooringPortInputRef.current.contains(event.target as Node)) {
+        setShowMooringPortSuggestions(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
   
   // Get tab from URL parameter and manage active tab
   const urlParams = new URLSearchParams(window.location.search);
@@ -1414,61 +1488,48 @@ export default function OwnerDashboard() {
                           />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 relative">
                           <Label htmlFor="mooring-port">Porto *</Label>
-                          <Select required>
-                            <SelectTrigger id="mooring-port" data-testid="select-mooringPort">
-                              <SelectValue placeholder="Seleziona il porto" />
-                            </SelectTrigger>
-                            <SelectContent className="max-h-[300px]">
-                              {/* Lazio */}
-                              <SelectItem value="civitavecchia">Civitavecchia</SelectItem>
-                              <SelectItem value="fiumicino">Fiumicino</SelectItem>
-                              <SelectItem value="ostia">Ostia</SelectItem>
-                              <SelectItem value="anzio">Anzio</SelectItem>
-                              <SelectItem value="nettuno">Nettuno</SelectItem>
-                              <SelectItem value="san-felice-circeo">San Felice Circeo</SelectItem>
-                              <SelectItem value="terracina">Terracina</SelectItem>
-                              <SelectItem value="sperlonga">Sperlonga</SelectItem>
-                              <SelectItem value="gaeta">Gaeta</SelectItem>
-                              <SelectItem value="formia">Formia</SelectItem>
-                              <SelectItem value="minturno">Minturno</SelectItem>
-                              <SelectItem value="santa-marinella">Santa Marinella</SelectItem>
-                              <SelectItem value="ladispoli">Ladispoli</SelectItem>
-                              <SelectItem value="riva-di-traiano">Riva di Traiano</SelectItem>
-                              <SelectItem value="ponza">Ponza</SelectItem>
-                              <SelectItem value="ventotene">Ventotene</SelectItem>
-                              {/* Campania */}
-                              <SelectItem value="napoli">Napoli</SelectItem>
-                              <SelectItem value="pozzuoli">Pozzuoli</SelectItem>
-                              <SelectItem value="baia">Baia</SelectItem>
-                              <SelectItem value="bacoli">Bacoli</SelectItem>
-                              <SelectItem value="ischia">Ischia</SelectItem>
-                              <SelectItem value="procida">Procida</SelectItem>
-                              <SelectItem value="capri">Capri - Marina Grande</SelectItem>
-                              <SelectItem value="sorrento">Sorrento</SelectItem>
-                              <SelectItem value="positano">Positano</SelectItem>
-                              <SelectItem value="amalfi">Amalfi</SelectItem>
-                              <SelectItem value="salerno">Salerno</SelectItem>
-                              <SelectItem value="torre-del-greco">Torre del Greco</SelectItem>
-                              <SelectItem value="torre-annunziata">Torre Annunziata</SelectItem>
-                              <SelectItem value="castellammare">Castellammare di Stabia</SelectItem>
-                              <SelectItem value="marina-di-stabia">Marina di Stabia</SelectItem>
-                              <SelectItem value="piano-di-sorrento">Piano di Sorrento</SelectItem>
-                              <SelectItem value="vico-equense">Vico Equense</SelectItem>
-                              <SelectItem value="massa-lubrense">Massa Lubrense</SelectItem>
-                              <SelectItem value="cetara">Cetara</SelectItem>
-                              <SelectItem value="maiori">Maiori</SelectItem>
-                              <SelectItem value="minori">Minori</SelectItem>
-                              <SelectItem value="atrani">Atrani</SelectItem>
-                              <SelectItem value="agropoli">Agropoli</SelectItem>
-                              <SelectItem value="palinuro">Palinuro</SelectItem>
-                              <SelectItem value="marina-di-camerota">Marina di Camerota</SelectItem>
-                              <SelectItem value="sapri">Sapri</SelectItem>
-                              <SelectItem value="acciaroli">Acciaroli</SelectItem>
-                              <SelectItem value="castellabate">Santa Maria di Castellabate</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <Input
+                            ref={mooringPortInputRef}
+                            id="mooring-port"
+                            value={mooringPortSearch}
+                            onChange={(e) => {
+                              setMooringPortSearch(e.target.value);
+                              setShowMooringPortSuggestions(e.target.value.trim().length > 0);
+                            }}
+                            onFocus={() => {
+                              if (mooringPortSearch.trim().length > 0) {
+                                setShowMooringPortSuggestions(true);
+                              }
+                            }}
+                            placeholder="Cerca porto (es. Napoli, Amalfi...)"
+                            required
+                            data-testid="input-mooringPort"
+                            autoComplete="off"
+                          />
+                          {/* Suggerimenti autofill */}
+                          {showMooringPortSuggestions && filteredMooringPorts.length > 0 && (
+                            <div 
+                              ref={mooringPortSuggestionsRef}
+                              className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                            >
+                              {filteredMooringPorts.map((port, index) => (
+                                <button
+                                  key={index}
+                                  type="button"
+                                  className="w-full px-4 py-3 text-left hover:bg-blue-50 flex justify-between items-center border-b border-gray-100 last:border-b-0"
+                                  onClick={() => {
+                                    setMooringPortSearch(port.name);
+                                    setShowMooringPortSuggestions(false);
+                                  }}
+                                >
+                                  <span className="font-medium text-gray-900">{port.name}</span>
+                                  <span className="text-sm text-gray-500">{port.region}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
 
                         <div className="space-y-2 md:col-span-2">

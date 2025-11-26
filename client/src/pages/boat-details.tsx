@@ -110,7 +110,7 @@ export default function BoatDetails() {
       {/* Hero Images */}
       <div className="relative h-96 md:h-[500px]">
         <img
-          src={boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=500"}
+          src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=500"}
           alt={boat.name}
           className="w-full h-full object-cover"
         />

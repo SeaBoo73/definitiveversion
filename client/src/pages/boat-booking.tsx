@@ -181,7 +181,7 @@ export default function BoatBooking() {
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-6">
               <img
-                src={boat.images?.[0] || "/attached_assets/luxury_yacht_charter_boat_7d39103e.png"}
+                src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "/attached_assets/luxury_yacht_charter_boat_7d39103e.png"}
                 alt={boat.name}
                 className="w-full md:w-80 h-48 object-cover rounded-lg"
               />

@@ -242,9 +242,9 @@ export function SearchResults() {
                 {filteredBoats.map((boat: Boat) => (
                   <Card key={boat.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="aspect-[4/3] bg-gray-200">
-                      {boat.images?.[0] ? (
+                      {boat.images?.[(boat.coverImage || 0)] || boat.images?.[0] ? (
                         <img
-                          src={`/api/images/${encodeURIComponent(boat.images[0])}`}
+                          src={`/api/images/${encodeURIComponent(boat.images[(boat.coverImage || 0)] || boat.images[0])}`}
                           alt={boat.name}
                           className="w-full h-full object-cover"
                         />

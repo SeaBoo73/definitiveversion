@@ -1293,7 +1293,7 @@ export default function OwnerDashboard() {
                   <CardContent className="p-4">
                     <div className="relative mb-4">
                       <img
-                        src={boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=400&h=250"}
+                        src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=400&h=250"}
                         alt={boat.name}
                         className="w-full h-40 object-cover rounded-lg"
                       />

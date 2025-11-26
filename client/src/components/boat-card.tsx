@@ -75,7 +75,7 @@ export function BoatCard({ boat }: BoatCardProps) {
       <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
         <div className="relative">
           <img
-            src={boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"}
+            src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400"}
             alt={boat.name}
             className="w-full h-48 object-cover"
           />

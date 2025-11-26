@@ -331,6 +331,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
               
               {monthDays.map(date => {
                 const availabilityInfo = getAvailabilityForDate(date);
+                const uniqueStatuses = [...new Set(availabilityInfo.map(a => a.status))];
                 return (
                   <div
                     key={date.toISOString()}
@@ -341,23 +342,11 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
                     data-testid={`calendar-day-${format(date, 'yyyy-MM-dd')}`}
                   >
                     <div className="text-sm font-semibold mb-1">{format(date, 'd')}</div>
-                    {availabilityInfo.length > 0 && (
-                      <div className="space-y-1">
-                        {availabilityInfo.map((avail) => (
-                          <div key={avail.id} className="flex items-center justify-between text-xs">
-                            <span className="capitalize truncate">{avail.status}</span>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="h-5 w-5 p-0 hover:bg-red-500 hover:text-white"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteMutation.mutate(avail.id);
-                              }}
-                              data-testid={`delete-availability-${avail.id}`}
-                            >
-                              <Trash2 className="w-3 h-3" />
-                            </Button>
+                    {uniqueStatuses.length > 0 && (
+                      <div className="text-[10px] leading-tight mt-1">
+                        {uniqueStatuses.map((status) => (
+                          <div key={status} className="capitalize">
+                            {status === 'blocked' ? 'Bloccato' : status === 'booked' ? 'Prenotato' : 'Disponibile'}
                           </div>
                         ))}
                       </div>

@@ -31,6 +31,7 @@ declare module 'express-session' {
       role: string;
       userType: string;
       businessName?: string;
+      profileImage?: string;
     };
   }
 }
@@ -350,6 +351,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       res.json({ success: true });
     });
+  });
+
+  // Update user profile endpoint
+  app.patch('/api/user/profile', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const { firstName, lastName, phone, profileImage } = req.body;
+      
+      const updatedUser = await storage.updateUser(userId, {
+        firstName,
+        lastName,
+        phone,
+        profileImage
+      });
+
+      if (!updatedUser) {
+        return res.status(500).json({ error: "Errore durante l'aggiornamento del profilo" });
+      }
+
+      // Update session with new data
+      req.session.user = {
+        ...req.session.user!,
+        firstName: updatedUser.firstName || undefined,
+        lastName: updatedUser.lastName || undefined,
+        profileImage: updatedUser.profileImage || undefined
+      };
+
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error:', err);
+          return res.status(500).json({ error: 'Errore nel salvataggio della sessione' });
+        }
+
+        res.json({
+          success: true,
+          user: {
+            id: updatedUser.id,
+            email: updatedUser.email,
+            firstName: updatedUser.firstName,
+            lastName: updatedUser.lastName,
+            phone: updatedUser.phone,
+            profileImage: updatedUser.profileImage,
+            role: updatedUser.role
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Update profile error:", error);
+      res.status(500).json({ error: "Errore durante l'aggiornamento del profilo" });
+    }
   });
 
   // Delete account endpoint

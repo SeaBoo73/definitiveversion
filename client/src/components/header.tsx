@@ -1,7 +1,7 @@
 import { useAuth } from "@/hooks/use-auth";
 import { NotificationsCenter } from "@/components/notifications-center";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ServicesNavButton } from "./services-nav-button";
 import { Link, useLocation } from "wouter";
@@ -123,6 +123,13 @@ export function Header() {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="flex items-center gap-2">
                     <Avatar className="h-8 w-8">
+                      {user.profileImage && (
+                        <AvatarImage 
+                          src={user.profileImage} 
+                          alt={user.firstName || user.username || "Profilo"} 
+                          className="object-cover"
+                        />
+                      )}
                       <AvatarFallback className="bg-blue-100 text-blue-600">
                         {user.firstName?.[0] || user.username?.[0] || "U"}
                       </AvatarFallback>

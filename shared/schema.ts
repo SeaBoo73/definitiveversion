@@ -52,6 +52,9 @@ export const users = pgTable("users", {
   vatNumber: varchar("vat_number", { length: 50 }),
   website: varchar("website", { length: 255 }),
   instagram: varchar("instagram", { length: 100 }),
+  
+  // Profile image (base64)
+  profileImage: text("profile_image"),
 });
 
 // Boats table schema that matches existing database structure exactly

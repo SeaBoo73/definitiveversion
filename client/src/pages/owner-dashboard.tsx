@@ -359,8 +359,8 @@ export default function OwnerDashboard() {
     bio: "",
   });
 
-  // Profile photo state
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  // Profile photo state - initialize from user data
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(user?.profileImage || null);
 
   // Profile Photo Upload Handler
   const handlePhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -401,12 +401,35 @@ export default function OwnerDashboard() {
     }
   };
 
+  // Save profile mutation
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: { firstName?: string; lastName?: string; phone?: string; profileImage?: string | null }) => {
+      const res = await apiRequest("PATCH", "/api/user/profile", data);
+      return await res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      toast({
+        title: "Profilo aggiornato",
+        description: "Le tue informazioni sono state salvate con successo.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Impossibile aggiornare il profilo",
+        variant: "destructive",
+      });
+    },
+  });
+
   // Save profile changes
   const handleSaveProfile = () => {
-    // TODO: Implement API call to save profile data
-    toast({
-      title: "Profilo aggiornato",
-      description: "Le tue informazioni sono state salvate con successo.",
+    updateProfileMutation.mutate({
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
+      phone: profileData.phone,
+      profileImage: profilePhoto,
     });
   };
 

@@ -12,6 +12,23 @@ import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import type { Boat } from "@shared/schema";
 
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400";
+
+const getImageSrc = (boat: Boat): string => {
+  const img = boat.images?.[boat.coverImage || 0] || boat.images?.[0];
+  if (!img) return FALLBACK_IMAGE;
+  
+  if (img.startsWith('data:image/')) {
+    return img;
+  }
+  
+  if (img.includes('seagorentalboat.com')) {
+    return FALLBACK_IMAGE;
+  }
+  
+  return img;
+};
+
 // Use the Boat type from shared schema
 
 interface SearchParams {
@@ -242,17 +259,14 @@ export function SearchResults() {
                 {filteredBoats.map((boat: Boat) => (
                   <Card key={boat.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="aspect-[4/3] bg-gray-200">
-                      {boat.images?.[(boat.coverImage || 0)] || boat.images?.[0] ? (
-                        <img
-                          src={`/api/images/${encodeURIComponent(boat.images[(boat.coverImage || 0)] || boat.images[0])}`}
-                          alt={boat.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          Nessuna immagine
-                        </div>
-                      )}
+                      <img
+                        src={getImageSrc(boat)}
+                        alt={boat.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                        }}
+                      />
                     </div>
                     
                     <CardContent className="p-4">

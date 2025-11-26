@@ -6,13 +6,18 @@ import { Button } from "@/components/ui/button";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useToast } from "@/hooks/use-toast";
+import { useApplePay } from "@/hooks/use-apple-pay";
 import { Link, useLocation } from "wouter";
+import { Separator } from "@/components/ui/separator";
+import { SiApplepay, SiGooglepay } from "react-icons/si";
 import { 
   ArrowLeft,
   CreditCard,
   Shield,
   CheckCircle2,
-  Loader2
+  Loader2,
+  Wallet,
+  Smartphone
 } from "lucide-react";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
@@ -20,12 +25,27 @@ import {
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51RmJeyRemNUXGzu7lcts67FtOOZFuYrqUSvhjCQTNrZyEgAB1051AqnVSzM0jXsDcMeWGThb3JNdMXGFAzj06GbU004axe6Kek';
 const stripePromise = loadStripe(stripeKey);
 
-const CheckoutForm = ({ bookingDetails }: { bookingDetails: any }) => {
+interface CheckoutFormProps {
+  bookingDetails: any;
+  clientSecret: string;
+}
+
+const CheckoutForm = ({ bookingDetails, clientSecret }: CheckoutFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
   const [, navigate] = useLocation();
   const [loading, setLoading] = useState(false);
+
+  const { 
+    isApplePayAvailable, 
+    isGooglePayAvailable, 
+    isLoading: isNativePayLoading,
+    presentApplePay,
+    presentGooglePay 
+  } = useApplePay();
+
+  const amount = bookingDetails?.prezzoTotale || 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,6 +78,44 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: any }) => {
     }
   };
 
+  const handleApplePay = async () => {
+    setLoading(true);
+    const success = await presentApplePay(amount, 'EUR', clientSecret);
+    if (success) {
+      toast({
+        title: "Pagamento Completato",
+        description: "Grazie per la tua prenotazione con Apple Pay!",
+      });
+      navigate(`/payment-success-esperienza?booking_id=${bookingDetails?.bookingId}`);
+    } else {
+      toast({
+        title: "Pagamento Fallito",
+        description: "Si è verificato un errore con Apple Pay",
+        variant: "destructive",
+      });
+    }
+    setLoading(false);
+  };
+
+  const handleGooglePay = async () => {
+    setLoading(true);
+    const success = await presentGooglePay(amount, 'EUR', clientSecret);
+    if (success) {
+      toast({
+        title: "Pagamento Completato",
+        description: "Grazie per la tua prenotazione con Google Pay!",
+      });
+      navigate(`/payment-success-esperienza?booking_id=${bookingDetails?.bookingId}`);
+    } else {
+      toast({
+        title: "Pagamento Fallito",
+        description: "Si è verificato un errore con Google Pay",
+        variant: "destructive",
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -70,12 +128,61 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: any }) => {
                 Dettagli pagamento
               </CardTitle>
               <CardDescription>
-                Inserisci i dati della tua carta per completare la prenotazione
+                Scegli il tuo metodo di pagamento preferito
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-6">
+              {/* Native Payment Methods - Apple Pay / Google Pay */}
+              {!isNativePayLoading && (isApplePayAvailable || isGooglePayAvailable) && (
+                <div className="space-y-3">
+                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                    <Wallet className="h-4 w-4" />
+                    Pagamento rapido
+                  </p>
+                  
+                  <div className="flex flex-col gap-3">
+                    {isApplePayAvailable && (
+                      <Button
+                        type="button"
+                        onClick={handleApplePay}
+                        disabled={loading}
+                        className="w-full h-12 bg-black hover:bg-gray-800 text-white flex items-center justify-center gap-2"
+                        data-testid="button-apple-pay"
+                      >
+                        <SiApplepay className="h-6 w-6" />
+                        Apple Pay
+                      </Button>
+                    )}
+                    
+                    {isGooglePayAvailable && (
+                      <Button
+                        type="button"
+                        onClick={handleGooglePay}
+                        disabled={loading}
+                        className="w-full h-12 bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 flex items-center justify-center gap-2"
+                        data-testid="button-google-pay"
+                      >
+                        <SiGooglepay className="h-6 w-6" />
+                        Google Pay
+                      </Button>
+                    )}
+                  </div>
+                  
+                  <div className="relative py-4">
+                    <Separator />
+                    <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-sm text-gray-500">
+                      oppure
+                    </span>
+                  </div>
+                </div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
-                <PaymentElement />
+                <PaymentElement 
+                  options={{
+                    layout: 'accordion',
+                  }}
+                />
                 
                 <div className="bg-green-50 p-4 rounded-lg">
                   <div className="flex items-center gap-2 text-green-800">
@@ -91,6 +198,7 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: any }) => {
                   type="submit" 
                   className="w-full bg-coral hover:bg-orange-600 text-white text-lg py-3"
                   disabled={!stripe || loading}
+                  data-testid="button-complete-payment"
                 >
                   {loading ? (
                     <>
@@ -105,6 +213,24 @@ const CheckoutForm = ({ bookingDetails }: { bookingDetails: any }) => {
                   )}
                 </Button>
               </form>
+
+              {/* Payment methods info */}
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <p className="text-xs text-gray-500 text-center mb-3">
+                  Metodi di pagamento accettati
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded font-semibold">VISA</span>
+                  <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded font-semibold">Mastercard</span>
+                  <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded font-semibold">AMEX</span>
+                  <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded flex items-center gap-1">
+                    <Smartphone className="h-3 w-3" /> Apple Pay
+                  </span>
+                  <span className="text-xs text-gray-600 bg-white px-2 py-1 rounded">Google Pay</span>
+                  <span className="text-xs text-blue-600 bg-white px-2 py-1 rounded font-semibold">PayPal</span>
+                  <span className="text-xs text-pink-500 bg-white px-2 py-1 rounded font-semibold">Klarna</span>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -250,7 +376,7 @@ export default function CheckoutEsperienza() {
 
       {/* Make SURE to wrap the form in <Elements> which provides the stripe context. */}
       <Elements stripe={stripePromise} options={{ clientSecret }}>
-        <CheckoutForm bookingDetails={bookingDetails} />
+        <CheckoutForm bookingDetails={bookingDetails} clientSecret={clientSecret} />
       </Elements>
 
       <Footer />

@@ -385,10 +385,13 @@ export default function OrmeggioPage() {
               <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
                 Trova il tuo ormeggio ideale
               </h1>
-              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
                 Trova il posto barca perfetto o affitta il tuo ormeggio.<br/>
                 Mai più barche in rada!
               </p>
+              <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3 text-lg">
+                <a href="#ormeggi-list">Trova il tuo ormeggio</a>
+              </Button>
             </div>
           </div>
         </div>
@@ -540,7 +543,7 @@ export default function OrmeggioPage() {
       </section>
 
       {/* Mooring Spots Grid */}
-      <section className="py-12">
+      <section id="ormeggi-list" className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-bold text-gray-900">

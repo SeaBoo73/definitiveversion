@@ -49,17 +49,6 @@ export function Header() {
                 Esplora
               </Link>
               <Link 
-                href="/esperienze" 
-                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/esperienze" || location === "/charter"
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                <Sparkles className="h-4 w-4" />
-                Esperienze
-              </Link>
-              <Link 
                 href="/ormeggio" 
                 className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
                   location === "/ormeggio" 
@@ -69,6 +58,17 @@ export function Header() {
               >
                 <Anchor className="h-4 w-4" />
                 Ormeggio
+              </Link>
+              <Link 
+                href="/esperienze" 
+                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                  location === "/esperienze" || location === "/charter"
+                    ? "text-blue-600 border-b-2 border-blue-600" 
+                    : "text-gray-500 hover:text-gray-900"
+                }`}
+              >
+                <Sparkles className="h-4 w-4" />
+                Esperienze
               </Link>
               <Link 
                 href="/ia" 
@@ -201,21 +201,6 @@ export function Header() {
               </Link>
               
               <Link 
-                href="/esperienze" 
-                className={`block px-3 py-2 rounded-md font-medium ${
-                  location === "/esperienze" || location === "/charter"
-                    ? "text-blue-600 bg-blue-50" 
-                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4" />
-                  Esperienze
-                </div>
-              </Link>
-              
-              <Link 
                 href="/ormeggio" 
                 className={`block px-3 py-2 rounded-md font-medium ${
                   location === "/ormeggio" 
@@ -227,6 +212,21 @@ export function Header() {
                 <div className="flex items-center gap-2">
                   <Anchor className="h-4 w-4" />
                   Ormeggio
+                </div>
+              </Link>
+              
+              <Link 
+                href="/esperienze" 
+                className={`block px-3 py-2 rounded-md font-medium ${
+                  location === "/esperienze" || location === "/charter"
+                    ? "text-blue-600 bg-blue-50" 
+                    : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4" />
+                  Esperienze
                 </div>
               </Link>
               

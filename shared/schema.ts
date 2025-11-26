@@ -73,6 +73,7 @@ export const boats = pgTable("boats", {
   pricePerDay: numeric("price_per_day"),
   description: text("description"),
   images: text("images").array(),
+  coverImage: integer("cover_image").default(0),
   documentsRequired: text("documents_required"),
   active: boolean("active").default(true),
   createdAt: timestamp("created_at").defaultNow(),

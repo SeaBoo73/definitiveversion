@@ -92,6 +92,7 @@ const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({
   }, "Cantiere/Marca non riconosciuto. Inserisci un cantiere nautico valido."),
   cancellationPolicy: z.enum(["flexible", "moderate", "strict", "super_strict"]).optional().default("moderate"),
   refundMethod: z.enum(["credit_card", "bank_transfer", "paypal", "seaboo_credit"]).optional().default("credit_card"),
+  coverImage: z.number().optional().default(0),
 });
 
 type BoatFormData = z.infer<typeof boatFormSchema>;
@@ -145,6 +146,7 @@ export default function OwnerDashboard() {
       pricePerDay: "",
       description: "",
       images: [],
+      coverImage: 0,
       documentsRequired: "",
       active: true,
       cancellationPolicy: "moderate",
@@ -218,6 +220,7 @@ export default function OwnerDashboard() {
       year: data.year ? parseInt(data.year) : undefined,
       cancellationPolicy: data.cancellationPolicy,
       refundMethod: data.refundMethod,
+      coverImage: data.coverImage || 0,
     };
     
     if (editingBoat) {
@@ -343,6 +346,7 @@ export default function OwnerDashboard() {
       year: boat.year?.toString() || "",
       cancellationPolicy: boat.cancellationPolicy || "moderate",
       refundMethod: boat.refundMethod || "credit_card",
+      coverImage: boat.coverImage || 0,
     });
     setShowAddBoatModal(true);
   };
@@ -1076,26 +1080,51 @@ export default function OwnerDashboard() {
                       </div>
                       
                       <div className="space-y-4">
+                        <p className="text-sm text-gray-600 mb-2">
+                          Clicca su una foto per impostarla come immagine di copertina
+                        </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          {(form.watch("images") || []).map((imageUrl: string, index: number) => (
-                            <div key={index} className="relative group">
-                              <img 
-                                src={imageUrl} 
-                                alt={`Foto ${index + 1}`}
-                                className="w-full h-24 object-cover rounded-lg border border-pink-200"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const currentImages = form.getValues("images") || [];
-                                  form.setValue("images", currentImages.filter((_: string, i: number) => i !== index));
-                                }}
-                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ))}
+                          {(form.watch("images") || []).map((imageUrl: string, index: number) => {
+                            const isCover = (form.watch("coverImage") || 0) === index;
+                            return (
+                              <div key={index} className="relative group">
+                                <img 
+                                  src={imageUrl} 
+                                  alt={`Foto ${index + 1}`}
+                                  className={`w-full h-24 object-cover rounded-lg border-2 cursor-pointer transition-all ${
+                                    isCover ? 'border-yellow-500 ring-2 ring-yellow-300' : 'border-pink-200 hover:border-pink-400'
+                                  }`}
+                                  onClick={() => {
+                                    form.setValue("coverImage", index);
+                                    toast({
+                                      title: "Copertina impostata",
+                                      description: `Foto ${index + 1} selezionata come copertina`,
+                                    });
+                                  }}
+                                />
+                                {isCover && (
+                                  <div className="absolute top-1 left-1 bg-yellow-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">
+                                    Copertina
+                                  </div>
+                                )}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const currentImages = form.getValues("images") || [];
+                                    const currentCover = form.getValues("coverImage") || 0;
+                                    form.setValue("images", currentImages.filter((_: string, i: number) => i !== index));
+                                    if (currentCover >= index && currentCover > 0) {
+                                      form.setValue("coverImage", currentCover - 1);
+                                    }
+                                  }}
+                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  ×
+                                </button>
+                              </div>
+                            );
+                          })}
                         </div>
                         
                         <div className="flex flex-col items-center justify-center border-2 border-dashed border-pink-300 rounded-lg p-6 hover:border-pink-400 transition-colors">
@@ -1128,29 +1157,69 @@ export default function OwnerDashboard() {
                               
                               const filesToProcess = Array.from(files).slice(0, remainingSlots);
                               
-                              filesToProcess.forEach((file) => {
-                                if (file.size > 5 * 1024 * 1024) {
+                              const compressImage = (file: File): Promise<string> => {
+                                return new Promise((resolve, reject) => {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    const img = new Image();
+                                    img.onload = () => {
+                                      const canvas = document.createElement('canvas');
+                                      const maxWidth = 1200;
+                                      const maxHeight = 900;
+                                      let width = img.width;
+                                      let height = img.height;
+                                      
+                                      if (width > maxWidth) {
+                                        height = (height * maxWidth) / width;
+                                        width = maxWidth;
+                                      }
+                                      if (height > maxHeight) {
+                                        width = (width * maxHeight) / height;
+                                        height = maxHeight;
+                                      }
+                                      
+                                      canvas.width = width;
+                                      canvas.height = height;
+                                      const ctx = canvas.getContext('2d');
+                                      ctx?.drawImage(img, 0, 0, width, height);
+                                      const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                                      resolve(compressed);
+                                    };
+                                    img.onerror = reject;
+                                    img.src = event.target?.result as string;
+                                  };
+                                  reader.onerror = reject;
+                                  reader.readAsDataURL(file);
+                                });
+                              };
+                              
+                              filesToProcess.forEach(async (file) => {
+                                if (file.size > 10 * 1024 * 1024) {
                                   toast({
                                     title: "File troppo grande",
-                                    description: `${file.name} supera i 5MB`,
+                                    description: `${file.name} supera i 10MB`,
                                     variant: "destructive",
                                   });
                                   return;
                                 }
                                 
-                                const reader = new FileReader();
-                                reader.onload = (event) => {
-                                  const base64 = event.target?.result as string;
+                                try {
+                                  const compressed = await compressImage(file);
                                   const updatedImages = form.getValues("images") || [];
                                   if (updatedImages.length < 10) {
-                                    form.setValue("images", [...updatedImages, base64]);
+                                    form.setValue("images", [...updatedImages, compressed]);
                                     toast({
                                       title: "Foto caricata",
-                                      description: `${file.name} aggiunta con successo`,
+                                      description: `${file.name} compressa e aggiunta`,
                                     });
                                   }
-                                };
-                                reader.readAsDataURL(file);
+                                } catch (err) {
+                                  toast({
+                                    title: "Errore",
+                                    description: `Impossibile caricare ${file.name}`,
+                                    variant: "destructive",
+                                  });
+                                }
                               });
                               
                               e.target.value = '';
@@ -1167,7 +1236,7 @@ export default function OwnerDashboard() {
                             Scegli foto dal dispositivo
                           </Button>
                           <p className="text-xs text-gray-500 mt-3">
-                            💡 Formati: JPG, PNG, WebP (max 5MB per foto)
+                            💡 Formati: JPG, PNG, WebP (max 10MB, compresse automaticamente)
                           </p>
                         </div>
                       </div>

@@ -122,7 +122,7 @@ export const boatAvailability = pgTable("boat_availability", {
 // Moorings table for boat berths/slips
 export const moorings = pgTable("moorings", {
   id: serial("id").primaryKey(),
-  ownerId: integer("owner_id").references(() => users.id).notNull(),
+  managerId: integer("manager_id").references(() => users.id).notNull(),
   name: text("name").notNull(),
   port: text("port").notNull(),
   location: text("location"),

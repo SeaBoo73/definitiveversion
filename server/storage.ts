@@ -54,10 +54,10 @@ export interface IStorage {
   deleteAvailability(id: number): Promise<boolean>;
   
   // Mooring operations
-  getMooringsByOwner(ownerId: number): Promise<Mooring[]>;
+  getMooringsByOwner(managerId: number): Promise<Mooring[]>;
   createMooring(data: InsertMooring): Promise<Mooring>;
-  updateMooring(id: number, ownerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined>;
-  deleteMooring(id: number, ownerId: number): Promise<boolean>;
+  updateMooring(id: number, managerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined>;
+  deleteMooring(id: number, managerId: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -241,8 +241,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Mooring operations
-  async getMooringsByOwner(ownerId: number): Promise<Mooring[]> {
-    return await db.select().from(moorings).where(eq(moorings.ownerId, ownerId));
+  async getMooringsByOwner(managerId: number): Promise<Mooring[]> {
+    return await db.select().from(moorings).where(eq(moorings.managerId, managerId));
   }
 
   async createMooring(data: InsertMooring): Promise<Mooring> {
@@ -250,19 +250,19 @@ export class DatabaseStorage implements IStorage {
     return mooring;
   }
 
-  async updateMooring(id: number, ownerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined> {
+  async updateMooring(id: number, managerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined> {
     const [mooring] = await db
       .update(moorings)
       .set(data)
-      .where(and(eq(moorings.id, id), eq(moorings.ownerId, ownerId)))
+      .where(and(eq(moorings.id, id), eq(moorings.managerId, managerId)))
       .returning();
     return mooring;
   }
 
-  async deleteMooring(id: number, ownerId: number): Promise<boolean> {
+  async deleteMooring(id: number, managerId: number): Promise<boolean> {
     const result = await db
       .delete(moorings)
-      .where(and(eq(moorings.id, id), eq(moorings.ownerId, ownerId)));
+      .where(and(eq(moorings.id, id), eq(moorings.managerId, managerId)));
     return (result.rowCount ?? 0) > 0;
   }
 }

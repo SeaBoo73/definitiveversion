@@ -980,7 +980,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const mooringData = {
         ...req.body,
-        ownerId: req.session.user.id,
+        managerId: req.session.user.id,
       };
       const mooring = await storage.createMooring(mooringData);
       res.json(mooring);

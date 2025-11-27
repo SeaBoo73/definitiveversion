@@ -15,7 +15,6 @@ import {
   Clock,
   Euro,
   Star,
-  Phone,
   Wifi,
   Fuel,
   Droplet,
@@ -666,16 +665,10 @@ export default function OrmeggioPage() {
                         Prenota Ormeggio
                       </Link>
                     </Button>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" className="flex-1">
-                        <Phone className="h-4 w-4 mr-1" />
-                        Chiama
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
-                        <Calendar className="h-4 w-4 mr-1" />
-                        Disponibilità
-                      </Button>
-                    </div>
+                    <Button variant="outline" size="sm" className="w-full">
+                      <Calendar className="h-4 w-4 mr-1" />
+                      Verifica Disponibilità
+                    </Button>
                   </div>
 
                   {/* Contact Info */}

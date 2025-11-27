@@ -3,6 +3,7 @@ import {
   boats,
   bookings,
   boatAvailability,
+  moorings,
   type User,
   type InsertUser,
   type Boat,
@@ -11,6 +12,8 @@ import {
   type InsertBooking,
   type BoatAvailability,
   type InsertBoatAvailability,
+  type Mooring,
+  type InsertMooring,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -49,6 +52,12 @@ export interface IStorage {
   createAvailability(data: InsertBoatAvailability): Promise<BoatAvailability>;
   updateAvailability(id: number, data: Partial<InsertBoatAvailability>): Promise<BoatAvailability | undefined>;
   deleteAvailability(id: number): Promise<boolean>;
+  
+  // Mooring operations
+  getMooringsByOwner(ownerId: number): Promise<Mooring[]>;
+  createMooring(data: InsertMooring): Promise<Mooring>;
+  updateMooring(id: number, ownerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined>;
+  deleteMooring(id: number, ownerId: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -228,6 +237,32 @@ export class DatabaseStorage implements IStorage {
 
   async deleteAvailability(id: number): Promise<boolean> {
     const result = await db.delete(boatAvailability).where(eq(boatAvailability.id, id));
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  // Mooring operations
+  async getMooringsByOwner(ownerId: number): Promise<Mooring[]> {
+    return await db.select().from(moorings).where(eq(moorings.ownerId, ownerId));
+  }
+
+  async createMooring(data: InsertMooring): Promise<Mooring> {
+    const [mooring] = await db.insert(moorings).values(data).returning();
+    return mooring;
+  }
+
+  async updateMooring(id: number, ownerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined> {
+    const [mooring] = await db
+      .update(moorings)
+      .set(data)
+      .where(and(eq(moorings.id, id), eq(moorings.ownerId, ownerId)))
+      .returning();
+    return mooring;
+  }
+
+  async deleteMooring(id: number, ownerId: number): Promise<boolean> {
+    const result = await db
+      .delete(moorings)
+      .where(and(eq(moorings.id, id), eq(moorings.ownerId, ownerId)));
     return (result.rowCount ?? 0) > 0;
   }
 }

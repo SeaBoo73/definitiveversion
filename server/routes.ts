@@ -962,6 +962,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ========== MOORINGS API ==========
+  
+  // Get owner's moorings
+  app.get('/api/owner/moorings', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const moorings = await storage.getMooringsByOwner(req.session.user.id);
+      res.json({ moorings });
+    } catch (error) {
+      console.error("Get owner moorings error:", error);
+      res.status(500).json({ error: "Errore nel recupero degli ormeggi" });
+    }
+  });
+
+  // Create mooring
+  app.post('/api/owner/moorings', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const mooringData = {
+        ...req.body,
+        ownerId: req.session.user.id,
+      };
+      const mooring = await storage.createMooring(mooringData);
+      res.json(mooring);
+    } catch (error: any) {
+      console.error("Create mooring error:", error);
+      res.status(400).json({ error: error.message || "Errore nella creazione dell'ormeggio" });
+    }
+  });
+
+  // Update mooring
+  app.patch('/api/owner/moorings/:id', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const mooringId = parseInt(req.params.id);
+      const mooring = await storage.updateMooring(mooringId, req.session.user.id, req.body);
+      if (!mooring) {
+        return res.status(404).json({ error: "Ormeggio non trovato" });
+      }
+      res.json(mooring);
+    } catch (error: any) {
+      console.error("Update mooring error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'aggiornamento dell'ormeggio" });
+    }
+  });
+
+  // Delete mooring
+  app.delete('/api/owner/moorings/:id', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const mooringId = parseInt(req.params.id);
+      await storage.deleteMooring(mooringId, req.session.user.id);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Delete mooring error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'eliminazione dell'ormeggio" });
+    }
+  });
+
   // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

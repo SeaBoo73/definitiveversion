@@ -27,7 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertBoatSchema, Boat, Booking } from "@shared/schema";
+import { insertBoatSchema, insertMooringDbSchema, Boat, Booking, Mooring } from "@shared/schema";
 import { validateManufacturer, findSimilarManufacturers, getManufacturersByCategory } from "@shared/boat-manufacturers";
 import { getAllPorts } from "@shared/ports-data";
 import { apiRequest } from "@/lib/queryClient";
@@ -202,6 +202,64 @@ export default function OwnerDashboard() {
   });
   const bookings = bookingsData?.bookings || [];
 
+  // Fetch owner's moorings
+  const { data: mooringsData, isLoading: mooringsLoading } = useQuery<{ moorings: Mooring[] }>({
+    queryKey: ["/api/owner/moorings"],
+    enabled: !!user,
+    retry: false,
+  });
+  const moorings = mooringsData?.moorings || [];
+
+  // Mooring form state
+  const [mooringFormData, setMooringFormData] = useState({
+    name: "",
+    port: "",
+    location: "",
+    maxLength: "",
+    maxBeam: "",
+    depth: "",
+    pricePerDay: "",
+    pricePerWeek: "",
+    pricePerMonth: "",
+    pricePerSeason: "",
+    services: {
+      security: false,
+      water: false,
+      electricity: false,
+      fuel: false,
+      wifi: false,
+      parking: false,
+      shower: false,
+      restaurant: false,
+    },
+  });
+
+  const resetMooringForm = () => {
+    setMooringFormData({
+      name: "",
+      port: "",
+      location: "",
+      maxLength: "",
+      maxBeam: "",
+      depth: "",
+      pricePerDay: "",
+      pricePerWeek: "",
+      pricePerMonth: "",
+      pricePerSeason: "",
+      services: {
+        security: false,
+        water: false,
+        electricity: false,
+        fuel: false,
+        wifi: false,
+        parking: false,
+        shower: false,
+        restaurant: false,
+      },
+    });
+    setMooringPortSearch("");
+  };
+
   const form = useForm<BoatFormData>({
     resolver: zodResolver(boatFormSchema),
     defaultValues: {
@@ -280,6 +338,82 @@ export default function OwnerDashboard() {
       });
     },
   });
+
+  // Mooring mutations
+  const createMooringMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await apiRequest("POST", "/api/owner/moorings", data);
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/moorings"] });
+      setShowAddMooringModal(false);
+      resetMooringForm();
+      toast({
+        title: "Ormeggio aggiunto",
+        description: "Il tuo ormeggio è stato pubblicato con successo",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nella creazione dell'ormeggio",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteMooringMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/owner/moorings/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/moorings"] });
+      toast({
+        title: "Ormeggio eliminato",
+        description: "L'ormeggio è stato rimosso",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'eliminazione dell'ormeggio",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleMooringSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!mooringFormData.name.trim()) {
+      toast({ title: "Errore", description: "Nome ormeggio richiesto", variant: "destructive" });
+      return;
+    }
+    if (!mooringPortSearch.trim()) {
+      toast({ title: "Errore", description: "Porto richiesto", variant: "destructive" });
+      return;
+    }
+    if (!mooringFormData.pricePerDay || parseFloat(mooringFormData.pricePerDay) <= 0) {
+      toast({ title: "Errore", description: "Prezzo giornaliero richiesto", variant: "destructive" });
+      return;
+    }
+
+    const dataToSubmit = {
+      name: mooringFormData.name.trim(),
+      port: mooringPortSearch.trim(),
+      location: mooringFormData.location.trim() || null,
+      maxLength: mooringFormData.maxLength ? parseFloat(mooringFormData.maxLength) : null,
+      maxBeam: mooringFormData.maxBeam ? parseFloat(mooringFormData.maxBeam) : null,
+      depth: mooringFormData.depth ? parseFloat(mooringFormData.depth) : null,
+      pricePerDay: parseFloat(mooringFormData.pricePerDay),
+      pricePerWeek: mooringFormData.pricePerWeek ? parseFloat(mooringFormData.pricePerWeek) : null,
+      pricePerMonth: mooringFormData.pricePerMonth ? parseFloat(mooringFormData.pricePerMonth) : null,
+      services: mooringFormData.services,
+    };
+
+    createMooringMutation.mutate(dataToSubmit);
+  };
 
   const onSubmit = (data: BoatFormData) => {
     console.log("Form validation passed! Submitting data:", data);
@@ -1492,7 +1626,7 @@ export default function OwnerDashboard() {
                     </p>
                   </DialogHeader>
 
-                  <form className="space-y-8">
+                  <form className="space-y-8" onSubmit={handleMooringSubmit}>
                     {/* Informazioni Base */}
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
                       <div className="flex items-center gap-3 mb-6">
@@ -1510,6 +1644,8 @@ export default function OwnerDashboard() {
                             placeholder="es. Ormeggio A12 - Porto di Napoli"
                             required
                             data-testid="input-mooringName"
+                            value={mooringFormData.name}
+                            onChange={(e) => setMooringFormData({...mooringFormData, name: e.target.value})}
                           />
                         </div>
 
@@ -1563,6 +1699,8 @@ export default function OwnerDashboard() {
                             id="mooring-location"
                             placeholder="es. Molo C, Posto 45"
                             data-testid="input-mooringLocation"
+                            value={mooringFormData.location}
+                            onChange={(e) => setMooringFormData({...mooringFormData, location: e.target.value})}
                           />
                         </div>
                       </div>
@@ -1586,6 +1724,8 @@ export default function OwnerDashboard() {
                             placeholder="es. 12"
                             required
                             data-testid="input-mooringMaxLength"
+                            value={mooringFormData.maxLength}
+                            onChange={(e) => setMooringFormData({...mooringFormData, maxLength: e.target.value})}
                           />
                         </div>
 
@@ -1596,6 +1736,8 @@ export default function OwnerDashboard() {
                             type="number"
                             placeholder="es. 4"
                             data-testid="input-mooringMaxBeam"
+                            value={mooringFormData.maxBeam}
+                            onChange={(e) => setMooringFormData({...mooringFormData, maxBeam: e.target.value})}
                           />
                         </div>
 
@@ -1607,6 +1749,8 @@ export default function OwnerDashboard() {
                             step="0.1"
                             placeholder="es. 3.5"
                             data-testid="input-mooringDepth"
+                            value={mooringFormData.depth}
+                            onChange={(e) => setMooringFormData({...mooringFormData, depth: e.target.value})}
                           />
                         </div>
                       </div>
@@ -1630,6 +1774,8 @@ export default function OwnerDashboard() {
                             placeholder="es. 50"
                             required
                             data-testid="input-mooringDailyPrice"
+                            value={mooringFormData.pricePerDay}
+                            onChange={(e) => setMooringFormData({...mooringFormData, pricePerDay: e.target.value})}
                           />
                         </div>
 
@@ -1640,6 +1786,8 @@ export default function OwnerDashboard() {
                             type="number"
                             placeholder="es. 300"
                             data-testid="input-mooringWeeklyPrice"
+                            value={mooringFormData.pricePerWeek}
+                            onChange={(e) => setMooringFormData({...mooringFormData, pricePerWeek: e.target.value})}
                           />
                         </div>
 
@@ -1650,6 +1798,8 @@ export default function OwnerDashboard() {
                             type="number"
                             placeholder="es. 1000"
                             data-testid="input-mooringMonthlyPrice"
+                            value={mooringFormData.pricePerMonth}
+                            onChange={(e) => setMooringFormData({...mooringFormData, pricePerMonth: e.target.value})}
                           />
                         </div>
 
@@ -1660,6 +1810,8 @@ export default function OwnerDashboard() {
                             type="number"
                             placeholder="es. 5000"
                             data-testid="input-mooringSeasonalPrice"
+                            value={mooringFormData.pricePerSeason}
+                            onChange={(e) => setMooringFormData({...mooringFormData, pricePerSeason: e.target.value})}
                           />
                         </div>
                       </div>
@@ -1676,36 +1828,84 @@ export default function OwnerDashboard() {
 
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-security" />
-                          <span className="text-sm">🔒 Sorveglianza</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-security"
+                            checked={mooringFormData.services.security}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, security: e.target.checked}})}
+                          />
+                          <span className="text-sm">Sorveglianza</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-water" />
-                          <span className="text-sm">💧 Acqua</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-water"
+                            checked={mooringFormData.services.water}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, water: e.target.checked}})}
+                          />
+                          <span className="text-sm">Acqua</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-electricity" />
-                          <span className="text-sm">⚡ Elettricità</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-electricity"
+                            checked={mooringFormData.services.electricity}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, electricity: e.target.checked}})}
+                          />
+                          <span className="text-sm">Elettricita</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-fuel" />
-                          <span className="text-sm">⛽ Carburante</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-fuel"
+                            checked={mooringFormData.services.fuel}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, fuel: e.target.checked}})}
+                          />
+                          <span className="text-sm">Carburante</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-wifi" />
-                          <span className="text-sm">📶 WiFi</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-wifi"
+                            checked={mooringFormData.services.wifi}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, wifi: e.target.checked}})}
+                          />
+                          <span className="text-sm">WiFi</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-parking" />
-                          <span className="text-sm">🅿️ Parcheggio</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-parking"
+                            checked={mooringFormData.services.parking}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, parking: e.target.checked}})}
+                          />
+                          <span className="text-sm">Parcheggio</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-shower" />
-                          <span className="text-sm">🚿 Docce</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-shower"
+                            checked={mooringFormData.services.shower}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, shower: e.target.checked}})}
+                          />
+                          <span className="text-sm">Docce</span>
                         </label>
                         <label className="flex items-center space-x-2 cursor-pointer">
-                          <input type="checkbox" className="rounded" data-testid="checkbox-restaurant" />
-                          <span className="text-sm">🍴 Ristorante</span>
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            data-testid="checkbox-restaurant"
+                            checked={mooringFormData.services.restaurant}
+                            onChange={(e) => setMooringFormData({...mooringFormData, services: {...mooringFormData.services, restaurant: e.target.checked}})}
+                          />
+                          <span className="text-sm">Ristorante</span>
                         </label>
                       </div>
                     </div>
@@ -1758,45 +1958,74 @@ export default function OwnerDashboard() {
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Placeholder per ormeggi - da implementare con API dedicata */}
-              {[].map((mooring: any) => (
-                <Card key={mooring.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="font-semibold text-lg text-gray-900">{mooring.name}</h3>
-                        <p className="text-sm text-gray-600">{mooring.location}</p>
+            {mooringsLoading ? (
+              <div className="text-center py-8">
+                <div className="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
+                <p className="mt-2 text-gray-600">Caricamento ormeggi...</p>
+              </div>
+            ) : moorings.length === 0 ? (
+              <p className="text-center text-gray-500 py-8">Nessun ormeggio aggiunto. Clicca "Aggiungi ormeggio" per iniziare.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {moorings.map((mooring) => (
+                  <Card key={mooring.id} className="hover:shadow-lg transition-shadow" data-testid={`card-mooring-${mooring.id}`}>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="font-semibold text-lg text-gray-900">{mooring.name}</h3>
+                          <p className="text-sm text-gray-600">{mooring.port}</p>
+                          {mooring.location && <p className="text-xs text-gray-500">{mooring.location}</p>}
+                        </div>
+                        <Badge className="bg-blue-100 text-blue-800">
+                          <Anchor className="h-3 w-3 mr-1" />
+                          Ormeggio
+                        </Badge>
                       </div>
-                      <Badge className="bg-blue-100 text-blue-800">
-                        <Anchor className="h-3 w-3 mr-1" />
-                        Ormeggio
-                      </Badge>
-                    </div>
 
-                    <div className="space-y-2 text-sm text-gray-600 mb-4">
-                      <div className="flex items-center">
-                        <Ruler className="h-4 w-4 mr-1" />
-                        Max {mooring.length}m
+                      <div className="space-y-2 text-sm text-gray-600 mb-4">
+                        {mooring.maxLength && (
+                          <div className="flex items-center">
+                            <Ruler className="h-4 w-4 mr-1" />
+                            Max {mooring.maxLength}m
+                          </div>
+                        )}
+                        <div className="flex items-center">
+                          <Euro className="h-4 w-4 mr-1" />
+                          {mooring.pricePerDay}/giorno
+                        </div>
                       </div>
-                      <div className="flex items-center">
-                        <Euro className="h-4 w-4 mr-1" />
-                        €{mooring.pricePerDay}/giorno
-                      </div>
-                    </div>
 
-                    <div className="flex space-x-2">
-                      <Button size="sm" variant="outline">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                      <div className="flex space-x-2">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50" data-testid={`button-deleteMooring-${mooring.id}`}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Eliminare questo ormeggio?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Questa azione non puo essere annullata. L'ormeggio "{mooring.name}" verra eliminato permanentemente.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Annulla</AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-red-600 hover:bg-red-700"
+                                onClick={() => deleteMooringMutation.mutate(mooring.id)}
+                              >
+                                Elimina
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="experiences" className="space-y-6">

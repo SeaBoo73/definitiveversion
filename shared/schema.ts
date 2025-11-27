@@ -119,6 +119,25 @@ export const boatAvailability = pgTable("boat_availability", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Moorings table for boat berths/slips
+export const moorings = pgTable("moorings", {
+  id: serial("id").primaryKey(),
+  ownerId: integer("owner_id").references(() => users.id).notNull(),
+  name: text("name").notNull(),
+  port: text("port").notNull(),
+  location: text("location"),
+  maxLength: numeric("max_length"),
+  maxBeam: numeric("max_beam"),
+  depth: numeric("depth"),
+  pricePerDay: numeric("price_per_day").notNull(),
+  pricePerWeek: numeric("price_per_week"),
+  pricePerMonth: numeric("price_per_month"),
+  services: jsonb("services"),
+  description: text("description"),
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Zod schemas for validation
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email non valido"),
@@ -174,6 +193,27 @@ export const insertBoatAvailabilitySchema = createInsertSchema(boatAvailability,
   priceOverride: z.coerce.number().optional(),
 }).omit({ id: true, createdAt: true });
 
+export const insertMooringDbSchema = createInsertSchema(moorings, {
+  name: z.string().min(1, "Nome richiesto"),
+  port: z.string().min(1, "Porto richiesto"),
+  pricePerDay: z.coerce.number().min(1, "Prezzo giornaliero richiesto"),
+  maxLength: z.coerce.number().optional(),
+  maxBeam: z.coerce.number().optional(),
+  depth: z.coerce.number().optional(),
+  pricePerWeek: z.coerce.number().optional(),
+  pricePerMonth: z.coerce.number().optional(),
+  services: z.object({
+    water: z.boolean().optional(),
+    electricity: z.boolean().optional(),
+    security: z.boolean().optional(),
+    fuel: z.boolean().optional(),
+    wifi: z.boolean().optional(),
+    parking: z.boolean().optional(),
+    shower: z.boolean().optional(),
+    restaurant: z.boolean().optional(),
+  }).optional(),
+}).omit({ id: true, createdAt: true });
+
 // Legacy exports for compatibility
 export const insertMooringSchema = insertBoatSchema;
 export const insertMooringBookingSchema = insertBookingSchema;
@@ -182,7 +222,9 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertBoat = z.infer<typeof insertBoatSchema>;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type InsertBoatAvailability = z.infer<typeof insertBoatAvailabilitySchema>;
+export type InsertMooring = z.infer<typeof insertMooringDbSchema>;
 export type User = typeof users.$inferSelect;
 export type Boat = typeof boats.$inferSelect;
 export type Booking = typeof bookings.$inferSelect;
 export type BoatAvailability = typeof boatAvailability.$inferSelect;
+export type Mooring = typeof moorings.$inferSelect;

@@ -665,9 +665,11 @@ export default function OrmeggioPage() {
                         Prenota Ormeggio
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="w-full">
-                      <Calendar className="h-4 w-4 mr-1" />
-                      Verifica Disponibilità
+                    <Button variant="outline" size="sm" className="w-full" asChild>
+                      <Link href={`/ormeggio/${spot.id}#disponibilita`}>
+                        <Calendar className="h-4 w-4 mr-1" />
+                        Verifica Disponibilità
+                      </Link>
                     </Button>
                   </div>
 

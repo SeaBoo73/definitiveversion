@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useAuth } from '@/hooks/use-auth';
+import { useMooringFavorites } from '@/hooks/use-favorites';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Anchor, 
   MapPin, 
@@ -299,6 +301,8 @@ const portsWithRegion = [
 
 export default function OrmeggioPage() {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const { favorites, toggleFavorite, isFavorite } = useMooringFavorites();
   const [searchLocation, setSearchLocation] = useState("");
   const [maxLength, setMaxLength] = useState("all");
   const [priceRange, setPriceRange] = useState("all");
@@ -310,6 +314,45 @@ export default function OrmeggioPage() {
   const suggestionsRef = useRef<HTMLDivElement>(null);
   
   const isOwner = user?.role === 'owner';
+
+  const handleToggleFavorite = (spotId: string, spotTitle: string) => {
+    const wasAdded = toggleFavorite(spotId, spotTitle);
+    toast({
+      title: wasAdded ? "Aggiunto ai preferiti" : "Rimosso dai preferiti",
+      description: wasAdded 
+        ? `${spotTitle} è stato salvato nei tuoi preferiti` 
+        : `${spotTitle} è stato rimosso dai preferiti`,
+    });
+  };
+
+  const handleShare = async (spot: MooringSpot) => {
+    const shareUrl = `${window.location.origin}/ormeggio/${spot.id}`;
+    const shareData = {
+      title: spot.title,
+      text: `Scopri questo ormeggio su SeaBoo: ${spot.title} - €${spot.pricing.daily}/giorno`,
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          await navigator.clipboard.writeText(shareUrl);
+          toast({
+            title: "Link copiato!",
+            description: "Il link è stato copiato negli appunti",
+          });
+        }
+      }
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      toast({
+        title: "Link copiato!",
+        description: "Il link è stato copiato negli appunti",
+      });
+    }
+  };
 
   // Gestione autofill intelligente
   useEffect(() => {
@@ -587,10 +630,30 @@ export default function OrmeggioPage() {
                     </Badge>
                   )}
                   <div className="absolute top-3 right-3 flex gap-2">
-                    <Button size="sm" variant="ghost" className="bg-white/80 hover:bg-white p-2">
-                      <Heart className="h-4 w-4" />
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      className="bg-white/80 hover:bg-white p-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleToggleFavorite(spot.id, spot.title);
+                      }}
+                      data-testid={`button-favorite-${spot.id}`}
+                    >
+                      <Heart className={`h-4 w-4 ${isFavorite(spot.id) ? 'fill-red-500 text-red-500' : ''}`} />
                     </Button>
-                    <Button size="sm" variant="ghost" className="bg-white/80 hover:bg-white p-2">
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      className="bg-white/80 hover:bg-white p-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleShare(spot);
+                      }}
+                      data-testid={`button-share-${spot.id}`}
+                    >
                       <Share2 className="h-4 w-4" />
                     </Button>
                   </div>

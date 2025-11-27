@@ -59,16 +59,16 @@ localPort = 33815
 externalPort = 4200
 
 [[ports]]
+localPort = 37437
+externalPort = 5173
+
+[[ports]]
 localPort = 39909
 externalPort = 5000
 
 [[ports]]
 localPort = 40855
 externalPort = 3003
-
-[[ports]]
-localPort = 41821
-externalPort = 5173
 
 [agent]
 integrations = ["javascript_stripe:1.0.0", "github:1.0.0"]

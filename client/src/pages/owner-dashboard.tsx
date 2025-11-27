@@ -221,7 +221,6 @@ export default function OwnerDashboard() {
     pricePerDay: "",
     pricePerWeek: "",
     pricePerMonth: "",
-    pricePerSeason: "",
     services: {
       security: false,
       water: false,
@@ -245,7 +244,6 @@ export default function OwnerDashboard() {
       pricePerDay: "",
       pricePerWeek: "",
       pricePerMonth: "",
-      pricePerSeason: "",
       services: {
         security: false,
         water: false,
@@ -1803,17 +1801,6 @@ export default function OwnerDashboard() {
                           />
                         </div>
 
-                        <div className="space-y-2">
-                          <Label htmlFor="mooring-seasonalPrice">Tariffa stagionale (€)</Label>
-                          <Input
-                            id="mooring-seasonalPrice"
-                            type="number"
-                            placeholder="es. 5000"
-                            data-testid="input-mooringSeasonalPrice"
-                            value={mooringFormData.pricePerSeason}
-                            onChange={(e) => setMooringFormData({...mooringFormData, pricePerSeason: e.target.value})}
-                          />
-                        </div>
                       </div>
                     </div>
 

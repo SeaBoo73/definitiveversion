@@ -3,16 +3,28 @@ import { NotificationsCenter } from "@/components/notifications-center";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ServicesNavButton } from "./services-nav-button";
+import { useMooringFavorites } from "@/hooks/use-favorites";
 import { Link, useLocation } from "wouter";
-import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship } from "lucide-react";
+import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship, Heart, MapPin, Trash2 } from "lucide-react";
 import { useState } from "react";
 import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1759682721865.jpeg";
+
+const MOORING_NAMES: Record<string, { title: string; port: string; price: number }> = {
+  'mooring-1': { title: 'Porto di Civitavecchia - Pontile Premium', port: 'Civitavecchia', price: 700 },
+  'mooring-2': { title: 'Marina di Gaeta - Boa Campo Boe', port: 'Gaeta', price: 150 },
+  'mooring-3': { title: 'Porto di Anzio - Pontile Standard', port: 'Anzio', price: 450 },
+  'mooring-4': { title: 'Terracina - Boa Economica', port: 'Terracina', price: 120 },
+  'mooring-5': { title: 'Formia - Pontile Medio', port: 'Formia', price: 350 },
+  'mooring-6': { title: 'Nettuno - Boa Premium', port: 'Nettuno', price: 200 },
+};
 
 export function Header() {
   const { user, logoutMutation } = useAuth();
   const [location, setLocation] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { favorites, toggleFavorite } = useMooringFavorites();
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -116,6 +128,85 @@ export function Header() {
 
           {/* Right Side - Auth & Notifications */}
           <div className="flex items-center space-x-3">
+            {/* Favorites Popover */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="ghost" size="sm" className="relative" data-testid="button-favorites">
+                  <Heart className={`h-5 w-5 ${favorites.length > 0 ? 'text-red-500 fill-red-500' : 'text-gray-500'}`} />
+                  {favorites.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {favorites.length}
+                    </span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-0" align="end">
+                <div className="p-4 border-b">
+                  <h3 className="font-semibold text-gray-900">I tuoi preferiti</h3>
+                  <p className="text-sm text-gray-500">{favorites.length} ormeggi salvati</p>
+                </div>
+                <div className="max-h-80 overflow-y-auto">
+                  {favorites.length === 0 ? (
+                    <div className="p-6 text-center text-gray-500">
+                      <Heart className="h-10 w-10 mx-auto mb-2 text-gray-300" />
+                      <p className="text-sm">Nessun ormeggio salvato</p>
+                      <p className="text-xs mt-1">Clicca il cuore su un ormeggio per salvarlo</p>
+                    </div>
+                  ) : (
+                    favorites.map((fav) => {
+                      const mooringInfo = MOORING_NAMES[fav.id] || { 
+                        title: fav.title || 'Ormeggio', 
+                        port: 'Porto', 
+                        price: 0 
+                      };
+                      return (
+                        <div key={fav.id} className="flex items-center gap-3 p-3 hover:bg-gray-50 border-b last:border-0">
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Anchor className="h-6 w-6 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <Link 
+                              href={`/ormeggio/${fav.id}`} 
+                              className="font-medium text-gray-900 hover:text-blue-600 text-sm line-clamp-1"
+                            >
+                              {mooringInfo.title}
+                            </Link>
+                            <div className="flex items-center text-xs text-gray-500 mt-0.5">
+                              <MapPin className="h-3 w-3 mr-1" />
+                              {mooringInfo.port}
+                            </div>
+                            {mooringInfo.price > 0 && (
+                              <div className="text-xs font-medium text-blue-600 mt-0.5">
+                                €{mooringInfo.price}/notte
+                              </div>
+                            )}
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-gray-400 hover:text-red-500 p-1"
+                            onClick={() => toggleFavorite(fav.id)}
+                            data-testid={`button-remove-favorite-${fav.id}`}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+                {favorites.length > 0 && (
+                  <div className="p-3 border-t bg-gray-50">
+                    <Link href="/ormeggio">
+                      <Button variant="outline" size="sm" className="w-full">
+                        Cerca altri ormeggi
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </PopoverContent>
+            </Popover>
+
             {user && <NotificationsCenter />}
             
             {user ? (

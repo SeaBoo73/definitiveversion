@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { PortSelector } from '@/components/port-selector';
+import { useToast } from '@/hooks/use-toast';
+import { useMooringFavorites } from '@/hooks/use-favorites';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { 
@@ -86,6 +88,62 @@ export default function OrmeggioBookingPage() {
   const [guests, setGuests] = useState<string>('1');
   const [sortBy, setSortBy] = useState<string>('price');
   const [priceRange, setPriceRange] = useState<string>('all');
+  const { toast } = useToast();
+  const { toggleFavorite, isFavorite } = useMooringFavorites();
+
+  // Funzione per condividere l'ormeggio
+  const handleShare = async (spot: MooringSpot) => {
+    const shareUrl = `${window.location.origin}/ormeggio/${spot.id}`;
+    const shareData = {
+      title: spot.title,
+      text: `Scopri questo ormeggio su SeaBoo: ${spot.title} - €${spot.pricing.daily}/notte`,
+      url: shareUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        toast({
+          title: "Condiviso!",
+          description: "Link condiviso con successo",
+        });
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        toast({
+          title: "Link copiato!",
+          description: "Il link è stato copiato negli appunti",
+        });
+      }
+    } catch (error) {
+      if ((error as Error).name !== 'AbortError') {
+        try {
+          await navigator.clipboard.writeText(shareUrl);
+          toast({
+            title: "Link copiato!",
+            description: "Il link è stato copiato negli appunti",
+          });
+        } catch {
+          toast({
+            title: "Errore",
+            description: "Impossibile condividere o copiare il link",
+            variant: "destructive",
+          });
+        }
+      }
+    }
+  };
+
+  // Funzione per gestire i preferiti
+  const handleToggleFavorite = (spotId: string, spotTitle: string) => {
+    const wasFavorite = isFavorite(spotId);
+    toggleFavorite(spotId);
+    toast({
+      title: wasFavorite ? "Rimosso dai preferiti" : "Aggiunto ai preferiti",
+      description: wasFavorite 
+        ? `${spotTitle} è stato rimosso dai tuoi preferiti`
+        : `${spotTitle} è stato aggiunto ai tuoi preferiti`,
+    });
+  };
 
   // Mock data per ormeggi stile Booking.com con opzioni noleggiatori
   const mooringSpots: MooringSpot[] = [
@@ -452,10 +510,22 @@ export default function OrmeggioBookingPage() {
                       </Badge>
                     </div>
                     <div className="absolute top-4 right-4 flex gap-2">
-                      <Button size="sm" variant="ghost" className="bg-white/80 hover:bg-white">
-                        <Heart className="h-4 w-4" />
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        className="bg-white/80 hover:bg-white"
+                        onClick={() => handleToggleFavorite(spot.id, spot.title)}
+                        data-testid="button-favorite"
+                      >
+                        <Heart className={`h-4 w-4 ${isFavorite(spot.id) ? 'fill-red-500 text-red-500' : ''}`} />
                       </Button>
-                      <Button size="sm" variant="ghost" className="bg-white/80 hover:bg-white">
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        className="bg-white/80 hover:bg-white"
+                        onClick={() => handleShare(spot)}
+                        data-testid="button-share"
+                      >
                         <Share2 className="h-4 w-4" />
                       </Button>
                     </div>

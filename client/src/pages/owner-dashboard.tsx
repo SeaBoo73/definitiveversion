@@ -215,7 +215,7 @@ export default function OwnerDashboard() {
     name: "",
     port: "",
     location: "",
-    type: "ormeggio",
+    type: "pontile",
     maxLength: "",
     maxBeam: "",
     depth: "",
@@ -239,7 +239,7 @@ export default function OwnerDashboard() {
       name: "",
       port: "",
       location: "",
-      type: "ormeggio",
+      type: "pontile",
       maxLength: "",
       maxBeam: "",
       depth: "",
@@ -1702,11 +1702,30 @@ export default function OwnerDashboard() {
                           )}
                         </div>
 
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="mooring-location">Posizione esatta</Label>
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-type">Tipo ormeggio *</Label>
+                          <Select
+                            value={mooringFormData.type}
+                            onValueChange={(value) => setMooringFormData({...mooringFormData, type: value})}
+                          >
+                            <SelectTrigger data-testid="select-mooringType">
+                              <SelectValue placeholder="Seleziona tipo" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="pontile">Pontile</SelectItem>
+                              <SelectItem value="boa">Boa</SelectItem>
+                              <SelectItem value="ancora">Ancora</SelectItem>
+                              <SelectItem value="gavitello">Gavitello</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="mooring-location">Posizione esatta *</Label>
                           <Input
                             id="mooring-location"
                             placeholder="es. Molo C, Posto 45"
+                            required
                             data-testid="input-mooringLocation"
                             value={mooringFormData.location}
                             onChange={(e) => setMooringFormData({...mooringFormData, location: e.target.value})}

@@ -215,6 +215,7 @@ export default function OwnerDashboard() {
     name: "",
     port: "",
     location: "",
+    type: "ormeggio",
     maxLength: "",
     maxBeam: "",
     depth: "",
@@ -238,6 +239,7 @@ export default function OwnerDashboard() {
       name: "",
       port: "",
       location: "",
+      type: "ormeggio",
       maxLength: "",
       maxBeam: "",
       depth: "",
@@ -392,6 +394,14 @@ export default function OwnerDashboard() {
       toast({ title: "Errore", description: "Porto richiesto", variant: "destructive" });
       return;
     }
+    if (!mooringFormData.location.trim()) {
+      toast({ title: "Errore", description: "Posizione richiesta", variant: "destructive" });
+      return;
+    }
+    if (!mooringFormData.maxLength || parseFloat(mooringFormData.maxLength) <= 0) {
+      toast({ title: "Errore", description: "Lunghezza massima richiesta", variant: "destructive" });
+      return;
+    }
     if (!mooringFormData.pricePerDay || parseFloat(mooringFormData.pricePerDay) <= 0) {
       toast({ title: "Errore", description: "Prezzo giornaliero richiesto", variant: "destructive" });
       return;
@@ -400,8 +410,9 @@ export default function OwnerDashboard() {
     const dataToSubmit = {
       name: mooringFormData.name.trim(),
       port: mooringPortSearch.trim(),
-      location: mooringFormData.location.trim() || null,
-      maxLength: mooringFormData.maxLength ? parseFloat(mooringFormData.maxLength) : null,
+      location: mooringFormData.location.trim(),
+      type: mooringFormData.type || "ormeggio",
+      maxLength: parseFloat(mooringFormData.maxLength),
       maxBeam: mooringFormData.maxBeam ? parseFloat(mooringFormData.maxBeam) : null,
       depth: mooringFormData.depth ? parseFloat(mooringFormData.depth) : null,
       pricePerDay: parseFloat(mooringFormData.pricePerDay),

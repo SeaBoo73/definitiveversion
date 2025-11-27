@@ -1017,6 +1017,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Mooring availability endpoints
+  app.get('/api/owner/moorings/:id/availability', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const mooringId = parseInt(req.params.id);
+      const availability = await storage.getMooringAvailability(mooringId);
+      res.json({ availability });
+    } catch (error: any) {
+      console.error("Get mooring availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nel recupero disponibilità" });
+    }
+  });
+
+  app.post('/api/owner/moorings/:id/availability', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const mooringId = parseInt(req.params.id);
+      const availabilityData = {
+        ...req.body,
+        mooringId,
+      };
+      const availability = await storage.createMooringAvailability(availabilityData);
+      res.json(availability);
+    } catch (error: any) {
+      console.error("Create mooring availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nella creazione disponibilità" });
+    }
+  });
+
+  app.patch('/api/owner/moorings/:id/availability/:availId', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const availId = parseInt(req.params.availId);
+      const availability = await storage.updateMooringAvailability(availId, req.body);
+      if (!availability) {
+        return res.status(404).json({ error: "Disponibilità non trovata" });
+      }
+      res.json(availability);
+    } catch (error: any) {
+      console.error("Update mooring availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'aggiornamento disponibilità" });
+    }
+  });
+
+  app.delete('/api/owner/moorings/:id/availability/:availId', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const availId = parseInt(req.params.availId);
+      await storage.deleteMooringAvailability(availId);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Delete mooring availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'eliminazione disponibilità" });
+    }
+  });
+
   // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

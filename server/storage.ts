@@ -4,6 +4,7 @@ import {
   bookings,
   boatAvailability,
   moorings,
+  mooringAvailability,
   type User,
   type InsertUser,
   type Boat,
@@ -14,6 +15,8 @@ import {
   type InsertBoatAvailability,
   type Mooring,
   type InsertMooring,
+  type MooringAvailability,
+  type InsertMooringAvailability,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -58,6 +61,12 @@ export interface IStorage {
   createMooring(data: InsertMooring): Promise<Mooring>;
   updateMooring(id: number, managerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined>;
   deleteMooring(id: number, managerId: number): Promise<boolean>;
+  
+  // Mooring availability operations
+  getMooringAvailability(mooringId: number): Promise<MooringAvailability[]>;
+  createMooringAvailability(data: InsertMooringAvailability): Promise<MooringAvailability>;
+  updateMooringAvailability(id: number, data: Partial<InsertMooringAvailability>): Promise<MooringAvailability | undefined>;
+  deleteMooringAvailability(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -263,6 +272,36 @@ export class DatabaseStorage implements IStorage {
     const result = await db
       .delete(moorings)
       .where(and(eq(moorings.id, id), eq(moorings.managerId, managerId)));
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  // Mooring availability operations
+  async getMooringAvailability(mooringId: number): Promise<MooringAvailability[]> {
+    return await db
+      .select()
+      .from(mooringAvailability)
+      .where(eq(mooringAvailability.mooringId, mooringId));
+  }
+
+  async createMooringAvailability(data: InsertMooringAvailability): Promise<MooringAvailability> {
+    const [availability] = await db
+      .insert(mooringAvailability)
+      .values(data)
+      .returning();
+    return availability;
+  }
+
+  async updateMooringAvailability(id: number, data: Partial<InsertMooringAvailability>): Promise<MooringAvailability | undefined> {
+    const [availability] = await db
+      .update(mooringAvailability)
+      .set(data)
+      .where(eq(mooringAvailability.id, id))
+      .returning();
+    return availability;
+  }
+
+  async deleteMooringAvailability(id: number): Promise<boolean> {
+    const result = await db.delete(mooringAvailability).where(eq(mooringAvailability.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 }

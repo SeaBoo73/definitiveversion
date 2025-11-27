@@ -148,6 +148,17 @@ export const moorings = pgTable("moorings", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Mooring availability table for managing rental periods
+export const mooringAvailability = pgTable("mooring_availability", {
+  id: serial("id").primaryKey(),
+  mooringId: integer("mooring_id").references(() => moorings.id, { onDelete: 'cascade' }).notNull(),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date").notNull(),
+  status: varchar("status", { length: 20 }).default("available"),
+  priceOverride: numeric("price_override"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Zod schemas for validation
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email non valido"),
@@ -203,6 +214,14 @@ export const insertBoatAvailabilitySchema = createInsertSchema(boatAvailability,
   priceOverride: z.coerce.number().optional(),
 }).omit({ id: true, createdAt: true });
 
+export const insertMooringAvailabilitySchema = createInsertSchema(mooringAvailability, {
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  mooringId: z.number(),
+  status: z.enum(["available", "blocked", "booked"]).default("available"),
+  priceOverride: z.coerce.number().optional(),
+}).omit({ id: true, createdAt: true });
+
 export const insertMooringDbSchema = createInsertSchema(moorings, {
   name: z.string().min(1, "Nome richiesto"),
   port: z.string().min(1, "Porto richiesto"),
@@ -232,9 +251,11 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertBoat = z.infer<typeof insertBoatSchema>;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type InsertBoatAvailability = z.infer<typeof insertBoatAvailabilitySchema>;
+export type InsertMooringAvailability = z.infer<typeof insertMooringAvailabilitySchema>;
 export type InsertMooring = z.infer<typeof insertMooringDbSchema>;
 export type User = typeof users.$inferSelect;
 export type Boat = typeof boats.$inferSelect;
 export type Booking = typeof bookings.$inferSelect;
 export type BoatAvailability = typeof boatAvailability.$inferSelect;
+export type MooringAvailability = typeof mooringAvailability.$inferSelect;
 export type Mooring = typeof moorings.$inferSelect;

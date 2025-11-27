@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertBoatSchema, insertMooringDbSchema, Boat, Booking, Mooring } from "@shared/schema";
@@ -104,6 +105,10 @@ export default function OwnerDashboard() {
   const [location, navigate] = useLocation();
   const [showAddBoatModal, setShowAddBoatModal] = useState(false);
   const [showAddMooringModal, setShowAddMooringModal] = useState(false);
+  const [editingMooring, setEditingMooring] = useState<Mooring | null>(null);
+  const [showMooringCalendarModal, setShowMooringCalendarModal] = useState(false);
+  const [selectedMooringForCalendar, setSelectedMooringForCalendar] = useState<Mooring | null>(null);
+  const [mooringCalendarDates, setMooringCalendarDates] = useState<Date[]>([]);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
   // Mooring port autofill state
@@ -363,6 +368,30 @@ export default function OwnerDashboard() {
     },
   });
 
+  const updateMooringMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: any }) => {
+      const res = await apiRequest("PATCH", `/api/owner/moorings/${id}`, data);
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/moorings"] });
+      setShowAddMooringModal(false);
+      setEditingMooring(null);
+      resetMooringForm();
+      toast({
+        title: "Ormeggio aggiornato",
+        description: "Le modifiche sono state salvate con successo",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'aggiornamento dell'ormeggio",
+        variant: "destructive",
+      });
+    },
+  });
+
   const deleteMooringMutation = useMutation({
     mutationFn: async (id: number) => {
       await apiRequest("DELETE", `/api/owner/moorings/${id}`);
@@ -382,6 +411,34 @@ export default function OwnerDashboard() {
       });
     },
   });
+
+  const openEditMooringModal = (mooring: Mooring) => {
+    setEditingMooring(mooring);
+    setMooringFormData({
+      name: mooring.name,
+      port: mooring.port,
+      location: mooring.location || "",
+      type: mooring.type || "pontile",
+      maxLength: mooring.maxLength?.toString() || "",
+      maxBeam: mooring.maxBeam?.toString() || "",
+      depth: mooring.depth?.toString() || "",
+      pricePerDay: mooring.pricePerDay?.toString() || "",
+      pricePerWeek: mooring.pricePerWeek?.toString() || "",
+      pricePerMonth: mooring.pricePerMonth?.toString() || "",
+      services: (mooring.services as any) || {
+        security: false,
+        water: false,
+        electricity: false,
+        fuel: false,
+        wifi: false,
+        parking: false,
+        shower: false,
+        restaurant: false,
+      },
+    });
+    setMooringPortSearch(mooring.port);
+    setShowAddMooringModal(true);
+  };
 
   const handleMooringSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -421,7 +478,11 @@ export default function OwnerDashboard() {
       services: mooringFormData.services,
     };
 
-    createMooringMutation.mutate(dataToSubmit);
+    if (editingMooring) {
+      updateMooringMutation.mutate({ id: editingMooring.id, data: dataToSubmit });
+    } else {
+      createMooringMutation.mutate(dataToSubmit);
+    }
   };
 
   const onSubmit = (data: BoatFormData) => {
@@ -1612,7 +1673,13 @@ export default function OwnerDashboard() {
           <TabsContent value="moorings" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900">I miei ormeggi</h2>
-              <Dialog open={showAddMooringModal} onOpenChange={setShowAddMooringModal}>
+              <Dialog open={showAddMooringModal} onOpenChange={(open) => {
+                setShowAddMooringModal(open);
+                if (!open) {
+                  setEditingMooring(null);
+                  resetMooringForm();
+                }
+              }}>
                 <DialogTrigger asChild>
                   <Button 
                     className="bg-blue-600 hover:bg-blue-700"
@@ -1625,13 +1692,13 @@ export default function OwnerDashboard() {
                 <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto pb-24 md:pb-6">
                   <DialogHeader className="text-center pb-6">
                     <div className="mx-auto w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center mb-4">
-                      <Anchor className="h-8 w-8 text-white" />
+                      {editingMooring ? <Pencil className="h-8 w-8 text-white" /> : <Anchor className="h-8 w-8 text-white" />}
                     </div>
                     <DialogTitle className="text-2xl font-bold text-gray-900">
-                      ⚓ Aggiungi un nuovo ormeggio
+                      {editingMooring ? "Modifica ormeggio" : "Aggiungi un nuovo ormeggio"}
                     </DialogTitle>
                     <p className="text-gray-600 mt-2">
-                      Metti a disposizione il tuo posto barca per altre imbarcazioni
+                      {editingMooring ? "Modifica i dettagli del tuo posto barca" : "Metti a disposizione il tuo posto barca per altre imbarcazioni"}
                     </p>
                   </DialogHeader>
 
@@ -1941,9 +2008,15 @@ export default function OwnerDashboard() {
                         type="submit"
                         className="bg-blue-600 hover:bg-blue-700"
                         data-testid="button-submitMooring"
+                        disabled={createMooringMutation.isPending || updateMooringMutation.isPending}
                       >
-                        <Anchor className="h-4 w-4 mr-2" />
-                        Pubblica ormeggio
+                        {editingMooring ? <Pencil className="h-4 w-4 mr-2" /> : <Anchor className="h-4 w-4 mr-2" />}
+                        {(createMooringMutation.isPending || updateMooringMutation.isPending) 
+                          ? "Salvataggio..." 
+                          : editingMooring 
+                            ? "Salva modifiche" 
+                            : "Pubblica ormeggio"
+                        }
                       </Button>
                     </div>
                   </form>
@@ -2013,6 +2086,29 @@ export default function OwnerDashboard() {
                       </div>
 
                       <div className="flex space-x-2">
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="text-blue-600 hover:bg-blue-50"
+                          onClick={() => openEditMooringModal(mooring)}
+                          data-testid={`button-editMooring-${mooring.id}`}
+                        >
+                          <Pencil className="h-4 w-4 mr-1" />
+                          Modifica
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline" 
+                          className="text-green-600 hover:bg-green-50"
+                          onClick={() => {
+                            setSelectedMooringForCalendar(mooring);
+                            setShowMooringCalendarModal(true);
+                          }}
+                          data-testid={`button-calendarMooring-${mooring.id}`}
+                        >
+                          <CalendarIcon className="h-4 w-4 mr-1" />
+                          Calendario
+                        </Button>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50" data-testid={`button-deleteMooring-${mooring.id}`}>
@@ -2777,6 +2873,75 @@ export default function OwnerDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Modal Calendario Disponibilità Ormeggi */}
+      <Dialog open={showMooringCalendarModal} onOpenChange={(open) => {
+        setShowMooringCalendarModal(open);
+        if (!open) {
+          setSelectedMooringForCalendar(null);
+          setMooringCalendarDates([]);
+        }
+      }}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CalendarIcon className="h-5 w-5 text-green-600" />
+              Disponibilità Ormeggio
+            </DialogTitle>
+            <p className="text-sm text-gray-600">
+              {selectedMooringForCalendar?.name} - {selectedMooringForCalendar?.port}
+            </p>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">
+              Seleziona le date in cui l'ormeggio <strong>non è disponibile</strong> (date bloccate).
+            </p>
+            
+            <div className="flex justify-center">
+              <CalendarPicker
+                mode="multiple"
+                selected={mooringCalendarDates}
+                onSelect={(dates) => setMooringCalendarDates(dates || [])}
+                locale={it}
+                className="rounded-md border"
+              />
+            </div>
+            
+            <div className="flex justify-between items-center text-sm">
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-red-100 border border-red-300 rounded"></div>
+                Date bloccate: {mooringCalendarDates.length}
+              </span>
+            </div>
+            
+            <div className="flex justify-end gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowMooringCalendarModal(false);
+                  setSelectedMooringForCalendar(null);
+                  setMooringCalendarDates([]);
+                }}
+              >
+                Chiudi
+              </Button>
+              <Button
+                className="bg-green-600 hover:bg-green-700"
+                onClick={() => {
+                  toast({
+                    title: "Disponibilità salvata",
+                    description: `${mooringCalendarDates.length} date bloccate per ${selectedMooringForCalendar?.name}`,
+                  });
+                  setShowMooringCalendarModal(false);
+                }}
+              >
+                Salva disponibilità
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>

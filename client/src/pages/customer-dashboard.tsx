@@ -107,7 +107,15 @@ export default function CustomerDashboard() {
   // TODO: Fetch boats for favorites (disabled until favorites table exists)
   const boats: Boat[] = [];
 
-  const getBookingStatusBadge = (status: string) => {
+  const getBookingStatusBadge = (status: string, endDate?: Date | string) => {
+    const now = new Date();
+    const bookingEndDate = endDate ? new Date(endDate) : null;
+    const isPastBooking = bookingEndDate && bookingEndDate < now;
+    
+    if (isPastBooking && (status === "pending" || status === "confirmed")) {
+      return <Badge className="bg-gray-100 text-gray-800"><Clock className="h-3 w-3 mr-1" />Scaduta</Badge>;
+    }
+    
     switch (status) {
       case "confirmed":
         return <Badge className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />Confermata</Badge>;
@@ -270,7 +278,7 @@ export default function CustomerDashboard() {
                         <div className="flex-1">
                           <div className="flex items-center space-x-4 mb-2">
                             <h3 className="text-lg font-semibold">Prenotazione #{booking.id}</h3>
-                            {getBookingStatusBadge(booking.status || 'pending')}
+                            {getBookingStatusBadge(booking.status || 'pending', booking.endDate)}
                           </div>
                           
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">

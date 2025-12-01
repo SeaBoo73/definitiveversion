@@ -79,7 +79,8 @@ import {
   CreditCard,
   Shield,
   Key,
-  AlertTriangle
+  AlertTriangle,
+  Pencil
 } from "lucide-react";
 
 const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({

@@ -1557,6 +1557,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Messaggio richiesto" });
       }
       
+      // Check for phone numbers to prevent private bookings
+      const phoneRegex = /(?:\+?\d{1,4}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?)?\d{3,4}[\s.-]?\d{3,4}|\d{10,}/gi;
+      const cleanedContent = content.replace(/\s/g, '');
+      if (phoneRegex.test(content) || /\d{6,}/.test(cleanedContent)) {
+        return res.status(400).json({ 
+          error: "Non è possibile condividere numeri di telefono nei messaggi. Per garantire la sicurezza delle transazioni, tutte le prenotazioni devono avvenire tramite SeaBoo." 
+        });
+      }
+      
       // Verify user is part of conversation
       const conversation = await storage.getConversation(conversationId);
       if (!conversation) {

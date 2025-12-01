@@ -449,6 +449,7 @@ export default function OwnerDashboard() {
   // Experiences state
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
   const [experienceImages, setExperienceImages] = useState<string[]>([]);
+  const [experienceCoverIndex, setExperienceCoverIndex] = useState(0);
   const [editingExperience, setEditingExperience] = useState<Experience | null>(null);
   const [showExperienceCalendarModal, setShowExperienceCalendarModal] = useState(false);
   const [selectedExperienceForCalendar, setSelectedExperienceForCalendar] = useState<Experience | null>(null);
@@ -485,6 +486,7 @@ export default function OwnerDashboard() {
     setExperienceImages([]);
     setExperienceLocationSearch("");
     setEditingExperience(null);
+    setExperienceCoverIndex(0);
   };
 
   // Experience mutations
@@ -586,6 +588,13 @@ export default function OwnerDashboard() {
       return;
     }
 
+    // Riordina le immagini mettendo la copertina al primo posto
+    const reorderedImages = [...experienceImages];
+    if (experienceCoverIndex > 0 && experienceCoverIndex < reorderedImages.length) {
+      const coverImage = reorderedImages.splice(experienceCoverIndex, 1)[0];
+      reorderedImages.unshift(coverImage);
+    }
+
     const dataToSubmit = {
       name: experienceFormData.name.trim(),
       category: experienceFormData.category,
@@ -596,7 +605,7 @@ export default function OwnerDashboard() {
       location: experienceFormData.location.trim(),
       includes: experienceFormData.includes ? experienceFormData.includes.split('\n').filter(s => s.trim()) : [],
       requirements: experienceFormData.requirements.trim() || null,
-      images: experienceImages,
+      images: reorderedImages,
     };
 
     if (editingExperience) {
@@ -2608,30 +2617,55 @@ export default function OwnerDashboard() {
                       <div className="space-y-4">
                         {/* Anteprima foto caricate */}
                         {experienceImages.length > 0 && (
-                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                            {experienceImages.map((image, index) => (
-                              <div key={index} className="relative aspect-video rounded-lg overflow-hidden group border-2 border-purple-200">
-                                <img
-                                  src={image}
-                                  alt={`Foto ${index + 1}`}
-                                  className="w-full h-full object-cover"
-                                />
-                                <button
-                                  type="button"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setExperienceImages(experienceImages.filter((_, i) => i !== index));
-                                  }}
-                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          <>
+                            <div className="text-sm text-purple-600 mb-2">
+                              Clicca su una foto per impostarla come copertina
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                              {experienceImages.map((image, index) => (
+                                <div 
+                                  key={index} 
+                                  className={`relative aspect-video rounded-lg overflow-hidden group cursor-pointer transition-all ${
+                                    experienceCoverIndex === index 
+                                      ? 'border-4 border-coral ring-2 ring-coral/30 scale-105' 
+                                      : 'border-2 border-purple-200 hover:border-purple-400'
+                                  }`}
+                                  onClick={() => setExperienceCoverIndex(index)}
                                 >
-                                  x
-                                </button>
-                                <div className="absolute bottom-1 left-1 bg-black/50 text-white text-xs px-2 py-0.5 rounded">
-                                  {index + 1}/{experienceImages.length}
+                                  <img
+                                    src={image}
+                                    alt={`Foto ${index + 1}`}
+                                    className="w-full h-full object-cover"
+                                  />
+                                  {experienceCoverIndex === index && (
+                                    <div className="absolute top-1 left-1 bg-coral text-white text-xs px-2 py-1 rounded-full font-semibold flex items-center gap-1">
+                                      <Star className="h-3 w-3" />
+                                      Copertina
+                                    </div>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const newImages = experienceImages.filter((_, i) => i !== index);
+                                      setExperienceImages(newImages);
+                                      if (experienceCoverIndex >= newImages.length) {
+                                        setExperienceCoverIndex(Math.max(0, newImages.length - 1));
+                                      } else if (experienceCoverIndex > index) {
+                                        setExperienceCoverIndex(experienceCoverIndex - 1);
+                                      }
+                                    }}
+                                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                  >
+                                    x
+                                  </button>
+                                  <div className="absolute bottom-1 left-1 bg-black/50 text-white text-xs px-2 py-0.5 rounded">
+                                    {index + 1}/{experienceImages.length}
+                                  </div>
                                 </div>
-                              </div>
-                            ))}
-                          </div>
+                              ))}
+                            </div>
+                          </>
                         )}
                         
                         {/* Indicatore progresso foto */}

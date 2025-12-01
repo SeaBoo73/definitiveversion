@@ -34,7 +34,7 @@ import { getAllPorts } from "@shared/ports-data";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
-import { format } from "date-fns";
+import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isBefore, isAfter, getDay } from "date-fns";
 import { it } from "date-fns/locale";
 import { ChatButton } from "@/components/chat-button";
 import {
@@ -80,7 +80,9 @@ import {
   Shield,
   Key,
   AlertTriangle,
-  Pencil
+  Pencil,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({
@@ -109,10 +111,12 @@ export default function OwnerDashboard() {
   const [editingMooring, setEditingMooring] = useState<Mooring | null>(null);
   const [showMooringCalendarModal, setShowMooringCalendarModal] = useState(false);
   const [selectedMooringForCalendar, setSelectedMooringForCalendar] = useState<Mooring | null>(null);
-  const [mooringCalendarDates, setMooringCalendarDates] = useState<Date[]>([]);
-  const [mooringPriceOverrides, setMooringPriceOverrides] = useState<Record<string, number>>({});
-  const [selectedDateForPrice, setSelectedDateForPrice] = useState<Date | null>(null);
-  const [tempPrice, setTempPrice] = useState("");
+  const [mooringRangeStart, setMooringRangeStart] = useState<Date | null>(null);
+  const [mooringRangeEnd, setMooringRangeEnd] = useState<Date | null>(null);
+  const [mooringHoveredDate, setMooringHoveredDate] = useState<Date | null>(null);
+  const [mooringCalendarMonth, setMooringCalendarMonth] = useState(new Date());
+  const [mooringPriceOverride, setMooringPriceOverride] = useState("");
+  const [mooringBlockStatus, setMooringBlockStatus] = useState<'blocked' | 'available'>('blocked');
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
   // Mooring port autofill state
@@ -2883,17 +2887,18 @@ export default function OwnerDashboard() {
         setShowMooringCalendarModal(open);
         if (!open) {
           setSelectedMooringForCalendar(null);
-          setMooringCalendarDates([]);
-          setMooringPriceOverrides({});
-          setSelectedDateForPrice(null);
-          setTempPrice("");
+          setMooringRangeStart(null);
+          setMooringRangeEnd(null);
+          setMooringHoveredDate(null);
+          setMooringPriceOverride("");
+          setMooringBlockStatus('blocked');
         }
       }}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5 text-green-600" />
-              Disponibilità Ormeggio
+              Gestione Disponibilità Ormeggio
             </DialogTitle>
             <p className="text-sm text-gray-600">
               {selectedMooringForCalendar?.name} - {selectedMooringForCalendar?.port}
@@ -2901,120 +2906,215 @@ export default function OwnerDashboard() {
           </DialogHeader>
           
           <div className="space-y-4">
-            <p className="text-sm text-gray-600">
-              Clicca sulle date per <strong>bloccarle</strong> (non disponibili). Clicca di nuovo per sbloccare.
-            </p>
-            
-            <div className="flex justify-center">
-              <CalendarPicker
-                mode="multiple"
-                selected={mooringCalendarDates}
-                onSelect={(dates) => setMooringCalendarDates(dates || [])}
-                locale={it}
-                className="rounded-md border"
-                modifiers={{
-                  blocked: mooringCalendarDates,
-                  hasPrice: Object.keys(mooringPriceOverrides).map(d => new Date(d))
-                }}
-                modifiersStyles={{
-                  blocked: { backgroundColor: '#fee2e2', color: '#dc2626', fontWeight: 'bold' },
-                  hasPrice: { border: '2px solid #10b981' }
-                }}
-                onDayClick={(day) => {
-                  setSelectedDateForPrice(day);
-                  const dateKey = format(day, 'yyyy-MM-dd');
-                  setTempPrice(mooringPriceOverrides[dateKey]?.toString() || "");
-                }}
-              />
-            </div>
-            
-            {/* Legenda */}
-            <div className="flex flex-wrap gap-4 text-sm">
-              <span className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-red-100 border border-red-300 rounded"></div>
-                Bloccate: {mooringCalendarDates.length}
-              </span>
-              <span className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-white border-2 border-green-500 rounded"></div>
-                Prezzo modificato: {Object.keys(mooringPriceOverrides).length}
-              </span>
+            {/* Istruzioni */}
+            <div className="bg-blue-50 p-3 rounded-lg text-sm text-blue-800">
+              <strong>Come funziona:</strong> Clicca su una data di inizio, poi su una data di fine per selezionare un intervallo. Le date selezionate verranno evidenziate in blu.
             </div>
 
-            {/* Modifica prezzo per data selezionata */}
-            {selectedDateForPrice && (
-              <div className="p-3 bg-gray-50 rounded-lg border">
-                <p className="text-sm font-medium mb-2">
-                  Prezzo per {format(selectedDateForPrice, 'd MMMM yyyy', { locale: it })}
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="relative flex-1">
-                    <Euro className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-                    <Input
-                      type="number"
-                      placeholder={selectedMooringForCalendar?.pricePerDay?.toString() || "Prezzo base"}
-                      value={tempPrice}
-                      onChange={(e) => setTempPrice(e.target.value)}
-                      className="pl-9"
-                    />
+            {/* Navigazione mese */}
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMooringCalendarMonth(subMonths(mooringCalendarMonth, 1))}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <span className="font-semibold text-lg">
+                {format(mooringCalendarMonth, 'MMMM yyyy', { locale: it })}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setMooringCalendarMonth(addMonths(mooringCalendarMonth, 1))}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Calendario custom con griglia */}
+            <div className="border rounded-lg overflow-hidden">
+              {/* Header giorni settimana */}
+              <div className="grid grid-cols-7 bg-gray-100">
+                {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map((day) => (
+                  <div key={day} className="p-2 text-center text-sm font-medium text-gray-600 border-b">
+                    {day}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Griglia giorni */}
+              <div className="grid grid-cols-7">
+                {(() => {
+                  const monthStart = startOfMonth(mooringCalendarMonth);
+                  const monthEnd = endOfMonth(mooringCalendarMonth);
+                  const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+                  
+                  const startDayOfWeek = getDay(monthStart);
+                  const emptyDays = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+                  
+                  const allCells = [
+                    ...Array(emptyDays).fill(null),
+                    ...days
+                  ];
+                  
+                  return allCells.map((day, idx) => {
+                    if (!day) {
+                      return <div key={`empty-${idx}`} className="min-h-[50px] bg-gray-50 border-b border-r"></div>;
+                    }
+                    
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const isPast = isBefore(day, today);
+                    
+                    const isRangeStart = mooringRangeStart && isSameDay(day, mooringRangeStart);
+                    const isRangeEnd = mooringRangeEnd && isSameDay(day, mooringRangeEnd);
+                    const isInRange = mooringRangeStart && mooringRangeEnd && 
+                      !isBefore(day, mooringRangeStart) && !isAfter(day, mooringRangeEnd);
+                    const isHovered = mooringRangeStart && !mooringRangeEnd && mooringHoveredDate &&
+                      !isBefore(day, mooringRangeStart) && !isAfter(day, mooringHoveredDate);
+                    
+                    let bgClass = "bg-white hover:bg-gray-100";
+                    let textClass = "text-gray-900";
+                    
+                    if (isPast) {
+                      bgClass = "bg-gray-100";
+                      textClass = "text-gray-400";
+                    } else if (isRangeStart || isRangeEnd) {
+                      bgClass = "bg-blue-600";
+                      textClass = "text-white font-bold";
+                    } else if (isInRange) {
+                      bgClass = "bg-blue-500";
+                      textClass = "text-white";
+                    } else if (isHovered) {
+                      bgClass = "bg-blue-200";
+                      textClass = "text-blue-900";
+                    }
+                    
+                    return (
+                      <div
+                        key={day.toISOString()}
+                        className={`min-h-[50px] p-2 border-b border-r cursor-pointer transition-colors ${bgClass} ${isPast ? 'cursor-not-allowed' : ''}`}
+                        onClick={() => {
+                          if (isPast) return;
+                          
+                          if (!mooringRangeStart) {
+                            setMooringRangeStart(day);
+                            setMooringRangeEnd(null);
+                          } else if (!mooringRangeEnd) {
+                            if (isBefore(day, mooringRangeStart)) {
+                              setMooringRangeStart(day);
+                            } else {
+                              setMooringRangeEnd(day);
+                            }
+                          } else {
+                            setMooringRangeStart(day);
+                            setMooringRangeEnd(null);
+                          }
+                        }}
+                        onMouseEnter={() => {
+                          if (!isPast && mooringRangeStart && !mooringRangeEnd && !isBefore(day, mooringRangeStart)) {
+                            setMooringHoveredDate(day);
+                          }
+                        }}
+                        onMouseLeave={() => setMooringHoveredDate(null)}
+                      >
+                        <span className={`text-sm ${textClass}`}>{format(day, 'd')}</span>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            </div>
+
+            {/* Range selezionato */}
+            {mooringRangeStart && (
+              <div className="bg-blue-50 p-4 rounded-lg space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-blue-700 font-medium">Date selezionate:</p>
+                    <p className="text-lg font-bold text-blue-900">
+                      {format(mooringRangeStart, 'd MMM yyyy', { locale: it })}
+                      {mooringRangeEnd && ` → ${format(mooringRangeEnd, 'd MMM yyyy', { locale: it })}`}
+                    </p>
+                    {mooringRangeEnd && (
+                      <p className="text-sm text-blue-600">
+                        {Math.ceil((mooringRangeEnd.getTime() - mooringRangeStart.getTime()) / (1000 * 60 * 60 * 24)) + 1} giorni
+                      </p>
+                    )}
                   </div>
                   <Button
-                    size="sm"
-                    onClick={() => {
-                      if (tempPrice) {
-                        const dateKey = format(selectedDateForPrice, 'yyyy-MM-dd');
-                        setMooringPriceOverrides(prev => ({
-                          ...prev,
-                          [dateKey]: parseFloat(tempPrice)
-                        }));
-                        toast({
-                          title: "Prezzo aggiornato",
-                          description: `€${tempPrice}/giorno per ${format(selectedDateForPrice, 'd MMMM', { locale: it })}`,
-                        });
-                      }
-                      setSelectedDateForPrice(null);
-                      setTempPrice("");
-                    }}
-                    className="bg-green-600 hover:bg-green-700"
-                  >
-                    Salva
-                  </Button>
-                  <Button
-                    size="sm"
                     variant="outline"
+                    size="sm"
                     onClick={() => {
-                      const dateKey = format(selectedDateForPrice, 'yyyy-MM-dd');
-                      setMooringPriceOverrides(prev => {
-                        const newPrices = { ...prev };
-                        delete newPrices[dateKey];
-                        return newPrices;
-                      });
-                      setSelectedDateForPrice(null);
-                      setTempPrice("");
+                      setMooringRangeStart(null);
+                      setMooringRangeEnd(null);
                     }}
                   >
-                    Rimuovi
+                    Annulla
                   </Button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Prezzo base: €{selectedMooringForCalendar?.pricePerDay}/giorno
-                </p>
-              </div>
-            )}
 
-            {/* Lista prezzi modificati */}
-            {Object.keys(mooringPriceOverrides).length > 0 && (
-              <div className="space-y-1">
-                <p className="text-sm font-medium">Prezzi personalizzati:</p>
-                <div className="max-h-24 overflow-y-auto space-y-1">
-                  {Object.entries(mooringPriceOverrides).map(([dateStr, price]) => (
-                    <div key={dateStr} className="flex justify-between items-center text-sm bg-green-50 px-2 py-1 rounded">
-                      <span>{format(new Date(dateStr), 'd MMM yyyy', { locale: it })}</span>
-                      <span className="font-medium text-green-700">€{price}/giorno</span>
+                {mooringRangeEnd && (
+                  <div className="space-y-3 pt-3 border-t border-blue-200">
+                    {/* Tipo di blocco */}
+                    <div className="flex items-center gap-4">
+                      <Label className="text-blue-800">Stato:</Label>
+                      <div className="flex gap-2">
+                        <Button
+                          size="sm"
+                          variant={mooringBlockStatus === 'blocked' ? 'default' : 'outline'}
+                          className={mooringBlockStatus === 'blocked' ? 'bg-red-600 hover:bg-red-700' : ''}
+                          onClick={() => setMooringBlockStatus('blocked')}
+                        >
+                          🔒 Bloccato
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant={mooringBlockStatus === 'available' ? 'default' : 'outline'}
+                          className={mooringBlockStatus === 'available' ? 'bg-green-600 hover:bg-green-700' : ''}
+                          onClick={() => setMooringBlockStatus('available')}
+                        >
+                          ✅ Disponibile
+                        </Button>
+                      </div>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Prezzo personalizzato */}
+                    <div className="flex items-center gap-4">
+                      <Label className="text-blue-800">Prezzo speciale:</Label>
+                      <div className="relative flex-1 max-w-[200px]">
+                        <Euro className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Input
+                          type="number"
+                          placeholder={selectedMooringForCalendar?.pricePerDay?.toString() || "Prezzo base"}
+                          value={mooringPriceOverride}
+                          onChange={(e) => setMooringPriceOverride(e.target.value)}
+                          className="pl-9"
+                        />
+                      </div>
+                      <span className="text-sm text-blue-600">/giorno</span>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
+            
+            {/* Legenda */}
+            <div className="flex flex-wrap gap-4 text-sm border-t pt-4">
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                Selezionato
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-gray-100 rounded"></div>
+                Passato
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-white border rounded"></div>
+                Disponibile
+              </span>
+            </div>
             
             <div className="flex justify-end gap-2 pt-4 border-t">
               <Button
@@ -3022,24 +3122,29 @@ export default function OwnerDashboard() {
                 onClick={() => {
                   setShowMooringCalendarModal(false);
                   setSelectedMooringForCalendar(null);
-                  setMooringCalendarDates([]);
-                  setMooringPriceOverrides({});
-                  setSelectedDateForPrice(null);
+                  setMooringRangeStart(null);
+                  setMooringRangeEnd(null);
                 }}
               >
                 Chiudi
               </Button>
               <Button
                 className="bg-green-600 hover:bg-green-700"
+                disabled={!mooringRangeStart || !mooringRangeEnd}
                 onClick={() => {
-                  toast({
-                    title: "Disponibilità salvata",
-                    description: `${mooringCalendarDates.length} date bloccate, ${Object.keys(mooringPriceOverrides).length} prezzi personalizzati`,
-                  });
-                  setShowMooringCalendarModal(false);
+                  if (mooringRangeStart && mooringRangeEnd) {
+                    const days = Math.ceil((mooringRangeEnd.getTime() - mooringRangeStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                    toast({
+                      title: mooringBlockStatus === 'blocked' ? "Date bloccate" : "Disponibilità salvata",
+                      description: `${days} giorni ${mooringBlockStatus === 'blocked' ? 'bloccati' : 'impostati come disponibili'}${mooringPriceOverride ? ` a €${mooringPriceOverride}/giorno` : ''}`,
+                    });
+                    setMooringRangeStart(null);
+                    setMooringRangeEnd(null);
+                    setMooringPriceOverride("");
+                  }
                 }}
               >
-                Salva tutto
+                {mooringBlockStatus === 'blocked' ? '🔒 Blocca date' : '✅ Salva disponibilità'}
               </Button>
             </div>
           </div>

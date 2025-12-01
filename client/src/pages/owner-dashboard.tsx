@@ -110,6 +110,9 @@ export default function OwnerDashboard() {
   const [showMooringCalendarModal, setShowMooringCalendarModal] = useState(false);
   const [selectedMooringForCalendar, setSelectedMooringForCalendar] = useState<Mooring | null>(null);
   const [mooringCalendarDates, setMooringCalendarDates] = useState<Date[]>([]);
+  const [mooringPriceOverrides, setMooringPriceOverrides] = useState<Record<string, number>>({});
+  const [selectedDateForPrice, setSelectedDateForPrice] = useState<Date | null>(null);
+  const [tempPrice, setTempPrice] = useState("");
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
   // Mooring port autofill state
@@ -2881,9 +2884,12 @@ export default function OwnerDashboard() {
         if (!open) {
           setSelectedMooringForCalendar(null);
           setMooringCalendarDates([]);
+          setMooringPriceOverrides({});
+          setSelectedDateForPrice(null);
+          setTempPrice("");
         }
       }}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5 text-green-600" />
@@ -2896,7 +2902,7 @@ export default function OwnerDashboard() {
           
           <div className="space-y-4">
             <p className="text-sm text-gray-600">
-              Seleziona le date in cui l'ormeggio <strong>non è disponibile</strong> (date bloccate).
+              Clicca sulle date per <strong>bloccarle</strong> (non disponibili). Clicca di nuovo per sbloccare.
             </p>
             
             <div className="flex justify-center">
@@ -2906,23 +2912,119 @@ export default function OwnerDashboard() {
                 onSelect={(dates) => setMooringCalendarDates(dates || [])}
                 locale={it}
                 className="rounded-md border"
+                modifiers={{
+                  blocked: mooringCalendarDates,
+                  hasPrice: Object.keys(mooringPriceOverrides).map(d => new Date(d))
+                }}
+                modifiersStyles={{
+                  blocked: { backgroundColor: '#fee2e2', color: '#dc2626', fontWeight: 'bold' },
+                  hasPrice: { border: '2px solid #10b981' }
+                }}
+                onDayClick={(day) => {
+                  setSelectedDateForPrice(day);
+                  const dateKey = format(day, 'yyyy-MM-dd');
+                  setTempPrice(mooringPriceOverrides[dateKey]?.toString() || "");
+                }}
               />
             </div>
             
-            <div className="flex justify-between items-center text-sm">
+            {/* Legenda */}
+            <div className="flex flex-wrap gap-4 text-sm">
               <span className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-red-100 border border-red-300 rounded"></div>
-                Date bloccate: {mooringCalendarDates.length}
+                Bloccate: {mooringCalendarDates.length}
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-white border-2 border-green-500 rounded"></div>
+                Prezzo modificato: {Object.keys(mooringPriceOverrides).length}
               </span>
             </div>
+
+            {/* Modifica prezzo per data selezionata */}
+            {selectedDateForPrice && (
+              <div className="p-3 bg-gray-50 rounded-lg border">
+                <p className="text-sm font-medium mb-2">
+                  Prezzo per {format(selectedDateForPrice, 'd MMMM yyyy', { locale: it })}
+                </p>
+                <div className="flex items-center gap-2">
+                  <div className="relative flex-1">
+                    <Euro className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      type="number"
+                      placeholder={selectedMooringForCalendar?.pricePerDay?.toString() || "Prezzo base"}
+                      value={tempPrice}
+                      onChange={(e) => setTempPrice(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      if (tempPrice) {
+                        const dateKey = format(selectedDateForPrice, 'yyyy-MM-dd');
+                        setMooringPriceOverrides(prev => ({
+                          ...prev,
+                          [dateKey]: parseFloat(tempPrice)
+                        }));
+                        toast({
+                          title: "Prezzo aggiornato",
+                          description: `€${tempPrice}/giorno per ${format(selectedDateForPrice, 'd MMMM', { locale: it })}`,
+                        });
+                      }
+                      setSelectedDateForPrice(null);
+                      setTempPrice("");
+                    }}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    Salva
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const dateKey = format(selectedDateForPrice, 'yyyy-MM-dd');
+                      setMooringPriceOverrides(prev => {
+                        const newPrices = { ...prev };
+                        delete newPrices[dateKey];
+                        return newPrices;
+                      });
+                      setSelectedDateForPrice(null);
+                      setTempPrice("");
+                    }}
+                  >
+                    Rimuovi
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Prezzo base: €{selectedMooringForCalendar?.pricePerDay}/giorno
+                </p>
+              </div>
+            )}
+
+            {/* Lista prezzi modificati */}
+            {Object.keys(mooringPriceOverrides).length > 0 && (
+              <div className="space-y-1">
+                <p className="text-sm font-medium">Prezzi personalizzati:</p>
+                <div className="max-h-24 overflow-y-auto space-y-1">
+                  {Object.entries(mooringPriceOverrides).map(([dateStr, price]) => (
+                    <div key={dateStr} className="flex justify-between items-center text-sm bg-green-50 px-2 py-1 rounded">
+                      <span>{format(new Date(dateStr), 'd MMM yyyy', { locale: it })}</span>
+                      <span className="font-medium text-green-700">€{price}/giorno</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             
-            <div className="flex justify-end gap-2 pt-4">
+            <div className="flex justify-end gap-2 pt-4 border-t">
               <Button
                 variant="outline"
                 onClick={() => {
                   setShowMooringCalendarModal(false);
                   setSelectedMooringForCalendar(null);
                   setMooringCalendarDates([]);
+                  setMooringPriceOverrides({});
+                  setSelectedDateForPrice(null);
                 }}
               >
                 Chiudi
@@ -2932,12 +3034,12 @@ export default function OwnerDashboard() {
                 onClick={() => {
                   toast({
                     title: "Disponibilità salvata",
-                    description: `${mooringCalendarDates.length} date bloccate per ${selectedMooringForCalendar?.name}`,
+                    description: `${mooringCalendarDates.length} date bloccate, ${Object.keys(mooringPriceOverrides).length} prezzi personalizzati`,
                   });
                   setShowMooringCalendarModal(false);
                 }}
               >
-                Salva disponibilità
+                Salva tutto
               </Button>
             </div>
           </div>

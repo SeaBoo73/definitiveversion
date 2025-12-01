@@ -449,6 +449,9 @@ export default function OwnerDashboard() {
   // Experiences state
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
   const [experienceImages, setExperienceImages] = useState<string[]>([]);
+  const [editingExperience, setEditingExperience] = useState<Experience | null>(null);
+  const [showExperienceCalendarModal, setShowExperienceCalendarModal] = useState(false);
+  const [selectedExperienceForCalendar, setSelectedExperienceForCalendar] = useState<Experience | null>(null);
   const [experienceFormData, setExperienceFormData] = useState({
     name: "",
     category: "tour" as "sunset" | "fishing" | "diving" | "aperitivo" | "tour" | "sport" | "romantic",
@@ -475,6 +478,7 @@ export default function OwnerDashboard() {
     });
     setExperienceImages([]);
     setExperienceLocationSearch("");
+    setEditingExperience(null);
   };
 
   // Experience mutations
@@ -496,6 +500,29 @@ export default function OwnerDashboard() {
       toast({
         title: "Errore",
         description: error.message || "Errore nella creazione dell'esperienza",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const updateExperienceMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: number; data: any }) => {
+      const res = await apiRequest("PATCH", `/api/owner/experiences/${id}`, data);
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/experiences"] });
+      setShowAddExperienceModal(false);
+      resetExperienceForm();
+      toast({
+        title: "Esperienza aggiornata",
+        description: "Le modifiche sono state salvate con successo",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'aggiornamento dell'esperienza",
         variant: "destructive",
       });
     },
@@ -566,7 +593,11 @@ export default function OwnerDashboard() {
       images: experienceImages,
     };
 
-    createExperienceMutation.mutate(dataToSubmit);
+    if (editingExperience) {
+      updateExperienceMutation.mutate({ id: editingExperience.id, data: dataToSubmit });
+    } else {
+      createExperienceMutation.mutate(dataToSubmit);
+    }
   };
 
   const openEditMooringModal = (mooring: Mooring) => {
@@ -2311,13 +2342,13 @@ export default function OwnerDashboard() {
                 <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                   <DialogHeader className="text-center pb-6">
                     <div className="mx-auto w-16 h-16 bg-gradient-to-br from-coral to-orange-500 rounded-full flex items-center justify-center mb-4">
-                      <Sparkles className="h-8 w-8 text-white" />
+                      {editingExperience ? <Pencil className="h-8 w-8 text-white" /> : <Sparkles className="h-8 w-8 text-white" />}
                     </div>
                     <DialogTitle className="text-2xl font-bold text-gray-900">
-                      Crea una nuova esperienza
+                      {editingExperience ? "Modifica esperienza" : "Crea una nuova esperienza"}
                     </DialogTitle>
                     <p className="text-gray-600 mt-2">
-                      Offri ai tuoi ospiti un'esperienza memorabile sul mare
+                      {editingExperience ? "Modifica i dettagli dell'esperienza" : "Offri ai tuoi ospiti un'esperienza memorabile sul mare"}
                     </p>
                   </DialogHeader>
 
@@ -2733,12 +2764,15 @@ export default function OwnerDashboard() {
                     <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                       <Button 
                         type="submit" 
-                        disabled={createExperienceMutation.isPending}
+                        disabled={createExperienceMutation.isPending || updateExperienceMutation.isPending}
                         className="flex-1 bg-gradient-to-r from-coral to-orange-500 hover:from-orange-500 hover:to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
                         data-testid="button-submitExperience"
                       >
-                        <Sparkles className="h-4 w-4" />
-                        {createExperienceMutation.isPending ? "Creazione..." : "Crea esperienza"}
+                        {editingExperience ? <Save className="h-4 w-4" /> : <Sparkles className="h-4 w-4" />}
+                        {editingExperience 
+                          ? (updateExperienceMutation.isPending ? "Salvataggio..." : "Salva modifiche")
+                          : (createExperienceMutation.isPending ? "Creazione..." : "Crea esperienza")
+                        }
                       </Button>
                       
                       <Button 
@@ -2845,6 +2879,43 @@ export default function OwnerDashboard() {
                         </div>
                         
                         <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="text-blue-600 hover:bg-blue-50"
+                            onClick={() => {
+                              setExperienceFormData({
+                                name: experience.name,
+                                category: experience.category as any,
+                                description: experience.description,
+                                duration: String(experience.duration),
+                                maxParticipants: String(experience.maxParticipants),
+                                pricePerPerson: String(experience.pricePerPerson),
+                                location: experience.location,
+                                includes: experience.includes || "",
+                                requirements: experience.requirements || "",
+                              });
+                              setExperienceImages(experience.images || []);
+                              setExperienceLocationSearch(experience.location);
+                              setEditingExperience(experience);
+                              setShowAddExperienceModal(true);
+                            }}
+                            data-testid={`button-editExperience-${experience.id}`}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="text-coral hover:bg-coral/10"
+                            onClick={() => {
+                              setSelectedExperienceForCalendar(experience);
+                              setShowExperienceCalendarModal(true);
+                            }}
+                            data-testid={`button-calendarExperience-${experience.id}`}
+                          >
+                            <CalendarIcon className="h-4 w-4" />
+                          </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50" data-testid={`button-deleteExperience-${experience.id}`}>

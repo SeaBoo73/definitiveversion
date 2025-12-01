@@ -1291,28 +1291,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // External Services API Endpoints
   app.get('/api/external/weather', (req, res) => {
-    const location = req.query.location || 'Roma';
+    const location = (req.query.location as string) || 'Roma';
     
-    // Mock weather data
+    // Location-specific weather data
+    const locationWeatherData: Record<string, any> = {
+      'Roma': {
+        temperature: 22, windSpeed: 12, windDirection: 180, humidity: 65,
+        waves: { height: 0.8, direction: 170, period: 5 },
+        description: 'Soleggiato'
+      },
+      'Roma / Fiumicino': {
+        temperature: 21, windSpeed: 15, windDirection: 200, humidity: 70,
+        waves: { height: 1.0, direction: 190, period: 6 },
+        description: 'Parzialmente nuvoloso'
+      },
+      'Gaeta': {
+        temperature: 23, windSpeed: 8, windDirection: 150, humidity: 60,
+        waves: { height: 0.5, direction: 140, period: 4 },
+        description: 'Sereno'
+      },
+      'Civitavecchia': {
+        temperature: 20, windSpeed: 18, windDirection: 220, humidity: 72,
+        waves: { height: 1.3, direction: 210, period: 7 },
+        description: 'Nuvoloso'
+      },
+      'Anzio': {
+        temperature: 22, windSpeed: 10, windDirection: 170, humidity: 68,
+        waves: { height: 0.6, direction: 160, period: 5 },
+        description: 'Soleggiato'
+      },
+      'Ponza': {
+        temperature: 24, windSpeed: 14, windDirection: 190, humidity: 55,
+        waves: { height: 0.9, direction: 180, period: 6 },
+        description: 'Sereno'
+      },
+      'Terracina': {
+        temperature: 23, windSpeed: 11, windDirection: 160, humidity: 62,
+        waves: { height: 0.7, direction: 150, period: 5 },
+        description: 'Parzialmente nuvoloso'
+      },
+      'Formia': {
+        temperature: 22, windSpeed: 9, windDirection: 140, humidity: 63,
+        waves: { height: 0.4, direction: 130, period: 4 },
+        description: 'Sereno'
+      },
+      'Nettuno': {
+        temperature: 21, windSpeed: 13, windDirection: 175, humidity: 67,
+        waves: { height: 0.8, direction: 165, period: 5 },
+        description: 'Soleggiato'
+      },
+      'San Felice Circeo': {
+        temperature: 23, windSpeed: 12, windDirection: 165, humidity: 58,
+        waves: { height: 0.6, direction: 155, period: 5 },
+        description: 'Sereno'
+      }
+    };
+    
+    // Get location data or default to Roma
+    const locData = locationWeatherData[location] || locationWeatherData['Roma'];
+    
     const weatherData = {
       location: location,
-      temperature: 22,
-      description: 'Soleggiato',
-      windSpeed: 12,
-      windDirection: 180,
-      humidity: 65,
-      pressure: 1013,
+      temperature: locData.temperature,
+      description: locData.description,
+      windSpeed: locData.windSpeed,
+      windDirection: locData.windDirection,
+      humidity: locData.humidity,
+      pressure: 1013 + Math.floor(Math.random() * 10) - 5,
       visibility: 10,
-      waves: {
-        height: 0.8,
-        direction: 170,
-        period: 5
-      },
+      waves: locData.waves,
       forecast: [
-        { time: new Date(Date.now() + 0 * 3600000).toISOString(), temperature: 23, description: 'Soleggiato', windSpeed: 10, waves: 0.7 },
-        { time: new Date(Date.now() + 3 * 3600000).toISOString(), temperature: 24, description: 'Parzialmente nuvoloso', windSpeed: 14, waves: 0.9 },
-        { time: new Date(Date.now() + 6 * 3600000).toISOString(), temperature: 21, description: 'Nuvoloso', windSpeed: 16, waves: 1.1 },
-        { time: new Date(Date.now() + 9 * 3600000).toISOString(), temperature: 19, description: 'Sereno', windSpeed: 12, waves: 0.8 }
+        { time: new Date(Date.now() + 0 * 3600000).toISOString(), temperature: locData.temperature + 1, description: locData.description, windSpeed: locData.windSpeed - 2, waves: locData.waves.height - 0.1 },
+        { time: new Date(Date.now() + 3 * 3600000).toISOString(), temperature: locData.temperature + 2, description: 'Parzialmente nuvoloso', windSpeed: locData.windSpeed + 2, waves: locData.waves.height + 0.1 },
+        { time: new Date(Date.now() + 6 * 3600000).toISOString(), temperature: locData.temperature - 1, description: 'Nuvoloso', windSpeed: locData.windSpeed + 4, waves: locData.waves.height + 0.3 },
+        { time: new Date(Date.now() + 9 * 3600000).toISOString(), temperature: locData.temperature - 3, description: 'Sereno', windSpeed: locData.windSpeed, waves: locData.waves.height }
       ]
     };
     

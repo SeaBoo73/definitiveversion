@@ -880,14 +880,47 @@ export default function OwnerDashboard() {
 
   // Calculate statistics
   const totalEarnings = bookings
-    .filter(b => b.status === "completed")
-    .reduce((sum, b) => sum + (Number(b.totalPrice) - Number(b.commission)), 0);
+    .filter(b => b.status === "completed" || b.status === "confirmed")
+    .reduce((sum, b) => sum + (Number(b.totalPrice) - Number(b.commission || 0)), 0);
 
   const monthlyBookings = bookings.filter(b => {
     const bookingDate = new Date(b.createdAt!);
     const now = new Date();
     return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear();
   }).length;
+
+  // Calculate average rating from boats
+  const boatsWithRating = boats.filter(b => b.rating && Number(b.rating) > 0);
+  const averageRating = boatsWithRating.length > 0 
+    ? boatsWithRating.reduce((sum, b) => sum + Number(b.rating || 0), 0) / boatsWithRating.length 
+    : 0;
+
+  // Calculate confirmation rate (confirmed / total non-cancelled)
+  const totalBookingsForRate = bookings.filter(b => b.status !== "cancelled").length;
+  const confirmedBookings = bookings.filter(b => b.status === "confirmed" || b.status === "completed").length;
+  const confirmationRate = totalBookingsForRate > 0 
+    ? Math.round((confirmedBookings / totalBookingsForRate) * 100) 
+    : 0;
+
+  // Calculate occupancy rate (days booked / total available days in last 30 days)
+  const last30Days = 30;
+  const bookedDays = bookings
+    .filter(b => b.status === "confirmed" || b.status === "completed")
+    .reduce((sum, b) => {
+      const start = new Date(b.startDate);
+      const end = new Date(b.endDate);
+      const days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+      return sum + days;
+    }, 0);
+  const totalAvailableDays = boats.length * last30Days;
+  const occupancyRate = totalAvailableDays > 0 
+    ? Math.min(100, Math.round((bookedDays / totalAvailableDays) * 100))
+    : 0;
+
+  // Calculate months active from user creation date
+  const monthsActive = user?.createdAt 
+    ? Math.max(1, Math.floor((Date.now() - new Date(user.createdAt).getTime()) / (1000 * 60 * 60 * 24 * 30)))
+    : 1;
 
   // Check if user is logged in
   if (!user) {
@@ -1001,7 +1034,7 @@ export default function OwnerDashboard() {
                 <Star className="h-8 w-8 text-yellow-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Valutazione media</p>
-                  <p className="text-2xl font-bold text-gray-900">4.8</p>
+                  <p className="text-2xl font-bold text-gray-900">{averageRating > 0 ? averageRating.toFixed(1) : '-'}</p>
                 </div>
               </div>
             </CardContent>
@@ -3421,7 +3454,7 @@ export default function OwnerDashboard() {
               <Card>
                 <CardContent className="p-6 text-center">
                   <Calendar className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">12</p>
+                  <p className="text-2xl font-bold text-gray-900">{monthsActive}</p>
                   <p className="text-sm text-gray-600">Mesi attivo</p>
                 </CardContent>
               </Card>
@@ -3429,7 +3462,7 @@ export default function OwnerDashboard() {
               <Card>
                 <CardContent className="p-6 text-center">
                   <Star className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">4.8</p>
+                  <p className="text-2xl font-bold text-gray-900">{averageRating > 0 ? averageRating.toFixed(1) : '-'}</p>
                   <p className="text-sm text-gray-600">Rating medio</p>
                 </CardContent>
               </Card>
@@ -3437,7 +3470,7 @@ export default function OwnerDashboard() {
               <Card>
                 <CardContent className="p-6 text-center">
                   <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-gray-900">98%</p>
+                  <p className="text-2xl font-bold text-gray-900">{confirmationRate > 0 ? `${confirmationRate}%` : '-'}</p>
                   <p className="text-sm text-gray-600">Tasso conferma</p>
                 </CardContent>
               </Card>
@@ -3449,7 +3482,7 @@ export default function OwnerDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Guadagni mensili</CardTitle>
+                  <CardTitle>Guadagni totali</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center">
@@ -3470,7 +3503,7 @@ export default function OwnerDashboard() {
                   <div className="flex items-center">
                     <Calendar className="h-8 w-8 text-blue-500 mr-4" />
                     <div>
-                      <p className="text-2xl font-bold">85%</p>
+                      <p className="text-2xl font-bold">{occupancyRate}%</p>
                       <p className="text-sm text-gray-600">Media ultimo mese</p>
                     </div>
                   </div>

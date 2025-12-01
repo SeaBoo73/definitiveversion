@@ -432,6 +432,7 @@ export default function OwnerDashboard() {
 
   // Experiences state
   const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
+  const [experienceImages, setExperienceImages] = useState<string[]>([]);
   const [experienceFormData, setExperienceFormData] = useState({
     name: "",
     category: "tour" as "sunset" | "fishing" | "diving" | "aperitivo" | "tour" | "sport" | "romantic",
@@ -456,6 +457,7 @@ export default function OwnerDashboard() {
       includes: "",
       requirements: "",
     });
+    setExperienceImages([]);
   };
 
   // Experience mutations
@@ -529,6 +531,10 @@ export default function OwnerDashboard() {
       toast({ title: "Errore", description: "Località richiesta", variant: "destructive" });
       return;
     }
+    if (experienceImages.length < 3) {
+      toast({ title: "Errore", description: "Carica almeno 3 foto dell'esperienza", variant: "destructive" });
+      return;
+    }
 
     const dataToSubmit = {
       name: experienceFormData.name.trim(),
@@ -540,6 +546,7 @@ export default function OwnerDashboard() {
       location: experienceFormData.location.trim(),
       includes: experienceFormData.includes ? experienceFormData.includes.split('\n').filter(s => s.trim()) : [],
       requirements: experienceFormData.requirements.trim() || null,
+      images: experienceImages,
     };
 
     createExperienceMutation.mutate(dataToSubmit);
@@ -2492,6 +2499,179 @@ export default function OwnerDashboard() {
                             data-testid="textarea-experienceRequirements"
                           />
                         </div>
+                      </div>
+                    </div>
+
+                    {/* Sezione 4: Foto Esperienza */}
+                    <div className="bg-purple-50 border border-purple-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
+                          <Camera className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Foto Esperienza *</h3>
+                          <p className="text-sm text-gray-600">Carica almeno 3 foto per mostrare la tua esperienza (max 10)</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        {/* Anteprima foto caricate */}
+                        {experienceImages.length > 0 && (
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            {experienceImages.map((image, index) => (
+                              <div key={index} className="relative aspect-video rounded-lg overflow-hidden group border-2 border-purple-200">
+                                <img
+                                  src={image}
+                                  alt={`Foto ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setExperienceImages(experienceImages.filter((_, i) => i !== index));
+                                  }}
+                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  x
+                                </button>
+                                <div className="absolute bottom-1 left-1 bg-black/50 text-white text-xs px-2 py-0.5 rounded">
+                                  {index + 1}/{experienceImages.length}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        
+                        {/* Indicatore progresso foto */}
+                        <div className="flex items-center gap-2">
+                          <div className={`text-sm font-medium ${experienceImages.length >= 3 ? 'text-green-600' : 'text-red-500'}`}>
+                            {experienceImages.length}/3 foto minime {experienceImages.length >= 3 ? '✓' : '(obbligatorie)'}
+                          </div>
+                          <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full transition-all ${experienceImages.length >= 3 ? 'bg-green-500' : 'bg-orange-400'}`}
+                              style={{ width: `${Math.min((experienceImages.length / 3) * 100, 100)}%` }}
+                            />
+                          </div>
+                        </div>
+                        
+                        {/* Upload zone */}
+                        {experienceImages.length < 10 && (
+                          <div className="flex flex-col items-center justify-center border-2 border-dashed border-purple-300 rounded-lg p-6 hover:border-purple-400 transition-colors">
+                            <Camera className="h-10 w-10 text-purple-400 mb-2" />
+                            <p className="text-sm text-gray-600 text-center mb-3">
+                              Carica le foto della tua esperienza
+                            </p>
+                            <input 
+                              type="file"
+                              accept="image/jpeg,image/jpg,image/png,image/webp"
+                              multiple
+                              id="experienceImageUpload"
+                              className="hidden"
+                              data-testid="input-experience-image-file"
+                              onChange={(e) => {
+                                const files = e.target.files;
+                                if (!files) return;
+                                
+                                const remainingSlots = 10 - experienceImages.length;
+                                
+                                if (remainingSlots <= 0) {
+                                  toast({
+                                    title: "Limite raggiunto",
+                                    description: "Puoi caricare massimo 10 foto",
+                                    variant: "destructive",
+                                  });
+                                  return;
+                                }
+                                
+                                const filesToProcess = Array.from(files).slice(0, remainingSlots);
+                                
+                                const compressImage = (file: File): Promise<string> => {
+                                  return new Promise((resolve, reject) => {
+                                    const reader = new FileReader();
+                                    reader.onload = (event) => {
+                                      const img = new Image();
+                                      img.onload = () => {
+                                        const canvas = document.createElement('canvas');
+                                        const maxWidth = 1200;
+                                        const maxHeight = 900;
+                                        let width = img.width;
+                                        let height = img.height;
+                                        
+                                        if (width > maxWidth) {
+                                          height = (height * maxWidth) / width;
+                                          width = maxWidth;
+                                        }
+                                        if (height > maxHeight) {
+                                          width = (width * maxHeight) / height;
+                                          height = maxHeight;
+                                        }
+                                        
+                                        canvas.width = width;
+                                        canvas.height = height;
+                                        const ctx = canvas.getContext('2d');
+                                        ctx?.drawImage(img, 0, 0, width, height);
+                                        const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                                        resolve(compressed);
+                                      };
+                                      img.onerror = reject;
+                                      img.src = event.target?.result as string;
+                                    };
+                                    reader.onerror = reject;
+                                    reader.readAsDataURL(file);
+                                  });
+                                };
+                                
+                                filesToProcess.forEach(async (file) => {
+                                  if (file.size > 10 * 1024 * 1024) {
+                                    toast({
+                                      title: "File troppo grande",
+                                      description: `${file.name} supera i 10MB`,
+                                      variant: "destructive",
+                                    });
+                                    return;
+                                  }
+                                  
+                                  try {
+                                    const compressed = await compressImage(file);
+                                    setExperienceImages(prev => {
+                                      if (prev.length < 10) {
+                                        return [...prev, compressed];
+                                      }
+                                      return prev;
+                                    });
+                                    toast({
+                                      title: "Foto caricata",
+                                      description: `${file.name} aggiunta`,
+                                    });
+                                  } catch (err) {
+                                    toast({
+                                      title: "Errore",
+                                      description: `Impossibile caricare ${file.name}`,
+                                      variant: "destructive",
+                                    });
+                                  }
+                                });
+                                
+                                e.target.value = '';
+                              }}
+                            />
+                            <Button 
+                              type="button"
+                              variant="outline"
+                              className="border-purple-300 text-purple-600 hover:bg-purple-100"
+                              data-testid="button-upload-experience-image"
+                              onClick={() => document.getElementById('experienceImageUpload')?.click()}
+                            >
+                              <Camera className="h-4 w-4 mr-2" />
+                              Scegli foto dal dispositivo
+                            </Button>
+                            <p className="text-xs text-gray-500 mt-3">
+                              Formati: JPG, PNG, WebP (max 10MB, compresse automaticamente)
+                            </p>
+                          </div>
+                        )}
                       </div>
                     </div>
 

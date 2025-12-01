@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Send, MessageCircle, X } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { formatDistanceToNow } from "date-fns";
 import { it } from "date-fns/locale";
 import io, { Socket } from "socket.io-client";
@@ -39,6 +40,7 @@ interface ChatWindowProps {
 
 export function ChatWindow({ bookingId, onClose, isOpen }: ChatWindowProps) {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [newMessage, setNewMessage] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -60,12 +62,21 @@ export function ChatWindow({ bookingId, onClose, isOpen }: ChatWindowProps) {
   const sendMessageMutation = useMutation({
     mutationFn: async (content: string) => {
       if (!conversation?.id) throw new Error("No conversation");
-      return apiRequest("POST", `/api/conversations/${conversation.id}/messages`, { content });
+      const response = await apiRequest("POST", `/api/conversations/${conversation.id}/messages`, { content });
+      return response;
     },
     onSuccess: () => {
       setNewMessage("");
       queryClientRef.invalidateQueries({
         queryKey: ["/api/conversations", conversation?.id, "messages"],
+      });
+    },
+    onError: (error: any) => {
+      const errorMessage = error?.message || "Errore nell'invio del messaggio";
+      toast({
+        title: "Messaggio non inviato",
+        description: errorMessage,
+        variant: "destructive",
       });
     },
   });

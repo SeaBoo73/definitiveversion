@@ -127,6 +127,12 @@ export default function OwnerDashboard() {
   const mooringPortInputRef = useRef<HTMLInputElement>(null);
   const mooringPortSuggestionsRef = useRef<HTMLDivElement>(null);
   
+  // Experience location autofill state
+  const [experienceLocationSearch, setExperienceLocationSearch] = useState("");
+  const [showExperienceLocationSuggestions, setShowExperienceLocationSuggestions] = useState(false);
+  const experienceLocationInputRef = useRef<HTMLInputElement>(null);
+  const experienceLocationSuggestionsRef = useRef<HTMLDivElement>(null);
+  
   // Lista completa dei porti Lazio e Campania
   const allMooringPorts = [
     // Lazio
@@ -183,12 +189,22 @@ export default function OwnerDashboard() {
       ).slice(0, 8)
     : [];
   
+  const filteredExperienceLocations = experienceLocationSearch.trim().length > 0 
+    ? allMooringPorts.filter(port => 
+        port.name.toLowerCase().includes(experienceLocationSearch.toLowerCase())
+      ).slice(0, 8)
+    : [];
+  
   // Chiudi suggerimenti quando si clicca fuori
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (mooringPortSuggestionsRef.current && !mooringPortSuggestionsRef.current.contains(event.target as Node) &&
           mooringPortInputRef.current && !mooringPortInputRef.current.contains(event.target as Node)) {
         setShowMooringPortSuggestions(false);
+      }
+      if (experienceLocationSuggestionsRef.current && !experienceLocationSuggestionsRef.current.contains(event.target as Node) &&
+          experienceLocationInputRef.current && !experienceLocationInputRef.current.contains(event.target as Node)) {
+        setShowExperienceLocationSuggestions(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -458,6 +474,7 @@ export default function OwnerDashboard() {
       requirements: "",
     });
     setExperienceImages([]);
+    setExperienceLocationSearch("");
   };
 
   // Experience mutations
@@ -2374,19 +2391,56 @@ export default function OwnerDashboard() {
                           />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-2 relative">
                           <Label htmlFor="experienceLocation" className="flex items-center gap-2">
                             <MapPin className="h-4 w-4 text-coral" />
                             Località partenza *
                           </Label>
                           <Input 
+                            ref={experienceLocationInputRef}
                             id="experienceLocation" 
-                            placeholder="es. Porto di Gaeta, Marina di Civitavecchia..." 
+                            placeholder="Inizia a digitare... (es. Gaeta, Napoli)" 
                             className="border-coral/30 focus:border-coral"
-                            value={experienceFormData.location}
-                            onChange={(e) => setExperienceFormData({...experienceFormData, location: e.target.value})}
+                            value={experienceLocationSearch || experienceFormData.location}
+                            onChange={(e) => {
+                              setExperienceLocationSearch(e.target.value);
+                              setShowExperienceLocationSuggestions(true);
+                              if (e.target.value === '') {
+                                setExperienceFormData({...experienceFormData, location: ''});
+                              }
+                            }}
+                            onFocus={() => {
+                              if (experienceLocationSearch.length > 0) {
+                                setShowExperienceLocationSuggestions(true);
+                              }
+                            }}
                             data-testid="input-experienceLocation"
                           />
+                          {showExperienceLocationSuggestions && filteredExperienceLocations.length > 0 && (
+                            <div 
+                              ref={experienceLocationSuggestionsRef}
+                              className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                            >
+                              {filteredExperienceLocations.map((port, index) => (
+                                <button
+                                  key={index}
+                                  type="button"
+                                  className="w-full px-4 py-3 text-left hover:bg-coral/10 flex items-center justify-between border-b border-gray-100 last:border-b-0"
+                                  onClick={() => {
+                                    setExperienceFormData({...experienceFormData, location: port.name});
+                                    setExperienceLocationSearch(port.name);
+                                    setShowExperienceLocationSuggestions(false);
+                                  }}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <MapPin className="h-4 w-4 text-coral" />
+                                    <span className="font-medium">{port.name}</span>
+                                  </div>
+                                  <span className="text-xs text-gray-500">{port.region}</span>
+                                </button>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

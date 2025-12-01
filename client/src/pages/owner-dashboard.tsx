@@ -117,6 +117,7 @@ export default function OwnerDashboard() {
   const [mooringCalendarMonth, setMooringCalendarMonth] = useState(new Date());
   const [mooringPriceOverride, setMooringPriceOverride] = useState("");
   const [mooringBlockStatus, setMooringBlockStatus] = useState<'blocked' | 'available'>('blocked');
+  const [mooringBlockedDates, setMooringBlockedDates] = useState<Date[]>([]);
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
   // Mooring port autofill state
@@ -2973,6 +2974,7 @@ export default function OwnerDashboard() {
                       !isBefore(day, mooringRangeStart) && !isAfter(day, mooringRangeEnd);
                     const isHovered = mooringRangeStart && !mooringRangeEnd && mooringHoveredDate &&
                       !isBefore(day, mooringRangeStart) && !isAfter(day, mooringHoveredDate);
+                    const isBlocked = mooringBlockedDates.some(blockedDate => isSameDay(day, blockedDate));
                     
                     let bgClass = "bg-white hover:bg-gray-100";
                     let textClass = "text-gray-900";
@@ -2980,6 +2982,9 @@ export default function OwnerDashboard() {
                     if (isPast) {
                       bgClass = "bg-gray-100";
                       textClass = "text-gray-400";
+                    } else if (isBlocked) {
+                      bgClass = "bg-red-500";
+                      textClass = "text-white font-bold";
                     } else if (isRangeStart || isRangeEnd) {
                       bgClass = "bg-blue-600";
                       textClass = "text-white font-bold";
@@ -3103,6 +3108,10 @@ export default function OwnerDashboard() {
             {/* Legenda */}
             <div className="flex flex-wrap gap-4 text-sm border-t pt-4">
               <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-red-500 rounded"></div>
+                Bloccato ({mooringBlockedDates.length})
+              </span>
+              <span className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-blue-600 rounded"></div>
                 Selezionato
               </span>
@@ -3134,6 +3143,25 @@ export default function OwnerDashboard() {
                 onClick={() => {
                   if (mooringRangeStart && mooringRangeEnd) {
                     const days = Math.ceil((mooringRangeEnd.getTime() - mooringRangeStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                    
+                    if (mooringBlockStatus === 'blocked') {
+                      const rangeDates = eachDayOfInterval({ start: mooringRangeStart, end: mooringRangeEnd });
+                      setMooringBlockedDates(prev => {
+                        const newDates = [...prev];
+                        rangeDates.forEach(date => {
+                          if (!newDates.some(d => isSameDay(d, date))) {
+                            newDates.push(date);
+                          }
+                        });
+                        return newDates;
+                      });
+                    } else {
+                      const rangeDates = eachDayOfInterval({ start: mooringRangeStart, end: mooringRangeEnd });
+                      setMooringBlockedDates(prev => 
+                        prev.filter(d => !rangeDates.some(rd => isSameDay(rd, d)))
+                      );
+                    }
+                    
                     toast({
                       title: mooringBlockStatus === 'blocked' ? "Date bloccate" : "Disponibilità salvata",
                       description: `${days} giorni ${mooringBlockStatus === 'blocked' ? 'bloccati' : 'impostati come disponibili'}${mooringPriceOverride ? ` a €${mooringPriceOverride}/giorno` : ''}`,

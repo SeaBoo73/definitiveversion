@@ -20,6 +20,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Booking, Boat } from "@shared/schema";
@@ -41,13 +49,18 @@ import {
   Phone,
   Ship,
   TrendingUp,
-  ArrowLeft
+  ArrowLeft,
+  Bell,
+  Anchor
 } from "lucide-react";
+import { differenceInHours } from "date-fns";
 
 export default function CustomerDashboard() {
   const { user } = useAuth();
   const [location, setLocation] = useLocation();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showReminderDialog, setShowReminderDialog] = useState(false);
+  const [upcomingBooking, setUpcomingBooking] = useState<Booking | null>(null);
   const { toast } = useToast();
 
   // Get tab from URL parameter
@@ -70,6 +83,33 @@ export default function CustomerDashboard() {
     queryKey: ["/api/bookings", { customerId: user?.id }],
     enabled: !!user,
   });
+
+  // Check for bookings starting within 24 hours and show reminder
+  useEffect(() => {
+    if (bookings.length > 0) {
+      const now = new Date();
+      const reminderKey = 'seaboo_reminder_shown';
+      const lastShown = localStorage.getItem(reminderKey);
+      const today = format(now, 'yyyy-MM-dd');
+      
+      // Only show once per day
+      if (lastShown === today) return;
+      
+      // Find confirmed bookings starting within the next 24 hours
+      const bookingStartingSoon = bookings.find(booking => {
+        if (booking.status !== 'confirmed') return false;
+        const startDate = new Date(booking.startDate);
+        const hoursUntilStart = differenceInHours(startDate, now);
+        return hoursUntilStart > 0 && hoursUntilStart <= 24;
+      });
+      
+      if (bookingStartingSoon) {
+        setUpcomingBooking(bookingStartingSoon);
+        setShowReminderDialog(true);
+        localStorage.setItem(reminderKey, today);
+      }
+    }
+  }, [bookings]);
 
   // Delete account mutation
   const deleteAccountMutation = useMutation({
@@ -158,6 +198,59 @@ export default function CustomerDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+      
+      {/* Reminder Dialog for bookings starting within 24 hours */}
+      <Dialog open={showReminderDialog} onOpenChange={setShowReminderDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 bg-ocean-blue/10 rounded-full flex items-center justify-center">
+                <Bell className="w-8 h-8 text-ocean-blue" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-xl">
+              La tua avventura sta per iniziare!
+            </DialogTitle>
+            <DialogDescription className="text-center">
+              {upcomingBooking && (
+                <div className="mt-4 space-y-3">
+                  <div className="bg-blue-50 rounded-lg p-4">
+                    <div className="flex items-center justify-center space-x-2 mb-2">
+                      <Anchor className="h-5 w-5 text-ocean-blue" />
+                      <span className="font-semibold text-ocean-blue">Prenotazione #{upcomingBooking.id}</span>
+                    </div>
+                    <p className="text-gray-700">
+                      Inizia il <strong>{format(new Date(upcomingBooking.startDate), "dd MMMM yyyy 'alle' HH:mm", { locale: it })}</strong>
+                    </p>
+                  </div>
+                  <div className="text-sm text-gray-600 space-y-2">
+                    <p className="flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                      Porta un documento d'identità valido
+                    </p>
+                    <p className="flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                      Verifica la patente nautica (se richiesta)
+                    </p>
+                    <p className="flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
+                      Controlla le condizioni meteo
+                    </p>
+                  </div>
+                </div>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex-col space-y-2 sm:space-y-0 sm:flex-row sm:justify-center">
+            <Button 
+              onClick={() => setShowReminderDialog(false)}
+              className="bg-ocean-blue hover:bg-ocean-blue/90"
+            >
+              Ho capito, grazie!
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Back to Home Button */}

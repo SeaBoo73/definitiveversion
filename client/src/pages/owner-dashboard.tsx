@@ -3037,27 +3037,40 @@ export default function OwnerDashboard() {
               <div className="bg-blue-50 p-4 rounded-lg space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-blue-700 font-medium">Date selezionate:</p>
+                    <p className="text-sm text-blue-700 font-medium">
+                      {mooringRangeEnd ? 'Date selezionate:' : 'Data selezionata (clicca su un\'altra per un intervallo):'}
+                    </p>
                     <p className="text-lg font-bold text-blue-900">
                       {format(mooringRangeStart, 'd MMM yyyy', { locale: it })}
-                      {mooringRangeEnd && ` → ${format(mooringRangeEnd, 'd MMM yyyy', { locale: it })}`}
+                      {mooringRangeEnd && !isSameDay(mooringRangeStart, mooringRangeEnd) && ` → ${format(mooringRangeEnd, 'd MMM yyyy', { locale: it })}`}
                     </p>
-                    {mooringRangeEnd && (
+                    {mooringRangeEnd && !isSameDay(mooringRangeStart, mooringRangeEnd) && (
                       <p className="text-sm text-blue-600">
                         {Math.ceil((mooringRangeEnd.getTime() - mooringRangeStart.getTime()) / (1000 * 60 * 60 * 24)) + 1} giorni
                       </p>
                     )}
                   </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => {
-                      setMooringRangeStart(null);
-                      setMooringRangeEnd(null);
-                    }}
-                  >
-                    Annulla
-                  </Button>
+                  <div className="flex gap-2">
+                    {!mooringRangeEnd && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        onClick={() => setMooringRangeEnd(mooringRangeStart)}
+                      >
+                        Usa solo questa data
+                      </Button>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setMooringRangeStart(null);
+                        setMooringRangeEnd(null);
+                      }}
+                    >
+                      Annulla
+                    </Button>
+                  </div>
                 </div>
 
                 {mooringRangeEnd && (

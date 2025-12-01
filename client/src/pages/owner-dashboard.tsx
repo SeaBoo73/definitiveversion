@@ -452,6 +452,12 @@ export default function OwnerDashboard() {
   const [editingExperience, setEditingExperience] = useState<Experience | null>(null);
   const [showExperienceCalendarModal, setShowExperienceCalendarModal] = useState(false);
   const [selectedExperienceForCalendar, setSelectedExperienceForCalendar] = useState<Experience | null>(null);
+  const [experienceCalendarMonth, setExperienceCalendarMonth] = useState(new Date());
+  const [experienceRangeStart, setExperienceRangeStart] = useState<Date | null>(null);
+  const [experienceRangeEnd, setExperienceRangeEnd] = useState<Date | null>(null);
+  const [experienceHoveredDate, setExperienceHoveredDate] = useState<Date | null>(null);
+  const [experienceBlockedDates, setExperienceBlockedDates] = useState<Date[]>([]);
+  const [experienceBlockStatus, setExperienceBlockStatus] = useState<'blocked' | 'available'>('blocked');
   const [experienceFormData, setExperienceFormData] = useState({
     name: "",
     category: "tour" as "sunset" | "fishing" | "diving" | "aperitivo" | "tour" | "sport" | "romantic",
@@ -3758,6 +3764,258 @@ export default function OwnerDashboard() {
                 }}
               >
                 {mooringBlockStatus === 'blocked' ? '🔒 Blocca date' : '✅ Salva disponibilità'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal Calendario Disponibilità Esperienze */}
+      <Dialog open={showExperienceCalendarModal} onOpenChange={(open) => {
+        setShowExperienceCalendarModal(open);
+        if (!open) {
+          setSelectedExperienceForCalendar(null);
+          setExperienceRangeStart(null);
+          setExperienceRangeEnd(null);
+          setExperienceHoveredDate(null);
+          setExperienceBlockStatus('blocked');
+        }
+      }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CalendarIcon className="h-5 w-5 text-coral" />
+              Gestione Disponibilità Esperienza
+            </DialogTitle>
+            <p className="text-sm text-gray-600">
+              {selectedExperienceForCalendar?.name} - {selectedExperienceForCalendar?.location}
+            </p>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {/* Istruzioni */}
+            <div className="bg-coral/10 p-3 rounded-lg text-sm text-coral">
+              <strong>Come funziona:</strong> Clicca su una data di inizio, poi su una data di fine per selezionare un intervallo. Le date selezionate verranno evidenziate in blu.
+            </div>
+
+            {/* Navigazione mese */}
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setExperienceCalendarMonth(subMonths(experienceCalendarMonth, 1))}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </Button>
+              <span className="font-semibold text-lg">
+                {format(experienceCalendarMonth, 'MMMM yyyy', { locale: it })}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setExperienceCalendarMonth(addMonths(experienceCalendarMonth, 1))}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            </div>
+
+            {/* Calendario custom con griglia */}
+            <div className="border rounded-lg overflow-hidden">
+              {/* Header giorni settimana */}
+              <div className="grid grid-cols-7 bg-gray-100">
+                {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map((day) => (
+                  <div key={day} className="p-2 text-center text-sm font-medium text-gray-600 border-b">
+                    {day}
+                  </div>
+                ))}
+              </div>
+              
+              {/* Griglia giorni */}
+              <div className="grid grid-cols-7">
+                {(() => {
+                  const monthStart = startOfMonth(experienceCalendarMonth);
+                  const monthEnd = endOfMonth(experienceCalendarMonth);
+                  const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+                  
+                  const startDayOfWeek = getDay(monthStart);
+                  const emptyDays = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+                  
+                  const allCells = [
+                    ...Array(emptyDays).fill(null),
+                    ...days
+                  ];
+                  
+                  return allCells.map((day, idx) => {
+                    if (!day) {
+                      return <div key={`empty-${idx}`} className="min-h-[50px] bg-gray-50 border-b border-r"></div>;
+                    }
+                    
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const isPast = isBefore(day, today);
+                    
+                    const isRangeStart = experienceRangeStart && isSameDay(day, experienceRangeStart);
+                    const isRangeEnd = experienceRangeEnd && isSameDay(day, experienceRangeEnd);
+                    const isInRange = experienceRangeStart && experienceRangeEnd && 
+                      !isBefore(day, experienceRangeStart) && !isAfter(day, experienceRangeEnd);
+                    const isHovered = experienceRangeStart && !experienceRangeEnd && experienceHoveredDate &&
+                      !isBefore(day, experienceRangeStart) && !isAfter(day, experienceHoveredDate);
+                    const isBlocked = experienceBlockedDates.some(blockedDate => isSameDay(day, blockedDate));
+                    
+                    let bgClass = "bg-white hover:bg-gray-100";
+                    let textClass = "text-gray-900";
+                    
+                    if (isPast) {
+                      bgClass = "bg-gray-100";
+                      textClass = "text-gray-400";
+                    } else if (isBlocked) {
+                      bgClass = "bg-red-500";
+                      textClass = "text-white font-bold";
+                    } else if (isRangeStart || isRangeEnd) {
+                      bgClass = "bg-coral";
+                      textClass = "text-white font-bold";
+                    } else if (isInRange) {
+                      bgClass = "bg-coral/70";
+                      textClass = "text-white";
+                    } else if (isHovered) {
+                      bgClass = "bg-coral/30";
+                      textClass = "text-coral";
+                    }
+                    
+                    return (
+                      <div
+                        key={day.toISOString()}
+                        className={`min-h-[60px] p-1 border-b border-r cursor-pointer transition-colors ${bgClass} ${isPast ? 'cursor-not-allowed' : ''} flex flex-col`}
+                        onClick={() => {
+                          if (isPast) return;
+                          
+                          if (!experienceRangeStart) {
+                            setExperienceRangeStart(day);
+                            setExperienceRangeEnd(null);
+                          } else if (!experienceRangeEnd) {
+                            if (isBefore(day, experienceRangeStart)) {
+                              setExperienceRangeStart(day);
+                            } else {
+                              setExperienceRangeEnd(day);
+                            }
+                          } else {
+                            setExperienceRangeStart(day);
+                            setExperienceRangeEnd(null);
+                          }
+                        }}
+                        onMouseEnter={() => {
+                          if (experienceRangeStart && !experienceRangeEnd && !isPast) {
+                            setExperienceHoveredDate(day);
+                          }
+                        }}
+                      >
+                        <span className={`text-sm font-medium ${textClass}`}>
+                          {format(day, 'd')}
+                        </span>
+                        {isBlocked && (
+                          <span className="text-[10px] text-white">Bloccato</span>
+                        )}
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            </div>
+
+            {/* Opzioni quando range selezionato */}
+            {experienceRangeStart && experienceRangeEnd && (
+              <div className="bg-coral/10 p-4 rounded-lg space-y-4">
+                <p className="font-medium text-coral">
+                  Periodo selezionato: {format(experienceRangeStart, 'dd MMM', { locale: it })} - {format(experienceRangeEnd, 'dd MMM yyyy', { locale: it })}
+                </p>
+                
+                {/* Status toggle */}
+                <div className="flex items-center gap-4">
+                  <Label className="text-coral">Imposta come:</Label>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant={experienceBlockStatus === 'blocked' ? 'default' : 'outline'}
+                      className={experienceBlockStatus === 'blocked' ? 'bg-red-600 hover:bg-red-700' : ''}
+                      onClick={() => setExperienceBlockStatus('blocked')}
+                    >
+                      🔒 Bloccato
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant={experienceBlockStatus === 'available' ? 'default' : 'outline'}
+                      className={experienceBlockStatus === 'available' ? 'bg-green-600 hover:bg-green-700' : ''}
+                      onClick={() => setExperienceBlockStatus('available')}
+                    >
+                      ✅ Disponibile
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Legenda */}
+            <div className="flex flex-wrap gap-4 text-sm border-t pt-4">
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-red-500 rounded"></div>
+                Bloccato ({experienceBlockedDates.length})
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-coral rounded"></div>
+                Selezionato
+              </span>
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 bg-white border rounded"></div>
+                Disponibile
+              </span>
+            </div>
+            
+            <div className="flex justify-end gap-2 pt-4 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowExperienceCalendarModal(false);
+                  setSelectedExperienceForCalendar(null);
+                  setExperienceRangeStart(null);
+                  setExperienceRangeEnd(null);
+                }}
+              >
+                Chiudi
+              </Button>
+              <Button
+                className="bg-coral hover:bg-orange-600"
+                disabled={!experienceRangeStart || !experienceRangeEnd}
+                onClick={() => {
+                  if (experienceRangeStart && experienceRangeEnd) {
+                    const days = Math.ceil((experienceRangeEnd.getTime() - experienceRangeStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                    const rangeDates = eachDayOfInterval({ start: experienceRangeStart, end: experienceRangeEnd });
+                    
+                    if (experienceBlockStatus === 'blocked') {
+                      setExperienceBlockedDates(prev => {
+                        const newDates = [...prev];
+                        rangeDates.forEach(date => {
+                          if (!newDates.some(d => isSameDay(d, date))) {
+                            newDates.push(date);
+                          }
+                        });
+                        return newDates;
+                      });
+                    } else {
+                      setExperienceBlockedDates(prev => 
+                        prev.filter(d => !rangeDates.some(rd => isSameDay(rd, d)))
+                      );
+                    }
+                    
+                    toast({
+                      title: experienceBlockStatus === 'blocked' ? "Date bloccate" : "Disponibilità salvata",
+                      description: `${days} giorni ${experienceBlockStatus === 'blocked' ? 'bloccati' : 'impostati come disponibili'}`,
+                    });
+                    setExperienceRangeStart(null);
+                    setExperienceRangeEnd(null);
+                  }
+                }}
+              >
+                {experienceBlockStatus === 'blocked' ? '🔒 Blocca date' : '✅ Salva disponibilità'}
               </Button>
             </div>
           </div>

@@ -1289,86 +1289,109 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({received: true});
   });
 
-  // External Services API Endpoints
-  app.get('/api/external/weather', (req, res) => {
+  // External Services API Endpoints - Real weather data from Open-Meteo
+  app.get('/api/external/weather', async (req, res) => {
     const location = (req.query.location as string) || 'Roma';
     
-    // Location-specific weather data
-    const locationWeatherData: Record<string, any> = {
-      'Roma': {
-        temperature: 22, windSpeed: 12, windDirection: 180, humidity: 65,
-        waves: { height: 0.8, direction: 170, period: 5 },
-        description: 'Soleggiato'
-      },
-      'Roma / Fiumicino': {
-        temperature: 21, windSpeed: 15, windDirection: 200, humidity: 70,
-        waves: { height: 1.0, direction: 190, period: 6 },
-        description: 'Parzialmente nuvoloso'
-      },
-      'Gaeta': {
-        temperature: 23, windSpeed: 8, windDirection: 150, humidity: 60,
-        waves: { height: 0.5, direction: 140, period: 4 },
-        description: 'Sereno'
-      },
-      'Civitavecchia': {
-        temperature: 20, windSpeed: 18, windDirection: 220, humidity: 72,
-        waves: { height: 1.3, direction: 210, period: 7 },
-        description: 'Nuvoloso'
-      },
-      'Anzio': {
-        temperature: 22, windSpeed: 10, windDirection: 170, humidity: 68,
-        waves: { height: 0.6, direction: 160, period: 5 },
-        description: 'Soleggiato'
-      },
-      'Ponza': {
-        temperature: 24, windSpeed: 14, windDirection: 190, humidity: 55,
-        waves: { height: 0.9, direction: 180, period: 6 },
-        description: 'Sereno'
-      },
-      'Terracina': {
-        temperature: 23, windSpeed: 11, windDirection: 160, humidity: 62,
-        waves: { height: 0.7, direction: 150, period: 5 },
-        description: 'Parzialmente nuvoloso'
-      },
-      'Formia': {
-        temperature: 22, windSpeed: 9, windDirection: 140, humidity: 63,
-        waves: { height: 0.4, direction: 130, period: 4 },
-        description: 'Sereno'
-      },
-      'Nettuno': {
-        temperature: 21, windSpeed: 13, windDirection: 175, humidity: 67,
-        waves: { height: 0.8, direction: 165, period: 5 },
-        description: 'Soleggiato'
-      },
-      'San Felice Circeo': {
-        temperature: 23, windSpeed: 12, windDirection: 165, humidity: 58,
-        waves: { height: 0.6, direction: 155, period: 5 },
-        description: 'Sereno'
+    // Coordinates for Italian coastal locations
+    const locationCoords: Record<string, { lat: number; lon: number }> = {
+      'Roma': { lat: 41.9028, lon: 12.4964 },
+      'Roma / Fiumicino': { lat: 41.7735, lon: 12.2356 },
+      'Gaeta': { lat: 41.2144, lon: 13.5712 },
+      'Civitavecchia': { lat: 42.0931, lon: 11.7969 },
+      'Anzio': { lat: 41.4475, lon: 12.6203 },
+      'Ponza': { lat: 40.8958, lon: 12.9631 },
+      'Terracina': { lat: 41.2922, lon: 13.2489 },
+      'Formia': { lat: 41.2558, lon: 13.6058 },
+      'Nettuno': { lat: 41.4589, lon: 12.6650 },
+      'San Felice Circeo': { lat: 41.2286, lon: 13.0883 }
+    };
+    
+    const coords = locationCoords[location] || locationCoords['Roma'];
+    
+    try {
+      // Fetch weather data from Open-Meteo
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,surface_pressure&hourly=temperature_2m,weather_code,wind_speed_10m&forecast_days=1&timezone=Europe/Rome`;
+      
+      // Fetch marine data from Open-Meteo Marine API
+      const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${coords.lat}&longitude=${coords.lon}&current=wave_height,wave_direction,wave_period&hourly=wave_height,wave_period&forecast_days=1&timezone=Europe/Rome`;
+      
+      const [weatherResponse, marineResponse] = await Promise.all([
+        fetch(weatherUrl),
+        fetch(marineUrl)
+      ]);
+      
+      const weatherJson = await weatherResponse.json();
+      const marineJson = await marineResponse.json();
+      
+      // Map weather code to description
+      const getWeatherDescription = (code: number): string => {
+        if (code === 0) return 'Sereno';
+        if (code <= 3) return 'Parzialmente nuvoloso';
+        if (code <= 48) return 'Nuvoloso';
+        if (code <= 67) return 'Pioggia';
+        if (code <= 77) return 'Neve';
+        if (code <= 82) return 'Acquazzone';
+        if (code <= 99) return 'Temporale';
+        return 'Variabile';
+      };
+      
+      // Build forecast from hourly data
+      const forecast = [];
+      const hourlyTimes = weatherJson.hourly?.time || [];
+      const hourlyTemps = weatherJson.hourly?.temperature_2m || [];
+      const hourlyCodes = weatherJson.hourly?.weather_code || [];
+      const hourlyWind = weatherJson.hourly?.wind_speed_10m || [];
+      const hourlyWaves = marineJson.hourly?.wave_height || [];
+      
+      for (let i = 0; i < Math.min(4, hourlyTimes.length); i += 3) {
+        const idx = Math.min(i * 3, hourlyTimes.length - 1);
+        forecast.push({
+          time: hourlyTimes[idx] || new Date(Date.now() + i * 3 * 3600000).toISOString(),
+          temperature: Math.round(hourlyTemps[idx] || 20),
+          description: getWeatherDescription(hourlyCodes[idx] || 0),
+          windSpeed: Math.round(hourlyWind[idx] || 10),
+          waves: Number((hourlyWaves[idx] || 0.5).toFixed(1))
+        });
       }
-    };
-    
-    // Get location data or default to Roma
-    const locData = locationWeatherData[location] || locationWeatherData['Roma'];
-    
-    const weatherData = {
-      location: location,
-      temperature: locData.temperature,
-      description: locData.description,
-      windSpeed: locData.windSpeed,
-      windDirection: locData.windDirection,
-      humidity: locData.humidity,
-      pressure: 1013 + Math.floor(Math.random() * 10) - 5,
-      visibility: 10,
-      waves: locData.waves,
-      forecast: [
-        { time: new Date(Date.now() + 0 * 3600000).toISOString(), temperature: locData.temperature + 1, description: locData.description, windSpeed: locData.windSpeed - 2, waves: locData.waves.height - 0.1 },
-        { time: new Date(Date.now() + 3 * 3600000).toISOString(), temperature: locData.temperature + 2, description: 'Parzialmente nuvoloso', windSpeed: locData.windSpeed + 2, waves: locData.waves.height + 0.1 },
-        { time: new Date(Date.now() + 6 * 3600000).toISOString(), temperature: locData.temperature - 1, description: 'Nuvoloso', windSpeed: locData.windSpeed + 4, waves: locData.waves.height + 0.3 },
-        { time: new Date(Date.now() + 9 * 3600000).toISOString(), temperature: locData.temperature - 3, description: 'Sereno', windSpeed: locData.windSpeed, waves: locData.waves.height }
-      ]
-    };
-    
-    res.json(weatherData);
+      
+      const weatherData = {
+        location: location,
+        temperature: Math.round(weatherJson.current?.temperature_2m || 20),
+        description: getWeatherDescription(weatherJson.current?.weather_code || 0),
+        windSpeed: Math.round(weatherJson.current?.wind_speed_10m || 10),
+        windDirection: Math.round(weatherJson.current?.wind_direction_10m || 180),
+        humidity: Math.round(weatherJson.current?.relative_humidity_2m || 65),
+        pressure: Math.round(weatherJson.current?.surface_pressure || 1013),
+        visibility: 10,
+        waves: {
+          height: Number((marineJson.current?.wave_height || 0.5).toFixed(1)),
+          direction: Math.round(marineJson.current?.wave_direction || 180),
+          period: Math.round(marineJson.current?.wave_period || 5)
+        },
+        forecast: forecast,
+        dataSource: 'Open-Meteo',
+        lastUpdated: new Date().toISOString()
+      };
+      
+      res.json(weatherData);
+    } catch (error) {
+      console.error('Error fetching weather data:', error);
+      // Fallback to default data if API fails
+      res.json({
+        location: location,
+        temperature: 20,
+        description: 'Dati non disponibili',
+        windSpeed: 10,
+        windDirection: 180,
+        humidity: 65,
+        pressure: 1013,
+        visibility: 10,
+        waves: { height: 0.5, direction: 180, period: 5 },
+        forecast: [],
+        error: 'Impossibile recuperare dati meteo reali'
+      });
+    }
   });
 
   app.get('/api/external/fuel-prices', (req, res) => {

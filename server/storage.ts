@@ -6,6 +6,8 @@ import {
   moorings,
   mooringAvailability,
   experiences,
+  conversations,
+  messages,
   type User,
   type InsertUser,
   type Boat,
@@ -20,6 +22,10 @@ import {
   type InsertMooringAvailability,
   type Experience,
   type InsertExperience,
+  type Conversation,
+  type InsertConversation,
+  type Message,
+  type InsertMessage,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -78,6 +84,17 @@ export interface IStorage {
   createExperience(data: InsertExperience & { hostId: number }): Promise<Experience>;
   updateExperience(id: number, hostId: number, data: Partial<InsertExperience>): Promise<Experience | undefined>;
   deleteExperience(id: number, hostId: number): Promise<boolean>;
+  
+  // Conversation operations
+  getConversation(id: number): Promise<Conversation | undefined>;
+  getConversationByBookingId(bookingId: number): Promise<Conversation | undefined>;
+  createConversation(data: InsertConversation): Promise<Conversation>;
+  updateConversationLastMessage(id: number): Promise<void>;
+  
+  // Message operations
+  getMessages(conversationId: number): Promise<(Message & { senderName?: string; senderEmail?: string })[]>;
+  createMessage(data: InsertMessage): Promise<Message>;
+  getBooking(id: number): Promise<Booking | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -349,6 +366,55 @@ export class DatabaseStorage implements IStorage {
       .delete(experiences)
       .where(and(eq(experiences.id, id), eq(experiences.hostId, hostId)));
     return (result.rowCount ?? 0) > 0;
+  }
+
+  // Conversation operations
+  async getConversation(id: number): Promise<Conversation | undefined> {
+    const [conversation] = await db.select().from(conversations).where(eq(conversations.id, id));
+    return conversation;
+  }
+
+  async getConversationByBookingId(bookingId: number): Promise<Conversation | undefined> {
+    const [conversation] = await db.select().from(conversations).where(eq(conversations.bookingId, bookingId));
+    return conversation;
+  }
+
+  async createConversation(data: InsertConversation): Promise<Conversation> {
+    const [conversation] = await db.insert(conversations).values(data).returning();
+    return conversation;
+  }
+
+  async updateConversationLastMessage(id: number): Promise<void> {
+    await db.update(conversations).set({ lastMessageAt: new Date() }).where(eq(conversations.id, id));
+  }
+
+  // Message operations
+  async getMessages(conversationId: number): Promise<(Message & { senderName?: string; senderEmail?: string })[]> {
+    const messagesList = await db.select().from(messages).where(eq(messages.conversationId, conversationId));
+    
+    // Get sender info for each message
+    const messagesWithSenders = await Promise.all(
+      messagesList.map(async (msg) => {
+        const sender = await this.getUser(msg.senderId);
+        return {
+          ...msg,
+          senderName: sender ? `${sender.firstName || ''} ${sender.lastName || ''}`.trim() || sender.username : undefined,
+          senderEmail: sender?.email
+        };
+      })
+    );
+    
+    return messagesWithSenders;
+  }
+
+  async createMessage(data: InsertMessage): Promise<Message> {
+    const [message] = await db.insert(messages).values(data).returning();
+    return message;
+  }
+
+  async getBooking(id: number): Promise<Booking | undefined> {
+    const [booking] = await db.select().from(bookings).where(eq(bookings.id, id));
+    return booking;
   }
 }
 

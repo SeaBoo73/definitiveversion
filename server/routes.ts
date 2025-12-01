@@ -1465,6 +1465,124 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(portServices);
   });
 
+  // ===========================================
+  // CONVERSATIONS & MESSAGES ENDPOINTS
+  // ===========================================
+
+  // Get or create conversation for a booking
+  app.get("/api/conversations/:bookingId", async (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Non autenticato" });
+    }
+    
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      const userId = parseInt(req.session.user.id);
+      
+      // Get the booking to find customer and owner
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ error: "Prenotazione non trovata" });
+      }
+      
+      // Get the boat to find the owner
+      const boat = await storage.getBoat(booking.boatId);
+      if (!boat) {
+        return res.status(404).json({ error: "Barca non trovata" });
+      }
+      
+      // Check if user is part of this booking
+      if (booking.customerId !== userId && boat.hostId !== userId) {
+        return res.status(403).json({ error: "Non autorizzato" });
+      }
+      
+      // Get or create conversation
+      let conversation = await storage.getConversationByBookingId(bookingId);
+      
+      if (!conversation) {
+        conversation = await storage.createConversation({
+          bookingId,
+          customerId: booking.customerId,
+          ownerId: boat.hostId
+        });
+      }
+      
+      res.json(conversation);
+    } catch (error: any) {
+      console.error("Error getting conversation:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Get messages for a conversation
+  app.get("/api/conversations/:conversationId/messages", async (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Non autenticato" });
+    }
+    
+    try {
+      const conversationId = parseInt(req.params.conversationId);
+      const userId = parseInt(req.session.user.id);
+      
+      // Verify user is part of conversation
+      const conversation = await storage.getConversation(conversationId);
+      if (!conversation) {
+        return res.status(404).json({ error: "Conversazione non trovata" });
+      }
+      
+      if (conversation.customerId !== userId && conversation.ownerId !== userId) {
+        return res.status(403).json({ error: "Non autorizzato" });
+      }
+      
+      const messages = await storage.getMessages(conversationId);
+      res.json(messages);
+    } catch (error: any) {
+      console.error("Error getting messages:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Send a message
+  app.post("/api/conversations/:conversationId/messages", async (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Non autenticato" });
+    }
+    
+    try {
+      const conversationId = parseInt(req.params.conversationId);
+      const userId = parseInt(req.session.user.id);
+      const { content } = req.body;
+      
+      if (!content || !content.trim()) {
+        return res.status(400).json({ error: "Messaggio richiesto" });
+      }
+      
+      // Verify user is part of conversation
+      const conversation = await storage.getConversation(conversationId);
+      if (!conversation) {
+        return res.status(404).json({ error: "Conversazione non trovata" });
+      }
+      
+      if (conversation.customerId !== userId && conversation.ownerId !== userId) {
+        return res.status(403).json({ error: "Non autorizzato" });
+      }
+      
+      const message = await storage.createMessage({
+        conversationId,
+        senderId: userId,
+        content: content.trim()
+      });
+      
+      // Update conversation last message time
+      await storage.updateConversationLastMessage(conversationId);
+      
+      res.json(message);
+    } catch (error: any) {
+      console.error("Error sending message:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

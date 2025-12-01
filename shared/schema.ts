@@ -279,15 +279,49 @@ export type Experience = typeof experiences.$inferSelect;
 export const insertMooringSchema = insertBoatSchema;
 export const insertMooringBookingSchema = insertBookingSchema;
 
+// Conversations table for chat between customers and owners
+export const conversations = pgTable("conversations", {
+  id: serial("id").primaryKey(),
+  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  customerId: integer("customer_id").references(() => users.id).notNull(),
+  ownerId: integer("owner_id").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  lastMessageAt: timestamp("last_message_at").defaultNow(),
+});
+
+// Messages table for chat messages
+export const messages = pgTable("messages", {
+  id: serial("id").primaryKey(),
+  conversationId: integer("conversation_id").references(() => conversations.id).notNull(),
+  senderId: integer("sender_id").references(() => users.id).notNull(),
+  content: text("content").notNull(),
+  readAt: timestamp("read_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertConversationSchema = createInsertSchema(conversations).omit({ 
+  id: true, 
+  createdAt: true, 
+  lastMessageAt: true 
+});
+
+export const insertMessageSchema = createInsertSchema(messages, {
+  content: z.string().min(1, "Messaggio richiesto"),
+}).omit({ id: true, createdAt: true, readAt: true });
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertBoat = z.infer<typeof insertBoatSchema>;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type InsertBoatAvailability = z.infer<typeof insertBoatAvailabilitySchema>;
 export type InsertMooringAvailability = z.infer<typeof insertMooringAvailabilitySchema>;
 export type InsertMooring = z.infer<typeof insertMooringDbSchema>;
+export type InsertConversation = z.infer<typeof insertConversationSchema>;
+export type InsertMessage = z.infer<typeof insertMessageSchema>;
 export type User = typeof users.$inferSelect;
 export type Boat = typeof boats.$inferSelect;
 export type Booking = typeof bookings.$inferSelect;
 export type BoatAvailability = typeof boatAvailability.$inferSelect;
 export type MooringAvailability = typeof mooringAvailability.$inferSelect;
 export type Mooring = typeof moorings.$inferSelect;
+export type Conversation = typeof conversations.$inferSelect;
+export type Message = typeof messages.$inferSelect;

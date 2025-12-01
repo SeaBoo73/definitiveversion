@@ -2884,6 +2884,9 @@ export default function OwnerDashboard() {
                             variant="outline" 
                             className="text-blue-600 hover:bg-blue-50"
                             onClick={() => {
+                              const includesValue = Array.isArray(experience.includes) 
+                                ? experience.includes.join('\n') 
+                                : (experience.includes || "");
                               setExperienceFormData({
                                 name: experience.name,
                                 category: experience.category as any,
@@ -2892,7 +2895,7 @@ export default function OwnerDashboard() {
                                 maxParticipants: String(experience.maxParticipants),
                                 pricePerPerson: String(experience.pricePerPerson),
                                 location: experience.location,
-                                includes: experience.includes || "",
+                                includes: includesValue,
                                 requirements: experience.requirements || "",
                               });
                               setExperienceImages(experience.images || []);

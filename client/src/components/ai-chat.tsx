@@ -47,10 +47,11 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
   // Send message to OpenAI
   const sendMessageMutation = useMutation({
     mutationFn: async (content: string) => {
-      return apiRequest("POST", "/api/ai/chat", { 
+      const response = await apiRequest("POST", "/api/ai/chat", { 
         message: content,
         context: "SeaBoo boat rental platform - Italian maritime services assistant"
       });
+      return await response.json();
     },
     onSuccess: (data: any) => {
       const assistantMessage: ChatMessage = {
@@ -104,10 +105,6 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
     };
     setMessages(prev => [...prev, userMessage]);
     sendMessageMutation.mutate(action);
-  };
-
-  const handleEmailSupport = () => {
-    window.open('mailto:assistenza@seaboo.it?subject=Richiesta Assistenza SeaBoo', '_self');
   };
 
   if (!isOpen) return null;
@@ -214,23 +211,6 @@ export function AiChat({ isOpen, onClose }: AiChatProps) {
               <div ref={messagesEndRef} />
             </div>
           </ScrollArea>
-
-          {/* Alternative Support Options */}
-          <div className="border-t bg-gray-50 p-3">
-            <div className="flex items-center justify-between text-xs text-gray-600">
-              <span>Serve assistenza umana?</span>
-              <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleEmailSupport}
-                  className="text-xs h-7"
-                >
-                  Email Assistenza
-                </Button>
-              </div>
-            </div>
-          </div>
 
           {/* Message Input */}
           <form onSubmit={handleSendMessage} className="border-t p-4">

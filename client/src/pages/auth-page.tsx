@@ -699,7 +699,7 @@ export default function AuthPage() {
               Benvenuto in SeaBoo
             </h2>
             <p className="text-xl text-blue-100 max-w-md">
-              La piattaforma leader per il noleggio di imbarcazioni in Italia.
+              La piattaforma leader per il noleggio di imbarcazioni e ormeggi.
               Scopri il mare come mai prima d'ora.
             </p>
           </div>

@@ -43,6 +43,18 @@
         <key>UIViewControllerBasedStatusBarAppearance</key>
         <true/>
         
+        <!-- Privacy Usage Descriptions -->
+        <key>NSCameraUsageDescription</key>
+        <string>SeaBoo utilizza la fotocamera per scattare foto delle tue imbarcazioni e del tuo profilo.</string>
+        <key>NSPhotoLibraryUsageDescription</key>
+        <string>SeaBoo accede alla libreria foto per caricare immagini delle tue imbarcazioni.</string>
+        <key>NSPhotoLibraryAddUsageDescription</key>
+        <string>SeaBoo salva le foto delle imbarcazioni nella tua libreria.</string>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>SeaBoo utilizza la tua posizione per mostrarti le imbarcazioni disponibili nelle vicinanze.</string>
+        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+        <string>SeaBoo utilizza la tua posizione per mostrarti le imbarcazioni disponibili nelle vicinanze.</string>
+        
         <!-- Configurazioni per Apple Sign In -->
         <key>NSAppTransportSecurity</key>
         <dict>

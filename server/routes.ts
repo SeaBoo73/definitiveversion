@@ -1069,6 +1069,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // =============== EXPERIENCES API ===============
+  
+  app.get('/api/experiences', async (req, res) => {
+    try {
+      const experiencesList = await storage.getExperiences();
+      res.json(experiencesList);
+    } catch (error: any) {
+      console.error("Get experiences error:", error);
+      res.status(500).json({ error: "Errore nel recupero esperienze" });
+    }
+  });
+
+  app.get('/api/experiences/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const experience = await storage.getExperience(id);
+      if (!experience) {
+        return res.status(404).json({ error: "Esperienza non trovata" });
+      }
+      res.json(experience);
+    } catch (error: any) {
+      console.error("Get experience error:", error);
+      res.status(500).json({ error: "Errore nel recupero esperienza" });
+    }
+  });
+
+  app.get('/api/owner/experiences', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const experiencesList = await storage.getExperiencesByOwner(userId);
+      res.json(experiencesList);
+    } catch (error: any) {
+      console.error("Get owner experiences error:", error);
+      res.status(500).json({ error: "Errore nel recupero esperienze" });
+    }
+  });
+
+  app.post('/api/owner/experiences', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const experienceData = { ...req.body, hostId: userId };
+      const experience = await storage.createExperience(experienceData);
+      res.status(201).json(experience);
+    } catch (error: any) {
+      console.error("Create experience error:", error);
+      res.status(400).json({ error: error.message || "Errore nella creazione esperienza" });
+    }
+  });
+
+  app.patch('/api/owner/experiences/:id', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const userId = parseInt(req.session.user.id);
+      const experience = await storage.updateExperience(id, userId, req.body);
+      if (!experience) {
+        return res.status(404).json({ error: "Esperienza non trovata o non autorizzato" });
+      }
+      res.json(experience);
+    } catch (error: any) {
+      console.error("Update experience error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'aggiornamento esperienza" });
+    }
+  });
+
+  app.delete('/api/owner/experiences/:id', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const userId = parseInt(req.session.user.id);
+      const deleted = await storage.deleteExperience(id, userId);
+      if (!deleted) {
+        return res.status(404).json({ error: "Esperienza non trovata o non autorizzato" });
+      }
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Delete experience error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'eliminazione esperienza" });
+    }
+  });
+
   // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

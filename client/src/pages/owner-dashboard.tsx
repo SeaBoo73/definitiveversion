@@ -28,7 +28,7 @@ import { Separator } from "@/components/ui/separator";
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertBoatSchema, insertMooringDbSchema, Boat, Booking, Mooring } from "@shared/schema";
+import { insertBoatSchema, insertMooringDbSchema, Boat, Booking, Mooring, Experience, insertExperienceSchema } from "@shared/schema";
 import { validateManufacturer, findSimilarManufacturers, getManufacturersByCategory } from "@shared/boat-manufacturers";
 import { getAllPorts } from "@shared/ports-data";
 import { apiRequest } from "@/lib/queryClient";
@@ -421,6 +421,129 @@ export default function OwnerDashboard() {
       });
     },
   });
+
+  // Experiences query
+  const { data: experiencesData, isLoading: experiencesLoading } = useQuery<Experience[]>({
+    queryKey: ["/api/owner/experiences"],
+    enabled: !!user,
+    retry: false,
+  });
+  const experiencesList = experiencesData || [];
+
+  // Experiences state
+  const [showAddExperienceModal, setShowAddExperienceModal] = useState(false);
+  const [experienceFormData, setExperienceFormData] = useState({
+    name: "",
+    category: "tour" as "sunset" | "fishing" | "diving" | "aperitivo" | "tour" | "sport" | "romantic",
+    description: "",
+    duration: "",
+    maxParticipants: "",
+    pricePerPerson: "",
+    location: "",
+    includes: "",
+    requirements: "",
+  });
+
+  const resetExperienceForm = () => {
+    setExperienceFormData({
+      name: "",
+      category: "tour",
+      description: "",
+      duration: "",
+      maxParticipants: "",
+      pricePerPerson: "",
+      location: "",
+      includes: "",
+      requirements: "",
+    });
+  };
+
+  // Experience mutations
+  const createExperienceMutation = useMutation({
+    mutationFn: async (data: any) => {
+      const res = await apiRequest("POST", "/api/owner/experiences", data);
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/experiences"] });
+      setShowAddExperienceModal(false);
+      resetExperienceForm();
+      toast({
+        title: "Esperienza creata",
+        description: "La tua esperienza è stata pubblicata con successo",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nella creazione dell'esperienza",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteExperienceMutation = useMutation({
+    mutationFn: async (id: number) => {
+      await apiRequest("DELETE", `/api/owner/experiences/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/experiences"] });
+      toast({
+        title: "Esperienza eliminata",
+        description: "L'esperienza è stata rimossa",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Errore",
+        description: error.message || "Errore nell'eliminazione dell'esperienza",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleExperienceSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!experienceFormData.name.trim()) {
+      toast({ title: "Errore", description: "Nome esperienza richiesto", variant: "destructive" });
+      return;
+    }
+    if (!experienceFormData.description.trim() || experienceFormData.description.length < 10) {
+      toast({ title: "Errore", description: "Descrizione richiesta (min 10 caratteri)", variant: "destructive" });
+      return;
+    }
+    if (!experienceFormData.duration || parseInt(experienceFormData.duration) <= 0) {
+      toast({ title: "Errore", description: "Durata richiesta", variant: "destructive" });
+      return;
+    }
+    if (!experienceFormData.maxParticipants || parseInt(experienceFormData.maxParticipants) <= 0) {
+      toast({ title: "Errore", description: "Numero partecipanti richiesto", variant: "destructive" });
+      return;
+    }
+    if (!experienceFormData.pricePerPerson || parseFloat(experienceFormData.pricePerPerson) <= 0) {
+      toast({ title: "Errore", description: "Prezzo richiesto", variant: "destructive" });
+      return;
+    }
+    if (!experienceFormData.location.trim()) {
+      toast({ title: "Errore", description: "Località richiesta", variant: "destructive" });
+      return;
+    }
+
+    const dataToSubmit = {
+      name: experienceFormData.name.trim(),
+      category: experienceFormData.category,
+      description: experienceFormData.description.trim(),
+      duration: parseInt(experienceFormData.duration),
+      maxParticipants: parseInt(experienceFormData.maxParticipants),
+      pricePerPerson: experienceFormData.pricePerPerson,
+      location: experienceFormData.location.trim(),
+      includes: experienceFormData.includes ? experienceFormData.includes.split('\n').filter(s => s.trim()) : [],
+      requirements: experienceFormData.requirements.trim() || null,
+    };
+
+    createExperienceMutation.mutate(dataToSubmit);
+  };
 
   const openEditMooringModal = (mooring: Mooring) => {
     setEditingMooring(mooring);
@@ -2154,9 +2277,9 @@ export default function OwnerDashboard() {
           <TabsContent value="experiences" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-bold text-gray-900">Le mie esperienze</h2>
-              <Dialog>
+              <Dialog open={showAddExperienceModal} onOpenChange={setShowAddExperienceModal}>
                 <DialogTrigger asChild>
-                  <Button className="bg-coral hover:bg-orange-600">
+                  <Button className="bg-coral hover:bg-orange-600" data-testid="button-addExperience">
                     <Plus className="h-4 w-4 mr-2" />
                     Aggiungi esperienza
                   </Button>
@@ -2167,14 +2290,14 @@ export default function OwnerDashboard() {
                       <Sparkles className="h-8 w-8 text-white" />
                     </div>
                     <DialogTitle className="text-2xl font-bold text-gray-900">
-                      ✨ Crea una nuova esperienza
+                      Crea una nuova esperienza
                     </DialogTitle>
                     <p className="text-gray-600 mt-2">
                       Offri ai tuoi ospiti un'esperienza memorabile sul mare
                     </p>
                   </DialogHeader>
 
-                  <form className="space-y-8">
+                  <form onSubmit={handleExperienceSubmit} className="space-y-8">
                     
                     {/* Sezione 1: Informazioni Base */}
                     <div className="bg-coral/10 border border-coral/30 rounded-xl p-6">
@@ -2198,6 +2321,9 @@ export default function OwnerDashboard() {
                             id="experienceTitle" 
                             placeholder="es. Tour delle Isole Pontine, Tramonto con Aperitivo..." 
                             className="border-coral/30 focus:border-coral"
+                            value={experienceFormData.name}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, name: e.target.value})}
+                            data-testid="input-experienceName"
                           />
                         </div>
 
@@ -2206,17 +2332,21 @@ export default function OwnerDashboard() {
                             <Star className="h-4 w-4 text-coral" />
                             Categoria *
                           </Label>
-                          <Select>
-                            <SelectTrigger className="border-coral/30 focus:border-coral">
+                          <Select
+                            value={experienceFormData.category}
+                            onValueChange={(value: any) => setExperienceFormData({...experienceFormData, category: value})}
+                          >
+                            <SelectTrigger className="border-coral/30 focus:border-coral" data-testid="select-experienceCategory">
                               <SelectValue placeholder="Seleziona categoria" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="tour">🌊 Tour ed Escursioni</SelectItem>
-                              <SelectItem value="gourmet">🍽️ Esperienze Gourmet</SelectItem>
-                              <SelectItem value="charter">⛵ Charter Privato</SelectItem>
-                              <SelectItem value="events">🎉 Eventi Speciali</SelectItem>
-                              <SelectItem value="courses">🎓 Corsi Nautici</SelectItem>
-                              <SelectItem value="fishing">🎣 Pesca Sportiva</SelectItem>
+                              <SelectItem value="tour">Tour ed Escursioni</SelectItem>
+                              <SelectItem value="aperitivo">Aperitivo al Tramonto</SelectItem>
+                              <SelectItem value="sunset">Tramonto Romantico</SelectItem>
+                              <SelectItem value="fishing">Pesca Sportiva</SelectItem>
+                              <SelectItem value="diving">Snorkeling e Immersioni</SelectItem>
+                              <SelectItem value="sport">Sport Acquatici</SelectItem>
+                              <SelectItem value="romantic">Esperienza Romantica</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -2224,12 +2354,16 @@ export default function OwnerDashboard() {
                         <div className="space-y-2">
                           <Label htmlFor="experienceDuration" className="flex items-center gap-2">
                             <Clock className="h-4 w-4 text-coral" />
-                            Durata
+                            Durata (ore) *
                           </Label>
                           <Input 
                             id="experienceDuration" 
-                            placeholder="es. 4 ore, Giornata intera, Weekend..." 
+                            type="number"
+                            placeholder="es. 4" 
                             className="border-coral/30 focus:border-coral"
+                            value={experienceFormData.duration}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, duration: e.target.value})}
+                            data-testid="input-experienceDuration"
                           />
                         </div>
 
@@ -2242,6 +2376,9 @@ export default function OwnerDashboard() {
                             id="experienceLocation" 
                             placeholder="es. Porto di Gaeta, Marina di Civitavecchia..." 
                             className="border-coral/30 focus:border-coral"
+                            value={experienceFormData.location}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, location: e.target.value})}
+                            data-testid="input-experienceLocation"
                           />
                         </div>
                       </div>
@@ -2259,7 +2396,7 @@ export default function OwnerDashboard() {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
                           <Label htmlFor="maxParticipants" className="flex items-center gap-2">
                             <Users className="h-4 w-4 text-blue-600" />
@@ -2270,13 +2407,16 @@ export default function OwnerDashboard() {
                             type="number" 
                             placeholder="es. 12" 
                             className="border-blue-200 focus:border-blue-500"
+                            value={experienceFormData.maxParticipants}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, maxParticipants: e.target.value})}
+                            data-testid="input-experienceMaxParticipants"
                           />
                         </div>
 
                         <div className="space-y-2">
                           <Label htmlFor="pricePerPerson" className="flex items-center gap-2">
-                            <DollarSign className="h-4 w-4 text-blue-600" />
-                            Prezzo per persona (€) *
+                            <Euro className="h-4 w-4 text-blue-600" />
+                            Prezzo per persona *
                           </Label>
                           <Input 
                             id="pricePerPerson" 
@@ -2284,24 +2424,10 @@ export default function OwnerDashboard() {
                             step="0.01" 
                             placeholder="es. 85.00" 
                             className="border-blue-200 focus:border-blue-500"
+                            value={experienceFormData.pricePerPerson}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, pricePerPerson: e.target.value})}
+                            data-testid="input-experiencePrice"
                           />
-                        </div>
-
-                        <div className="space-y-2">
-                          <Label htmlFor="difficulty" className="flex items-center gap-2">
-                            <Gauge className="h-4 w-4 text-blue-600" />
-                            Difficoltà
-                          </Label>
-                          <Select>
-                            <SelectTrigger className="border-blue-200 focus:border-blue-500">
-                              <SelectValue placeholder="Livello" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="easy">🟢 Facile - Per tutti</SelectItem>
-                              <SelectItem value="medium">🟡 Medio - Esperienza base</SelectItem>
-                              <SelectItem value="hard">🔴 Difficile - Esperti</SelectItem>
-                            </SelectContent>
-                          </Select>
                         </div>
                       </div>
 
@@ -2315,6 +2441,9 @@ export default function OwnerDashboard() {
                           placeholder="es. Pranzo a bordo&#10;Attrezzatura snorkeling&#10;Guida esperta&#10;Assicurazione"
                           rows={4}
                           className="border-blue-200 focus:border-blue-500"
+                          value={experienceFormData.includes}
+                          onChange={(e) => setExperienceFormData({...experienceFormData, includes: e.target.value})}
+                          data-testid="textarea-experienceIncludes"
                         />
                       </div>
                     </div>
@@ -2342,6 +2471,9 @@ export default function OwnerDashboard() {
                             placeholder="Descrivi nel dettaglio l'esperienza: itinerario, attività, momenti speciali che vivranno gli ospiti..."
                             rows={5}
                             className="border-green-200 focus:border-green-500"
+                            value={experienceFormData.description}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, description: e.target.value})}
+                            data-testid="textarea-experienceDescription"
                           />
                         </div>
 
@@ -2355,6 +2487,9 @@ export default function OwnerDashboard() {
                             placeholder="es. Esperienza soggetta a condizioni meteo, si consiglia abbigliamento comodo, età minima 18 anni..."
                             rows={3}
                             className="border-green-200 focus:border-green-500"
+                            value={experienceFormData.requirements}
+                            onChange={(e) => setExperienceFormData({...experienceFormData, requirements: e.target.value})}
+                            data-testid="textarea-experienceRequirements"
                           />
                         </div>
                       </div>
@@ -2364,43 +2499,121 @@ export default function OwnerDashboard() {
                     <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
                       <Button 
                         type="submit" 
+                        disabled={createExperienceMutation.isPending}
                         className="flex-1 bg-gradient-to-r from-coral to-orange-500 hover:from-orange-500 hover:to-red-500 text-white font-semibold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-2"
+                        data-testid="button-submitExperience"
                       >
                         <Sparkles className="h-4 w-4" />
-                        ✨ Crea esperienza
+                        {createExperienceMutation.isPending ? "Creazione..." : "Crea esperienza"}
                       </Button>
                       
                       <Button 
                         type="button" 
                         variant="outline" 
+                        onClick={() => {
+                          setShowAddExperienceModal(false);
+                          resetExperienceForm();
+                        }}
                         className="flex-1 sm:flex-initial min-w-[120px] border-gray-300 text-gray-700 hover:bg-gray-50 py-3 px-6 rounded-lg transition-colors duration-200"
+                        data-testid="button-cancelExperience"
                       >
-                        ❌ Annulla
+                        Annulla
                       </Button>
-                    </div>
-
-                    {/* Info Footer */}
-                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-                      <p className="text-sm text-gray-600">
-                        🌟 <strong>Consiglio:</strong> Le esperienze uniche e ben descritte attirano più prenotazioni e ottengono recensioni migliori!
-                      </p>
                     </div>
                   </form>
                 </DialogContent>
               </Dialog>
             </div>
 
-            {/* Lista esperienze placeholder */}
-            <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-              <Sparkles className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Nessuna esperienza creata</h3>
-              <p className="text-gray-600 mb-4">
-                Inizia a offrire esperienze uniche ai tuoi ospiti per aumentare i guadagni!
-              </p>
-              <p className="text-sm text-gray-500">
-                Le esperienze possono generare fino al 40% di ricavi aggiuntivi rispetto al solo noleggio
-              </p>
-            </div>
+            {/* Lista esperienze */}
+            {experiencesList.length === 0 ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                <Sparkles className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Nessuna esperienza creata</h3>
+                <p className="text-gray-600 mb-4">
+                  Inizia a offrire esperienze uniche ai tuoi ospiti per aumentare i guadagni!
+                </p>
+                <p className="text-sm text-gray-500">
+                  Le esperienze possono generare fino al 40% di ricavi aggiuntivi rispetto al solo noleggio
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {experiencesList.map((experience) => {
+                  const categoryLabels: Record<string, string> = {
+                    tour: "Tour ed Escursioni",
+                    aperitivo: "Aperitivo al Tramonto",
+                    sunset: "Tramonto Romantico",
+                    fishing: "Pesca Sportiva",
+                    diving: "Snorkeling e Immersioni",
+                    sport: "Sport Acquatici",
+                    romantic: "Esperienza Romantica",
+                  };
+                  return (
+                    <Card key={experience.id} className="hover:shadow-lg transition-shadow" data-testid={`card-experience-${experience.id}`}>
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-900">{experience.name}</h3>
+                            <Badge className="bg-coral/20 text-coral mt-1">
+                              {categoryLabels[experience.category] || experience.category}
+                            </Badge>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-2xl font-bold text-coral">{experience.pricePerPerson}</p>
+                            <p className="text-xs text-gray-500">per persona</p>
+                          </div>
+                        </div>
+                        
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">{experience.description}</p>
+                        
+                        <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            {experience.duration} ore
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4" />
+                            Max {experience.maxParticipants}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {experience.location}
+                          </div>
+                        </div>
+                        
+                        <div className="flex gap-2">
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50" data-testid={`button-deleteExperience-${experience.id}`}>
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Eliminare questa esperienza?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Questa azione non puo essere annullata. L'esperienza "{experience.name}" verra eliminata permanentemente.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Annulla</AlertDialogCancel>
+                                <AlertDialogAction
+                                  className="bg-red-600 hover:bg-red-700"
+                                  onClick={() => deleteExperienceMutation.mutate(experience.id)}
+                                >
+                                  Elimina
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="bookings" className="space-y-6">

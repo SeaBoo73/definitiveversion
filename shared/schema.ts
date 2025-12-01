@@ -243,6 +243,38 @@ export const insertMooringDbSchema = createInsertSchema(moorings, {
   }).optional(),
 }).omit({ id: true, createdAt: true });
 
+// Experiences table for boat experiences/tours
+export const experiences = pgTable("experiences", {
+  id: serial("id").primaryKey(),
+  hostId: integer("host_id").references(() => users.id).notNull(),
+  boatId: integer("boat_id").references(() => boats.id),
+  name: text("name").notNull(),
+  category: text("category").notNull(), // sunset, fishing, diving, aperitivo, tour, sport, romantic
+  description: text("description").notNull(),
+  duration: integer("duration").notNull(), // in hours
+  maxParticipants: integer("max_participants").notNull(),
+  pricePerPerson: numeric("price_per_person").notNull(),
+  location: text("location").notNull(),
+  images: text("images").array(),
+  includes: text("includes").array(), // what's included
+  requirements: text("requirements"), // special notes/requirements
+  active: boolean("active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertExperienceSchema = createInsertSchema(experiences, {
+  name: z.string().min(1, "Nome richiesto"),
+  category: z.enum(["sunset", "fishing", "diving", "aperitivo", "tour", "sport", "romantic"]),
+  description: z.string().min(10, "Descrizione richiesta (min 10 caratteri)"),
+  duration: z.coerce.number().min(1, "Durata richiesta"),
+  maxParticipants: z.coerce.number().min(1, "Numero partecipanti richiesto"),
+  pricePerPerson: z.coerce.number().min(1, "Prezzo richiesto"),
+  location: z.string().min(1, "Località richiesta"),
+}).omit({ id: true, createdAt: true, hostId: true });
+
+export type InsertExperience = z.infer<typeof insertExperienceSchema>;
+export type Experience = typeof experiences.$inferSelect;
+
 // Legacy exports for compatibility
 export const insertMooringSchema = insertBoatSchema;
 export const insertMooringBookingSchema = insertBookingSchema;

@@ -5,6 +5,7 @@ import {
   boatAvailability,
   moorings,
   mooringAvailability,
+  experiences,
   type User,
   type InsertUser,
   type Boat,
@@ -17,6 +18,8 @@ import {
   type InsertMooring,
   type MooringAvailability,
   type InsertMooringAvailability,
+  type Experience,
+  type InsertExperience,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -67,6 +70,14 @@ export interface IStorage {
   createMooringAvailability(data: InsertMooringAvailability): Promise<MooringAvailability>;
   updateMooringAvailability(id: number, data: Partial<InsertMooringAvailability>): Promise<MooringAvailability | undefined>;
   deleteMooringAvailability(id: number): Promise<boolean>;
+  
+  // Experience operations
+  getExperiencesByOwner(hostId: number): Promise<Experience[]>;
+  getExperiences(): Promise<Experience[]>;
+  getExperience(id: number): Promise<Experience | undefined>;
+  createExperience(data: InsertExperience & { hostId: number }): Promise<Experience>;
+  updateExperience(id: number, hostId: number, data: Partial<InsertExperience>): Promise<Experience | undefined>;
+  deleteExperience(id: number, hostId: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -302,6 +313,41 @@ export class DatabaseStorage implements IStorage {
 
   async deleteMooringAvailability(id: number): Promise<boolean> {
     const result = await db.delete(mooringAvailability).where(eq(mooringAvailability.id, id));
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  // Experience operations
+  async getExperiencesByOwner(hostId: number): Promise<Experience[]> {
+    return await db.select().from(experiences).where(eq(experiences.hostId, hostId));
+  }
+
+  async getExperiences(): Promise<Experience[]> {
+    return await db.select().from(experiences).where(eq(experiences.active, true));
+  }
+
+  async getExperience(id: number): Promise<Experience | undefined> {
+    const [experience] = await db.select().from(experiences).where(eq(experiences.id, id));
+    return experience;
+  }
+
+  async createExperience(data: InsertExperience & { hostId: number }): Promise<Experience> {
+    const [experience] = await db.insert(experiences).values(data).returning();
+    return experience;
+  }
+
+  async updateExperience(id: number, hostId: number, data: Partial<InsertExperience>): Promise<Experience | undefined> {
+    const [experience] = await db
+      .update(experiences)
+      .set(data)
+      .where(and(eq(experiences.id, id), eq(experiences.hostId, hostId)))
+      .returning();
+    return experience;
+  }
+
+  async deleteExperience(id: number, hostId: number): Promise<boolean> {
+    const result = await db
+      .delete(experiences)
+      .where(and(eq(experiences.id, id), eq(experiences.hostId, hostId)));
     return (result.rowCount ?? 0) > 0;
   }
 }

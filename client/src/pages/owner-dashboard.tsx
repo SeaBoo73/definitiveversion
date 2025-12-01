@@ -118,6 +118,7 @@ export default function OwnerDashboard() {
   const [mooringPriceOverride, setMooringPriceOverride] = useState("");
   const [mooringBlockStatus, setMooringBlockStatus] = useState<'blocked' | 'available'>('blocked');
   const [mooringBlockedDates, setMooringBlockedDates] = useState<Date[]>([]);
+  const [mooringCustomPrices, setMooringCustomPrices] = useState<Record<string, number>>({});
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
   
   // Mooring port autofill state
@@ -2975,6 +2976,9 @@ export default function OwnerDashboard() {
                     const isHovered = mooringRangeStart && !mooringRangeEnd && mooringHoveredDate &&
                       !isBefore(day, mooringRangeStart) && !isAfter(day, mooringHoveredDate);
                     const isBlocked = mooringBlockedDates.some(blockedDate => isSameDay(day, blockedDate));
+                    const dateKey = format(day, 'yyyy-MM-dd');
+                    const customPrice = mooringCustomPrices[dateKey];
+                    const hasCustomPrice = customPrice !== undefined;
                     
                     let bgClass = "bg-white hover:bg-gray-100";
                     let textClass = "text-gray-900";
@@ -2994,12 +2998,15 @@ export default function OwnerDashboard() {
                     } else if (isHovered) {
                       bgClass = "bg-blue-200";
                       textClass = "text-blue-900";
+                    } else if (hasCustomPrice) {
+                      bgClass = "bg-green-100 hover:bg-green-200";
+                      textClass = "text-green-900";
                     }
                     
                     return (
                       <div
                         key={day.toISOString()}
-                        className={`min-h-[50px] p-2 border-b border-r cursor-pointer transition-colors ${bgClass} ${isPast ? 'cursor-not-allowed' : ''}`}
+                        className={`min-h-[60px] p-1 border-b border-r cursor-pointer transition-colors ${bgClass} ${isPast ? 'cursor-not-allowed' : ''} flex flex-col`}
                         onClick={() => {
                           if (isPast) return;
                           
@@ -3025,6 +3032,11 @@ export default function OwnerDashboard() {
                         onMouseLeave={() => setMooringHoveredDate(null)}
                       >
                         <span className={`text-sm ${textClass}`}>{format(day, 'd')}</span>
+                        {hasCustomPrice && !isPast && (
+                          <span className={`text-xs font-medium ${isBlocked || isRangeStart || isRangeEnd || isInRange ? 'text-white' : 'text-green-700'}`}>
+                            €{customPrice}
+                          </span>
+                        )}
                       </div>
                     );
                   });
@@ -3125,12 +3137,12 @@ export default function OwnerDashboard() {
                 Bloccato ({mooringBlockedDates.length})
               </span>
               <span className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-blue-600 rounded"></div>
-                Selezionato
+                <div className="w-4 h-4 bg-green-100 border border-green-300 rounded"></div>
+                Prezzo speciale ({Object.keys(mooringCustomPrices).length})
               </span>
               <span className="flex items-center gap-2">
-                <div className="w-4 h-4 bg-gray-100 rounded"></div>
-                Passato
+                <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                Selezionato
               </span>
               <span className="flex items-center gap-2">
                 <div className="w-4 h-4 bg-white border rounded"></div>
@@ -3156,9 +3168,9 @@ export default function OwnerDashboard() {
                 onClick={() => {
                   if (mooringRangeStart && mooringRangeEnd) {
                     const days = Math.ceil((mooringRangeEnd.getTime() - mooringRangeStart.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+                    const rangeDates = eachDayOfInterval({ start: mooringRangeStart, end: mooringRangeEnd });
                     
                     if (mooringBlockStatus === 'blocked') {
-                      const rangeDates = eachDayOfInterval({ start: mooringRangeStart, end: mooringRangeEnd });
                       setMooringBlockedDates(prev => {
                         const newDates = [...prev];
                         rangeDates.forEach(date => {
@@ -3169,10 +3181,21 @@ export default function OwnerDashboard() {
                         return newDates;
                       });
                     } else {
-                      const rangeDates = eachDayOfInterval({ start: mooringRangeStart, end: mooringRangeEnd });
                       setMooringBlockedDates(prev => 
                         prev.filter(d => !rangeDates.some(rd => isSameDay(rd, d)))
                       );
+                    }
+                    
+                    if (mooringPriceOverride) {
+                      const priceValue = parseFloat(mooringPriceOverride);
+                      setMooringCustomPrices(prev => {
+                        const newPrices = { ...prev };
+                        rangeDates.forEach(date => {
+                          const key = format(date, 'yyyy-MM-dd');
+                          newPrices[key] = priceValue;
+                        });
+                        return newPrices;
+                      });
                     }
                     
                     toast({

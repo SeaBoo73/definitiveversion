@@ -1,60 +1,43 @@
-// SeaGO Service Worker - v2.1.1 - FORCE REFRESH
-const CACHE_NAME = 'seago-cache-v2.1.1';
-const API_CACHE_NAME = 'seago-api-cache-v2.1.1';
+// SeaBoo Service Worker - v3.0.0 - DISABLED FOR NATIVE APP
+// This SW is disabled to prevent caching issues in Capacitor native apps
 
-// Install event - clear old caches and force update
+const CACHE_NAME = 'seaboo-cache-v3.0.0';
+
+// Install event - skip caching, immediately activate
 self.addEventListener('install', (event) => {
-  console.log('SeaGO SW v2.1.1 installing - FORCE REFRESH...');
+  console.log('SeaBoo SW v3.0.0 installing - CACHING DISABLED...');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      // Delete ALL caches
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          console.log('Deleting cache:', cacheName);
+          return caches.delete(cacheName);
+        })
+      );
+    }).then(() => {
+      self.skipWaiting();
+    })
+  );
+});
+
+// Activate event - take control and clear all caches
+self.addEventListener('activate', (event) => {
+  console.log('SeaBoo SW v3.0.0 activated - ALL CACHES CLEARED');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME && cacheName !== API_CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
+          return caches.delete(cacheName);
         })
       );
     }).then(() => {
-      self.skipWaiting(); // Force activation
+      self.clients.claim();
     })
   );
 });
 
-// Activate event - take control immediately
-self.addEventListener('activate', (event) => {
-  console.log('SeaGO SW v2.1.1 activated - CACHE CLEARED');
-  event.waitUntil(self.clients.claim());
-});
-
-// Fetch event - Network first for API calls, cache first for static assets
+// Fetch event - ALWAYS fetch from network, no caching
 self.addEventListener('fetch', (event) => {
-  const { request } = event;
-  
-  // API calls - always fetch fresh data
-  if (request.url.includes('/api/')) {
-    event.respondWith(
-      fetch(request)
-        .then(response => {
-          if (response.ok) {
-            const responseClone = response.clone();
-            caches.open(API_CACHE_NAME).then(cache => {
-              cache.put(request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => {
-          return caches.match(request);
-        })
-    );
-    return;
-  }
-  
-  // Static assets - cache first
-  event.respondWith(
-    caches.match(request).then(response => {
-      return response || fetch(request);
-    })
-  );
+  event.respondWith(fetch(event.request));
 });

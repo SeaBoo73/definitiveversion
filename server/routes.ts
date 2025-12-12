@@ -589,6 +589,143 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ ok: true, service: 'apple-login' });
   });
 
+  // Password Reset - Request reset email
+  app.post('/api/auth/forgot-password', async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ error: "Email richiesta" });
+      }
+      
+      const user = await storage.getUserByEmail(email);
+      
+      // Always return success to prevent email enumeration
+      if (!user) {
+        return res.json({ 
+          success: true, 
+          message: "Se l'email esiste, riceverai un link per reimpostare la password" 
+        });
+      }
+      
+      // Generate secure token
+      const crypto = await import('crypto');
+      const token = crypto.randomBytes(32).toString('hex');
+      const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+      
+      // Save token to database
+      await storage.createPasswordResetToken(user.id, token, expiresAt);
+      
+      // Send email with reset link
+      const resetLink = `${process.env.APP_URL || 'https://seaboo.it'}/reset-password?token=${token}`;
+      
+      try {
+        const sgMail = await import('@sendgrid/mail');
+        sgMail.default.setApiKey(process.env.SENDGRID_API_KEY!);
+        
+        await sgMail.default.send({
+          to: email,
+          from: 'noreply@seaboo.it',
+          subject: 'Reimposta la tua password - SeaBoo',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #0ea5e9;">Reimposta la tua password</h2>
+              <p>Hai richiesto di reimpostare la password del tuo account SeaBoo.</p>
+              <p>Clicca il pulsante qui sotto per creare una nuova password:</p>
+              <a href="${resetLink}" style="display: inline-block; background-color: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">Reimposta Password</a>
+              <p style="color: #666; font-size: 14px;">Questo link scadrà tra 1 ora.</p>
+              <p style="color: #666; font-size: 14px;">Se non hai richiesto questo reset, ignora questa email.</p>
+              <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+              <p style="color: #999; font-size: 12px;">SeaBoo - Piattaforma Marittima</p>
+            </div>
+          `,
+        });
+        
+        console.log('Password reset email sent to:', email);
+      } catch (emailError) {
+        console.error('Error sending password reset email:', emailError);
+        // Continue even if email fails - log for debugging
+      }
+      
+      res.json({ 
+        success: true, 
+        message: "Se l'email esiste, riceverai un link per reimpostare la password" 
+      });
+    } catch (error: any) {
+      console.error("Forgot password error:", error);
+      res.status(500).json({ error: "Errore durante la richiesta" });
+    }
+  });
+
+  // Password Reset - Verify token
+  app.get('/api/auth/reset-password/:token', async (req, res) => {
+    try {
+      const { token } = req.params;
+      const resetToken = await storage.getPasswordResetToken(token);
+      
+      if (!resetToken) {
+        return res.status(400).json({ valid: false, error: "Token non valido" });
+      }
+      
+      if (resetToken.usedAt) {
+        return res.status(400).json({ valid: false, error: "Token già utilizzato" });
+      }
+      
+      if (new Date() > new Date(resetToken.expiresAt)) {
+        return res.status(400).json({ valid: false, error: "Token scaduto" });
+      }
+      
+      res.json({ valid: true });
+    } catch (error) {
+      console.error("Verify reset token error:", error);
+      res.status(500).json({ valid: false, error: "Errore durante la verifica" });
+    }
+  });
+
+  // Password Reset - Set new password
+  app.post('/api/auth/reset-password', async (req, res) => {
+    try {
+      const { token, password } = req.body;
+      
+      if (!token || !password) {
+        return res.status(400).json({ error: "Token e password richiesti" });
+      }
+      
+      if (password.length < 6) {
+        return res.status(400).json({ error: "La password deve avere almeno 6 caratteri" });
+      }
+      
+      const resetToken = await storage.getPasswordResetToken(token);
+      
+      if (!resetToken) {
+        return res.status(400).json({ error: "Token non valido" });
+      }
+      
+      if (resetToken.usedAt) {
+        return res.status(400).json({ error: "Token già utilizzato" });
+      }
+      
+      if (new Date() > new Date(resetToken.expiresAt)) {
+        return res.status(400).json({ error: "Token scaduto" });
+      }
+      
+      // Hash new password
+      const bcrypt = await import('bcryptjs');
+      const hashedPassword = await bcrypt.hash(password, 12);
+      
+      // Update user password
+      await storage.updateUserPassword(resetToken.userId, hashedPassword);
+      
+      // Mark token as used
+      await storage.markPasswordResetTokenUsed(token);
+      
+      res.json({ success: true, message: "Password aggiornata con successo" });
+    } catch (error) {
+      console.error("Reset password error:", error);
+      res.status(500).json({ error: "Errore durante il reset della password" });
+    }
+  });
+
   // Protected route example
   app.get("/api/profile", requireAuth, async (req: any, res) => {
     try {

@@ -8,6 +8,7 @@ import {
   experiences,
   conversations,
   messages,
+  passwordResetTokens,
   type User,
   type InsertUser,
   type Boat,
@@ -26,6 +27,7 @@ import {
   type InsertConversation,
   type Message,
   type InsertMessage,
+  type PasswordResetToken,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -95,6 +97,12 @@ export interface IStorage {
   getMessages(conversationId: number): Promise<(Message & { senderName?: string; senderEmail?: string })[]>;
   createMessage(data: InsertMessage): Promise<Message>;
   getBooking(id: number): Promise<Booking | undefined>;
+  
+  // Password reset operations
+  createPasswordResetToken(userId: number, token: string, expiresAt: Date): Promise<PasswordResetToken>;
+  getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined>;
+  markPasswordResetTokenUsed(token: string): Promise<void>;
+  updateUserPassword(userId: number, hashedPassword: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -415,6 +423,29 @@ export class DatabaseStorage implements IStorage {
   async getBooking(id: number): Promise<Booking | undefined> {
     const [booking] = await db.select().from(bookings).where(eq(bookings.id, id));
     return booking;
+  }
+
+  // Password reset operations
+  async createPasswordResetToken(userId: number, token: string, expiresAt: Date): Promise<PasswordResetToken> {
+    const [resetToken] = await db.insert(passwordResetTokens).values({
+      userId,
+      token,
+      expiresAt,
+    }).returning();
+    return resetToken;
+  }
+
+  async getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined> {
+    const [resetToken] = await db.select().from(passwordResetTokens).where(eq(passwordResetTokens.token, token));
+    return resetToken;
+  }
+
+  async markPasswordResetTokenUsed(token: string): Promise<void> {
+    await db.update(passwordResetTokens).set({ usedAt: new Date() }).where(eq(passwordResetTokens.token, token));
+  }
+
+  async updateUserPassword(userId: number, hashedPassword: string): Promise<void> {
+    await db.update(users).set({ password: hashedPassword }).where(eq(users.id, userId));
   }
 }
 

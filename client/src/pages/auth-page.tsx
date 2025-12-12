@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useForm } from "react-hook-form";
@@ -20,6 +21,10 @@ import { apiRequest } from "@/lib/queryClient";
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),
   password: z.string().min(1, "Password richiesta"),
+});
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email("Email non valida"),
 });
 
 const registerSchema = insertUserSchema.extend({
@@ -52,6 +57,10 @@ export default function AuthPage() {
   };
   
   const [activeTab, setActiveTab] = useState(getInitialTab());
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
+  const [forgotPasswordSent, setForgotPasswordSent] = useState(false);
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -98,6 +107,37 @@ export default function AuthPage() {
 
   const onLogin = (data: LoginData) => {
     loginMutation.mutate(data);
+  };
+
+  const handleForgotPassword = async () => {
+    if (!forgotPasswordEmail) {
+      toast({
+        title: "Errore",
+        description: "Inserisci la tua email",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setForgotPasswordLoading(true);
+    try {
+      const response = await apiRequest('POST', '/api/auth/forgot-password', { email: forgotPasswordEmail });
+      const data = await response.json();
+      
+      setForgotPasswordSent(true);
+      toast({
+        title: "Email inviata",
+        description: "Se l'email esiste, riceverai un link per reimpostare la password",
+      });
+    } catch (error) {
+      toast({
+        title: "Errore",
+        description: "Si è verificato un errore. Riprova più tardi.",
+        variant: "destructive",
+      });
+    } finally {
+      setForgotPasswordLoading(false);
+    }
   };
 
   const onRegister = (data: RegisterData) => {
@@ -322,6 +362,17 @@ export default function AuthPage() {
                           {loginForm.formState.errors.password.message}
                         </p>
                       )}
+                    </div>
+
+                    <div className="text-right">
+                      <button
+                        type="button"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-ocean-blue hover:underline"
+                        data-testid="link-forgot-password"
+                      >
+                        Password dimenticata?
+                      </button>
                     </div>
 
                     <Button
@@ -705,6 +756,74 @@ export default function AuthPage() {
           </div>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Password dimenticata</DialogTitle>
+            <DialogDescription>
+              Inserisci la tua email e ti invieremo un link per reimpostare la password.
+            </DialogDescription>
+          </DialogHeader>
+          {!forgotPasswordSent ? (
+            <div className="space-y-4 pt-4">
+              <div className="space-y-2">
+                <Label htmlFor="forgot-email">Email</Label>
+                <Input
+                  id="forgot-email"
+                  type="email"
+                  placeholder="nome@esempio.com"
+                  value={forgotPasswordEmail}
+                  onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                  data-testid="input-forgot-email"
+                />
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => {
+                    setShowForgotPassword(false);
+                    setForgotPasswordEmail("");
+                  }}
+                >
+                  Annulla
+                </Button>
+                <Button
+                  className="flex-1 bg-ocean-blue hover:bg-blue-600"
+                  onClick={handleForgotPassword}
+                  disabled={forgotPasswordLoading}
+                  data-testid="button-send-reset"
+                >
+                  {forgotPasswordLoading ? "Invio in corso..." : "Invia link"}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4 pt-4 text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="text-gray-600">
+                Se l'email esiste nel nostro sistema, riceverai un link per reimpostare la password.
+              </p>
+              <Button
+                className="w-full bg-ocean-blue hover:bg-blue-600"
+                onClick={() => {
+                  setShowForgotPassword(false);
+                  setForgotPasswordEmail("");
+                  setForgotPasswordSent(false);
+                }}
+              >
+                Chiudi
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

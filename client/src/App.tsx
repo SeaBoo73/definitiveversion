@@ -75,6 +75,7 @@ import PaymentSuccessEsperienza from "@/pages/payment-success-esperienza";
 import DiventaSeaHostPage from "@/pages/diventa-sea-host";
 import ProfiloDatiBancariPage from "@/pages/profilo-dati-bancari";
 import SupportoPage from "@/pages/supporto";
+import ResetPasswordPage from "@/pages/reset-password";
 
 function Router() {
   return (
@@ -141,6 +142,7 @@ function Router() {
       <Route path="/test-moorings" component={lazy(() => import('./pages/test-moorings'))} />
       <Route path="/ricerca-avanzata" component={AdvancedSearchPage} />
       <Route path="/auth" component={AuthPage} />
+      <Route path="/reset-password" component={ResetPasswordPage} />
       <Route path="/boats/:id" component={BoatDetail} />
       <Route path="/boats/:id/book" component={BoatBooking} />
       <Route path="/boats/:boatId/availability" component={AvailabilityManagement} />

@@ -359,13 +359,24 @@ export default function OwnerDashboard() {
 
   const deleteBoatMutation = useMutation({
     mutationFn: async (id: number) => {
-      await apiRequest("DELETE", `/api/boats/${id}`);
+      const res = await apiRequest("DELETE", `/api/boats/${id}`);
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Errore nell'eliminazione della barca");
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/owner/boats"] });
       toast({
         title: "Imbarcazione eliminata",
         description: "L'imbarcazione è stata rimossa",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Impossibile eliminare",
+        description: error.message || "Errore nell'eliminazione della barca",
+        variant: "destructive",
       });
     },
   });

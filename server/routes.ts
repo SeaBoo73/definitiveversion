@@ -620,28 +620,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const resetLink = `${process.env.APP_URL || 'https://seaboo.it'}/reset-password?token=${token}`;
       
       try {
-        const sgMail = await import('@sendgrid/mail');
-        sgMail.default.setApiKey(process.env.SENDGRID_API_KEY!);
+        const nodemailer = await import('nodemailer');
         
-        await sgMail.default.send({
-          to: email,
-          from: 'noreply@seaboo.it',
-          subject: 'Reimposta la tua password - SeaBoo',
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #0ea5e9;">Reimposta la tua password</h2>
-              <p>Hai richiesto di reimpostare la password del tuo account SeaBoo.</p>
-              <p>Clicca il pulsante qui sotto per creare una nuova password:</p>
-              <a href="${resetLink}" style="display: inline-block; background-color: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">Reimposta Password</a>
-              <p style="color: #666; font-size: 14px;">Questo link scadrà tra 1 ora.</p>
-              <p style="color: #666; font-size: 14px;">Se non hai richiesto questo reset, ignora questa email.</p>
-              <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
-              <p style="color: #999; font-size: 12px;">SeaBoo - Piattaforma Marittima</p>
-            </div>
-          `,
-        });
-        
-        console.log('Password reset email sent to:', email);
+        if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
+          const transporter = nodemailer.default.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.GMAIL_USER,
+              pass: process.env.GMAIL_APP_PASSWORD
+            }
+          });
+          
+          await transporter.sendMail({
+            from: process.env.GMAIL_USER,
+            to: email,
+            subject: 'Reimposta la tua password - SeaBoo',
+            html: `
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <h2 style="color: #0ea5e9;">Reimposta la tua password</h2>
+                <p>Hai richiesto di reimpostare la password del tuo account SeaBoo.</p>
+                <p>Clicca il pulsante qui sotto per creare una nuova password:</p>
+                <a href="${resetLink}" style="display: inline-block; background-color: #0ea5e9; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">Reimposta Password</a>
+                <p style="color: #666; font-size: 14px;">Questo link scadrà tra 1 ora.</p>
+                <p style="color: #666; font-size: 14px;">Se non hai richiesto questo reset, ignora questa email.</p>
+                <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+                <p style="color: #999; font-size: 12px;">SeaBoo - Piattaforma Marittima</p>
+              </div>
+            `,
+          });
+          
+          console.log('Password reset email sent to:', email);
+        } else {
+          console.log('⚠️ Credenziali Gmail non configurate per password reset');
+        }
       } catch (emailError) {
         console.error('Error sending password reset email:', emailError);
         // Continue even if email fails - log for debugging

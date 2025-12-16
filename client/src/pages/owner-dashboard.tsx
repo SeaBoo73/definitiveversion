@@ -796,13 +796,6 @@ export default function OwnerDashboard() {
     }
   };
 
-  const handleActivate2FA = () => {
-    toast({
-      title: "Autenticazione 2FA",
-      description: "Funzionalità in sviluppo. L'autenticazione a due fattori sarà disponibile presto.",
-    });
-  };
-
   const handleManageNotifications = () => {
     setShowNotificationsDialog(true);
   };
@@ -3454,19 +3447,6 @@ export default function OwnerDashboard() {
                   </div>
                   <Button variant="outline" size="sm" onClick={handleChangePassword}>
                     Cambia password
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Shield className="h-5 w-5 text-gray-600" />
-                    <div>
-                      <p className="font-medium">Autenticazione a due fattori</p>
-                      <p className="text-sm text-gray-600">Non attivata</p>
-                    </div>
-                  </div>
-                  <Button variant="outline" size="sm" onClick={handleActivate2FA}>
-                    Attiva 2FA
                   </Button>
                 </div>
 

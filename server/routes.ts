@@ -362,7 +362,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         profileImage: user.profileImage,
         role: user.role,
         businessName: user.businessName,
-        bio: user.bio
+        bio: user.bio,
+        iban: user.iban,
+        bankName: user.bankName,
+        accountHolder: user.accountHolder,
+        swiftBic: user.swiftBic
       });
     } catch (error) {
       console.error("Get profile error:", error);
@@ -384,16 +388,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/user/profile', requireAuth, async (req, res) => {
     try {
       const userId = parseInt(req.session.user!.id);
-      const { firstName, lastName, phone, profileImage, bio } = req.body;
+      const { firstName, lastName, phone, profileImage, bio, iban, bankName, accountHolder, swiftBic } = req.body;
       
-      console.log('[PROFILE UPDATE] User ID:', userId, 'Data received:', { firstName, lastName, phone, bio: bio ? 'has bio' : 'no bio' });
+      console.log('[PROFILE UPDATE] User ID:', userId, 'Data received:', { firstName, lastName, phone, bio: bio ? 'has bio' : 'no bio', iban: iban ? 'has iban' : 'no iban' });
       
       const updatedUser = await storage.updateUser(userId, {
         firstName,
         lastName,
         phone,
         profileImage,
-        bio
+        bio,
+        iban,
+        bankName,
+        accountHolder,
+        swiftBic
       });
       
       console.log('[PROFILE UPDATE] Updated user:', updatedUser ? 'success' : 'failed');

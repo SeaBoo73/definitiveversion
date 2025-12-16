@@ -841,6 +841,10 @@ export default function OwnerDashboard() {
     phone: string | null;
     profileImage: string | null;
     bio: string | null;
+    iban: string | null;
+    bankName: string | null;
+    accountHolder: string | null;
+    swiftBic: string | null;
   }>({
     queryKey: ["/api/user/profile"],
     enabled: !!user,
@@ -855,6 +859,14 @@ export default function OwnerDashboard() {
     bio: "",
   });
 
+  // Banking data state
+  const [bankingData, setBankingData] = useState({
+    iban: "",
+    bankName: "",
+    accountHolder: "",
+    swiftBic: "",
+  });
+
   // Update profileData when fullProfile loads
   useEffect(() => {
     if (fullProfile) {
@@ -864,6 +876,12 @@ export default function OwnerDashboard() {
         email: fullProfile.email || "",
         phone: fullProfile.phone || "",
         bio: fullProfile.bio || "",
+      });
+      setBankingData({
+        iban: fullProfile.iban || "",
+        bankName: fullProfile.bankName || "",
+        accountHolder: fullProfile.accountHolder || "",
+        swiftBic: fullProfile.swiftBic || "",
       });
       setProfilePhoto(fullProfile.profileImage || null);
     }
@@ -942,6 +960,16 @@ export default function OwnerDashboard() {
       phone: profileData.phone,
       profileImage: profilePhoto,
       bio: profileData.bio,
+    });
+  };
+
+  // Save banking data
+  const handleSaveBankingData = () => {
+    updateProfileMutation.mutate({
+      iban: bankingData.iban,
+      bankName: bankingData.bankName,
+      accountHolder: bankingData.accountHolder,
+      swiftBic: bankingData.swiftBic,
     });
   };
 
@@ -3394,6 +3422,9 @@ export default function OwnerDashboard() {
                       id="iban" 
                       placeholder="IT60 X054 2811 1010 0000 0123 456" 
                       className="border-green-200 focus:border-green-500 font-mono"
+                      value={bankingData.iban}
+                      onChange={(e) => setBankingData({ ...bankingData, iban: e.target.value })}
+                      data-testid="input-iban"
                     />
                   </div>
 
@@ -3406,6 +3437,9 @@ export default function OwnerDashboard() {
                       id="bankName" 
                       placeholder="es. Intesa Sanpaolo, UniCredit..." 
                       className="border-green-200 focus:border-green-500"
+                      value={bankingData.bankName}
+                      onChange={(e) => setBankingData({ ...bankingData, bankName: e.target.value })}
+                      data-testid="input-bankName"
                     />
                   </div>
 
@@ -3418,6 +3452,9 @@ export default function OwnerDashboard() {
                       id="accountHolder" 
                       placeholder="Nome e Cognome come sul conto" 
                       className="border-green-200 focus:border-green-500"
+                      value={bankingData.accountHolder}
+                      onChange={(e) => setBankingData({ ...bankingData, accountHolder: e.target.value })}
+                      data-testid="input-accountHolder"
                     />
                   </div>
 
@@ -3430,6 +3467,9 @@ export default function OwnerDashboard() {
                       id="swiftBic" 
                       placeholder="BCITITMM" 
                       className="border-green-200 focus:border-green-500"
+                      value={bankingData.swiftBic}
+                      onChange={(e) => setBankingData({ ...bankingData, swiftBic: e.target.value })}
+                      data-testid="input-swiftBic"
                     />
                   </div>
                 </div>
@@ -3447,9 +3487,14 @@ export default function OwnerDashboard() {
                   </div>
                 </div>
 
-                <Button className="bg-green-600 hover:bg-green-700 text-white">
+                <Button 
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                  onClick={handleSaveBankingData}
+                  disabled={updateProfileMutation.isPending}
+                  data-testid="button-saveBankingData"
+                >
                   <Save className="h-4 w-4 mr-2" />
-                  Salva dati di pagamento
+                  {updateProfileMutation.isPending ? "Salvataggio..." : "Salva dati di pagamento"}
                 </Button>
               </CardContent>
             </Card>

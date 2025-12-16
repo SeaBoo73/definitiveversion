@@ -58,6 +58,12 @@ export const users = pgTable("users", {
   
   // User bio/description
   bio: text("bio"),
+  
+  // Banking information for owners
+  iban: varchar("iban", { length: 34 }),
+  bankName: varchar("bank_name", { length: 100 }),
+  accountHolder: varchar("account_holder", { length: 200 }),
+  swiftBic: varchar("swift_bic", { length: 11 }),
 });
 
 // Boats table schema that matches existing database structure exactly

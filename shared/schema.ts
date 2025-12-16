@@ -55,6 +55,9 @@ export const users = pgTable("users", {
   
   // Profile image (base64)
   profileImage: text("profile_image"),
+  
+  // User bio/description
+  bio: text("bio"),
 });
 
 // Boats table schema that matches existing database structure exactly

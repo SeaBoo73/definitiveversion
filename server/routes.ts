@@ -343,6 +343,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get full user profile from database
+  app.get('/api/user/profile', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ error: "Utente non trovato" });
+      }
+
+      res.json({
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
+        profileImage: user.profileImage,
+        role: user.role,
+        businessName: user.businessName,
+        bio: user.bio
+      });
+    } catch (error) {
+      console.error("Get profile error:", error);
+      res.status(500).json({ error: "Errore durante il recupero del profilo" });
+    }
+  });
+
   // Logout endpoint
   app.post('/api/logout', (req, res) => {
     req.session.destroy((err) => {
@@ -357,13 +384,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/user/profile', requireAuth, async (req, res) => {
     try {
       const userId = parseInt(req.session.user!.id);
-      const { firstName, lastName, phone, profileImage } = req.body;
+      const { firstName, lastName, phone, profileImage, bio } = req.body;
       
       const updatedUser = await storage.updateUser(userId, {
         firstName,
         lastName,
         phone,
-        profileImage
+        profileImage,
+        bio
       });
 
       if (!updatedUser) {

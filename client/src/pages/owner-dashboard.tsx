@@ -832,17 +832,45 @@ export default function OwnerDashboard() {
     deleteAccountMutation.mutate();
   };
 
-  // Profile state management
+  // Fetch full user profile from database
+  const { data: fullProfile } = useQuery<{
+    id: number;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    phone: string | null;
+    profileImage: string | null;
+    bio: string | null;
+  }>({
+    queryKey: ["/api/user/profile"],
+    enabled: !!user,
+  });
+
+  // Profile state management - initialize from fetched profile
   const [profileData, setProfileData] = useState({
-    firstName: user?.username?.split('.')[0] || "",
-    lastName: user?.username?.split('.')[1]?.split('@')[0] || "",
-    email: user?.username || "",
+    firstName: "",
+    lastName: "",
+    email: "",
     phone: "",
     bio: "",
   });
 
+  // Update profileData when fullProfile loads
+  useEffect(() => {
+    if (fullProfile) {
+      setProfileData({
+        firstName: fullProfile.firstName || "",
+        lastName: fullProfile.lastName || "",
+        email: fullProfile.email || "",
+        phone: fullProfile.phone || "",
+        bio: fullProfile.bio || "",
+      });
+      setProfilePhoto(fullProfile.profileImage || null);
+    }
+  }, [fullProfile]);
+
   // Profile photo state - initialize from user data
-  const [profilePhoto, setProfilePhoto] = useState<string | null>(user?.profileImage || null);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
 
   // Profile Photo Upload Handler
   const handlePhotoUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -885,12 +913,13 @@ export default function OwnerDashboard() {
 
   // Save profile mutation
   const updateProfileMutation = useMutation({
-    mutationFn: async (data: { firstName?: string; lastName?: string; phone?: string; profileImage?: string | null }) => {
+    mutationFn: async (data: { firstName?: string; lastName?: string; phone?: string; profileImage?: string | null; bio?: string }) => {
       const res = await apiRequest("PATCH", "/api/user/profile", data);
       return await res.json();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/user/profile"] });
       toast({
         title: "Profilo aggiornato",
         description: "Le tue informazioni sono state salvate con successo.",
@@ -912,6 +941,7 @@ export default function OwnerDashboard() {
       lastName: profileData.lastName,
       phone: profileData.phone,
       profileImage: profilePhoto,
+      bio: profileData.bio,
     });
   };
 

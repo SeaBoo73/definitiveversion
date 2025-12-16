@@ -3303,10 +3303,11 @@ export default function OwnerDashboard() {
                   <Button 
                     className="bg-blue-600 hover:bg-blue-700 text-white"
                     onClick={handleSaveProfile}
+                    disabled={updateProfileMutation.isPending}
                     data-testid="button-saveProfile"
                   >
                     <Save className="h-4 w-4 mr-2" />
-                    Salva modifiche
+                    {updateProfileMutation.isPending ? "Salvataggio..." : "Salva modifiche"}
                   </Button>
                 </CardContent>
               </Card>

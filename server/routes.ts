@@ -386,6 +386,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.session.user!.id);
       const { firstName, lastName, phone, profileImage, bio } = req.body;
       
+      console.log('[PROFILE UPDATE] User ID:', userId, 'Data received:', { firstName, lastName, phone, bio: bio ? 'has bio' : 'no bio' });
+      
       const updatedUser = await storage.updateUser(userId, {
         firstName,
         lastName,
@@ -393,6 +395,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         profileImage,
         bio
       });
+      
+      console.log('[PROFILE UPDATE] Updated user:', updatedUser ? 'success' : 'failed');
 
       if (!updatedUser) {
         return res.status(500).json({ error: "Errore durante l'aggiornamento del profilo" });

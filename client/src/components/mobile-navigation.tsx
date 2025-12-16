@@ -58,11 +58,14 @@ export function MobileNavigation() {
           const Icon = item.icon;
           return (
             <Link key={item.path} href={item.path}>
-              <div className={`flex flex-col items-center py-2 px-2 rounded-lg transition-colors min-w-0 ${
-                item.active 
-                  ? "text-ocean-blue bg-blue-50" 
-                  : "text-gray-600 hover:text-ocean-blue"
-              }`}>
+              <div 
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className={`flex flex-col items-center py-2 px-2 rounded-lg transition-colors min-w-0 ${
+                  item.active 
+                    ? "text-ocean-blue bg-blue-50" 
+                    : "text-gray-600 hover:text-ocean-blue"
+                }`}
+              >
                 <Icon className="h-5 w-5 mb-1 flex-shrink-0" />
                 <span className="text-xs font-medium truncate">{item.label}</span>
               </div>

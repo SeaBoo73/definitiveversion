@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { 
   Search, 
   Settings, 
@@ -9,13 +9,25 @@ import {
   Sparkles
 } from "lucide-react";
 
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  const mainContent = document.querySelector('main');
+  if (mainContent) mainContent.scrollTop = 0;
+  const scrollableElements = document.querySelectorAll('[class*="overflow"]');
+  scrollableElements.forEach(el => {
+    if (el instanceof HTMLElement && el.scrollTop > 0) {
+      el.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+};
+
 export function MobileNavigation() {
   const [location] = useLocation();
-  // Updated: Using Sparkles icon for Esperienze
 
-  // Scroll to top when navigation changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   }, [location]);
 
   const navItems = [
@@ -59,7 +71,7 @@ export function MobileNavigation() {
           return (
             <Link key={item.path} href={item.path}>
               <div 
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={scrollToTop}
                 className={`flex flex-col items-center py-2 px-2 rounded-lg transition-colors min-w-0 ${
                   item.active 
                     ? "text-ocean-blue bg-blue-50" 

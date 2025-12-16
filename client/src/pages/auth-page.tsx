@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 import { Redirect, Link, useLocation } from "wouter";
-import { Anchor, ArrowLeft } from "lucide-react";
+import { Anchor, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757318764148.jpeg";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
@@ -61,6 +61,9 @@ export default function AuthPage() {
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [forgotPasswordLoading, setForgotPasswordLoading] = useState(false);
   const [forgotPasswordSent, setForgotPasswordSent] = useState(false);
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -351,12 +354,22 @@ export default function AuthPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="••••••••"
-                        {...loginForm.register("password")}
-                      />
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showLoginPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          {...loginForm.register("password")}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowLoginPassword(!showLoginPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          data-testid="button-toggle-login-password"
+                        >
+                          {showLoginPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                       {loginForm.formState.errors.password && (
                         <p className="text-sm text-red-500">
                           {loginForm.formState.errors.password.message}
@@ -661,12 +674,22 @@ export default function AuthPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="registerPassword">Password</Label>
-                      <Input
-                        id="registerPassword"
-                        type="password"
-                        placeholder="••••••••"
-                        {...registerForm.register("password")}
-                      />
+                      <div className="relative">
+                        <Input
+                          id="registerPassword"
+                          type={showRegisterPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          {...registerForm.register("password")}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          data-testid="button-toggle-register-password"
+                        >
+                          {showRegisterPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                       {registerForm.formState.errors.password && (
                         <p className="text-sm text-red-500">
                           {registerForm.formState.errors.password.message}
@@ -676,12 +699,22 @@ export default function AuthPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="confirmPassword">Conferma Password</Label>
-                      <Input
-                        id="confirmPassword"
-                        type="password"
-                        placeholder="••••••••"
-                        {...registerForm.register("confirmPassword")}
-                      />
+                      <div className="relative">
+                        <Input
+                          id="confirmPassword"
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          {...registerForm.register("confirmPassword")}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                          data-testid="button-toggle-confirm-password"
+                        >
+                          {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </button>
+                      </div>
                       {registerForm.formState.errors.confirmPassword && (
                         <p className="text-sm text-red-500">
                           {registerForm.formState.errors.confirmPassword.message}

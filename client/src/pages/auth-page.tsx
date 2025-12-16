@@ -500,7 +500,7 @@ export default function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Telefono (opzionale)</Label>
+                      <Label htmlFor="phone">Telefono</Label>
                       <Input
                         id="phone"
                         placeholder="+39 123 456 7890"

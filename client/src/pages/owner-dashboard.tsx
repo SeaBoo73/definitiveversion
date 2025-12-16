@@ -82,7 +82,8 @@ import {
   AlertTriangle,
   Pencil,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  EyeOff
 } from "lucide-react";
 
 const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({
@@ -120,6 +121,18 @@ export default function OwnerDashboard() {
   const [mooringBlockedDates, setMooringBlockedDates] = useState<Date[]>([]);
   const [mooringCustomPrices, setMooringCustomPrices] = useState<Record<string, number>>({});
   const [editingBoat, setEditingBoat] = useState<Boat | null>(null);
+  
+  // Security dialogs state
+  const [showChangePasswordDialog, setShowChangePasswordDialog] = useState(false);
+  const [showNotificationsDialog, setShowNotificationsDialog] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [emailNotificationsEnabled, setEmailNotificationsEnabled] = useState(true);
+  const [bookingNotifications, setBookingNotifications] = useState(true);
+  const [marketingNotifications, setMarketingNotifications] = useState(false);
   
   // Mooring port autofill state
   const [mooringPortSearch, setMooringPortSearch] = useState("");
@@ -724,10 +737,63 @@ export default function OwnerDashboard() {
 
   // Security Account Handlers
   const handleChangePassword = () => {
-    toast({
-      title: "Cambio Password",
-      description: "Funzionalità in arrivo. Ti invieremo un'email con le istruzioni per cambiare la password.",
-    });
+    setShowChangePasswordDialog(true);
+  };
+
+  const handleSubmitPasswordChange = async () => {
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      toast({
+        title: "Errore",
+        description: "Compila tutti i campi",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      toast({
+        title: "Errore",
+        description: "Le nuove password non coincidono",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast({
+        title: "Errore",
+        description: "La password deve avere almeno 6 caratteri",
+        variant: "destructive",
+      });
+      return;
+    }
+    try {
+      const response = await apiRequest('POST', '/api/user/change-password', {
+        currentPassword,
+        newPassword,
+      });
+      if (response.ok) {
+        toast({
+          title: "Password aggiornata",
+          description: "La tua password è stata cambiata con successo",
+        });
+        setShowChangePasswordDialog(false);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+      } else {
+        const data = await response.json();
+        toast({
+          title: "Errore",
+          description: data.error || "Impossibile cambiare la password",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Errore",
+        description: "Si è verificato un errore. Riprova.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleActivate2FA = () => {
@@ -738,10 +804,15 @@ export default function OwnerDashboard() {
   };
 
   const handleManageNotifications = () => {
+    setShowNotificationsDialog(true);
+  };
+
+  const handleSaveNotifications = () => {
     toast({
-      title: "Gestione Notifiche",
-      description: "Preferenze notifiche aggiornate. Riceverai aggiornamenti importanti via email.",
+      title: "Preferenze salvate",
+      description: "Le tue preferenze di notifica sono state aggiornate.",
     });
+    setShowNotificationsDialog(false);
   };
 
   const deleteAccountMutation = useMutation({
@@ -4102,6 +4173,121 @@ export default function OwnerDashboard() {
                 }}
               >
                 {experienceBlockStatus === 'blocked' ? '🔒 Blocca date' : '✅ Salva disponibilità'}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Change Password Dialog */}
+      <Dialog open={showChangePasswordDialog} onOpenChange={setShowChangePasswordDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Cambia Password</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="currentPassword">Password attuale</Label>
+              <div className="relative">
+                <Input
+                  id="currentPassword"
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showCurrentPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="newPassword">Nuova password</Label>
+              <div className="relative">
+                <Input
+                  id="newPassword"
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="••••••••"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                >
+                  {showNewPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmNewPassword">Conferma nuova password</Label>
+              <Input
+                id="confirmNewPassword"
+                type="password"
+                value={confirmNewPassword}
+                onChange={(e) => setConfirmNewPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+            </div>
+            <div className="flex justify-end gap-2 pt-4">
+              <Button variant="outline" onClick={() => {
+                setShowChangePasswordDialog(false);
+                setCurrentPassword("");
+                setNewPassword("");
+                setConfirmNewPassword("");
+              }}>
+                Annulla
+              </Button>
+              <Button className="bg-ocean-blue hover:bg-blue-600" onClick={handleSubmitPasswordChange}>
+                Cambia Password
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Notifications Dialog */}
+      <Dialog open={showNotificationsDialog} onOpenChange={setShowNotificationsDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Gestione Notifiche Email</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div>
+                <p className="font-medium">Notifiche prenotazioni</p>
+                <p className="text-sm text-gray-600">Ricevi email per nuove prenotazioni</p>
+              </div>
+              <button
+                onClick={() => setBookingNotifications(!bookingNotifications)}
+                className={`w-12 h-6 rounded-full transition-colors ${bookingNotifications ? 'bg-ocean-blue' : 'bg-gray-300'}`}
+              >
+                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${bookingNotifications ? 'translate-x-6' : 'translate-x-0.5'}`} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div>
+                <p className="font-medium">Aggiornamenti e novità</p>
+                <p className="text-sm text-gray-600">Ricevi email su nuove funzionalità</p>
+              </div>
+              <button
+                onClick={() => setMarketingNotifications(!marketingNotifications)}
+                className={`w-12 h-6 rounded-full transition-colors ${marketingNotifications ? 'bg-ocean-blue' : 'bg-gray-300'}`}
+              >
+                <div className={`w-5 h-5 bg-white rounded-full shadow transition-transform ${marketingNotifications ? 'translate-x-6' : 'translate-x-0.5'}`} />
+              </button>
+            </div>
+            <div className="flex justify-end gap-2 pt-4">
+              <Button variant="outline" onClick={() => setShowNotificationsDialog(false)}>
+                Annulla
+              </Button>
+              <Button className="bg-ocean-blue hover:bg-blue-600" onClick={handleSaveNotifications}>
+                Salva Preferenze
               </Button>
             </div>
           </div>

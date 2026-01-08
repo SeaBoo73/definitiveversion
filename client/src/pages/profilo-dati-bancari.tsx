@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -7,29 +7,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ArrowLeft, CreditCard, Banknote, Shield, CheckCircle, Edit, Save } from "lucide-react";
 import { Link } from "wouter";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
-const bankingDataSchema = z.object({
-  iban: z.string().optional(),
-  bankName: z.string().optional(),
-  accountHolderName: z.string().optional(),
-  paymentPreference: z.string().default("stripe"),
-  taxCode: z.string().optional(),
-  vatNumber: z.string().optional(),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  postalCode: z.string().optional(),
-  country: z.string().default("Italy"),
-});
-
-type BankingData = z.infer<typeof bankingDataSchema>;
+interface BankingData {
+  iban: string;
+  bankName: string;
+  accountHolder: string;
+  swiftBic: string;
+}
 
 export default function ProfiloDatiBancariPage() {
   const { user } = useAuth();
@@ -37,41 +27,48 @@ export default function ProfiloDatiBancariPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<BankingData>({
-    resolver: zodResolver(bankingDataSchema),
-    defaultValues: {
-      iban: user?.iban || "",
-      bankName: user?.bankName || "",
-      accountHolderName: user?.accountHolderName || "",
-      paymentPreference: user?.paymentPreference || "stripe",
-      taxCode: user?.taxCode || "",
-      vatNumber: user?.vatNumber || "",
-      address: user?.address || "",
-      city: user?.city || "",
-      postalCode: user?.postalCode || "",
-      country: user?.country || "Italy",
-    },
+  // Banking data state
+  const [bankingData, setBankingData] = useState<BankingData>({
+    iban: "",
+    bankName: "",
+    accountHolder: "",
+    swiftBic: "",
   });
+
+  // Fetch profile data from database
+  const { data: fullProfile } = useQuery<{
+    iban: string | null;
+    bankName: string | null;
+    accountHolder: string | null;
+    swiftBic: string | null;
+  }>({
+    queryKey: ["/api/user/profile"],
+    enabled: !!user,
+  });
+
+  // Update state when profile loads
+  useEffect(() => {
+    if (fullProfile) {
+      setBankingData({
+        iban: fullProfile.iban || "",
+        bankName: fullProfile.bankName || "",
+        accountHolder: fullProfile.accountHolder || "",
+        swiftBic: fullProfile.swiftBic || "",
+      });
+    }
+  }, [fullProfile]);
 
   const updateBankingMutation = useMutation({
     mutationFn: async (data: BankingData) => {
-      const response = await fetch(`/api/users/${user?.id}/banking`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to update banking data");
-      }
+      const response = await apiRequest("PATCH", "/api/user/profile", data);
       return response.json();
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/user/profile"] });
       queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       toast({
         title: "Dati aggiornati",
-        description: "I tuoi dati bancari sono stati aggiornati con successo.",
+        description: "I tuoi dati bancari sono stati salvati in modo sicuro con crittografia AES-256.",
       });
       setIsEditing(false);
     },
@@ -84,8 +81,8 @@ export default function ProfiloDatiBancariPage() {
     },
   });
 
-  const onSubmit = (data: BankingData) => {
-    updateBankingMutation.mutate(data);
+  const handleSave = () => {
+    updateBankingMutation.mutate(bankingData);
   };
 
   if (!user) {
@@ -173,7 +170,7 @@ export default function ProfiloDatiBancariPage() {
                 </Button>
               </CardHeader>
               <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="space-y-6">
                   {/* IBAN Section */}
                   <div className="space-y-4">
                     <h3 className="font-medium text-gray-900">Dati del Conto</h3>
@@ -184,7 +181,8 @@ export default function ProfiloDatiBancariPage() {
                           id="iban"
                           placeholder="IT60 X054 2811 1010 0000 0123 456"
                           disabled={!isEditing}
-                          {...form.register("iban")}
+                          value={bankingData.iban}
+                          onChange={(e) => setBankingData({ ...bankingData, iban: e.target.value })}
                           data-testid="input-iban"
                         />
                       </div>
@@ -195,142 +193,61 @@ export default function ProfiloDatiBancariPage() {
                           id="bankName"
                           placeholder="Es. UniCredit, Intesa Sanpaolo"
                           disabled={!isEditing}
-                          {...form.register("bankName")}
+                          value={bankingData.bankName}
+                          onChange={(e) => setBankingData({ ...bankingData, bankName: e.target.value })}
                           data-testid="input-bank-name"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="accountHolderName">Intestatario Conto</Label>
+                        <Label htmlFor="accountHolder">Intestatario Conto</Label>
                         <Input
-                          id="accountHolderName"
+                          id="accountHolder"
                           placeholder="Nome e cognome del titolare"
                           disabled={!isEditing}
-                          {...form.register("accountHolderName")}
+                          value={bankingData.accountHolder}
+                          onChange={(e) => setBankingData({ ...bankingData, accountHolder: e.target.value })}
                           data-testid="input-account-holder"
                         />
                       </div>
-                    </div>
-                  </div>
-
-                  {/* Tax Information */}
-                  <div className="space-y-4 border-t pt-6">
-                    <h3 className="font-medium text-gray-900">Informazioni Fiscali</h3>
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="taxCode">Codice Fiscale</Label>
-                        <Input
-                          id="taxCode"
-                          placeholder="RSSMRA80A01H501X"
-                          disabled={!isEditing}
-                          {...form.register("taxCode")}
-                          data-testid="input-tax-code"
-                        />
-                      </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="vatNumber">Partita IVA (opzionale)</Label>
+                        <Label htmlFor="swiftBic">Codice SWIFT/BIC (opzionale)</Label>
                         <Input
-                          id="vatNumber"
-                          placeholder="12345678901"
+                          id="swiftBic"
+                          placeholder="BCITITMM"
                           disabled={!isEditing}
-                          {...form.register("vatNumber")}
-                          data-testid="input-vat-number"
+                          value={bankingData.swiftBic}
+                          onChange={(e) => setBankingData({ ...bankingData, swiftBic: e.target.value })}
+                          data-testid="input-swift-bic"
                         />
                       </div>
                     </div>
                   </div>
 
-                  {/* Address Information */}
-                  <div className="space-y-4 border-t pt-6">
-                    <h3 className="font-medium text-gray-900">Indirizzo</h3>
-                    <div className="grid grid-cols-1 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="address">Indirizzo</Label>
-                        <Input
-                          id="address"
-                          placeholder="Via Roma 123"
-                          disabled={!isEditing}
-                          {...form.register("address")}
-                          data-testid="input-address"
-                        />
+                  {/* Security Notice */}
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="flex items-start gap-3">
+                      <Shield className="h-5 w-5 text-green-600 mt-0.5" />
+                      <div>
+                        <p className="font-medium text-green-800">Crittografia AES-256</p>
+                        <p className="text-sm text-green-700">
+                          I tuoi dati bancari vengono crittografati con algoritmo AES-256-GCM prima di essere salvati nel database. 
+                          Solo tu puoi visualizzarli.
+                        </p>
                       </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="city">Città</Label>
-                          <Input
-                            id="city"
-                            placeholder="Milano"
-                            disabled={!isEditing}
-                            {...form.register("city")}
-                            data-testid="input-city"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="postalCode">CAP</Label>
-                          <Input
-                            id="postalCode"
-                            placeholder="20100"
-                            disabled={!isEditing}
-                            {...form.register("postalCode")}
-                            data-testid="input-postal-code"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="country">Paese</Label>
-                        <Select
-                          value={form.watch("country")}
-                          onValueChange={(value) => form.setValue("country", value)}
-                          disabled={!isEditing}
-                        >
-                          <SelectTrigger data-testid="select-country">
-                            <SelectValue placeholder="Seleziona paese" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="Italy">Italia</SelectItem>
-                            <SelectItem value="Switzerland">Svizzera</SelectItem>
-                            <SelectItem value="France">Francia</SelectItem>
-                            <SelectItem value="Austria">Austria</SelectItem>
-                            <SelectItem value="Germany">Germania</SelectItem>
-                            <SelectItem value="Spain">Spagna</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Payment Preference */}
-                  <div className="space-y-4 border-t pt-6">
-                    <h3 className="font-medium text-gray-900">Preferenza Pagamento</h3>
-                    <div className="space-y-2">
-                      <Label htmlFor="paymentPreference">Metodo Preferito</Label>
-                      <Select
-                        value={form.watch("paymentPreference")}
-                        onValueChange={(value) => form.setValue("paymentPreference", value)}
-                        disabled={!isEditing}
-                      >
-                        <SelectTrigger data-testid="select-payment-preference">
-                          <SelectValue placeholder="Seleziona metodo" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="stripe">Stripe (Consigliato)</SelectItem>
-                          <SelectItem value="bank_transfer">Bonifico Bancario</SelectItem>
-                        </SelectContent>
-                      </Select>
                     </div>
                   </div>
 
                   {isEditing && (
                     <div className="flex gap-4 pt-6">
                       <Button
-                        type="submit"
+                        type="button"
+                        onClick={handleSave}
                         disabled={updateBankingMutation.isPending}
                         data-testid="button-save-banking"
                       >
-                        {updateBankingMutation.isPending ? "Salvando..." : "Salva Modifiche"}
+                        {updateBankingMutation.isPending ? "Salvataggio..." : "Salva Modifiche"}
                       </Button>
                       <Button
                         type="button"
@@ -342,7 +259,7 @@ export default function ProfiloDatiBancariPage() {
                       </Button>
                     </div>
                   )}
-                </form>
+                </div>
               </CardContent>
             </Card>
           </div>

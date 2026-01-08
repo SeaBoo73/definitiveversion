@@ -232,7 +232,7 @@ export function EsperienzePage() {
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <div className="inline-block bg-blue-900/90 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
+            <div className="inline-block bg-blue-900/90 backdrop-blur-md rounded-3xl px-4 md:px-8 py-6 md:py-8">
               <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
                 Esperienze Uniche in Mare
               </h1>

@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import trasportiCapuanoLogo from "@assets/trasporti_capuano_logo_1767885647184.png";
 
 export function PartnersSection() {
   return (
@@ -9,50 +9,35 @@ export function PartnersSection() {
         {/* Header */}
         <div className="text-center mb-12">
           <Badge className="mb-4 bg-blue-100 text-blue-800 hover:bg-blue-200">
-            🤝 Partner Ufficiali
+            Partner Ufficiali
           </Badge>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Unisciti alla Rete SeaBoo
+            I Nostri Partner
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Stiamo costruendo una rete esclusiva di partner qualificati nel settore nautico. 
-            Fai parte della rivoluzione digitale del mare.
+            Collaboriamo con aziende leader del settore per offrirti servizi di qualità superiore.
           </p>
         </div>
 
-        {/* Call to Action per nuovi partner */}
+        {/* Partner Ufficiale - Trasporti Capuano */}
         <div className="text-center">
-          <Card className="inline-block bg-gradient-to-r from-blue-600 to-blue-700 text-white border-0 shadow-xl">
+          <Card className="inline-block bg-white border-2 border-gray-200 shadow-xl hover:shadow-2xl transition-shadow">
             <CardContent className="p-8">
-              <div className="text-6xl mb-4">🚀</div>
-              <h3 className="text-2xl font-bold mb-4">Diventa Partner SeaBoo</h3>
-              <p className="mb-6 text-blue-100 text-lg max-w-md mx-auto">
-                Unisciti alla nostra rete di partner qualificati e fai crescere il tuo business nel settore nautico. 
-                Opportunità esclusive ti aspettano.
-              </p>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center justify-center text-blue-100">
-                  <span className="mr-2">✓</span>
-                  <span>Visibilità su migliaia di utenti marittimi</span>
-                </div>
-                <div className="flex items-center justify-center text-blue-100">
-                  <span className="mr-2">✓</span>
-                  <span>Sistema di prenotazioni integrato</span>
-                </div>
-                <div className="flex items-center justify-center text-blue-100">
-                  <span className="mr-2">✓</span>
-                  <span>Supporto marketing dedicato</span>
-                </div>
+              <Badge className="mb-4 bg-green-100 text-green-800">
+                Partner Verificato
+              </Badge>
+              <div className="bg-black rounded-lg p-6 mb-4">
+                <img 
+                  src={trasportiCapuanoLogo} 
+                  alt="Trasporti Capuano - Trasporti Eccezionali" 
+                  className="h-24 md:h-32 w-auto mx-auto object-contain"
+                  data-testid="img-partner-trasporti-capuano"
+                />
               </div>
-              <Button 
-                variant="secondary" 
-                size="lg"
-                className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3"
-                onClick={() => window.location.href = 'mailto:app.seago.italia@gmail.com?subject=Richiesta Partnership SeaBoo&body=Salve,%0D%0A%0D%0ASono interessato a diventare un partner ufficiale di SeaBoo.%0D%0A%0D%0ANome azienda:%0D%0AContatto:%0D%0ATelefono:%0D%0ASettore di attività:%0D%0A%0D%0ACordiali saluti'}
-                data-testid="button-candidati-partner"
-              >
-                Candidati Come Partner
-              </Button>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Trasporti Capuano</h3>
+              <p className="text-gray-600 max-w-md mx-auto">
+                Partner ufficiale per trasporti eccezionali e logistica nautica.
+              </p>
             </CardContent>
           </Card>
         </div>

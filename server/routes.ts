@@ -1552,10 +1552,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get invoices for a booking
+  // Get invoices for a booking (only authorized users)
   app.get('/api/invoices/booking/:bookingId', requireAuth, async (req: any, res) => {
     try {
       const bookingId = parseInt(req.params.bookingId);
+      const userId = parseInt(req.session.user.id);
+      
+      // Verify user is authorized to see this booking's invoices
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ error: "Prenotazione non trovata" });
+      }
+      
+      // Check if user is customer or boat owner
+      const boat = await storage.getBoat(booking.boatId);
+      if (booking.customerId !== userId && boat?.hostId !== userId) {
+        return res.status(403).json({ error: "Non autorizzato" });
+      }
+      
       const invoices = await storage.getInvoicesByBooking(bookingId);
       res.json(invoices);
     } catch (error: any) {

@@ -54,6 +54,7 @@ import {
   Anchor
 } from "lucide-react";
 import { differenceInHours } from "date-fns";
+import { ReviewForm } from "@/components/review-form";
 
 export default function CustomerDashboard() {
   const { user } = useAuth();
@@ -61,6 +62,7 @@ export default function CustomerDashboard() {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
   const [upcomingBooking, setUpcomingBooking] = useState<Booking | null>(null);
+  const [reviewBookingId, setReviewBookingId] = useState<number | null>(null);
   const { toast } = useToast();
 
   // Get tab from URL parameter
@@ -403,8 +405,14 @@ export default function CustomerDashboard() {
                         <div className="flex space-x-2">
                           <ChatButton bookingId={booking.id} />
                           {booking.status === "completed" && (
-                            <Button size="sm" variant="outline">
-                              <Star className="h-4 w-4" />
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => setReviewBookingId(booking.id)}
+                              data-testid={`button-review-booking-${booking.id}`}
+                            >
+                              <Star className="h-4 w-4 mr-1" />
+                              <span className="hidden sm:inline">Recensione</span>
                             </Button>
                           )}
                         </div>
@@ -622,6 +630,24 @@ export default function CustomerDashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      <Dialog open={reviewBookingId !== null} onOpenChange={(open) => !open && setReviewBookingId(null)}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Scrivi una recensione</DialogTitle>
+            <DialogDescription>
+              Condividi la tua esperienza per aiutare altri utenti
+            </DialogDescription>
+          </DialogHeader>
+          {reviewBookingId && (
+            <ReviewForm 
+              bookingId={reviewBookingId} 
+              onSuccess={() => setReviewBookingId(null)}
+              onCancel={() => setReviewBookingId(null)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>

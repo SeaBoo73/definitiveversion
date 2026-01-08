@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
+import { ReviewForm } from "@/components/review-form";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -230,6 +231,7 @@ export default function OwnerDashboard() {
   const tabFromUrl = urlParams.get('tab');
   const initialTab = tabFromUrl || 'boats';
   const [activeTab, setActiveTab] = useState(initialTab);
+  const [reviewBookingId, setReviewBookingId] = useState<number | null>(null);
 
   // Fetch owner's boats - let the backend handle authorization
   const { data: boatsData, isLoading: boatsLoading, error: boatsQueryError } = useQuery<{ boats: Boat[] }>({
@@ -3228,6 +3230,17 @@ export default function OwnerDashboard() {
                         
                         <div className="flex space-x-2">
                           <ChatButton bookingId={booking.id} />
+                          {booking.status === "completed" && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => setReviewBookingId(booking.id)}
+                              data-testid={`button-review-customer-${booking.id}`}
+                            >
+                              <Star className="h-4 w-4 mr-1" />
+                              <span className="hidden sm:inline">Recensione</span>
+                            </Button>
+                          )}
                           <Button size="sm" variant="outline">
                             <Eye className="h-4 w-4" />
                           </Button>
@@ -4379,6 +4392,24 @@ export default function OwnerDashboard() {
               </Button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={reviewBookingId !== null} onOpenChange={(open) => !open && setReviewBookingId(null)}>
+        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Recensisci il cliente</DialogTitle>
+            <DialogDescription>
+              Condividi la tua esperienza con questo cliente
+            </DialogDescription>
+          </DialogHeader>
+          {reviewBookingId && (
+            <ReviewForm 
+              bookingId={reviewBookingId} 
+              onSuccess={() => setReviewBookingId(null)}
+              onCancel={() => setReviewBookingId(null)}
+            />
+          )}
         </DialogContent>
       </Dialog>
 

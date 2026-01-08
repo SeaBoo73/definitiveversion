@@ -1114,69 +1114,6 @@ export default function OwnerDashboard() {
           <p className="text-gray-600 mt-2">Gestisci le tue imbarcazioni e prenotazioni</p>
         </div>
 
-        {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Ship className="h-8 w-8 text-ocean-blue" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Imbarcazioni</p>
-                  <p className="text-2xl font-bold text-gray-900">{boats.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Sparkles className="h-8 w-8 text-coral" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Esperienze</p>
-                  <p className="text-2xl font-bold text-gray-900">3</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Calendar className="h-8 w-8 text-seafoam" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Prenotazioni (mese)</p>
-                  <p className="text-2xl font-bold text-gray-900">{monthlyBookings}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Euro className="h-8 w-8 text-green-600" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Guadagni totali</p>
-                  <p className="text-2xl font-bold text-gray-900">€{totalEarnings.toFixed(2)}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Star className="h-8 w-8 text-yellow-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Valutazione media</p>
-                  <p className="text-2xl font-bold text-gray-900">{averageRating > 0 ? averageRating.toFixed(1) : '-'}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <div className="flex flex-col gap-3">
             <Card 

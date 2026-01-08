@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Booking, Boat } from "@shared/schema";
+import { Booking, Boat, Invoice } from "@shared/schema";
 import { format } from "date-fns";
 import { it } from "date-fns/locale";
 import { ChatButton } from "@/components/chat-button";
@@ -51,11 +51,172 @@ import {
   TrendingUp,
   ArrowLeft,
   Bell,
-  Anchor
+  Anchor,
+  FileText,
+  Download
 } from "lucide-react";
 import { differenceInHours } from "date-fns";
 import { ReviewForm, ReviewCard } from "@/components/review-form";
 import type { Review } from "@shared/schema";
+
+function ReceiptsSection({ bookings }: { bookings: Booking[] }) {
+  const { toast } = useToast();
+  
+  const { data: invoices = [], isLoading } = useQuery<Invoice[]>({
+    queryKey: ['/api/invoices'],
+  });
+
+  const generateReceiptMutation = useMutation({
+    mutationFn: async (bookingId: number) => {
+      const response = await apiRequest('POST', `/api/invoices/generate-receipt/${bookingId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Ricevuta generata",
+        description: "La ricevuta è stata generata con successo",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Errore",
+        description: "Impossibile generare la ricevuta",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Get confirmed/completed bookings that can have receipts
+  const eligibleBookings = bookings.filter(b => 
+    b.status === 'confirmed' || b.status === 'completed'
+  );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <h2 className="text-2xl font-bold text-gray-900">Le mie ricevute</h2>
+        {[...Array(2)].map((_, i) => (
+          <Card key={i} className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+              <div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  const customerReceipts = invoices.filter(i => i.type === 'customer_receipt');
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold text-gray-900">Le mie ricevute</h2>
+      
+      {customerReceipts.length > 0 ? (
+        <div className="space-y-4">
+          {customerReceipts.map((invoice) => (
+            <Card key={invoice.id} data-testid={`card-receipt-${invoice.id}`}>
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <FileText className="h-5 w-5 text-ocean-blue" />
+                      <h3 className="text-lg font-semibold">{invoice.invoiceNumber}</h3>
+                      <Badge className="bg-green-100 text-green-800">Emessa</Badge>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Barca</p>
+                        <p className="font-medium">{invoice.boatName || 'N/A'}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Periodo noleggio</p>
+                        <p className="font-medium">
+                          {invoice.bookingStartDate && invoice.bookingEndDate 
+                            ? `${format(new Date(invoice.bookingStartDate), "dd MMM", { locale: it })} - ${format(new Date(invoice.bookingEndDate), "dd MMM yyyy", { locale: it })}`
+                            : 'N/A'
+                          }
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Totale</p>
+                        <p className="font-medium text-ocean-blue text-lg">€{invoice.total}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 p-3 bg-gray-50 rounded-lg grid grid-cols-3 gap-4 text-sm">
+                      <div>
+                        <p className="text-gray-600">Imponibile</p>
+                        <p className="font-medium">€{invoice.subtotal}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">IVA (22%)</p>
+                        <p className="font-medium">€{invoice.vat || '0.00'}</p>
+                      </div>
+                      <div>
+                        <p className="text-gray-600">Data emissione</p>
+                        <p className="font-medium">
+                          {invoice.createdAt 
+                            ? format(new Date(invoice.createdAt), "dd MMM yyyy", { locale: it })
+                            : 'N/A'
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <Card>
+          <CardContent className="p-8 text-center">
+            <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Nessuna ricevuta</h3>
+            <p className="text-gray-600 mb-4">
+              Le ricevute verranno generate automaticamente dopo il completamento delle prenotazioni.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {eligibleBookings.length > 0 && customerReceipts.length < eligibleBookings.length && (
+        <Card className="border-dashed border-2">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Genera ricevute mancanti</h3>
+            <div className="space-y-3">
+              {eligibleBookings
+                .filter(b => !customerReceipts.some(r => r.bookingId === b.id))
+                .map((booking) => (
+                  <div key={booking.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="font-medium">Prenotazione #{booking.id}</p>
+                      <p className="text-sm text-gray-600">
+                        {format(new Date(booking.startDate), "dd MMM", { locale: it })} - {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })} • €{booking.totalPrice}
+                      </p>
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={() => generateReceiptMutation.mutate(booking.id)}
+                      disabled={generateReceiptMutation.isPending}
+                      data-testid={`button-generate-receipt-${booking.id}`}
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      Genera
+                    </Button>
+                  </div>
+                ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}
 
 function MyReviewsSection() {
   const { data: myReviews = [], isLoading } = useQuery<Review[]>({
@@ -387,6 +548,7 @@ export default function CustomerDashboard() {
         <Tabs defaultValue={initialTab} className="space-y-6">
           <TabsList className="flex overflow-x-auto">
             <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
+            <TabsTrigger value="receipts">Ricevute</TabsTrigger>
             <TabsTrigger value="favorites">Preferiti</TabsTrigger>
             <TabsTrigger value="reviews">Recensioni</TabsTrigger>
             <TabsTrigger value="profile">Profilo</TabsTrigger>
@@ -477,6 +639,10 @@ export default function CustomerDashboard() {
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          <TabsContent value="receipts" className="space-y-6">
+            <ReceiptsSection bookings={bookings} />
           </TabsContent>
 
           <TabsContent value="favorites" className="space-y-6">

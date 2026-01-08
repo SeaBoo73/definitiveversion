@@ -1515,6 +1515,219 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Invoice/Receipt API Routes
+  
+  // Get all invoices for current user
+  app.get('/api/invoices', requireAuth, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const invoices = await storage.getInvoicesByUser(userId);
+      res.json(invoices);
+    } catch (error: any) {
+      console.error("Get invoices error:", error);
+      res.status(500).json({ error: "Errore nel recupero delle fatture" });
+    }
+  });
+
+  // Get invoice by ID
+  app.get('/api/invoices/:id', requireAuth, async (req: any, res) => {
+    try {
+      const invoiceId = parseInt(req.params.id);
+      const userId = parseInt(req.session.user.id);
+      
+      const invoice = await storage.getInvoice(invoiceId);
+      if (!invoice) {
+        return res.status(404).json({ error: "Fattura non trovata" });
+      }
+      
+      // Check authorization
+      if (invoice.userId !== userId) {
+        return res.status(403).json({ error: "Non autorizzato" });
+      }
+      
+      res.json(invoice);
+    } catch (error: any) {
+      console.error("Get invoice error:", error);
+      res.status(500).json({ error: "Errore nel recupero della fattura" });
+    }
+  });
+
+  // Get invoices for a booking
+  app.get('/api/invoices/booking/:bookingId', requireAuth, async (req: any, res) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      const invoices = await storage.getInvoicesByBooking(bookingId);
+      res.json(invoices);
+    } catch (error: any) {
+      console.error("Get invoices by booking error:", error);
+      res.status(500).json({ error: "Errore nel recupero delle fatture" });
+    }
+  });
+
+  // Generate customer receipt for a completed booking
+  app.post('/api/invoices/generate-receipt/:bookingId', requireAuth, async (req: any, res) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      const userId = parseInt(req.session.user.id);
+      
+      // Get booking
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ error: "Prenotazione non trovata" });
+      }
+      
+      // Check if user is the customer
+      if (booking.customerId !== userId) {
+        return res.status(403).json({ error: "Non autorizzato" });
+      }
+      
+      // Check if booking is completed or confirmed
+      if (!['completed', 'confirmed'].includes(booking.status || '')) {
+        return res.status(400).json({ error: "La prenotazione deve essere confermata o completata" });
+      }
+      
+      // Check if receipt already exists
+      const existingInvoices = await storage.getInvoicesByBooking(bookingId);
+      const existingReceipt = existingInvoices.find(i => i.type === 'customer_receipt' && i.userId === userId);
+      if (existingReceipt) {
+        return res.json(existingReceipt);
+      }
+      
+      // Get boat and user info
+      const boat = await storage.getBoat(booking.boatId);
+      const user = await storage.getUser(userId);
+      
+      if (!boat || !user) {
+        return res.status(404).json({ error: "Dati non trovati" });
+      }
+      
+      // Generate invoice number
+      const invoiceNumber = await storage.generateInvoiceNumber('customer_receipt');
+      
+      // Calculate amounts
+      const subtotal = parseFloat(booking.totalPrice || '0');
+      const vat = subtotal * 0.22; // 22% VAT
+      const total = subtotal;
+      
+      // Create receipt
+      const receipt = await storage.createInvoice({
+        invoiceNumber,
+        type: 'customer_receipt',
+        userId,
+        bookingId,
+        boatId: booking.boatId,
+        subtotal: (subtotal - vat).toFixed(2),
+        vat: vat.toFixed(2),
+        total: total.toFixed(2),
+        customerName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username,
+        customerEmail: user.email,
+        boatName: boat.name,
+        bookingStartDate: booking.startDate.toISOString().split('T')[0],
+        bookingEndDate: booking.endDate.toISOString().split('T')[0],
+        status: 'issued',
+        paidAt: new Date(),
+      });
+      
+      res.json(receipt);
+    } catch (error: any) {
+      console.error("Generate receipt error:", error);
+      res.status(500).json({ error: error.message || "Errore nella generazione della ricevuta" });
+    }
+  });
+
+  // Generate monthly report for boat owner
+  app.post('/api/invoices/generate-monthly-report', requireAuth, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const userRole = req.session.user.role;
+      
+      if (userRole !== 'owner') {
+        return res.status(403).json({ error: "Solo i noleggiatori possono generare report mensili" });
+      }
+      
+      const { year, month } = req.body;
+      
+      if (!year || !month) {
+        return res.status(400).json({ error: "Anno e mese richiesti" });
+      }
+      
+      // Get user info
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: "Utente non trovato" });
+      }
+      
+      // Get all boats for this owner
+      const boats = await storage.getBoatsByOwner(userId);
+      const boatIds = boats.map(b => b.id);
+      
+      // Calculate period
+      const periodStart = new Date(year, month - 1, 1);
+      const periodEnd = new Date(year, month, 0);
+      
+      // Check if report already exists
+      const existingInvoices = await storage.getInvoicesByUser(userId);
+      const existingReport = existingInvoices.find(i => 
+        i.type === 'owner_monthly_report' && 
+        i.periodStart === periodStart.toISOString().split('T')[0] &&
+        i.periodEnd === periodEnd.toISOString().split('T')[0]
+      );
+      
+      if (existingReport) {
+        return res.json(existingReport);
+      }
+      
+      // Get all bookings for this period (we'll need to aggregate from booking data)
+      // For now, create a summary report
+      const invoiceNumber = await storage.generateInvoiceNumber('owner_monthly_report');
+      
+      // Calculate totals from bookings (simplified - you may want to query actual bookings)
+      let totalRevenue = 0;
+      let totalCommission = 0;
+      
+      // For each boat, get completed bookings in period
+      for (const boat of boats) {
+        const bookings = await storage.getBookingsByOwner(userId);
+        const periodBookings = bookings.filter(b => {
+          const bookingDate = new Date(b.startDate);
+          return b.boatId === boat.id && 
+                 b.status === 'completed' &&
+                 bookingDate >= periodStart && 
+                 bookingDate <= periodEnd;
+        });
+        
+        for (const booking of periodBookings) {
+          totalRevenue += parseFloat(booking.totalPrice || '0');
+          totalCommission += parseFloat(booking.commission || '0');
+        }
+      }
+      
+      const netAmount = totalRevenue - totalCommission;
+      
+      // Create monthly report
+      const report = await storage.createInvoice({
+        invoiceNumber,
+        type: 'owner_monthly_report',
+        userId,
+        subtotal: totalRevenue.toFixed(2),
+        commission: totalCommission.toFixed(2),
+        total: netAmount.toFixed(2),
+        periodStart: periodStart.toISOString().split('T')[0],
+        periodEnd: periodEnd.toISOString().split('T')[0],
+        customerName: user.businessName || `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username,
+        customerEmail: user.email,
+        customerVatNumber: user.vatNumber || undefined,
+        status: 'issued',
+        notes: `Report mensile ${month}/${year} - ${boats.length} barche`,
+      });
+      
+      res.json(report);
+    } catch (error: any) {
+      console.error("Generate monthly report error:", error);
+      res.status(500).json({ error: error.message || "Errore nella generazione del report" });
+    }
+  });
+
   // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

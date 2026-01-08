@@ -426,3 +426,61 @@ export const insertInvoiceSchema = createInsertSchema(invoices, {
 
 export type InsertInvoice = z.infer<typeof insertInvoiceSchema>;
 export type Invoice = typeof invoices.$inferSelect;
+
+// Local fees and bureaucratic obligations for boat rentals
+export const localFees = pgTable("local_fees", {
+  id: serial("id").primaryKey(),
+  
+  // Geographic scope
+  region: varchar("region", { length: 100 }).notNull(), // e.g., "Sardegna", "Sicilia", "Campania"
+  province: varchar("province", { length: 100 }), // e.g., "Olbia-Tempio", "Napoli"
+  municipality: varchar("municipality", { length: 100 }), // e.g., "La Maddalena", "Capri"
+  port: varchar("port", { length: 200 }), // specific port if applicable
+  marineProtectedArea: varchar("marine_protected_area", { length: 200 }), // e.g., "AMP Arcipelago di La Maddalena"
+  
+  // Fee details
+  name: varchar("name", { length: 200 }).notNull(), // e.g., "Contributo di sbarco", "Ticket AMP"
+  description: text("description").notNull(),
+  feeType: varchar("fee_type", { length: 50 }).notNull(), // 'landing_fee', 'amp_ticket', 'mooring', 'environmental', 'other'
+  
+  // Amount
+  amount: numeric("amount"), // null if variable/to be verified
+  amountType: varchar("amount_type", { length: 30 }).default("fixed"), // 'fixed', 'per_person', 'per_day', 'per_meter', 'variable'
+  currency: varchar("currency", { length: 3 }).default("EUR"),
+  
+  // Who pays
+  obligatedParty: varchar("obligated_party", { length: 50 }).notNull(), // 'customer', 'owner', 'skipper', 'varies'
+  
+  // Status
+  isRequired: boolean("is_required").default(true), // mandatory vs informative
+  isActive: boolean("is_active").default(true),
+  
+  // Validity period
+  validFrom: date("valid_from"),
+  validTo: date("valid_to"),
+  seasonalNotes: text("seasonal_notes"), // e.g., "Solo periodo estivo 1 giugno - 30 settembre"
+  
+  // Additional info
+  paymentMethod: text("payment_method"), // e.g., "Online su sito Comune", "Presso ufficio porto"
+  officialLink: text("official_link"), // link to official regulations
+  contactInfo: text("contact_info"), // phone/email for inquiries
+  notes: text("notes"),
+  
+  // Metadata
+  lastVerified: timestamp("last_verified"),
+  source: varchar("source", { length: 255 }), // where the info was obtained
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertLocalFeeSchema = createInsertSchema(localFees, {
+  region: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  feeType: z.enum(["landing_fee", "amp_ticket", "mooring", "environmental", "other"]),
+  obligatedParty: z.enum(["customer", "owner", "skipper", "varies"]),
+  amountType: z.enum(["fixed", "per_person", "per_day", "per_meter", "variable"]).optional(),
+}).omit({ id: true, createdAt: true, updatedAt: true });
+
+export type InsertLocalFee = z.infer<typeof insertLocalFeeSchema>;
+export type LocalFee = typeof localFees.$inferSelect;

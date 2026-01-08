@@ -11,6 +11,17 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 
 ## Recent Changes
 
+### January 8, 2026 - Local Fees Module (Oneri Locali e Adempimenti)
+**Status:** Completed - Compliance-aware platform feature
+- Created `local_fees` database table with flexible schema for regional/municipal obligations
+- Implemented storage methods for CRUD operations with geographic filtering
+- Added API routes with Zod validation and admin-only write access
+- Built frontend page `/oneri-locali` with search by region, municipality, and port
+- Populated database with 13 real Italian fees (AMP tickets, landing fees, mooring info)
+- Regions covered: Sardegna, Campania, Sicilia, Liguria, Puglia, Toscana
+- Fee types: amp_ticket, landing_fee, mooring, environmental, other
+- Features: obligated party tracking, seasonal notes, payment methods, official links
+
 ### October 2, 2025 - Critical Bug Fixes for Apple App Store Submission
 **Status:** App Store review issues resolved
 - Fixed database schema mismatch: aligned TypeScript enum with database user_role (customer/owner/admin)

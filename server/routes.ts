@@ -1742,6 +1742,109 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Local Fees API Routes (Oneri Locali e Adempimenti)
+  
+  // Get all local fees
+  app.get('/api/local-fees', async (_req, res) => {
+    try {
+      const fees = await storage.getAllLocalFees();
+      res.json(fees);
+    } catch (error: any) {
+      console.error("Get local fees error:", error);
+      res.status(500).json({ error: "Errore nel recupero degli oneri locali" });
+    }
+  });
+
+  // Get local fees by region
+  app.get('/api/local-fees/region/:region', async (req, res) => {
+    try {
+      const { region } = req.params;
+      const fees = await storage.getLocalFeesByRegion(region);
+      res.json(fees);
+    } catch (error: any) {
+      console.error("Get local fees by region error:", error);
+      res.status(500).json({ error: "Errore nel recupero degli oneri locali" });
+    }
+  });
+
+  // Search local fees by area (query params: region, municipality, port)
+  app.get('/api/local-fees/search', async (req, res) => {
+    try {
+      const { region, municipality, port } = req.query;
+      const fees = await storage.getLocalFeesByArea(
+        region as string | undefined,
+        municipality as string | undefined,
+        port as string | undefined
+      );
+      res.json(fees);
+    } catch (error: any) {
+      console.error("Search local fees error:", error);
+      res.status(500).json({ error: "Errore nella ricerca degli oneri locali" });
+    }
+  });
+
+  // Create local fee (admin only)
+  app.post('/api/local-fees', requireAuth, async (req: any, res) => {
+    try {
+      const userRole = req.session.user.role;
+      if (userRole !== 'admin') {
+        return res.status(403).json({ error: "Solo gli amministratori possono creare oneri locali" });
+      }
+      
+      const { insertLocalFeeSchema } = await import("@shared/schema");
+      const validatedData = insertLocalFeeSchema.parse(req.body);
+      const fee = await storage.createLocalFee(validatedData);
+      res.json(fee);
+    } catch (error: any) {
+      console.error("Create local fee error:", error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: "Dati non validi", details: error.errors });
+      }
+      res.status(500).json({ error: error.message || "Errore nella creazione dell'onere locale" });
+    }
+  });
+
+  // Update local fee (admin only)
+  app.patch('/api/local-fees/:id', requireAuth, async (req: any, res) => {
+    try {
+      const userRole = req.session.user.role;
+      if (userRole !== 'admin') {
+        return res.status(403).json({ error: "Solo gli amministratori possono modificare gli oneri locali" });
+      }
+      
+      const { insertLocalFeeSchema } = await import("@shared/schema");
+      const partialSchema = insertLocalFeeSchema.partial();
+      const validatedData = partialSchema.parse(req.body);
+      
+      const id = parseInt(req.params.id);
+      const fee = await storage.updateLocalFee(id, validatedData);
+      
+      if (!fee) {
+        return res.status(404).json({ error: "Onere locale non trovato" });
+      }
+      
+      res.json(fee);
+    } catch (error: any) {
+      console.error("Update local fee error:", error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: "Dati non validi", details: error.errors });
+      }
+      res.status(500).json({ error: error.message || "Errore nell'aggiornamento dell'onere locale" });
+    }
+  });
+
+  // Get unique regions for dropdown
+  app.get('/api/local-fees/regions', async (_req, res) => {
+    try {
+      const fees = await storage.getAllLocalFees();
+      const regions = [...new Set(fees.map(f => f.region))].sort();
+      res.json(regions);
+    } catch (error: any) {
+      console.error("Get regions error:", error);
+      res.status(500).json({ error: "Errore nel recupero delle regioni" });
+    }
+  });
+
   // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

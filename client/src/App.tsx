@@ -76,6 +76,7 @@ import DiventaSeaHostPage from "@/pages/diventa-sea-host";
 import ProfiloDatiBancariPage from "@/pages/profilo-dati-bancari";
 import SupportoPage from "@/pages/supporto";
 import ResetPasswordPage from "@/pages/reset-password";
+import OneriLocali from "@/pages/oneri-locali";
 
 function Router() {
   return (
@@ -137,6 +138,7 @@ function Router() {
       <Route path="/emergency" component={EmergencyPage} />
       <Route path="/emergency-system" component={EmergencySystem} />
       <Route path="/external-services" component={ExternalServices} />
+      <Route path="/oneri-locali" component={OneriLocali} />
       <Route path="/ormeggio/:id" component={OrmeggioBookingPage} />
       <Route path="/ormeggio" component={OrmeggioPage} />
       <Route path="/test-moorings" component={lazy(() => import('./pages/test-moorings'))} />

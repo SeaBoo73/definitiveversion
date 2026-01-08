@@ -11,6 +11,7 @@ import {
   passwordResetTokens,
   reviews,
   invoices,
+  localFees,
   type User,
   type InsertUser,
   type Boat,
@@ -34,9 +35,11 @@ import {
   type InsertReview,
   type Invoice,
   type InsertInvoice,
+  type LocalFee,
+  type InsertLocalFee,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, sql, and, gte, lte } from "drizzle-orm";
+import { eq, sql, and, gte, lte, or, ilike } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
@@ -123,6 +126,13 @@ export interface IStorage {
   createInvoice(data: InsertInvoice): Promise<Invoice>;
   getInvoice(id: number): Promise<Invoice | undefined>;
   generateInvoiceNumber(type: string): Promise<string>;
+  
+  // Local fees operations
+  getAllLocalFees(): Promise<LocalFee[]>;
+  getLocalFeesByRegion(region: string): Promise<LocalFee[]>;
+  getLocalFeesByArea(region?: string, municipality?: string, port?: string): Promise<LocalFee[]>;
+  createLocalFee(data: InsertLocalFee): Promise<LocalFee>;
+  updateLocalFee(id: number, data: Partial<InsertLocalFee>): Promise<LocalFee | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -548,6 +558,59 @@ export class DatabaseStorage implements IStorage {
     const paddedCount = count.toString().padStart(6, '0');
     
     return `${prefix}-${year}-${paddedCount}`;
+  }
+
+  // Local fees operations
+  async getAllLocalFees(): Promise<LocalFee[]> {
+    return await db.select().from(localFees).where(eq(localFees.isActive, true));
+  }
+
+  async getLocalFeesByRegion(region: string): Promise<LocalFee[]> {
+    return await db.select().from(localFees).where(
+      and(
+        eq(localFees.isActive, true),
+        ilike(localFees.region, `%${region}%`)
+      )
+    );
+  }
+
+  async getLocalFeesByArea(region?: string, municipality?: string, port?: string): Promise<LocalFee[]> {
+    const conditions = [eq(localFees.isActive, true)];
+    
+    if (region) {
+      conditions.push(ilike(localFees.region, `%${region}%`));
+    }
+    if (municipality) {
+      conditions.push(
+        or(
+          ilike(localFees.municipality, `%${municipality}%`),
+          sql`${localFees.municipality} IS NULL`
+        )!
+      );
+    }
+    if (port) {
+      conditions.push(
+        or(
+          ilike(localFees.port, `%${port}%`),
+          sql`${localFees.port} IS NULL`
+        )!
+      );
+    }
+    
+    return await db.select().from(localFees).where(and(...conditions));
+  }
+
+  async createLocalFee(data: InsertLocalFee): Promise<LocalFee> {
+    const [fee] = await db.insert(localFees).values(data).returning();
+    return fee;
+  }
+
+  async updateLocalFee(id: number, data: Partial<InsertLocalFee>): Promise<LocalFee | undefined> {
+    const [fee] = await db.update(localFees).set({
+      ...data,
+      updatedAt: new Date(),
+    }).where(eq(localFees.id, id)).returning();
+    return fee;
   }
 }
 

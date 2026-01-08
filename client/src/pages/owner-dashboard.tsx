@@ -1253,7 +1253,7 @@ export default function OwnerDashboard() {
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">Guadagni totali</p>
-                  <p className="text-2xl font-bold">{formatCurrency(bookings?.filter((b: any) => b.status === 'completed').reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) || 0)}</p>
+                  <p className="text-2xl font-bold">€{((bookings?.filter((b: any) => b.status === 'completed').reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) || 0)).toFixed(2)}</p>
                 </div>
               </CardContent>
             </Card>

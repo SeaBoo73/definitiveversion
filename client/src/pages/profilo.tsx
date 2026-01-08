@@ -90,13 +90,6 @@ export default function ProfiloPage() {
       color: "text-red-500"
     },
     {
-      icon: Star,
-      title: "Le mie recensioni",
-      subtitle: "Recensioni scritte",
-      href: "/customer-dashboard?tab=reviews",
-      color: "text-yellow-500"
-    },
-    {
       icon: Ship,
       title: "Diventa noleggiatore",
       subtitle: "Metti in affitto la tua barca",

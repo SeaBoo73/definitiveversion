@@ -99,6 +99,65 @@ function MonthlyReportsSection() {
     queryKey: ['/api/invoices'],
   });
 
+  const downloadPDF = async (report: Invoice) => {
+    const { jsPDF } = await import('jspdf');
+    const doc = new jsPDF();
+    
+    doc.setFontSize(20);
+    doc.text('SeaBoo - Report Mensile', 20, 20);
+    
+    doc.setFontSize(12);
+    doc.text(`Numero: ${report.invoiceNumber}`, 20, 40);
+    doc.text(`Periodo: ${report.periodStart || ''} - ${report.periodEnd || ''}`, 20, 50);
+    doc.text(`Intestatario: ${report.customerName || ''}`, 20, 60);
+    doc.text(`Email: ${report.customerEmail || ''}`, 20, 70);
+    
+    doc.setFontSize(14);
+    doc.text('Riepilogo Finanziario', 20, 90);
+    
+    doc.setFontSize(12);
+    doc.text(`Ricavi lordi: €${report.subtotal}`, 20, 105);
+    doc.text(`Commissioni SeaBoo (15%): -€${report.commission || '0.00'}`, 20, 115);
+    doc.text(`Netto spettante: €${report.total}`, 20, 125);
+    
+    if (report.notes) {
+      doc.text(`Note: ${report.notes}`, 20, 145);
+    }
+    
+    doc.setFontSize(10);
+    doc.text('Documento generato da SeaBoo - Piattaforma Noleggio Barche', 20, 280);
+    
+    doc.save(`${report.invoiceNumber}.pdf`);
+    toast({ title: "PDF scaricato", description: `${report.invoiceNumber}.pdf` });
+  };
+
+  const downloadExcel = (report: Invoice) => {
+    const csvContent = [
+      ['SeaBoo - Report Mensile'],
+      [],
+      ['Numero Report', report.invoiceNumber],
+      ['Periodo Inizio', report.periodStart || ''],
+      ['Periodo Fine', report.periodEnd || ''],
+      ['Intestatario', report.customerName || ''],
+      ['Email', report.customerEmail || ''],
+      ['P.IVA', report.customerVatNumber || ''],
+      [],
+      ['RIEPILOGO FINANZIARIO'],
+      ['Ricavi Lordi', `€${report.subtotal}`],
+      ['Commissioni SeaBoo (15%)', `-€${report.commission || '0.00'}`],
+      ['Netto Spettante', `€${report.total}`],
+      [],
+      ['Note', report.notes || ''],
+    ].map(row => row.join(';')).join('\n');
+    
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${report.invoiceNumber}.csv`;
+    link.click();
+    toast({ title: "Excel scaricato", description: `${report.invoiceNumber}.csv` });
+  };
+
   const generateReportMutation = useMutation({
     mutationFn: async () => {
       const response = await apiRequest('POST', '/api/invoices/generate-monthly-report', {
@@ -250,6 +309,27 @@ function MonthlyReportsSection() {
                         {report.notes}
                       </div>
                     )}
+                    
+                    <div className="mt-4 flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => downloadPDF(report)}
+                        data-testid={`button-download-pdf-${report.id}`}
+                      >
+                        <FileText className="h-4 w-4 mr-1" />
+                        Scarica PDF
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => downloadExcel(report)}
+                        data-testid={`button-download-excel-${report.id}`}
+                      >
+                        <Download className="h-4 w-4 mr-1" />
+                        Scarica Excel
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

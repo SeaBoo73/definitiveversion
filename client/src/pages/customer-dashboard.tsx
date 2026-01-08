@@ -66,6 +66,69 @@ function ReceiptsSection({ bookings }: { bookings: Booking[] }) {
     queryKey: ['/api/invoices'],
   });
 
+  const downloadPDF = async (invoice: Invoice) => {
+    const { jsPDF } = await import('jspdf');
+    const doc = new jsPDF();
+    
+    doc.setFontSize(20);
+    doc.text('SeaBoo - Ricevuta di Pagamento', 20, 20);
+    
+    doc.setFontSize(12);
+    doc.text(`Numero: ${invoice.invoiceNumber}`, 20, 40);
+    doc.text(`Data: ${invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString('it-IT') : ''}`, 20, 50);
+    doc.text(`Cliente: ${invoice.customerName || ''}`, 20, 60);
+    doc.text(`Email: ${invoice.customerEmail || ''}`, 20, 70);
+    
+    doc.setFontSize(14);
+    doc.text('Dettagli Noleggio', 20, 90);
+    
+    doc.setFontSize(12);
+    doc.text(`Imbarcazione: ${invoice.boatName || ''}`, 20, 105);
+    doc.text(`Periodo: ${invoice.bookingStartDate || ''} - ${invoice.bookingEndDate || ''}`, 20, 115);
+    
+    doc.setFontSize(14);
+    doc.text('Riepilogo Pagamento', 20, 135);
+    
+    doc.setFontSize(12);
+    doc.text(`Imponibile: €${invoice.subtotal}`, 20, 150);
+    doc.text(`IVA (22%): €${invoice.vat || '0.00'}`, 20, 160);
+    doc.text(`Totale pagato: €${invoice.total}`, 20, 170);
+    
+    doc.setFontSize(10);
+    doc.text('Documento generato da SeaBoo - Piattaforma Noleggio Barche', 20, 280);
+    
+    doc.save(`${invoice.invoiceNumber}.pdf`);
+    toast({ title: "PDF scaricato", description: `${invoice.invoiceNumber}.pdf` });
+  };
+
+  const downloadExcel = (invoice: Invoice) => {
+    const csvContent = [
+      ['SeaBoo - Ricevuta di Pagamento'],
+      [],
+      ['Numero Ricevuta', invoice.invoiceNumber],
+      ['Data Emissione', invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString('it-IT') : ''],
+      ['Cliente', invoice.customerName || ''],
+      ['Email', invoice.customerEmail || ''],
+      [],
+      ['DETTAGLI NOLEGGIO'],
+      ['Imbarcazione', invoice.boatName || ''],
+      ['Data Inizio', invoice.bookingStartDate || ''],
+      ['Data Fine', invoice.bookingEndDate || ''],
+      [],
+      ['RIEPILOGO PAGAMENTO'],
+      ['Imponibile', `€${invoice.subtotal}`],
+      ['IVA (22%)', `€${invoice.vat || '0.00'}`],
+      ['Totale Pagato', `€${invoice.total}`],
+    ].map(row => row.join(';')).join('\n');
+    
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `${invoice.invoiceNumber}.csv`;
+    link.click();
+    toast({ title: "Excel scaricato", description: `${invoice.invoiceNumber}.csv` });
+  };
+
   const generateReceiptMutation = useMutation({
     mutationFn: async (bookingId: number) => {
       const response = await apiRequest('POST', `/api/invoices/generate-receipt/${bookingId}`);
@@ -165,6 +228,27 @@ function ReceiptsSection({ bookings }: { bookings: Booking[] }) {
                           }
                         </p>
                       </div>
+                    </div>
+                    
+                    <div className="mt-4 flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => downloadPDF(invoice)}
+                        data-testid={`button-download-receipt-pdf-${invoice.id}`}
+                      >
+                        <FileText className="h-4 w-4 mr-1" />
+                        Scarica PDF
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => downloadExcel(invoice)}
+                        data-testid={`button-download-receipt-excel-${invoice.id}`}
+                      >
+                        <Download className="h-4 w-4 mr-1" />
+                        Scarica Excel
+                      </Button>
                     </div>
                   </div>
                 </div>

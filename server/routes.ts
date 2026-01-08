@@ -1390,6 +1390,131 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ============ REVIEWS API ============
+  
+  // Get reviews for a booking
+  app.get('/api/reviews/booking/:bookingId', requireAuth, async (req: any, res) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      const reviews = await storage.getReviewsByBooking(bookingId);
+      res.json(reviews);
+    } catch (error: any) {
+      console.error("Get reviews by booking error:", error);
+      res.status(500).json({ error: "Errore nel recupero recensioni" });
+    }
+  });
+
+  // Get reviews received by a user (as reviewee)
+  app.get('/api/reviews/user/:userId', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const reviews = await storage.getReviewsByUser(userId, false);
+      res.json(reviews);
+    } catch (error: any) {
+      console.error("Get reviews by user error:", error);
+      res.status(500).json({ error: "Errore nel recupero recensioni" });
+    }
+  });
+
+  // Get reviews for a boat
+  app.get('/api/reviews/boat/:boatId', async (req, res) => {
+    try {
+      const boatId = parseInt(req.params.boatId);
+      const reviews = await storage.getReviewsByBoat(boatId);
+      res.json(reviews);
+    } catch (error: any) {
+      console.error("Get reviews by boat error:", error);
+      res.status(500).json({ error: "Errore nel recupero recensioni" });
+    }
+  });
+
+  // Get my reviews (written by me)
+  app.get('/api/reviews/my-reviews', requireAuth, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const reviews = await storage.getReviewsByUser(userId, true);
+      res.json(reviews);
+    } catch (error: any) {
+      console.error("Get my reviews error:", error);
+      res.status(500).json({ error: "Errore nel recupero recensioni" });
+    }
+  });
+
+  // Check if user can write a review
+  app.get('/api/reviews/can-review/:bookingId', requireAuth, async (req: any, res) => {
+    try {
+      const bookingId = parseInt(req.params.bookingId);
+      const userId = parseInt(req.session.user.id);
+      const userRole = req.session.user.role;
+      
+      const type = userRole === 'owner' ? 'owner_to_customer' : 'customer_to_owner';
+      const canReview = await storage.canUserReview(bookingId, userId, type);
+      
+      res.json({ canReview, type });
+    } catch (error: any) {
+      console.error("Can review check error:", error);
+      res.status(500).json({ error: "Errore nella verifica" });
+    }
+  });
+
+  // Create a new review
+  app.post('/api/reviews', requireAuth, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { bookingId, type, rating, cleanliness, communication, accuracy, value, title, comment } = req.body;
+      
+      // Validate type
+      if (!['customer_to_owner', 'owner_to_customer'].includes(type)) {
+        return res.status(400).json({ error: "Tipo recensione non valido" });
+      }
+      
+      // Check if can review
+      const canReview = await storage.canUserReview(bookingId, userId, type);
+      if (!canReview) {
+        return res.status(403).json({ error: "Non puoi scrivere questa recensione" });
+      }
+      
+      // Get booking to determine reviewee
+      const booking = await storage.getBooking(bookingId);
+      if (!booking) {
+        return res.status(404).json({ error: "Prenotazione non trovata" });
+      }
+      
+      let revieweeId: number;
+      if (type === 'customer_to_owner') {
+        // Customer reviewing owner - get boat owner
+        const boat = await storage.getBoat(booking.boatId);
+        if (!boat) {
+          return res.status(404).json({ error: "Barca non trovata" });
+        }
+        revieweeId = boat.hostId;
+      } else {
+        // Owner reviewing customer
+        revieweeId = booking.customerId;
+      }
+      
+      const review = await storage.createReview({
+        bookingId,
+        reviewerId: userId,
+        revieweeId,
+        boatId: booking.boatId,
+        type,
+        rating,
+        cleanliness,
+        communication,
+        accuracy,
+        value,
+        title,
+        comment
+      });
+      
+      res.json(review);
+    } catch (error: any) {
+      console.error("Create review error:", error);
+      res.status(500).json({ error: error.message || "Errore nella creazione recensione" });
+    }
+  });
+
   // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

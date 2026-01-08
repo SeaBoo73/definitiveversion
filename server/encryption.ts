@@ -62,6 +62,28 @@ export function decrypt(encryptedText: string): string {
   }
 }
 
+// Mask IBAN - show only last 4 characters
+export function maskIban(iban: string | null): string {
+  if (!iban) return '';
+  // Remove spaces for processing
+  const cleanIban = iban.replace(/\s/g, '');
+  if (cleanIban.length <= 4) return cleanIban;
+  // Show first 4 (country + check) and last 4 characters
+  const visible = cleanIban.slice(0, 4) + ' **** **** **** ' + cleanIban.slice(-4);
+  return visible;
+}
+
+// Mask bank account holder name - show only first letter and last name initial
+export function maskAccountHolder(name: string | null): string {
+  if (!name) return '';
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) {
+    return parts[0].charAt(0) + '***';
+  }
+  // First name first char + *** + Last name first char + ***
+  return parts[0].charAt(0) + '*** ' + parts[parts.length - 1].charAt(0) + '***';
+}
+
 // Helper functions for banking data
 export function encryptBankingData(data: {
   iban?: string | null;

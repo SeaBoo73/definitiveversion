@@ -38,8 +38,10 @@ export default function ProfiloDatiBancariPage() {
   // Fetch profile data from database
   const { data: fullProfile } = useQuery<{
     iban: string | null;
+    ibanMasked: string | null;
     bankName: string | null;
     accountHolder: string | null;
+    accountHolderMasked: string | null;
     swiftBic: string | null;
   }>({
     queryKey: ["/api/user/profile"],
@@ -181,10 +183,14 @@ export default function ProfiloDatiBancariPage() {
                           id="iban"
                           placeholder="IT60 X054 2811 1010 0000 0123 456"
                           disabled={!isEditing}
-                          value={bankingData.iban}
+                          value={isEditing ? bankingData.iban : (fullProfile?.ibanMasked || "")}
                           onChange={(e) => setBankingData({ ...bankingData, iban: e.target.value })}
                           data-testid="input-iban"
+                          className={!isEditing && fullProfile?.ibanMasked ? "font-mono tracking-wider" : ""}
                         />
+                        {!isEditing && fullProfile?.ibanMasked && (
+                          <p className="text-xs text-gray-500">IBAN parzialmente nascosto per sicurezza</p>
+                        )}
                       </div>
 
                       <div className="space-y-2">
@@ -205,10 +211,13 @@ export default function ProfiloDatiBancariPage() {
                           id="accountHolder"
                           placeholder="Nome e cognome del titolare"
                           disabled={!isEditing}
-                          value={bankingData.accountHolder}
+                          value={isEditing ? bankingData.accountHolder : (fullProfile?.accountHolderMasked || "")}
                           onChange={(e) => setBankingData({ ...bankingData, accountHolder: e.target.value })}
                           data-testid="input-account-holder"
                         />
+                        {!isEditing && fullProfile?.accountHolderMasked && (
+                          <p className="text-xs text-gray-500">Nome parzialmente nascosto per sicurezza</p>
+                        )}
                       </div>
 
                       <div className="space-y-2">

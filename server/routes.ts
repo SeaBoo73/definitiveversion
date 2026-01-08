@@ -12,7 +12,7 @@ import Stripe from "stripe";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import aiChatRouter from "./routes/ai-chat";
-import { encryptBankingData, decryptBankingData } from "./encryption";
+import { encryptBankingData, decryptBankingData, maskIban, maskAccountHolder } from "./encryption";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -362,6 +362,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         swiftBic: user.swiftBic
       });
 
+      // Generate masked versions for display
+      const ibanMasked = maskIban(decryptedBanking.iban || null);
+      const accountHolderMasked = maskAccountHolder(decryptedBanking.accountHolder || null);
+
       res.json({
         id: user.id,
         email: user.email,
@@ -372,9 +376,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         role: user.role,
         businessName: user.businessName,
         bio: user.bio,
+        // Return both masked and full versions
         iban: decryptedBanking.iban,
+        ibanMasked,
         bankName: decryptedBanking.bankName,
         accountHolder: decryptedBanking.accountHolder,
+        accountHolderMasked,
         swiftBic: decryptedBanking.swiftBic
       });
     } catch (error) {

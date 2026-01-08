@@ -842,8 +842,10 @@ export default function OwnerDashboard() {
     profileImage: string | null;
     bio: string | null;
     iban: string | null;
+    ibanMasked: string | null;
     bankName: string | null;
     accountHolder: string | null;
+    accountHolderMasked: string | null;
     swiftBic: string | null;
   }>({
     queryKey: ["/api/user/profile"],
@@ -3421,11 +3423,15 @@ export default function OwnerDashboard() {
                     <Input 
                       id="iban" 
                       placeholder="IT60 X054 2811 1010 0000 0123 456" 
-                      className="border-green-200 focus:border-green-500 font-mono"
-                      value={bankingData.iban}
+                      className="border-green-200 focus:border-green-500 font-mono tracking-wider"
+                      value={fullProfile?.ibanMasked || bankingData.iban}
                       onChange={(e) => setBankingData({ ...bankingData, iban: e.target.value })}
                       data-testid="input-iban"
+                      disabled
                     />
+                    {fullProfile?.ibanMasked && (
+                      <p className="text-xs text-gray-500">IBAN parzialmente nascosto per sicurezza</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">
@@ -3452,10 +3458,14 @@ export default function OwnerDashboard() {
                       id="accountHolder" 
                       placeholder="Nome e Cognome come sul conto" 
                       className="border-green-200 focus:border-green-500"
-                      value={bankingData.accountHolder}
+                      value={fullProfile?.accountHolderMasked || bankingData.accountHolder}
                       onChange={(e) => setBankingData({ ...bankingData, accountHolder: e.target.value })}
                       data-testid="input-accountHolder"
+                      disabled
                     />
+                    {fullProfile?.accountHolderMasked && (
+                      <p className="text-xs text-gray-500">Nome parzialmente nascosto per sicurezza</p>
+                    )}
                   </div>
 
                   <div className="space-y-2">

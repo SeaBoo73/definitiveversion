@@ -54,7 +54,50 @@ import {
   Anchor
 } from "lucide-react";
 import { differenceInHours } from "date-fns";
-import { ReviewForm } from "@/components/review-form";
+import { ReviewForm, ReviewCard } from "@/components/review-form";
+import type { Review } from "@shared/schema";
+
+function MyReviewsSection() {
+  const { data: myReviews = [], isLoading } = useQuery<Review[]>({
+    queryKey: ['/api/reviews/my-reviews'],
+  });
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {[...Array(2)].map((_, i) => (
+          <Card key={i} className="animate-pulse">
+            <CardContent className="p-6">
+              <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+              <div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  if (myReviews.length === 0) {
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <Star className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Nessuna recensione</h3>
+          <p className="text-gray-600">Non hai ancora scritto nessuna recensione. Dopo una prenotazione completata, potrai lasciare un feedback!</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {myReviews.map((review) => (
+        <ReviewCard key={review.id} review={review} />
+      ))}
+    </div>
+  );
+}
 
 export default function CustomerDashboard() {
   const { user } = useAuth();
@@ -342,9 +385,10 @@ export default function CustomerDashboard() {
         </div>
 
         <Tabs defaultValue={initialTab} className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="bookings">Le mie prenotazioni</TabsTrigger>
+          <TabsList className="flex overflow-x-auto">
+            <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
             <TabsTrigger value="favorites">Preferiti</TabsTrigger>
+            <TabsTrigger value="reviews">Recensioni</TabsTrigger>
             <TabsTrigger value="profile">Profilo</TabsTrigger>
             <TabsTrigger value="messages">Messaggi</TabsTrigger>
           </TabsList>
@@ -514,6 +558,12 @@ export default function CustomerDashboard() {
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          <TabsContent value="reviews" className="space-y-6">
+            <h2 className="text-2xl font-bold text-gray-900">Le mie recensioni</h2>
+            
+            <MyReviewsSection />
           </TabsContent>
 
           <TabsContent value="profile" className="space-y-6">

@@ -93,7 +93,7 @@ export default function ProfiloPage() {
       icon: Star,
       title: "Le mie recensioni",
       subtitle: "Recensioni scritte",
-      href: "/customer-dashboard",
+      href: "/customer-dashboard?tab=reviews",
       color: "text-yellow-500"
     },
     {

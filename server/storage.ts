@@ -10,6 +10,7 @@ import {
   messages,
   passwordResetTokens,
   reviews,
+  invoices,
   type User,
   type InsertUser,
   type Boat,
@@ -31,6 +32,8 @@ import {
   type PasswordResetToken,
   type Review,
   type InsertReview,
+  type Invoice,
+  type InsertInvoice,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -113,6 +116,13 @@ export interface IStorage {
   getReviewsByBoat(boatId: number): Promise<Review[]>;
   createReview(data: InsertReview): Promise<Review>;
   canUserReview(bookingId: number, userId: number, type: string): Promise<boolean>;
+  
+  // Invoice operations
+  getInvoicesByUser(userId: number): Promise<Invoice[]>;
+  getInvoicesByBooking(bookingId: number): Promise<Invoice[]>;
+  createInvoice(data: InsertInvoice): Promise<Invoice>;
+  getInvoice(id: number): Promise<Invoice | undefined>;
+  generateInvoiceNumber(type: string): Promise<string>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -504,6 +514,40 @@ export class DatabaseStorage implements IStorage {
     );
     
     return existingReviews.length === 0;
+  }
+
+  // Invoice operations
+  async getInvoicesByUser(userId: number): Promise<Invoice[]> {
+    return await db.select().from(invoices).where(eq(invoices.userId, userId));
+  }
+
+  async getInvoicesByBooking(bookingId: number): Promise<Invoice[]> {
+    return await db.select().from(invoices).where(eq(invoices.bookingId, bookingId));
+  }
+
+  async createInvoice(data: InsertInvoice): Promise<Invoice> {
+    const [invoice] = await db.insert(invoices).values(data).returning();
+    return invoice;
+  }
+
+  async getInvoice(id: number): Promise<Invoice | undefined> {
+    const [invoice] = await db.select().from(invoices).where(eq(invoices.id, id));
+    return invoice;
+  }
+
+  async generateInvoiceNumber(type: string): Promise<string> {
+    const year = new Date().getFullYear();
+    const prefix = type === 'customer_receipt' ? 'RIC' : 'REP';
+    
+    // Get count of invoices of this type this year
+    const countResult = await db.select({ count: sql<number>`count(*)` })
+      .from(invoices)
+      .where(sql`${invoices.type} = ${type} AND EXTRACT(YEAR FROM ${invoices.createdAt}) = ${year}`);
+    
+    const count = Number(countResult[0]?.count || 0) + 1;
+    const paddedCount = count.toString().padStart(6, '0');
+    
+    return `${prefix}-${year}-${paddedCount}`;
   }
 }
 

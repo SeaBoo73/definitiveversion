@@ -378,3 +378,51 @@ export const insertReviewSchema = createInsertSchema(reviews, {
 
 export type InsertReview = z.infer<typeof insertReviewSchema>;
 export type Review = typeof reviews.$inferSelect;
+
+// Invoices table for receipts and billing documents
+export const invoices = pgTable("invoices", {
+  id: serial("id").primaryKey(),
+  invoiceNumber: varchar("invoice_number", { length: 50 }).unique().notNull(),
+  type: varchar("type", { length: 30 }).notNull(), // 'customer_receipt', 'owner_monthly_report'
+  userId: integer("user_id").references(() => users.id).notNull(),
+  bookingId: integer("booking_id").references(() => bookings.id),
+  boatId: integer("boat_id").references(() => boats.id),
+  
+  // Financial details
+  subtotal: numeric("subtotal").notNull(),
+  commission: numeric("commission").default("0"),
+  vat: numeric("vat").default("0"),
+  total: numeric("total").notNull(),
+  
+  // Period for monthly reports
+  periodStart: date("period_start"),
+  periodEnd: date("period_end"),
+  
+  // Invoice details
+  customerName: varchar("customer_name", { length: 200 }),
+  customerEmail: varchar("customer_email", { length: 255 }),
+  customerAddress: text("customer_address"),
+  customerVatNumber: varchar("customer_vat_number", { length: 50 }),
+  
+  // Booking details (for customer receipts)
+  boatName: varchar("boat_name", { length: 200 }),
+  bookingStartDate: date("booking_start_date"),
+  bookingEndDate: date("booking_end_date"),
+  
+  // Status
+  status: varchar("status", { length: 20 }).default("issued"), // 'draft', 'issued', 'paid', 'cancelled'
+  paidAt: timestamp("paid_at"),
+  
+  // Metadata
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertInvoiceSchema = createInsertSchema(invoices, {
+  type: z.enum(["customer_receipt", "owner_monthly_report"]),
+  subtotal: z.string(),
+  total: z.string(),
+}).omit({ id: true, createdAt: true });
+
+export type InsertInvoice = z.infer<typeof insertInvoiceSchema>;
+export type Invoice = typeof invoices.$inferSelect;

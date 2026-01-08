@@ -1189,7 +1189,7 @@ export default function OwnerDashboard() {
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">Imbarcazioni</p>
-                  <p className="text-2xl font-bold">{ownerBoats?.length || 0}</p>
+                  <p className="text-2xl font-bold">{boats?.length || 0}</p>
                 </div>
               </CardContent>
             </Card>
@@ -1204,7 +1204,7 @@ export default function OwnerDashboard() {
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">Ormeggi</p>
-                  <p className="text-2xl font-bold">{ownerMoorings?.length || 0}</p>
+                  <p className="text-2xl font-bold">{moorings?.length || 0}</p>
                 </div>
               </CardContent>
             </Card>
@@ -1219,7 +1219,7 @@ export default function OwnerDashboard() {
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">Esperienze</p>
-                  <p className="text-2xl font-bold">{ownerExperiences?.length || 0}</p>
+                  <p className="text-2xl font-bold">{experiencesData?.length || 0}</p>
                 </div>
               </CardContent>
             </Card>

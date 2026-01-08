@@ -346,3 +346,35 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
 });
 
 export type PasswordResetToken = typeof passwordResetTokens.$inferSelect;
+
+// Reviews table for bidirectional reviews between customers and owners
+export const reviews = pgTable("reviews", {
+  id: serial("id").primaryKey(),
+  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  reviewerId: integer("reviewer_id").references(() => users.id).notNull(),
+  revieweeId: integer("reviewee_id").references(() => users.id).notNull(),
+  boatId: integer("boat_id").references(() => boats.id),
+  type: varchar("type", { length: 30 }).notNull(), // 'customer_to_owner' or 'owner_to_customer'
+  rating: integer("rating").notNull(), // 1-5 stars
+  cleanliness: integer("cleanliness"), // 1-5 for boat/customer cleanliness
+  communication: integer("communication"), // 1-5 for communication
+  accuracy: integer("accuracy"), // 1-5 for accuracy of listing/behavior
+  value: integer("value"), // 1-5 for value/reliability
+  title: varchar("title", { length: 200 }),
+  comment: text("comment"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertReviewSchema = createInsertSchema(reviews, {
+  rating: z.number().min(1).max(5),
+  cleanliness: z.number().min(1).max(5).optional(),
+  communication: z.number().min(1).max(5).optional(),
+  accuracy: z.number().min(1).max(5).optional(),
+  value: z.number().min(1).max(5).optional(),
+  title: z.string().max(200).optional(),
+  comment: z.string().optional(),
+  type: z.enum(["customer_to_owner", "owner_to_customer"]),
+}).omit({ id: true, createdAt: true });
+
+export type InsertReview = z.infer<typeof insertReviewSchema>;
+export type Review = typeof reviews.$inferSelect;

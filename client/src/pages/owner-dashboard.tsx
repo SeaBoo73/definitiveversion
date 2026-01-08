@@ -1177,17 +1177,15 @@ export default function OwnerDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="overflow-x-auto -mx-4 px-4 pb-2 scrollbar-hide">
-            <TabsList className="inline-flex w-max min-w-full md:w-full">
-              <TabsTrigger value="boats" className="whitespace-nowrap">Le mie imbarcazioni</TabsTrigger>
-              <TabsTrigger value="moorings" className="whitespace-nowrap">I miei ormeggi</TabsTrigger>
-              <TabsTrigger value="experiences" className="whitespace-nowrap">Le mie esperienze</TabsTrigger>
-              <TabsTrigger value="bookings" className="whitespace-nowrap">Prenotazioni</TabsTrigger>
-              <TabsTrigger value="messages" className="whitespace-nowrap">Messaggi</TabsTrigger>
-              <TabsTrigger value="profile" className="whitespace-nowrap">Il mio profilo</TabsTrigger>
-              <TabsTrigger value="analytics" className="whitespace-nowrap">Statistiche</TabsTrigger>
-            </TabsList>
-          </div>
+          <TabsList className="flex flex-col w-full h-auto bg-white border rounded-lg p-2 gap-1">
+            <TabsTrigger value="boats" className="w-full justify-start px-4 py-3 text-left">Imbarcazioni</TabsTrigger>
+            <TabsTrigger value="moorings" className="w-full justify-start px-4 py-3 text-left">Ormeggi</TabsTrigger>
+            <TabsTrigger value="experiences" className="w-full justify-start px-4 py-3 text-left">Esperienze</TabsTrigger>
+            <TabsTrigger value="bookings" className="w-full justify-start px-4 py-3 text-left">Prenotazioni</TabsTrigger>
+            <TabsTrigger value="messages" className="w-full justify-start px-4 py-3 text-left">Messaggi</TabsTrigger>
+            <TabsTrigger value="profile" className="w-full justify-start px-4 py-3 text-left">Il mio profilo</TabsTrigger>
+            <TabsTrigger value="analytics" className="w-full justify-start px-4 py-3 text-left">Statistiche</TabsTrigger>
+          </TabsList>
 
           <TabsContent value="boats" className="space-y-6">
             <div className="flex justify-between items-center">

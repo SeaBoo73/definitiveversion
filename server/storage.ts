@@ -9,6 +9,7 @@ import {
   conversations,
   messages,
   passwordResetTokens,
+  reviews,
   type User,
   type InsertUser,
   type Boat,
@@ -28,6 +29,8 @@ import {
   type Message,
   type InsertMessage,
   type PasswordResetToken,
+  type Review,
+  type InsertReview,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte } from "drizzle-orm";
@@ -103,6 +106,13 @@ export interface IStorage {
   getPasswordResetToken(token: string): Promise<PasswordResetToken | undefined>;
   markPasswordResetTokenUsed(token: string): Promise<void>;
   updateUserPassword(userId: number, hashedPassword: string): Promise<void>;
+  
+  // Review operations
+  getReviewsByBooking(bookingId: number): Promise<Review[]>;
+  getReviewsByUser(userId: number, asReviewer?: boolean): Promise<Review[]>;
+  getReviewsByBoat(boatId: number): Promise<Review[]>;
+  createReview(data: InsertReview): Promise<Review>;
+  canUserReview(bookingId: number, userId: number, type: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -446,6 +456,54 @@ export class DatabaseStorage implements IStorage {
 
   async updateUserPassword(userId: number, hashedPassword: string): Promise<void> {
     await db.update(users).set({ password: hashedPassword }).where(eq(users.id, userId));
+  }
+
+  // Review operations
+  async getReviewsByBooking(bookingId: number): Promise<Review[]> {
+    return await db.select().from(reviews).where(eq(reviews.bookingId, bookingId));
+  }
+
+  async getReviewsByUser(userId: number, asReviewer: boolean = false): Promise<Review[]> {
+    if (asReviewer) {
+      return await db.select().from(reviews).where(eq(reviews.reviewerId, userId));
+    }
+    return await db.select().from(reviews).where(eq(reviews.revieweeId, userId));
+  }
+
+  async getReviewsByBoat(boatId: number): Promise<Review[]> {
+    return await db.select().from(reviews).where(eq(reviews.boatId, boatId));
+  }
+
+  async createReview(data: InsertReview): Promise<Review> {
+    const [review] = await db.insert(reviews).values(data).returning();
+    return review;
+  }
+
+  async canUserReview(bookingId: number, userId: number, type: string): Promise<boolean> {
+    // Check if booking exists and is completed
+    const booking = await this.getBooking(bookingId);
+    if (!booking || booking.status !== 'completed') {
+      return false;
+    }
+
+    // Check if user is part of the booking
+    if (type === 'customer_to_owner') {
+      if (booking.customerId !== userId) return false;
+    } else if (type === 'owner_to_customer') {
+      const boat = await this.getBoat(booking.boatId);
+      if (!boat || boat.hostId !== userId) return false;
+    }
+
+    // Check if review already exists
+    const existingReviews = await db.select().from(reviews).where(
+      and(
+        eq(reviews.bookingId, bookingId),
+        eq(reviews.reviewerId, userId),
+        eq(reviews.type, type)
+      )
+    );
+    
+    return existingReviews.length === 0;
   }
 }
 

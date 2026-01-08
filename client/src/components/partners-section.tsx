@@ -26,14 +26,12 @@ export function PartnersSection() {
               <Badge className="mb-4 bg-green-100 text-green-800">
                 Partner Verificato
               </Badge>
-              <div className="bg-black rounded-lg p-6 mb-4">
-                <img 
-                  src={trasportiCapuanoLogo} 
-                  alt="Trasporti Capuano - Trasporti Eccezionali" 
-                  className="h-24 md:h-32 w-auto mx-auto object-contain"
-                  data-testid="img-partner-trasporti-capuano"
-                />
-              </div>
+              <img 
+                src={trasportiCapuanoLogo} 
+                alt="Trasporti Capuano - Trasporti Eccezionali" 
+                className="h-24 md:h-32 w-auto mx-auto object-contain mb-4"
+                data-testid="img-partner-trasporti-capuano"
+              />
               <h3 className="text-xl font-bold text-gray-900 mb-2">Trasporti Capuano</h3>
               <p className="text-gray-600 max-w-md mx-auto">
                 Partner ufficiale per trasporti eccezionali e logistica nautica.

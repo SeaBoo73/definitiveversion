@@ -205,21 +205,23 @@ export default function ProfiloPage() {
         {/* Profilo Header */}
                 <Card className="mb-6">
           <CardContent className="pt-6">
-            <div className="flex items-center space-x-4">
-              <div className="h-16 w-16 bg-ocean-blue rounded-full flex items-center justify-center text-white text-xl font-bold">
-                {user.firstName?.charAt(0) || user.email?.charAt(0) || 'U'}{user.lastName?.charAt(0) || ''}
-              </div>
-              <div className="flex-1">
-                <h1 className="text-xl font-bold text-gray-900">
-                  {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
-                </h1>
-                <p className="text-gray-600">{user.email}</p>
-                <div className="flex items-center mt-2 text-sm text-gray-500">
-                  <MapPin className="h-4 w-4 mr-1" />
-                  <span>Membro dal 2025</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+              <div className="flex items-center gap-4 flex-1">
+                <div className="h-16 w-16 bg-ocean-blue rounded-full flex items-center justify-center text-white text-xl font-bold flex-shrink-0">
+                  {user.firstName?.charAt(0) || user.email?.charAt(0) || 'U'}{user.lastName?.charAt(0) || ''}
+                </div>
+                <div className="min-w-0">
+                  <h1 className="text-xl font-bold text-gray-900 truncate">
+                    {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
+                  </h1>
+                  <p className="text-gray-600 text-sm truncate">{user.email}</p>
+                  <div className="flex items-center mt-2 text-sm text-gray-500">
+                    <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+                    <span>Membro dal 2025</span>
+                  </div>
                 </div>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="self-start sm:self-center flex-shrink-0">
                 <Settings className="h-4 w-4 mr-2" />
                 Modifica
               </Button>

@@ -45,6 +45,7 @@ import {
   Euro,
   Users,
   MessageSquare,
+  MessageCircle,
   TrendingUp,
   Star,
   Edit,
@@ -1177,15 +1178,116 @@ export default function OwnerDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="flex flex-col w-full h-auto bg-white border rounded-lg p-2 gap-1">
-            <TabsTrigger value="boats" className="w-full justify-start px-4 py-3 text-left">Imbarcazioni</TabsTrigger>
-            <TabsTrigger value="moorings" className="w-full justify-start px-4 py-3 text-left">Ormeggi</TabsTrigger>
-            <TabsTrigger value="experiences" className="w-full justify-start px-4 py-3 text-left">Esperienze</TabsTrigger>
-            <TabsTrigger value="bookings" className="w-full justify-start px-4 py-3 text-left">Prenotazioni</TabsTrigger>
-            <TabsTrigger value="messages" className="w-full justify-start px-4 py-3 text-left">Messaggi</TabsTrigger>
-            <TabsTrigger value="profile" className="w-full justify-start px-4 py-3 text-left">Il mio profilo</TabsTrigger>
-            <TabsTrigger value="analytics" className="w-full justify-start px-4 py-3 text-left">Statistiche</TabsTrigger>
-          </TabsList>
+          <div className="flex flex-col gap-3">
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'boats' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('boats')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Ship className="h-6 w-6 text-ocean-blue" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Imbarcazioni</p>
+                  <p className="text-2xl font-bold">{ownerBoats?.length || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'moorings' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('moorings')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-teal-100 rounded-lg">
+                  <Anchor className="h-6 w-6 text-teal-600" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Ormeggi</p>
+                  <p className="text-2xl font-bold">{ownerMoorings?.length || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'experiences' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('experiences')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-orange-100 rounded-lg">
+                  <Sparkles className="h-6 w-6 text-orange-500" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Esperienze</p>
+                  <p className="text-2xl font-bold">{ownerExperiences?.length || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'bookings' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('bookings')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Calendar className="h-6 w-6 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Prenotazioni (mese)</p>
+                  <p className="text-2xl font-bold">{bookings?.filter((b: any) => {
+                    const bookingDate = new Date(b.startDate);
+                    const now = new Date();
+                    return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear();
+                  }).length || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'analytics' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('analytics')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-emerald-100 rounded-lg">
+                  <Euro className="h-6 w-6 text-emerald-600" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Guadagni totali</p>
+                  <p className="text-2xl font-bold">{formatCurrency(bookings?.filter((b: any) => b.status === 'completed').reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) || 0)}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'messages' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('messages')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <MessageCircle className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Messaggi</p>
+                  <p className="text-2xl font-bold">0</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'profile' ? 'ring-2 ring-ocean-blue' : ''}`}
+              onClick={() => setActiveTab('profile')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-gray-100 rounded-lg">
+                  <User className="h-6 w-6 text-gray-600" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Il mio profilo</p>
+                  <p className="text-2xl font-bold text-ocean-blue">Gestisci</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
 
           <TabsContent value="boats" className="space-y-6">
             <div className="flex justify-between items-center">

@@ -1272,21 +1272,6 @@ export default function OwnerDashboard() {
                 </div>
               </CardContent>
             </Card>
-
-            <Card 
-              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'profile' ? 'ring-2 ring-ocean-blue' : ''}`}
-              onClick={() => setActiveTab('profile')}
-            >
-              <CardContent className="flex items-center gap-4 p-4">
-                <div className="p-3 bg-gray-100 rounded-lg">
-                  <User className="h-6 w-6 text-gray-600" />
-                </div>
-                <div>
-                  <p className="text-gray-600 text-sm">Il mio profilo</p>
-                  <p className="text-2xl font-bold text-ocean-blue">Gestisci</p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           <TabsContent value="boats" className="space-y-6">

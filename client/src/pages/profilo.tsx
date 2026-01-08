@@ -74,6 +74,8 @@ export default function ProfiloPage() {
     deleteAccountMutation.mutate();
   };
 
+  const isOwner = user?.role === "owner";
+  
   const menuItems = [
     {
       icon: Calendar,
@@ -89,13 +91,19 @@ export default function ProfiloPage() {
       href: "/customer-dashboard",
       color: "text-red-500"
     },
-    {
+    ...(isOwner ? [{
+      icon: Ship,
+      title: "Dashboard Noleggiatore",
+      subtitle: "Gestisci le tue barche",
+      href: "/owner-dashboard",
+      color: "text-ocean-blue"
+    }] : [{
       icon: Ship,
       title: "Diventa noleggiatore",
       subtitle: "Metti in affitto la tua barca",
       href: "/diventa-noleggiatore",
       color: "text-ocean-blue"
-    }
+    }])
   ];
 
   const assistanceItems = [

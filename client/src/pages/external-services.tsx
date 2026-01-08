@@ -368,16 +368,19 @@ export default function ExternalServices() {
       {/* Location Selector */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex items-center gap-4">
-            <MapPin className="h-5 w-5 text-blue-600" />
-            <span className="font-medium">Località:</span>
-            <Select value={selectedLocation} onValueChange={setSelectedLocation}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Seleziona località" />
-                {(weatherLoading || fuelLoading || portsLoading) && (
-                  <RefreshCw className="h-4 w-4 ml-2 animate-spin text-blue-600" />
-                )}
-              </SelectTrigger>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <div className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-blue-600 flex-shrink-0" />
+              <span className="font-medium">Località:</span>
+            </div>
+            <div className="flex items-center gap-2 flex-1">
+              <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                <SelectTrigger className="w-full sm:w-48">
+                  <SelectValue placeholder="Seleziona località" />
+                  {(weatherLoading || fuelLoading || portsLoading) && (
+                    <RefreshCw className="h-4 w-4 ml-2 animate-spin text-blue-600" />
+                  )}
+                </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Roma">Roma / Fiumicino</SelectItem>
                 <SelectItem value="Civitavecchia">Civitavecchia</SelectItem>
@@ -406,31 +409,36 @@ export default function ExternalServices() {
                 <SelectItem value="Minori">Minori</SelectItem>
                 <SelectItem value="Acciaroli">Acciaroli</SelectItem>
               </SelectContent>
-            </Select>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => {
-                refetchWeather();
-                refetchFuel();
-                refetchPorts();
-              }}
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Aggiorna Tutto
-            </Button>
+              </Select>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="flex-shrink-0 whitespace-nowrap"
+                onClick={() => {
+                  refetchWeather();
+                  refetchFuel();
+                  refetchPorts();
+                }}
+              >
+                <RefreshCw className="h-4 w-4 mr-1 sm:mr-2" />
+                <span className="hidden sm:inline">Aggiorna Tutto</span>
+                <span className="sm:hidden">Aggiorna</span>
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="weather">Meteo</TabsTrigger>
-          <TabsTrigger value="fuel">Carburante</TabsTrigger>
-          <TabsTrigger value="ports">Porti</TabsTrigger>
-          <TabsTrigger value="marine">Condizioni Marine</TabsTrigger>
-          <TabsTrigger value="partners">Partner</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="inline-flex w-max sm:grid sm:w-full sm:grid-cols-5 gap-1">
+            <TabsTrigger value="weather" className="text-xs sm:text-sm px-3 sm:px-4">Meteo</TabsTrigger>
+            <TabsTrigger value="fuel" className="text-xs sm:text-sm px-3 sm:px-4">Carburante</TabsTrigger>
+            <TabsTrigger value="ports" className="text-xs sm:text-sm px-3 sm:px-4">Porti</TabsTrigger>
+            <TabsTrigger value="marine" className="text-xs sm:text-sm px-3 sm:px-4">Mare</TabsTrigger>
+            <TabsTrigger value="partners" className="text-xs sm:text-sm px-3 sm:px-4">Partner</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Weather Tab */}
         <TabsContent value="weather" className="space-y-6">

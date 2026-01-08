@@ -12,6 +12,7 @@ import Stripe from "stripe";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import aiChatRouter from "./routes/ai-chat";
+import { encryptBankingData, decryptBankingData } from "./encryption";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -353,6 +354,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: "Utente non trovato" });
       }
 
+      // Decrypt banking data before sending to client
+      const decryptedBanking = decryptBankingData({
+        iban: user.iban,
+        bankName: user.bankName,
+        accountHolder: user.accountHolder,
+        swiftBic: user.swiftBic
+      });
+
       res.json({
         id: user.id,
         email: user.email,
@@ -363,10 +372,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         role: user.role,
         businessName: user.businessName,
         bio: user.bio,
-        iban: user.iban,
-        bankName: user.bankName,
-        accountHolder: user.accountHolder,
-        swiftBic: user.swiftBic
+        iban: decryptedBanking.iban,
+        bankName: decryptedBanking.bankName,
+        accountHolder: decryptedBanking.accountHolder,
+        swiftBic: decryptedBanking.swiftBic
       });
     } catch (error) {
       console.error("Get profile error:", error);
@@ -392,16 +401,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log('[PROFILE UPDATE] User ID:', userId, 'Data received:', { firstName, lastName, phone, bio: bio ? 'has bio' : 'no bio', iban: iban ? 'has iban' : 'no iban' });
       
+      // Encrypt banking data before saving
+      const encryptedBanking = encryptBankingData({ iban, bankName, accountHolder, swiftBic });
+      
       const updatedUser = await storage.updateUser(userId, {
         firstName,
         lastName,
         phone,
         profileImage,
         bio,
-        iban,
-        bankName,
-        accountHolder,
-        swiftBic
+        iban: encryptedBanking.iban,
+        bankName: encryptedBanking.bankName,
+        accountHolder: encryptedBanking.accountHolder,
+        swiftBic: encryptedBanking.swiftBic
       });
       
       console.log('[PROFILE UPDATE] Updated user:', updatedUser ? 'success' : 'failed');

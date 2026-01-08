@@ -237,8 +237,8 @@ export function EsperienzePage() {
                 Esperienze Uniche in Mare
               </h1>
               <p className="text-xl md:text-2xl text-blue-100 max-w-md mx-auto mb-6">
-                Scopri avventure, relax e gusto a bordo delle nostre imbarcazioni.<br/>
-                Vivi il mare come mai prima!
+                Scopri avventure, relax e gusto a bordo<br/>
+                delle nostre imbarcazioni. Vivi il mare come mai prima!
               </p>
               <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3 text-lg">
                 <Link href="/search">Trova la tua esperienza</Link>

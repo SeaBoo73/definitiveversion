@@ -219,7 +219,7 @@ export function EsperienzePage() {
       <Header />
       <Breadcrumbs />
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-deep-navy to-ocean-blue">
+      <section className="relative text-white py-16 overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -229,13 +229,14 @@ export function EsperienzePage() {
             backgroundRepeat: 'no-repeat'
           }}
         />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
             <div className="inline-block bg-blue-900/90 backdrop-blur-md rounded-3xl px-8 md:px-16 py-10 md:py-12">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
                 Esperienze Uniche in Mare
               </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+              <p className="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8">
                 Scopri avventure, relax e gusto a bordo delle nostre imbarcazioni.<br/>
                 Vivi il mare come mai prima!
               </p>
@@ -245,7 +246,7 @@ export function EsperienzePage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Content with Sidebar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

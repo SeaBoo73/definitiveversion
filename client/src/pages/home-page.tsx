@@ -41,12 +41,24 @@ export default function HomePage() {
   const [guests, setGuests] = useState<string>("2");
   const [boatType, setBoatType] = useState<string>("");
 
-  // Gestisci parametri URL per il filtro categorie
+  // Gestisci parametri URL per il filtro categorie e date persistenti
   useEffect(() => {
     const handleUrlChange = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const typeParam = urlParams.get('type');
       setSelectedCategory(typeParam || "");
+      
+      // Leggi date persistenti da sessionStorage o URL
+      const savedStartDate = sessionStorage.getItem('searchStartDate');
+      const savedEndDate = sessionStorage.getItem('searchEndDate');
+      const savedGuests = sessionStorage.getItem('searchGuests');
+      const savedPort = sessionStorage.getItem('searchPort');
+      
+      if (savedStartDate) setStartDate(savedStartDate);
+      if (savedEndDate) setEndDate(savedEndDate);
+      if (savedGuests) setGuests(savedGuests);
+      if (savedPort) setSelectedPort(savedPort);
+      
       // Scroll to top when category changes
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -92,6 +104,12 @@ export default function HomePage() {
     if (guests) searchParams.set("guests", guests);
     if (boatType && boatType !== "Tutte le categorie") searchParams.set("boatTypes", boatType);
     if (withSkipper) searchParams.set("skipperRequired", "true");
+    
+    // Salva i parametri di ricerca in sessionStorage per persistenza
+    if (startDate) sessionStorage.setItem('searchStartDate', startDate);
+    if (endDate) sessionStorage.setItem('searchEndDate', endDate);
+    if (guests) sessionStorage.setItem('searchGuests', guests);
+    if (selectedPort) sessionStorage.setItem('searchPort', selectedPort);
     
     setLocation(`/search?${searchParams.toString()}`);
   };

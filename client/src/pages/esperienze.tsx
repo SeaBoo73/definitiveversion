@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { PortSelector } from "@/components/port-selector";
 import { Link } from "wouter";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Sunset, 
   MapPin, 
@@ -29,11 +30,19 @@ import { StructuredData } from "@/components/structured-data";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export function EsperienzePage() {
+  const { toast } = useToast();
   const [porto, setPorto] = useState("");
   const [dataDal, setDataDal] = useState("");
   const [dataAl, setDataAl] = useState("");
   const [numeroPersone, setNumeroPersone] = useState("");
   const [tipoEsperienza, setTipoEsperienza] = useState("");
+
+  const handleSearch = () => {
+    toast({
+      title: "Esperienze in arrivo!",
+      description: "Le esperienze saranno disponibili a breve. Nel frattempo, esplora le nostre barche.",
+    });
+  };
 
   const experienceTypes = [
     { icon: <Sunset className="h-8 w-8" />, title: "Tramonti in barca", description: "Gite al tramonto con aperitivo" },
@@ -166,7 +175,7 @@ export function EsperienzePage() {
                   </Select>
                 </div>
 
-                <Button className="w-full bg-coral hover:bg-orange-600 text-white">
+                <Button onClick={handleSearch} className="w-full bg-coral hover:bg-orange-600 text-white">
                   <Search className="h-4 w-4 mr-2" />
                   Cerca esperienze
                 </Button>

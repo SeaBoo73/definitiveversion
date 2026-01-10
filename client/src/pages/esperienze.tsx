@@ -17,9 +17,7 @@ import {
   Heart, 
   Users,
   Ship,
-  Search,
-  Anchor,
-  Clock
+  Search
 } from "lucide-react";
 import heroBackground from "@assets/ultra-realistic_wide_banner_photo_upper_half-_real_hot_air_balloons_flying_in_a_clear_sky_with_natu_bulwsrzxfrv4rr4z3f37_3_1764073467671.png";
 import { Header } from "@/components/header";
@@ -183,39 +181,12 @@ export function EsperienzePage() {
             </Card>
           </div>
 
-          {/* Main Content - Coming Soon */}
+          {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Coming Soon Message */}
-            <Card className="bg-gradient-to-br from-blue-50 to-white border-2 border-dashed border-blue-200">
-              <CardContent className="py-16 text-center">
-                <div className="flex justify-center mb-6">
-                  <div className="relative">
-                    <Anchor className="h-20 w-20 text-blue-400" />
-                    <Clock className="h-8 w-8 text-coral absolute -bottom-1 -right-1 bg-white rounded-full p-1" />
-                  </div>
-                </div>
-                <h2 className="text-3xl font-bold text-deep-navy mb-4">
-                  Presto disponibili!
-                </h2>
-                <p className="text-lg text-gray-600 max-w-xl mx-auto mb-8">
-                  Le esperienze in mare stanno arrivando. I nostri partner stanno preparando 
-                  tour esclusivi, cene romantiche a bordo e avventure indimenticabili.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white">
-                    <Link href="/search">Esplora le barche disponibili</Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="border-deep-navy text-deep-navy hover:bg-deep-navy hover:text-white">
-                    <Link href="/diventa-sea-host">Diventa Sea Host</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-
             {/* Experience Types Preview */}
-            <div className="mt-12">
+            <div>
               <h3 className="text-2xl font-bold text-deep-navy mb-6 text-center">
-                Tipologie di esperienze in arrivo
+                Tipologie di esperienze
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {experienceTypes.map((type, index) => (

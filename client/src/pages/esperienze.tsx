@@ -15,7 +15,6 @@ import {
   ChefHat, 
   Wine, 
   Heart, 
-  Users,
   Ship,
   Search
 } from "lucide-react";
@@ -207,48 +206,6 @@ export function EsperienzePage() {
               </div>
             </div>
 
-            {/* CTA for Owners */}
-            <Card className="mt-12 bg-deep-navy text-white">
-              <CardContent className="py-8">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                  <div className="flex items-center gap-4">
-                    <Users className="h-12 w-12 text-coral" />
-                    <div>
-                      <h3 className="text-xl font-bold">Sei un proprietario di barca?</h3>
-                      <p className="text-blue-200">
-                        Registrati e inizia a offrire le tue esperienze uniche in mare
-                      </p>
-                    </div>
-                  </div>
-                  <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white whitespace-nowrap">
-                    <Link href="/diventa-noleggiatore">Registrati ora</Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-
-      {/* Call to Action */}
-      <div className="bg-gradient-to-r from-deep-navy to-ocean-blue">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Nel frattempo, esplora le nostre barche
-            </h2>
-            <p className="text-xl text-ocean-light mb-8 max-w-2xl mx-auto">
-              Trova la barca perfetta per la tua prossima avventura. 
-              Noleggio giornaliero o settimanale, con o senza skipper.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3">
-                <Link href="/search">Cerca una barca</Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-white bg-white text-deep-navy hover:bg-gray-100 hover:text-deep-navy px-8 py-3">
-                <Link href="/contatti">Contattaci</Link>
-              </Button>
-            </div>
           </div>
         </div>
       </div>

@@ -81,8 +81,8 @@ export function EsperienzePage() {
                 Scopri avventure, relax e gusto a bordo<br/>
                 delle nostre imbarcazioni. Vivi il mare come mai prima!
               </p>
-              <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3 text-lg">
-                <Link href="/search">Trova la tua esperienza</Link>
+              <Button onClick={handleSearch} size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3 text-lg">
+                Trova la tua esperienza
               </Button>
             </div>
           </div>

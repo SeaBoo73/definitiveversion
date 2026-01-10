@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
@@ -14,18 +13,13 @@ import {
   Fish, 
   ChefHat, 
   Wine, 
-  UtensilsCrossed, 
-  Camera, 
-  GraduationCap, 
-  PartyPopper, 
   Heart, 
   Users,
   Ship,
-  Crown,
-  Calendar,
-  Search
+  Search,
+  Anchor,
+  Clock
 } from "lucide-react";
-import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
 import heroBackground from "@assets/ultra-realistic_wide_banner_photo_upper_half-_real_hot_air_balloons_flying_in_a_clear_sky_with_natu_bulwsrzxfrv4rr4z3f37_3_1764073467671.png";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -41,176 +35,16 @@ export function EsperienzePage() {
   const [numeroPersone, setNumeroPersone] = useState("");
   const [tipoEsperienza, setTipoEsperienza] = useState("");
 
-  const experiences = [
-    {
-      category: "Tour ed Escursioni Tematiche",
-      icon: <Sunset className="h-6 w-6" />,
-      items: [
-        {
-          title: "Tramonti in barca",
-          description: "Gite al tramonto con aperitivo a bordo",
-          icon: <Sunset className="h-5 w-5" />,
-          badge: "Romantico"
-        },
-        {
-          title: "Tour delle isole nascoste",
-          description: "Esplorazioni di calette e baie accessibili solo via mare",
-          icon: <MapPin className="h-5 w-5" />,
-          badge: "Avventura"
-        },
-        {
-          title: "Giornate in barca a vela",
-          description: "Esperienze giornaliere o weekend su vela",
-          icon: <Sailboat className="h-5 w-5" />,
-          badge: "Relax"
-        },
-        {
-          title: "Noleggio con pescatore locale",
-          description: "Escursioni autentiche con chi vive il mare ogni giorno",
-          icon: <Fish className="h-5 w-5" />,
-          badge: "Autentico"
-        }
-      ]
-    },
-    {
-      category: "Esperienze Gourmet",
-      icon: <ChefHat className="h-6 w-6" />,
-      items: [
-        {
-          title: "Cena romantica a bordo",
-          description: "Con chef privato per una serata indimenticabile",
-          icon: <Heart className="h-5 w-5" />,
-          badge: "Lusso"
-        },
-        {
-          title: "Aperitivo in rada",
-          description: "Bollicine e finger food ancorati in una baia tranquilla",
-          icon: <Wine className="h-5 w-5" />,
-          badge: "Aperitivo"
-        },
-        {
-          title: "Degustazione prodotti tipici",
-          description: "Prodotti locali legati alla costa o alle isole visitate",
-          icon: <UtensilsCrossed className="h-5 w-5" />,
-          badge: "Tipico"
-        }
-      ]
-    },
-    {
-      category: "Attività a Bordo",
-      icon: <img src={seabooLogo} alt="SeaBoo" className="h-6 w-6 object-contain" />,
-      items: [
-        {
-          title: "Snorkeling e immersioni",
-          description: "Pacchetti attrezzati con guida esperta",
-          icon: <Camera className="h-5 w-5" />,
-          badge: "Sport"
-        },
-        {
-          title: "Pesca sportiva o tradizionale",
-          description: "Esperienza di pesca con attrezzatura inclusa",
-          icon: <Fish className="h-5 w-5" />,
-          badge: "Pesca"
-        },
-        {
-          title: "Lezioni di vela",
-          description: "Navigazione per principianti con istruttore qualificato",
-          icon: <GraduationCap className="h-5 w-5" />,
-          badge: "Formativo"
-        }
-      ]
-    },
-    {
-      category: "Charter e Noleggi Premium",
-      icon: <Ship className="h-6 w-6" />,
-      items: [
-        {
-          title: "Charter con skipper",
-          description: "Noleggi con skipper professionale per navigare in sicurezza",
-          icon: <Users className="h-5 w-5" />,
-          badge: "Skipper"
-        },
-        {
-          title: "Charter bareboat",
-          description: "Noleggio senza equipaggio per marinai esperti",
-          icon: <Ship className="h-5 w-5" />,
-          badge: "Indipendente"
-        },
-        {
-          title: "Charter di lusso",
-          description: "Yacht premium con equipaggio e servizi esclusivi",
-          icon: <Crown className="h-5 w-5" />,
-          badge: "Lusso"
-        },
-        {
-          title: "Charter multi-giorno",
-          description: "Crociere da 3-7 giorni nelle isole del Lazio",
-          icon: <Calendar className="h-5 w-5" />,
-          badge: "Crociera"
-        }
-      ]
-    },
-    {
-      category: "Eventi Speciali",
-      icon: <PartyPopper className="h-6 w-6" />,
-      items: [
-        {
-          title: "Feste private",
-          description: "Addii al celibato/nubilato, compleanni, anniversari",
-          icon: <PartyPopper className="h-5 w-5" />,
-          badge: "Festa"
-        },
-        {
-          title: "Matrimoni e proposte",
-          description: "Matrimoni e proposte di matrimonio in barca",
-          icon: <Heart className="h-5 w-5" />,
-          badge: "Romantico"
-        },
-        {
-          title: "Team building aziendali",
-          description: "Attività a bordo per rafforzare il team",
-          icon: <Users className="h-5 w-5" />,
-          badge: "Business"
-        }
-      ]
-    }
+  const experienceTypes = [
+    { icon: <Sunset className="h-8 w-8" />, title: "Tramonti in barca", description: "Gite al tramonto con aperitivo" },
+    { icon: <MapPin className="h-8 w-8" />, title: "Tour delle isole", description: "Esplora calette nascoste" },
+    { icon: <Sailboat className="h-8 w-8" />, title: "Giornate in vela", description: "Navigazione rilassante" },
+    { icon: <Fish className="h-8 w-8" />, title: "Pesca sportiva", description: "Con pescatore locale" },
+    { icon: <ChefHat className="h-8 w-8" />, title: "Cena a bordo", description: "Chef privato a bordo" },
+    { icon: <Wine className="h-8 w-8" />, title: "Aperitivo in rada", description: "Bollicine al tramonto" },
+    { icon: <Heart className="h-8 w-8" />, title: "Eventi romantici", description: "Proposte e anniversari" },
+    { icon: <Ship className="h-8 w-8" />, title: "Charter premium", description: "Yacht con equipaggio" },
   ];
-
-  const badgeColors = {
-    "Romantico": "bg-pink-100 text-pink-700",
-    "Avventura": "bg-orange-100 text-orange-700",
-    "Relax": "bg-blue-100 text-blue-700",
-    "Autentico": "bg-green-100 text-green-700",
-    "Lusso": "bg-purple-100 text-purple-700",
-    "Aperitivo": "bg-amber-100 text-amber-700",
-    "Tipico": "bg-emerald-100 text-emerald-700",
-    "Sport": "bg-cyan-100 text-cyan-700",
-    "Pesca": "bg-teal-100 text-teal-700",
-    "Formativo": "bg-indigo-100 text-indigo-700",
-    "Festa": "bg-rose-100 text-rose-700",
-    "Business": "bg-slate-100 text-slate-700"
-  };
-
-  const getExperienceSlug = (title: string) => {
-    const mapping: Record<string, string> = {
-      "Tramonti in barca": "tramonto",
-      "Tour delle isole nascoste": "tour-isole",
-      "Giornate in barca a vela": "vela",
-      "Degustazioni di prodotti tipici": "degustazione",
-      "Pesca sportiva": "pesca-sportiva",
-      "Cene romantiche in barca": "cena-romantica",
-      "Aperitivi al tramonto": "aperitivo-tramonto",
-      "Snorkeling e immersioni": "snorkeling",
-      "Charter con skipper esperto": "charter-skipper",
-      "Charter bareboat": "charter-bareboat",
-      "Yacht di lusso": "yacht-lusso",
-      "Charter multi-giorno": "charter-multigiorno",
-      "Feste private": "feste-private",
-      "Matrimoni e proposte": "matrimoni-proposte",
-      "Team building aziendali": "team-building"
-    };
-    return mapping[title] || "tramonto";
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20 md:pb-0">
@@ -218,6 +52,7 @@ export function EsperienzePage() {
       <StructuredData type="esperienze" />
       <Header />
       <Breadcrumbs />
+      
       {/* Hero Section */}
       <section className="relative text-white py-16 overflow-hidden">
         <div 
@@ -240,9 +75,6 @@ export function EsperienzePage() {
                 Scopri avventure, relax e gusto a bordo<br/>
                 delle nostre imbarcazioni. Vivi il mare come mai prima!
               </p>
-              <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3 text-lg">
-                <Link href="/search">Trova la tua esperienza</Link>
-              </Button>
             </div>
           </div>
         </div>
@@ -261,7 +93,6 @@ export function EsperienzePage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Porto */}
                 <div className="space-y-2">
                   <Label htmlFor="porto" className="text-sm font-medium">Porto</Label>
                   <PortSelector
@@ -271,7 +102,6 @@ export function EsperienzePage() {
                   />
                 </div>
 
-                {/* Dal */}
                 <div className="space-y-2">
                   <Label htmlFor="dal" className="text-sm font-medium">Dal</Label>
                   <Input
@@ -283,7 +113,6 @@ export function EsperienzePage() {
                   />
                 </div>
 
-                {/* Al */}
                 <div className="space-y-2">
                   <Label htmlFor="al" className="text-sm font-medium">Al</Label>
                   <Input
@@ -295,7 +124,6 @@ export function EsperienzePage() {
                   />
                 </div>
 
-                {/* Numero persone */}
                 <div className="space-y-2">
                   <Label htmlFor="persone" className="text-sm font-medium">Numero persone</Label>
                   <Select value={numeroPersone} onValueChange={setNumeroPersone}>
@@ -316,7 +144,6 @@ export function EsperienzePage() {
                   </Select>
                 </div>
 
-                {/* Tipo esperienza */}
                 <div className="space-y-2">
                   <Label htmlFor="tipo" className="text-sm font-medium">Tipo esperienza</Label>
                   <Select value={tipoEsperienza} onValueChange={setTipoEsperienza}>
@@ -339,7 +166,6 @@ export function EsperienzePage() {
                   </Select>
                 </div>
 
-                {/* Search Button */}
                 <Button className="w-full bg-coral hover:bg-orange-600 text-white">
                   <Search className="h-4 w-4 mr-2" />
                   Cerca esperienze
@@ -348,56 +174,78 @@ export function EsperienzePage() {
             </Card>
           </div>
 
-          {/* Experiences Grid */}
+          {/* Main Content - Coming Soon */}
           <div className="lg:col-span-3">
-            <div className="space-y-12">
-              {experiences.map((category, categoryIndex) => (
-                <div key={categoryIndex} className="space-y-6">
-                  {/* Category Header */}
-                  <div className="flex items-center space-x-3 mb-8">
-                    <div className="flex items-center justify-center w-12 h-12 bg-coral rounded-lg text-white">
-                      {category.icon}
-                    </div>
-                    <h2 className="text-3xl font-bold text-deep-navy">
-                      {category.category}
-                    </h2>
-                  </div>
-
-                  {/* Experience Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {category.items.map((item, itemIndex) => (
-                      <Card key={itemIndex} className="group hover:shadow-lg transition-all duration-300 hover:scale-[1.02] border-gray-200">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center space-x-2">
-                              <div className="flex items-center justify-center w-10 h-10 bg-ocean-light rounded-lg text-deep-navy">
-                                {item.icon}
-                              </div>
-                              <CardTitle className="text-lg text-deep-navy group-hover:text-coral transition-colors">
-                                {item.title}
-                              </CardTitle>
-                            </div>
-                            <Badge className={`${badgeColors[item.badge as keyof typeof badgeColors]} border-0`}>
-                              {item.badge}
-                            </Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <CardDescription className="text-sea-gray text-base leading-relaxed">
-                            {item.description}
-                          </CardDescription>
-                          <div className="mt-4">
-                            <Button asChild variant="outline" className="w-full border-coral text-red-600 hover:bg-coral hover:text-white font-semibold">
-                              <Link href={`/esperienza/${getExperienceSlug(item.title)}`}>Scopri di più</Link>
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+            {/* Coming Soon Message */}
+            <Card className="bg-gradient-to-br from-blue-50 to-white border-2 border-dashed border-blue-200">
+              <CardContent className="py-16 text-center">
+                <div className="flex justify-center mb-6">
+                  <div className="relative">
+                    <Anchor className="h-20 w-20 text-blue-400" />
+                    <Clock className="h-8 w-8 text-coral absolute -bottom-1 -right-1 bg-white rounded-full p-1" />
                   </div>
                 </div>
-              ))}
+                <h2 className="text-3xl font-bold text-deep-navy mb-4">
+                  Presto disponibili!
+                </h2>
+                <p className="text-lg text-gray-600 max-w-xl mx-auto mb-8">
+                  Le esperienze in mare stanno arrivando. I nostri partner stanno preparando 
+                  tour esclusivi, cene romantiche a bordo e avventure indimenticabili.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white">
+                    <Link href="/search">Esplora le barche disponibili</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="border-deep-navy text-deep-navy hover:bg-deep-navy hover:text-white">
+                    <Link href="/diventa-sea-host">Diventa Sea Host</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Experience Types Preview */}
+            <div className="mt-12">
+              <h3 className="text-2xl font-bold text-deep-navy mb-6 text-center">
+                Tipologie di esperienze in arrivo
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {experienceTypes.map((type, index) => (
+                  <Card key={index} className="text-center hover:shadow-md transition-shadow">
+                    <CardContent className="py-6">
+                      <div className="flex justify-center mb-3 text-blue-500">
+                        {type.icon}
+                      </div>
+                      <h4 className="font-semibold text-deep-navy text-sm mb-1">
+                        {type.title}
+                      </h4>
+                      <p className="text-xs text-gray-500">
+                        {type.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
+
+            {/* CTA for Owners */}
+            <Card className="mt-12 bg-deep-navy text-white">
+              <CardContent className="py-8">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-4">
+                    <Users className="h-12 w-12 text-coral" />
+                    <div>
+                      <h3 className="text-xl font-bold">Sei un proprietario di barca?</h3>
+                      <p className="text-blue-200">
+                        Registrati e inizia a offrire le tue esperienze uniche in mare
+                      </p>
+                    </div>
+                  </div>
+                  <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white whitespace-nowrap">
+                    <Link href="/diventa-noleggiatore">Registrati ora</Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
@@ -407,18 +255,18 @@ export function EsperienzePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Pronto per la tua prossima avventura?
+              Nel frattempo, esplora le nostre barche
             </h2>
             <p className="text-xl text-ocean-light mb-8 max-w-2xl mx-auto">
-              Ogni esperienza può essere personalizzata secondo le tue esigenze. 
-              Contattaci per creare l'esperienza perfetta per te.
+              Trova la barca perfetta per la tua prossima avventura. 
+              Noleggio giornaliero o settimanale, con o senza skipper.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white px-8 py-3">
-                <Link href="/search">Esplora le imbarcazioni</Link>
+                <Link href="/search">Cerca una barca</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white bg-white text-deep-navy hover:bg-gray-100 hover:text-deep-navy px-8 py-3">
-                <Link href="#help">Contattaci</Link>
+                <Link href="/contatti">Contattaci</Link>
               </Button>
             </div>
           </div>

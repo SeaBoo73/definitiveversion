@@ -77,18 +77,29 @@ export default function OneriLocali() {
     queryKey: ['/api/local-fees'],
   });
 
-  // Extract unique municipalities and ports for autocomplete
+  // Extract unique municipalities and ports for autocomplete (filtered by selected region)
   const municipalities = useMemo(() => {
-    const filtered = allFees.map(f => f.municipality).filter((m): m is string => m !== null && m !== undefined);
+    let feesToFilter = allFees;
+    if (selectedRegion && selectedRegion !== 'all') {
+      feesToFilter = allFees.filter(f => f.region.toLowerCase().includes(selectedRegion.toLowerCase()));
+    }
+    const filtered = feesToFilter.map(f => f.municipality).filter((m): m is string => m !== null && m !== undefined);
     const uniqueMunicipalities = Array.from(new Set(filtered));
     return uniqueMunicipalities.sort();
-  }, [allFees]);
+  }, [allFees, selectedRegion]);
 
   const ports = useMemo(() => {
-    const filtered = allFees.map(f => f.port).filter((p): p is string => p !== null && p !== undefined);
+    let feesToFilter = allFees;
+    if (selectedRegion && selectedRegion !== 'all') {
+      feesToFilter = allFees.filter(f => f.region.toLowerCase().includes(selectedRegion.toLowerCase()));
+    }
+    if (searchMunicipality) {
+      feesToFilter = feesToFilter.filter(f => f.municipality?.toLowerCase().includes(searchMunicipality.toLowerCase()));
+    }
+    const filtered = feesToFilter.map(f => f.port).filter((p): p is string => p !== null && p !== undefined);
     const uniquePorts = Array.from(new Set(filtered));
     return uniquePorts.sort();
-  }, [allFees]);
+  }, [allFees, selectedRegion, searchMunicipality]);
 
   const { data: fees = [], isLoading } = useQuery<LocalFee[]>({
     queryKey: ['/api/local-fees/search', selectedRegion, searchMunicipality, searchPort],
@@ -153,7 +164,11 @@ export default function OneriLocali() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Label>Regione</Label>
-                <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+                <Select value={selectedRegion} onValueChange={(value) => {
+                  setSelectedRegion(value);
+                  setSearchMunicipality("");
+                  setSearchPort("");
+                }}>
                   <SelectTrigger data-testid="select-region">
                     <SelectValue placeholder="Seleziona regione" />
                   </SelectTrigger>

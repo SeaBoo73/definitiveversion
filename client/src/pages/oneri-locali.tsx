@@ -12,6 +12,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { LocalFee } from "@shared/schema";
 import {
   MapPin,
@@ -26,7 +27,8 @@ import {
   Search,
   FileText,
   Shield,
-  Waves
+  Waves,
+  ChevronDown
 } from "lucide-react";
 
 const feeTypeLabels: Record<string, { label: string; icon: any; color: string }> = {
@@ -56,6 +58,19 @@ export default function OneriLocali() {
   const [searchPort, setSearchPort] = useState("");
   const [municipalityOpen, setMunicipalityOpen] = useState(false);
   const [portOpen, setPortOpen] = useState(false);
+  const [expandedFees, setExpandedFees] = useState<Set<number>>(new Set());
+
+  const toggleFee = (feeId: number) => {
+    setExpandedFees(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(feeId)) {
+        newSet.delete(feeId);
+      } else {
+        newSet.add(feeId);
+      }
+      return newSet;
+    });
+  };
 
   // Fetch all fees to get unique municipalities and ports for autocomplete
   const { data: allFees = [] } = useQuery<LocalFee[]>({
@@ -331,23 +346,41 @@ export default function OneriLocali() {
                   {areaFees.map((fee) => {
                     const feeType = feeTypeLabels[fee.feeType] || feeTypeLabels.other;
                     const FeeIcon = feeType.icon;
+                    const isExpanded = expandedFees.has(fee.id);
                     
                     return (
-                      <Card key={fee.id} data-testid={`card-fee-${fee.id}`}>
-                        <CardContent className="p-6">
-                          <div className="flex flex-wrap items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-3">
-                                <div className={`p-2 rounded-lg ${feeType.color.split(' ')[0]}`}>
-                                  <FeeIcon className={`h-5 w-5 ${feeType.color.split(' ')[1]}`} />
+                      <Collapsible key={fee.id} open={isExpanded} onOpenChange={() => toggleFee(fee.id)}>
+                        <Card data-testid={`card-fee-${fee.id}`} className="overflow-hidden">
+                          <CollapsibleTrigger asChild>
+                            <CardContent className="p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                  <div className={`p-2 rounded-lg ${feeType.color.split(' ')[0]}`}>
+                                    <FeeIcon className={`h-5 w-5 ${feeType.color.split(' ')[1]}`} />
+                                  </div>
+                                  <div>
+                                    <h4 className="text-lg font-semibold">{fee.name}</h4>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      <Badge className={feeType.color}>{feeType.label}</Badge>
+                                      {fee.amount && (
+                                        <span className="text-sm text-green-600 font-medium">
+                                          €{fee.amount}
+                                          {fee.amountType === 'per_person' && '/pers.'}
+                                          {fee.amountType === 'per_day' && '/giorno'}
+                                          {fee.amountType === 'per_meter' && '/mt'}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
                                 </div>
-                                <div>
-                                  <h4 className="text-lg font-semibold">{fee.name}</h4>
-                                  <Badge className={feeType.color}>{feeType.label}</Badge>
-                                </div>
+                                <ChevronDown className={`h-5 w-5 text-gray-500 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                               </div>
-                              
-                              <p className="text-gray-700 mb-4">{fee.description}</p>
+                            </CardContent>
+                          </CollapsibleTrigger>
+                          
+                          <CollapsibleContent>
+                            <CardContent className="px-4 pb-4 pt-0 border-t bg-gray-50">
+                              <p className="text-gray-700 mb-4 mt-4">{fee.description}</p>
                               
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                                 {fee.amount && (
@@ -395,7 +428,7 @@ export default function OneriLocali() {
                               </div>
                               
                               {(fee.seasonalNotes || fee.paymentMethod || fee.notes) && (
-                                <div className="mt-4 p-3 bg-gray-50 rounded-lg space-y-2 text-sm">
+                                <div className="mt-4 p-3 bg-white rounded-lg space-y-2 text-sm border">
                                   {fee.seasonalNotes && (
                                     <p><strong>Periodo:</strong> {fee.seasonalNotes}</p>
                                   )}
@@ -427,10 +460,10 @@ export default function OneriLocali() {
                                   </span>
                                 )}
                               </div>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                            </CardContent>
+                          </CollapsibleContent>
+                        </Card>
+                      </Collapsible>
                     );
                   })}
                 </div>

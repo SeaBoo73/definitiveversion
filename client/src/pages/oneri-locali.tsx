@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -8,6 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { LocalFee } from "@shared/schema";
@@ -52,6 +54,26 @@ export default function OneriLocali() {
   const [selectedRegion, setSelectedRegion] = useState<string>("");
   const [searchMunicipality, setSearchMunicipality] = useState("");
   const [searchPort, setSearchPort] = useState("");
+  const [municipalityOpen, setMunicipalityOpen] = useState(false);
+  const [portOpen, setPortOpen] = useState(false);
+
+  // Fetch all fees to get unique municipalities and ports for autocomplete
+  const { data: allFees = [] } = useQuery<LocalFee[]>({
+    queryKey: ['/api/local-fees'],
+  });
+
+  // Extract unique municipalities and ports for autocomplete
+  const municipalities = useMemo(() => {
+    const filtered = allFees.map(f => f.municipality).filter((m): m is string => m !== null && m !== undefined);
+    const uniqueMunicipalities = Array.from(new Set(filtered));
+    return uniqueMunicipalities.sort();
+  }, [allFees]);
+
+  const ports = useMemo(() => {
+    const filtered = allFees.map(f => f.port).filter((p): p is string => p !== null && p !== undefined);
+    const uniquePorts = Array.from(new Set(filtered));
+    return uniquePorts.sort();
+  }, [allFees]);
 
   const { data: fees = [], isLoading } = useQuery<LocalFee[]>({
     queryKey: ['/api/local-fees/search', selectedRegion, searchMunicipality, searchPort],
@@ -131,22 +153,100 @@ export default function OneriLocali() {
               
               <div>
                 <Label>Comune / Località</Label>
-                <Input
-                  placeholder="es. Capri, La Maddalena..."
-                  value={searchMunicipality}
-                  onChange={(e) => setSearchMunicipality(e.target.value)}
-                  data-testid="input-municipality"
-                />
+                <Popover open={municipalityOpen} onOpenChange={setMunicipalityOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={municipalityOpen}
+                      className="w-full justify-between font-normal"
+                      data-testid="input-municipality"
+                    >
+                      {searchMunicipality || "Seleziona comune..."}
+                      <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Cerca comune..." />
+                      <CommandList>
+                        <CommandEmpty>Nessun comune trovato.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value=""
+                            onSelect={() => {
+                              setSearchMunicipality("");
+                              setMunicipalityOpen(false);
+                            }}
+                          >
+                            Tutti i comuni
+                          </CommandItem>
+                          {municipalities.map((municipality) => (
+                            <CommandItem
+                              key={municipality}
+                              value={municipality}
+                              onSelect={(value) => {
+                                setSearchMunicipality(value);
+                                setMunicipalityOpen(false);
+                              }}
+                            >
+                              {municipality}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
               
               <div>
                 <Label>Porto di partenza</Label>
-                <Input
-                  placeholder="es. Porto Cervo, Marina Grande..."
-                  value={searchPort}
-                  onChange={(e) => setSearchPort(e.target.value)}
-                  data-testid="input-port"
-                />
+                <Popover open={portOpen} onOpenChange={setPortOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={portOpen}
+                      className="w-full justify-between font-normal"
+                      data-testid="input-port"
+                    >
+                      {searchPort || "Seleziona porto..."}
+                      <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-full p-0" align="start">
+                    <Command>
+                      <CommandInput placeholder="Cerca porto..." />
+                      <CommandList>
+                        <CommandEmpty>Nessun porto trovato.</CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value=""
+                            onSelect={() => {
+                              setSearchPort("");
+                              setPortOpen(false);
+                            }}
+                          >
+                            Tutti i porti
+                          </CommandItem>
+                          {ports.map((port) => (
+                            <CommandItem
+                              key={port}
+                              value={port}
+                              onSelect={(value) => {
+                                setSearchPort(value);
+                                setPortOpen(false);
+                              }}
+                            >
+                              {port}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
             

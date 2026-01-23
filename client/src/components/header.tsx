@@ -30,14 +30,16 @@ export function Header() {
     logoutMutation.mutate();
   };
 
-  const handleScrollToTop = () => {
+  const handleScrollToTop = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('a, button, [role="button"]')) return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <header 
       className="bg-white shadow-sm sticky top-0 z-50 pt-[env(safe-area-inset-top)]"
-      onDoubleClick={handleScrollToTop}
+      onClick={handleScrollToTop}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">

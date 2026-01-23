@@ -242,27 +242,6 @@ export default function ExternalServices() {
               </Link>
             </nav>
 
-            {/* Quick Service Links - Mobile */}
-            <div className="md:hidden flex items-center gap-2">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setActiveTab('fuel')}
-                className="text-xs"
-              >
-                <Fuel className="h-3 w-3 mr-1" />
-                Carburante
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => setActiveTab('ports')}
-                className="text-xs"
-              >
-                <Anchor className="h-3 w-3 mr-1" />
-                Porti
-              </Button>
-            </div>
           </div>
         </div>
       </header>

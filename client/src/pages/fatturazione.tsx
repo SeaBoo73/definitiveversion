@@ -2,7 +2,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, Download, Calendar, CreditCard, Building, CheckCircle } from "lucide-react";
+import { FileText, Download, Calendar, CreditCard, CheckCircle } from "lucide-react";
 
 export default function FatturazionePage() {
   return (
@@ -19,58 +19,30 @@ export default function FatturazionePage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
           <Card className="text-center">
             <CardHeader>
               <CardTitle className="flex flex-col items-center">
                 <FileText className="h-8 w-8 mb-2 text-blue-600" />
-                Fatture Automatiche
+                Ricevute Automatiche
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 mb-4">
-                Ricevi automaticamente la fattura per ogni prenotazione completata
+                Ricevi automaticamente la ricevuta per ogni prenotazione completata
               </p>
               <div className="space-y-2">
                 <div className="flex items-center text-sm">
                   <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                  <span>Invio immediato via email</span>
+                  <span>Generazione automatica</span>
                 </div>
                 <div className="flex items-center text-sm">
                   <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                  <span>Formato PDF ufficiale</span>
+                  <span>Download PDF</span>
                 </div>
                 <div className="flex items-center text-sm">
                   <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
                   <span>Archiviazione digitale</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center">
-            <CardHeader>
-              <CardTitle className="flex flex-col items-center">
-                <Building className="h-8 w-8 mb-2 text-green-600" />
-                Fatturazione Aziendale
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-4">
-                Fatture intestate alla tua azienda con tutti i dati fiscali
-              </p>
-              <div className="space-y-2">
-                <div className="flex items-center text-sm">
-                  <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                  <span>Partita IVA e Codice Fiscale</span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                  <span>Indirizzo sede legale</span>
-                </div>
-                <div className="flex items-center text-sm">
-                  <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                  <span>Codice destinatario SDI</span>
                 </div>
               </div>
             </CardContent>
@@ -228,66 +200,47 @@ export default function FatturazionePage() {
           </CardHeader>
           <CardContent>
             <div className="bg-blue-50 p-6 rounded-lg">
-              <h4 className="font-semibold text-blue-800 mb-3">Come Impostare i Tuoi Dati Fiscali</h4>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h5 className="font-semibold text-sm mb-2">Fatturazione Privata:</h5>
-                  <ul className="text-sm text-blue-700 space-y-1">
-                    <li>• Nome e Cognome completi</li>
-                    <li>• Codice Fiscale</li>
-                    <li>• Indirizzo di residenza</li>
-                    <li>• Email per invio fatture</li>
-                  </ul>
-                </div>
-                <div>
-                  <h5 className="font-semibold text-sm mb-2">Fatturazione Aziendale:</h5>
-                  <ul className="text-sm text-blue-700 space-y-1">
-                    <li>• Ragione sociale completa</li>
-                    <li>• Partita IVA e Codice Fiscale</li>
-                    <li>• Indirizzo sede legale</li>
-                    <li>• Codice destinatario SDI (opzionale)</li>
-                  </ul>
-                </div>
+              <h4 className="font-semibold text-blue-800 mb-3">Come Impostare i Tuoi Dati</h4>
+              <div className="max-w-md mx-auto">
+                <h5 className="font-semibold text-sm mb-2">Dati per le Ricevute:</h5>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>• Nome e Cognome completi</li>
+                  <li>• Codice Fiscale</li>
+                  <li>• Indirizzo di residenza</li>
+                  <li>• Email per comunicazioni</li>
+                </ul>
               </div>
               <div className="mt-4 text-center">
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2">
-                  Configura Dati di Fatturazione
+                  Configura i Tuoi Dati
                 </Button>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-            <h3 className="font-semibold text-green-900 mb-2">Conformità Fiscale</h3>
+            <h3 className="font-semibold text-green-900 mb-2">Ricevute Dettagliate</h3>
             <p className="text-sm text-green-800 mb-3">
-              Tutte le fatture sono conformi alla normativa fiscale italiana ed europea
+              Tutte le ricevute includono i dettagli completi della prenotazione
             </p>
             <div className="text-2xl font-bold text-green-600">✓</div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-            <h3 className="font-semibold text-blue-900 mb-2">Fatturazione Elettronica</h3>
-            <p className="text-sm text-blue-800 mb-3">
-              Sistema integrato con l'Agenzia delle Entrate per B2B
-            </p>
-            <div className="text-2xl font-bold text-blue-600">SDI</div>
-          </div>
-
           <div className="bg-orange-50 border border-orange-200 rounded-lg p-6 text-center">
-            <h3 className="font-semibold text-orange-900 mb-2">Conservazione Digitale</h3>
+            <h3 className="font-semibold text-orange-900 mb-2">Archivio Digitale</h3>
             <p className="text-sm text-orange-800 mb-3">
-              Archiviazione sicura per 10 anni secondo normative
+              Tutte le tue ricevute sempre disponibili nel tuo profilo
             </p>
-            <div className="text-2xl font-bold text-orange-600">10y</div>
+            <div className="text-2xl font-bold text-orange-600">📁</div>
           </div>
         </div>
 
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-4">Fatturazione Semplice e Automatica</h3>
+          <h3 className="text-2xl font-bold mb-4">Ricevute Semplici e Automatiche</h3>
           <p className="mb-6 opacity-90">
-            Non dovrai mai preoccuparti della documentazione fiscale. Tutto è gestito automaticamente dal nostro sistema.
+            Non dovrai mai preoccuparti della documentazione. Tutto è gestito automaticamente dal nostro sistema.
           </p>
           <div className="grid md:grid-cols-4 gap-4 mt-6">
             <div className="bg-white bg-opacity-20 rounded-lg p-3">

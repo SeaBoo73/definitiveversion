@@ -14,14 +14,11 @@ export function LiveChatButton() {
         <TooltipTrigger asChild>
           <Button
             onClick={() => setShowAiChat(true)}
-            className="fixed bottom-24 md:bottom-6 right-6 z-40 bg-gradient-to-r from-ocean-blue to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full w-16 h-16 shadow-xl border-2 border-white transition-all flex items-center justify-center group"
+            className="fixed bottom-32 md:bottom-6 right-6 z-40 bg-gradient-to-r from-ocean-blue to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full w-14 h-14 shadow-xl border-2 border-white transition-all flex items-center justify-center group"
             size="lg"
             data-testid="button-live-chat"
           >
-            <div className="relative">
-              <MessageCircle className="h-7 w-7 fill-white stroke-ocean-blue group-hover:animate-pulse" />
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
-            </div>
+            <span className="text-lg font-bold">IA</span>
           </Button>
         </TooltipTrigger>
         <TooltipContent side="left" className="bg-gray-900 text-white">

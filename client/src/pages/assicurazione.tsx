@@ -1,6 +1,6 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Shield, CheckCircle, Users, Phone } from "lucide-react";
+import { Shield, CheckCircle, Users } from "lucide-react";
 
 export default function AssicurazionePage() {
   return (
@@ -67,14 +67,6 @@ export default function AssicurazionePage() {
           </div>
         </div>
 
-        <div className="bg-ocean-blue text-white rounded-xl p-8 text-center">
-          <Phone className="h-12 w-12 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold mb-4">Assistenza 24/7</h2>
-          <p className="text-lg mb-6">
-            Il nostro team di supporto è sempre disponibile per assistenza immediata
-          </p>
-          <p className="text-xl font-semibold">+39 800 123 456</p>
-        </div>
       </div>
 
       <Footer />

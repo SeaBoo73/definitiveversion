@@ -40,7 +40,6 @@ export function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li><Link to="/" className="hover:text-white transition-colors">Prenota una barca</Link></li>
               <li><Link to="/diventa-noleggiatore" className="hover:text-white transition-colors">Diventa Sea Host</Link></li>
-              <li><Link to="/assicurazione" className="hover:text-white transition-colors">Assicurazione</Link></li>
               <li><Link to="/oneri-locali" className="hover:text-white transition-colors">Oneri Locali e AMP</Link></li>
               <li><Link to="/recensioni-user" className="hover:text-white transition-colors">Recensioni</Link></li>
             </ul>

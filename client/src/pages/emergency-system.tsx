@@ -216,12 +216,12 @@ export default function EmergencySystem() {
       </Alert>
 
       <Tabs defaultValue="contacts" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="contacts">Contatti</TabsTrigger>
-          <TabsTrigger value="alerts">Allerte</TabsTrigger>
-          <TabsTrigger value="locations">Localizzazione</TabsTrigger>
-          <TabsTrigger value="protocols">Protocolli</TabsTrigger>
-          <TabsTrigger value="assistance">Assistenza</TabsTrigger>
+        <TabsList className="flex flex-col w-full h-auto space-y-1 bg-gray-100 p-2 rounded-lg">
+          <TabsTrigger value="contacts" className="w-full justify-start">Contatti</TabsTrigger>
+          <TabsTrigger value="alerts" className="w-full justify-start">Allerte</TabsTrigger>
+          <TabsTrigger value="locations" className="w-full justify-start">Localizzazione</TabsTrigger>
+          <TabsTrigger value="protocols" className="w-full justify-start">Protocolli</TabsTrigger>
+          <TabsTrigger value="assistance" className="w-full justify-start">Assistenza</TabsTrigger>
         </TabsList>
 
         {/* Emergency Contacts Tab */}

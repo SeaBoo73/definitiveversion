@@ -408,11 +408,7 @@ export function BoatDetail() {
                     <span>Inclusa nel prezzo</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Assicurazione</span>
-                    <span>Inclusa</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Supporto 24/7</span>
+                    <span>Supporto dedicato</span>
                     <span>Incluso</span>
                   </div>
                 </div>

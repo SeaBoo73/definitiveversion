@@ -57,8 +57,8 @@ const faqData = [
   {
     id: 6,
     category: "Sicurezza",
-    question: "Le barche sono assicurate?",
-    answer: "Tutte le imbarcazioni sulla piattaforma SeaBoo sono coperte da assicurazione di base. Sono disponibili coperture aggiuntive durante la prenotazione."
+    question: "Le barche sono sicure?",
+    answer: "Tutte le imbarcazioni sulla piattaforma SeaBoo sono verificate e devono rispettare gli standard di sicurezza nautica. I proprietari sono responsabili della manutenzione."
   },
   {
     id: 7,

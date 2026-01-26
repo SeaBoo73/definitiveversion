@@ -139,11 +139,11 @@ export default function DiventaSeaHostPage() {
           <Card className="border-green-200 bg-white/50 backdrop-blur-sm">
             <CardHeader className="text-center">
               <Shield className="h-8 w-8 text-green-600 mx-auto mb-2" />
-              <CardTitle className="text-green-900">Sicurezza Totale</CardTitle>
+              <CardTitle className="text-green-900">Pagamenti Sicuri</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
               <div className="text-2xl font-bold text-green-600 mb-2">100%</div>
-              <p className="text-gray-600">assicurazione coperta</p>
+              <p className="text-gray-600">transazioni protette</p>
             </CardContent>
           </Card>
 
@@ -393,9 +393,8 @@ export default function DiventaSeaHostPage() {
                           SeaBoo trattiene il 15% su ogni prenotazione per coprire:
                         </p>
                         <ul className="list-disc list-inside text-sm mt-2 space-y-1">
-                          <li>Assicurazione completa della tua imbarcazione</li>
                           <li>Marketing e visibilità sulla piattaforma</li>
-                          <li>Assistenza clienti 24/7</li>
+                          <li>Assistenza clienti dedicata</li>
                           <li>Gestione pagamenti e fatturazione</li>
                           <li>Supporto tecnico dedicato</li>
                         </ul>

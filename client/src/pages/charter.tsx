@@ -28,7 +28,7 @@ export function CharterPage() {
       icon: <Sailboat className="h-8 w-8" />,
       duration: "7 giorni",
       capacity: "2-8 persone",
-      includes: ["Skipper professionista", "Carburante incluso", "Assicurazione", "Pulizie finali"],
+      includes: ["Skipper professionista", "Carburante incluso", "Pulizie finali"],
       highlights: ["Costa Amalfitana", "Arcipelago Toscano", "Sardegna", "Sicilia"],
       price: "Da €2.500/settimana",
       badge: "Più richiesto",

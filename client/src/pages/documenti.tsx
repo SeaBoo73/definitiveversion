@@ -128,37 +128,7 @@ export default function DocumentiPage() {
           </CardContent>
         </Card>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Shield className="h-6 w-6 mr-2 text-green-600" />
-                Documenti per l'Assicurazione
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <p className="text-gray-600 text-sm">
-                  L'assicurazione è inclusa in ogni prenotazione. Potrebbero essere richiesti:
-                </p>
-                <div className="space-y-2">
-                  <div className="flex items-center text-sm">
-                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                    <span>Certificato medico per età &gt; 65 anni</span>
-                  </div>
-                  <div className="flex items-center text-sm">
-                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                    <span>Dichiarazione esperienza nautica</span>
-                  </div>
-                  <div className="flex items-center text-sm">
-                    <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                    <span>Lista equipaggio (per barche grandi)</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
+        <div className="mb-8">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
@@ -202,7 +172,6 @@ export default function DocumentiPage() {
                   <h5 className="font-semibold text-sm mb-2">Verifica Documenti:</h5>
                   <ul className="text-sm text-blue-700 space-y-1">
                     <li>• Controllo identità e patente</li>
-                    <li>• Verifica validità assicurazione</li>
                     <li>• Conferma dati prenotazione</li>
                   </ul>
                 </div>

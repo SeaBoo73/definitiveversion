@@ -97,8 +97,8 @@ export default function CondizioniServizioPage() {
                   <div>
                     <p className="font-semibold text-yellow-800">Importante</p>
                     <p className="text-yellow-700 text-sm">
-                      Tutte le imbarcazioni devono essere coperte da assicurazione valida. 
-                      Gli utenti sono tenuti a rispettare le normative nautiche vigenti.
+                      Gli utenti sono tenuti a rispettare le normative nautiche vigenti 
+                      e a verificare le condizioni dell'imbarcazione prima della partenza.
                     </p>
                   </div>
                 </div>

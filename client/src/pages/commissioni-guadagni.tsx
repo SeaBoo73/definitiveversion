@@ -51,8 +51,8 @@ export default function CommissioniGuadagniPage() {
                 <h3 className="text-lg font-medium mb-4">Struttura Semplice</h3>
                 <p className="text-gray-600 mb-4">
                   SeaBoo applica una commissione del 15% sul prezzo di noleggio. 
-                  Questo include tutti i nostri servizi: marketing, assistenza clienti, 
-                  pagamenti sicuri e assicurazione.
+                  Questo include tutti i nostri servizi: marketing, assistenza clienti 
+                  e pagamenti sicuri.
                 </p>
                 <div className="bg-gray-50 p-4 rounded-lg">
                   <h4 className="font-medium mb-2">Esempio:</h4>

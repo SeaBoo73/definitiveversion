@@ -176,7 +176,7 @@ export default function GestionePrenotazioniPage() {
                 </div>
                 <h4 className="font-semibold mb-2">Commissione SeaBoo</h4>
                 <p className="text-sm text-gray-600">
-                  Include assicurazione e supporto
+                  Include supporto dedicato
                 </p>
               </div>
               <div className="text-center">

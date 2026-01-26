@@ -226,7 +226,6 @@ export default function DiventaNoleggiatorePage() {
                   <h3 className="font-semibold text-gray-900">Documenti Obbligatori</h3>
                   <ul className="text-gray-600 text-sm mt-2 space-y-1">
                     <li>• Certificato di proprietà dell'imbarcazione</li>
-                    <li>• Assicurazione nautica valida</li>
                     <li>• Licenza di navigazione (se richiesta)</li>
                     <li>• Documento di identità del proprietario</li>
                   </ul>

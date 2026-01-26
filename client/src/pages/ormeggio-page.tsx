@@ -135,8 +135,7 @@ const mooringSpots: MooringSpot[] = [
     rules: [
       "Check-in dalle 9:00 alle 18:00",
       "Mantenere la barca in condizioni pulite",
-      "Rispettare il regolamento del porto",
-      "Assicurazione obbligatoria"
+      "Rispettare il regolamento del porto"
     ],
     featured: true
   },

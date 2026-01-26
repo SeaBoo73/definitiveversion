@@ -34,7 +34,7 @@ export default function InserisciBarcaPage() {
                   <Shield className="h-5 w-5 mr-2 text-green-500 mt-0.5" />
                   <div>
                     <h4 className="font-semibold">Documenti Obbligatori</h4>
-                    <p className="text-sm text-gray-600">Licenza di navigazione, assicurazione valida, certificati di sicurezza</p>
+                    <p className="text-sm text-gray-600">Licenza di navigazione, certificati di sicurezza</p>
                   </div>
                 </div>
                 <div className="flex items-start">

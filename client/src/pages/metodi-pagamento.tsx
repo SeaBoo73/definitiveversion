@@ -151,7 +151,7 @@ export default function MetodiPagamentoPage() {
                   </div>
                   <div className="flex items-center text-sm">
                     <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
-                    <span>Assicurazione transazioni inclusa</span>
+                    <span>Transazioni protette</span>
                   </div>
                 </div>
               </div>

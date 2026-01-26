@@ -92,7 +92,7 @@ export default function AssistenzaProprietariPage() {
                 </div>
                 <div className="border-b pb-3">
                   <h4 className="font-semibold mb-2">Cosa succede in caso di danni?</h4>
-                  <p className="text-sm text-gray-600">Ogni prenotazione include assicurazione. I danni vengono gestiti dal nostro team assicurativo.</p>
+                  <p className="text-sm text-gray-600">I danni vengono gestiti tramite la cauzione e comunicazione diretta tra le parti. Contatta il supporto per assistenza.</p>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Come gestire le recensioni negative?</h4>

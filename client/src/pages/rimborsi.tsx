@@ -235,13 +235,6 @@ export default function RimborsiPage() {
                   </p>
                 </div>
                 
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <h4 className="font-medium text-blue-800 mb-2">Assicurazione viaggio</h4>
-                  <p className="text-sm text-blue-700">
-                    Considera l'assicurazione viaggio per copertura aggiuntiva 
-                    su cancellazioni dovute a emergenze personali.
-                  </p>
-                </div>
               </div>
             </CardContent>
           </Card>

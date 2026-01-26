@@ -472,28 +472,6 @@ export default function EmergencySystem() {
                   </Button>
                 </div>
 
-                <div>
-                  <h4 className="font-semibold mb-3">Centri Assistenza Autorizzati</h4>
-                  <div className="space-y-3">
-                    <div className="border rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium">Assistenza Motori Marini</span>
-                        <Badge variant="secondary">24h</Badge>
-                      </div>
-                      <div className="text-sm text-gray-600">Tel: +39 06 1234567</div>
-                      <div className="text-sm text-gray-600">Coprire: Lazio, Campania</div>
-                    </div>
-                    
-                    <div className="border rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-medium">Rimorchio Nautico</span>
-                        <Badge variant="outline">Su chiamata</Badge>
-                      </div>
-                      <div className="text-sm text-gray-600">Tel: +39 06 7654321</div>
-                      <div className="text-sm text-gray-600">Servizio H24 - Costa italiana</div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </CardContent>
           </Card>

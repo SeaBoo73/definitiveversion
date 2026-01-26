@@ -690,22 +690,13 @@ export default function ExternalServices() {
                           </div>
                         </div>
 
-                        <div className="space-y-1 text-sm">
-                          <div className="flex items-center gap-2">
-                            <Phone className="h-3 w-3" />
-                            <span>{port.contact.phone}</span>
-                          </div>
-                          {port.contact.vhf && (
-                            <div className="flex items-center gap-2">
-                              <RefreshCw className="h-3 w-3" />
-                              <span>VHF {port.contact.vhf}</span>
-                            </div>
-                          )}
-                        </div>
-
-                        <Button variant="outline" size="sm" className="w-full mt-3">
-                          <Phone className="h-4 w-4 mr-2" />
-                          Contatta Porto
+                        <Button 
+                          variant="default" 
+                          size="sm" 
+                          className="w-full mt-3 bg-ocean-blue hover:bg-blue-700"
+                          onClick={() => window.location.href = '/ormeggio'}
+                        >
+                          Prenota Ormeggio
                         </Button>
                       </div>
                     </div>

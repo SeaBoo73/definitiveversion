@@ -300,54 +300,95 @@ export default function EmergencySystem() {
         </TabsContent>
 
 
-        {/* Boat Locations Tab */}
+        {/* Location Tab */}
         <TabsContent value="locations" className="space-y-6">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Navigation className="h-5 w-5" />
-                Localizzazione Imbarcazioni
+                <MapPin className="h-5 w-5 text-blue-600" />
+                La Tua Posizione
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {boatLocations?.map((boat) => (
-                  <div key={boat.boatId} className="border rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <Anchor className="h-4 w-4" />
-                        <span className="font-medium">{boat.boatName}</span>
-                        <Badge variant={getStatusColor(boat.status)}>
-                          {boat.status}
-                        </Badge>
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {new Date(boat.lastUpdate).toLocaleString('it-IT')}
-                      </div>
+              {currentLocation ? (
+                <div className="space-y-4">
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="flex items-center gap-2 text-blue-800 mb-2">
+                      <MapPin className="h-5 w-5" />
+                      <span className="font-semibold">Posizione GPS Attuale</span>
                     </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                      <div>
-                        <span className="text-gray-600">Posizione:</span>
-                        <div className="font-mono">
-                          {formatCoordinates(boat.location.lat, boat.location.lng)}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Velocità:</span>
-                        <div>{boat.speed} nodi</div>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Rotta:</span>
-                        <div>{boat.heading}°</div>
-                      </div>
-                      <div>
-                        <span className="text-gray-600">Stato:</span>
-                        <div className="capitalize">{boat.status}</div>
-                      </div>
+                    <div className="text-2xl font-mono text-blue-900 mb-4">
+                      {formatCoordinates(currentLocation.lat, currentLocation.lng)}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          const coords = `${currentLocation.lat.toFixed(6)}, ${currentLocation.lng.toFixed(6)}`;
+                          navigator.clipboard.writeText(coords);
+                          alert('Coordinate copiate negli appunti!');
+                        }}
+                      >
+                        Copia Coordinate
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => {
+                          const coords = `${currentLocation.lat.toFixed(6)}, ${currentLocation.lng.toFixed(6)}`;
+                          const message = `La mia posizione attuale: ${coords}`;
+                          if (navigator.share) {
+                            navigator.share({ title: 'Posizione', text: message });
+                          } else {
+                            navigator.clipboard.writeText(message);
+                            alert('Messaggio copiato negli appunti!');
+                          }
+                        }}
+                      >
+                        Condividi Posizione
+                      </Button>
+                      <Button 
+                        variant="default" 
+                        size="sm"
+                        onClick={() => window.open(`https://www.google.com/maps?q=${currentLocation.lat},${currentLocation.lng}`, '_blank')}
+                      >
+                        Apri in Google Maps
+                      </Button>
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                    <p className="text-sm text-yellow-800">
+                      <strong>In caso di emergenza:</strong> Comunica queste coordinate alla Guardia Costiera (1530) per permettere ai soccorsi di localizzarti.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="font-semibold text-gray-700 mb-2">Posizione non disponibile</h3>
+                  <p className="text-gray-600 mb-4">
+                    Attiva la geolocalizzazione nel browser per vedere la tua posizione.
+                  </p>
+                  <Button 
+                    variant="outline"
+                    onClick={() => {
+                      navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                          setCurrentLocation({
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                          });
+                        },
+                        (error) => alert('Impossibile ottenere la posizione. Verifica i permessi del browser.'),
+                        { enableHighAccuracy: true }
+                      );
+                    }}
+                  >
+                    Attiva Localizzazione
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

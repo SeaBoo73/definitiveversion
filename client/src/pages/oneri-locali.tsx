@@ -280,21 +280,28 @@ export default function OneriLocali() {
               </div>
             </div>
             
-            {(selectedRegion || searchMunicipality || searchPort) && (
+            <div className="flex gap-2 mt-4">
               <Button
-                variant="outline"
-                size="sm"
-                className="mt-4"
-                onClick={() => {
-                  setSelectedRegion("");
-                  setSearchMunicipality("");
-                  setSearchPort("");
-                }}
-                data-testid="button-clear-filters"
+                variant="default"
+                className="bg-teal-600 hover:bg-teal-700"
+                data-testid="button-search"
               >
-                Cancella filtri
+                Cerca
               </Button>
-            )}
+              {(selectedRegion || searchMunicipality || searchPort) && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedRegion("");
+                    setSearchMunicipality("");
+                    setSearchPort("");
+                  }}
+                  data-testid="button-clear-filters"
+                >
+                  Cancella filtri
+                </Button>
+              )}
+            </div>
           </CardContent>
         </Card>
 

@@ -221,7 +221,6 @@ export default function EmergencySystem() {
           <TabsTrigger value="contacts" className="w-full justify-start">Contatti</TabsTrigger>
           <TabsTrigger value="locations" className="w-full justify-start">Localizzazione</TabsTrigger>
           <TabsTrigger value="protocols" className="w-full justify-start">Protocolli</TabsTrigger>
-          <TabsTrigger value="assistance" className="w-full justify-start">Assistenza</TabsTrigger>
         </TabsList>
 
         {/* Emergency Contacts Tab */}
@@ -431,51 +430,6 @@ export default function EmergencySystem() {
           </Card>
         </TabsContent>
 
-        {/* Remote Assistance Tab */}
-        <TabsContent value="assistance" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Radio className="h-5 w-5" />
-                Assistenza Tecnica Remota
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Button variant="outline" className="h-auto p-4 flex-col">
-                    <Radio className="h-6 w-6 mb-2" />
-                    <span className="font-medium">Supporto Radio VHF</span>
-                    <span className="text-sm text-gray-600">Canale 16 - Emergenze</span>
-                    <span className="text-sm text-gray-600">Canale 9 - Assistenza</span>
-                  </Button>
-
-                  <Button variant="outline" className="h-auto p-4 flex-col">
-                    <Phone className="h-6 w-6 mb-2" />
-                    <span className="font-medium">Chat Video</span>
-                    <span className="text-sm text-gray-600">Assistenza visiva remota</span>
-                    <span className="text-sm text-gray-600">Diagnosi problemi tecnici</span>
-                  </Button>
-
-                  <Button variant="outline" className="h-auto p-4 flex-col">
-                    <MapPin className="h-6 w-6 mb-2" />
-                    <span className="font-medium">Localizzazione GPS</span>
-                    <span className="text-sm text-gray-600">Condivisione posizione</span>
-                    <span className="text-sm text-gray-600">Tracciamento automatico</span>
-                  </Button>
-
-                  <Button variant="outline" className="h-auto p-4 flex-col">
-                    <Anchor className="h-6 w-6 mb-2" />
-                    <span className="font-medium">Manuali Online</span>
-                    <span className="text-sm text-gray-600">Guide riparazione</span>
-                    <span className="text-sm text-gray-600">Video tutorial</span>
-                  </Button>
-                </div>
-
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
       </Tabs>
 
       {/* Current Location Display */}

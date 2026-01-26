@@ -186,7 +186,7 @@ export default function EmergencySystem() {
               <Button 
                 variant="destructive" 
                 size="sm"
-                onClick={() => handleQuickEmergency('medical', 'critical')}
+                onClick={() => window.open('tel:1530', '_self')}
                 className="flex items-center gap-2"
               >
                 <Phone className="h-4 w-4" />
@@ -195,7 +195,7 @@ export default function EmergencySystem() {
               <Button 
                 variant="destructive" 
                 size="sm"
-                onClick={() => handleQuickEmergency('mechanical', 'high')}
+                onClick={() => window.open('tel:1530', '_self')}
                 className="flex items-center gap-2"
               >
                 <Anchor className="h-4 w-4" />
@@ -204,13 +204,14 @@ export default function EmergencySystem() {
               <Button 
                 variant="destructive" 
                 size="sm"
-                onClick={() => handleQuickEmergency('weather', 'high')}
+                onClick={() => window.open('tel:1530', '_self')}
                 className="flex items-center gap-2"
               >
-                <img src={seabooLogo} alt="SeaBoo" className="h-4 w-4 object-contain" />
+                <Radio className="h-4 w-4" />
                 Meteo Avverso
               </Button>
             </div>
+            <p className="text-xs text-red-600 mt-2">Tutti i pulsanti chiamano il 1530 - Guardia Costiera</p>
           </div>
         </AlertDescription>
       </Alert>
@@ -218,7 +219,6 @@ export default function EmergencySystem() {
       <Tabs defaultValue="contacts" className="space-y-6">
         <TabsList className="flex flex-col w-full h-auto space-y-1 bg-gray-100 p-2 rounded-lg">
           <TabsTrigger value="contacts" className="w-full justify-start">Contatti</TabsTrigger>
-          <TabsTrigger value="alerts" className="w-full justify-start">Allerte</TabsTrigger>
           <TabsTrigger value="locations" className="w-full justify-start">Localizzazione</TabsTrigger>
           <TabsTrigger value="protocols" className="w-full justify-start">Protocolli</TabsTrigger>
           <TabsTrigger value="assistance" className="w-full justify-start">Assistenza</TabsTrigger>
@@ -300,152 +300,6 @@ export default function EmergencySystem() {
           </Card>
         </TabsContent>
 
-        {/* Emergency Alerts Tab */}
-        <TabsContent value="alerts" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Crea Nuova Allerta</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Tipo di Emergenza</label>
-                  <Select value={emergencyType} onValueChange={setEmergencyType}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleziona tipo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="medical">Emergenza Medica</SelectItem>
-                      <SelectItem value="mechanical">Avaria Meccanica</SelectItem>
-                      <SelectItem value="weather">Condizioni Meteo</SelectItem>
-                      <SelectItem value="collision">Collisione</SelectItem>
-                      <SelectItem value="fire">Incendio</SelectItem>
-                      <SelectItem value="grounding">Incaglio</SelectItem>
-                      <SelectItem value="other">Altro</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">Gravità</label>
-                  <Select value={severity} onValueChange={setSeverity}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleziona gravità" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="critical">Critica - Pericolo di vita</SelectItem>
-                      <SelectItem value="high">Alta - Richiede intervento</SelectItem>
-                      <SelectItem value="medium">Media - Assistenza necessaria</SelectItem>
-                      <SelectItem value="low">Bassa - Informativa</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">Persone a Bordo</label>
-                  <Input 
-                    type="number" 
-                    value={personsOnBoard}
-                    onChange={(e) => setPersonsOnBoard(parseInt(e.target.value))}
-                    min="1"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium">Contatto</label>
-                  <Input 
-                    value={contactInfo}
-                    onChange={(e) => setContactInfo(e.target.value)}
-                    placeholder="Telefono o radio"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium">Descrizione</label>
-                <Textarea 
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Descrivi la situazione..."
-                  rows={3}
-                />
-              </div>
-
-              {currentLocation && (
-                <div className="bg-blue-50 p-3 rounded-lg">
-                  <div className="flex items-center gap-2 text-blue-800">
-                    <MapPin className="h-4 w-4" />
-                    <span className="font-medium">Posizione Attuale:</span>
-                  </div>
-                  <div className="text-blue-700 font-mono text-sm">
-                    {formatCoordinates(currentLocation.lat, currentLocation.lng)}
-                  </div>
-                </div>
-              )}
-
-              <Button 
-                onClick={() => createEmergencyAlert.mutate({
-                  type: emergencyType as any,
-                  severity: severity as any,
-                  location: currentLocation!,
-                  description,
-                  contactInfo,
-                  personsOnBoard,
-                  status: 'active'
-                })}
-                disabled={!emergencyType || !severity || !currentLocation}
-                className="w-full"
-              >
-                <AlertTriangle className="h-4 w-4 mr-2" />
-                Invia Allerta
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Active Alerts */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Allerte Attive</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {activeAlerts?.map((alert) => (
-                  <div key={alert.id} className="border rounded-lg p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <AlertTriangle className="h-4 w-4 text-red-600" />
-                        <span className="font-medium capitalize">{alert.type.replace('_', ' ')}</span>
-                        <Badge variant={getSeverityColor(alert.severity)}>
-                          {alert.severity}
-                        </Badge>
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {new Date(alert.createdAt).toLocaleString('it-IT')}
-                      </div>
-                    </div>
-                    <p className="text-gray-700 mb-2">{alert.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-gray-600">
-                      <span className="flex items-center gap-1">
-                        <Users className="h-3 w-3" />
-                        {alert.personsOnBoard} persone
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {formatCoordinates(alert.location.lat, alert.location.lng)}
-                      </span>
-                      {alert.contactInfo && (
-                        <span className="flex items-center gap-1">
-                          <Phone className="h-3 w-3" />
-                          {alert.contactInfo}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         {/* Boat Locations Tab */}
         <TabsContent value="locations" className="space-y-6">

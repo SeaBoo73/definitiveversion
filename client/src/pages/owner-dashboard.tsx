@@ -2044,7 +2044,6 @@ export default function OwnerDashboard() {
                               <SelectItem value="credit_card">💳 Carta di credito (3-5 giorni lavorativi)</SelectItem>
                               <SelectItem value="bank_transfer">🏦 Bonifico bancario (5-7 giorni lavorativi)</SelectItem>
                               <SelectItem value="paypal">📱 PayPal (1-3 giorni lavorativi)</SelectItem>
-                              <SelectItem value="seaboo_credit">🌊 Credito SeaBoo (Immediato)</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>

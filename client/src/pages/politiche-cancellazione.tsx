@@ -173,10 +173,6 @@ export default function PoliticheCancellazionePage() {
                     <Euro className="h-4 w-4 text-green-600" />
                     <span><strong>PayPal:</strong> 1-3 giorni lavorativi</span>
                   </li>
-                  <li className="flex items-center gap-2">
-                    <Euro className="h-4 w-4 text-green-600" />
-                    <span><strong>Credito SeaBoo:</strong> Immediato</span>
-                  </li>
                 </ul>
               </div>
             </div>

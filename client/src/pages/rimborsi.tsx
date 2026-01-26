@@ -25,12 +25,6 @@ export default function RimborsiPage() {
       icon: <RefreshCw className="h-6 w-6 text-blue-600" />,
       time: "5-7 giorni lavorativi",
       description: "Bonifico diretto sul conto corrente indicato"
-    },
-    {
-      method: "Credito SeaBoo",
-      icon: <CheckCircle className="h-6 w-6 text-green-600" />,
-      time: "Immediato",
-      description: "Credito utilizzabile per future prenotazioni"
     }
   ];
 
@@ -227,13 +221,6 @@ export default function RimborsiPage() {
                   </p>
                 </div>
                 
-                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <h4 className="font-medium text-green-800 mb-2">Credito SeaBoo</h4>
-                  <p className="text-sm text-green-700">
-                    Scegli il credito SeaBoo per rimborsi immediati e ottieni 
-                    un bonus del 5% sull'importo per future prenotazioni.
-                  </p>
-                </div>
                 
               </div>
             </CardContent>

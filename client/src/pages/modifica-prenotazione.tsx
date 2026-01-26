@@ -197,14 +197,9 @@ export default function ModificaPrenotazionePage() {
           <p className="mb-6 opacity-90">
             Il nostro team è disponibile 24/7 per aiutarti con qualsiasi modifica alla tua prenotazione.
           </p>
-          <div className="space-x-4">
-            <Button className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3">
-              Chat Live
-            </Button>
-            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 font-semibold px-8 py-3">
-              Chiama: +39 06 1234 5678
-            </Button>
-          </div>
+          <Button className="bg-white text-blue-600 hover:bg-gray-100 font-semibold px-8 py-3">
+            Chat Live
+          </Button>
         </div>
       </div>
 

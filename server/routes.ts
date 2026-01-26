@@ -2096,37 +2096,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get('/api/external/fuel-prices', (req, res) => {
-    // Mock fuel prices data
-    const fuelPrices = [
-      {
-        station: 'Marina di Gaeta',
-        location: 'Gaeta, LT',
-        gasoline: 1.89,
-        diesel: 1.72,
-        lastUpdated: new Date().toISOString(),
-        distance: 2.5,
-        services: ['Rifornimento 24/7', 'Acqua', 'Elettricità']
-      },
-      {
-        station: 'Porto di Civitavecchia',
-        location: 'Civitavecchia, RM',
-        gasoline: 1.92,
-        diesel: 1.75,
-        lastUpdated: new Date().toISOString(),
-        distance: 5.8,
-        services: ['Rifornimento', 'Officina', 'Bar']
-      },
-      {
-        station: 'Porto di Anzio',
-        location: 'Anzio, RM',
-        gasoline: 1.85,
-        diesel: 1.69,
-        lastUpdated: new Date().toISOString(),
-        distance: 8.2,
-        services: ['Rifornimento', 'Acqua']
-      }
-    ];
+    const location = (req.query.location as string) || 'Roma';
     
+    // Fuel prices data by location
+    const fuelPricesByLocation: Record<string, any[]> = {
+      'Roma': [
+        { station: 'Porto di Fiumicino', location: 'Fiumicino, RM', gasoline: 1.91, diesel: 1.74, lastUpdated: new Date().toISOString(), distance: 3.2, services: ['Rifornimento 24/7', 'Acqua', 'Elettricità'] },
+        { station: 'Marina di Ostia', location: 'Ostia, RM', gasoline: 1.88, diesel: 1.71, lastUpdated: new Date().toISOString(), distance: 5.5, services: ['Rifornimento', 'Bar'] }
+      ],
+      'Roma / Fiumicino': [
+        { station: 'Porto di Fiumicino', location: 'Fiumicino, RM', gasoline: 1.91, diesel: 1.74, lastUpdated: new Date().toISOString(), distance: 1.0, services: ['Rifornimento 24/7', 'Acqua', 'Elettricità'] },
+        { station: 'Marina di Fregene', location: 'Fregene, RM', gasoline: 1.93, diesel: 1.76, lastUpdated: new Date().toISOString(), distance: 4.2, services: ['Rifornimento', 'Officina'] }
+      ],
+      'Gaeta': [
+        { station: 'Marina di Gaeta', location: 'Gaeta, LT', gasoline: 1.89, diesel: 1.72, lastUpdated: new Date().toISOString(), distance: 2.5, services: ['Rifornimento 24/7', 'Acqua', 'Elettricità'] },
+        { station: 'Porto di Formia', location: 'Formia, LT', gasoline: 1.87, diesel: 1.70, lastUpdated: new Date().toISOString(), distance: 6.8, services: ['Rifornimento', 'Acqua'] }
+      ],
+      'Civitavecchia': [
+        { station: 'Porto di Civitavecchia', location: 'Civitavecchia, RM', gasoline: 1.92, diesel: 1.75, lastUpdated: new Date().toISOString(), distance: 1.5, services: ['Rifornimento', 'Officina', 'Bar'] },
+        { station: 'Marina Riva di Traiano', location: 'Civitavecchia, RM', gasoline: 1.94, diesel: 1.77, lastUpdated: new Date().toISOString(), distance: 3.0, services: ['Rifornimento 24/7', 'Ristorante'] }
+      ],
+      'Anzio': [
+        { station: 'Porto di Anzio', location: 'Anzio, RM', gasoline: 1.85, diesel: 1.69, lastUpdated: new Date().toISOString(), distance: 1.2, services: ['Rifornimento', 'Acqua'] },
+        { station: 'Marina di Nettuno', location: 'Nettuno, RM', gasoline: 1.86, diesel: 1.70, lastUpdated: new Date().toISOString(), distance: 3.5, services: ['Rifornimento', 'Elettricità'] }
+      ],
+      'Ponza': [
+        { station: 'Porto di Ponza', location: 'Ponza, LT', gasoline: 2.05, diesel: 1.89, lastUpdated: new Date().toISOString(), distance: 0.5, services: ['Rifornimento', 'Acqua'] }
+      ],
+      'Terracina': [
+        { station: 'Porto di Terracina', location: 'Terracina, LT', gasoline: 1.88, diesel: 1.71, lastUpdated: new Date().toISOString(), distance: 1.8, services: ['Rifornimento', 'Acqua', 'Bar'] }
+      ],
+      'Formia': [
+        { station: 'Porto di Formia', location: 'Formia, LT', gasoline: 1.87, diesel: 1.70, lastUpdated: new Date().toISOString(), distance: 1.0, services: ['Rifornimento', 'Acqua'] },
+        { station: 'Marina di Gaeta', location: 'Gaeta, LT', gasoline: 1.89, diesel: 1.72, lastUpdated: new Date().toISOString(), distance: 5.5, services: ['Rifornimento 24/7', 'Acqua', 'Elettricità'] }
+      ],
+      'Nettuno': [
+        { station: 'Marina di Nettuno', location: 'Nettuno, RM', gasoline: 1.86, diesel: 1.70, lastUpdated: new Date().toISOString(), distance: 1.0, services: ['Rifornimento', 'Elettricità'] },
+        { station: 'Porto di Anzio', location: 'Anzio, RM', gasoline: 1.85, diesel: 1.69, lastUpdated: new Date().toISOString(), distance: 2.5, services: ['Rifornimento', 'Acqua'] }
+      ],
+      'San Felice Circeo': [
+        { station: 'Porto del Circeo', location: 'San Felice Circeo, LT', gasoline: 1.90, diesel: 1.73, lastUpdated: new Date().toISOString(), distance: 1.5, services: ['Rifornimento', 'Bar'] },
+        { station: 'Porto di Terracina', location: 'Terracina, LT', gasoline: 1.88, diesel: 1.71, lastUpdated: new Date().toISOString(), distance: 8.0, services: ['Rifornimento', 'Acqua', 'Bar'] }
+      ]
+    };
+    
+    const fuelPrices = fuelPricesByLocation[location] || fuelPricesByLocation['Roma'];
     res.json(fuelPrices);
   });
 

@@ -443,7 +443,6 @@ export default function DiventaSeaHostPage() {
                         <li>✓ Pagamenti sicuri e puntuali ogni settimana</li>
                         <li>✓ Visibilità su migliaia di potenziali clienti</li>
                         <li>✓ Supporto marketing professionale gratuito</li>
-                        <li>✓ Assicurazione completa inclusa</li>
                         <li>✓ Dashboard dedicata per gestire tutto</li>
                       </ul>
                     </CardContent>

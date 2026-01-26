@@ -76,11 +76,7 @@ export default function ComePrenotarePage() {
               <div className="space-y-3">
                 <div className="flex items-center">
                   <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                  <span className="text-sm">Assicurazione completa inclusa</span>
-                </div>
-                <div className="flex items-center">
-                  <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
-                  <span className="text-sm">Assistenza 24/7 durante il noleggio</span>
+                  <span className="text-sm">Assistenza durante il noleggio</span>
                 </div>
                 <div className="flex items-center">
                   <CheckCircle className="h-5 w-5 mr-2 text-green-500" />

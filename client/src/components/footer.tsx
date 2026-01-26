@@ -74,7 +74,7 @@ export function Footer() {
               <li><Link to="/aiuto" className="hover:text-white transition-colors">Centro assistenza</Link></li>
               <li><Link to="/contatti" className="hover:text-white transition-colors">Contatti</Link></li>
               <li><Link to="/emergency-system" className="hover:text-white transition-colors">Emergenze</Link></li>
-              <li><Link to="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
+              <li><Link to="/aiuto" className="hover:text-white transition-colors">FAQ</Link></li>
             </ul>
           </div>
         </div>

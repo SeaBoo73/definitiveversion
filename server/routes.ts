@@ -2145,113 +2145,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get('/api/external/port-services', (req, res) => {
-    // Mock port services data
-    const portServices = [
-      {
-        id: 'port-1',
-        name: 'Marina di Gaeta',
-        location: 'Gaeta, Lazio',
-        coordinates: { lat: 41.2119, lng: 13.5704 },
-        services: {
-          mooring: true,
-          fuel: true,
-          water: true,
-          electricity: true,
-          wifi: true,
-          restaurant: true,
-          repair: true,
-          security: true
-        },
-        pricing: {
-          mooring: 3.5,
-          fuel: 1.89,
-          water: 0.5,
-          electricity: 0.3
-        },
-        contact: {
-          phone: '+39 0771 123456',
-          email: 'info@marinadigaeta.it',
-          website: 'www.marinadigaeta.it',
-          vhf: 'Canale 16'
-        },
-        availability: {
-          total: 500,
-          available: 45,
-          reserved: 455
-        },
-        rating: 4.5,
-        reviews: 128
-      },
-      {
-        id: 'port-2',
-        name: 'Porto di Civitavecchia',
-        location: 'Civitavecchia, Lazio',
-        coordinates: { lat: 42.0922, lng: 11.7950 },
-        services: {
-          mooring: true,
-          fuel: true,
-          water: true,
-          electricity: true,
-          wifi: false,
-          restaurant: true,
-          repair: true,
-          security: true
-        },
-        pricing: {
-          mooring: 4.0,
-          fuel: 1.92,
-          water: 0.6,
-          electricity: 0.35
-        },
-        contact: {
-          phone: '+39 0766 987654',
-          email: 'info@portocivitavecchia.it',
-          vhf: 'Canale 12'
-        },
-        availability: {
-          total: 800,
-          available: 120,
-          reserved: 680
-        },
-        rating: 4.2,
-        reviews: 256
-      },
-      {
-        id: 'port-3',
-        name: 'Porto di Anzio',
-        location: 'Anzio, Lazio',
-        coordinates: { lat: 41.4511, lng: 12.6230 },
-        services: {
-          mooring: true,
-          fuel: true,
-          water: true,
-          electricity: true,
-          wifi: true,
-          restaurant: false,
-          repair: false,
-          security: true
-        },
-        pricing: {
-          mooring: 3.0,
-          fuel: 1.85,
-          water: 0.4,
-          electricity: 0.25
-        },
-        contact: {
-          phone: '+39 06 123 4567',
-          email: 'info@portoanзio.it',
-          vhf: 'Canale 9'
-        },
-        availability: {
-          total: 300,
-          available: 28,
-          reserved: 272
-        },
-        rating: 4.0,
-        reviews: 89
-      }
-    ];
+    const location = (req.query.location as string) || 'Roma';
     
+    // Port services by location
+    const portsByLocation: Record<string, any[]> = {
+      'Roma': [
+        { id: 'port-fiumicino', name: 'Porto di Fiumicino', location: 'Fiumicino, Lazio', coordinates: { lat: 41.7735, lng: 12.2356 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: true, security: true }, pricing: { mooring: 4.0, fuel: 1.91, water: 0.5, electricity: 0.35 }, contact: { phone: '+39 06 6522901', email: 'info@portodifiumicino.it', vhf: 'Canale 16' }, availability: { total: 600, available: 85, reserved: 515 }, rating: 4.3, reviews: 198 },
+        { id: 'port-ostia', name: 'Marina di Ostia', location: 'Ostia, Lazio', coordinates: { lat: 41.7302, lng: 12.2856 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: false, repair: false, security: true }, pricing: { mooring: 3.2, fuel: 1.88, water: 0.4, electricity: 0.3 }, contact: { phone: '+39 06 5612345', email: 'info@marinaostia.it', vhf: 'Canale 9' }, availability: { total: 250, available: 32, reserved: 218 }, rating: 4.0, reviews: 76 }
+      ],
+      'Roma / Fiumicino': [
+        { id: 'port-fiumicino', name: 'Porto di Fiumicino', location: 'Fiumicino, Lazio', coordinates: { lat: 41.7735, lng: 12.2356 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: true, security: true }, pricing: { mooring: 4.0, fuel: 1.91, water: 0.5, electricity: 0.35 }, contact: { phone: '+39 06 6522901', email: 'info@portodifiumicino.it', vhf: 'Canale 16' }, availability: { total: 600, available: 85, reserved: 515 }, rating: 4.3, reviews: 198 }
+      ],
+      'Gaeta': [
+        { id: 'port-gaeta', name: 'Marina di Gaeta', location: 'Gaeta, Lazio', coordinates: { lat: 41.2119, lng: 13.5704 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: true, security: true }, pricing: { mooring: 3.5, fuel: 1.89, water: 0.5, electricity: 0.3 }, contact: { phone: '+39 0771 123456', email: 'info@marinadigaeta.it', vhf: 'Canale 16' }, availability: { total: 500, available: 45, reserved: 455 }, rating: 4.5, reviews: 128 },
+        { id: 'port-formia', name: 'Porto di Formia', location: 'Formia, Lazio', coordinates: { lat: 41.2558, lng: 13.6058 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: false, restaurant: true, repair: false, security: true }, pricing: { mooring: 2.8, fuel: 1.87, water: 0.4, electricity: 0.25 }, contact: { phone: '+39 0771 789012', email: 'info@portoformia.it', vhf: 'Canale 9' }, availability: { total: 200, available: 18, reserved: 182 }, rating: 4.1, reviews: 65 }
+      ],
+      'Civitavecchia': [
+        { id: 'port-civitavecchia', name: 'Porto di Civitavecchia', location: 'Civitavecchia, Lazio', coordinates: { lat: 42.0922, lng: 11.7950 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: false, restaurant: true, repair: true, security: true }, pricing: { mooring: 4.0, fuel: 1.92, water: 0.6, electricity: 0.35 }, contact: { phone: '+39 0766 987654', email: 'info@portocivitavecchia.it', vhf: 'Canale 12' }, availability: { total: 800, available: 120, reserved: 680 }, rating: 4.2, reviews: 256 },
+        { id: 'port-riva', name: 'Riva di Traiano', location: 'Civitavecchia, Lazio', coordinates: { lat: 42.0650, lng: 11.7800 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: true, security: true }, pricing: { mooring: 5.0, fuel: 1.94, water: 0.6, electricity: 0.4 }, contact: { phone: '+39 0766 567890', email: 'info@rivaditraiano.it', vhf: 'Canale 16' }, availability: { total: 350, available: 28, reserved: 322 }, rating: 4.6, reviews: 189 }
+      ],
+      'Anzio': [
+        { id: 'port-anzio', name: 'Porto di Anzio', location: 'Anzio, Lazio', coordinates: { lat: 41.4511, lng: 12.6230 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: false, repair: false, security: true }, pricing: { mooring: 3.0, fuel: 1.85, water: 0.4, electricity: 0.25 }, contact: { phone: '+39 06 9845678', email: 'info@portoanzio.it', vhf: 'Canale 9' }, availability: { total: 300, available: 28, reserved: 272 }, rating: 4.0, reviews: 89 }
+      ],
+      'Nettuno': [
+        { id: 'port-nettuno', name: 'Marina di Nettuno', location: 'Nettuno, Lazio', coordinates: { lat: 41.4589, lng: 12.6650 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: false, security: true }, pricing: { mooring: 2.8, fuel: 1.86, water: 0.4, electricity: 0.25 }, contact: { phone: '+39 06 9876543', email: 'info@marinanettuno.it', vhf: 'Canale 9' }, availability: { total: 180, available: 15, reserved: 165 }, rating: 4.2, reviews: 54 }
+      ],
+      'Ponza': [
+        { id: 'port-ponza', name: 'Porto di Ponza', location: 'Ponza, Lazio', coordinates: { lat: 40.8958, lng: 12.9631 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: false, restaurant: true, repair: false, security: true }, pricing: { mooring: 5.5, fuel: 2.05, water: 0.8, electricity: 0.5 }, contact: { phone: '+39 0771 809090', email: 'info@portoponza.it', vhf: 'Canale 16' }, availability: { total: 150, available: 8, reserved: 142 }, rating: 4.4, reviews: 112 }
+      ],
+      'Terracina': [
+        { id: 'port-terracina', name: 'Porto di Terracina', location: 'Terracina, Lazio', coordinates: { lat: 41.2922, lng: 13.2489 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: true, security: true }, pricing: { mooring: 3.0, fuel: 1.88, water: 0.5, electricity: 0.3 }, contact: { phone: '+39 0773 702020', email: 'info@portoterracina.it', vhf: 'Canale 12' }, availability: { total: 280, available: 35, reserved: 245 }, rating: 4.3, reviews: 98 }
+      ],
+      'Formia': [
+        { id: 'port-formia', name: 'Porto di Formia', location: 'Formia, Lazio', coordinates: { lat: 41.2558, lng: 13.6058 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: false, restaurant: true, repair: false, security: true }, pricing: { mooring: 2.8, fuel: 1.87, water: 0.4, electricity: 0.25 }, contact: { phone: '+39 0771 789012', email: 'info@portoformia.it', vhf: 'Canale 9' }, availability: { total: 200, available: 18, reserved: 182 }, rating: 4.1, reviews: 65 }
+      ],
+      'San Felice Circeo': [
+        { id: 'port-circeo', name: 'Porto del Circeo', location: 'San Felice Circeo, Lazio', coordinates: { lat: 41.2286, lng: 13.0883 }, services: { mooring: true, fuel: true, water: true, electricity: true, wifi: true, restaurant: true, repair: false, security: true }, pricing: { mooring: 3.5, fuel: 1.90, water: 0.5, electricity: 0.35 }, contact: { phone: '+39 0773 548000', email: 'info@portocirceo.it', vhf: 'Canale 9' }, availability: { total: 220, available: 22, reserved: 198 }, rating: 4.5, reviews: 87 }
+      ]
+    };
+    
+    const portServices = portsByLocation[location] || portsByLocation['Roma'];
     res.json(portServices);
   });
 

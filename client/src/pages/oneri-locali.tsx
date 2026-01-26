@@ -180,104 +180,6 @@ export default function OneriLocali() {
                   </SelectContent>
                 </Select>
               </div>
-              
-              <div>
-                <Label>Comune / Località</Label>
-                <Popover open={municipalityOpen} onOpenChange={setMunicipalityOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={municipalityOpen}
-                      className="w-full justify-between font-normal"
-                      data-testid="input-municipality"
-                    >
-                      {searchMunicipality || "Seleziona comune..."}
-                      <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0" align="start">
-                    <Command>
-                      <CommandInput placeholder="Cerca comune..." />
-                      <CommandList>
-                        <CommandEmpty>Nessun comune trovato.</CommandEmpty>
-                        <CommandGroup>
-                          <CommandItem
-                            value=""
-                            onSelect={() => {
-                              setSearchMunicipality("");
-                              setMunicipalityOpen(false);
-                            }}
-                          >
-                            Tutti i comuni
-                          </CommandItem>
-                          {municipalities.map((municipality) => (
-                            <CommandItem
-                              key={municipality}
-                              value={municipality}
-                              onSelect={(value) => {
-                                setSearchMunicipality(value);
-                                setMunicipalityOpen(false);
-                              }}
-                            >
-                              {municipality}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
-              
-              <div>
-                <Label>Porto di partenza</Label>
-                <Popover open={portOpen} onOpenChange={setPortOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={portOpen}
-                      className="w-full justify-between font-normal"
-                      data-testid="input-port"
-                    >
-                      {searchPort || "Seleziona porto..."}
-                      <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-full p-0" align="start">
-                    <Command>
-                      <CommandInput placeholder="Cerca porto..." />
-                      <CommandList>
-                        <CommandEmpty>Nessun porto trovato.</CommandEmpty>
-                        <CommandGroup>
-                          <CommandItem
-                            value=""
-                            onSelect={() => {
-                              setSearchPort("");
-                              setPortOpen(false);
-                            }}
-                          >
-                            Tutti i porti
-                          </CommandItem>
-                          {ports.map((port) => (
-                            <CommandItem
-                              key={port}
-                              value={port}
-                              onSelect={(value) => {
-                                setSearchPort(value);
-                                setPortOpen(false);
-                              }}
-                            >
-                              {port}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
             </div>
             
             <div className="flex gap-2 mt-4">
@@ -288,13 +190,11 @@ export default function OneriLocali() {
               >
                 Cerca
               </Button>
-              {(selectedRegion || searchMunicipality || searchPort) && (
+              {selectedRegion && (
                 <Button
                   variant="outline"
                   onClick={() => {
                     setSelectedRegion("");
-                    setSearchMunicipality("");
-                    setSearchPort("");
                   }}
                   data-testid="button-clear-filters"
                 >

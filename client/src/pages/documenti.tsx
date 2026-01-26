@@ -64,18 +64,18 @@ export default function DocumentiPage() {
               <div className="space-y-4">
                 <div className="border-l-4 border-green-400 pl-4">
                   <h4 className="font-semibold text-green-700">Barche senza Patente</h4>
-                  <p className="text-sm text-gray-600">Nessuna patente richiesta per motori fino a 40 CV</p>
-                  <p className="text-xs text-green-600 font-semibold">Solo maggiorenni</p>
+                  <p className="text-sm text-gray-600">Nessuna patente richiesta per motori fino a 40 CV, entro 6 miglia dalla costa</p>
+                  <p className="text-xs text-green-600 font-semibold">Solo maggiorenni (18+)</p>
                 </div>
                 <div className="border-l-4 border-blue-400 pl-4">
-                  <h4 className="font-semibold text-blue-700">Patente Nautica Entro le Miglia</h4>
-                  <p className="text-sm text-gray-600">Per barche oltre 40 CV e navigazione costiera</p>
-                  <p className="text-xs text-blue-600 font-semibold">Entro 12 miglia dalla costa</p>
+                  <h4 className="font-semibold text-blue-700">Patente Nautica Entro 12 Miglia</h4>
+                  <p className="text-sm text-gray-600">Obbligatoria per motori oltre 40 CV o navigazione oltre 6 miglia</p>
+                  <p className="text-xs text-blue-600 font-semibold">Consente navigazione fino a 12 miglia dalla costa</p>
                 </div>
                 <div className="border-l-4 border-orange-400 pl-4">
                   <h4 className="font-semibold text-orange-700">Patente Nautica Senza Limiti</h4>
-                  <p className="text-sm text-gray-600">Per navigazione d'altura e yacht più grandi</p>
-                  <p className="text-xs text-orange-600 font-semibold">Navigazione illimitata</p>
+                  <p className="text-sm text-gray-600">Consente navigazione senza limiti dalla costa, anche d'altura</p>
+                  <p className="text-xs text-orange-600 font-semibold">Per imbarcazioni di qualsiasi dimensione</p>
                 </div>
               </div>
             </CardContent>
@@ -94,10 +94,10 @@ export default function DocumentiPage() {
                 </div>
                 <h3 className="font-semibold mb-2">Gommoni</h3>
                 <p className="text-sm text-gray-600 mb-2">
-                  Solo documento d'identità
+                  Documento d'identità richiesto
                 </p>
                 <div className="text-xs text-green-600 font-semibold">
-                  Nessuna patente richiesta
+                  Senza patente solo se ≤40 CV e entro 6 miglia
                 </div>
               </div>
               <div className="text-center">

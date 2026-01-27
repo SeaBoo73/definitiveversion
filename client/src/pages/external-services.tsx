@@ -28,7 +28,7 @@ import {
   Users,
   Sparkles
 } from 'lucide-react';
-import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
+import seabooLogo from "@assets/seaboo-logo-ai.png";
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { SEOHead } from '@/components/seo-head';

@@ -24,7 +24,7 @@ export function StructuredData({ type, data }: StructuredDataProps) {
               "url": baseUrl,
               "logo": {
                 "@type": "ImageObject",
-                "url": `${baseUrl}/attached_assets/ChatGPT Image 7 ago 2025, 07_13_19_1754546696908.png`
+                "url": `${baseUrl}/attached_assets/Logo_SeaBoo_1769779759913.jpg`
               },
               "description": "Piattaforma marittima leader per noleggio barche, charter nautici e servizi marittimi in Italia",
               "address": {

@@ -23,7 +23,7 @@ const slides = [
   {
     icon: Calendar,
     title: "Prenota Facilmente",
-    description: "Seleziona date, scegli la barca e prenota in pochi tap. Gestisci le tue prenotazioni direttamente dall'app.",
+    description: "Seleziona date, scegli la barca o il posto barca e prenota in pochi tap. Gestisci le tue prenotazioni direttamente dall'app.",
     color: "bg-cyan-500"
   },
   {

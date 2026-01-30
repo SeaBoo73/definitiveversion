@@ -160,12 +160,18 @@ function Router() {
 
 const ONBOARDING_KEY = "seaboo_onboarding_completed";
 
+function isIOS(): boolean {
+  const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
+  return /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream;
+}
+
 function App() {
   const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
 
   useEffect(() => {
     const completed = localStorage.getItem(ONBOARDING_KEY);
-    setShowOnboarding(completed !== "true");
+    const shouldShow = completed !== "true" && !isIOS();
+    setShowOnboarding(shouldShow);
   }, []);
 
   const handleOnboardingComplete = () => {

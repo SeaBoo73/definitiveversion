@@ -16,8 +16,8 @@ const slides = [
   },
   {
     icon: MapPin,
-    title: "Scopri Destinazioni",
-    description: "Esplora le migliori destinazioni costiere. Da porti turistici a calette nascoste, trova il luogo perfetto per la tua navigazione.",
+    title: "Vivi Esperienze",
+    description: "Esplora le migliori destinazioni costiere. Da tramonti in barca ai tour delle isole, scopri avventure relax e gusto a bordo delle nostre imbarcazioni.",
     color: "bg-teal-500"
   },
   {

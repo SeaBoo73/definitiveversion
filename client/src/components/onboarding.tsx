@@ -11,7 +11,7 @@ const slides = [
   {
     icon: Ship,
     title: "Benvenuto su SeaBoo",
-    description: "La tua app per noleggiare barche in modo semplice e sicuro. Trova l'imbarcazione perfetta per la tua avventura in mare.",
+    description: "La tua app per noleggiare barche e ormeggi in modo semplice e sicuro. Trova l'imbarcazione perfetta per la tua avventura in mare.",
     color: "bg-blue-500"
   },
   {

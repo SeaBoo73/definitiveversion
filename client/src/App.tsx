@@ -1,11 +1,12 @@
 import { Switch, Route } from "wouter";
-import { lazy } from "react";
+import { lazy, useState, useEffect } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "./lib/protected-route";
 import HomePage from "@/pages/home-page";
+import { Onboarding } from "@/components/onboarding";
 import { SimpleTest } from "./simple-test";
 import { MinimalApp } from "./minimal-app";
 import { ErrorBoundary } from "./error-boundary";
@@ -157,16 +158,37 @@ function Router() {
   );
 }
 
+const ONBOARDING_KEY = "seaboo_onboarding_completed";
+
 function App() {
+  const [showOnboarding, setShowOnboarding] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const completed = localStorage.getItem(ONBOARDING_KEY);
+    setShowOnboarding(completed !== "true");
+  }, []);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem(ONBOARDING_KEY, "true");
+    setShowOnboarding(false);
+  };
+
+  if (showOnboarding === null) {
+    return (
+      <div className="min-h-screen bg-blue-600 flex items-center justify-center">
+        <div className="animate-pulse text-white text-xl">Caricamento...</div>
+      </div>
+    );
+  }
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
           <Toaster />
           <Router />
-          {/* Mobile Navigation sempre visibile su tutte le pagine */}
           <MobileNavigation />
-
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

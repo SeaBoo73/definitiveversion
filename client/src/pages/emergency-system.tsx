@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Phone, MapPin, AlertTriangle, Shield, Anchor, Navigation, Radio, Clock, Users } from 'lucide-react';
-import seabooLogo from "@assets/ChatGPT Image 7 ago 2025, 07_13_19_1754544753003.png";
+import seabooLogo from "@/assets/seaboo-logo-new.svg";
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 interface EmergencyContact {

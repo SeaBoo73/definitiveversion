@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Ship, MapPin, Calendar, Shield, ChevronRight, ChevronLeft } from "lucide-react";
-import seabooLogo from "@/assets/seaboo-logo-new.svg";
+import seabooLogo from "@assets/Logo_SeaBoo_1769779759913.jpg";
 
 interface OnboardingProps {
   onComplete: () => void;
@@ -74,7 +74,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
       <div className="relative flex-1 flex flex-col items-center justify-between p-6 safe-area-inset">
         <div className="w-full flex justify-between items-center pt-4">
-          <img src={seabooLogo} alt="SeaBoo" className="h-10 brightness-0 invert" />
+          <img src={seabooLogo} alt="SeaBoo" className="h-16 rounded-lg" />
           {currentSlide < slides.length - 1 && (
             <Button
               variant="ghost"

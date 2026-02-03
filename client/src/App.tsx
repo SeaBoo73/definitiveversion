@@ -181,10 +181,9 @@ function App() {
 
   useEffect(() => {
     const completed = localStorage.getItem(ONBOARDING_KEY);
-    // TESTING: Force onboarding to always show on first load (ignoring platform check)
-    // This will show onboarding if not completed, regardless of platform
-    const shouldShow = completed !== "true";
-    console.log('Onboarding check:', { completed, isAndroid: isAndroidDevice(), isIOS: isIOS(), isMobileApp: isMobileApp(), shouldShow, userAgent: navigator.userAgent });
+    // Show onboarding on Android devices (both native app and mobile browser), but NOT on iOS or desktop
+    const shouldShow = completed !== "true" && isAndroidDevice() && !isIOS();
+    console.log('Onboarding check:', { completed, isAndroid: isAndroidDevice(), isIOS: isIOS(), shouldShow });
     setShowOnboarding(shouldShow);
   }, []);
 

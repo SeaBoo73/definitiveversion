@@ -303,43 +303,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 text-align: center;
                 padding: 20px;
               }
-              .container { max-width: 400px; }
-              h1 { font-size: 24px; margin-bottom: 16px; }
-              p { font-size: 16px; opacity: 0.9; margin-bottom: 24px; }
+              .container { max-width: 400px; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px); }
+              h1 { font-size: 28px; margin-bottom: 16px; font-weight: 800; }
+              p { font-size: 18px; opacity: 0.9; margin-bottom: 30px; line-height: 1.5; }
               .btn {
-                display: inline-block;
+                display: block;
                 background: white;
                 color: #0066cc;
-                padding: 16px 32px;
-                border-radius: 8px;
+                padding: 18px 32px;
+                border-radius: 12px;
                 text-decoration: none;
-                font-weight: bold;
-                font-size: 16px;
-                margin: 8px;
+                font-weight: 800;
+                font-size: 18px;
+                margin: 12px 0;
+                transition: transform 0.2s;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
               }
-              .token-display {
-                background: rgba(255,255,255,0.2);
-                padding: 12px;
-                border-radius: 8px;
-                font-size: 12px;
-                word-break: break-all;
-                margin-top: 16px;
-              }
+              .btn:active { transform: scale(0.98); }
+              .btn-alt { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; box-shadow: none; }
+              .footer-text { font-size: 14px; opacity: 0.7; margin-top: 20px; }
             </style>
           </head>
           <body>
             <div class="container">
-              <h1>Accesso completato!</h1>
-              <p>Hai effettuato l'accesso con Google. Clicca il pulsante per tornare all'app.</p>
-              <a href="${intentUrl}" class="btn">Apri SeaBoo</a>
-              <a href="${deepLink}" class="btn">Apri (alternativo)</a>
-              <div class="token-display">
-                <strong>Token:</strong> ${tempToken.substring(0, 20)}...
-              </div>
+              <h1>Benvenuto a bordo!</h1>
+              <p>Il login è stato completato con successo. Clicca il pulsante qui sotto per tornare all'app e iniziare a navigare.</p>
+              
+              <a href="${intentUrl}" class="btn">TORNA ALL'APP SEABOO</a>
+              <a href="${deepLink}" class="btn btn-alt">Problemi? Prova questo link</a>
+              
+              <p class="footer-text">Una volta tornato nell'app, sarai automaticamente loggato con il tuo account Google.</p>
             </div>
             <script>
-              // No automatic redirect - user must click button
-              console.log('Login success page loaded. Token ready for exchange.');
+              console.log('Login success - waiting for user interaction');
+              // Log the specific action for debugging
+              window.onclick = function() {
+                console.log('User clicked - redirection attempted');
+              };
             </script>
           </body>
           </html>

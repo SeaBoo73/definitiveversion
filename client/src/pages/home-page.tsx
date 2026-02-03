@@ -275,11 +275,7 @@ export default function HomePage() {
       </section>
 
       {/* Quick Stats Section */}
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <QuickStatsCard />
-        </div>
-      </section>
+      {/* Sezione statistiche nascosta - verrà riattivata quando ci sono dati reali */}
 
       {/* Category Gallery - SEZIONE ESPLORA PER CATEGORIA */}
       <CategoryGallery />

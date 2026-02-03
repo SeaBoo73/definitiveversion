@@ -103,7 +103,7 @@ export function NotificationsCenter() {
 
       {/* Notifications Dropdown */}
       {isOpen && (
-        <Card className="absolute right-0 top-full mt-2 w-80 z-50 shadow-lg">
+        <Card className="fixed right-2 top-16 w-[calc(100vw-1rem)] max-w-80 z-50 shadow-lg md:absolute md:right-0 md:top-full md:mt-2 md:w-80">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">Notifiche</CardTitle>

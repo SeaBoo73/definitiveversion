@@ -287,17 +287,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
-        const deepLink = `seaboo://login-success?token=${tempToken}`;
         const intentUrl = `intent://login-success?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;S.browser_fallback_url=https://www.seaboo.it;end`;
         
-        // For Android, redirect to a success page with deep link
+        // AUTOMATIC redirect back to app - no button needed
         res.send(`
           <!DOCTYPE html>
           <html>
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Accesso completato - SeaBoo</title>
+            <title>Ritorno all'app...</title>
             <style>
               body { 
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -311,43 +310,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 text-align: center;
                 padding: 20px;
               }
-              .container { max-width: 400px; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; backdrop-filter: blur(10px); }
-              h1 { font-size: 28px; margin-bottom: 16px; font-weight: 800; }
-              p { font-size: 18px; opacity: 0.9; margin-bottom: 30px; line-height: 1.5; }
-              .btn {
-                display: block;
-                background: white;
-                color: #0066cc;
-                padding: 18px 32px;
-                border-radius: 12px;
-                text-decoration: none;
-                font-weight: 800;
-                font-size: 18px;
-                margin: 12px 0;
-                transition: transform 0.2s;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+              .container { max-width: 400px; }
+              .spinner { 
+                width: 50px; height: 50px; 
+                border: 4px solid rgba(255,255,255,0.3); 
+                border-top-color: white; 
+                border-radius: 50%; 
+                animation: spin 1s linear infinite; 
+                margin: 0 auto 20px;
               }
-              .btn:active { transform: scale(0.98); }
-              .btn-alt { background: rgba(255,255,255,0.2); color: white; border: 2px solid white; box-shadow: none; }
-              .footer-text { font-size: 14px; opacity: 0.7; margin-top: 20px; }
+              @keyframes spin { to { transform: rotate(360deg); } }
+              h1 { font-size: 24px; margin-bottom: 10px; }
+              p { font-size: 16px; opacity: 0.8; }
             </style>
           </head>
           <body>
             <div class="container">
-              <h1>Benvenuto a bordo!</h1>
-              <p>Il login è stato completato con successo. Clicca il pulsante qui sotto per tornare all'app e iniziare a navigare.</p>
-              
-              <a href="${intentUrl}" class="btn">TORNA ALL'APP SEABOO</a>
-              <a href="${deepLink}" class="btn btn-alt">Problemi? Prova questo link</a>
-              
-              <p class="footer-text">Una volta tornato nell'app, sarai automaticamente loggato con il tuo account Google.</p>
+              <div class="spinner"></div>
+              <h1>Login completato!</h1>
+              <p>Ritorno automatico all'app SeaBoo...</p>
             </div>
             <script>
-              console.log('Login success - waiting for user interaction');
-              // Log the specific action for debugging
-              window.onclick = function() {
-                console.log('User clicked - redirection attempted');
-              };
+              // Redirect automatico all'app
+              setTimeout(function() {
+                window.location.href = "${intentUrl}";
+              }, 500);
             </script>
           </body>
           </html>

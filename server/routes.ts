@@ -338,13 +338,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               </div>
             </div>
             <script>
-              // Try Android Intent first, then fallback to deep link
-              setTimeout(() => {
-                window.location.href = '${intentUrl}';
-              }, 500);
-              setTimeout(() => {
-                window.location.href = '${deepLink}';
-              }, 1500);
+              // No automatic redirect - user must click button
+              console.log('Login success page loaded. Token ready for exchange.');
             </script>
           </body>
           </html>

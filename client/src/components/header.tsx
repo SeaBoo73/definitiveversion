@@ -136,8 +136,8 @@ export function Header() {
           </nav>
 
           {/* Right Side - Auth & Notifications */}
-          <div className="flex items-center space-x-3">
-            {/* Favorites Popover */}
+          <div className="flex items-center space-x-1 md:space-x-3">
+            {/* Favorites Popover - hidden on small mobile */}
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="ghost" size="sm" className="relative" data-testid="button-favorites">

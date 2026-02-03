@@ -38,7 +38,7 @@ export function Header() {
 
   return (
     <header 
-      className="bg-white shadow-sm sticky top-0 z-50 pt-[env(safe-area-inset-top)]"
+      className="bg-white shadow-sm sticky top-0 z-50 pt-[max(env(safe-area-inset-top),24px)]"
       onClick={handleScrollToTop}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

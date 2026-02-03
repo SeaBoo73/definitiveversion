@@ -281,7 +281,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
         
         const deepLink = `seaboo://login-success?token=${tempToken}`;
-        const intentUrl = `intent://login-success?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;end`;
+        const intentUrl = `intent://login-success?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;S.browser_fallback_url=https://www.seaboo.it;end`;
         
         // For Android, redirect to a success page with deep link
         res.send(`

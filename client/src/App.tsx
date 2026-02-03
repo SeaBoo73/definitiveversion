@@ -37,9 +37,14 @@ function checkMobileAuthToken() {
     })
     .then(userData => {
       console.log('Mobile auth successful:', userData);
+      // Force immediate persistence
+      localStorage.setItem('seaboo_user', JSON.stringify(userData));
       queryClient.setQueryData(['/api/user'], userData);
       queryClient.invalidateQueries({ queryKey: ['/api/user'] });
-      window.location.href = '/';
+      // Short delay to ensure state update before redirect
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 300);
     })
     .catch(error => {
       console.error('Error exchanging token:', error);

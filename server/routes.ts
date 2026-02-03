@@ -236,7 +236,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/auth?tab=login' }),
-    (req, res) => {
+    async (req, res) => {
       // Store user in session
       const user = req.user as any;
       req.session.user = {
@@ -254,6 +254,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const isMobileAndroid = state === 'mobile_android';
       
       if (isMobileAndroid) {
+        // Generate a temporary auth token for mobile
+        const crypto = await import('crypto');
+        const tempToken = crypto.randomBytes(32).toString('hex');
+        const tokenExpiry = Date.now() + 5 * 60 * 1000; // 5 minutes
+        
+        // Store token temporarily (in memory - for production use Redis)
+        if (!(global as any).mobileAuthTokens) {
+          (global as any).mobileAuthTokens = new Map();
+        }
+        (global as any).mobileAuthTokens.set(tempToken, {
+          userId: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          expiry: tokenExpiry
+        });
+        
+        // Clean up expired tokens
+        for (const [key, value] of (global as any).mobileAuthTokens.entries()) {
+          if ((value as any).expiry < Date.now()) {
+            (global as any).mobileAuthTokens.delete(key);
+          }
+        }
+        
+        const deepLink = `seaboo://login-success?token=${tempToken}`;
+        const intentUrl = `intent://login-success?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;end`;
+        
         // For Android, redirect to a success page with deep link
         res.send(`
           <!DOCTYPE html>
@@ -287,20 +315,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 text-decoration: none;
                 font-weight: bold;
                 font-size: 16px;
+                margin: 8px;
+              }
+              .token-display {
+                background: rgba(255,255,255,0.2);
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 12px;
+                word-break: break-all;
+                margin-top: 16px;
               }
             </style>
           </head>
           <body>
             <div class="container">
               <h1>Accesso completato!</h1>
-              <p>Hai effettuato l'accesso con Google. Ora puoi tornare all'app SeaBoo.</p>
-              <a href="seaboo://login-success" class="btn">Apri SeaBoo</a>
+              <p>Hai effettuato l'accesso con Google. Clicca il pulsante per tornare all'app.</p>
+              <a href="${intentUrl}" class="btn">Apri SeaBoo</a>
+              <a href="${deepLink}" class="btn">Apri (alternativo)</a>
+              <div class="token-display">
+                <strong>Token:</strong> ${tempToken.substring(0, 20)}...
+              </div>
             </div>
             <script>
-              // Try to open the app automatically
+              // Try Android Intent first, then fallback to deep link
               setTimeout(() => {
-                window.location.href = 'seaboo://login-success';
-              }, 1000);
+                window.location.href = '${intentUrl}';
+              }, 500);
+              setTimeout(() => {
+                window.location.href = '${deepLink}';
+              }, 1500);
             </script>
           </body>
           </html>
@@ -311,6 +355,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }
   );
+
+  // Mobile token exchange endpoint
+  app.post('/api/auth/mobile-token', async (req, res) => {
+    try {
+      const { token } = req.body;
+      
+      if (!token) {
+        return res.status(400).json({ error: "Token mancante" });
+      }
+      
+      // Get token from storage
+      const tokenData = (global as any).mobileAuthTokens?.get(token);
+      
+      if (!tokenData) {
+        return res.status(401).json({ error: "Token non valido o scaduto" });
+      }
+      
+      // Check expiry
+      if (tokenData.expiry < Date.now()) {
+        (global as any).mobileAuthTokens.delete(token);
+        return res.status(401).json({ error: "Token scaduto" });
+      }
+      
+      // Delete token (one-time use)
+      (global as any).mobileAuthTokens.delete(token);
+      
+      // Create session
+      req.session.user = {
+        id: tokenData.userId.toString(),
+        email: tokenData.email,
+        firstName: tokenData.firstName || undefined,
+        lastName: tokenData.lastName || undefined,
+        role: tokenData.role || "customer",
+        userType: tokenData.role === "owner" ? "owner" : "customer"
+      };
+      
+      // Return user data
+      res.json({
+        id: tokenData.userId,
+        email: tokenData.email,
+        firstName: tokenData.firstName,
+        lastName: tokenData.lastName,
+        role: tokenData.role
+      });
+      
+    } catch (error) {
+      console.error('Mobile token exchange error:', error);
+      res.status(500).json({ error: "Errore interno" });
+    }
+  });
 
   // Apple Sign In endpoint - handles both registration and login
   app.post('/api/auth/apple', async (req, res) => {

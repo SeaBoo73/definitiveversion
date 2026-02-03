@@ -1,6 +1,6 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { lazy, useState, useEffect } from "react";
-import { queryClient } from "./lib/queryClient";
+import { queryClient, apiRequest } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/hooks/use-auth";
@@ -13,6 +13,48 @@ import { ErrorBoundary } from "./error-boundary";
 import { CleanApp } from "./clean-app";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import "./hide-overlay";
+
+// Handle mobile auth token from URL (for deep link callback)
+function checkMobileAuthToken() {
+  // Check if there's a token in URL params (from deep link or redirect)
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('auth_token');
+  
+  if (token) {
+    // Remove token from URL to prevent reuse
+    const newUrl = window.location.pathname;
+    window.history.replaceState({}, '', newUrl);
+    
+    // Exchange token for session
+    fetch('https://www.seaboo.it/api/auth/mobile-token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+      credentials: 'include'
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Token exchange failed');
+    })
+    .then(userData => {
+      console.log('Mobile auth successful:', userData);
+      // Store user data in localStorage for immediate access
+      localStorage.setItem('seaboo_user', JSON.stringify(userData));
+      // Refresh the page to update auth state
+      window.location.reload();
+    })
+    .catch(error => {
+      console.error('Error exchanging token:', error);
+    });
+  }
+}
+
+// Check for auth token on page load
+if (typeof window !== 'undefined') {
+  checkMobileAuthToken();
+}
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";

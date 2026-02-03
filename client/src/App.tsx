@@ -160,9 +160,11 @@ function Router() {
 
 const ONBOARDING_KEY = "seaboo_onboarding_completed";
 
-function isIOS(): boolean {
-  const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-  return /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream;
+function isAndroidNative(): boolean {
+  // Check if running in Capacitor on Android
+  const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
+  const platform = isCapacitor ? (window as any).Capacitor?.getPlatform?.() : null;
+  return isCapacitor && platform === 'android';
 }
 
 function App() {
@@ -170,7 +172,9 @@ function App() {
 
   useEffect(() => {
     const completed = localStorage.getItem(ONBOARDING_KEY);
-    const shouldShow = completed !== "true" && !isIOS();
+    // Show onboarding ONLY on Android native app, and only if not completed
+    const shouldShow = completed !== "true" && isAndroidNative();
+    console.log('Onboarding check:', { completed, isAndroidNative: isAndroidNative(), shouldShow });
     setShowOnboarding(shouldShow);
   }, []);
 

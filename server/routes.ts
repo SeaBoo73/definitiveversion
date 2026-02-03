@@ -226,13 +226,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Google OAuth routes
   app.get('/api/auth/google', (req, res, next) => {
-    // Pass mobile flag via OAuth state parameter (survives redirects)
-    const state = req.query.mobile === 'android' ? 'mobile_android' : 'web';
-    passport.authenticate('google', { 
-      scope: ['profile', 'email'],
-      state: state,
-      prompt: 'select_account' // FORCE Google to show the account selection screen
-    })(req, res, next);
+    try {
+      const isMobile = req.query.mobile === 'android';
+      const state = isMobile ? 'mobile_android' : 'web';
+      console.log('Starting Google Auth, state:', state);
+      
+      passport.authenticate('google', { 
+        scope: ['profile', 'email'],
+        state: state,
+        prompt: 'select_account'
+      })(req, res, next);
+    } catch (error) {
+      console.error('Error starting Google Auth:', error);
+      res.status(500).send('Error starting authentication');
+    }
   });
 
   app.get('/api/auth/google/callback',
@@ -368,6 +375,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (!tokenData) {
         console.log('Token not found in memory store. Total tokens in store:', tokens ? tokens.size : 0);
+        // Special case: if we have tokens, let's list them for debug (first few chars)
+        if (tokens) {
+          const keys = Array.from(tokens.keys()).map((k: any) => k.substring(0, 5) + '...');
+          console.log('Available tokens:', keys);
+        }
         return res.status(401).json({ error: "Token non valido o scaduto" });
       }
       
@@ -379,9 +391,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       console.log('Token valid. Authenticating user:', tokenData.userId);
-      
-      // Delete token (one-time use)
-      tokens.delete(token);
       
       // Create session
       const sessionUser = {
@@ -402,6 +411,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return res.status(500).json({ error: "Errore salvataggio sessione" });
         }
         console.log('Session saved successfully for user:', tokenData.userId);
+        
+        // Delete token ONLY after successful session save
+        tokens.delete(token);
+        
         res.json(sessionUser);
       });
       

@@ -18,24 +18,25 @@ import "./hide-overlay";
 function checkMobileAuthToken() {
   if (typeof window === 'undefined') return;
 
-  // IMPORTANT: Check for token in BOTH URL and deep link format
   const urlParams = new URLSearchParams(window.location.search);
   let token = urlParams.get('token') || urlParams.get('auth_token');
   
-  // Also check hash for fragments (sometimes used in deep links)
   if (!token && window.location.hash) {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const hashStr = window.location.hash.substring(1);
+    const hashParams = new URLSearchParams(hashStr.includes('?') ? hashStr.split('?')[1] : hashStr);
     token = hashParams.get('token') || hashParams.get('auth_token');
   }
   
   if (token) {
-    console.log('Mobile token detected, attempting exchange:', token);
+    console.log('Mobile token detected, attempting exchange:', token.substring(0, 5) + '...');
     
-    // Remove token from URL immediately to prevent reload loops
-    const newUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState({}, '', newUrl);
+    const cleanUrl = window.location.pathname;
+    window.history.replaceState({}, '', cleanUrl);
     
-    fetch('/api/auth/mobile-token', {
+    // IMPORTANT: Use full absolute URL to ensure we hit the production server
+    const apiUrl = 'https://www.seaboo.it/api/auth/mobile-token';
+    
+    fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ token }),
@@ -48,15 +49,11 @@ function checkMobileAuthToken() {
     })
     .then(userData => {
       console.log('Mobile auth successful, user data:', userData);
-      // Force immediate persistence to localStorage
       localStorage.setItem('seaboo_user', JSON.stringify(userData));
-      // Update React Query state
       queryClient.setQueryData(['/api/user'], userData);
       queryClient.invalidateQueries({ queryKey: ['/api/user'] });
-      // Short delay to ensure state update, then go to home
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
+      // Reload page instead of simple redirect to ensure everything is clean
+      window.location.href = '/';
     })
     .catch(error => {
       console.error('Error during mobile token exchange:', error);

@@ -13,6 +13,9 @@ const config: CapacitorConfig = {
     allowsLinkPreview: false,
     scrollEnabled: true
   },
+  android: {
+    allowMixedContent: true
+  },
   plugins: {
     CapacitorHttp: {
       enabled: true

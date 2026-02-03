@@ -225,9 +225,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Google OAuth routes
-  app.get('/api/auth/google',
-    passport.authenticate('google', { scope: ['profile', 'email'] })
-  );
+  app.get('/api/auth/google', (req, res, next) => {
+    // Store mobile flag in session for callback
+    if (req.query.mobile === 'android') {
+      (req.session as any).mobileLogin = 'android';
+    }
+    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  });
 
   app.get('/api/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/auth?tab=login' }),
@@ -244,8 +248,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
         businessName: user.businessName || undefined
       };
 
-      // Redirect to home page
-      res.redirect('/');
+      // Check if this was a mobile login
+      const mobileLogin = (req.session as any).mobileLogin;
+      delete (req.session as any).mobileLogin;
+      
+      if (mobileLogin === 'android') {
+        // For Android, redirect to a success page with deep link
+        res.send(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>Accesso completato - SeaBoo</title>
+            <style>
+              body { 
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                min-height: 100vh; 
+                margin: 0;
+                background: linear-gradient(135deg, #0066cc 0%, #00a3cc 100%);
+                color: white;
+                text-align: center;
+                padding: 20px;
+              }
+              .container { max-width: 400px; }
+              h1 { font-size: 24px; margin-bottom: 16px; }
+              p { font-size: 16px; opacity: 0.9; margin-bottom: 24px; }
+              .btn {
+                display: inline-block;
+                background: white;
+                color: #0066cc;
+                padding: 16px 32px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 16px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Accesso completato!</h1>
+              <p>Hai effettuato l'accesso con Google. Ora puoi tornare all'app SeaBoo.</p>
+              <a href="seaboo://login-success" class="btn">Apri SeaBoo</a>
+            </div>
+            <script>
+              // Try to open the app automatically
+              setTimeout(() => {
+                window.location.href = 'seaboo://login-success';
+              }, 1000);
+            </script>
+          </body>
+          </html>
+        `);
+      } else {
+        // Web: redirect to home page
+        res.redirect('/');
+      }
     }
   );
 

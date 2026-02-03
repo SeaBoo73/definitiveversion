@@ -153,22 +153,19 @@ export default function AuthPage() {
     const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
     const isAndroid = isCapacitor && (window as any).Capacitor?.getPlatform?.() === 'android';
     
+    // Use the production URL for OAuth
+    const baseUrl = 'https://www.seaboo.it';
+    const googleAuthUrl = `${baseUrl}/api/auth/google${isAndroid ? '?mobile=android' : ''}`;
+
     if (isAndroid) {
       try {
-        // For Android native app, open in external browser
-        // The OAuth flow will work in the system browser
-        const baseUrl = 'https://www.seaboo.it';
-        const googleAuthUrl = `${baseUrl}/api/auth/google?mobile=android`;
-        
         // Open in system browser using intent
         window.open(googleAuthUrl, '_system');
         
-        // Show message to user
         toast({
           title: "Accesso Google",
           description: "Si aprirà il browser per completare l'accesso. Torna all'app dopo aver effettuato il login.",
         });
-        
       } catch (error) {
         console.error('Error opening browser for Google Sign In:', error);
         toast({
@@ -179,7 +176,7 @@ export default function AuthPage() {
       }
     } else {
       // Web and iOS: use regular redirect
-      window.location.href = '/api/auth/google';
+      window.location.href = googleAuthUrl;
     }
   };
 

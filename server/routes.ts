@@ -287,9 +287,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
-        const intentUrl = `intent://login-success?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;S.browser_fallback_url=https://www.seaboo.it;end`;
+        const deepLink = `seaboo://auth?token=${tempToken}`;
+        const intentUrl = `intent://auth?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;end`;
         
-        // AUTOMATIC redirect back to app - no button needed
+        // AUTOMATIC redirect back to app - try multiple methods
         res.send(`
           <!DOCTYPE html>
           <html>
@@ -322,6 +323,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
               @keyframes spin { to { transform: rotate(360deg); } }
               h1 { font-size: 24px; margin-bottom: 10px; }
               p { font-size: 16px; opacity: 0.8; }
+              .btn {
+                display: inline-block;
+                background: white;
+                color: #0066cc;
+                padding: 16px 32px;
+                border-radius: 12px;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 16px;
+                margin-top: 20px;
+              }
             </style>
           </head>
           <body>
@@ -329,12 +341,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
               <div class="spinner"></div>
               <h1>Login completato!</h1>
               <p>Ritorno automatico all'app SeaBoo...</p>
+              <a id="fallback" href="${intentUrl}" class="btn" style="display:none;">Apri App</a>
             </div>
             <script>
-              // Redirect automatico all'app
-              setTimeout(function() {
-                window.location.href = "${intentUrl}";
-              }, 500);
+              // Try custom scheme first
+              var tried = 0;
+              function tryOpen() {
+                tried++;
+                if (tried === 1) {
+                  window.location.href = "${deepLink}";
+                } else if (tried === 2) {
+                  window.location.href = "${intentUrl}";
+                } else {
+                  // Show fallback button
+                  document.getElementById('fallback').style.display = 'inline-block';
+                  document.querySelector('.spinner').style.display = 'none';
+                  document.querySelector('p').textContent = 'Clicca il pulsante per aprire l\\'app';
+                }
+              }
+              setTimeout(tryOpen, 300);
+              setTimeout(tryOpen, 1500);
+              setTimeout(tryOpen, 3000);
             </script>
           </body>
           </html>

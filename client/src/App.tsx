@@ -14,13 +14,42 @@ import { CleanApp } from "./clean-app";
 import { MobileNavigation } from "@/components/mobile-navigation";
 import "./hide-overlay";
 
+// Exchange mobile auth token for session
+function exchangeAuthToken(token: string) {
+  console.log('Exchanging auth token:', token.substring(0, 5) + '...');
+  
+  fetch('https://www.seaboo.it/api/auth/mobile-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token }),
+    credentials: 'include'
+  })
+  .then(async response => {
+    if (response.ok) return response.json();
+    const errText = await response.text();
+    throw new Error(`Token exchange failed: ${errText}`);
+  })
+  .then(userData => {
+    console.log('Mobile auth successful:', userData.email);
+    localStorage.setItem('seaboo_user', JSON.stringify(userData));
+    queryClient.setQueryData(['/api/user'], userData);
+    queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+    window.location.href = '/';
+  })
+  .catch(error => {
+    console.error('Token exchange error:', error);
+  });
+}
+
 // Handle mobile auth token from URL (for deep link callback)
 function checkMobileAuthToken() {
   if (typeof window === 'undefined') return;
 
+  // Check URL parameters first
   const urlParams = new URLSearchParams(window.location.search);
   let token = urlParams.get('token') || urlParams.get('auth_token');
   
+  // Also check hash for fragments
   if (!token && window.location.hash) {
     const hashStr = window.location.hash.substring(1);
     const hashParams = new URLSearchParams(hashStr.includes('?') ? hashStr.split('?')[1] : hashStr);
@@ -28,41 +57,27 @@ function checkMobileAuthToken() {
   }
   
   if (token) {
-    console.log('Mobile token detected, attempting exchange:', token.substring(0, 5) + '...');
-    
-    const cleanUrl = window.location.pathname;
-    window.history.replaceState({}, '', cleanUrl);
-    
-    // IMPORTANT: Use full absolute URL to ensure we hit the production server
-    const apiUrl = 'https://www.seaboo.it/api/auth/mobile-token';
-    
-    fetch(apiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token }),
-      credentials: 'include'
-    })
-    .then(async response => {
-      if (response.ok) return response.json();
-      const errText = await response.text();
-      throw new Error(`Token exchange failed: ${errText}`);
-    })
-    .then(userData => {
-      console.log('Mobile auth successful, user data:', userData);
-      localStorage.setItem('seaboo_user', JSON.stringify(userData));
-      queryClient.setQueryData(['/api/user'], userData);
-      queryClient.invalidateQueries({ queryKey: ['/api/user'] });
-      // Reload page instead of simple redirect to ensure everything is clean
-      window.location.href = '/';
-    })
-    .catch(error => {
-      console.error('Error during mobile token exchange:', error);
-    });
+    window.history.replaceState({}, '', window.location.pathname);
+    exchangeAuthToken(token);
   }
 }
 
-// Check for auth token on page load
+// Listen for postMessage from Android native code (deep link handler)
+function setupNativeAuthListener() {
+  if (typeof window === 'undefined') return;
+  
+  window.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SEABOO_AUTH_TOKEN' && event.data.token) {
+      console.log('Received auth token from native code');
+      exchangeAuthToken(event.data.token);
+    }
+  });
+}
+
+// Initialize auth handling on page load
 checkMobileAuthToken();
+setupNativeAuthListener();
+
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";

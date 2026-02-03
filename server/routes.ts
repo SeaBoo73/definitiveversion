@@ -230,7 +230,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const state = req.query.mobile === 'android' ? 'mobile_android' : 'web';
     passport.authenticate('google', { 
       scope: ['profile', 'email'],
-      state: state
+      state: state,
+      prompt: 'select_account' // FORCE Google to show the account selection screen
     })(req, res, next);
   });
 

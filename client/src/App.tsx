@@ -18,11 +18,21 @@ import "./hide-overlay";
 function checkMobileAuthToken() {
   if (typeof window === 'undefined') return;
 
+  // IMPORTANT: Check for token in BOTH URL and deep link format
   const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token') || urlParams.get('auth_token');
+  let token = urlParams.get('token') || urlParams.get('auth_token');
+  
+  // Also check hash for fragments (sometimes used in deep links)
+  if (!token && window.location.hash) {
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    token = hashParams.get('token') || hashParams.get('auth_token');
+  }
   
   if (token) {
-    const newUrl = window.location.pathname;
+    console.log('Mobile token detected, attempting exchange:', token);
+    
+    // Remove token from URL immediately to prevent reload loops
+    const newUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, '', newUrl);
     
     fetch('/api/auth/mobile-token', {
@@ -31,23 +41,25 @@ function checkMobileAuthToken() {
       body: JSON.stringify({ token }),
       credentials: 'include'
     })
-    .then(response => {
+    .then(async response => {
       if (response.ok) return response.json();
-      throw new Error('Token exchange failed');
+      const errText = await response.text();
+      throw new Error(`Token exchange failed: ${errText}`);
     })
     .then(userData => {
-      console.log('Mobile auth successful:', userData);
-      // Force immediate persistence
+      console.log('Mobile auth successful, user data:', userData);
+      // Force immediate persistence to localStorage
       localStorage.setItem('seaboo_user', JSON.stringify(userData));
+      // Update React Query state
       queryClient.setQueryData(['/api/user'], userData);
       queryClient.invalidateQueries({ queryKey: ['/api/user'] });
-      // Short delay to ensure state update before redirect
+      // Short delay to ensure state update, then go to home
       setTimeout(() => {
         window.location.href = '/';
-      }, 300);
+      }, 500);
     })
     .catch(error => {
-      console.error('Error exchanging token:', error);
+      console.error('Error during mobile token exchange:', error);
     });
   }
 }

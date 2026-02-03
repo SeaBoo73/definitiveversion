@@ -356,29 +356,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/auth/mobile-token', async (req, res) => {
     try {
       const { token } = req.body;
+      console.log('Token exchange request received for token:', token ? token.substring(0, 5) + '...' : 'NONE');
       
       if (!token) {
         return res.status(400).json({ error: "Token mancante" });
       }
       
       // Get token from storage
-      const tokenData = (global as any).mobileAuthTokens?.get(token);
+      const tokens = (global as any).mobileAuthTokens;
+      const tokenData = tokens?.get(token);
       
       if (!tokenData) {
+        console.log('Token not found in memory store. Total tokens in store:', tokens ? tokens.size : 0);
         return res.status(401).json({ error: "Token non valido o scaduto" });
       }
       
       // Check expiry
       if (tokenData.expiry < Date.now()) {
-        (global as any).mobileAuthTokens.delete(token);
+        tokens.delete(token);
+        console.log('Token found but expired');
         return res.status(401).json({ error: "Token scaduto" });
       }
       
+      console.log('Token valid. Authenticating user:', tokenData.userId);
+      
       // Delete token (one-time use)
-      (global as any).mobileAuthTokens.delete(token);
+      tokens.delete(token);
       
       // Create session
-      req.session.user = {
+      const sessionUser = {
         id: tokenData.userId.toString(),
         email: tokenData.email,
         firstName: tokenData.firstName || undefined,
@@ -387,13 +393,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userType: tokenData.role === "owner" ? "owner" : "customer"
       };
       
-      // Return user data
-      res.json({
-        id: tokenData.userId,
-        email: tokenData.email,
-        firstName: tokenData.firstName,
-        lastName: tokenData.lastName,
-        role: tokenData.role
+      req.session.user = sessionUser;
+      
+      // IMPORTANT: Manually save session to ensure it persists before response
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error during token exchange:', err);
+          return res.status(500).json({ error: "Errore salvataggio sessione" });
+        }
+        console.log('Session saved successfully for user:', tokenData.userId);
+        res.json(sessionUser);
       });
       
     } catch (error) {

@@ -226,11 +226,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Google OAuth routes
   app.get('/api/auth/google', (req, res, next) => {
-    // Store mobile flag in session for callback
-    if (req.query.mobile === 'android') {
-      (req.session as any).mobileLogin = 'android';
-    }
-    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+    // Pass mobile flag via OAuth state parameter (survives redirects)
+    const state = req.query.mobile === 'android' ? 'mobile_android' : 'web';
+    passport.authenticate('google', { 
+      scope: ['profile', 'email'],
+      state: state
+    })(req, res, next);
   });
 
   app.get('/api/auth/google/callback',
@@ -248,11 +249,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         businessName: user.businessName || undefined
       };
 
-      // Check if this was a mobile login
-      const mobileLogin = (req.session as any).mobileLogin;
-      delete (req.session as any).mobileLogin;
+      // Check if this was a mobile login via state parameter
+      const state = req.query.state as string;
+      const isMobileAndroid = state === 'mobile_android';
       
-      if (mobileLogin === 'android') {
+      if (isMobileAndroid) {
         // For Android, redirect to a success page with deep link
         res.send(`
           <!DOCTYPE html>

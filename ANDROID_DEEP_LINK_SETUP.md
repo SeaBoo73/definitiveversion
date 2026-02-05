@@ -13,31 +13,6 @@ Apri `android/app/src/main/AndroidManifest.xml` e aggiungi questo intent-filter 
 </intent-filter>
 ```
 
-Il tuo `<activity>` dovrebbe apparire così:
-
-```xml
-<activity
-    android:name=".MainActivity"
-    android:exported="true"
-    android:launchMode="singleTask"
-    ...altri attributi...>
-    
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-    
-    <!-- AGGIUNGI QUESTO per deep links -->
-    <intent-filter>
-        <action android:name="android.intent.action.VIEW" />
-        <category android:name="android.intent.category.DEFAULT" />
-        <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="seaboo" />
-    </intent-filter>
-    
-</activity>
-```
-
 **IMPORTANTE**: Assicurati che `android:launchMode="singleTask"` sia presente nell'activity!
 
 ## Passo 2: Modifica MainActivity.java
@@ -50,12 +25,14 @@ package it.seaboo.app;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
-
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
     private static final String TAG = "SeaBooAuth";
+    private String pendingToken = null;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,23 +47,47 @@ public class MainActivity extends BridgeActivity {
         handleIntent(intent);
     }
     
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (pendingToken != null) {
+            injectTokenWithRetry(pendingToken);
+            pendingToken = null;
+        }
+    }
+    
     private void handleIntent(Intent intent) {
-        String action = intent.getAction();
         Uri data = intent.getData();
+        Log.d(TAG, "handleIntent: data=" + data);
         
-        if (Intent.ACTION_VIEW.equals(action) && data != null) {
-            String scheme = data.getScheme();
-            if ("seaboo".equals(scheme)) {
-                String token = data.getQueryParameter("token");
-                if (token != null && !token.isEmpty()) {
-                    Log.d(TAG, "Received auth token from deep link");
-                    // Pass token to WebView via JavaScript
-                    String js = "window.postMessage({type:'SEABOO_AUTH_TOKEN',token:'" + token + "'},'*');";
-                    getBridge().getWebView().post(() -> {
-                        getBridge().getWebView().evaluateJavascript(js, null);
-                    });
-                }
+        if (data != null && "seaboo".equals(data.getScheme())) {
+            String token = data.getQueryParameter("token");
+            Log.d(TAG, "Token found: " + (token != null ? "YES" : "NO"));
+            
+            if (token != null && !token.isEmpty()) {
+                pendingToken = token;
+                injectTokenWithRetry(token);
             }
+        }
+    }
+    
+    private void injectTokenWithRetry(String token) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        int[] delays = {100, 500, 1000, 2000};
+        for (int delay : delays) {
+            handler.postDelayed(() -> injectToken(token), delay);
+        }
+    }
+    
+    private void injectToken(String token) {
+        try {
+            if (getBridge() != null && getBridge().getWebView() != null) {
+                String js = "if(window.handleSeaBooAuth){window.handleSeaBooAuth('" + token + "');}else{window.SEABOO_PENDING_TOKEN='" + token + "';}";
+                Log.d(TAG, "Injecting token via JS");
+                getBridge().getWebView().evaluateJavascript(js, null);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error injecting token: " + e.getMessage());
         }
     }
 }
@@ -96,16 +97,14 @@ public class MainActivity extends BridgeActivity {
 
 Dopo aver fatto queste modifiche:
 
-1. `npm run build`
-2. `npx cap sync android`
-3. In Android Studio: **Build > Clean Project**
-4. Poi: **Build > Rebuild Project**
-5. Infine: **Run**
+1. In Android Studio: **Build > Clean Project**
+2. Poi: **Build > Rebuild Project**
+3. Infine: **Run**
 
 ## Come funziona
 
 1. Quando clicchi "Accedi con Google" nell'app, si apre il browser
 2. Dopo il login Google, il browser reindirizza a `seaboo://auth?token=xxx`
 3. Android intercetta questo URL e apre l'app SeaBoo
-4. MainActivity.java estrae il token e lo passa alla WebView tramite postMessage
-5. L'app riceve il messaggio e fa lo scambio del token per il login
+4. MainActivity.java estrae il token e lo inietta nella WebView
+5. L'app riceve il token e completa il login automaticamente

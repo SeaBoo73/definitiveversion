@@ -66,12 +66,36 @@ function checkMobileAuthToken() {
 function setupNativeAuthListener() {
   if (typeof window === 'undefined') return;
   
+  // Method 1: postMessage listener
   window.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'SEABOO_AUTH_TOKEN' && event.data.token) {
-      console.log('Received auth token from native code');
+      console.log('Received auth token via postMessage');
       exchangeAuthToken(event.data.token);
     }
   });
+  
+  // Method 2: Global function that Android can call directly
+  (window as any).handleSeaBooAuth = function(token: string) {
+    console.log('handleSeaBooAuth called with token');
+    if (token) {
+      exchangeAuthToken(token);
+    }
+  };
+  
+  // Method 3: Check for pending token (set before WebView was ready)
+  const checkPendingToken = () => {
+    const pendingToken = (window as any).SEABOO_PENDING_TOKEN;
+    if (pendingToken) {
+      console.log('Found pending token');
+      delete (window as any).SEABOO_PENDING_TOKEN;
+      exchangeAuthToken(pendingToken);
+    }
+  };
+  
+  // Check immediately and after a short delay
+  checkPendingToken();
+  setTimeout(checkPendingToken, 500);
+  setTimeout(checkPendingToken, 1500);
 }
 
 // Initialize auth handling on page load

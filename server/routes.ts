@@ -287,16 +287,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
         
+        // Use HTTPS App Link (more reliable than intent:// URLs)
+        const appLinkUrl = `https://www.seaboo.it/app-callback?token=${tempToken}`;
         const intentUrl = `intent://auth?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;end`;
         
-        // Use intent URL directly with immediate redirect
+        // Redirect via HTTP 302 to App Link URL
         res.send(`
           <!DOCTYPE html>
           <html>
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta http-equiv="refresh" content="0;url=${intentUrl}">
             <title>Ritorno all'app...</title>
             <style>
               body { 
@@ -323,20 +324,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 text-decoration: none;
                 font-weight: 700;
                 font-size: 16px;
+                margin: 10px;
+              }
+              .btn-secondary {
+                background: transparent;
+                border: 2px solid white;
+                color: white;
               }
             </style>
           </head>
           <body>
             <div class="container">
               <h1>Login completato!</h1>
-              <p>Se l'app non si apre automaticamente:</p>
-              <a href="${intentUrl}" class="btn">APRI APP SEABOO</a>
+              <p>Clicca per tornare all'app:</p>
+              <a href="${appLinkUrl}" class="btn">APRI APP SEABOO</a>
+              <br>
+              <a href="${intentUrl}" class="btn btn-secondary">Metodo alternativo</a>
             </div>
             <script>
-              // Fallback: try opening via JS after a short delay
-              setTimeout(function() {
-                window.location.href = "${intentUrl}";
-              }, 100);
+              // Try App Link first
+              window.location.href = "${appLinkUrl}";
             </script>
           </body>
           </html>

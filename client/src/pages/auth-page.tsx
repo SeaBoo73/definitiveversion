@@ -148,26 +148,89 @@ export default function AuthPage() {
     registerMutation.mutate(registerData);
   };
 
+  const [isPollingAuth, setIsPollingAuth] = useState(false);
+
   const handleGoogleSignIn = async () => {
-    // Check if we're in Capacitor (native Android app)
     const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
     const isAndroid = isCapacitor && (window as any).Capacitor?.getPlatform?.() === 'android';
     
-    // Use the production URL for OAuth
     const baseUrl = 'https://www.seaboo.it';
-    const googleAuthUrl = `${baseUrl}/api/auth/google${isAndroid ? '?mobile=android' : ''}`;
 
     if (isAndroid) {
       try {
-        // Open in system browser using intent
+        // Step 1: Get a poll ID from the server
+        const pollRes = await fetch(`${baseUrl}/api/auth/mobile-poll-start`);
+        const { pollId } = await pollRes.json();
+        
+        // Step 2: Open Google OAuth with the poll ID
+        const googleAuthUrl = `${baseUrl}/api/auth/google?mobile=android&pollId=${pollId}`;
         window.open(googleAuthUrl, '_system');
         
+        setIsPollingAuth(true);
         toast({
           title: "Accesso Google",
-          description: "Si aprirà il browser per completare l'accesso. Torna all'app dopo aver effettuato il login.",
+          description: "Completa il login nel browser. Tornerai automaticamente all'app.",
         });
+        
+        // Step 3: Poll every 2 seconds for auth completion
+        let attempts = 0;
+        const maxAttempts = 150; // 5 minutes max
+        const pollInterval = setInterval(async () => {
+          attempts++;
+          if (attempts > maxAttempts) {
+            clearInterval(pollInterval);
+            setIsPollingAuth(false);
+            toast({
+              title: "Timeout",
+              description: "Il login ha impiegato troppo tempo. Riprova.",
+              variant: "destructive",
+            });
+            return;
+          }
+          
+          try {
+            const res = await fetch(`${baseUrl}/api/auth/mobile-poll/${pollId}`, {
+              credentials: 'include'
+            });
+            
+            if (res.status === 404 || res.status === 410) {
+              clearInterval(pollInterval);
+              setIsPollingAuth(false);
+              toast({
+                title: "Errore",
+                description: "Sessione di login scaduta. Riprova.",
+                variant: "destructive",
+              });
+              return;
+            }
+            
+            const data = await res.json();
+            
+            if (data.status === 'completed' && data.user) {
+              clearInterval(pollInterval);
+              setIsPollingAuth(false);
+              console.log('Mobile auth polling success:', data.user.email);
+              localStorage.setItem('seaboo_user', JSON.stringify(data.user));
+              
+              const { queryClient } = await import('@/lib/queryClient');
+              queryClient.setQueryData(['/api/user'], data.user);
+              queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+              
+              toast({
+                title: "Accesso completato!",
+                description: `Benvenuto, ${data.user.firstName || data.user.email}!`,
+              });
+              
+              window.location.href = '/';
+            }
+          } catch (e) {
+            // Ignore network errors, just retry
+          }
+        }, 2000);
+        
       } catch (error) {
-        console.error('Error opening browser for Google Sign In:', error);
+        console.error('Error starting Google Sign In:', error);
+        setIsPollingAuth(false);
         toast({
           title: "Errore",
           description: "Impossibile avviare il login con Google. Riprova.",
@@ -175,8 +238,7 @@ export default function AuthPage() {
         });
       }
     } else {
-      // Web and iOS: use regular redirect
-      window.location.href = googleAuthUrl;
+      window.location.href = `${baseUrl}/api/auth/google`;
     }
   };
 
@@ -453,6 +515,7 @@ export default function AuthPage() {
                       variant="outline"
                       className="w-full border-gray-300 hover:bg-gray-50"
                       onClick={handleGoogleSignIn}
+                      disabled={isPollingAuth}
                       data-testid="button-google-signin"
                     >
                       <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -461,7 +524,7 @@ export default function AuthPage() {
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                       </svg>
-                      Continua con Google
+                      {isPollingAuth ? "Attendo login nel browser..." : "Continua con Google"}
                     </Button>
                   </div>
                 </CardContent>

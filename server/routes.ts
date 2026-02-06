@@ -224,11 +224,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Mobile auth polling storage
+  if (!(global as any).mobileAuthPolling) {
+    (global as any).mobileAuthPolling = new Map();
+  }
+
+  // Generate a poll ID for mobile auth
+  app.get('/api/auth/mobile-poll-start', async (req, res) => {
+    const crypto = await import('crypto');
+    const pollId = crypto.randomBytes(16).toString('hex');
+    (global as any).mobileAuthPolling.set(pollId, { status: 'pending', expiry: Date.now() + 10 * 60 * 1000 });
+    
+    // Clean expired entries
+    for (const [key, value] of (global as any).mobileAuthPolling.entries()) {
+      if ((value as any).expiry < Date.now()) {
+        (global as any).mobileAuthPolling.delete(key);
+      }
+    }
+    
+    res.json({ pollId });
+  });
+
+  // Poll for auth result
+  app.get('/api/auth/mobile-poll/:pollId', (req, res) => {
+    const { pollId } = req.params;
+    const pollData = (global as any).mobileAuthPolling?.get(pollId);
+    
+    if (!pollData) {
+      return res.status(404).json({ status: 'not_found' });
+    }
+    
+    if (pollData.expiry < Date.now()) {
+      (global as any).mobileAuthPolling.delete(pollId);
+      return res.status(410).json({ status: 'expired' });
+    }
+    
+    if (pollData.status === 'completed' && pollData.userData) {
+      // Set the session for this user
+      req.session.user = pollData.userData;
+      req.session.save((err) => {
+        if (err) {
+          console.error('Session save error during poll:', err);
+        }
+        // Don't delete yet - allow a few more polls to ensure client gets it
+        pollData.retrievedCount = (pollData.retrievedCount || 0) + 1;
+        if (pollData.retrievedCount > 3) {
+          (global as any).mobileAuthPolling.delete(pollId);
+        }
+        res.json({ status: 'completed', user: pollData.userData });
+      });
+      return;
+    }
+    
+    res.json({ status: 'pending' });
+  });
+
   // Google OAuth routes
   app.get('/api/auth/google', (req, res, next) => {
     try {
       const isMobile = req.query.mobile === 'android';
-      const state = isMobile ? 'mobile_android' : 'web';
+      const pollId = req.query.pollId as string;
+      const state = isMobile ? `mobile_android:${pollId || ''}` : 'web';
       console.log('Starting Google Auth, state:', state);
       
       passport.authenticate('google', { 
@@ -259,46 +315,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Check if this was a mobile login via state parameter
       const state = req.query.state as string;
-      const isMobileAndroid = state === 'mobile_android';
+      const isMobileAndroid = state?.startsWith('mobile_android');
       
       if (isMobileAndroid) {
-        // Generate a temporary auth token for mobile
-        const crypto = await import('crypto');
-        const tempToken = crypto.randomBytes(32).toString('hex');
-        const tokenExpiry = Date.now() + 5 * 60 * 1000; // 5 minutes
+        // Extract poll ID from state (format: mobile_android:pollId)
+        const pollId = state.split(':')[1];
         
-        // Store token temporarily (in memory - for production use Redis)
-        if (!(global as any).mobileAuthTokens) {
-          (global as any).mobileAuthTokens = new Map();
-        }
-        (global as any).mobileAuthTokens.set(tempToken, {
-          userId: user.id,
+        const userData = {
+          id: user.id.toString(),
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          role: user.role,
-          expiry: tokenExpiry
-        });
+          firstName: user.firstName || undefined,
+          lastName: user.lastName || undefined,
+          role: user.role || "customer",
+          userType: user.role === "owner" ? "owner" : "customer",
+          businessName: user.businessName || undefined
+        };
         
-        // Clean up expired tokens
-        for (const [key, value] of (global as any).mobileAuthTokens.entries()) {
-          if ((value as any).expiry < Date.now()) {
-            (global as any).mobileAuthTokens.delete(key);
-          }
+        // Store result for polling
+        if (pollId && (global as any).mobileAuthPolling?.has(pollId)) {
+          (global as any).mobileAuthPolling.set(pollId, {
+            status: 'completed',
+            userData,
+            expiry: Date.now() + 10 * 60 * 1000,
+            retrievedCount: 0
+          });
+          console.log('Mobile auth completed for pollId:', pollId);
+        } else {
+          console.warn('Mobile auth: pollId missing or not found:', pollId);
         }
         
-        // Use HTTPS App Link (more reliable than intent:// URLs)
-        const appLinkUrl = `https://www.seaboo.it/app-callback?token=${tempToken}`;
-        const intentUrl = `intent://auth?token=${tempToken}#Intent;scheme=seaboo;package=it.seaboo.app;end`;
-        
-        // Redirect via HTTP 302 to App Link URL
+        // Show simple "go back to app" page
         res.send(`
           <!DOCTYPE html>
           <html>
           <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>Ritorno all'app...</title>
+            <title>Login completato</title>
             <style>
               body { 
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -313,38 +366,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 padding: 20px;
               }
               .container { max-width: 400px; }
+              .checkmark { font-size: 64px; margin-bottom: 20px; }
               h1 { font-size: 24px; margin-bottom: 10px; }
-              p { font-size: 16px; opacity: 0.8; margin-bottom: 20px; }
-              .btn {
-                display: inline-block;
-                background: white;
-                color: #0066cc;
-                padding: 16px 32px;
-                border-radius: 12px;
-                text-decoration: none;
-                font-weight: 700;
-                font-size: 16px;
-                margin: 10px;
-              }
-              .btn-secondary {
-                background: transparent;
-                border: 2px solid white;
-                color: white;
-              }
+              p { font-size: 16px; opacity: 0.9; margin-bottom: 20px; }
             </style>
           </head>
           <body>
             <div class="container">
+              <div class="checkmark">&#10004;</div>
               <h1>Login completato!</h1>
-              <p>Clicca per tornare all'app:</p>
-              <a href="${appLinkUrl}" class="btn">APRI APP SEABOO</a>
-              <br>
-              <a href="${intentUrl}" class="btn btn-secondary">Metodo alternativo</a>
+              <p>Torna all'app SeaBoo.<br>Il login verr&agrave; completato automaticamente.</p>
             </div>
-            <script>
-              // Try App Link first
-              window.location.href = "${appLinkUrl}";
-            </script>
           </body>
           </html>
         `);

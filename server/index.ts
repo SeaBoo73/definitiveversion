@@ -34,6 +34,7 @@ const ALLOWED_ORIGINS = [
   "https://www.seaboo.it",
   "https://seaboo.it",
   "capacitor://localhost",
+  "https://localhost",
   "http://localhost",
   "http://localhost:5173",
   "http://localhost:5000",

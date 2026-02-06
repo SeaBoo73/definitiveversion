@@ -16,7 +16,7 @@ import { Redirect, Link, useLocation } from "wouter";
 import { Anchor, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1757318764148.jpeg";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, getApiUrl } from "@/lib/queryClient";
 
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),
@@ -153,10 +153,10 @@ export default function AuthPage() {
   const pollingActiveRef = useRef(false);
 
   const checkPollResult = useCallback(async (pollId: string): Promise<boolean> => {
-    const baseUrl = 'https://www.seaboo.it';
     try {
-      console.log('Polling auth status for:', pollId);
-      const res = await fetch(`${baseUrl}/api/auth/mobile-poll/${pollId}`, {
+      const pollUrl = getApiUrl(`/api/auth/mobile-poll/${pollId}`);
+      console.log('Polling auth status for:', pollId, 'at:', pollUrl);
+      const res = await fetch(pollUrl, {
         credentials: 'include'
       });
 
@@ -284,11 +284,11 @@ export default function AuthPage() {
     const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
     const isAndroid = isCapacitor && (window as any).Capacitor?.getPlatform?.() === 'android';
 
-    const baseUrl = 'https://www.seaboo.it';
-
     if (isAndroid) {
       try {
-        const pollRes = await fetch(`${baseUrl}/api/auth/mobile-poll-start`);
+        const pollStartUrl = getApiUrl('/api/auth/mobile-poll-start');
+        console.log('Starting mobile poll at:', pollStartUrl);
+        const pollRes = await fetch(pollStartUrl);
         const { pollId } = await pollRes.json();
 
         pollIdRef.current = pollId;
@@ -301,7 +301,8 @@ export default function AuthPage() {
           description: "Completa il login nel browser. Tornerai automaticamente all'app.",
         });
 
-        const googleAuthUrl = `${baseUrl}/api/auth/google?mobile=android&pollId=${pollId}`;
+        const googleAuthUrl = getApiUrl(`/api/auth/google?mobile=android&pollId=${pollId}`);
+        console.log('Opening Google auth URL:', googleAuthUrl);
         window.open(googleAuthUrl, '_system');
 
       } catch (error) {
@@ -317,7 +318,7 @@ export default function AuthPage() {
         });
       }
     } else {
-      window.location.href = `${baseUrl}/api/auth/google`;
+      window.location.href = getApiUrl('/api/auth/google');
     }
   };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -149,87 +149,166 @@ export default function AuthPage() {
   };
 
   const [isPollingAuth, setIsPollingAuth] = useState(false);
+  const pollIdRef = useRef<string | null>(null);
+  const pollingActiveRef = useRef(false);
+
+  const checkPollResult = useCallback(async (pollId: string): Promise<boolean> => {
+    const baseUrl = 'https://www.seaboo.it';
+    try {
+      console.log('Polling auth status for:', pollId);
+      const res = await fetch(`${baseUrl}/api/auth/mobile-poll/${pollId}`, {
+        credentials: 'include'
+      });
+
+      if (res.status === 404 || res.status === 410) {
+        console.log('Poll expired or not found');
+        pollingActiveRef.current = false;
+        pollIdRef.current = null;
+        localStorage.removeItem('seaboo_pending_poll');
+        setIsPollingAuth(false);
+        toast({
+          title: "Errore",
+          description: "Sessione di login scaduta. Riprova.",
+          variant: "destructive",
+        });
+        return true;
+      }
+
+      const data = await res.json();
+      console.log('Poll result:', data.status);
+
+      if (data.status === 'completed' && data.user) {
+        pollingActiveRef.current = false;
+        pollIdRef.current = null;
+        localStorage.removeItem('seaboo_pending_poll');
+        setIsPollingAuth(false);
+        console.log('Mobile auth success:', data.user.email);
+        localStorage.setItem('seaboo_user', JSON.stringify(data.user));
+
+        const { queryClient } = await import('@/lib/queryClient');
+        queryClient.setQueryData(['/api/user'], data.user);
+        queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+
+        toast({
+          title: "Accesso completato!",
+          description: `Benvenuto, ${data.user.firstName || data.user.email}!`,
+        });
+
+        window.location.href = '/';
+        return true;
+      }
+    } catch (e) {
+      console.log('Poll network error, will retry');
+    }
+    return false;
+  }, [toast]);
+
+  useEffect(() => {
+    const savedPoll = localStorage.getItem('seaboo_pending_poll');
+    if (savedPoll) {
+      try {
+        const { pollId, timestamp } = JSON.parse(savedPoll);
+        const elapsed = Date.now() - timestamp;
+        if (elapsed < 10 * 60 * 1000) {
+          console.log('Resuming poll from localStorage:', pollId);
+          pollIdRef.current = pollId;
+          pollingActiveRef.current = true;
+          setIsPollingAuth(true);
+          checkPollResult(pollId);
+        } else {
+          localStorage.removeItem('seaboo_pending_poll');
+        }
+      } catch (e) {
+        localStorage.removeItem('seaboo_pending_poll');
+      }
+    }
+  }, [checkPollResult]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && pollIdRef.current && pollingActiveRef.current) {
+        console.log('App foregrounded, checking poll immediately');
+        checkPollResult(pollIdRef.current);
+      }
+    };
+
+    const handleResume = () => {
+      if (pollIdRef.current && pollingActiveRef.current) {
+        console.log('App resumed, checking poll immediately');
+        checkPollResult(pollIdRef.current);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('resume', handleResume);
+    window.addEventListener('focus', handleResume);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('resume', handleResume);
+      window.removeEventListener('focus', handleResume);
+    };
+  }, [checkPollResult]);
+
+  useEffect(() => {
+    if (!isPollingAuth || !pollIdRef.current) return;
+
+    const startTime = Date.now();
+    const maxDuration = 5 * 60 * 1000;
+
+    const interval = setInterval(async () => {
+      if (Date.now() - startTime > maxDuration) {
+        clearInterval(interval);
+        pollingActiveRef.current = false;
+        pollIdRef.current = null;
+        localStorage.removeItem('seaboo_pending_poll');
+        setIsPollingAuth(false);
+        toast({
+          title: "Timeout",
+          description: "Il login ha impiegato troppo tempo. Riprova.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (pollIdRef.current && pollingActiveRef.current) {
+        const done = await checkPollResult(pollIdRef.current);
+        if (done) clearInterval(interval);
+      }
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [isPollingAuth, checkPollResult, toast]);
 
   const handleGoogleSignIn = async () => {
     const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
     const isAndroid = isCapacitor && (window as any).Capacitor?.getPlatform?.() === 'android';
-    
+
     const baseUrl = 'https://www.seaboo.it';
 
     if (isAndroid) {
       try {
-        // Step 1: Get a poll ID from the server
         const pollRes = await fetch(`${baseUrl}/api/auth/mobile-poll-start`);
         const { pollId } = await pollRes.json();
-        
-        // Step 2: Open Google OAuth with the poll ID
-        const googleAuthUrl = `${baseUrl}/api/auth/google?mobile=android&pollId=${pollId}`;
-        window.open(googleAuthUrl, '_system');
-        
+
+        pollIdRef.current = pollId;
+        pollingActiveRef.current = true;
+        localStorage.setItem('seaboo_pending_poll', JSON.stringify({ pollId, timestamp: Date.now() }));
+
         setIsPollingAuth(true);
         toast({
           title: "Accesso Google",
           description: "Completa il login nel browser. Tornerai automaticamente all'app.",
         });
-        
-        // Step 3: Poll every 2 seconds for auth completion
-        let attempts = 0;
-        const maxAttempts = 150; // 5 minutes max
-        const pollInterval = setInterval(async () => {
-          attempts++;
-          if (attempts > maxAttempts) {
-            clearInterval(pollInterval);
-            setIsPollingAuth(false);
-            toast({
-              title: "Timeout",
-              description: "Il login ha impiegato troppo tempo. Riprova.",
-              variant: "destructive",
-            });
-            return;
-          }
-          
-          try {
-            const res = await fetch(`${baseUrl}/api/auth/mobile-poll/${pollId}`, {
-              credentials: 'include'
-            });
-            
-            if (res.status === 404 || res.status === 410) {
-              clearInterval(pollInterval);
-              setIsPollingAuth(false);
-              toast({
-                title: "Errore",
-                description: "Sessione di login scaduta. Riprova.",
-                variant: "destructive",
-              });
-              return;
-            }
-            
-            const data = await res.json();
-            
-            if (data.status === 'completed' && data.user) {
-              clearInterval(pollInterval);
-              setIsPollingAuth(false);
-              console.log('Mobile auth polling success:', data.user.email);
-              localStorage.setItem('seaboo_user', JSON.stringify(data.user));
-              
-              const { queryClient } = await import('@/lib/queryClient');
-              queryClient.setQueryData(['/api/user'], data.user);
-              queryClient.invalidateQueries({ queryKey: ['/api/user'] });
-              
-              toast({
-                title: "Accesso completato!",
-                description: `Benvenuto, ${data.user.firstName || data.user.email}!`,
-              });
-              
-              window.location.href = '/';
-            }
-          } catch (e) {
-            // Ignore network errors, just retry
-          }
-        }, 2000);
-        
+
+        const googleAuthUrl = `${baseUrl}/api/auth/google?mobile=android&pollId=${pollId}`;
+        window.open(googleAuthUrl, '_system');
+
       } catch (error) {
         console.error('Error starting Google Sign In:', error);
+        pollingActiveRef.current = false;
+        pollIdRef.current = null;
+        localStorage.removeItem('seaboo_pending_poll');
         setIsPollingAuth(false);
         toast({
           title: "Errore",

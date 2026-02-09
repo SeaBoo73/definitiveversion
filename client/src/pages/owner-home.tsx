@@ -57,24 +57,13 @@ export default function OwnerHome() {
       <Header />
       
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              Ciao, {user?.firstName || 'Noleggiatore'}
-            </h1>
-            <p className="text-gray-500 text-sm">
-              {today.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' })}
-            </p>
-          </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => { exitOwnerMode(); navigate('/'); }}
-            className="text-gray-600 border-gray-300"
-          >
-            <ArrowLeftRight className="h-4 w-4 mr-1" />
-            Ospite
-          </Button>
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">
+            Ciao, {user?.firstName || 'Noleggiatore'}
+          </h1>
+          <p className="text-gray-500 text-sm">
+            {today.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' })}
+          </p>
         </div>
 
         <div className="grid grid-cols-3 gap-3 mb-6">
@@ -234,6 +223,14 @@ export default function OwnerHome() {
           </div>
         </div>
       </div>
+
+      <button
+        onClick={() => { exitOwnerMode(); navigate('/'); }}
+        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] bg-coral hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl transition-all flex items-center gap-2"
+      >
+        <ArrowLeftRight className="h-5 w-5" />
+        Modalita ospite
+      </button>
     </div>
   );
 }

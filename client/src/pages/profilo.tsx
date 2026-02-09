@@ -145,13 +145,6 @@ export default function ProfiloPage() {
 
   const settingsItems = [
     {
-      icon: AlertTriangle,
-      title: "⚠️ Elimina account",
-      subtitle: "Rimuovi permanentemente il tuo account",
-      action: () => setShowDeleteDialog(true),
-      danger: true
-    },
-    {
       icon: User,
       title: "Informazioni personali",
       subtitle: "Nome, email, telefono",
@@ -174,6 +167,13 @@ export default function ProfiloPage() {
       title: "Privacy e sicurezza",
       subtitle: "Impostazioni account",
       href: "/privacy-policy"
+    },
+    {
+      icon: AlertTriangle,
+      title: "Elimina account",
+      subtitle: "Rimuovi permanentemente il tuo account",
+      action: () => setShowDeleteDialog(true),
+      danger: true
     }
   ];
 
@@ -410,64 +410,6 @@ export default function ProfiloPage() {
           </CardContent>
         </Card>
 
-        {/* Delete Account */}
-        <Card className="border-red-200">
-          <CardHeader>
-            <CardTitle className="text-red-600">Zona pericolosa</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="text-sm text-gray-600">
-                <p className="mb-2">
-                  L'eliminazione del tuo account è permanente e irreversibile.
-                </p>
-                <p>
-                  Verranno eliminati tutti i tuoi dati, incluse prenotazioni, barche e informazioni personali.
-                </p>
-              </div>
-              
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    variant="destructive"
-                    className="w-full"
-                    data-testid="button-delete-account"
-                  >
-                    Elimina il mio account
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>
-                    <AlertDialogDescription className="space-y-2">
-                      <p>
-                        Questa azione non può essere annullata. Eliminerà permanentemente il tuo
-                        account e rimuoverà tutti i tuoi dati dai nostri server.
-                      </p>
-                      <p className="font-semibold text-red-600">
-                        Tutte le tue prenotazioni, barche (se sei proprietario) e dati personali
-                        verranno eliminati definitivamente.
-                      </p>
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel data-testid="button-cancel-delete">
-                      Annulla
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={handleDeleteAccount}
-                      className="bg-red-600 hover:bg-red-700"
-                      data-testid="button-confirm-delete"
-                      disabled={deleteAccountMutation.isPending}
-                    >
-                      {deleteAccountMutation.isPending ? "Eliminazione..." : "Sì, elimina il mio account"}
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Delete Account Dialog - Controllato dal menu */}

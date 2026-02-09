@@ -4,6 +4,7 @@ import { queryClient, apiRequest } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/hooks/use-auth";
+import { OwnerModeProvider } from "@/hooks/use-owner-mode";
 import { ProtectedRoute } from "./lib/protected-route";
 import HomePage from "@/pages/home-page";
 import { Onboarding } from "@/components/onboarding";
@@ -166,6 +167,9 @@ import ProfiloDatiBancariPage from "@/pages/profilo-dati-bancari";
 import SupportoPage from "@/pages/supporto";
 import ResetPasswordPage from "@/pages/reset-password";
 import OneriLocali from "@/pages/oneri-locali";
+import OwnerHome from "@/pages/owner-home";
+import OwnerCalendar from "@/pages/owner-calendar";
+import OwnerMessages from "@/pages/owner-messages";
 
 function Router() {
   return (
@@ -238,7 +242,10 @@ function Router() {
       <Route path="/boats/:boatId/availability" component={AvailabilityManagement} />
       <ProtectedRoute path="/messaging" component={MessagingPage} />
       <ProtectedRoute path="/document-management" component={DocumentManagement} />
+      <ProtectedRoute path="/owner-home" component={OwnerHome} />
+      <ProtectedRoute path="/owner-calendar" component={OwnerCalendar} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
+      <ProtectedRoute path="/owner-messages" component={OwnerMessages} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
       <Route path="/checkout" component={Checkout} />
       <Route path="/payment-success" component={PaymentSuccess} />
@@ -293,10 +300,12 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
-          <Toaster />
-          <Router />
-          <MobileNavigation />
+          <OwnerModeProvider>
+            {showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
+            <Toaster />
+            <Router />
+            <MobileNavigation />
+          </OwnerModeProvider>
         </AuthProvider>
       </QueryClientProvider>
     </ErrorBoundary>

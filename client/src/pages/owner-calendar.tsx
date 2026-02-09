@@ -3,163 +3,272 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/header";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Ship } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Ship, Anchor, Compass, ChevronRight, Calendar, MapPin } from "lucide-react";
+import { OwnerAvailabilityManager } from "@/components/owner-availability-manager";
+import { OwnerMooringAvailabilityManager } from "@/components/owner-mooring-availability-manager";
+import { OwnerExperienceAvailabilityManager } from "@/components/owner-experience-availability-manager";
+
+type TabType = "boats" | "moorings" | "experiences";
 
 export default function OwnerCalendar() {
   const { user } = useAuth();
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [activeTab, setActiveTab] = useState<TabType>("boats");
+  const [selectedBoatId, setSelectedBoatId] = useState<number | null>(null);
+  const [selectedMooringId, setSelectedMooringId] = useState<number | null>(null);
+  const [selectedExperienceId, setSelectedExperienceId] = useState<number | null>(null);
 
-  const { data: bookingsData } = useQuery<{ bookings: any[] }>({
-    queryKey: ["/api/owner/bookings"],
+  const { data: boatsData, isLoading: boatsLoading } = useQuery<any>({
+    queryKey: ["/api/owner/boats"],
   });
-  const bookings = bookingsData?.bookings || [];
+  const boats = boatsData?.boats || boatsData || [];
 
-  const year = currentMonth.getFullYear();
-  const month = currentMonth.getMonth();
+  const { data: mooringsData, isLoading: mooringsLoading } = useQuery<any>({
+    queryKey: ["/api/owner/moorings"],
+  });
+  const moorings = mooringsData?.moorings || mooringsData || [];
 
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const startDayOfWeek = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
-  const daysInMonth = lastDay.getDate();
+  const { data: experiencesData, isLoading: experiencesLoading } = useQuery<any>({
+    queryKey: ["/api/owner/experiences"],
+  });
+  const experiences = experiencesData?.experiences || experiencesData || [];
 
-  const prevMonth = () => setCurrentMonth(new Date(year, month - 1, 1));
-  const nextMonth = () => setCurrentMonth(new Date(year, month + 1, 1));
+  const tabs: { key: TabType; label: string; icon: any; count: number }[] = [
+    { key: "boats", label: "Imbarcazioni", icon: Ship, count: Array.isArray(boats) ? boats.length : 0 },
+    { key: "moorings", label: "Ormeggi", icon: Anchor, count: Array.isArray(moorings) ? moorings.length : 0 },
+    { key: "experiences", label: "Esperienze", icon: Compass, count: Array.isArray(experiences) ? experiences.length : 0 },
+  ];
 
-  const getBookingsForDay = (day: number) => {
-    const date = new Date(year, month, day);
-    return bookings.filter((b: any) => {
-      const start = new Date(b.startDate);
-      const end = new Date(b.endDate);
-      return date >= new Date(start.getFullYear(), start.getMonth(), start.getDate()) && 
-             date <= new Date(end.getFullYear(), end.getMonth(), end.getDate()) &&
-             b.status !== 'cancelled';
-    });
+  const handleSelectItem = (type: TabType, id: number) => {
+    if (type === "boats") {
+      setSelectedBoatId(selectedBoatId === id ? null : id);
+      setSelectedMooringId(null);
+      setSelectedExperienceId(null);
+    } else if (type === "moorings") {
+      setSelectedMooringId(selectedMooringId === id ? null : id);
+      setSelectedBoatId(null);
+      setSelectedExperienceId(null);
+    } else {
+      setSelectedExperienceId(selectedExperienceId === id ? null : id);
+      setSelectedBoatId(null);
+      setSelectedMooringId(null);
+    }
   };
 
-  const today = new Date();
-  const isToday = (day: number) => 
-    day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const selectedBookings = selectedDay ? getBookingsForDay(selectedDay) : [];
-
-  const weekDays = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+  const isLoading = activeTab === "boats" ? boatsLoading : activeTab === "moorings" ? mooringsLoading : experiencesLoading;
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
       <Header />
-      
+
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <Button variant="ghost" size="icon" onClick={prevMonth}>
-            <ChevronLeft className="h-5 w-5" />
-          </Button>
-          <h2 className="text-xl font-bold text-gray-900 capitalize">
-            {currentMonth.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}
-          </h2>
-          <Button variant="ghost" size="icon" onClick={nextMonth}>
-            <ChevronRight className="h-5 w-5" />
-          </Button>
+        <div className="flex items-center gap-3 mb-6">
+          <Calendar className="h-6 w-6 text-[#0077B6]" />
+          <h1 className="text-xl font-bold text-gray-900">Gestione Disponibilità</h1>
         </div>
 
-        <Card className="mb-6">
-          <CardContent className="p-4">
-            <div className="grid grid-cols-7 gap-1 mb-2">
-              {weekDays.map(d => (
-                <div key={d} className="text-center text-xs font-medium text-gray-500 py-1">{d}</div>
-              ))}
-            </div>
-            <div className="grid grid-cols-7 gap-1">
-              {Array.from({ length: startDayOfWeek }).map((_, i) => (
-                <div key={`empty-${i}`} className="h-10" />
-              ))}
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const day = i + 1;
-                const dayBookings = getBookingsForDay(day);
-                const hasBookings = dayBookings.length > 0;
-                const hasPending = dayBookings.some((b: any) => b.status === 'pending');
-                const isSelected = selectedDay === day;
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.key;
+            return (
+              <button
+                key={tab.key}
+                onClick={() => {
+                  setActiveTab(tab.key);
+                  setSelectedBoatId(null);
+                  setSelectedMooringId(null);
+                  setSelectedExperienceId(null);
+                }}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  isActive
+                    ? "bg-[#0077B6] text-white shadow-md"
+                    : "bg-white text-gray-600 border border-gray-200 hover:border-[#0077B6] hover:text-[#0077B6]"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {tab.label}
+                {tab.count > 0 && (
+                  <Badge variant={isActive ? "secondary" : "outline"} className={`ml-1 text-xs px-1.5 py-0 ${isActive ? "bg-white/20 text-white border-0" : ""}`}>
+                    {tab.count}
+                  </Badge>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-                return (
-                  <button
-                    key={day}
-                    onClick={() => setSelectedDay(isSelected ? null : day)}
-                    className={`h-10 rounded-lg text-sm font-medium relative transition-colors ${
-                      isSelected ? 'bg-ocean-blue text-white' :
-                      isToday(day) ? 'bg-blue-100 text-ocean-blue font-bold' :
-                      'hover:bg-gray-100'
-                    }`}
-                  >
-                    {day}
-                    {hasBookings && (
-                      <span className={`absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full ${
-                        hasPending ? 'bg-coral' : 
-                        isSelected ? 'bg-white' : 'bg-ocean-blue'
-                      }`} />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-
-        {selectedDay && (
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-3">
-              {selectedDay} {currentMonth.toLocaleDateString('it-IT', { month: 'long' })}
-            </h3>
-            {selectedBookings.length === 0 ? (
-              <Card>
-                <CardContent className="p-6 text-center">
-                  <Ship className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-                  <p className="text-gray-500 text-sm">Nessuna prenotazione</p>
+        {isLoading ? (
+          <div className="space-y-3">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="animate-pulse">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg" />
+                    <div className="flex-1">
+                      <div className="h-4 bg-gray-200 rounded w-1/3 mb-2" />
+                      <div className="h-3 bg-gray-100 rounded w-1/2" />
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
-            ) : (
+            ))}
+          </div>
+        ) : (
+          <>
+            {activeTab === "boats" && (
               <div className="space-y-3">
-                {selectedBookings.map((booking: any) => (
-                  <Card key={booking.id}>
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-blue-100 rounded-lg">
-                            <Ship className="h-5 w-5 text-ocean-blue" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-sm">{booking.boatName || 'Prenotazione'}</p>
-                            <p className="text-xs text-gray-500">
-                              {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
-                            </p>
-                            <p className="text-xs text-gray-500">{booking.guests} ospiti</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <span className={`text-xs px-2 py-1 rounded-full ${
-                            booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                            booking.status === 'pending' ? 'bg-orange-100 text-orange-700' :
-                            'bg-gray-100 text-gray-600'
-                          }`}>
-                            {booking.status === 'confirmed' ? 'Confermata' :
-                             booking.status === 'pending' ? 'In attesa' :
-                             booking.status}
-                          </span>
-                          <p className="text-sm font-semibold mt-1">€{booking.totalPrice}</p>
-                        </div>
-                      </div>
+                {(!Array.isArray(boats) || boats.length === 0) ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <Ship className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-500">Nessuna imbarcazione registrata</p>
+                      <p className="text-gray-400 text-sm mt-1">Aggiungi un'imbarcazione dalla Dashboard</p>
                     </CardContent>
                   </Card>
-                ))}
+                ) : (
+                  boats.map((boat: any) => (
+                    <div key={boat.id}>
+                      <Card
+                        className={`cursor-pointer transition-all ${
+                          selectedBoatId === boat.id ? "ring-2 ring-[#0077B6] shadow-md" : "hover:shadow-sm"
+                        }`}
+                        onClick={() => handleSelectItem("boats", boat.id)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-2.5 rounded-lg ${selectedBoatId === boat.id ? "bg-[#0077B6] text-white" : "bg-blue-50 text-[#0077B6]"}`}>
+                              <Ship className="h-5 w-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-gray-900 truncate">{boat.name}</h3>
+                              <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                                {boat.location && (
+                                  <span className="flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {boat.location}
+                                  </span>
+                                )}
+                                {boat.type && <span className="capitalize">{boat.type}</span>}
+                              </div>
+                            </div>
+                            <ChevronRight className={`h-5 w-5 text-gray-400 transition-transform ${selectedBoatId === boat.id ? "rotate-90" : ""}`} />
+                          </div>
+                        </CardContent>
+                      </Card>
+                      {selectedBoatId === boat.id && (
+                        <div className="mt-2 mb-4">
+                          <OwnerAvailabilityManager boatId={boat.id} />
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
             )}
-          </div>
-        )}
 
-        {!selectedDay && (
-          <div className="text-center text-gray-400 text-sm mt-4">
-            Tocca un giorno per vedere le prenotazioni
-          </div>
+            {activeTab === "moorings" && (
+              <div className="space-y-3">
+                {(!Array.isArray(moorings) || moorings.length === 0) ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <Anchor className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-500">Nessun ormeggio registrato</p>
+                      <p className="text-gray-400 text-sm mt-1">Aggiungi un ormeggio dalla Dashboard</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  moorings.map((mooring: any) => (
+                    <div key={mooring.id}>
+                      <Card
+                        className={`cursor-pointer transition-all ${
+                          selectedMooringId === mooring.id ? "ring-2 ring-[#0077B6] shadow-md" : "hover:shadow-sm"
+                        }`}
+                        onClick={() => handleSelectItem("moorings", mooring.id)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-2.5 rounded-lg ${selectedMooringId === mooring.id ? "bg-[#0077B6] text-white" : "bg-blue-50 text-[#0077B6]"}`}>
+                              <Anchor className="h-5 w-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-gray-900 truncate">{mooring.name}</h3>
+                              <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                                {mooring.port && (
+                                  <span className="flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {mooring.port}
+                                  </span>
+                                )}
+                                {mooring.size && <span>{mooring.size}</span>}
+                              </div>
+                            </div>
+                            <ChevronRight className={`h-5 w-5 text-gray-400 transition-transform ${selectedMooringId === mooring.id ? "rotate-90" : ""}`} />
+                          </div>
+                        </CardContent>
+                      </Card>
+                      {selectedMooringId === mooring.id && (
+                        <div className="mt-2 mb-4">
+                          <OwnerMooringAvailabilityManager mooringId={mooring.id} />
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {activeTab === "experiences" && (
+              <div className="space-y-3">
+                {(!Array.isArray(experiences) || experiences.length === 0) ? (
+                  <Card>
+                    <CardContent className="p-8 text-center">
+                      <Compass className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-500">Nessuna esperienza registrata</p>
+                      <p className="text-gray-400 text-sm mt-1">Aggiungi un'esperienza dalla Dashboard</p>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  experiences.map((exp: any) => (
+                    <div key={exp.id}>
+                      <Card
+                        className={`cursor-pointer transition-all ${
+                          selectedExperienceId === exp.id ? "ring-2 ring-[#0077B6] shadow-md" : "hover:shadow-sm"
+                        }`}
+                        onClick={() => handleSelectItem("experiences", exp.id)}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-2.5 rounded-lg ${selectedExperienceId === exp.id ? "bg-[#0077B6] text-white" : "bg-blue-50 text-[#0077B6]"}`}>
+                              <Compass className="h-5 w-5" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-gray-900 truncate">{exp.title || exp.name}</h3>
+                              <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                                {exp.location && (
+                                  <span className="flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {exp.location}
+                                  </span>
+                                )}
+                                {exp.category && <span className="capitalize">{exp.category}</span>}
+                              </div>
+                            </div>
+                            <ChevronRight className={`h-5 w-5 text-gray-400 transition-transform ${selectedExperienceId === exp.id ? "rotate-90" : ""}`} />
+                          </div>
+                        </CardContent>
+                      </Card>
+                      {selectedExperienceId === exp.id && (
+                        <div className="mt-2 mb-4">
+                          <OwnerExperienceAvailabilityManager experienceId={exp.id} />
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

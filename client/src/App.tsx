@@ -106,6 +106,7 @@ setupNativeAuthListener();
 import TestPage from "@/pages/test-page";
 import AuthPage from "@/pages/auth-page";
 import OwnerDashboard from "@/pages/owner-dashboard";
+import OwnerEarnings from "@/pages/owner-earnings";
 import CustomerDashboard from "@/pages/customer-dashboard";
 import BoatDetails from "@/pages/boat-details";
 import BoatBooking from "@/pages/boat-booking";
@@ -245,6 +246,7 @@ function Router() {
       <ProtectedRoute path="/owner-home" component={OwnerHome} />
       <ProtectedRoute path="/owner-calendar" component={OwnerCalendar} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
+      <ProtectedRoute path="/guadagni" component={OwnerEarnings} />
       <ProtectedRoute path="/owner-messages" component={OwnerMessages} />
       <ProtectedRoute path="/customer-dashboard" component={CustomerDashboard} />
       <Route path="/checkout" component={Checkout} />

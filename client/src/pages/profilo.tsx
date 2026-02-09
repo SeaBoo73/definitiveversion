@@ -271,7 +271,7 @@ export default function ProfiloPage() {
 
         {/* Guadagni Totali - Solo Owner */}
         {isOwner && (
-          <Link href="/owner-dashboard?tab=analytics">
+          <Link href="/guadagni">
             <a>
               <Card className="mb-6 cursor-pointer transition-all hover:shadow-md border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50">
                 <CardContent className="p-5">

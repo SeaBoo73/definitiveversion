@@ -3727,6 +3727,28 @@ export default function OwnerDashboard() {
               </CardContent>
             </Card>
 
+            {/* Guadagni Totali */}
+            <Card 
+              className="cursor-pointer transition-all hover:shadow-md border-emerald-200 bg-emerald-50/50"
+              onClick={() => setActiveTab('analytics')}
+            >
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                      <Euro className="h-6 w-6 text-emerald-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-600">Guadagni totali</p>
+                      <p className="text-2xl font-bold text-emerald-700">€{totalEarnings.toFixed(2)}</p>
+                      <p className="text-xs text-gray-500">Clicca per i dettagli</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Sicurezza Account */}
             <Card>
               <CardHeader>

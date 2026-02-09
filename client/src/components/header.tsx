@@ -239,7 +239,7 @@ export function Header() {
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem asChild>
                     <Link 
-                      href={user.role === "owner" ? "/owner-dashboard?tab=profile" : "/customer-dashboard?tab=profile"} 
+                      href="/profilo" 
                       className="flex items-center gap-2 w-full"
                     >
                       <User className="h-4 w-4" />

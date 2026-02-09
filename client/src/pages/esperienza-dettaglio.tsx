@@ -14,12 +14,30 @@ import {
   Euro,
   Phone,
   Mail,
+  Heart,
   CheckCircle2
 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { useFavorites } from "@/hooks/use-favorites";
 
 export default function EsperienzaDettaglio() {
   const [match, params] = useRoute("/esperienza/:tipo");
   const tipo = params?.tipo || "";
+  const { user } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
+
+  const experienceIdMap: Record<string, number> = {
+    "tramonto": 1,
+    "tour-isole": 2,
+    "vela": 3,
+    "pesca": 4,
+    "cena": 5,
+    "aperitivo": 6,
+    "romantico": 7,
+    "charter": 8,
+  };
+
+  const currentExpId = experienceIdMap[tipo] || 0;
 
   const esperienze = {
     "tramonto": {
@@ -127,6 +145,17 @@ export default function EsperienzaDettaglio() {
               <span className="font-medium">{esperienza.rating}</span>
               <span className="text-blue-200">({esperienza.reviews} recensioni)</span>
             </div>
+            {user && currentExpId > 0 && (
+              <Button
+                size="sm"
+                variant="secondary"
+                onClick={() => toggleFavorite('experience', currentExpId)}
+                className="ml-auto"
+              >
+                <Heart className={`h-4 w-4 mr-1 ${isFavorite('experience', currentExpId) ? 'fill-red-500 text-red-500' : ''}`} />
+                {isFavorite('experience', currentExpId) ? 'Salvato' : 'Salva'}
+              </Button>
+            )}
           </div>
           
           <h1 className="text-4xl font-bold mb-4">{esperienza.title}</h1>

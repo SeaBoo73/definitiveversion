@@ -7,6 +7,8 @@ import { PortSelector } from "@/components/port-selector";
 import { Link } from "wouter";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
+import { useFavorites } from "@/hooks/use-favorites";
 import { 
   Sunset, 
   MapPin, 
@@ -28,6 +30,8 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 
 export function EsperienzePage() {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const [porto, setPorto] = useState("");
   const [dataDal, setDataDal] = useState("");
   const [dataAl, setDataAl] = useState("");
@@ -42,14 +46,14 @@ export function EsperienzePage() {
   };
 
   const experienceTypes = [
-    { icon: <Sunset className="h-8 w-8" />, title: "Tramonti in barca", description: "Gite al tramonto con aperitivo" },
-    { icon: <MapPin className="h-8 w-8" />, title: "Tour delle isole", description: "Esplora calette nascoste" },
-    { icon: <Sailboat className="h-8 w-8" />, title: "Giornate in vela", description: "Navigazione rilassante" },
-    { icon: <Fish className="h-8 w-8" />, title: "Pesca sportiva", description: "Con pescatore locale" },
-    { icon: <ChefHat className="h-8 w-8" />, title: "Cena a bordo", description: "Chef privato a bordo" },
-    { icon: <Wine className="h-8 w-8" />, title: "Aperitivo in rada", description: "Bollicine al tramonto" },
-    { icon: <Heart className="h-8 w-8" />, title: "Eventi romantici", description: "Proposte e anniversari" },
-    { icon: <Ship className="h-8 w-8" />, title: "Charter premium", description: "Yacht con equipaggio" },
+    { id: 1, icon: <Sunset className="h-8 w-8" />, title: "Tramonti in barca", description: "Gite al tramonto con aperitivo" },
+    { id: 2, icon: <MapPin className="h-8 w-8" />, title: "Tour delle isole", description: "Esplora calette nascoste" },
+    { id: 3, icon: <Sailboat className="h-8 w-8" />, title: "Giornate in vela", description: "Navigazione rilassante" },
+    { id: 4, icon: <Fish className="h-8 w-8" />, title: "Pesca sportiva", description: "Con pescatore locale" },
+    { id: 5, icon: <ChefHat className="h-8 w-8" />, title: "Cena a bordo", description: "Chef privato a bordo" },
+    { id: 6, icon: <Wine className="h-8 w-8" />, title: "Aperitivo in rada", description: "Bollicine al tramonto" },
+    { id: 7, icon: <Heart className="h-8 w-8" />, title: "Eventi romantici", description: "Proposte e anniversari" },
+    { id: 8, icon: <Ship className="h-8 w-8" />, title: "Charter premium", description: "Yacht con equipaggio" },
   ];
 
   return (
@@ -191,8 +195,20 @@ export function EsperienzePage() {
                 Tipologie di esperienze
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {experienceTypes.map((type, index) => (
-                  <Card key={index} className="text-center hover:shadow-md transition-shadow">
+                {experienceTypes.map((type) => (
+                  <Card key={type.id} className="text-center hover:shadow-md transition-shadow relative">
+                    {user && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleFavorite('experience', type.id);
+                        }}
+                        className="absolute top-2 right-2 z-10 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+                      >
+                        <Heart className={`h-4 w-4 ${isFavorite('experience', type.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+                      </button>
+                    )}
                     <CardContent className="py-6">
                       <div className="flex justify-center mb-3 text-blue-500">
                         {type.icon}

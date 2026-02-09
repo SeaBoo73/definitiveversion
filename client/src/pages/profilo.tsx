@@ -467,7 +467,7 @@ export default function ProfiloPage() {
       </AlertDialog>
 
       <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Modifica profilo</DialogTitle>
           </DialogHeader>

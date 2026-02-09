@@ -22,11 +22,9 @@ import { SEOHead, seoConfigs } from "@/components/seo-head";
 import { StructuredData } from "@/components/structured-data";
 import { QuickRegistration } from "@/components/quick-registration";
 import { useAuth } from "@/hooks/use-auth";
-import { useOwnerMode } from "@/hooks/use-owner-mode";
 
 export default function HomePage() {
   const { user } = useAuth();
-  const { enterOwnerMode } = useOwnerMode();
   const { data, isLoading } = useQuery<{ boats: Boat[] }>({
     queryKey: ["/api/boats"],
   });
@@ -421,19 +419,6 @@ export default function HomePage() {
       )}
 
       <Footer />
-
-      {user?.role === 'owner' && (
-        <button
-          onClick={() => {
-            enterOwnerMode();
-            setLocation('/owner-home');
-          }}
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] bg-coral hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl transition-all flex items-center gap-2"
-        >
-          <Ship className="h-5 w-5" />
-          Modalita noleggiatore
-        </button>
-      )}
 
       <LiveChatButton />
     </div>

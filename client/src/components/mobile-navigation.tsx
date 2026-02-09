@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useOwnerMode } from "@/hooks/use-owner-mode";
+import { ModeSwitchButton } from "@/components/mode-switch-button";
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -109,7 +110,9 @@ export function MobileNavigation() {
   const hoverColor = showOwnerNav ? "hover:text-coral" : "hover:text-ocean-blue";
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 bg-white border-t ${showOwnerNav ? 'border-orange-200' : 'border-gray-200'} z-[100] md:hidden`} style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)' }}>
+    <>
+      <ModeSwitchButton />
+      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t ${showOwnerNav ? 'border-orange-200' : 'border-gray-200'} z-[100] md:hidden`} style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 16px)' }}>
       <div className="flex items-center justify-around py-3 px-2">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -131,5 +134,6 @@ export function MobileNavigation() {
         })}
       </div>
     </div>
+    </>
   );
 }

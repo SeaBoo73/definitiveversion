@@ -1,23 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
-import { useOwnerMode } from "@/hooks/use-owner-mode";
 import { Header } from "@/components/header";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useLocation } from "wouter";
 import { 
   CalendarDays, 
   Ship, 
   Bell, 
   Clock, 
-  ChevronRight,
-  ArrowLeftRight
+  ChevronRight
 } from "lucide-react";
 
 export default function OwnerHome() {
   const { user } = useAuth();
-  const { exitOwnerMode } = useOwnerMode();
-  const [, navigate] = useLocation();
 
   const { data: bookingsData } = useQuery<{ bookings: any[] }>({
     queryKey: ["/api/owner/bookings"],
@@ -224,13 +218,6 @@ export default function OwnerHome() {
         </div>
       </div>
 
-      <button
-        onClick={() => { exitOwnerMode(); navigate('/'); }}
-        className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] bg-coral hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl transition-all flex items-center gap-2"
-      >
-        <ArrowLeftRight className="h-5 w-5" />
-        Modalita ospite
-      </button>
     </div>
   );
 }

@@ -65,6 +65,12 @@ export const users = pgTable("users", {
   // User bio/description
   bio: text("bio"),
   
+  // Notification preferences
+  notifEmail: boolean("notif_email").default(true),
+  notifPush: boolean("notif_push").default(true),
+  notifBooking: boolean("notif_booking").default(true),
+  notifPromo: boolean("notif_promo").default(false),
+
   // Banking information for owners
   iban: varchar("iban", { length: 34 }),
   bankName: varchar("bank_name", { length: 100 }),

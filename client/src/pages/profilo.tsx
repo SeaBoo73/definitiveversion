@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
@@ -196,6 +198,34 @@ export default function ProfiloPage() {
   const [notifPush, setNotifPush] = useState(true);
   const [notifBooking, setNotifBooking] = useState(true);
   const [notifPromo, setNotifPromo] = useState(false);
+
+  const { data: notifPrefs } = useQuery<{ notifEmail: boolean; notifPush: boolean; notifBooking: boolean; notifPromo: boolean }>({
+    queryKey: ['/api/user/notifications'],
+    enabled: !!user,
+  });
+
+  useEffect(() => {
+    if (notifPrefs) {
+      setNotifEmail(notifPrefs.notifEmail);
+      setNotifPush(notifPrefs.notifPush);
+      setNotifBooking(notifPrefs.notifBooking);
+      setNotifPromo(notifPrefs.notifPromo);
+    }
+  }, [notifPrefs]);
+
+  const saveNotifMutation = useMutation({
+    mutationFn: async (prefs: { notifEmail: boolean; notifPush: boolean; notifBooking: boolean; notifPromo: boolean }) => {
+      await apiRequest('PATCH', '/api/user/notifications', prefs);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/user/notifications'] });
+      toast({ title: "Notifiche aggiornate", description: "Le preferenze sono state salvate" });
+      setShowNotificheDialog(false);
+    },
+    onError: () => {
+      toast({ title: "Errore", description: "Impossibile salvare le preferenze", variant: "destructive" });
+    },
+  });
 
   const settingsItems = [
     {
@@ -621,12 +651,12 @@ export default function ProfiloPage() {
             <div className="pt-2">
               <Button 
                 className="w-full bg-ocean-blue hover:bg-blue-600"
+                disabled={saveNotifMutation.isPending}
                 onClick={() => {
-                  toast({ title: "Notifiche aggiornate", description: "Le preferenze sono state salvate" });
-                  setShowNotificheDialog(false);
+                  saveNotifMutation.mutate({ notifEmail, notifPush, notifBooking, notifPromo });
                 }}
               >
-                Salva preferenze
+                {saveNotifMutation.isPending ? "Salvataggio..." : "Salva preferenze"}
               </Button>
             </div>
           </div>

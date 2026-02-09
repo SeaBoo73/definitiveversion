@@ -784,6 +784,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get notification preferences
+  app.get('/api/user/notifications', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const user = await storage.getUser(userId);
+      if (!user) return res.status(404).json({ error: "Utente non trovato" });
+      res.json({
+        notifEmail: user.notifEmail ?? true,
+        notifPush: user.notifPush ?? true,
+        notifBooking: user.notifBooking ?? true,
+        notifPromo: user.notifPromo ?? false,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Errore nel recupero delle preferenze" });
+    }
+  });
+
+  // Save notification preferences
+  app.patch('/api/user/notifications', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const { notifEmail, notifPush, notifBooking, notifPromo } = req.body;
+      await storage.updateUser(userId, {
+        notifEmail: notifEmail ?? true,
+        notifPush: notifPush ?? true,
+        notifBooking: notifBooking ?? true,
+        notifPromo: notifPromo ?? false,
+      });
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Errore nel salvataggio delle preferenze" });
+    }
+  });
+
   // Apple Sign In callback endpoint
   app.post('/auth/apple/callback', async (req, res) => {
     try {

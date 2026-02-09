@@ -16,11 +16,11 @@ export default function PrivacyPolicyPage() {
         <div className="mb-6">
           <Button
             variant="ghost"
-            onClick={() => setLocation("/")}
+            onClick={() => setLocation("/profilo")}
             className="text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Torna alla home
+            Torna al profilo
           </Button>
         </div>
 

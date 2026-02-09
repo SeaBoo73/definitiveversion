@@ -155,6 +155,19 @@ export default function ProfiloPage() {
   const ownerEarnings = isOwner ? (bookingsData?.bookings || [])
     .filter((b: any) => b.status === 'completed')
     .reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) : 0;
+
+  const { data: userReviews = [] } = useQuery<any[]>({
+    queryKey: ['/api/reviews/user', user?.id],
+    queryFn: async () => {
+      const res = await fetch(`/api/reviews/user/${user?.id}`);
+      return res.json();
+    },
+    enabled: !!user?.id,
+  });
+
+  const avgRating = userReviews.length > 0
+    ? (userReviews.reduce((sum: number, r: any) => sum + (r.rating || 0), 0) / userReviews.length).toFixed(1)
+    : null;
   
   const menuItems = [
     ...(!isOwner ? [{
@@ -324,10 +337,18 @@ export default function ProfiloPage() {
                   </h1>
                   <p className="text-gray-600 text-sm truncate">{user.email}</p>
                   <div className="flex items-center gap-3 mt-2">
-                    <div className="flex items-center text-sm text-yellow-500">
-                      <Star className="h-4 w-4 mr-1 fill-yellow-400" />
-                      <span className="font-semibold">4.8</span>
-                    </div>
+                    {avgRating ? (
+                      <div className="flex items-center text-sm text-yellow-500">
+                        <Star className="h-4 w-4 mr-1 fill-yellow-400" />
+                        <span className="font-semibold">{avgRating}</span>
+                        <span className="text-gray-400 text-xs ml-1">({userReviews.length})</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center text-sm text-gray-400">
+                        <Star className="h-4 w-4 mr-1" />
+                        <span className="text-xs">Nessuna recensione</span>
+                      </div>
+                    )}
                     <div className="flex items-center text-sm text-gray-500">
                       <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
                       <span>Membro dal 2025</span>

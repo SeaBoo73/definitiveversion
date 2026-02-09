@@ -6,6 +6,9 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Link, useLocation } from "wouter";
 import {
   AlertDialog,
@@ -18,8 +21,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { 
   User, 
@@ -74,6 +83,29 @@ export default function ProfiloPage() {
 
   const handleDeleteAccount = () => {
     deleteAccountMutation.mutate();
+  };
+
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editFirstName, setEditFirstName] = useState(user?.firstName || "");
+  const [editLastName, setEditLastName] = useState(user?.lastName || "");
+  const [editPhone, setEditPhone] = useState(user?.phone || "");
+
+  const updateProfileMutation = useMutation({
+    mutationFn: async (data: { firstName: string; lastName: string; phone: string }) => {
+      return await apiRequest("PATCH", "/api/user/profile", data);
+    },
+    onSuccess: () => {
+      toast({ title: "Profilo aggiornato", description: "Le modifiche sono state salvate" });
+      setShowEditDialog(false);
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+    },
+    onError: (error: any) => {
+      toast({ title: "Errore", description: error.message || "Impossibile aggiornare il profilo", variant: "destructive" });
+    },
+  });
+
+  const handleSaveProfile = () => {
+    updateProfileMutation.mutate({ firstName: editFirstName, lastName: editLastName, phone: editPhone });
   };
 
   const isOwner = user?.role === "owner";
@@ -246,7 +278,17 @@ export default function ProfiloPage() {
                   </div>
                 </div>
               </div>
-              <Button variant="outline" size="sm" className="self-start sm:self-center flex-shrink-0">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="self-start sm:self-center flex-shrink-0"
+                onClick={() => {
+                  setEditFirstName(user.firstName || "");
+                  setEditLastName(user.lastName || "");
+                  setEditPhone(user.phone || "");
+                  setShowEditDialog(true);
+                }}
+              >
                 <Settings className="h-4 w-4 mr-2" />
                 Modifica
               </Button>
@@ -429,6 +471,56 @@ export default function ProfiloPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Modifica profilo</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="space-y-2">
+              <Label htmlFor="edit-firstName">Nome</Label>
+              <Input
+                id="edit-firstName"
+                value={editFirstName}
+                onChange={(e) => setEditFirstName(e.target.value)}
+                placeholder="Il tuo nome"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-lastName">Cognome</Label>
+              <Input
+                id="edit-lastName"
+                value={editLastName}
+                onChange={(e) => setEditLastName(e.target.value)}
+                placeholder="Il tuo cognome"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit-phone">Telefono</Label>
+              <Input
+                id="edit-phone"
+                value={editPhone}
+                onChange={(e) => setEditPhone(e.target.value)}
+                placeholder="+39 123 456 7890"
+                type="tel"
+              />
+            </div>
+            <div className="flex gap-3 pt-2">
+              <Button variant="outline" className="flex-1" onClick={() => setShowEditDialog(false)}>
+                Annulla
+              </Button>
+              <Button 
+                className="flex-1 bg-ocean-blue hover:bg-blue-600"
+                onClick={handleSaveProfile}
+                disabled={updateProfileMutation.isPending}
+              >
+                {updateProfileMutation.isPending ? "Salvataggio..." : "Salva"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Footer />
     </div>

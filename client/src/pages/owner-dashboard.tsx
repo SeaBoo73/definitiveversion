@@ -1380,18 +1380,45 @@ export default function OwnerDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {activeTab === 'boats' && (
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">Le mie imbarcazioni</h2>
+              <Button className="bg-ocean-blue hover:bg-blue-600" onClick={() => setShowAddBoatModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Aggiungi imbarcazione
+              </Button>
+            </div>
+          )}
+          {activeTab === 'moorings' && (
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">I miei ormeggi</h2>
+              <Button className="bg-blue-600 hover:bg-blue-700" onClick={() => setShowAddMooringModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Aggiungi ormeggio
+              </Button>
+            </div>
+          )}
+          {activeTab === 'experiences' && (
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">Le mie esperienze</h2>
+              <Button className="bg-coral hover:bg-orange-600" onClick={() => setShowAddExperienceModal(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Aggiungi esperienza
+              </Button>
+            </div>
+          )}
+          <div className="flex flex-col gap-3">
             <Card 
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'boats' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('boats')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Ship className="h-5 w-5 text-ocean-blue" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-blue-100 rounded-lg">
+                  <Ship className="h-6 w-6 text-ocean-blue" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Imbarcazioni</p>
-                  <p className="text-xl font-bold">{boats?.length || 0}</p>
+                  <p className="text-gray-600 text-sm">Imbarcazioni</p>
+                  <p className="text-2xl font-bold">{boats?.length || 0}</p>
                 </div>
               </CardContent>
             </Card>
@@ -1400,13 +1427,13 @@ export default function OwnerDashboard() {
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'moorings' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('moorings')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-teal-100 rounded-lg">
-                  <Anchor className="h-5 w-5 text-teal-600" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-teal-100 rounded-lg">
+                  <Anchor className="h-6 w-6 text-teal-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Ormeggi</p>
-                  <p className="text-xl font-bold">{moorings?.length || 0}</p>
+                  <p className="text-gray-600 text-sm">Ormeggi</p>
+                  <p className="text-2xl font-bold">{moorings?.length || 0}</p>
                 </div>
               </CardContent>
             </Card>
@@ -1415,13 +1442,13 @@ export default function OwnerDashboard() {
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'experiences' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('experiences')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Sparkles className="h-5 w-5 text-orange-500" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-orange-100 rounded-lg">
+                  <Sparkles className="h-6 w-6 text-orange-500" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Esperienze</p>
-                  <p className="text-xl font-bold">{experiencesData?.length || 0}</p>
+                  <p className="text-gray-600 text-sm">Esperienze</p>
+                  <p className="text-2xl font-bold">{experiencesData?.length || 0}</p>
                 </div>
               </CardContent>
             </Card>
@@ -1430,13 +1457,13 @@ export default function OwnerDashboard() {
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'bookings' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('bookings')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <Calendar className="h-5 w-5 text-green-600" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-green-100 rounded-lg">
+                  <Calendar className="h-6 w-6 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Prenotazioni</p>
-                  <p className="text-xl font-bold">{bookings?.filter((b: any) => {
+                  <p className="text-gray-600 text-sm">Prenotazioni (mese)</p>
+                  <p className="text-2xl font-bold">{bookings?.filter((b: any) => {
                     const bookingDate = new Date(b.startDate);
                     const now = new Date();
                     return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear();
@@ -1449,13 +1476,13 @@ export default function OwnerDashboard() {
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'analytics' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('analytics')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-emerald-100 rounded-lg">
-                  <Euro className="h-5 w-5 text-emerald-600" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-emerald-100 rounded-lg">
+                  <Euro className="h-6 w-6 text-emerald-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Guadagni</p>
-                  <p className="text-xl font-bold">€{((bookings?.filter((b: any) => b.status === 'completed').reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) || 0)).toFixed(2)}</p>
+                  <p className="text-gray-600 text-sm">Guadagni totali</p>
+                  <p className="text-2xl font-bold">€{((bookings?.filter((b: any) => b.status === 'completed').reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) || 0)).toFixed(2)}</p>
                 </div>
               </CardContent>
             </Card>
@@ -1464,13 +1491,13 @@ export default function OwnerDashboard() {
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'messages' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('messages')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <MessageCircle className="h-5 w-5 text-purple-600" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <MessageCircle className="h-6 w-6 text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Messaggi</p>
-                  <p className="text-xl font-bold">0</p>
+                  <p className="text-gray-600 text-sm">Messaggi</p>
+                  <p className="text-2xl font-bold">0</p>
                 </div>
               </CardContent>
             </Card>
@@ -1479,13 +1506,13 @@ export default function OwnerDashboard() {
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'reports' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('reports')}
             >
-              <CardContent className="flex items-center gap-3 p-3">
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Receipt className="h-5 w-5 text-orange-600" />
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-orange-100 rounded-lg">
+                  <Receipt className="h-6 w-6 text-orange-600" />
                 </div>
                 <div>
-                  <p className="text-gray-600 text-xs">Report</p>
-                  <p className="text-xl font-bold">Genera</p>
+                  <p className="text-gray-600 text-sm">Report mensili</p>
+                  <p className="text-2xl font-bold">Genera</p>
                 </div>
               </CardContent>
             </Card>

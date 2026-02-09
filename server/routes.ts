@@ -611,7 +611,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/user/profile', requireAuth, async (req, res) => {
     try {
       const userId = parseInt(req.session.user!.id);
-      const { firstName, lastName, phone, profileImage, bio, iban, bankName, accountHolder, swiftBic } = req.body;
+      const { firstName, lastName, phone, profileImage, bio, residenceAddress, billingAddress, billingAddressSameAsResidence, iban, bankName, accountHolder, swiftBic } = req.body;
       
       console.log('[PROFILE UPDATE] User ID:', userId, 'Data received:', { firstName, lastName, phone, bio: bio ? 'has bio' : 'no bio', iban: iban ? 'has iban' : 'no iban' });
       
@@ -624,6 +624,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         phone,
         profileImage,
         bio,
+        residenceAddress,
+        billingAddress: billingAddressSameAsResidence ? residenceAddress : billingAddress,
+        billingAddressSameAsResidence,
         iban: encryptedBanking.iban,
         bankName: encryptedBanking.bankName,
         accountHolder: encryptedBanking.accountHolder,

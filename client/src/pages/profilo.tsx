@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Link, useLocation } from "wouter";
 import {
   AlertDialog,
@@ -91,6 +92,9 @@ export default function ProfiloPage() {
   const [editFirstName, setEditFirstName] = useState(user?.firstName || "");
   const [editLastName, setEditLastName] = useState(user?.lastName || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
+  const [editResidenceAddress, setEditResidenceAddress] = useState(user?.residenceAddress || "");
+  const [editBillingAddress, setEditBillingAddress] = useState(user?.billingAddress || "");
+  const [billingSameAsResidence, setBillingSameAsResidence] = useState(user?.billingAddressSameAsResidence !== false);
 
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
 
@@ -117,7 +121,7 @@ export default function ProfiloPage() {
   };
 
   const updateProfileMutation = useMutation({
-    mutationFn: async (data: { firstName: string; lastName: string; phone: string }) => {
+    mutationFn: async (data: { firstName: string; lastName: string; phone: string; residenceAddress: string; billingAddress: string; billingAddressSameAsResidence: boolean }) => {
       return await apiRequest("PATCH", "/api/user/profile", data);
     },
     onSuccess: () => {
@@ -131,7 +135,14 @@ export default function ProfiloPage() {
   });
 
   const handleSaveProfile = () => {
-    updateProfileMutation.mutate({ firstName: editFirstName, lastName: editLastName, phone: editPhone });
+    updateProfileMutation.mutate({ 
+      firstName: editFirstName, 
+      lastName: editLastName, 
+      phone: editPhone,
+      residenceAddress: editResidenceAddress,
+      billingAddress: billingSameAsResidence ? editResidenceAddress : editBillingAddress,
+      billingAddressSameAsResidence: billingSameAsResidence,
+    });
   };
 
   const isOwner = user?.role === "owner";
@@ -518,6 +529,37 @@ export default function ProfiloPage() {
                 type="tel"
               />
             </div>
+            <Separator />
+            <div className="space-y-2">
+              <Label htmlFor="edit-residence">Indirizzo di residenza</Label>
+              <Input
+                id="edit-residence"
+                value={editResidenceAddress}
+                onChange={(e) => setEditResidenceAddress(e.target.value)}
+                placeholder="Via Roma 1, 00100 Roma (RM)"
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="billing-same"
+                checked={billingSameAsResidence}
+                onCheckedChange={(checked) => setBillingSameAsResidence(checked === true)}
+              />
+              <Label htmlFor="billing-same" className="text-sm font-normal cursor-pointer">
+                Indirizzo di fatturazione uguale a quello di residenza
+              </Label>
+            </div>
+            {!billingSameAsResidence && (
+              <div className="space-y-2">
+                <Label htmlFor="edit-billing">Indirizzo di fatturazione</Label>
+                <Input
+                  id="edit-billing"
+                  value={editBillingAddress}
+                  onChange={(e) => setEditBillingAddress(e.target.value)}
+                  placeholder="Via Milano 2, 20100 Milano (MI)"
+                />
+              </div>
+            )}
             <div className="flex gap-3 pt-2">
               <Button variant="outline" className="flex-1" onClick={() => setShowEditDialog(false)}>
                 Annulla

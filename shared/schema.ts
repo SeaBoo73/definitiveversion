@@ -55,6 +55,10 @@ export const users = pgTable("users", {
   
   birthDate: date("birth_date"),
   
+  residenceAddress: text("residence_address"),
+  billingAddress: text("billing_address"),
+  billingAddressSameAsResidence: boolean("billing_address_same_as_residence").default(true),
+  
   // Profile image (base64)
   profileImage: text("profile_image"),
   

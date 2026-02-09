@@ -12,6 +12,7 @@ import {
   reviews,
   invoices,
   localFees,
+  favorites,
   type User,
   type InsertUser,
   type Boat,
@@ -37,6 +38,8 @@ import {
   type InsertInvoice,
   type LocalFee,
   type InsertLocalFee,
+  type Favorite,
+  type InsertFavorite,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte, or, ilike } from "drizzle-orm";
@@ -133,6 +136,12 @@ export interface IStorage {
   getLocalFeesByArea(region?: string, municipality?: string, port?: string): Promise<LocalFee[]>;
   createLocalFee(data: InsertLocalFee): Promise<LocalFee>;
   updateLocalFee(id: number, data: Partial<InsertLocalFee>): Promise<LocalFee | undefined>;
+  
+  // Favorites operations
+  getFavoritesByUser(userId: number): Promise<Favorite[]>;
+  addFavorite(data: InsertFavorite): Promise<Favorite>;
+  removeFavorite(userId: number, itemType: string, itemId: number): Promise<boolean>;
+  isFavorite(userId: number, itemType: string, itemId: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -611,6 +620,44 @@ export class DatabaseStorage implements IStorage {
       updatedAt: new Date(),
     }).where(eq(localFees.id, id)).returning();
     return fee;
+  }
+  async getFavoritesByUser(userId: number): Promise<Favorite[]> {
+    return await db.select().from(favorites).where(eq(favorites.userId, userId));
+  }
+
+  async addFavorite(data: InsertFavorite): Promise<Favorite> {
+    const existing = await db.select().from(favorites).where(
+      and(
+        eq(favorites.userId, data.userId),
+        eq(favorites.itemType, data.itemType),
+        eq(favorites.itemId, data.itemId)
+      )
+    );
+    if (existing.length > 0) return existing[0];
+    const [fav] = await db.insert(favorites).values(data).returning();
+    return fav;
+  }
+
+  async removeFavorite(userId: number, itemType: string, itemId: number): Promise<boolean> {
+    const result = await db.delete(favorites).where(
+      and(
+        eq(favorites.userId, userId),
+        eq(favorites.itemType, itemType),
+        eq(favorites.itemId, itemId)
+      )
+    ).returning();
+    return result.length > 0;
+  }
+
+  async isFavorite(userId: number, itemType: string, itemId: number): Promise<boolean> {
+    const result = await db.select().from(favorites).where(
+      and(
+        eq(favorites.userId, userId),
+        eq(favorites.itemType, itemType),
+        eq(favorites.itemId, itemId)
+      )
+    );
+    return result.length > 0;
   }
 }
 

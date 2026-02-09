@@ -98,8 +98,8 @@ export default function ProfiloPage() {
     {
       icon: Heart,
       title: "Lista dei preferiti",
-      subtitle: "Barche salvate",
-      href: "/customer-dashboard",
+      subtitle: "Barche, ormeggi ed esperienze salvate",
+      href: "/preferiti",
       color: "text-red-500"
     },
     {

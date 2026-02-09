@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useAuth } from "@/hooks/use-auth";
 
 const FAVORITES_KEY = 'seaboo_favorites_moorings';
 
@@ -49,4 +52,53 @@ export function useMooringFavorites() {
   const isFavorite = (mooringId: string) => favorites.some(f => f.id === mooringId);
 
   return { favorites, toggleFavorite, isFavorite };
+}
+
+export function useFavorites() {
+  const { user } = useAuth();
+
+  const { data, isLoading } = useQuery<{ favorites: any[] }>({
+    queryKey: ["/api/favorites"],
+    enabled: !!user,
+  });
+
+  const favorites = data?.favorites || [];
+
+  const addMutation = useMutation({
+    mutationFn: async ({ itemType, itemId }: { itemType: string; itemId: number }) => {
+      return await apiRequest("POST", "/api/favorites", { itemType, itemId });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/favorites"] });
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: async ({ itemType, itemId }: { itemType: string; itemId: number }) => {
+      return await apiRequest("DELETE", "/api/favorites", { itemType, itemId });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/favorites"] });
+    },
+  });
+
+  const isFavorite = (itemType: string, itemId: number) => {
+    return favorites.some((f: any) => f.itemType === itemType && f.itemId === itemId);
+  };
+
+  const toggleFavorite = (itemType: string, itemId: number) => {
+    if (isFavorite(itemType, itemId)) {
+      removeMutation.mutate({ itemType, itemId });
+    } else {
+      addMutation.mutate({ itemType, itemId });
+    }
+  };
+
+  return {
+    favorites,
+    isLoading,
+    isFavorite,
+    toggleFavorite,
+    isToggling: addMutation.isPending || removeMutation.isPending,
+  };
 }

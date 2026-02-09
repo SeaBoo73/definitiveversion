@@ -26,10 +26,14 @@ import {
   ArrowLeft
 } from "lucide-react";
 import { Boat } from "@shared/schema";
+import { useAuth } from "@/hooks/use-auth";
+import { useFavorites } from "@/hooks/use-favorites";
 
 export default function BoatDetails() {
   const [location, setLocation] = useLocation();
   const [showBookingModal, setShowBookingModal] = useState(false);
+  const { user } = useAuth();
+  const { isFavorite, toggleFavorite } = useFavorites();
   
   // Extract boat ID from URL path
   const pathParts = location.split('/');
@@ -116,9 +120,17 @@ export default function BoatDetails() {
         />
         <div className="absolute inset-0 bg-black bg-opacity-20"></div>
         <div className="absolute bottom-4 right-4 flex space-x-2">
-          <Button size="sm" variant="secondary">
-            <Heart className="h-4 w-4 mr-1" />
-            Salva
+          <Button 
+            size="sm" 
+            variant="secondary"
+            onClick={() => {
+              if (user && boat) {
+                toggleFavorite('boat', boat.id);
+              }
+            }}
+          >
+            <Heart className={`h-4 w-4 mr-1 ${user && boat && isFavorite('boat', boat.id) ? "fill-red-500 text-red-500" : ""}`} />
+            {user && boat && isFavorite('boat', boat.id) ? "Salvato" : "Salva"}
           </Button>
           <Button size="sm" variant="secondary">
             <Share2 className="h-4 w-4 mr-1" />

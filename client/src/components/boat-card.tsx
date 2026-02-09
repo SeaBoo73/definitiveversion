@@ -6,8 +6,7 @@ import { Heart, Star, Users, MapPin, Clock, AlertCircle } from "lucide-react";
 import { Boat } from "@shared/schema";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+import { useFavorites } from "@/hooks/use-favorites";
 
 interface BoatCardProps {
   boat: Boat;
@@ -43,29 +42,16 @@ const getImageSrc = (boat: Boat): string => {
 
 export function BoatCard({ boat }: BoatCardProps) {
   const { user } = useAuth();
-  const queryClient = useQueryClient();
-  const [isFavorite, setIsFavorite] = useState(false);
+  const { isFavorite: checkFavorite, toggleFavorite, isToggling } = useFavorites();
   const [imageError, setImageError] = useState(false);
 
-  const favoriteMutation = useMutation({
-    mutationFn: async () => {
-      if (isFavorite) {
-        await apiRequest("DELETE", `/api/favorites/${boat.id}`);
-      } else {
-        await apiRequest("POST", "/api/favorites", { boatId: boat.id });
-      }
-    },
-    onSuccess: () => {
-      setIsFavorite(!isFavorite);
-      queryClient.invalidateQueries({ queryKey: ["/api/favorites"] });
-    },
-  });
+  const isFav = user ? checkFavorite('boat', boat.id) : false;
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (user) {
-      favoriteMutation.mutate();
+      toggleFavorite('boat', boat.id);
     }
   };
 
@@ -124,7 +110,7 @@ export function BoatCard({ boat }: BoatCardProps) {
               onClick={handleFavoriteClick}
             >
               <Heart 
-                className={`h-4 w-4 ${isFavorite ? "fill-red-500 text-red-500" : "text-gray-600"}`} 
+                className={`h-4 w-4 ${isFav ? "fill-red-500 text-red-500" : "text-gray-600"}`} 
               />
             </Button>
           )}

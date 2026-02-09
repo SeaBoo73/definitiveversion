@@ -2518,6 +2518,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ====== FAVORITES API ======
+  app.get("/api/favorites", async (req: Request, res: Response) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ error: "Non autorizzato" });
+    try {
+      const favs = await storage.getFavoritesByUser(req.user!.id);
+      res.json({ favorites: favs });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.get("/api/favorites/check", async (req: Request, res: Response) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ error: "Non autorizzato" });
+    const { itemType, itemId } = req.query;
+    if (!itemType || !itemId) return res.status(400).json({ error: "itemType e itemId richiesti" });
+    try {
+      const result = await storage.isFavorite(req.user!.id, itemType as string, Number(itemId));
+      res.json({ isFavorite: result });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/favorites", async (req: Request, res: Response) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ error: "Non autorizzato" });
+    const { itemType, itemId } = req.body;
+    if (!itemType || !itemId) return res.status(400).json({ error: "itemType e itemId richiesti" });
+    if (!['boat', 'mooring', 'experience'].includes(itemType)) {
+      return res.status(400).json({ error: "itemType deve essere boat, mooring o experience" });
+    }
+    try {
+      const fav = await storage.addFavorite({ userId: req.user!.id, itemType, itemId: Number(itemId) });
+      res.json(fav);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.delete("/api/favorites", async (req: Request, res: Response) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ error: "Non autorizzato" });
+    const { itemType, itemId } = req.body;
+    if (!itemType || !itemId) return res.status(400).json({ error: "itemType e itemId richiesti" });
+    try {
+      await storage.removeFavorite(req.user!.id, itemType as string, Number(itemId));
+      res.json({ success: true });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

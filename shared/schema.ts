@@ -473,6 +473,19 @@ export const localFees = pgTable("local_fees", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Favorites table
+export const favorites = pgTable("favorites", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  itemType: varchar("item_type", { length: 20 }).notNull(), // 'boat', 'mooring', 'experience'
+  itemId: integer("item_id").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertFavoriteSchema = createInsertSchema(favorites).omit({ id: true, createdAt: true });
+export type InsertFavorite = z.infer<typeof insertFavoriteSchema>;
+export type Favorite = typeof favorites.$inferSelect;
+
 export const insertLocalFeeSchema = createInsertSchema(localFees, {
   region: z.string().min(1),
   name: z.string().min(1),

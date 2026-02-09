@@ -1441,7 +1441,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/availability/set-day', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const userId = parseInt(req.session.user.id);
-      const { boatId, date, status } = req.body;
+      const { boatId, date, status, priceOverride } = req.body;
 
       if (!boatId || !date || !status) {
         return res.status(400).json({ error: "boatId, date e status sono obbligatori" });
@@ -1475,6 +1475,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         startDate: dayStr,
         endDate: dayStr,
         status,
+        priceOverride: priceOverride || undefined,
       });
 
       res.json({ success: true });

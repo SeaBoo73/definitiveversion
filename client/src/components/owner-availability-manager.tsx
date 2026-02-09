@@ -32,6 +32,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   const [showDayDialog, setShowDayDialog] = useState(false);
   const [clickedDate, setClickedDate] = useState<Date | null>(null);
   const [existingAvailability, setExistingAvailability] = useState<BoatAvailability | null>(null);
+  const [dayPrice, setDayPrice] = useState<string>('');
   
   const { toast } = useToast();
 
@@ -53,11 +54,12 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   });
 
   const setDayStatusMutation = useMutation({
-    mutationFn: async ({ date, status }: { date: string; status: string }) => {
+    mutationFn: async ({ date, status, priceOverride }: { date: string; status: string; priceOverride?: number }) => {
       const res = await apiRequest('POST', '/api/availability/set-day', {
         boatId,
         date,
-        status
+        status,
+        priceOverride
       });
       return res.json();
     },
@@ -149,14 +151,17 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
     const avail = getAvailabilityForDate(date);
     setClickedDate(date);
     setExistingAvailability(avail);
+    setDayPrice(avail?.priceOverride ? String(avail.priceOverride) : '');
     setShowDayDialog(true);
   };
 
   const handleSetStatus = (status: string) => {
     if (!clickedDate) return;
+    const priceVal = dayPrice ? parseFloat(dayPrice) : undefined;
     setDayStatusMutation.mutate({
       date: clickedDate.toISOString().split('T')[0],
-      status
+      status,
+      priceOverride: priceVal && !isNaN(priceVal) ? priceVal : undefined
     });
   };
 
@@ -283,6 +288,19 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
                   Stato attuale: <strong>{statusLabel(existingAvailability.status)}</strong>
                 </p>
               )}
+
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Prezzo giornaliero (€)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="Lascia vuoto per prezzo base"
+                  value={dayPrice}
+                  onChange={(e) => setDayPrice(e.target.value)}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
               <div className="space-y-2">
                 <p className="text-sm font-medium">Imposta stato:</p>

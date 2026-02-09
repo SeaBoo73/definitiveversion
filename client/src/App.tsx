@@ -170,6 +170,7 @@ import SupportoPage from "@/pages/supporto";
 import ResetPasswordPage from "@/pages/reset-password";
 import OneriLocali from "@/pages/oneri-locali";
 import OwnerHome from "@/pages/owner-home";
+import ReportMensiliPage from "@/pages/report-mensili";
 import OwnerCalendar from "@/pages/owner-calendar";
 import OwnerMessages from "@/pages/owner-messages";
 
@@ -246,6 +247,7 @@ function Router() {
       <ProtectedRoute path="/messaging" component={MessagingPage} />
       <ProtectedRoute path="/document-management" component={DocumentManagement} />
       <ProtectedRoute path="/owner-home" component={OwnerHome} />
+      <ProtectedRoute path="/report-mensili" component={ReportMensiliPage} />
       <ProtectedRoute path="/owner-calendar" component={OwnerCalendar} />
       <ProtectedRoute path="/owner-dashboard" component={OwnerDashboard} />
       <ProtectedRoute path="/guadagni" component={OwnerEarnings} />

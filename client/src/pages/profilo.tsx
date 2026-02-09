@@ -51,7 +51,8 @@ import {
   AlertTriangle,
   Euro,
   TrendingUp,
-  Camera
+  Camera,
+  Receipt
 } from "lucide-react";
 
 export default function ProfiloPage() {
@@ -265,6 +266,13 @@ export default function ProfiloPage() {
       subtitle: user?.role === "owner" ? "IBAN per ricevere pagamenti" : "Carte e metodi di pagamento",
       href: user?.role === "owner" ? "/profilo/dati-bancari" : "/metodi-pagamento-mobile"
     },
+    ...(user?.role === "owner" ? [{
+      icon: Receipt,
+      title: "Report mensili",
+      subtitle: "Genera e scarica report dei guadagni",
+      href: "/report-mensili",
+      color: "text-orange-500"
+    }] : []),
     {
       icon: Bell,
       title: "Notifiche",

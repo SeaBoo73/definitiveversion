@@ -174,7 +174,7 @@ export default function ProfiloPage() {
       icon: User,
       title: "Informazioni personali",
       subtitle: "Nome, email, telefono",
-      href: "/profilo/informazioni"
+      action: () => setShowEditDialog(true)
     },
     {
       icon: CreditCard,

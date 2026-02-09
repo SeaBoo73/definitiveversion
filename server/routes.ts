@@ -801,6 +801,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all notifications for logged-in user
+  app.get('/api/notifications', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const notifs = await storage.getNotificationsByUser(userId);
+      res.json(notifs);
+    } catch (error) {
+      res.status(500).json({ error: "Errore nel recupero delle notifiche" });
+    }
+  });
+
+  // Mark single notification as read
+  app.patch('/api/notifications/:id/read', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const notifId = parseInt(req.params.id);
+      await storage.markNotificationRead(notifId, userId);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Errore nell'aggiornamento della notifica" });
+    }
+  });
+
+  // Mark all notifications as read
+  app.patch('/api/notifications/mark-all-read', requireAuth, async (req, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      await storage.markAllNotificationsRead(userId);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Errore nell'aggiornamento delle notifiche" });
+    }
+  });
+
   // Save notification preferences
   app.patch('/api/user/notifications', requireAuth, async (req, res) => {
     try {
@@ -1445,6 +1479,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const bookingData = insertBookingSchema.parse(req.body);
       const booking = await storage.createBooking(bookingData);
+
+      // Auto-create notifications
+      const customerId = parseInt(req.session.user!.id);
+      const customerUser = await storage.getUser(customerId);
+
+      // Notify customer
+      await storage.createNotification({
+        userId: customerId,
+        type: 'booking',
+        title: 'Prenotazione inviata',
+        message: `La tua prenotazione #${booking.id} è stata inviata con successo. Riceverai conferma a breve.`,
+        read: false,
+        relatedId: booking.id,
+      });
+
+      // Notify boat owner
+      if (booking.boatId) {
+        const boat = await storage.getBoat(booking.boatId);
+        if (boat) {
+          await storage.createNotification({
+            userId: boat.hostId,
+            type: 'booking',
+            title: 'Nuova prenotazione ricevuta',
+            message: `${customerUser?.firstName || customerUser?.username || 'Un cliente'} ha prenotato "${boat.name}". Verifica i dettagli nel tuo pannello.`,
+            read: false,
+            relatedId: booking.id,
+          });
+        }
+      }
+
       res.json(booking);
     } catch (error: any) {
       console.error("Create booking error:", error);
@@ -1776,6 +1840,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         value,
         title,
         comment
+      });
+
+      // Notify the person being reviewed
+      const reviewer = await storage.getUser(userId);
+      await storage.createNotification({
+        userId: revieweeId,
+        type: 'review',
+        title: 'Nuova recensione ricevuta',
+        message: `${reviewer?.firstName || reviewer?.username || 'Un utente'} ti ha lasciato una recensione con ${rating} stelle.`,
+        read: false,
+        relatedId: review.id,
       });
       
       res.json(review);

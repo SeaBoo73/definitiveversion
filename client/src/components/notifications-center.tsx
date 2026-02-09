@@ -179,7 +179,7 @@ export function NotificationsCenter() {
                           
                           <div className="flex items-center justify-between mt-2">
                             <span className="text-xs text-muted-foreground">
-                              {new Date(notification.createdAt).toLocaleDateString('it-IT', {
+                              {new Date(notification.createdAt || Date.now()).toLocaleDateString('it-IT', {
                                 day: 'numeric',
                                 month: 'short',
                                 hour: '2-digit',

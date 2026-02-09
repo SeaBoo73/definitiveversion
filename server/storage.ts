@@ -40,6 +40,9 @@ import {
   type InsertLocalFee,
   type Favorite,
   type InsertFavorite,
+  notifications,
+  type Notification,
+  type InsertNotification,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, sql, and, gte, lte, or, ilike } from "drizzle-orm";
@@ -142,6 +145,12 @@ export interface IStorage {
   addFavorite(data: InsertFavorite): Promise<Favorite>;
   removeFavorite(userId: number, itemType: string, itemId: number): Promise<boolean>;
   isFavorite(userId: number, itemType: string, itemId: number): Promise<boolean>;
+
+  // Notification operations
+  getNotificationsByUser(userId: number): Promise<Notification[]>;
+  createNotification(data: InsertNotification): Promise<Notification>;
+  markNotificationRead(id: number, userId: number): Promise<boolean>;
+  markAllNotificationsRead(userId: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -658,6 +667,32 @@ export class DatabaseStorage implements IStorage {
       )
     );
     return result.length > 0;
+  }
+
+  async getNotificationsByUser(userId: number): Promise<Notification[]> {
+    return await db.select().from(notifications)
+      .where(eq(notifications.userId, userId))
+      .orderBy(sql`${notifications.createdAt} DESC`)
+      .limit(50);
+  }
+
+  async createNotification(data: InsertNotification): Promise<Notification> {
+    const [notif] = await db.insert(notifications).values(data).returning();
+    return notif;
+  }
+
+  async markNotificationRead(id: number, userId: number): Promise<boolean> {
+    const result = await db.update(notifications)
+      .set({ read: true })
+      .where(and(eq(notifications.id, id), eq(notifications.userId, userId)))
+      .returning();
+    return result.length > 0;
+  }
+
+  async markAllNotificationsRead(userId: number): Promise<void> {
+    await db.update(notifications)
+      .set({ read: true })
+      .where(and(eq(notifications.userId, userId), eq(notifications.read, false)));
   }
 }
 

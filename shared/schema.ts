@@ -510,3 +510,19 @@ export const insertLocalFeeSchema = createInsertSchema(localFees, {
 
 export type InsertLocalFee = z.infer<typeof insertLocalFeeSchema>;
 export type LocalFee = typeof localFees.$inferSelect;
+
+// Notifications table
+export const notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  type: varchar("type", { length: 30 }).notNull(), // 'booking', 'payment', 'promotion', 'review', 'system', 'message'
+  title: varchar("title", { length: 200 }).notNull(),
+  message: text("message").notNull(),
+  read: boolean("read").default(false),
+  relatedId: integer("related_id"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertNotificationSchema = createInsertSchema(notifications).omit({ id: true, createdAt: true });
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+export type Notification = typeof notifications.$inferSelect;

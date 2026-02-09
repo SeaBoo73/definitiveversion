@@ -1454,25 +1454,6 @@ export default function OwnerDashboard() {
             </Card>
 
             <Card 
-              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'bookings' ? 'ring-2 ring-ocean-blue' : ''}`}
-              onClick={() => setActiveTab('bookings')}
-            >
-              <CardContent className="flex items-center gap-4 p-4">
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <Calendar className="h-6 w-6 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-gray-600 text-sm">Prenotazioni (mese)</p>
-                  <p className="text-2xl font-bold">{bookings?.filter((b: any) => {
-                    const bookingDate = new Date(b.startDate);
-                    const now = new Date();
-                    return bookingDate.getMonth() === now.getMonth() && bookingDate.getFullYear() === now.getFullYear();
-                  }).length || 0}</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card 
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'analytics' ? 'ring-2 ring-ocean-blue' : ''}`}
               onClick={() => setActiveTab('analytics')}
             >
@@ -3479,67 +3460,6 @@ export default function OwnerDashboard() {
                 })}
               </div>
             )}
-          </TabsContent>
-
-          <TabsContent value="bookings" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Prenotazioni ricevute</h2>
-            
-            <div className="space-y-4">
-              {bookings.map((booking) => {
-                const boat = boats.find(b => b.id === booking.boatId);
-                return (
-                  <Card key={booking.id}>
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-4 mb-4">
-                            <h3 className="text-lg font-semibold">{boat?.name}</h3>
-                            {getBookingStatusBadge(booking.status || 'pending', booking.endDate)}
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                              <p className="text-gray-600">Date</p>
-                              <p className="font-medium">
-                                {format(new Date(booking.startDate), "dd MMM", { locale: it })} - {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-gray-600">Totale</p>
-                              <p className="font-medium">€{booking.totalPrice}</p>
-                            </div>
-                            <div>
-                              <p className="text-gray-600">Guadagno</p>
-                              <p className="font-medium text-green-600">
-                                €{(Number(booking.totalPrice) - Number(booking.commission)).toFixed(2)}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex space-x-2">
-                          <ChatButton bookingId={booking.id} />
-                          {booking.status === "completed" && (
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => setReviewBookingId(booking.id)}
-                              data-testid={`button-review-customer-${booking.id}`}
-                            >
-                              <Star className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">Recensione</span>
-                            </Button>
-                          )}
-                          <Button size="sm" variant="outline">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-            </div>
           </TabsContent>
 
           <TabsContent value="profile" className="space-y-6">

@@ -7,7 +7,9 @@ import {
   Ship, 
   Bell, 
   Clock, 
-  ChevronRight
+  Users,
+  MapPin,
+  Calendar
 } from "lucide-react";
 
 export default function OwnerHome() {
@@ -25,18 +27,21 @@ export default function OwnerHome() {
   const boats = boatsData?.boats || [];
 
   const today = new Date();
-  const todayStr = today.toISOString().split('T')[0];
+  today.setHours(0, 0, 0, 0);
 
-  const todayBookings = bookings.filter((b: any) => {
+  const allUpcoming = bookings
+    .filter((b: any) => {
+      const start = new Date(b.startDate);
+      return start >= today && b.status !== 'cancelled';
+    })
+    .sort((a: any, b: any) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+
+  const activeNow = bookings.filter((b: any) => {
     const start = new Date(b.startDate);
+    start.setHours(0, 0, 0, 0);
     const end = new Date(b.endDate);
+    end.setHours(23, 59, 59, 999);
     return today >= start && today <= end && b.status !== 'cancelled';
-  });
-
-  const upcomingBookings = bookings.filter((b: any) => {
-    const start = new Date(b.startDate);
-    const diffDays = Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-    return diffDays > 0 && diffDays <= 7 && b.status !== 'cancelled';
   });
 
   const pendingBookings = bookings.filter((b: any) => b.status === 'pending');
@@ -45,6 +50,20 @@ export default function OwnerHome() {
     const d = new Date(b.startDate);
     return d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear() && b.status === 'completed';
   }).reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0);
+
+  const getDaysUntil = (dateStr: string) => {
+    const start = new Date(dateStr);
+    start.setHours(0, 0, 0, 0);
+    const diff = Math.ceil((start.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    if (diff === 0) return 'Oggi';
+    if (diff === 1) return 'Domani';
+    return `Tra ${diff} giorni`;
+  };
+
+  const getBoatName = (boatId: number) => {
+    const boat = boats.find((b: any) => b.id === boatId);
+    return boat?.name || 'Imbarcazione';
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
@@ -63,19 +82,19 @@ export default function OwnerHome() {
         <div className="grid grid-cols-3 gap-3 mb-6">
           <Card className="bg-coral/10 border-coral/20">
             <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold text-coral">{todayBookings.length}</p>
+              <p className="text-2xl font-bold text-coral">{activeNow.length}</p>
               <p className="text-xs text-gray-600">Oggi</p>
             </CardContent>
           </Card>
           <Card className="bg-blue-50 border-blue-100">
             <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold text-ocean-blue">{upcomingBookings.length}</p>
-              <p className="text-xs text-gray-600">Prossimi 7gg</p>
+              <p className="text-2xl font-bold text-ocean-blue">{allUpcoming.length}</p>
+              <p className="text-xs text-gray-600">In arrivo</p>
             </CardContent>
           </Card>
           <Card className="bg-emerald-50 border-emerald-100">
             <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold text-emerald-600">€{monthRevenue.toFixed(0)}</p>
+              <p className="text-2xl font-bold text-emerald-600">{monthRevenue > 0 ? `€${monthRevenue.toFixed(0)}` : '€0'}</p>
               <p className="text-xs text-gray-600">Mese</p>
             </CardContent>
           </Card>
@@ -88,10 +107,10 @@ export default function OwnerHome() {
                 <Bell className="h-5 w-5 text-coral" />
                 <h3 className="font-semibold text-gray-900">Da confermare ({pendingBookings.length})</h3>
               </div>
-              {pendingBookings.slice(0, 3).map((booking: any) => (
+              {pendingBookings.map((booking: any) => (
                 <div key={booking.id} className="flex items-center justify-between py-2 border-b border-orange-100 last:border-0">
                   <div>
-                    <p className="font-medium text-sm">{booking.boatName || 'Prenotazione'}</p>
+                    <p className="font-medium text-sm">{booking.boatName || getBoatName(booking.boatId)}</p>
                     <p className="text-xs text-gray-500">
                       {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
                     </p>
@@ -103,118 +122,150 @@ export default function OwnerHome() {
           </Card>
         )}
 
-        <div className="mb-4">
+        <div className="mb-6">
           <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <Clock className="h-5 w-5 text-ocean-blue" />
-            Attivita di oggi
+            <Calendar className="h-5 w-5 text-ocean-blue" />
+            Prenotazioni in arrivo
           </h3>
-          {todayBookings.length === 0 ? (
+
+          {allUpcoming.length === 0 && activeNow.length === 0 ? (
             <Card>
-              <CardContent className="p-6 text-center">
-                <Ship className="h-10 w-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-500">Nessuna attivita per oggi</p>
+              <CardContent className="p-8 text-center">
+                <CalendarDays className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500 font-medium">Non risultano prenotazioni imminenti</p>
+                <p className="text-gray-400 text-sm mt-1">Le nuove prenotazioni appariranno qui in ordine di arrivo</p>
               </CardContent>
             </Card>
           ) : (
             <div className="space-y-3">
-              {todayBookings.map((booking: any) => (
-                <Card key={booking.id}>
+              {activeNow.map((booking: any) => (
+                <Card key={booking.id} className="border-l-4 border-l-green-500">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                          <Ship className="h-5 w-5 text-ocean-blue" />
+                        <div className="p-2 bg-green-100 rounded-lg">
+                          <Ship className="h-5 w-5 text-green-600" />
                         </div>
                         <div>
-                          <p className="font-medium">{booking.boatName || 'Prenotazione attiva'}</p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
-                          </p>
-                          <p className="text-xs text-gray-500">{booking.guests} ospiti</p>
+                          <p className="font-medium">{booking.boatName || getBoatName(booking.boatId)}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <span className="text-xs text-green-600 font-semibold bg-green-50 px-2 py-0.5 rounded-full">In corso</span>
+                            <span className="text-xs text-gray-500">
+                              {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
+                            </span>
+                          </div>
+                          {booking.guests && (
+                            <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                              <Users className="h-3 w-3" /> {booking.guests} ospiti
+                            </p>
+                          )}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                          booking.status === 'pending' ? 'bg-orange-100 text-orange-700' :
-                          'bg-gray-100 text-gray-600'
-                        }`}>
-                          {booking.status === 'confirmed' ? 'Confermata' :
-                           booking.status === 'pending' ? 'In attesa' :
-                           booking.status}
-                        </span>
-                        <p className="text-sm font-semibold mt-1">€{booking.totalPrice}</p>
-                      </div>
+                      <p className="text-sm font-semibold">€{booking.totalPrice}</p>
                     </div>
                   </CardContent>
                 </Card>
               ))}
+
+              {allUpcoming.map((booking: any) => {
+                const daysLabel = getDaysUntil(booking.startDate);
+                const isToday = daysLabel === 'Oggi';
+                const isTomorrow = daysLabel === 'Domani';
+
+                return (
+                  <Card key={booking.id} className={isToday ? 'border-l-4 border-l-coral' : isTomorrow ? 'border-l-4 border-l-orange-400' : ''}>
+                    <CardContent className="p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg ${isToday ? 'bg-red-50' : isTomorrow ? 'bg-orange-50' : 'bg-blue-50'}`}>
+                            <Ship className={`h-5 w-5 ${isToday ? 'text-coral' : isTomorrow ? 'text-orange-500' : 'text-ocean-blue'}`} />
+                          </div>
+                          <div>
+                            <p className="font-medium">{booking.boatName || getBoatName(booking.boatId)}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                                isToday ? 'text-coral bg-red-50' :
+                                isTomorrow ? 'text-orange-600 bg-orange-50' :
+                                'text-ocean-blue bg-blue-50'
+                              }`}>
+                                {daysLabel}
+                              </span>
+                              <span className="text-xs text-gray-500">
+                                {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
+                              </span>
+                            </div>
+                            {booking.guests && (
+                              <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
+                                <Users className="h-3 w-3" /> {booking.guests} ospiti
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-semibold">€{booking.totalPrice}</p>
+                          <span className={`text-xs px-2 py-0.5 rounded-full ${
+                            booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                            booking.status === 'pending' ? 'bg-orange-100 text-orange-700' :
+                            'bg-gray-100 text-gray-600'
+                          }`}>
+                            {booking.status === 'confirmed' ? 'Confermata' :
+                             booking.status === 'pending' ? 'In attesa' :
+                             booking.status}
+                          </span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </div>
-
-        {upcomingBookings.length > 0 && (
-          <div className="mb-4">
-            <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <CalendarDays className="h-5 w-5 text-ocean-blue" />
-              Prossime prenotazioni
-            </h3>
-            <div className="space-y-3">
-              {upcomingBookings.slice(0, 5).map((booking: any) => (
-                <Card key={booking.id}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-sm">{booking.boatName || 'Prenotazione'}</p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold">€{booking.totalPrice}</span>
-                        <ChevronRight className="h-4 w-4 text-gray-400" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
 
         <div>
           <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
             <Ship className="h-5 w-5 text-ocean-blue" />
             Le tue imbarcazioni
           </h3>
-          <div className="space-y-2">
-            {boats.slice(0, 5).map((boat: any) => (
-              <Card key={boat.id}>
-                <CardContent className="p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
-                      {boat.imageUrl ? (
-                        <img src={boat.imageUrl} alt={boat.name} className="w-full h-full object-cover" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <Ship className="h-5 w-5 text-gray-400" />
-                        </div>
-                      )}
+          {boats.length === 0 ? (
+            <Card>
+              <CardContent className="p-6 text-center">
+                <Ship className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <p className="text-gray-500 text-sm">Nessuna imbarcazione registrata</p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-2">
+              {boats.slice(0, 5).map((boat: any) => (
+                <Card key={boat.id}>
+                  <CardContent className="p-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                        {boat.imageUrl ? (
+                          <img src={boat.imageUrl} alt={boat.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <Ship className="h-5 w-5 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <p className="font-medium text-sm">{boat.name}</p>
+                        <p className="text-xs text-gray-500 flex items-center gap-1">
+                          <MapPin className="h-3 w-3" /> {boat.location}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-medium text-sm">{boat.name}</p>
-                      <p className="text-xs text-gray-500">{boat.location}</p>
-                    </div>
-                  </div>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    boat.available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                  }`}>
-                    {boat.available ? 'Disponibile' : 'Non disponibile'}
-                  </span>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    <span className={`text-xs px-2 py-1 rounded-full ${
+                      boat.available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                    }`}>
+                      {boat.available ? 'Disponibile' : 'Non disponibile'}
+                    </span>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

@@ -88,13 +88,13 @@ export default function ProfiloPage() {
     .reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) : 0;
   
   const menuItems = [
-    {
+    ...(!isOwner ? [{
       icon: Calendar,
       title: "Le mie prenotazioni",
       subtitle: "Gestisci le tue prenotazioni",
       href: "/customer-dashboard",
       color: "text-blue-600"
-    },
+    }] : []),
     {
       icon: Heart,
       title: "Lista dei preferiti",

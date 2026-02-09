@@ -170,19 +170,6 @@ export default function ProfiloPage() {
       href: "/mie-recensioni",
       color: "text-yellow-500"
     },
-    ...(isOwner ? [{
-      icon: Ship,
-      title: "Dashboard Noleggiatore",
-      subtitle: "Gestisci le tue barche",
-      href: "/owner-dashboard",
-      color: "text-ocean-blue"
-    }] : [{
-      icon: Ship,
-      title: "Diventa noleggiatore",
-      subtitle: "Metti in affitto la tua barca",
-      href: "/diventa-noleggiatore",
-      color: "text-ocean-blue"
-    }]),
     {
       icon: User,
       title: "Informazioni personali",

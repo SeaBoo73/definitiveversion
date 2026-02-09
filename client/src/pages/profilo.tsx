@@ -18,7 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { 
@@ -37,7 +37,9 @@ import {
   MapPin,
   Bot,
   MessageCircle,
-  AlertTriangle
+  AlertTriangle,
+  Euro,
+  TrendingUp
 } from "lucide-react";
 
 export default function ProfiloPage() {
@@ -75,6 +77,15 @@ export default function ProfiloPage() {
   };
 
   const isOwner = user?.role === "owner";
+
+  const { data: bookingsData } = useQuery<{ bookings: any[] }>({
+    queryKey: ["/api/owner/bookings"],
+    enabled: isOwner,
+  });
+
+  const ownerEarnings = isOwner ? (bookingsData?.bookings || [])
+    .filter((b: any) => b.status === 'completed')
+    .reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) : 0;
   
   const menuItems = [
     {
@@ -257,6 +268,33 @@ export default function ProfiloPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Guadagni Totali - Solo Owner */}
+        {isOwner && (
+          <Link href="/owner-dashboard?tab=analytics">
+            <a>
+              <Card className="mb-6 cursor-pointer transition-all hover:shadow-md border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50">
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                        <Euro className="h-6 w-6 text-emerald-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600">Guadagni totali</p>
+                        <p className="text-2xl font-bold text-emerald-700">€{ownerEarnings.toFixed(2)}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="h-5 w-5 text-emerald-500" />
+                      <ChevronRight className="h-5 w-5 text-gray-400" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </a>
+          </Link>
+        )}
 
         {/* Menu Principale */}
         <Card className="mb-6">

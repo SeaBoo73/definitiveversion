@@ -102,6 +102,13 @@ export default function ProfiloPage() {
       href: "/customer-dashboard",
       color: "text-red-500"
     },
+    {
+      icon: Star,
+      title: "Le mie recensioni",
+      subtitle: "Recensioni lasciate e ricevute",
+      href: "/customer-dashboard",
+      color: "text-yellow-500"
+    },
     ...(isOwner ? [{
       icon: Ship,
       title: "Dashboard Noleggiatore",
@@ -227,9 +234,15 @@ export default function ProfiloPage() {
                     {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
                   </h1>
                   <p className="text-gray-600 text-sm truncate">{user.email}</p>
-                  <div className="flex items-center mt-2 text-sm text-gray-500">
-                    <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
-                    <span>Membro dal 2025</span>
+                  <div className="flex items-center gap-3 mt-2">
+                    <div className="flex items-center text-sm text-yellow-500">
+                      <Star className="h-4 w-4 mr-1 fill-yellow-400" />
+                      <span className="font-semibold">4.8</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-500">
+                      <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
+                      <span>Membro dal 2025</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -241,33 +254,6 @@ export default function ProfiloPage() {
           </CardContent>
         </Card>
 
-        {/* Statistiche Utente */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <Card>
-            <CardContent className="pt-4 text-center">
-              <div className="text-2xl font-bold text-ocean-blue">3</div>
-              <div className="text-sm text-gray-600">Prenotazioni</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-4 text-center">
-              <div className="text-2xl font-bold text-ocean-blue">8</div>
-              <div className="text-sm text-gray-600">Preferiti</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-4 text-center">
-              <div className="text-2xl font-bold text-ocean-blue">4.8</div>
-              <div className="text-sm text-gray-600">Rating</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="pt-4 text-center">
-              <div className="text-2xl font-bold text-ocean-blue">2</div>
-              <div className="text-sm text-gray-600">Recensioni</div>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Guadagni Totali - Solo Owner */}
         {isOwner && (

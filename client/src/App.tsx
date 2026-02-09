@@ -213,6 +213,7 @@ function Router() {
       <Route path="/modifica-prenotazione" component={ModificaPrenotazionePage} />
       <Route path="/documenti" component={DocumentiPage} />
       <Route path="/recensioni-user" component={ReviewsPage} />
+      <ProtectedRoute path="/mie-recensioni" component={ReviewsPage} />
       <Route path="/metodi-pagamento" component={MetodiPagamentoPage} />
       <Route path="/metodi-pagamento-mobile" component={MetodiPagamentoMobile} />
       <ProtectedRoute path="/profilo/dati-bancari" component={ProfiloDatiBancariPage} />

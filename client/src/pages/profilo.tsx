@@ -106,7 +106,7 @@ export default function ProfiloPage() {
       icon: Star,
       title: "Le mie recensioni",
       subtitle: "Recensioni lasciate e ricevute",
-      href: "/customer-dashboard",
+      href: "/mie-recensioni",
       color: "text-yellow-500"
     },
     ...(isOwner ? [{

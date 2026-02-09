@@ -6,8 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, User, Calendar, Verified, ThumbsUp, MessageSquare, Check } from "lucide-react";
+import { Star, User, Calendar, Verified, ThumbsUp, MessageSquare, Check, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 
 interface UserReview {
   id: number;
@@ -52,16 +53,17 @@ interface ReceivedReview {
 
 export function ReviewsPage() {
   const { user } = useAuth();
+  const [, navigate] = useLocation();
   const [activeTab, setActiveTab] = useState("given");
 
   const { data: givenReviews, isLoading: loadingGiven } = useQuery<UserReview[]>({
-    queryKey: ['/api/reviews/user', user?.id],
+    queryKey: ['/api/reviews/my-reviews'],
     enabled: !!user
   });
 
   const { data: receivedReviews, isLoading: loadingReceived } = useQuery<ReceivedReview[]>({
-    queryKey: ['/api/reviews/received', user?.id],
-    enabled: !!user && user.role === 'owner'
+    queryKey: ['/api/reviews/user', user?.id],
+    enabled: !!user
   });
 
   const renderStars = (rating: number, size = "w-4 h-4") => {
@@ -123,10 +125,15 @@ export function ReviewsPage() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Le mie Recensioni</h1>
-          <p className="text-gray-600">Gestisci le tue recensioni e visualizza quelle ricevute</p>
+      <div className="container mx-auto px-4 py-6 pb-24">
+        <div className="flex items-center gap-3 mb-6">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/profilo')}>
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Le mie Recensioni</h1>
+            <p className="text-gray-500 text-sm">Recensioni lasciate e ricevute</p>
+          </div>
         </div>
 
         <div className="space-y-6">
@@ -142,18 +149,16 @@ export function ReviewsPage() {
             >
               Recensioni Date
             </button>
-            {user.role === 'owner' && (
-              <button
-                onClick={() => setActiveTab("received")}
-                className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
-                  activeTab === "received"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Recensioni Ricevute
-              </button>
-            )}
+            <button
+              onClick={() => setActiveTab("received")}
+              className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
+                activeTab === "received"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              Recensioni Ricevute
+            </button>
           </div>
 
           {/* Given Reviews Content */}

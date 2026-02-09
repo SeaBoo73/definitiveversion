@@ -30,6 +30,7 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { 
   User, 
   Settings, 
@@ -48,7 +49,8 @@ import {
   MessageCircle,
   AlertTriangle,
   Euro,
-  TrendingUp
+  TrendingUp,
+  Camera
 } from "lucide-react";
 
 export default function ProfiloPage() {
@@ -89,6 +91,30 @@ export default function ProfiloPage() {
   const [editFirstName, setEditFirstName] = useState(user?.firstName || "");
   const [editLastName, setEditLastName] = useState(user?.lastName || "");
   const [editPhone, setEditPhone] = useState(user?.phone || "");
+
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append('photo', file);
+      const res = await fetch('/api/user/profile-photo', {
+        method: 'POST',
+        body: formData,
+        credentials: 'include',
+      });
+      if (!res.ok) throw new Error('Upload fallito');
+      toast({ title: "Foto aggiornata", description: "La tua foto profilo è stata cambiata" });
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
+    } catch (error) {
+      toast({ title: "Errore", description: "Impossibile caricare la foto", variant: "destructive" });
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: { firstName: string; lastName: string; phone: string }) => {
@@ -435,6 +461,35 @@ export default function ProfiloPage() {
             <DialogTitle>Modifica profilo</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-2">
+            <div className="flex flex-col items-center gap-3">
+              <div className="relative">
+                <Avatar className="h-20 w-20">
+                  {user?.profileImage && (
+                    <AvatarImage src={user.profileImage} alt="Foto profilo" className="object-cover" />
+                  )}
+                  <AvatarFallback className="bg-blue-100 text-blue-600 text-2xl">
+                    {user?.firstName?.[0] || user?.username?.[0] || "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <label 
+                  htmlFor="photo-upload" 
+                  className="absolute bottom-0 right-0 bg-ocean-blue text-white rounded-full p-1.5 cursor-pointer hover:bg-blue-600 transition-colors shadow-md"
+                >
+                  <Camera className="h-4 w-4" />
+                </label>
+                <input
+                  id="photo-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoUpload}
+                  disabled={uploadingPhoto}
+                />
+              </div>
+              {uploadingPhoto && <p className="text-sm text-gray-500">Caricamento...</p>}
+              <p className="text-sm text-gray-500">Tocca l'icona per cambiare foto</p>
+            </div>
+            <Separator />
             <div className="space-y-2">
               <Label htmlFor="edit-firstName">Nome</Label>
               <Input

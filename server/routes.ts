@@ -1068,6 +1068,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.post('/api/user/profile-photo', requireAuth, upload.single('photo'), async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      if (!req.file) {
+        return res.status(400).json({ error: "Nessuna immagine caricata" });
+      }
+      const profileImage = `/uploads/${req.file.filename}`;
+      const updatedUser = await storage.updateUser(userId, { profileImage });
+      if (!updatedUser) {
+        return res.status(500).json({ error: "Errore durante l'aggiornamento" });
+      }
+      req.session.user = { ...req.session.user!, profileImage };
+      req.session.save((err: any) => {
+        if (err) console.error('Session save error:', err);
+        res.json({ success: true, profileImage });
+      });
+    } catch (error) {
+      console.error('Profile photo upload error:', error);
+      res.status(500).json({ error: "Errore durante il caricamento della foto" });
+    }
+  });
+
   // Owner-only middleware
   const requireOwner = (req: any, res: any, next: any) => {
     if (!req.session?.user || req.session.user.role !== 'owner') {

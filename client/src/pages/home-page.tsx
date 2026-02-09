@@ -4,7 +4,7 @@ import { Footer } from "@/components/footer";
 import { SearchFilters } from "@/components/search-filters";
 import { AppDownloadBanner } from "@/components/app-download-banner";
 import { PortSelector } from "@/components/port-selector";
-import { Anchor } from "lucide-react";
+import { Anchor, Ship } from "lucide-react";
 
 import { BoatCard } from "@/components/boat-card";
 import { Button } from "@/components/ui/button";
@@ -419,6 +419,17 @@ export default function HomePage() {
       )}
 
       <Footer />
+
+      {user?.role === 'owner' && (
+        <a
+          href="/owner-dashboard"
+          className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-coral hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-lg transition-all flex items-center gap-2"
+        >
+          <Ship className="h-5 w-5" />
+          Modalità noleggiatore
+        </a>
+      )}
+
       <LiveChatButton />
     </div>
   );

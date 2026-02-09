@@ -1437,14 +1437,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Set a single day's availability status (day-by-day, no blocks)
-  app.post('/api/availability/set-day', requireAuth, requireOwner, async (req: any, res) => {
+  // Set availability for a date range (each day individually)
+  app.post('/api/availability/set-range', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const userId = parseInt(req.session.user.id);
-      const { boatId, date, status, priceOverride } = req.body;
+      const { boatId, startDate: sDate, endDate: eDate, status, priceOverride } = req.body;
 
-      if (!boatId || !date || !status) {
-        return res.status(400).json({ error: "boatId, date e status sono obbligatori" });
+      if (!boatId || !sDate || !eDate || !status) {
+        return res.status(400).json({ error: "boatId, startDate, endDate e status sono obbligatori" });
       }
 
       const boat = await storage.getBoat(boatId);
@@ -1452,47 +1452,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
       }
 
-      const dayStr = date.split('T')[0];
+      const rangeStart = new Date(sDate);
+      const rangeEnd = new Date(eDate);
+      rangeStart.setHours(0,0,0,0);
+      rangeEnd.setHours(0,0,0,0);
 
-      // Delete any existing record that covers this exact day
+      // Delete any existing records that overlap with the range
       const allAvail = await storage.getBoatAvailability(boatId);
       for (const avail of allAvail) {
         const aStart = new Date(avail.startDate);
         const aEnd = new Date(avail.endDate);
-        const target = new Date(dayStr);
         aStart.setHours(0,0,0,0);
         aEnd.setHours(0,0,0,0);
-        target.setHours(0,0,0,0);
-
-        if (target >= aStart && target <= aEnd) {
+        if (aEnd >= rangeStart && aStart <= rangeEnd) {
           await storage.deleteAvailability(avail.id);
         }
       }
 
-      // Create single-day record
-      await storage.createAvailability({
-        boatId,
-        startDate: dayStr,
-        endDate: dayStr,
-        status,
-        priceOverride: priceOverride || undefined,
-      });
+      // Create individual day records for each day in the range
+      const current = new Date(rangeStart);
+      while (current <= rangeEnd) {
+        const dayStr = current.toISOString().split('T')[0];
+        await storage.createAvailability({
+          boatId,
+          startDate: dayStr,
+          endDate: dayStr,
+          status,
+          priceOverride: priceOverride || undefined,
+        });
+        current.setDate(current.getDate() + 1);
+      }
 
       res.json({ success: true });
     } catch (error: any) {
-      console.error("Set day availability error:", error);
+      console.error("Set range availability error:", error);
       res.status(400).json({ error: error.message || "Errore nell'impostazione della disponibilità" });
     }
   });
 
-  // Clear a single day's availability (day-by-day, no blocks)
-  app.post('/api/availability/clear-day', requireAuth, requireOwner, async (req: any, res) => {
+  // Clear availability for a date range
+  app.post('/api/availability/clear-range', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const userId = parseInt(req.session.user.id);
-      const { boatId, date } = req.body;
+      const { boatId, startDate: sDate, endDate: eDate } = req.body;
 
-      if (!boatId || !date) {
-        return res.status(400).json({ error: "boatId e date sono obbligatori" });
+      if (!boatId || !sDate || !eDate) {
+        return res.status(400).json({ error: "boatId, startDate e endDate sono obbligatori" });
       }
 
       const boat = await storage.getBoat(boatId);
@@ -1500,25 +1505,203 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
       }
 
-      const dayStr = date.split('T')[0];
+      const rangeStart = new Date(sDate);
+      const rangeEnd = new Date(eDate);
+      rangeStart.setHours(0,0,0,0);
+      rangeEnd.setHours(0,0,0,0);
+
       const allAvail = await storage.getBoatAvailability(boatId);
-      
       for (const avail of allAvail) {
         const aStart = new Date(avail.startDate);
         const aEnd = new Date(avail.endDate);
-        const target = new Date(dayStr);
         aStart.setHours(0,0,0,0);
         aEnd.setHours(0,0,0,0);
-        target.setHours(0,0,0,0);
-
-        if (target >= aStart && target <= aEnd) {
+        if (aEnd >= rangeStart && aStart <= rangeEnd) {
           await storage.deleteAvailability(avail.id);
         }
       }
 
       res.json({ success: true });
     } catch (error: any) {
-      console.error("Clear day availability error:", error);
+      console.error("Clear range availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nella rimozione della disponibilità" });
+    }
+  });
+
+  // Set mooring availability for a date range (day-by-day)
+  app.post('/api/mooring-availability/set-range', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { mooringId, startDate: sDate, endDate: eDate, status, priceOverride } = req.body;
+
+      if (!mooringId || !sDate || !eDate || !status) {
+        return res.status(400).json({ error: "mooringId, startDate, endDate e status sono obbligatori" });
+      }
+
+      const mooring = await storage.getMooring(mooringId);
+      if (!mooring || mooring.managerId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questo ormeggio" });
+      }
+
+      const rangeStart = new Date(sDate);
+      const rangeEnd = new Date(eDate);
+      rangeStart.setHours(0,0,0,0);
+      rangeEnd.setHours(0,0,0,0);
+
+      const allAvail = await storage.getMooringAvailability(mooringId);
+      for (const avail of allAvail) {
+        const aStart = new Date(avail.startDate);
+        const aEnd = new Date(avail.endDate);
+        aStart.setHours(0,0,0,0);
+        aEnd.setHours(0,0,0,0);
+        if (aEnd >= rangeStart && aStart <= rangeEnd) {
+          await storage.deleteMooringAvailability(avail.id);
+        }
+      }
+
+      const current = new Date(rangeStart);
+      while (current <= rangeEnd) {
+        const dayStr = current.toISOString().split('T')[0];
+        await storage.createMooringAvailability({
+          mooringId,
+          startDate: dayStr,
+          endDate: dayStr,
+          status,
+          priceOverride: priceOverride || undefined,
+        });
+        current.setDate(current.getDate() + 1);
+      }
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Set mooring range availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'impostazione della disponibilità" });
+    }
+  });
+
+  // Clear mooring availability for a date range
+  app.post('/api/mooring-availability/clear-range', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { mooringId, startDate: sDate, endDate: eDate } = req.body;
+
+      if (!mooringId || !sDate || !eDate) {
+        return res.status(400).json({ error: "mooringId, startDate e endDate sono obbligatori" });
+      }
+
+      const mooring = await storage.getMooring(mooringId);
+      if (!mooring || mooring.managerId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questo ormeggio" });
+      }
+
+      const rangeStart = new Date(sDate);
+      const rangeEnd = new Date(eDate);
+      rangeStart.setHours(0,0,0,0);
+      rangeEnd.setHours(0,0,0,0);
+
+      const allAvail = await storage.getMooringAvailability(mooringId);
+      for (const avail of allAvail) {
+        const aStart = new Date(avail.startDate);
+        const aEnd = new Date(avail.endDate);
+        aStart.setHours(0,0,0,0);
+        aEnd.setHours(0,0,0,0);
+        if (aEnd >= rangeStart && aStart <= rangeEnd) {
+          await storage.deleteMooringAvailability(avail.id);
+        }
+      }
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Clear mooring range availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nella rimozione della disponibilità" });
+    }
+  });
+
+  // Set experience availability for a date range (day-by-day)
+  app.post('/api/experience-availability/set-range', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { experienceId, startDate: sDate, endDate: eDate, status, priceOverride } = req.body;
+
+      if (!experienceId || !sDate || !eDate || !status) {
+        return res.status(400).json({ error: "experienceId, startDate, endDate e status sono obbligatori" });
+      }
+
+      const experience = await storage.getExperience(experienceId);
+      if (!experience || experience.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa esperienza" });
+      }
+
+      const rangeStart = new Date(sDate);
+      const rangeEnd = new Date(eDate);
+      rangeStart.setHours(0,0,0,0);
+      rangeEnd.setHours(0,0,0,0);
+
+      const allAvail = await storage.getExperienceAvailability(experienceId);
+      for (const avail of allAvail) {
+        const aStart = new Date(avail.startDate);
+        const aEnd = new Date(avail.endDate);
+        aStart.setHours(0,0,0,0);
+        aEnd.setHours(0,0,0,0);
+        if (aEnd >= rangeStart && aStart <= rangeEnd) {
+          await storage.deleteExperienceAvailability(avail.id);
+        }
+      }
+
+      const current = new Date(rangeStart);
+      while (current <= rangeEnd) {
+        const dayStr = current.toISOString().split('T')[0];
+        await storage.createExperienceAvailability({
+          experienceId,
+          startDate: dayStr,
+          endDate: dayStr,
+          status,
+          priceOverride: priceOverride || undefined,
+        });
+        current.setDate(current.getDate() + 1);
+      }
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Set experience range availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'impostazione della disponibilità" });
+    }
+  });
+
+  // Clear experience availability for a date range
+  app.post('/api/experience-availability/clear-range', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { experienceId, startDate: sDate, endDate: eDate } = req.body;
+
+      if (!experienceId || !sDate || !eDate) {
+        return res.status(400).json({ error: "experienceId, startDate e endDate sono obbligatori" });
+      }
+
+      const experience = await storage.getExperience(experienceId);
+      if (!experience || experience.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa esperienza" });
+      }
+
+      const rangeStart = new Date(sDate);
+      const rangeEnd = new Date(eDate);
+      rangeStart.setHours(0,0,0,0);
+      rangeEnd.setHours(0,0,0,0);
+
+      const allAvail = await storage.getExperienceAvailability(experienceId);
+      for (const avail of allAvail) {
+        const aStart = new Date(avail.startDate);
+        const aEnd = new Date(avail.endDate);
+        aStart.setHours(0,0,0,0);
+        aEnd.setHours(0,0,0,0);
+        if (aEnd >= rangeStart && aStart <= rangeEnd) {
+          await storage.deleteExperienceAvailability(avail.id);
+        }
+      }
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Clear experience range availability error:", error);
       res.status(400).json({ error: error.message || "Errore nella rimozione della disponibilità" });
     }
   });
@@ -1807,6 +1990,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error("Delete experience error:", error);
       res.status(400).json({ error: error.message || "Errore nell'eliminazione esperienza" });
+    }
+  });
+
+  // Get experience availability (owner)
+  app.get('/api/owner/experiences/:id/availability', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const experienceId = parseInt(req.params.id);
+      const availability = await storage.getExperienceAvailability(experienceId);
+      res.json({ availability });
+    } catch (error: any) {
+      console.error("Get experience availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nel recupero disponibilità" });
     }
   });
 

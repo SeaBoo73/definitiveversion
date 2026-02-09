@@ -25,8 +25,11 @@ import {
   type InsertMooring,
   type MooringAvailability,
   type InsertMooringAvailability,
+  experienceAvailability,
   type Experience,
   type InsertExperience,
+  type ExperienceAvailability,
+  type InsertExperienceAvailability,
   type Conversation,
   type InsertConversation,
   type Message,
@@ -83,6 +86,8 @@ export interface IStorage {
   deleteAvailability(id: number): Promise<boolean>;
   
   // Mooring operations
+  getMooring(id: number): Promise<Mooring | undefined>;
+  getMoorings(filters?: any): Promise<Mooring[]>;
   getMooringsByOwner(managerId: number): Promise<Mooring[]>;
   createMooring(data: InsertMooring): Promise<Mooring>;
   updateMooring(id: number, managerId: number, data: Partial<InsertMooring>): Promise<Mooring | undefined>;
@@ -93,6 +98,12 @@ export interface IStorage {
   createMooringAvailability(data: InsertMooringAvailability): Promise<MooringAvailability>;
   updateMooringAvailability(id: number, data: Partial<InsertMooringAvailability>): Promise<MooringAvailability | undefined>;
   deleteMooringAvailability(id: number): Promise<boolean>;
+  
+  // Experience availability operations
+  getExperienceAvailability(experienceId: number): Promise<ExperienceAvailability[]>;
+  createExperienceAvailability(data: InsertExperienceAvailability): Promise<ExperienceAvailability>;
+  updateExperienceAvailability(id: number, data: Partial<InsertExperienceAvailability>): Promise<ExperienceAvailability | undefined>;
+  deleteExperienceAvailability(id: number): Promise<boolean>;
   
   // Experience operations
   getExperiencesByOwner(hostId: number): Promise<Experience[]>;
@@ -334,6 +345,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Mooring operations
+  async getMooring(id: number): Promise<Mooring | undefined> {
+    const [mooring] = await db.select().from(moorings).where(eq(moorings.id, id));
+    return mooring;
+  }
+
+  async getMoorings(filters?: any): Promise<Mooring[]> {
+    return await db.select().from(moorings);
+  }
+
   async getMooringsByOwner(managerId: number): Promise<Mooring[]> {
     return await db.select().from(moorings).where(eq(moorings.managerId, managerId));
   }
@@ -386,6 +406,36 @@ export class DatabaseStorage implements IStorage {
 
   async deleteMooringAvailability(id: number): Promise<boolean> {
     const result = await db.delete(mooringAvailability).where(eq(mooringAvailability.id, id));
+    return (result.rowCount ?? 0) > 0;
+  }
+
+  // Experience availability operations
+  async getExperienceAvailability(experienceId: number): Promise<ExperienceAvailability[]> {
+    return await db
+      .select()
+      .from(experienceAvailability)
+      .where(eq(experienceAvailability.experienceId, experienceId));
+  }
+
+  async createExperienceAvailability(data: InsertExperienceAvailability): Promise<ExperienceAvailability> {
+    const [availability] = await db
+      .insert(experienceAvailability)
+      .values(data)
+      .returning();
+    return availability;
+  }
+
+  async updateExperienceAvailability(id: number, data: Partial<InsertExperienceAvailability>): Promise<ExperienceAvailability | undefined> {
+    const [availability] = await db
+      .update(experienceAvailability)
+      .set(data)
+      .where(eq(experienceAvailability.id, id))
+      .returning();
+    return availability;
+  }
+
+  async deleteExperienceAvailability(id: number): Promise<boolean> {
+    const result = await db.delete(experienceAvailability).where(eq(experienceAvailability.id, id));
     return (result.rowCount ?? 0) > 0;
   }
 

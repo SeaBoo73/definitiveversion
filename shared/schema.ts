@@ -180,6 +180,17 @@ export const mooringAvailability = pgTable("mooring_availability", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Experience availability table for managing availability periods
+export const experienceAvailability = pgTable("experience_availability", {
+  id: serial("id").primaryKey(),
+  experienceId: integer("experience_id").references(() => experiences.id, { onDelete: 'cascade' }).notNull(),
+  startDate: date("start_date").notNull(),
+  endDate: date("end_date").notNull(),
+  status: varchar("status", { length: 20 }).default("available"),
+  priceOverride: numeric("price_override"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Zod schemas for validation
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email non valido"),
@@ -240,6 +251,14 @@ export const insertMooringAvailabilitySchema = createInsertSchema(mooringAvailab
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   mooringId: z.number(),
+  status: z.enum(["available", "blocked", "booked"]).default("available"),
+  priceOverride: z.coerce.number().optional(),
+}).omit({ id: true, createdAt: true });
+
+export const insertExperienceAvailabilitySchema = createInsertSchema(experienceAvailability, {
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  experienceId: z.number(),
   status: z.enum(["available", "blocked", "booked"]).default("available"),
   priceOverride: z.coerce.number().optional(),
 }).omit({ id: true, createdAt: true });
@@ -336,6 +355,7 @@ export type InsertBoat = z.infer<typeof insertBoatSchema>;
 export type InsertBooking = z.infer<typeof insertBookingSchema>;
 export type InsertBoatAvailability = z.infer<typeof insertBoatAvailabilitySchema>;
 export type InsertMooringAvailability = z.infer<typeof insertMooringAvailabilitySchema>;
+export type InsertExperienceAvailability = z.infer<typeof insertExperienceAvailabilitySchema>;
 export type InsertMooring = z.infer<typeof insertMooringDbSchema>;
 export type InsertConversation = z.infer<typeof insertConversationSchema>;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
@@ -344,6 +364,7 @@ export type Boat = typeof boats.$inferSelect;
 export type Booking = typeof bookings.$inferSelect;
 export type BoatAvailability = typeof boatAvailability.$inferSelect;
 export type MooringAvailability = typeof mooringAvailability.$inferSelect;
+export type ExperienceAvailability = typeof experienceAvailability.$inferSelect;
 export type Mooring = typeof moorings.$inferSelect;
 export type Conversation = typeof conversations.$inferSelect;
 export type Message = typeof messages.$inferSelect;

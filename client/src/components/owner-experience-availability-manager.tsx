@@ -14,13 +14,13 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient as qc } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
-interface OwnerAvailabilityManagerProps {
-  boatId: number;
+interface OwnerExperienceAvailabilityManagerProps {
+  experienceId: number;
 }
 
-interface BoatAvailability {
+interface ExperienceAvailabilityItem {
   id: number;
-  boatId: number;
+  experienceId: number;
   startDate: string;
   endDate: string;
   status: 'available' | 'blocked' | 'booked';
@@ -28,7 +28,7 @@ interface BoatAvailability {
   createdAt: string;
 }
 
-export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerProps) {
+export function OwnerExperienceAvailabilityManager({ experienceId }: OwnerExperienceAvailabilityManagerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selStart, setSelStart] = useState<Date | null>(null);
   const [selEnd, setSelEnd] = useState<Date | null>(null);
@@ -38,27 +38,28 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   
   const { toast } = useToast();
 
-  const { data: boat } = useQuery<{ name: string }>({
-    queryKey: ['/api/boats', boatId]
+  const { data: experience } = useQuery<{ name: string; pricePerPerson: string }>({
+    queryKey: ['/api/experiences', experienceId]
   });
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
   
-  const { data: availabilities = [], isLoading, refetch } = useQuery<BoatAvailability[]>({
-    queryKey: ['/api/boats', boatId, 'availability', monthStart.toISOString(), monthEnd.toISOString()],
+  const { data: rawAvailabilities, isLoading, refetch } = useQuery<{ availability: ExperienceAvailabilityItem[] }>({
+    queryKey: ['/api/owner/experiences', experienceId, 'availability'],
     queryFn: async () => {
-      const url = `/api/boats/${boatId}/availability?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`;
-      const res = await fetch(url, { credentials: 'include' });
+      const res = await fetch(`/api/owner/experiences/${experienceId}/availability`, { credentials: 'include' });
       if (!res.ok) throw new Error('Failed to fetch availability');
       return res.json();
     }
   });
 
+  const availabilities = rawAvailabilities?.availability || [];
+
   const setRangeStatusMutation = useMutation({
     mutationFn: async ({ startDate, endDate, status, priceOverride }: { startDate: string; endDate: string; status: string; priceOverride?: number }) => {
-      const res = await apiRequest('POST', '/api/availability/set-range', {
-        boatId,
+      const res = await apiRequest('POST', '/api/experience-availability/set-range', {
+        experienceId,
         startDate,
         endDate,
         status,
@@ -69,7 +70,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
     onSuccess: async () => {
       toast({
         title: "Aggiornato",
-        description: "Disponibilità aggiornata."
+        description: "Disponibilità esperienza aggiornata."
       });
       await refetch();
       setShowDialog(false);
@@ -87,8 +88,8 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   const clearRangeMutation = useMutation({
     mutationFn: async ({ startDate, endDate }: { startDate: string; endDate: string }) => {
-      const res = await apiRequest('POST', '/api/availability/clear-range', {
-        boatId,
+      const res = await apiRequest('POST', '/api/experience-availability/clear-range', {
+        experienceId,
         startDate,
         endDate
       });
@@ -115,7 +116,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  const getAvailabilityForDate = (date: Date): BoatAvailability | null => {
+  const getAvailabilityForDate = (date: Date): ExperienceAvailabilityItem | null => {
     for (const item of availabilities) {
       if (!item.startDate || !item.endDate) continue;
       try {
@@ -235,9 +236,9 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold">Gestione Disponibilità</h2>
+        <h2 className="text-2xl font-bold">Gestione Disponibilità Esperienza</h2>
         <p className="text-gray-600">
-          {boat?.name} - Tocca un giorno o seleziona un intervallo
+          {experience?.name} - Tocca un giorno o seleziona un intervallo
         </p>
       </div>
 
@@ -308,7 +309,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
               {monthDays.map(date => {
                 const avail = getAvailabilityForDate(date);
-                const displayPrice = avail?.status === 'available' ? (avail.priceOverride || (boat as any)?.pricePerDay) : null;
+                const displayPrice = avail?.status === 'available' ? (avail.priceOverride || experience?.pricePerPerson) : null;
                 
                 return (
                   <div
@@ -365,7 +366,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
             )}
 
             <div className="space-y-1">
-              <label className="text-sm font-medium">Prezzo giornaliero (€)</label>
+              <label className="text-sm font-medium">Prezzo per persona (€)</label>
               <input
                 type="number"
                 step="0.01"

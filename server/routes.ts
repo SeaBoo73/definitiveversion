@@ -1437,6 +1437,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Set a single day's availability status (day-by-day, no blocks)
+  app.post('/api/availability/set-day', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { boatId, date, status } = req.body;
+
+      if (!boatId || !date || !status) {
+        return res.status(400).json({ error: "boatId, date e status sono obbligatori" });
+      }
+
+      const boat = await storage.getBoat(boatId);
+      if (!boat || boat.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
+      }
+
+      const dayStr = date.split('T')[0];
+
+      // Delete any existing record that covers this exact day
+      const allAvail = await storage.getBoatAvailability(boatId);
+      for (const avail of allAvail) {
+        const aStart = new Date(avail.startDate);
+        const aEnd = new Date(avail.endDate);
+        const target = new Date(dayStr);
+        aStart.setHours(0,0,0,0);
+        aEnd.setHours(0,0,0,0);
+        target.setHours(0,0,0,0);
+
+        if (target >= aStart && target <= aEnd) {
+          await storage.deleteAvailability(avail.id);
+        }
+      }
+
+      // Create single-day record
+      await storage.createAvailability({
+        boatId,
+        startDate: dayStr,
+        endDate: dayStr,
+        status,
+      });
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Set day availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nell'impostazione della disponibilità" });
+    }
+  });
+
+  // Clear a single day's availability (day-by-day, no blocks)
+  app.post('/api/availability/clear-day', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { boatId, date } = req.body;
+
+      if (!boatId || !date) {
+        return res.status(400).json({ error: "boatId e date sono obbligatori" });
+      }
+
+      const boat = await storage.getBoat(boatId);
+      if (!boat || boat.hostId !== userId) {
+        return res.status(403).json({ error: "Non sei il proprietario di questa barca" });
+      }
+
+      const dayStr = date.split('T')[0];
+      const allAvail = await storage.getBoatAvailability(boatId);
+      
+      for (const avail of allAvail) {
+        const aStart = new Date(avail.startDate);
+        const aEnd = new Date(avail.endDate);
+        const target = new Date(dayStr);
+        aStart.setHours(0,0,0,0);
+        aEnd.setHours(0,0,0,0);
+        target.setHours(0,0,0,0);
+
+        if (target >= aStart && target <= aEnd) {
+          await storage.deleteAvailability(avail.id);
+        }
+      }
+
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Clear day availability error:", error);
+      res.status(400).json({ error: error.message || "Errore nella rimozione della disponibilità" });
+    }
+  });
+
   // Delete availability (owner only)
   app.delete('/api/availability/:id', requireAuth, requireOwner, async (req: any, res) => {
     try {

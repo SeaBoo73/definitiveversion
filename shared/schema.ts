@@ -53,6 +53,8 @@ export const users = pgTable("users", {
   website: varchar("website", { length: 255 }),
   instagram: varchar("instagram", { length: 100 }),
   
+  birthDate: date("birth_date"),
+  
   // Profile image (base64)
   profileImage: text("profile_image"),
   
@@ -176,6 +178,7 @@ export const insertUserSchema = createInsertSchema(users, {
   firstName: z.string().min(1, "Nome richiesto").optional(),
   lastName: z.string().min(1, "Cognome richiesto").optional(),
   phone: z.string().optional(),
+  birthDate: z.string().optional(),
   role: z.enum(["customer", "owner", "admin"]).default("customer"),
   businessName: z.string().optional(),
   businessType: z.string().optional(),

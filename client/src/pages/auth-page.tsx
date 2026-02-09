@@ -30,12 +30,26 @@ const forgotPasswordSchema = z.object({
 const registerSchema = insertUserSchema.extend({
   confirmPassword: z.string(),
   acceptTerms: z.boolean(),
+  birthDate: z.string().min(1, "Data di nascita richiesta"),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Le password non coincidono",
   path: ["confirmPassword"],
 }).refine((data) => data.acceptTerms, {
   message: "Devi accettare i termini e condizioni",
   path: ["acceptTerms"],
+}).refine((data) => {
+  if (!data.birthDate) return false;
+  const birth = new Date(data.birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age >= 18;
+}, {
+  message: "Devi avere almeno 18 anni per registrarti",
+  path: ["birthDate"],
 });
 
 type LoginData = z.infer<typeof loginSchema>;
@@ -89,6 +103,7 @@ export default function AuthPage() {
       firstName: urlParams.get('firstName') || "",
       lastName: urlParams.get('lastName') || "",
       phone: urlParams.get('phone') || "",
+      birthDate: "",
       businessName: "",
       businessType: "",
       vatNumber: "",
@@ -676,6 +691,21 @@ export default function AuthPage() {
                         placeholder="+39 123 456 7890"
                         {...registerForm.register("phone")}
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="birthDate">Data di nascita *</Label>
+                      <Input
+                        id="birthDate"
+                        type="date"
+                        max={new Date().toISOString().split('T')[0]}
+                        {...registerForm.register("birthDate")}
+                      />
+                      {registerForm.formState.errors.birthDate && (
+                        <p className="text-sm text-red-500">
+                          {registerForm.formState.errors.birthDate.message}
+                        </p>
+                      )}
                     </div>
 
                     <div className="space-y-4">

@@ -191,6 +191,11 @@ export default function ProfiloPage() {
   ];
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showNotificheDialog, setShowNotificheDialog] = useState(false);
+  const [notifEmail, setNotifEmail] = useState(true);
+  const [notifPush, setNotifPush] = useState(true);
+  const [notifBooking, setNotifBooking] = useState(true);
+  const [notifPromo, setNotifPromo] = useState(false);
 
   const settingsItems = [
     {
@@ -223,7 +228,7 @@ export default function ProfiloPage() {
       icon: Bell,
       title: "Notifiche",
       subtitle: "Gestisci le notifiche",
-      href: "/profilo/notifiche"
+      action: () => setShowNotificheDialog(true)
     },
     {
       icon: Shield,
@@ -570,6 +575,58 @@ export default function ProfiloPage() {
                 disabled={updateProfileMutation.isPending}
               >
                 {updateProfileMutation.isPending ? "Salvataggio..." : "Salva"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showNotificheDialog} onOpenChange={setShowNotificheDialog}>
+        <DialogContent className="sm:max-w-md max-h-[70vh] overflow-y-auto mb-20">
+          <DialogHeader>
+            <DialogTitle>Impostazioni Notifiche</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-5 py-2">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-gray-900">Notifiche email</p>
+                <p className="text-sm text-gray-500">Ricevi aggiornamenti via email</p>
+              </div>
+              <Checkbox checked={notifEmail} onCheckedChange={(c) => setNotifEmail(c === true)} />
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-gray-900">Notifiche push</p>
+                <p className="text-sm text-gray-500">Ricevi notifiche sul dispositivo</p>
+              </div>
+              <Checkbox checked={notifPush} onCheckedChange={(c) => setNotifPush(c === true)} />
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-gray-900">Prenotazioni</p>
+                <p className="text-sm text-gray-500">Aggiornamenti su prenotazioni e pagamenti</p>
+              </div>
+              <Checkbox checked={notifBooking} onCheckedChange={(c) => setNotifBooking(c === true)} />
+            </div>
+            <Separator />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-gray-900">Promozioni</p>
+                <p className="text-sm text-gray-500">Offerte speciali e novità SeaBoo</p>
+              </div>
+              <Checkbox checked={notifPromo} onCheckedChange={(c) => setNotifPromo(c === true)} />
+            </div>
+            <div className="pt-2">
+              <Button 
+                className="w-full bg-ocean-blue hover:bg-blue-600"
+                onClick={() => {
+                  toast({ title: "Notifiche aggiornate", description: "Le preferenze sono state salvate" });
+                  setShowNotificheDialog(false);
+                }}
+              >
+                Salva preferenze
               </Button>
             </div>
           </div>

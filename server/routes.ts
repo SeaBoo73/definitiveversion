@@ -1074,7 +1074,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!req.file) {
         return res.status(400).json({ error: "Nessuna immagine caricata" });
       }
-      const profileImage = `/uploads/${req.file.filename}`;
+      const ext = path.extname(req.file.originalname) || '.jpg';
+      const newFilename = `${req.file.filename}${ext}`;
+      const fs = await import('fs');
+      fs.renameSync(req.file.path, path.join('uploads', newFilename));
+      const profileImage = `/uploads/${newFilename}`;
       const updatedUser = await storage.updateUser(userId, { profileImage });
       if (!updatedUser) {
         return res.status(500).json({ error: "Errore durante l'aggiornamento" });
@@ -2074,11 +2078,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Serve static files
   app.use('/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     next();
-  });
+  }, express.static(path.join(process.cwd(), 'uploads')));
 
   // Serve mobile native preview
   app.get('/mobile-native-preview', (req, res) => {

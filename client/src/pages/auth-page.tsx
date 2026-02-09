@@ -48,7 +48,7 @@ const registerSchema = insertUserSchema.extend({
   }
   return age >= 18;
 }, {
-  message: "Devi avere almeno 18 anni per registrarti",
+  message: "Devi aver compiuto 18 anni per registrarti",
   path: ["birthDate"],
 });
 

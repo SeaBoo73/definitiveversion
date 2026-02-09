@@ -126,34 +126,7 @@ export default function ProfiloPage() {
       subtitle: "Gestisci le tue prenotazioni",
       href: "/customer-dashboard",
       color: "text-blue-600"
-    }] : []),
-    {
-      icon: Heart,
-      title: "Lista dei preferiti",
-      subtitle: "Barche, ormeggi ed esperienze salvate",
-      href: "/preferiti",
-      color: "text-red-500"
-    },
-    {
-      icon: Star,
-      title: "Le mie recensioni",
-      subtitle: "Recensioni lasciate e ricevute",
-      href: "/mie-recensioni",
-      color: "text-yellow-500"
-    },
-    ...(isOwner ? [{
-      icon: Ship,
-      title: "Dashboard Noleggiatore",
-      subtitle: "Gestisci le tue barche",
-      href: "/owner-dashboard",
-      color: "text-ocean-blue"
-    }] : [{
-      icon: Ship,
-      title: "Diventa noleggiatore",
-      subtitle: "Metti in affitto la tua barca",
-      href: "/diventa-noleggiatore",
-      color: "text-ocean-blue"
-    }])
+    }] : [])
   ];
 
   const assistanceItems = [
@@ -183,6 +156,33 @@ export default function ProfiloPage() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const settingsItems = [
+    {
+      icon: Heart,
+      title: "Lista dei preferiti",
+      subtitle: "Barche, ormeggi ed esperienze salvate",
+      href: "/preferiti",
+      color: "text-red-500"
+    },
+    {
+      icon: Star,
+      title: "Le mie recensioni",
+      subtitle: "Recensioni lasciate e ricevute",
+      href: "/mie-recensioni",
+      color: "text-yellow-500"
+    },
+    ...(isOwner ? [{
+      icon: Ship,
+      title: "Dashboard Noleggiatore",
+      subtitle: "Gestisci le tue barche",
+      href: "/owner-dashboard",
+      color: "text-ocean-blue"
+    }] : [{
+      icon: Ship,
+      title: "Diventa noleggiatore",
+      subtitle: "Metti in affitto la tua barca",
+      href: "/diventa-noleggiatore",
+      color: "text-ocean-blue"
+    }]),
     {
       icon: User,
       title: "Informazioni personali",

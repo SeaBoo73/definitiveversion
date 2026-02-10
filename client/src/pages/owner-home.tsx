@@ -9,8 +9,11 @@ import {
   Clock, 
   Users,
   MapPin,
-  Calendar
+  Calendar,
+  MessageSquare,
+  ChevronRight
 } from "lucide-react";
+import { Link } from "wouter";
 
 export default function OwnerHome() {
   const { user } = useAuth();
@@ -220,6 +223,51 @@ export default function OwnerHome() {
               })}
             </div>
           )}
+        </div>
+
+        {/* Desktop only: Calendar and Messages */}
+        <div className="hidden md:grid md:grid-cols-2 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-ocean-blue" />
+                  Calendario
+                </h3>
+                <Link href="/owner-calendar" className="text-sm text-ocean-blue hover:underline flex items-center gap-1">
+                  Apri <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="text-center py-6 bg-gray-50 rounded-lg">
+                <CalendarDays className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">Gestisci disponibilità e date</p>
+                <p className="text-xs text-gray-400 mt-1">
+                  {boats.length > 0 
+                    ? `${boats.length} imbarcazion${boats.length === 1 ? 'e' : 'i'} registrat${boats.length === 1 ? 'a' : 'e'}`
+                    : 'Nessuna imbarcazione registrata'}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5 text-ocean-blue" />
+                  Messaggi
+                </h3>
+                <Link href="/owner-messages" className="text-sm text-ocean-blue hover:underline flex items-center gap-1">
+                  Apri <ChevronRight className="h-4 w-4" />
+                </Link>
+              </div>
+              <div className="text-center py-6 bg-gray-50 rounded-lg">
+                <MessageSquare className="h-10 w-10 text-gray-300 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">Comunica con i tuoi clienti</p>
+                <p className="text-xs text-gray-400 mt-1">Le conversazioni appariranno qui</p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
       </div>

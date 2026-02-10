@@ -2930,6 +2930,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // CONVERSATIONS & MESSAGES ENDPOINTS
   // ===========================================
 
+  // Get all conversations for current user
+  app.get("/api/user/conversations", async (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Non autenticato" });
+    }
+    try {
+      const userId = parseInt(req.session.user.id);
+      const convos = await storage.getUserConversations(userId);
+      res.json(convos);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Create or get inquiry conversation (no booking required)
+  app.post("/api/conversations/inquiry", async (req, res) => {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Non autenticato" });
+    }
+    try {
+      const userId = parseInt(req.session.user.id);
+      const { referenceType, referenceId, referenceName, ownerId } = req.body;
+
+      if (!referenceType || !referenceId || !ownerId) {
+        return res.status(400).json({ error: "Parametri mancanti" });
+      }
+
+      let conversation = await storage.getConversationByReference(referenceType, referenceId, userId);
+
+      if (!conversation) {
+        conversation = await storage.createConversation({
+          customerId: userId,
+          ownerId,
+          referenceType,
+          referenceId,
+          referenceName: referenceName || "",
+        });
+      }
+
+      res.json(conversation);
+    } catch (error: any) {
+      console.error("Error creating inquiry conversation:", error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Get or create conversation for a booking
   app.get("/api/conversations/:bookingId", async (req, res) => {
     if (!req.session.user) {
@@ -2957,14 +3003,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ error: "Non autorizzato" });
       }
       
-      // Get or create conversation
       let conversation = await storage.getConversationByBookingId(bookingId);
       
       if (!conversation) {
         conversation = await storage.createConversation({
           bookingId,
           customerId: booking.customerId,
-          ownerId: boat.hostId
+          ownerId: boat.hostId,
+          referenceType: 'boat',
+          referenceId: boat.id,
+          referenceName: boat.name,
         });
       }
       

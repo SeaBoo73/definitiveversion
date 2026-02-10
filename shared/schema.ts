@@ -328,9 +328,12 @@ export const insertMooringBookingSchema = insertBookingSchema;
 // Conversations table for chat between customers and owners
 export const conversations = pgTable("conversations", {
   id: serial("id").primaryKey(),
-  bookingId: integer("booking_id").references(() => bookings.id).notNull(),
+  bookingId: integer("booking_id").references(() => bookings.id),
   customerId: integer("customer_id").references(() => users.id).notNull(),
   ownerId: integer("owner_id").references(() => users.id).notNull(),
+  referenceType: text("reference_type"),
+  referenceId: integer("reference_id"),
+  referenceName: text("reference_name"),
   createdAt: timestamp("created_at").defaultNow(),
   lastMessageAt: timestamp("last_message_at").defaultNow(),
 });

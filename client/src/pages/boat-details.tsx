@@ -1,5 +1,7 @@
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -34,6 +36,25 @@ export default function BoatDetails() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const { user } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { toast } = useToast();
+
+  const contactOwnerMutation = useMutation({
+    mutationFn: async (boat: Boat) => {
+      const response = await apiRequest('POST', '/api/conversations/inquiry', {
+        referenceType: 'boat',
+        referenceId: boat.id,
+        referenceName: boat.name,
+        ownerId: boat.hostId,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      setLocation('/messaging');
+    },
+    onError: () => {
+      toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+    },
+  });
   
   // Extract boat ID from URL path
   const pathParts = location.split('/');
@@ -339,9 +360,20 @@ export default function BoatDetails() {
                     Calendario Avanzato
                   </Button>
                   
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      if (!user) {
+                        toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+                        return;
+                      }
+                      if (boat) contactOwnerMutation.mutate(boat);
+                    }}
+                    disabled={contactOwnerMutation.isPending}
+                  >
                     <MessageCircle className="h-4 w-4 mr-2" />
-                    Contatta il proprietario
+                    {contactOwnerMutation.isPending ? "Apertura chat..." : "Contatta il proprietario"}
                   </Button>
                 </div>
 

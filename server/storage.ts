@@ -116,6 +116,8 @@ export interface IStorage {
   // Conversation operations
   getConversation(id: number): Promise<Conversation | undefined>;
   getConversationByBookingId(bookingId: number): Promise<Conversation | undefined>;
+  getConversationByReference(referenceType: string, referenceId: number, customerId: number): Promise<Conversation | undefined>;
+  getUserConversations(userId: number): Promise<Conversation[]>;
   createConversation(data: InsertConversation): Promise<Conversation>;
   updateConversationLastMessage(id: number): Promise<void>;
   
@@ -483,6 +485,26 @@ export class DatabaseStorage implements IStorage {
   async getConversationByBookingId(bookingId: number): Promise<Conversation | undefined> {
     const [conversation] = await db.select().from(conversations).where(eq(conversations.bookingId, bookingId));
     return conversation;
+  }
+
+  async getConversationByReference(referenceType: string, referenceId: number, customerId: number): Promise<Conversation | undefined> {
+    const [conversation] = await db.select().from(conversations).where(
+      and(
+        eq(conversations.referenceType, referenceType),
+        eq(conversations.referenceId, referenceId),
+        eq(conversations.customerId, customerId)
+      )
+    );
+    return conversation;
+  }
+
+  async getUserConversations(userId: number): Promise<Conversation[]> {
+    return await db.select().from(conversations).where(
+      or(
+        eq(conversations.customerId, userId),
+        eq(conversations.ownerId, userId)
+      )
+    ).orderBy(conversations.lastMessageAt);
   }
 
   async createConversation(data: InsertConversation): Promise<Conversation> {

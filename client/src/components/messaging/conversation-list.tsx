@@ -1,39 +1,24 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Plus, Search, MessageSquare, Users, Phone } from 'lucide-react';
+import { Search, MessageSquare, Ship, Anchor, Compass } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { it } from 'date-fns/locale';
 
-interface Conversation {
+interface ConversationData {
   id: number;
-  type: 'direct' | 'group' | 'support';
-  title?: string;
-  isGroup: boolean;
+  bookingId?: number | null;
+  customerId: number;
+  ownerId: number;
+  referenceType?: string | null;
+  referenceId?: number | null;
+  referenceName?: string | null;
+  createdAt: string;
   lastMessageAt: string;
-  participants: Array<{
-    id: number;
-    firstName: string;
-    lastName: string;
-    role: string;
-  }>;
-  lastMessage?: {
-    content: string;
-    senderName: string;
-  };
-  unreadCount?: number;
-  booking?: {
-    id: number;
-    boatId: number;
-    startDate: string;
-    endDate: string;
-  };
 }
 
 interface ConversationListProps {
@@ -48,65 +33,45 @@ export function ConversationList({
   selectedConversationId 
 }: ConversationListProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [showNewChat, setShowNewChat] = useState(false);
 
-  // Query per ottenere le conversazioni dell'utente
-  const { data: conversations, isLoading } = useQuery({
-    queryKey: ['conversations', currentUserId],
-    queryFn: async () => {
-      const response = await fetch('/api/messaging/conversations');
-      if (!response.ok) throw new Error('Errore nel caricamento conversazioni');
-      return response.json();
-    },
-    refetchInterval: 30000, // Aggiorna ogni 30 secondi
+  const { data: conversations, isLoading } = useQuery<ConversationData[]>({
+    queryKey: ['/api/user/conversations'],
+    refetchInterval: 30000,
   });
 
-  // Query per notifiche non lette
-  const { data: notifications } = useQuery({
-    queryKey: ['notifications', currentUserId],
-    queryFn: async () => {
-      const response = await fetch('/api/messaging/notifications');
-      if (!response.ok) throw new Error('Errore nel caricamento notifiche');
-      return response.json();
-    },
-    refetchInterval: 10000, // Aggiorna ogni 10 secondi
-  });
-
-  // Filtra conversazioni in base al termine di ricerca
-  const filteredConversations = conversations?.filter((conv: Conversation) =>
-    conv.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    conv.participants.some(p => 
-      `${p.firstName} ${p.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+  const filteredConversations = conversations?.filter((conv) =>
+    conv.referenceName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (conv.bookingId && `#${conv.bookingId}`.includes(searchTerm))
   ) || [];
 
-  const getTotalUnreadCount = () => {
-    return notifications?.filter((n: any) => !n.read).length || 0;
+  const getReferenceIcon = (type?: string | null) => {
+    switch (type) {
+      case 'boat': return <Ship className="w-4 h-4" />;
+      case 'mooring': return <Anchor className="w-4 h-4" />;
+      case 'experience': return <Compass className="w-4 h-4" />;
+      default: return <MessageSquare className="w-4 h-4" />;
+    }
   };
 
-  const getConversationTitle = (conversation: Conversation) => {
-    if (conversation.title) return conversation.title;
-    if (conversation.isGroup) return 'Chat di Gruppo';
-    
-    // Per chat dirette, mostra il nome dell'altro partecipante
-    const otherParticipant = conversation.participants.find(p => p.id !== currentUserId);
-    return otherParticipant ? `${otherParticipant.firstName} ${otherParticipant.lastName}` : 'Chat';
+  const getReferenceLabel = (type?: string | null) => {
+    switch (type) {
+      case 'boat': return 'Imbarcazione';
+      case 'mooring': return 'Ormeggio';
+      case 'experience': return 'Esperienza';
+      default: return 'Messaggio';
+    }
   };
 
-  const getConversationSubtitle = (conversation: Conversation) => {
-    if (conversation.booking) {
-      return `Prenotazione #${conversation.booking.id}`;
-    }
-    if (conversation.lastMessage) {
-      return `${conversation.lastMessage.senderName}: ${conversation.lastMessage.content.substring(0, 50)}...`;
-    }
-    return 'Nessun messaggio';
+  const getConversationTitle = (conv: ConversationData) => {
+    if (conv.referenceName) return conv.referenceName;
+    if (conv.bookingId) return `Prenotazione #${conv.bookingId}`;
+    return 'Conversazione';
   };
 
   if (isLoading) {
     return (
       <Card className="h-full">
-        <CardContent className="flex items-center justify-center h-full">
+        <CardContent className="flex items-center justify-center h-full p-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
         </CardContent>
       </Card>
@@ -120,11 +85,6 @@ export function ConversationList({
           <CardTitle className="flex items-center space-x-2">
             <MessageSquare className="w-5 h-5" />
             <span>Messaggi</span>
-            {getTotalUnreadCount() > 0 && (
-              <Badge variant="destructive" className="rounded-full">
-                {getTotalUnreadCount()}
-              </Badge>
-            )}
           </CardTitle>
         </div>
         <div className="relative">
@@ -148,7 +108,7 @@ export function ConversationList({
             </div>
           ) : (
             <div className="space-y-1 p-2">
-              {filteredConversations.map((conversation: Conversation) => (
+              {filteredConversations.map((conversation) => (
                 <div
                   key={conversation.id}
                   onClick={() => onSelectConversation(conversation.id)}
@@ -157,71 +117,35 @@ export function ConversationList({
                   }`}
                 >
                   <div className="flex items-start space-x-3">
-                    <div className="relative">
-                      <Avatar>
-                        <AvatarFallback>
-                          {conversation.isGroup ? (
-                            <Users className="w-4 h-4" />
-                          ) : (
-                            <MessageSquare className="w-4 h-4" />
-                          )}
-                        </AvatarFallback>
-                      </Avatar>
-                      {conversation.unreadCount && conversation.unreadCount > 0 && (
-                        <Badge 
-                          variant="destructive" 
-                          className="absolute -top-1 -right-1 rounded-full w-5 h-5 text-xs flex items-center justify-center"
-                        >
-                          {conversation.unreadCount > 9 ? '9+' : conversation.unreadCount}
-                        </Badge>
-                      )}
-                    </div>
+                    <Avatar>
+                      <AvatarFallback>
+                        {getReferenceIcon(conversation.referenceType)}
+                      </AvatarFallback>
+                    </Avatar>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between">
                         <h4 className="font-medium text-sm truncate">
                           {getConversationTitle(conversation)}
                         </h4>
-                        <div className="flex items-center space-x-1">
-                          {conversation.type === 'support' && (
-                            <Badge variant="outline" className="text-xs">
-                              <Phone className="w-3 h-3 mr-1" />
-                              Supporto
-                            </Badge>
-                          )}
-                          <span className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(new Date(conversation.lastMessageAt), { 
-                              addSuffix: true, 
-                              locale: it 
-                            })}
-                          </span>
-                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {formatDistanceToNow(new Date(conversation.lastMessageAt), { 
+                            addSuffix: true, 
+                            locale: it 
+                          })}
+                        </span>
                       </div>
 
-                      <p className="text-sm text-muted-foreground truncate mt-1">
-                        {getConversationSubtitle(conversation)}
-                      </p>
-
-                      {conversation.booking && (
-                        <div className="flex items-center space-x-2 mt-2">
-                          <Badge variant="secondary" className="text-xs">
-                            {new Date(conversation.booking.startDate).toLocaleDateString('it-IT')}
+                      <div className="flex items-center space-x-2 mt-1">
+                        <Badge variant="secondary" className="text-xs">
+                          {getReferenceLabel(conversation.referenceType)}
+                        </Badge>
+                        {conversation.bookingId && (
+                          <Badge variant="outline" className="text-xs">
+                            Prenotazione #{conversation.bookingId}
                           </Badge>
-                          <span className="text-xs text-muted-foreground">→</span>
-                          <Badge variant="secondary" className="text-xs">
-                            {new Date(conversation.booking.endDate).toLocaleDateString('it-IT')}
-                          </Badge>
-                        </div>
-                      )}
-
-                      {conversation.isGroup && (
-                        <div className="flex items-center space-x-1 mt-2">
-                          <Users className="w-3 h-3 text-muted-foreground" />
-                          <span className="text-xs text-muted-foreground">
-                            {conversation.participants.length} partecipanti
-                          </span>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

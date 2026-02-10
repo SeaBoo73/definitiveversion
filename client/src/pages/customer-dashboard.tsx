@@ -624,17 +624,6 @@ export default function CustomerDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-md transition-all md:col-span-2" onClick={() => setLocation('/messaging')}>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <MessageSquare className="h-8 w-8 text-purple-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Messaggi</p>
-                  <p className="text-2xl font-bold text-gray-900">Vai ai messaggi</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         <Tabs defaultValue={initialTab} className="space-y-6">
@@ -644,7 +633,6 @@ export default function CustomerDashboard() {
             <TabsTrigger value="favorites">Preferiti</TabsTrigger>
             <TabsTrigger value="reviews">Recensioni</TabsTrigger>
             <TabsTrigger value="profile">Profilo</TabsTrigger>
-            <TabsTrigger value="messages">Messaggi</TabsTrigger>
           </TabsList>
 
           <TabsContent value="bookings" className="space-y-6">
@@ -937,17 +925,6 @@ export default function CustomerDashboard() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="messages" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Messaggi</h2>
-            
-            <Card>
-              <CardContent className="p-8 text-center">
-                <MessageSquare className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Nessun messaggio</h3>
-                <p className="text-gray-600">I messaggi con i proprietari delle imbarcazioni appariranno qui</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
       </div>
 

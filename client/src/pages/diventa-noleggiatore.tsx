@@ -173,7 +173,7 @@ export default function DiventaNoleggiatorePage() {
                 <Euro className="h-5 w-5 text-green-600 mt-1" />
                 <div>
                   <h3 className="font-semibold text-gray-900">Guadagni Extra</h3>
-                  <p className="text-gray-600 text-sm">Monetizza la tua barca quando non la usi. Guadagni medi di €12.500/anno.</p>
+                  <p className="text-gray-600 text-sm">Monetizza la tua barca quando non la usi.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -257,7 +257,6 @@ export default function DiventaNoleggiatorePage() {
                   <ul className="text-gray-600 text-sm mt-2 space-y-1">
                     <li>• Imbarcazione in buone condizioni di sicurezza</li>
                     <li>• Equipaggiamenti di sicurezza conformi</li>
-                    <li>• Ormeggio presso porti partner SeaBoo</li>
                     <li>• Disponibilità minima 30 giorni/anno</li>
                   </ul>
                 </div>

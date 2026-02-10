@@ -54,7 +54,6 @@ export function Header() {
                 alt="SeaBoo Logo" 
                 className="h-10 w-10 object-contain rounded-lg"
               />
-              <span className="text-xl font-bold" style={{ color: '#022237' }}>SeaBoo</span>
             </Link>
           </div>
 

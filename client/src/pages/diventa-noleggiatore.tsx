@@ -266,54 +266,56 @@ export default function DiventaNoleggiatorePage() {
           </CardContent>
         </Card>
 
-        {/* Terms Acceptance */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Accettazione Condizioni</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="terms"
-                checked={acceptedTerms}
-                onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
-              />
-              <label htmlFor="terms" className="text-sm text-gray-700 leading-5">
-                Accetto i{" "}
-                <Link href="/termini-servizio" className="text-blue-600 hover:underline">
-                  Termini di Servizio
-                </Link>
-                {" "}e la{" "}
-                <Link href="/privacy-policy" className="text-blue-600 hover:underline">
-                  Privacy Policy
-                </Link>
-                {" "}di SeaBoo
-              </label>
-            </div>
-            
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="commission"
-                checked={acceptedCommission}
-                onCheckedChange={(checked) => setAcceptedCommission(checked === true)}
-              />
-              <label htmlFor="commission" className="text-sm text-gray-700 leading-5">
-                Accetto la struttura commissionale del 15% su ogni prenotazione e comprendo che questo importo verrà trattenuto automaticamente
-              </label>
-            </div>
-            
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="requirements"
-                checked={acceptedRequirements}
-                onCheckedChange={(checked) => setAcceptedRequirements(checked === true)}
-              />
-              <label htmlFor="requirements" className="text-sm text-gray-700 leading-5">
-                Confermo di possedere tutti i documenti richiesti e che la mia imbarcazione rispetta i criteri di idoneità
-              </label>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Terms Acceptance - only for non-owners */}
+        {!isAlreadyOwner && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>Accettazione Condizioni</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="terms"
+                  checked={acceptedTerms}
+                  onCheckedChange={(checked) => setAcceptedTerms(checked === true)}
+                />
+                <label htmlFor="terms" className="text-sm text-gray-700 leading-5">
+                  Accetto i{" "}
+                  <Link href="/termini-servizio" className="text-blue-600 hover:underline">
+                    Termini di Servizio
+                  </Link>
+                  {" "}e la{" "}
+                  <Link href="/privacy-policy" className="text-blue-600 hover:underline">
+                    Privacy Policy
+                  </Link>
+                  {" "}di SeaBoo
+                </label>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="commission"
+                  checked={acceptedCommission}
+                  onCheckedChange={(checked) => setAcceptedCommission(checked === true)}
+                />
+                <label htmlFor="commission" className="text-sm text-gray-700 leading-5">
+                  Accetto la struttura commissionale del 15% su ogni prenotazione e comprendo che questo importo verrà trattenuto automaticamente
+                </label>
+              </div>
+              
+              <div className="flex items-start space-x-3">
+                <Checkbox
+                  id="requirements"
+                  checked={acceptedRequirements}
+                  onCheckedChange={(checked) => setAcceptedRequirements(checked === true)}
+                />
+                <label htmlFor="requirements" className="text-sm text-gray-700 leading-5">
+                  Confermo di possedere tutti i documenti richiesti e che la mia imbarcazione rispetta i criteri di idoneità
+                </label>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Business Info Form - Only shown if user needs to upgrade */}
         {needsUpgrade && (
@@ -375,34 +377,34 @@ export default function DiventaNoleggiatorePage() {
           </Card>
         )}
 
-        {/* CTA Button */}
-        <div className="text-center">
-          <Button
-            onClick={handleProceed}
-            disabled={!canProceed || upgradeToOwnerMutation.isPending}
-            className={`px-8 py-3 text-lg font-semibold rounded-lg transition-all ${
-              canProceed && !upgradeToOwnerMutation.isPending
-                ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            }`}
-            data-testid="button-proceed"
-          >
-            {upgradeToOwnerMutation.isPending 
-              ? "Elaborazione..." 
-              : isAlreadyOwner 
-                ? "Accedi alla Dashboard"
+        {/* CTA Button - only for non-owners */}
+        {!isAlreadyOwner && (
+          <div className="text-center">
+            <Button
+              onClick={handleProceed}
+              disabled={!canProceed || upgradeToOwnerMutation.isPending}
+              className={`px-8 py-3 text-lg font-semibold rounded-lg transition-all ${
+                canProceed && !upgradeToOwnerMutation.isPending
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
+              data-testid="button-proceed"
+            >
+              {upgradeToOwnerMutation.isPending 
+                ? "Elaborazione..." 
                 : needsUpgrade
                   ? "Diventa Noleggiatore"
                   : "Registrati come Noleggiatore"
-            }
-          </Button>
-          <p className="text-gray-500 text-sm mt-3">
-            {user 
-              ? "Sarai reindirizzato alla tua dashboard per aggiungere la prima imbarcazione"
-              : "Sarai reindirizzato alla pagina di registrazione"
-            }
-          </p>
-        </div>
+              }
+            </Button>
+            <p className="text-gray-500 text-sm mt-3">
+              {user 
+                ? "Sarai reindirizzato alla tua dashboard per aggiungere la prima imbarcazione"
+                : "Sarai reindirizzato alla pagina di registrazione"
+              }
+            </p>
+          </div>
+        )}
 
         {/* Support */}
         <div className="mt-12 text-center">

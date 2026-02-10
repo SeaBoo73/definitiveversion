@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { BookingCalendar } from "@/components/booking-calendar";
@@ -10,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Boat } from "@shared/schema";
+import { useAuth } from "@/hooks/use-auth";
+import { useToast } from "@/hooks/use-toast";
 import { 
   MapPin, 
   Users, 
@@ -20,7 +23,8 @@ import {
   Camera,
   Calendar,
   Shield,
-  CheckCircle
+  CheckCircle,
+  MessageCircle
 } from "lucide-react";
 
 export default function BoatBooking() {
@@ -32,6 +36,26 @@ export default function BoatBooking() {
     totalPrice: number;
     days: number;
   } | null>(null);
+  const { user } = useAuth();
+  const { toast } = useToast();
+
+  const contactOwnerMutation = useMutation({
+    mutationFn: async (boat: Boat) => {
+      const response = await apiRequest('POST', '/api/conversations/inquiry', {
+        referenceType: 'boat',
+        referenceId: boat.id,
+        referenceName: boat.name,
+        ownerId: boat.hostId,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      setLocation('/messaging');
+    },
+    onError: () => {
+      toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+    },
+  });
 
   // Extract boat ID from URL path
   const pathParts = location.split('/');
@@ -114,10 +138,10 @@ export default function BoatBooking() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 overflow-y-auto">
+    <div className="min-h-screen bg-gray-50 overflow-y-auto pb-40">
       <Header />
       
-      <div className="max-w-7xl mx-auto px-4 py-8 pb-20">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Back Button */}
         <Button
           variant="ghost"
@@ -192,7 +216,7 @@ export default function BoatBooking() {
                     <h1 className="text-2xl font-bold text-gray-900">{boat.name}</h1>
                     <p className="text-gray-600 flex items-center gap-1 mt-1">
                       <MapPin className="h-4 w-4" />
-                      {boat.port}
+                      {boat.location}
                     </p>
                   </div>
                   
@@ -209,7 +233,7 @@ export default function BoatBooking() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm">Fino a {boat.maxPersons} ospiti</span>
+                    <span className="text-sm">Fino a {boat.capacity || 8} ospiti</span>
                   </div>
                   
                   <div className="flex items-center gap-2">
@@ -228,13 +252,29 @@ export default function BoatBooking() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-3">
                   <Badge variant="outline">Skipper disponibile</Badge>
                   <Badge variant="outline">Carburante incluso</Badge>
                   <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
                     Cancellazione gratuita
                   </Badge>
                 </div>
+
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => {
+                    if (!user) {
+                      toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+                      return;
+                    }
+                    if (boat) contactOwnerMutation.mutate(boat);
+                  }}
+                  disabled={contactOwnerMutation.isPending}
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Contatta il proprietario"}
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -244,7 +284,7 @@ export default function BoatBooking() {
         {currentStep === 'calendar' && (
           <BookingCalendar
             boatId={boat.id}
-            pricePerDay={typeof boat.pricePerDay === 'string' ? parseInt(boat.pricePerDay) : boat.pricePerDay}
+            pricePerDay={typeof boat.pricePerDay === 'string' ? parseInt(boat.pricePerDay) : (boat.pricePerDay || 0)}
             onDateSelect={handleDateSelect}
           />
         )}
@@ -254,9 +294,9 @@ export default function BoatBooking() {
             boat={{
               id: boat.id,
               name: boat.name,
-              port: boat.port || "",
-              pricePerDay: typeof boat.pricePerDay === 'string' ? parseInt(boat.pricePerDay) : boat.pricePerDay,
-              maxPersons: boat.maxPersons || 8,
+              port: boat.location || "",
+              pricePerDay: typeof boat.pricePerDay === 'string' ? parseInt(boat.pricePerDay) : (boat.pricePerDay || 0),
+              maxPersons: boat.capacity || 8,
               images: boat.images || [],
               skipperRequired: false,
               fuelIncluded: true

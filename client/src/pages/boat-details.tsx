@@ -129,7 +129,7 @@ export default function BoatDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-40">
       <Header />
       
       {/* Hero Images */}

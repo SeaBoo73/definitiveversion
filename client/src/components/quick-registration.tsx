@@ -27,7 +27,7 @@ interface QuickRegistrationProps {
 export function QuickRegistration({ 
   title = "Inizia subito come noleggiatore",
   description = "Inserisci i tuoi dati per iniziare velocemente",
-  buttonText = "Diventa noleggiatore",
+  buttonText = "Diventa SeaHost",
   className = ""
 }: QuickRegistrationProps) {
   const [, setLocation] = useLocation();

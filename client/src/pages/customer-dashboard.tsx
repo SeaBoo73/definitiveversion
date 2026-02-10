@@ -573,7 +573,7 @@ export default function CustomerDashboard() {
               className="border-coral text-coral hover:bg-coral hover:text-white"
               onClick={() => setLocation("/diventa-noleggiatore")}
             >
-              Vuoi diventare noleggiatore?
+              Vuoi diventare SeaHost?
             </Button>
           </div>
         </div>

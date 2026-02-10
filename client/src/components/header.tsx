@@ -187,10 +187,10 @@ export function Header() {
                     Dashboard Sea Host
                   </Link>
                 )}
-                {user?.role === "customer" && (
+                {(!user || user.role === "customer") && (
                   <Button variant="ghost" asChild className="px-2 py-1 text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100">
                     <Link href="/diventa-noleggiatore">
-                      Diventa noleggiatore
+                      Diventa SeaHost
                     </Link>
                   </Button>
                 )}
@@ -464,7 +464,7 @@ export function Header() {
                 {user.role === "customer" && (
                   <Button variant="ghost" asChild className="w-full justify-start text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100">
                     <Link href="/diventa-noleggiatore" onClick={() => setIsMobileMenuOpen(false)}>
-                      Diventa noleggiatore
+                      Diventa SeaHost
                     </Link>
                   </Button>
                 )}

@@ -52,7 +52,10 @@ import {
   Euro,
   TrendingUp,
   Camera,
-  Receipt
+  Receipt,
+  Mail,
+  Phone,
+  CheckCircle
 } from "lucide-react";
 
 export default function ProfiloPage() {
@@ -206,6 +209,10 @@ export default function ProfiloPage() {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showNotificheDialog, setShowNotificheDialog] = useState(false);
+  const [showVerificaDialog, setShowVerificaDialog] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
+  const [verifyingType, setVerifyingType] = useState<'email' | 'phone' | null>(null);
+  const [codeSent, setCodeSent] = useState(false);
   const [notifEmail, setNotifEmail] = useState(true);
   const [notifPush, setNotifPush] = useState(true);
   const [notifBooking, setNotifBooking] = useState(true);
@@ -236,6 +243,59 @@ export default function ProfiloPage() {
     },
     onError: () => {
       toast({ title: "Errore", description: "Impossibile salvare le preferenze", variant: "destructive" });
+    },
+  });
+
+  const { data: verificationStatus, refetch: refetchVerification } = useQuery<{ emailVerified: boolean; phoneVerified: boolean; hasPhone: boolean; hasEmail: boolean }>({
+    queryKey: ['/api/verification/status'],
+    enabled: !!user,
+  });
+
+  const sendEmailCodeMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest('POST', '/api/verification/send-email');
+      return res.json();
+    },
+    onSuccess: () => {
+      setCodeSent(true);
+      setVerifyingType('email');
+      toast({ title: "Codice inviato", description: "Controlla la tua email per il codice di verifica" });
+    },
+    onError: (error: any) => {
+      toast({ title: "Errore", description: error.message || "Impossibile inviare il codice", variant: "destructive" });
+    },
+  });
+
+  const sendPhoneCodeMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest('POST', '/api/verification/send-phone');
+      return res.json();
+    },
+    onSuccess: () => {
+      setCodeSent(true);
+      setVerifyingType('phone');
+      toast({ title: "Codice inviato", description: "Codice di verifica inviato (controlla email o SMS)" });
+    },
+    onError: (error: any) => {
+      toast({ title: "Errore", description: error.message || "Impossibile inviare il codice", variant: "destructive" });
+    },
+  });
+
+  const verifyCodeMutation = useMutation({
+    mutationFn: async ({ code, type }: { code: string; type: 'email' | 'phone' }) => {
+      const res = await apiRequest('POST', '/api/verification/verify', { code, type });
+      return res.json();
+    },
+    onSuccess: (data: any) => {
+      toast({ title: "Verificato!", description: data.message });
+      setCodeSent(false);
+      setVerifyingType(null);
+      setVerificationCode("");
+      refetchVerification();
+      queryClient.invalidateQueries({ queryKey: ['/api/user'] });
+    },
+    onError: (error: any) => {
+      toast({ title: "Errore", description: error.message || "Codice non valido", variant: "destructive" });
     },
   });
 
@@ -281,9 +341,12 @@ export default function ProfiloPage() {
     },
     {
       icon: Shield,
-      title: "Privacy e sicurezza",
-      subtitle: "Impostazioni account",
-      href: "/privacy-policy"
+      title: "Verifica account",
+      subtitle: verificationStatus?.emailVerified && verificationStatus?.phoneVerified 
+        ? "Email e telefono verificati" 
+        : "Verifica email e numero di telefono",
+      action: () => { setShowVerificaDialog(true); setCodeSent(false); setVerifyingType(null); setVerificationCode(""); },
+      badge: verificationStatus?.emailVerified && verificationStatus?.phoneVerified ? "verified" : "unverified",
     },
     {
       icon: AlertTriangle,
@@ -418,17 +481,24 @@ export default function ProfiloPage() {
           <CardContent className="space-y-1">
             {settingsItems.map((item, index) => {
               const Icon = item.icon;
+              const badge = (item as any).badge;
               const content = (
                 <div className={`flex items-center p-3 rounded-lg transition-colors ${
                   item.danger 
                     ? 'hover:bg-red-50 cursor-pointer' 
                     : 'hover:bg-gray-50'
                 }`}>
-                  <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : 'text-gray-600'}`} />
+                  <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : badge === 'verified' ? 'text-green-600' : 'text-gray-600'}`} />
                   <div className="flex-1">
                     <div className={`font-medium ${item.danger ? 'text-red-600' : 'text-gray-900'}`}>{item.title}</div>
                     <div className={`text-sm ${item.danger ? 'text-red-500' : 'text-gray-500'}`}>{item.subtitle}</div>
                   </div>
+                  {badge === 'verified' && (
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full mr-2 font-medium">Verificato</span>
+                  )}
+                  {badge === 'unverified' && (
+                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full mr-2 font-medium">Da verificare</span>
+                  )}
                   <ChevronRight className={`h-5 w-5 ${item.danger ? 'text-red-400' : 'text-gray-400'}`} />
                 </div>
               );
@@ -685,6 +755,132 @@ export default function ProfiloPage() {
               >
                 {saveNotifMutation.isPending ? "Salvataggio..." : "Salva preferenze"}
               </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showVerificaDialog} onOpenChange={setShowVerificaDialog}>
+        <DialogContent className="sm:max-w-md max-h-[80vh] overflow-y-auto mb-20">
+          <DialogHeader>
+            <DialogTitle>Verifica Account</DialogTitle>
+            <p className="text-sm text-gray-500">Verifica la tua identità per una maggiore sicurezza e per sbloccare tutte le funzionalità</p>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="p-4 rounded-lg border border-gray-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Mail className="h-5 w-5 text-blue-600" />
+                  <div>
+                    <p className="font-medium text-gray-900">Email</p>
+                    <p className="text-sm text-gray-500">{user?.email || "Non impostata"}</p>
+                  </div>
+                </div>
+                {verificationStatus?.emailVerified ? (
+                  <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium flex items-center gap-1">
+                    <CheckCircle className="h-3.5 w-3.5" /> Verificata
+                  </span>
+                ) : (
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    disabled={sendEmailCodeMutation.isPending || (codeSent && verifyingType === 'email')}
+                    onClick={() => sendEmailCodeMutation.mutate()}
+                  >
+                    {sendEmailCodeMutation.isPending ? "Invio..." : "Verifica"}
+                  </Button>
+                )}
+              </div>
+              {codeSent && verifyingType === 'email' && (
+                <div className="space-y-2 pt-2">
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="Inserisci codice a 6 cifre"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      maxLength={6}
+                      className="flex-1"
+                    />
+                    <Button
+                      size="sm"
+                      disabled={verificationCode.length !== 6 || verifyCodeMutation.isPending}
+                      onClick={() => verifyCodeMutation.mutate({ code: verificationCode, type: 'email' })}
+                    >
+                      {verifyCodeMutation.isPending ? "..." : "Conferma"}
+                    </Button>
+                  </div>
+                  <button
+                    type="button"
+                    className="text-xs text-blue-600 hover:underline"
+                    onClick={() => { setCodeSent(false); setVerificationCode(""); setVerifyingType(null); }}
+                  >
+                    Richiedi nuovo codice
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="p-4 rounded-lg border border-gray-200 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Phone className="h-5 w-5 text-green-600" />
+                  <div>
+                    <p className="font-medium text-gray-900">Telefono</p>
+                    <p className="text-sm text-gray-500">{user?.phone || "Non impostato"}</p>
+                  </div>
+                </div>
+                {verificationStatus?.phoneVerified ? (
+                  <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium flex items-center gap-1">
+                    <CheckCircle className="h-3.5 w-3.5" /> Verificato
+                  </span>
+                ) : !user?.phone ? (
+                  <Button size="sm" variant="outline" onClick={() => { setShowVerificaDialog(false); setShowEditDialog(true); }}>
+                    Aggiungi
+                  </Button>
+                ) : (
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    disabled={sendPhoneCodeMutation.isPending || (codeSent && verifyingType === 'phone')}
+                    onClick={() => sendPhoneCodeMutation.mutate()}
+                  >
+                    {sendPhoneCodeMutation.isPending ? "Invio..." : "Verifica"}
+                  </Button>
+                )}
+              </div>
+              {codeSent && verifyingType === 'phone' && (
+                <div className="space-y-2 pt-2">
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="Inserisci codice a 6 cifre"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      maxLength={6}
+                      className="flex-1"
+                    />
+                    <Button
+                      size="sm"
+                      disabled={verificationCode.length !== 6 || verifyCodeMutation.isPending}
+                      onClick={() => verifyCodeMutation.mutate({ code: verificationCode, type: 'phone' })}
+                    >
+                      {verifyCodeMutation.isPending ? "..." : "Conferma"}
+                    </Button>
+                  </div>
+                  <button
+                    type="button"
+                    className="text-xs text-blue-600 hover:underline"
+                    onClick={() => { setCodeSent(false); setVerificationCode(""); setVerifyingType(null); }}
+                  >
+                    Richiedi nuovo codice
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <p className="text-xs text-blue-700">
+                La verifica protegge il tuo account e sblocca l'accesso completo ai dati di contatto degli altri utenti solo dopo la conferma di una prenotazione.
+              </p>
             </div>
           </div>
         </DialogContent>

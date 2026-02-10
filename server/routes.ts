@@ -2,7 +2,9 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema, insertBoatAvailabilitySchema } from "@shared/schema";
+import { db } from "./db";
+import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema, insertBoatAvailabilitySchema, users } from "@shared/schema";
+import { eq } from "drizzle-orm";
 import session from "express-session";
 import connectPg from "connect-pg-simple";
 import multer from "multer";
@@ -583,7 +585,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         role: user.role,
         businessName: user.businessName,
         bio: user.bio,
-        // Return both masked and full versions
+        emailVerified: user.emailVerified || false,
+        phoneVerified: user.phoneVerified || false,
         iban: decryptedBanking.iban,
         ibanMasked,
         bankName: decryptedBanking.bankName,
@@ -726,6 +729,115 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Change password error:", error);
       res.status(500).json({ error: "Errore durante il cambio password" });
+    }
+  });
+
+  // ========== VERIFICATION ENDPOINTS ==========
+  
+  app.post('/api/verification/send-email', requireAuth, async (req: any, res) => {
+    try {
+      const { VerificationService } = await import('./verification-service');
+      const userId = parseInt(req.session.user!.id);
+
+      const rateCheck = VerificationService.checkSendRateLimit(userId, 'email');
+      if (!rateCheck.allowed) {
+        return res.status(429).json({ error: `Troppi tentativi. Riprova tra ${rateCheck.retryAfterSeconds} secondi.` });
+      }
+
+      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      if (!user) return res.status(404).json({ error: 'Utente non trovato' });
+      if (user.emailVerified) return res.status(400).json({ error: 'Email già verificata' });
+      
+      const sent = await VerificationService.sendEmailVerification(userId, user.email);
+      if (sent) {
+        res.json({ success: true, message: 'Codice di verifica inviato alla tua email' });
+      } else {
+        res.status(500).json({ error: 'Errore invio codice' });
+      }
+    } catch (error) {
+      console.error('Send email verification error:', error);
+      res.status(500).json({ error: 'Errore interno' });
+    }
+  });
+
+  app.post('/api/verification/send-phone', requireAuth, async (req: any, res) => {
+    try {
+      const { VerificationService } = await import('./verification-service');
+      const userId = parseInt(req.session.user!.id);
+
+      const rateCheck = VerificationService.checkSendRateLimit(userId, 'phone');
+      if (!rateCheck.allowed) {
+        return res.status(429).json({ error: `Troppi tentativi. Riprova tra ${rateCheck.retryAfterSeconds} secondi.` });
+      }
+
+      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      if (!user) return res.status(404).json({ error: 'Utente non trovato' });
+      if (!user.phone) return res.status(400).json({ error: 'Nessun numero di telefono impostato. Aggiungilo nel profilo.' });
+      if (user.phoneVerified) return res.status(400).json({ error: 'Telefono già verificato' });
+      
+      const sent = await VerificationService.sendPhoneVerification(userId, user.phone);
+      if (sent) {
+        res.json({ success: true, message: 'Codice di verifica inviato' });
+      } else {
+        res.status(500).json({ error: 'Errore invio codice' });
+      }
+    } catch (error) {
+      console.error('Send phone verification error:', error);
+      res.status(500).json({ error: 'Errore interno' });
+    }
+  });
+
+  app.post('/api/verification/verify', requireAuth, async (req: any, res) => {
+    try {
+      const { VerificationService } = await import('./verification-service');
+      const userId = parseInt(req.session.user!.id);
+
+      const attemptCheck = VerificationService.checkVerifyAttempts(userId);
+      if (!attemptCheck.allowed) {
+        return res.status(429).json({ error: `Troppi tentativi errati. Riprova tra ${attemptCheck.retryAfterSeconds} secondi.` });
+      }
+
+      const { code, type } = req.body;
+      
+      if (!code || !type || !['email', 'phone'].includes(type)) {
+        return res.status(400).json({ error: 'Codice e tipo richiesti' });
+      }
+      
+      const result = await VerificationService.verifyCode(userId, code, type);
+      VerificationService.recordVerifyAttempt(userId, result.success);
+
+      if (result.success) {
+        const [updatedUser] = await db.select().from(users).where(eq(users.id, userId));
+        req.session.user = {
+          ...req.session.user,
+          emailVerified: updatedUser?.emailVerified,
+          phoneVerified: updatedUser?.phoneVerified,
+        };
+        res.json({ success: true, message: result.message });
+      } else {
+        res.status(400).json({ error: result.message });
+      }
+    } catch (error) {
+      console.error('Verify code error:', error);
+      res.status(500).json({ error: 'Errore interno' });
+    }
+  });
+
+  app.get('/api/verification/status', requireAuth, async (req: any, res) => {
+    try {
+      const userId = parseInt(req.session.user!.id);
+      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      if (!user) return res.status(404).json({ error: 'Utente non trovato' });
+      
+      res.json({
+        emailVerified: user.emailVerified || false,
+        phoneVerified: user.phoneVerified || false,
+        hasPhone: !!user.phone,
+        hasEmail: !!user.email,
+      });
+    } catch (error) {
+      console.error('Verification status error:', error);
+      res.status(500).json({ error: 'Errore interno' });
     }
   });
 

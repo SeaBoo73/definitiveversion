@@ -37,6 +37,11 @@ export const users = pgTable("users", {
   lastName: varchar("last_name", { length: 100 }),
   phone: varchar("phone", { length: 20 }),
   verified: boolean("verified").default(false),
+  emailVerified: boolean("email_verified").default(false),
+  phoneVerified: boolean("phone_verified").default(false),
+  verificationCode: varchar("verification_code", { length: 6 }),
+  verificationCodeExpiry: timestamp("verification_code_expiry"),
+  verificationCodeType: varchar("verification_code_type", { length: 10 }),
   stripeCustomerId: varchar("stripe_customer_id", { length: 255 }),
   createdAt: timestamp("created_at").defaultNow(),
   

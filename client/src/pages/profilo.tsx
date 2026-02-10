@@ -246,7 +246,7 @@ export default function ProfiloPage() {
     },
   });
 
-  const { data: verificationStatus, refetch: refetchVerification } = useQuery<{ emailVerified: boolean; phoneVerified: boolean; hasPhone: boolean; hasEmail: boolean }>({
+  const { data: verificationStatus, refetch: refetchVerification } = useQuery<{ emailVerified: boolean; phoneVerified: boolean; hasPhone: boolean; hasEmail: boolean; phone: string | null; email: string | null }>({
     queryKey: ['/api/verification/status'],
     enabled: !!user,
   });
@@ -773,7 +773,7 @@ export default function ProfiloPage() {
                   <Mail className="h-5 w-5 text-blue-600" />
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
-                    <p className="text-sm text-gray-500">{user?.email || "Non impostata"}</p>
+                    <p className="text-sm text-gray-500">{verificationStatus?.email || user?.email || "Non impostata"}</p>
                   </div>
                 </div>
                 {verificationStatus?.emailVerified ? (
@@ -826,14 +826,14 @@ export default function ProfiloPage() {
                   <Phone className="h-5 w-5 text-green-600" />
                   <div>
                     <p className="font-medium text-gray-900">Telefono</p>
-                    <p className="text-sm text-gray-500">{user?.phone || "Non impostato"}</p>
+                    <p className="text-sm text-gray-500">{verificationStatus?.phone || user?.phone || "Non impostato"}</p>
                   </div>
                 </div>
                 {verificationStatus?.phoneVerified ? (
                   <span className="text-xs bg-green-100 text-green-700 px-2.5 py-1 rounded-full font-medium flex items-center gap-1">
                     <CheckCircle className="h-3.5 w-3.5" /> Verificato
                   </span>
-                ) : !user?.phone ? (
+                ) : !verificationStatus?.hasPhone ? (
                   <Button size="sm" variant="outline" onClick={() => { setShowVerificaDialog(false); setShowEditDialog(true); }}>
                     Aggiungi
                   </Button>

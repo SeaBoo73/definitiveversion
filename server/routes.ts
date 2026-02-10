@@ -834,6 +834,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         phoneVerified: user.phoneVerified || false,
         hasPhone: !!user.phone,
         hasEmail: !!user.email,
+        phone: user.phone || null,
+        email: user.email || null,
       });
     } catch (error) {
       console.error('Verification status error:', error);

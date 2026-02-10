@@ -56,7 +56,8 @@ import {
   Receipt,
   Mail,
   Phone,
-  CheckCircle
+  CheckCircle,
+  ChevronDown
 } from "lucide-react";
 
 export default function ProfiloPage() {
@@ -211,6 +212,7 @@ export default function ProfiloPage() {
 
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [showNotificheDialog, setShowNotificheDialog] = useState(false);
+  const [showAccountSettings, setShowAccountSettings] = useState(false);
   const [showVerificaDialog, setShowVerificaDialog] = useState(false);
   const [verificationCode, setVerificationCode] = useState("");
   const [verifyingType, setVerifyingType] = useState<'email' | 'phone' | null>(null);
@@ -301,7 +303,7 @@ export default function ProfiloPage() {
     },
   });
 
-  const settingsItems = [
+  const mainItems = [
     {
       icon: Receipt,
       title: "Le mie prenotazioni",
@@ -323,6 +325,16 @@ export default function ProfiloPage() {
       href: "/mie-recensioni",
       color: "text-yellow-500"
     },
+    ...(user?.role === "owner" && isOwnerMode ? [{
+      icon: Receipt,
+      title: "Report mensili",
+      subtitle: "Genera e scarica report dei guadagni",
+      href: "/report-mensili",
+      color: "text-orange-500"
+    }] : []),
+  ];
+
+  const accountSettingsItems = [
     {
       icon: User,
       title: "Informazioni personali",
@@ -337,13 +349,6 @@ export default function ProfiloPage() {
       href: user?.role === "owner" ? "/profilo/dati-bancari" : "/metodi-pagamento-mobile",
       color: "text-indigo-500"
     },
-    ...(user?.role === "owner" && isOwnerMode ? [{
-      icon: Receipt,
-      title: "Report mensili",
-      subtitle: "Genera e scarica report dei guadagni",
-      href: "/report-mensili",
-      color: "text-orange-500"
-    }] : []),
     {
       icon: Bell,
       title: "Notifiche",
@@ -485,44 +490,21 @@ export default function ProfiloPage() {
           </Link>
         )}
 
-        {/* Impostazioni */}
+        {/* Voci principali */}
         <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Impostazioni account</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-1">
-            {settingsItems.map((item, index) => {
+          <CardContent className="pt-6 space-y-1">
+            {mainItems.map((item, index) => {
               const Icon = item.icon;
-              const badge = (item as any).badge;
               const content = (
-                <div className={`flex items-center p-3 rounded-lg transition-colors ${
-                  item.danger 
-                    ? 'hover:bg-red-50 cursor-pointer' 
-                    : 'hover:bg-gray-50'
-                }`}>
-                  <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : badge === 'verified' ? 'text-green-600' : item.color || 'text-gray-600'}`} />
+                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                  <Icon className={`h-5 w-5 mr-3 ${item.color || 'text-gray-600'}`} />
                   <div className="flex-1">
-                    <div className={`font-medium ${item.danger ? 'text-red-600' : 'text-gray-900'}`}>{item.title}</div>
-                    <div className={`text-sm ${item.danger ? 'text-red-500' : 'text-gray-500'}`}>{item.subtitle}</div>
+                    <div className="font-medium text-gray-900">{item.title}</div>
+                    <div className="text-sm text-gray-500">{item.subtitle}</div>
                   </div>
-                  {badge === 'verified' && (
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full mr-2 font-medium">Verificato</span>
-                  )}
-                  {badge === 'unverified' && (
-                    <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full mr-2 font-medium">Da verificare</span>
-                  )}
-                  <ChevronRight className={`h-5 w-5 ${item.danger ? 'text-red-400' : 'text-gray-400'}`} />
+                  <ChevronRight className="h-5 w-5 text-gray-400" />
                 </div>
               );
-              
-              if (item.action) {
-                return (
-                  <div key={index} onClick={item.action}>
-                    {content}
-                  </div>
-                );
-              }
-              
               return item.href ? (
                 <Link key={index} href={item.href}>
                   <a>{content}</a>
@@ -532,6 +514,67 @@ export default function ProfiloPage() {
               );
             })}
           </CardContent>
+        </Card>
+
+        {/* Impostazioni account - sezione espandibile */}
+        <Card className="mb-6">
+          <div 
+            className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors rounded-lg"
+            onClick={() => setShowAccountSettings(!showAccountSettings)}
+          >
+            <div className="flex items-center">
+              <Settings className="h-5 w-5 mr-3 text-gray-500" />
+              <div>
+                <div className="font-semibold text-gray-900">Impostazioni account</div>
+                <div className="text-sm text-gray-500">Gestisci il tuo profilo e le preferenze</div>
+              </div>
+            </div>
+            <ChevronDown className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${showAccountSettings ? 'rotate-180' : ''}`} />
+          </div>
+          {showAccountSettings && (
+            <CardContent className="pt-0 space-y-1">
+              {accountSettingsItems.map((item, index) => {
+                const Icon = item.icon;
+                const badge = (item as any).badge;
+                const content = (
+                  <div className={`flex items-center p-3 rounded-lg transition-colors ${
+                    item.danger 
+                      ? 'hover:bg-red-50 cursor-pointer' 
+                      : 'hover:bg-gray-50'
+                  }`}>
+                    <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : badge === 'verified' ? 'text-green-600' : item.color || 'text-gray-600'}`} />
+                    <div className="flex-1">
+                      <div className={`font-medium ${item.danger ? 'text-red-600' : 'text-gray-900'}`}>{item.title}</div>
+                      <div className={`text-sm ${item.danger ? 'text-red-500' : 'text-gray-500'}`}>{item.subtitle}</div>
+                    </div>
+                    {badge === 'verified' && (
+                      <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full mr-2 font-medium">Verificato</span>
+                    )}
+                    {badge === 'unverified' && (
+                      <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full mr-2 font-medium">Da verificare</span>
+                    )}
+                    <ChevronRight className={`h-5 w-5 ${item.danger ? 'text-red-400' : 'text-gray-400'}`} />
+                  </div>
+                );
+                
+                if (item.action) {
+                  return (
+                    <div key={index} onClick={item.action}>
+                      {content}
+                    </div>
+                  );
+                }
+                
+                return item.href ? (
+                  <Link key={index} href={item.href}>
+                    <a>{content}</a>
+                  </Link>
+                ) : (
+                  <div key={index}>{content}</div>
+                );
+              })}
+            </CardContent>
+          )}
         </Card>
 
         {/* Logout */}

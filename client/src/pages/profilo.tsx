@@ -327,13 +327,15 @@ export default function ProfiloPage() {
       icon: User,
       title: "Informazioni personali",
       subtitle: "Nome, email, telefono",
-      action: () => setShowEditDialog(true)
+      action: () => setShowEditDialog(true),
+      color: "text-blue-500"
     },
     {
       icon: CreditCard,
       title: user?.role === "owner" ? "Dati Bancari" : "Metodi di Pagamento",
       subtitle: user?.role === "owner" ? "IBAN per ricevere pagamenti" : "Carte e metodi di pagamento",
-      href: user?.role === "owner" ? "/profilo/dati-bancari" : "/metodi-pagamento-mobile"
+      href: user?.role === "owner" ? "/profilo/dati-bancari" : "/metodi-pagamento-mobile",
+      color: "text-indigo-500"
     },
     ...(user?.role === "owner" && isOwnerMode ? [{
       icon: Receipt,
@@ -346,7 +348,8 @@ export default function ProfiloPage() {
       icon: Bell,
       title: "Notifiche",
       subtitle: "Gestisci le notifiche",
-      action: () => setShowNotificheDialog(true)
+      action: () => setShowNotificheDialog(true),
+      color: "text-purple-500"
     },
     {
       icon: Shield,
@@ -497,7 +500,7 @@ export default function ProfiloPage() {
                     ? 'hover:bg-red-50 cursor-pointer' 
                     : 'hover:bg-gray-50'
                 }`}>
-                  <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : badge === 'verified' ? 'text-green-600' : 'text-gray-600'}`} />
+                  <Icon className={`h-5 w-5 mr-3 ${item.danger ? 'text-red-600' : badge === 'verified' ? 'text-green-600' : item.color || 'text-gray-600'}`} />
                   <div className="flex-1">
                     <div className={`font-medium ${item.danger ? 'text-red-600' : 'text-gray-900'}`}>{item.title}</div>
                     <div className={`text-sm ${item.danger ? 'text-red-500' : 'text-gray-500'}`}>{item.subtitle}</div>

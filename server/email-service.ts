@@ -329,6 +329,80 @@ SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
     `;
   }
 
+  static async sendCustomerConfirmationEmail(data: BookingEmailData): Promise<boolean> {
+    try {
+      if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+        console.log("⚠️ Credenziali Gmail non configurate, impossibile inviare conferma al cliente");
+        return false;
+      }
+
+      const transporter = this.createTransporter();
+      const mailOptions = {
+        from: `"SeaBoo" <${process.env.GMAIL_USER}>`,
+        to: data.customerEmail,
+        subject: `Conferma Prenotazione SeaBoo - ${data.bookingCode}`,
+        html: this.formatCustomerConfirmationHTML(data)
+      };
+
+      const result = await transporter.sendMail(mailOptions);
+      console.log("✅ EMAIL CONFERMA CLIENTE INVIATA:", result.messageId);
+      return true;
+    } catch (error) {
+      console.error("❌ Errore invio email conferma cliente:", error);
+      return false;
+    }
+  }
+
+  private static formatCustomerConfirmationHTML(data: BookingEmailData): string {
+    return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
+      <div style="background: linear-gradient(135deg, #1e40af, #0891b2); padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
+        <h1 style="color: white; margin: 0; font-size: 24px;">SeaBoo</h1>
+        <p style="color: #e0f2fe; margin: 8px 0 0;">Prenotazione Confermata</p>
+      </div>
+      
+      <div style="padding: 30px;">
+        <p style="font-size: 16px; color: #334155;">Ciao <strong>${data.customerName}</strong>,</p>
+        <p style="color: #64748b;">La tua prenotazione su SeaBoo è stata confermata con successo!</p>
+        
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #166534; margin-top: 0;">Riepilogo Prenotazione</h3>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr><td style="padding: 6px 0; color: #64748b;">Codice:</td><td style="padding: 6px 0; font-weight: bold; text-align: right;">${data.bookingCode}</td></tr>
+            <tr><td style="padding: 6px 0; color: #64748b;">${data.boatType}:</td><td style="padding: 6px 0; font-weight: bold; text-align: right;">${data.boatName}</td></tr>
+            <tr><td style="padding: 6px 0; color: #64748b;">Dal:</td><td style="padding: 6px 0; text-align: right;">${data.startDate}</td></tr>
+            <tr><td style="padding: 6px 0; color: #64748b;">Al:</td><td style="padding: 6px 0; text-align: right;">${data.endDate}</td></tr>
+            <tr style="border-top: 1px solid #d1fae5;"><td style="padding: 10px 0 0; font-weight: bold;">Totale:</td><td style="padding: 10px 0 0; font-weight: bold; text-align: right; color: #166534; font-size: 18px;">&euro;${data.totalPrice.toFixed(2)}</td></tr>
+          </table>
+        </div>
+
+        <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #334155; margin-top: 0;">Proprietario</h3>
+          <p style="margin: 4px 0; color: #64748b;"><strong>${data.ownerName}</strong></p>
+          <p style="margin: 4px 0; color: #64748b;">${data.ownerEmail}</p>
+        </div>
+
+        <div style="background: #eff6ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <h3 style="color: #1e40af; margin-top: 0;">Cosa fare ora</h3>
+          <ul style="color: #475569; padding-left: 20px;">
+            <li style="margin-bottom: 8px;">Il proprietario ti contatterà per organizzare i dettagli</li>
+            <li style="margin-bottom: 8px;">Prepara documento d'identità valido</li>
+            <li style="margin-bottom: 8px;">Puoi gestire la prenotazione dalla sezione "Le mie prenotazioni"</li>
+            <li>Cancellazione gratuita fino a 24 ore prima</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="background: #f1f5f9; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
+        <p style="color: #94a3b8; font-size: 12px; margin: 0;">
+          SeaBoo - La tua piattaforma per il noleggio nautico in Italia<br>
+          ${new Date().toLocaleString('it-IT')}
+        </p>
+      </div>
+    </div>
+    `;
+  }
+
   private static async saveMooringEmailBackup(data: MooringBookingEmailData, content: string) {
     try {
       const fs = await import('fs');

@@ -15,6 +15,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import aiChatRouter from "./routes/ai-chat";
 import { encryptBankingData, decryptBankingData, maskIban, maskAccountHolder } from "./encryption";
+import { EmailService } from "./email-service";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -1891,11 +1892,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const bookingData = insertBookingSchema.parse(req.body);
       const booking = await storage.createBooking(bookingData);
 
-      // Auto-create notifications
       const customerId = parseInt(req.session.user!.id);
       const customerUser = await storage.getUser(customerId);
 
-      // Notify customer
       await storage.createNotification({
         userId: customerId,
         type: 'booking',
@@ -1905,10 +1904,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         relatedId: booking.id,
       });
 
-      // Notify boat owner
+      const bookingCode = `SB-${Date.now().toString(36).toUpperCase()}-${booking.id}`;
+      let ownerName = 'Proprietario SeaBoo';
+      let ownerEmail = '';
+      let itemName = 'Prenotazione';
+      let itemType = 'Prenotazione';
+
       if (booking.boatId) {
         const boat = await storage.getBoat(booking.boatId);
         if (boat) {
+          itemName = boat.name;
+          itemType = 'Imbarcazione';
+          const owner = await storage.getUser(boat.hostId);
+          if (owner) {
+            ownerName = `${owner.firstName || ''} ${owner.lastName || ''}`.trim() || owner.username;
+            ownerEmail = owner.email;
+          }
           await storage.createNotification({
             userId: boat.hostId,
             type: 'booking',
@@ -1918,6 +1929,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
             relatedId: booking.id,
           });
         }
+      }
+
+      if (customerUser?.email) {
+        const emailData = {
+          customerName: `${customerUser.firstName || ''} ${customerUser.lastName || ''}`.trim() || customerUser.username,
+          customerEmail: customerUser.email,
+          ownerName,
+          ownerEmail,
+          startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
+          endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
+          boatType: itemType,
+          boatName: itemName,
+          totalPrice: Number(booking.totalPrice),
+          paymentMethod: 'Stripe',
+          bookingCode,
+        };
+
+        EmailService.sendCustomerConfirmationEmail(emailData).catch(err =>
+          console.error("Email conferma cliente fallita:", err)
+        );
+        EmailService.sendBookingNotification(emailData).catch(err =>
+          console.error("Email notifica piattaforma fallita:", err)
+        );
       }
 
       res.json(booking);

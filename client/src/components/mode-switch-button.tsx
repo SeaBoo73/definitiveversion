@@ -17,7 +17,7 @@ export function ModeSwitchButton() {
         className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] bg-coral hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl transition-all flex items-center gap-2"
       >
         <ArrowLeftRight className="h-5 w-5" />
-        Modalita ospite
+        Modalità viaggio
       </button>
     );
   }
@@ -28,7 +28,7 @@ export function ModeSwitchButton() {
       className="fixed bottom-24 left-1/2 -translate-x-1/2 z-[60] bg-coral hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-full shadow-xl transition-all flex items-center gap-2"
     >
       <Ship className="h-5 w-5" />
-      Modalita noleggiatore
+      Modalità SeaHost
     </button>
   );
 }

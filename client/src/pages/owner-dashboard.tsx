@@ -92,7 +92,7 @@ import {
   Receipt
 } from "lucide-react";
 
-function ExperienceImageCarousel({ images, name, price }: { images: string[]; name: string; price: string | number | null }) {
+function ImageCarousel({ images, name, overlay, className = "h-48" }: { images: string[]; name: string; overlay?: React.ReactNode; className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
@@ -104,7 +104,7 @@ function ExperienceImageCarousel({ images, name, price }: { images: string[]; na
 
   return (
     <div
-      className="relative h-48 w-full group"
+      className={`relative w-full group ${className}`}
       onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
@@ -120,10 +120,7 @@ function ExperienceImageCarousel({ images, name, price }: { images: string[]; na
         alt={`${name} - ${currentIndex + 1}`}
         className="w-full h-full object-cover transition-opacity duration-300"
       />
-      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
-        <span className="text-sm font-bold text-coral">{price}</span>
-        <span className="text-xs text-gray-500">/persona</span>
-      </div>
+      {overlay}
       {images.length > 1 && (
         <>
           <button
@@ -2028,20 +2025,36 @@ export default function OwnerDashboard() {
               </Dialog>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {boats.map((boat) => (
-                <Card key={boat.id}>
+              {boats.map((boat) => {
+                const boatImages = boat.images && boat.images.length > 0 ? boat.images : [];
+                const fallbackImage = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=400&h=250";
+                return (
+                <Card key={boat.id} className="overflow-hidden">
                   <CardContent className="p-4">
-                    <div className="relative mb-4">
-                      <img
-                        src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=400&h=250"}
-                        alt={boat.name}
-                        className="w-full h-40 object-cover rounded-lg"
-                      />
-                      <Badge 
-                        className={`absolute top-2 right-2 ${boat.active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}
-                      >
-                        {boat.active ? "Attiva" : "Disattiva"}
-                      </Badge>
+                    <div className="relative mb-4 rounded-lg overflow-hidden">
+                      {boatImages.length > 1 ? (
+                        <ImageCarousel
+                          images={boatImages}
+                          name={boat.name}
+                          className="h-40"
+                          overlay={
+                            <Badge className={`absolute top-2 right-2 ${boat.active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                              {boat.active ? "Attiva" : "Disattiva"}
+                            </Badge>
+                          }
+                        />
+                      ) : (
+                        <>
+                          <img
+                            src={boatImages[0] || fallbackImage}
+                            alt={boat.name}
+                            className="w-full h-40 object-cover"
+                          />
+                          <Badge className={`absolute top-2 right-2 ${boat.active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                            {boat.active ? "Attiva" : "Disattiva"}
+                          </Badge>
+                        </>
+                      )}
                     </div>
 
                     <h3 className="font-semibold text-lg mb-2">{boat.name}</h3>
@@ -2103,7 +2116,8 @@ export default function OwnerDashboard() {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           </TabsContent>
 
@@ -3050,7 +3064,16 @@ export default function OwnerDashboard() {
                   return (
                     <Card key={experience.id} className="hover:shadow-lg transition-shadow overflow-hidden" data-testid={`card-experience-${experience.id}`}>
                       {images.length > 0 ? (
-                        <ExperienceImageCarousel images={images} name={experience.name} price={experience.pricePerPerson} />
+                        <ImageCarousel
+                          images={images}
+                          name={experience.name}
+                          overlay={
+                            <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
+                              <span className="text-sm font-bold text-coral">{experience.pricePerPerson}</span>
+                              <span className="text-xs text-gray-500">/persona</span>
+                            </div>
+                          }
+                        />
                       ) : (
                         <div className="h-32 bg-gradient-to-br from-coral/20 to-orange-100 flex items-center justify-center">
                           <Sparkles className="h-12 w-12 text-coral/40" />

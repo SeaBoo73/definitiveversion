@@ -197,6 +197,26 @@ export const experienceAvailability = pgTable("experience_availability", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Mooring bookings table
+export const mooringBookings = pgTable("mooring_bookings", {
+  id: serial("id").primaryKey(),
+  customerId: integer("customer_id").references(() => users.id).notNull(),
+  mooringId: integer("mooring_id").references(() => moorings.id).notNull(),
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  boatLength: numeric("boat_length").notNull(),
+  boatName: text("boat_name"),
+  boatType: text("boat_type"),
+  totalPrice: numeric("total_price").notNull(),
+  originalPrice: numeric("original_price").notNull(),
+  commission: numeric("commission").notNull(),
+  status: varchar("status", { length: 20 }).default("pending"),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  specialRequests: text("special_requests"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Zod schemas for validation
 export const insertUserSchema = createInsertSchema(users, {
   email: z.string().email("Email non valido"),
@@ -325,7 +345,10 @@ export type Experience = typeof experiences.$inferSelect;
 
 // Legacy exports for compatibility
 export const insertMooringSchema = insertBoatSchema;
-export const insertMooringBookingSchema = insertBookingSchema;
+
+export const insertMooringBookingSchema = createInsertSchema(mooringBookings).omit({ id: true, createdAt: true });
+export type InsertMooringBooking = z.infer<typeof insertMooringBookingSchema>;
+export type MooringBooking = typeof mooringBookings.$inferSelect;
 
 // Conversations table for chat between customers and owners
 export const conversations = pgTable("conversations", {

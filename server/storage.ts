@@ -5,6 +5,7 @@ import {
   boatAvailability,
   moorings,
   mooringAvailability,
+  mooringBookings,
   experiences,
   conversations,
   messages,
@@ -25,6 +26,8 @@ import {
   type InsertMooring,
   type MooringAvailability,
   type InsertMooringAvailability,
+  type MooringBooking,
+  type InsertMooringBooking,
   experienceAvailability,
   type Experience,
   type InsertExperience,
@@ -78,6 +81,7 @@ export interface IStorage {
   getBookingsByOwner(ownerId: number): Promise<Booking[]>;
   getBookingsByCustomer(customerId: number): Promise<Booking[]>;
   createBooking(booking: InsertBooking): Promise<Booking>;
+  updateBooking(id: number, data: Partial<Booking>): Promise<Booking | undefined>;
   
   // Boat Availability operations
   getBoatAvailability(boatId: number, startDate?: Date, endDate?: Date): Promise<BoatAvailability[]>;

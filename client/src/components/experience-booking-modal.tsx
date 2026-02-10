@@ -94,7 +94,7 @@ export function ExperienceBookingModal({ experience, onClose }: ExperienceBookin
         setLocation("/auth");
         return;
       }
-      setLocation(`/checkout?type=experience&id=${experience.id}&date=${selectedDate!.toISOString()}&participants=${numParticipants}`);
+      setLocation(`/checkout?type=experience&amount=${totalPrice}&name=${encodeURIComponent(experience.name)}&date=${selectedDate!.toISOString()}&participants=${numParticipants}`);
     }
   };
 

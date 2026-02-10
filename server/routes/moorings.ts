@@ -154,15 +154,14 @@ export function registerMooringRoutes(app: Express) {
       // For testing, use customerId from request body or default to user 5 (customer@test.com)
       const customerId = req.body.customerId || (req.user ? req.user.id : 5);
 
-      // Prepare booking data with proper types
       const validatedData = {
         mooringId: req.body.mooringId,
         customerId: customerId,
         startDate: new Date(req.body.startDate),
         endDate: new Date(req.body.endDate),
-        boatLength: req.body.boatLength.toString(),
-        boatName: req.body.boatName,
-        boatType: req.body.boatType,
+        boatLength: req.body.boatLength ? req.body.boatLength.toString() : '0',
+        boatName: req.body.boatName || null,
+        boatType: req.body.boatType || null,
         totalPrice: req.body.totalPrice.toString(),
         originalPrice: req.body.totalPrice.toString(),
         specialRequests: req.body.specialRequests || null,

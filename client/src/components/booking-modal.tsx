@@ -134,7 +134,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
         title: "Prenotazione creata",
         description: "Ora procedi con il pagamento",
       });
-      setLocation(`/checkout?bookingId=${booking.id}`);
+      setLocation(`/checkout?type=boat&bookingId=${booking.id}&amount=${totalPrice}&name=${encodeURIComponent(boat.name)}&startDate=${form.getValues("startDate").toISOString()}&endDate=${form.getValues("endDate").toISOString()}`);
     },
     onError: (error) => {
       toast({

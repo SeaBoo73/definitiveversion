@@ -2767,18 +2767,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Payment Intent Creation Endpoint
   app.post('/api/create-payment-intent', async (req, res) => {
     try {
-      const { amount, bookingId, currency = 'eur' } = req.body;
+      const { amount, bookingId, currency = 'eur', metadata: extraMetadata } = req.body;
 
       if (!amount || amount <= 0) {
         return res.status(400).json({ error: 'Invalid amount' });
       }
 
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(amount * 100), // Convert to cents
+        amount: Math.round(amount * 100),
         currency: currency,
         metadata: {
           bookingId: bookingId ? bookingId.toString() : '',
-          platform: 'seaboo'
+          platform: 'seaboo',
+          type: extraMetadata?.type || 'boat',
+          ...(extraMetadata || {}),
         },
         automatic_payment_methods: {
           enabled: true,
@@ -2806,12 +2808,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
-    // Handle the event
     switch (event.type) {
       case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object;
+        const paymentIntent = event.data.object as any;
         console.log('Payment succeeded:', paymentIntent.id);
-        // Update booking status in database
+        const bookingType = paymentIntent.metadata?.type || 'boat';
+        const bookingId = paymentIntent.metadata?.bookingId;
+        
+        if (bookingId) {
+          try {
+            if (bookingType === 'mooring') {
+              await storage.updateMooringBooking(parseInt(bookingId), {
+                status: 'confirmed',
+                stripePaymentIntentId: paymentIntent.id,
+              });
+              console.log(`Mooring booking ${bookingId} confirmed`);
+            } else {
+              await storage.updateBooking(parseInt(bookingId), {
+                status: 'confirmed',
+                stripePaymentIntentId: paymentIntent.id,
+              });
+              console.log(`Boat booking ${bookingId} confirmed`);
+            }
+          } catch (err) {
+            console.error(`Error updating booking ${bookingId} status:`, err);
+          }
+        }
         break;
       default:
         console.log(`Unhandled event type ${event.type}`);

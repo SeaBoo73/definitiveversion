@@ -117,18 +117,18 @@ export function MooringBookingModal({ mooring, onClose }: MooringBookingModalPro
         totalPrice: totalPrice.toString(),
         commission: platformFee.toString(),
       };
-      const res = await apiRequest("POST", "/api/bookings", bookingData);
+      const res = await apiRequest("POST", "/api/mooring-bookings", bookingData);
       return await res.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/bookings"] });
+    onSuccess: (booking) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/mooring-bookings"] });
       toast({
         title: "Prenotazione creata",
         description: "Ora procedi con il pagamento",
       });
       const checkIn = form.getValues("startDate").toISOString();
       const checkOut = form.getValues("endDate").toISOString();
-      setLocation(`/checkout?type=mooring&id=${mooring.id}&checkIn=${checkIn}&checkOut=${checkOut}`);
+      setLocation(`/checkout?type=mooring&bookingId=${booking.id}&amount=${totalPrice}&name=${encodeURIComponent(mooring.name)}&startDate=${checkIn}&endDate=${checkOut}`);
     },
     onError: (error) => {
       toast({

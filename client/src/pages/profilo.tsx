@@ -547,13 +547,13 @@ export default function ProfiloPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/mie-recensioni')}>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Euro className="h-7 w-7 text-emerald-500" />
+                  <Star className="h-7 w-7 text-yellow-500" />
                   <div>
-                    <p className="text-xs text-gray-500">Spesa totale</p>
-                    <p className="text-xl font-bold text-gray-900">€{totalSpent.toFixed(0)}</p>
+                    <p className="text-xs text-gray-500">Recensioni</p>
+                    <p className="text-xl font-bold text-gray-900">{userReviews.length}</p>
                   </div>
                 </div>
               </CardContent>
@@ -561,31 +561,6 @@ export default function ProfiloPage() {
           </div>
         )}
 
-        {/* Voci principali */}
-        <Card className="mb-6">
-          <CardContent className="pt-6 space-y-1">
-            {mainItems.map((item, index) => {
-              const Icon = item.icon;
-              const content = (
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <Icon className={`h-5 w-5 mr-3 ${item.color || 'text-gray-600'}`} />
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">{item.title}</div>
-                    <div className="text-sm text-gray-500">{item.subtitle}</div>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              );
-              return item.href ? (
-                <Link key={index} href={item.href}>
-                  <a>{content}</a>
-                </Link>
-              ) : (
-                <div key={index}>{content}</div>
-              );
-            })}
-          </CardContent>
-        </Card>
 
         {/* Impostazioni account - sezione espandibile */}
         <Card className="mb-6">

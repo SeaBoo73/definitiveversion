@@ -3,9 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { PortSelector } from "@/components/port-selector";
 import { Link } from "wouter";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
@@ -18,8 +20,14 @@ import {
   Wine, 
   Heart, 
   Ship,
-  Search
+  Search,
+  Clock,
+  Users,
+  Euro,
+  Loader2
 } from "lucide-react";
+import type { Experience } from "@shared/schema";
+import { ImageCarousel } from "@/components/image-carousel";
 import heroBackground from "@assets/ultra-realistic_wide_banner_photo_upper_half-_real_hot_air_balloons_flying_in_a_clear_sky_with_natu_bulwsrzxfrv4rr4z3f37_3_1764073467671.png";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -27,6 +35,16 @@ import { MobileNavigation } from "@/components/mobile-navigation";
 import { SEOHead, seoConfigs } from "@/components/seo-head";
 import { StructuredData } from "@/components/structured-data";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+
+const categoryLabels: Record<string, string> = {
+  sunset: "Tramonto",
+  fishing: "Pesca sportiva",
+  diving: "Immersioni",
+  aperitivo: "Aperitivo",
+  tour: "Tour",
+  sport: "Sport",
+  romantic: "Romantico",
+};
 
 export function EsperienzePage() {
   const { toast } = useToast();
@@ -38,23 +56,25 @@ export function EsperienzePage() {
   const [numeroPersone, setNumeroPersone] = useState("");
   const [tipoEsperienza, setTipoEsperienza] = useState("");
 
+  const { data: dbExperiences = [], isLoading: experiencesLoading } = useQuery<Experience[]>({
+    queryKey: ['/api/experiences'],
+  });
+
+  const filteredExperiences = dbExperiences.filter(exp => {
+    if (porto && !exp.location?.toLowerCase().includes(porto.toLowerCase())) return false;
+    if (tipoEsperienza && tipoEsperienza !== "tutti" && exp.category !== tipoEsperienza) return false;
+    return true;
+  });
+
   const handleSearch = () => {
-    toast({
-      title: "Esperienze in arrivo!",
-      description: "Le esperienze saranno disponibili a breve. Nel frattempo, esplora le nostre barche.",
-    });
+    if (filteredExperiences.length === 0) {
+      toast({
+        title: "Nessuna esperienza trovata",
+        description: "Prova a modificare i filtri di ricerca",
+      });
+    }
   };
 
-  const experienceTypes = [
-    { id: 1, icon: <Sunset className="h-8 w-8" />, title: "Tramonti in barca", description: "Gite al tramonto con aperitivo" },
-    { id: 2, icon: <MapPin className="h-8 w-8" />, title: "Tour delle isole", description: "Esplora calette nascoste" },
-    { id: 3, icon: <Sailboat className="h-8 w-8" />, title: "Giornate in vela", description: "Navigazione rilassante" },
-    { id: 4, icon: <Fish className="h-8 w-8" />, title: "Pesca sportiva", description: "Con pescatore locale" },
-    { id: 5, icon: <ChefHat className="h-8 w-8" />, title: "Cena a bordo", description: "Chef privato a bordo" },
-    { id: 6, icon: <Wine className="h-8 w-8" />, title: "Aperitivo in rada", description: "Bollicine al tramonto" },
-    { id: 7, icon: <Heart className="h-8 w-8" />, title: "Eventi romantici", description: "Proposte e anniversari" },
-    { id: 8, icon: <Ship className="h-8 w-8" />, title: "Charter premium", description: "Yacht con equipaggio" },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20 md:pb-0">
@@ -189,40 +209,90 @@ export function EsperienzePage() {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            {/* Experience Types Preview */}
             <div>
               <h3 className="text-2xl font-bold text-deep-navy mb-6 text-center">
-                Tipologie di esperienze
+                Esperienze disponibili
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {experienceTypes.map((type) => (
-                  <Card key={type.id} className="text-center hover:shadow-md transition-shadow relative">
-                    {user && (
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          toggleFavorite('experience', type.id);
-                        }}
-                        className="absolute top-2 right-2 z-10 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
-                      >
-                        <Heart className={`h-4 w-4 ${isFavorite('experience', type.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
-                      </button>
-                    )}
-                    <CardContent className="py-6">
-                      <div className="flex justify-center mb-3 text-blue-500">
-                        {type.icon}
+              {experiencesLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                </div>
+              ) : filteredExperiences.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {filteredExperiences.map((exp) => (
+                    <Card key={exp.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                      <div className="relative">
+                        <ImageCarousel
+                          images={exp.images || []}
+                          alt={exp.name}
+                          className="h-48"
+                          fallback={
+                            <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-orange-100 flex items-center justify-center">
+                              <Sunset className="h-12 w-12 text-orange-400" />
+                            </div>
+                          }
+                        />
+                        <Badge className="absolute top-3 left-3 bg-blue-600 text-white z-20">
+                          {categoryLabels[exp.category] || exp.category}
+                        </Badge>
+                        {user && (
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleFavorite('experience', exp.id);
+                            }}
+                            className="absolute top-3 right-3 w-8 h-8 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-20"
+                          >
+                            <Heart className={`h-4 w-4 ${isFavorite('experience', exp.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+                          </button>
+                        )}
                       </div>
-                      <h4 className="font-semibold text-deep-navy text-sm mb-1">
-                        {type.title}
-                      </h4>
-                      <p className="text-xs text-gray-500">
-                        {type.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                      <CardContent className="p-5">
+                        <h4 className="font-bold text-lg text-gray-900 mb-2">{exp.name}</h4>
+                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{exp.description}</p>
+                        <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            <span>{exp.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{exp.duration}h</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4" />
+                            <span>Max {exp.maxParticipants}</span>
+                          </div>
+                        </div>
+                        {exp.includes && exp.includes.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {exp.includes.slice(0, 3).map((item, i) => (
+                              <Badge key={i} variant="secondary" className="text-xs">{item}</Badge>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <div className="text-xl font-bold text-green-600">
+                            €{exp.pricePerPerson}<span className="text-sm font-normal text-gray-500">/persona</span>
+                          </div>
+                          <Button className="bg-coral hover:bg-orange-600" asChild>
+                            <Link href={`/esperienza/${exp.id}`}>
+                              Prenota
+                            </Link>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <Sunset className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                  <h4 className="text-xl font-medium text-gray-900 mb-2">Nessuna esperienza disponibile</h4>
+                  <p className="text-gray-600">Le esperienze saranno disponibili presto. Torna a trovarci!</p>
+                </div>
+              )}
             </div>
 
           </div>

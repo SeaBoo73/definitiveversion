@@ -7,6 +7,7 @@ import { Boat } from "@shared/schema";
 import { Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
+import { ImageCarousel } from "@/components/image-carousel";
 
 interface BoatCardProps {
   boat: Boat;
@@ -14,37 +15,18 @@ interface BoatCardProps {
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400";
 
-const getImageSrc = (boat: Boat): string => {
-  const img = boat.images?.[boat.coverImage || 0] || boat.images?.[0];
-  
-  console.log(`Boat ${boat.id} (${boat.name}): img=${img?.substring(0, 60)}...`);
-  
-  if (!img) {
-    console.log(`Boat ${boat.id}: No image, using fallback`);
-    return FALLBACK_IMAGE;
-  }
-  
-  // Se è un'immagine base64, usala direttamente
-  if (img.startsWith('data:image/')) {
-    console.log(`Boat ${boat.id}: Using base64 image`);
+const sanitizeImages = (images: string[]): string[] => {
+  return images.map(img => {
+    if (!img) return FALLBACK_IMAGE;
+    if (img.startsWith('data:image/')) return img;
+    if (img.includes('seagorentalboat.com')) return FALLBACK_IMAGE;
     return img;
-  }
-  
-  // Se è un URL esterno non accessibile (seagorentalboat.com), usa fallback
-  if (img.includes('seagorentalboat.com')) {
-    console.log(`Boat ${boat.id}: External URL (seagorentalboat.com), using fallback`);
-    return FALLBACK_IMAGE;
-  }
-  
-  console.log(`Boat ${boat.id}: Using original URL`);
-  return img;
+  });
 };
 
 export function BoatCard({ boat }: BoatCardProps) {
   const { user } = useAuth();
   const { isFavorite: checkFavorite, toggleFavorite, isToggling } = useFavorites();
-  const [imageError, setImageError] = useState(false);
-
   const isFav = user ? checkFavorite('boat', boat.id) : false;
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -89,24 +71,21 @@ export function BoatCard({ boat }: BoatCardProps) {
     <Link href={`/boats/${boat.id}`} className="block">
       <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
         <div className="relative">
-          <img
-            src={imageError ? FALLBACK_IMAGE : getImageSrc(boat)}
+          <ImageCarousel
+            images={sanitizeImages(boat.images || [])}
             alt={boat.name}
-            className="w-full h-48 object-cover"
-            onError={() => {
-              if (!imageError) {
-                setImageError(true);
-              }
-            }}
+            fallbackImage={FALLBACK_IMAGE}
+            className="h-48"
+            initialIndex={boat.coverImage || 0}
           />
-          <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${getBadgeColor()}`}>
+          <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${getBadgeColor()} z-20`}>
             {getTypeLabel()}
           </div>
           {user && (
             <Button
               size="sm"
               variant="ghost"
-              className="absolute top-3 right-3 w-8 h-8 p-0 bg-white rounded-full hover:scale-110 transition-transform"
+              className="absolute top-3 right-3 w-8 h-8 p-0 bg-white rounded-full hover:scale-110 transition-transform z-20"
               onClick={handleFavoriteClick}
             >
               <Heart 

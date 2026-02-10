@@ -31,64 +31,14 @@ import {
   Share2,
   Home,
   X,
-  Plus
+  Plus,
+  Loader2
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import marinaBackground from "@assets/ultra-realistic_wide_banner_photo_of_a_luxury_marina_sleek_modern_yachts_and_refined_sailboats_dock_s7kkr4ovnfrvawy99jmg_2_1764074396924.png";
-
-interface MooringSpot {
-  id: string;
-  ownerId: number;
-  title: string;
-  port: string;
-  location: string;
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-  pricing: {
-    daily: number;
-    weekly: number;
-    monthly: number;
-    seasonal: number;
-  };
-  specs: {
-    maxLength: number;
-    maxBeam: number;
-    depth: number;
-    draft: number;
-  };
-  services: {
-    security: boolean;
-    fuel: boolean;
-    water: boolean;
-    electricity: boolean;
-    wifi: boolean;
-    parking: boolean;
-    restaurant: boolean;
-    shower: boolean;
-  };
-  availability: {
-    startDate: string;
-    endDate: string;
-    minStay: number;
-  };
-  images: string[];
-  rating: number;
-  reviews: number;
-  description: string;
-  contact: {
-    name: string;
-    phone: string;
-    email: string;
-  };
-  rules: string[];
-  featured: boolean;
-}
-
-// Array vuoto - i dati reali verranno caricati dal database
-const mooringSpots: MooringSpot[] = [];
+import type { Mooring } from '@shared/schema';
+import { ImageCarousel } from '@/components/image-carousel';
 
 // Lista completa di tutti i porti del Lazio e Campania per autofill con regioni
 const portsWithRegion = [
@@ -157,6 +107,10 @@ export default function OrmeggioPage() {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredPorts, setFilteredPorts] = useState<{ name: string; region: string }[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { data: dbMoorings = [], isLoading: mooringsLoading } = useQuery<Mooring[]>({
+    queryKey: ['/api/moorings'],
+  });
   const suggestionsRef = useRef<HTMLDivElement>(null);
   
   const isOwner = user?.role === 'owner';
@@ -171,11 +125,11 @@ export default function OrmeggioPage() {
     });
   };
 
-  const handleShare = async (spot: MooringSpot) => {
+  const handleShare = async (spot: Mooring) => {
     const shareUrl = `${window.location.origin}/ormeggio/${spot.id}`;
     const shareData = {
-      title: spot.title,
-      text: `Scopri questo ormeggio su SeaBoo: ${spot.title} - €${spot.pricing.daily}/giorno`,
+      title: spot.name,
+      text: `Scopri questo ormeggio su SeaBoo: ${spot.name} - €${spot.pricePerDay}/giorno`,
       url: shareUrl,
     };
 
@@ -235,11 +189,11 @@ export default function OrmeggioPage() {
     inputRef.current?.focus(); // Mantieni il focus sull'input
   };
 
-  const filteredSpots = mooringSpots.filter(spot => {
-    if (searchLocation && !spot.location.toLowerCase().includes(searchLocation.toLowerCase())) return false;
-    if (maxLength && maxLength !== "all" && spot.specs.maxLength < parseInt(maxLength)) return false;
+  const filteredSpots = dbMoorings.filter(spot => {
+    if (searchLocation && !spot.location?.toLowerCase().includes(searchLocation.toLowerCase()) && !spot.port?.toLowerCase().includes(searchLocation.toLowerCase())) return false;
+    if (maxLength && maxLength !== "all" && Number(spot.maxLength) < parseInt(maxLength)) return false;
     if (priceRange && priceRange !== "all") {
-      const price = spot.pricing.daily;
+      const price = Number(spot.pricePerDay);
       if (priceRange === "0-30" && price > 30) return false;
       if (priceRange === "30-50" && (price < 30 || price > 50)) return false;
       if (priceRange === "50+" && price < 50) return false;
@@ -248,9 +202,9 @@ export default function OrmeggioPage() {
   });
 
   const sortedSpots = [...filteredSpots].sort((a, b) => {
-    if (sortBy === "featured") return b.featured ? 1 : -1;
-    if (sortBy === "price") return a.pricing.daily - b.pricing.daily;
-    if (sortBy === "rating") return b.rating - a.rating;
+    if (sortBy === "featured") return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+    if (sortBy === "price") return Number(a.pricePerDay) - Number(b.pricePerDay);
+    if (sortBy === "rating") return Number(b.rating || 0) - Number(a.rating || 0);
     return 0;
   });
 
@@ -460,21 +414,33 @@ export default function OrmeggioPage() {
             </div>
           </div>
 
+          {mooringsLoading ? (
+            <div className="flex justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+            </div>
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {sortedSpots.map((spot) => (
+            {sortedSpots.map((spot) => {
+              const svc = (spot.services as any) || {};
+              return (
               <Card key={spot.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                 <div className="relative">
-                  <img 
-                    src={spot.images[0]} 
-                    alt={spot.title}
-                    className="w-full h-48 object-cover"
+                  <ImageCarousel
+                    images={spot.images || []}
+                    alt={spot.name}
+                    className="h-48"
+                    fallback={
+                      <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                        <Anchor className="h-12 w-12 text-blue-400" />
+                      </div>
+                    }
                   />
                   {spot.featured && (
-                    <Badge className="absolute top-3 left-3 bg-yellow-500 text-white">
+                    <Badge className="absolute top-3 left-3 bg-yellow-500 text-white z-20">
                       In Evidenza
                     </Badge>
                   )}
-                  <div className="absolute top-3 right-3 flex gap-2">
+                  <div className="absolute top-3 right-3 flex gap-2 z-20">
                     <Button 
                       size="sm" 
                       variant="ghost" 
@@ -482,11 +448,11 @@ export default function OrmeggioPage() {
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
-                        handleToggleFavorite(spot.id, spot.title);
+                        handleToggleFavorite(String(spot.id), spot.name);
                       }}
                       data-testid={`button-favorite-${spot.id}`}
                     >
-                      <Heart className={`h-4 w-4 ${isFavorite(spot.id) ? 'fill-red-500 text-red-500' : ''}`} />
+                      <Heart className={`h-4 w-4 ${isFavorite(String(spot.id)) ? 'fill-red-500 text-red-500' : ''}`} />
                     </Button>
                     <Button 
                       size="sm" 
@@ -507,66 +473,70 @@ export default function OrmeggioPage() {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h3 className="font-bold text-lg text-gray-900 mb-1">{spot.title}</h3>
+                      <h3 className="font-bold text-lg text-gray-900 mb-1">{spot.name}</h3>
                       <div className="flex items-center gap-1 text-sm text-gray-600">
                         <MapPin className="h-4 w-4" />
-                        <span>{spot.location}</span>
+                        <span>{spot.port} - {spot.location}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                      <span className="font-medium">{spot.rating}</span>
-                      <span className="text-sm text-gray-500">({spot.reviews})</span>
-                    </div>
+                    {spot.rating && (
+                      <div className="flex items-center gap-1">
+                        <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                        <span className="font-medium">{spot.rating}</span>
+                        {spot.reviewCount && <span className="text-sm text-gray-500">({spot.reviewCount})</span>}
+                      </div>
+                    )}
                   </div>
 
-                  <p className="text-sm text-gray-700 mb-4 line-clamp-2">
-                    {spot.description}
-                  </p>
+                  {spot.description && (
+                    <p className="text-sm text-gray-700 mb-4 line-clamp-2">
+                      {spot.description}
+                    </p>
+                  )}
 
-                  {/* Specs */}
                   <div className="grid grid-cols-2 gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
                     <div className="text-sm">
-                      <span className="text-gray-600">Max:</span>
-                      <span className="font-medium ml-1">{spot.specs.maxLength}m</span>
+                      <span className="text-gray-600">Max lunghezza:</span>
+                      <span className="font-medium ml-1">{spot.maxLength}m</span>
                     </div>
+                    {spot.maxBeam && (
+                      <div className="text-sm">
+                        <span className="text-gray-600">Larghezza:</span>
+                        <span className="font-medium ml-1">{spot.maxBeam}m</span>
+                      </div>
+                    )}
+                    {spot.depth && (
+                      <div className="text-sm">
+                        <span className="text-gray-600">Profondità:</span>
+                        <span className="font-medium ml-1">{spot.depth}m</span>
+                      </div>
+                    )}
                     <div className="text-sm">
-                      <span className="text-gray-600">Pescaggio:</span>
-                      <span className="font-medium ml-1">{spot.specs.draft}m</span>
-                    </div>
-                    <div className="text-sm">
-                      <span className="text-gray-600">Larghezza:</span>
-                      <span className="font-medium ml-1">{spot.specs.maxBeam}m</span>
-                    </div>
-                    <div className="text-sm">
-                      <span className="text-gray-600">Profondità:</span>
-                      <span className="font-medium ml-1">{spot.specs.depth}m</span>
+                      <span className="text-gray-600">Tipo:</span>
+                      <span className="font-medium ml-1">{spot.type}</span>
                     </div>
                   </div>
 
-                  {/* Services Icons */}
                   <div className="flex gap-2 mb-4">
-                    {spot.services.security && <Shield className="h-5 w-5 text-green-500" />}
-                    {spot.services.fuel && <Fuel className="h-5 w-5 text-orange-500" />}
-                    {spot.services.water && <Droplet className="h-5 w-5 text-blue-500" />}
-                    {spot.services.electricity && <Zap className="h-5 w-5 text-yellow-500" />}
-                    {spot.services.wifi && <Wifi className="h-5 w-5 text-purple-500" />}
-                    {spot.services.parking && <Car className="h-5 w-5 text-gray-500" />}
+                    {svc.security && <Shield className="h-5 w-5 text-green-500" />}
+                    {svc.fuel && <Fuel className="h-5 w-5 text-orange-500" />}
+                    {svc.water && <Droplet className="h-5 w-5 text-blue-500" />}
+                    {svc.electricity && <Zap className="h-5 w-5 text-yellow-500" />}
+                    {svc.wifi && <Wifi className="h-5 w-5 text-purple-500" />}
+                    {svc.parking && <Car className="h-5 w-5 text-gray-500" />}
                   </div>
 
-                  {/* Pricing */}
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <div className="text-2xl font-bold text-green-600">€{spot.pricing.daily}</div>
-                      <div className="text-sm text-gray-600">per metro/giorno</div>
+                      <div className="text-2xl font-bold text-green-600">€{spot.pricePerDay}</div>
+                      <div className="text-sm text-gray-600">al giorno</div>
                     </div>
                     <div className="text-right text-sm text-gray-600">
-                      <div>Settimanale: €{spot.pricing.weekly}</div>
-                      <div>Mensile: €{spot.pricing.monthly}</div>
+                      {spot.pricePerWeek && <div>Settimanale: €{spot.pricePerWeek}</div>}
+                      {spot.pricePerMonth && <div>Mensile: €{spot.pricePerMonth}</div>}
                     </div>
                   </div>
 
-                  {/* Actions */}
                   <div className="space-y-2">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
                       <Link href={`/ormeggio/${spot.id}`}>
@@ -581,17 +551,20 @@ export default function OrmeggioPage() {
                     </Button>
                   </div>
 
-                  {/* Contact Info */}
-                  <div className="mt-4 pt-4 border-t text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <span>Proprietario: {spot.contact.name}</span>
+                  {spot.contactName && (
+                    <div className="mt-4 pt-4 border-t text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        <span>Proprietario: {spot.contactName}</span>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </CardContent>
               </Card>
-            ))}
+              );
+            })}
           </div>
+          )}
 
           {sortedSpots.length === 0 && (
             <div className="text-center py-12">

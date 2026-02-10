@@ -1925,7 +1925,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ========== MOORINGS API ==========
-  
+
+  // Get all moorings (public)
+  app.get('/api/moorings', async (req, res) => {
+    try {
+      const mooringsList = await storage.getMoorings();
+      res.json(mooringsList);
+    } catch (error: any) {
+      console.error("Get moorings error:", error);
+      res.status(500).json({ error: "Errore nel recupero degli ormeggi" });
+    }
+  });
+
+  // Get single mooring (public)
+  app.get('/api/moorings/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const mooring = await storage.getMooring(id);
+      if (!mooring) {
+        return res.status(404).json({ error: "Ormeggio non trovato" });
+      }
+      res.json(mooring);
+    } catch (error: any) {
+      console.error("Get mooring error:", error);
+      res.status(500).json({ error: "Errore nel recupero ormeggio" });
+    }
+  });
+
   // Get owner's moorings
   app.get('/api/owner/moorings', requireAuth, requireOwner, async (req: any, res) => {
     try {

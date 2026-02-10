@@ -120,7 +120,6 @@ export default function HomePage() {
       <StructuredData type="homepage" />
       <AppDownloadBanner />
       <Header />
-      <div className="bg-ocean-blue text-white text-center py-1 text-xs font-semibold">v2.1 - 10 Feb 2026</div>
       
       {/* Hero Section - Catamarano */}
       <section className="relative min-h-screen text-white overflow-hidden">

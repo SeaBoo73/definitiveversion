@@ -328,7 +328,7 @@ export default function ProfiloPage() {
       subtitle: user?.role === "owner" ? "IBAN per ricevere pagamenti" : "Carte e metodi di pagamento",
       href: user?.role === "owner" ? "/profilo/dati-bancari" : "/metodi-pagamento-mobile"
     },
-    ...(user?.role === "owner" ? [{
+    ...(user?.role === "owner" && isOwnerMode ? [{
       icon: Receipt,
       title: "Report mensili",
       subtitle: "Genera e scarica report dei guadagni",

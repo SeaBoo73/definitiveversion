@@ -180,8 +180,8 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-hidden flex flex-col" style={{ display: 'flex' }}>
+        <DialogHeader className="shrink-0">
           <DialogTitle className="flex items-center justify-between">
             <span>Prenota {boat.name}</span>
             <Button variant="ghost" size="sm" onClick={onClose}>
@@ -190,7 +190,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6 overflow-y-auto flex-1 pr-1">
+        <div className="space-y-6 overflow-y-auto flex-1 min-h-0 pr-1 -mr-1">
           {/* Progress Steps */}
           <div className="flex items-center justify-center space-x-4">
             <div className={`flex items-center ${step === "dates" ? "text-ocean-blue" : "text-gray-400"}`}>

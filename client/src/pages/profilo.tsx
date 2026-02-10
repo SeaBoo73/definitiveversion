@@ -525,13 +525,13 @@ export default function ProfiloPage() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/customer-dashboard')}>
+            <Card className="cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/messaging')}>
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
-                  <Calendar className="h-7 w-7 text-seafoam" />
+                  <MessageCircle className="h-7 w-7 text-purple-500" />
                   <div>
-                    <p className="text-xs text-gray-500">In arrivo</p>
-                    <p className="text-xl font-bold text-gray-900">{upcomingBookings.length}</p>
+                    <p className="text-xs text-gray-500">Messaggi</p>
+                    <p className="text-xl font-bold text-gray-900">0</p>
                   </div>
                 </div>
               </CardContent>

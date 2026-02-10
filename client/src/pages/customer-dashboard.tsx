@@ -623,6 +623,18 @@ export default function CustomerDashboard() {
               </div>
             </CardContent>
           </Card>
+
+          <Card className="cursor-pointer hover:shadow-md transition-all md:col-span-2" onClick={() => setLocation('/messaggi')}>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <MessageSquare className="h-8 w-8 text-purple-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-600">Messaggi</p>
+                  <p className="text-2xl font-bold text-gray-900">Vai ai messaggi</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <Tabs defaultValue={initialTab} className="space-y-6">

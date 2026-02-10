@@ -1,14 +1,18 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Link, useRoute } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { ImageCarousel } from "@/components/image-carousel";
 import { useLocation } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { format } from "date-fns";
+import { it } from "date-fns/locale";
 import { 
   ArrowLeft,
   Clock,
@@ -18,6 +22,7 @@ import {
   Calendar,
   Heart,
   CheckCircle2,
+  Shield,
   MessageCircle,
   Loader2
 } from "lucide-react";
@@ -42,6 +47,8 @@ export default function EsperienzaDettaglio() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [, navigate] = useLocation();
   const { toast } = useToast();
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date>();
 
   const contactOwnerMutation = useMutation({
     mutationFn: async (info: { id: number; name: string; hostId: number }) => {
@@ -100,14 +107,6 @@ export default function EsperienzaDettaglio() {
 
   const numericId = parseInt(id);
   const pricePerPerson = parseFloat(String(experience.pricePerPerson) || '0');
-
-  const handleBooking = () => {
-    if (!user) {
-      toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
-      return;
-    }
-    navigate(`/checkout?type=experience&id=${experience.id}`);
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -218,11 +217,6 @@ export default function EsperienzaDettaglio() {
           <div className="lg:col-span-1">
             <Card className="sticky top-32">
               <CardContent className="p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold">Prenota ora</h3>
-                  <Badge variant="outline" className="text-green-600 border-green-600">Disponibile</Badge>
-                </div>
-
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900 mb-1">€{pricePerPerson.toFixed(2)}</div>
                   <div className="text-gray-600">per persona</div>
@@ -241,10 +235,54 @@ export default function EsperienzaDettaglio() {
 
                 <Button
                   className="w-full bg-ocean-blue hover:bg-blue-600 h-12 text-lg font-semibold"
-                  onClick={handleBooking}
+                  onClick={() => {
+                    if (!user) {
+                      toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
+                      return;
+                    }
+                    setShowCalendar(!showCalendar);
+                  }}
                 >
-                  Prenota ora
+                  <Calendar className="h-5 w-5 mr-2" />
+                  Verifica Disponibilità
                 </Button>
+
+                {showCalendar && (
+                  <div className="border rounded-lg p-3 space-y-3">
+                    <CalendarComponent
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={setSelectedDate}
+                      locale={it}
+                      disabled={(date) => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        return date < today;
+                      }}
+                    />
+                    {selectedDate && (
+                      <div className="space-y-2 pt-3 border-t">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Data</span>
+                          <span className="font-medium">{format(selectedDate, "dd MMM yyyy", { locale: it })}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Prezzo/persona</span>
+                          <span className="font-medium">€{pricePerPerson.toFixed(2)}</span>
+                        </div>
+                        <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
+                          <CheckCircle2 className="h-3 w-3 mr-1" /> Data disponibile
+                        </Badge>
+                        <Button
+                          className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
+                          onClick={() => navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}`)}
+                        >
+                          Prenota ora
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <Button
                   variant="outline"
@@ -267,7 +305,10 @@ export default function EsperienzaDettaglio() {
                 </Button>
 
                 <div className="text-center text-sm text-gray-500 space-y-1 pt-2">
-                  <p>Prenotazione sicura con Stripe</p>
+                  <div className="flex items-center justify-center">
+                    <Shield className="h-4 w-4 mr-1" />
+                    Prenotazione sicura con Stripe
+                  </div>
                   <p>Cancellazione gratuita fino a 24h prima</p>
                 </div>
               </CardContent>

@@ -1,24 +1,30 @@
+import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { useMooringFavorites } from '@/hooks/use-favorites';
 import { ImageCarousel } from '@/components/image-carousel';
 import { apiRequest } from '@/lib/queryClient';
+import { format } from 'date-fns';
+import { it } from 'date-fns/locale';
 import { 
   Anchor, 
   MapPin, 
   Star, 
   Shield, 
+  Calendar as CalendarIcon,
   Wifi,
   Car,
   Fuel,
   Zap,
   Droplet,
   ArrowLeft,
+  CheckCircle,
   Heart,
   Share2,
   MessageCircle,
@@ -31,6 +37,9 @@ export default function OrmeggioBookingPage() {
   const [match, params] = useRoute('/ormeggio/:id');
   const mooringId = params?.id || '';
   const { toast } = useToast();
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [checkIn, setCheckIn] = useState<Date>();
+  const [checkOut, setCheckOut] = useState<Date>();
   const { toggleFavorite, isFavorite } = useMooringFavorites();
   const [, navigate] = useLocation();
   const { user } = useAuth();
@@ -125,6 +134,10 @@ export default function OrmeggioBookingPage() {
   }
 
   const svc = (mooring.services as any) || {};
+  const nights = checkIn && checkOut
+    ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
+    : 0;
+  const total = nights * parseFloat(mooring.pricePerDay || '0');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -238,11 +251,6 @@ export default function OrmeggioBookingPage() {
           <div className="lg:col-span-1">
             <Card className="sticky top-32">
               <CardContent className="p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold">Prenota ora</h3>
-                  <Badge variant="outline" className="text-green-600 border-green-600">Disponibile</Badge>
-                </div>
-
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900 mb-1">€{mooring.pricePerDay}</div>
                   <div className="text-gray-600">al giorno</div>
@@ -272,11 +280,59 @@ export default function OrmeggioBookingPage() {
                       toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
                       return;
                     }
-                    navigate(`/checkout?type=mooring&id=${mooring.id}`);
+                    setShowCalendar(!showCalendar);
                   }}
                 >
-                  Prenota ora
+                  <CalendarIcon className="h-5 w-5 mr-2" />
+                  Verifica Disponibilità
                 </Button>
+
+                {showCalendar && (
+                  <div className="border rounded-lg p-3 space-y-3">
+                    <Calendar
+                      mode="range"
+                      selected={{ from: checkIn, to: checkOut }}
+                      onSelect={(range) => {
+                        setCheckIn(range?.from);
+                        setCheckOut(range?.to);
+                      }}
+                      numberOfMonths={1}
+                      locale={it}
+                      disabled={(date) => {
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        return date < today;
+                      }}
+                    />
+                    {checkIn && checkOut && nights > 0 && (
+                      <div className="space-y-2 pt-3 border-t">
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Arrivo</span>
+                          <span className="font-medium">{format(checkIn, "dd MMM yyyy", { locale: it })}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Partenza</span>
+                          <span className="font-medium">{format(checkOut, "dd MMM yyyy", { locale: it })}</span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">{nights} notti × €{mooring.pricePerDay}</span>
+                          <span className="font-bold text-green-600">€{total.toFixed(2)}</span>
+                        </div>
+                        <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
+                          <CheckCircle className="h-3 w-3 mr-1" /> Date disponibili
+                        </Badge>
+                        <Button
+                          className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
+                          asChild
+                        >
+                          <Link href={`/checkout?type=mooring&id=${mooring.id}&checkIn=${checkIn.toISOString()}&checkOut=${checkOut.toISOString()}`}>
+                            Prenota ora
+                          </Link>
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <Button
                   variant="outline"
@@ -299,7 +355,10 @@ export default function OrmeggioBookingPage() {
                 </Button>
 
                 <div className="text-center text-sm text-gray-500 space-y-1 pt-2">
-                  <p>Prenotazione sicura con Stripe</p>
+                  <div className="flex items-center justify-center">
+                    <Shield className="h-4 w-4 mr-1" />
+                    Prenotazione sicura con Stripe
+                  </div>
                   <p>Cancellazione gratuita fino a 24h prima</p>
                 </div>
 

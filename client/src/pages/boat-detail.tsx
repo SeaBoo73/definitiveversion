@@ -391,15 +391,7 @@ export function BoatDetail() {
           {/* Booking Sidebar */}
           <div className="lg:col-span-1">
             <Card className="sticky top-32">
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>Prenota ora</span>
-                  <Badge variant="outline" className="text-green-600 border-green-600">
-                    Disponibile
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="p-5 space-y-4">
                 <div className="text-center p-4 bg-gray-50 rounded-lg">
                   <div className="text-2xl font-bold text-gray-900 mb-1">€{boatData.pricePerDay}</div>
                   <div className="text-gray-600">per giorno</div>
@@ -410,7 +402,8 @@ export function BoatDetail() {
                   onClick={handleBookNow}
                   data-testid="button-prenota-detail"
                 >
-                  {user ? "Prenota ora" : "Accedi per prenotare"}
+                  <Calendar className="h-5 w-5 mr-2" />
+                  {user ? "Verifica Disponibilità" : "Accedi per prenotare"}
                 </Button>
 
                 <Button 

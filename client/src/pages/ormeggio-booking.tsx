@@ -334,14 +334,6 @@ export default function OrmeggioBookingPage() {
                     <span className="font-medium">{mooring.pricePerMonth}</span>
                   </div>
                 )}
-                <Button className="w-full bg-blue-600 hover:bg-blue-700" onClick={() => {
-                  const el = document.getElementById('disponibilita');
-                  el?.scrollIntoView({ behavior: 'smooth' });
-                }}>
-                  <CalendarIcon className="h-4 w-4 mr-2" />
-                  Verifica Disponibilità
-                </Button>
-
                 <Button
                   variant="outline"
                   className="w-full"

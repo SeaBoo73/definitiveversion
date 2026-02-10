@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { db, pool } from "./db";
+import { db } from "./db";
 import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema, insertBoatAvailabilitySchema, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import session from "express-session";
@@ -1505,16 +1505,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/moorings/:id/availability', async (req, res) => {
     try {
       const mooringId = parseInt(req.params.id);
-      const { rows } = await pool.query(
-        `SELECT id, mooring_id as "mooringId", date, available, price, block_reason as "blockReason", notes 
-         FROM mooring_availability WHERE mooring_id = $1`,
-        [mooringId]
-      );
-      const result = rows.map((r: any) => ({
-        ...r,
-        startDate: r.date ? new Date(r.date).toISOString().split('T')[0] : null,
-        endDate: r.date ? new Date(r.date).toISOString().split('T')[0] : null,
-        status: r.available === false ? 'blocked' : 'available',
+      const availability = await storage.getMooringAvailability(mooringId);
+      const result = availability.map((a: any) => ({
+        ...a,
+        startDate: a.date ? new Date(a.date).toISOString().split('T')[0] : null,
+        endDate: a.date ? new Date(a.date).toISOString().split('T')[0] : null,
+        status: a.available === false ? 'blocked' : 'available',
       }));
       res.json(result);
     } catch (error: any) {
@@ -1701,24 +1697,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const allAvail = await storage.getMooringAvailability(mooringId);
       for (const avail of allAvail) {
-        const aStart = new Date(avail.startDate);
-        const aEnd = new Date(avail.endDate);
-        aStart.setHours(0,0,0,0);
-        aEnd.setHours(0,0,0,0);
-        if (aEnd >= rangeStart && aStart <= rangeEnd) {
+        const aDate = new Date(avail.date);
+        aDate.setHours(0,0,0,0);
+        if (aDate >= rangeStart && aDate <= rangeEnd) {
           await storage.deleteMooringAvailability(avail.id);
         }
       }
 
+      const isBlocked = status === 'blocked';
       const current = new Date(rangeStart);
       while (current <= rangeEnd) {
-        const dayStr = current.toISOString().split('T')[0];
         await storage.createMooringAvailability({
           mooringId,
-          startDate: dayStr,
-          endDate: dayStr,
-          status,
-          priceOverride: priceOverride || undefined,
+          date: new Date(current),
+          available: !isBlocked,
+          price: priceOverride || undefined,
         });
         current.setDate(current.getDate() + 1);
       }
@@ -1752,11 +1745,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const allAvail = await storage.getMooringAvailability(mooringId);
       for (const avail of allAvail) {
-        const aStart = new Date(avail.startDate);
-        const aEnd = new Date(avail.endDate);
-        aStart.setHours(0,0,0,0);
-        aEnd.setHours(0,0,0,0);
-        if (aEnd >= rangeStart && aStart <= rangeEnd) {
+        const aDate = new Date(avail.date);
+        aDate.setHours(0,0,0,0);
+        if (aDate >= rangeStart && aDate <= rangeEnd) {
           await storage.deleteMooringAvailability(avail.id);
         }
       }
@@ -2043,7 +2034,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/owner/moorings/:id/availability', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const mooringId = parseInt(req.params.id);
-      const availability = await storage.getMooringAvailability(mooringId);
+      const rawAvailability = await storage.getMooringAvailability(mooringId);
+      const availability = rawAvailability.map((a: any) => ({
+        ...a,
+        startDate: a.date ? new Date(a.date).toISOString().split('T')[0] : null,
+        endDate: a.date ? new Date(a.date).toISOString().split('T')[0] : null,
+        status: a.available === false ? 'blocked' : 'available',
+        priceOverride: a.price,
+      }));
       res.json({ availability });
     } catch (error: any) {
       console.error("Get mooring availability error:", error);

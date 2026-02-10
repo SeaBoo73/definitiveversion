@@ -178,10 +178,11 @@ export const moorings = pgTable("moorings", {
 export const mooringAvailability = pgTable("mooring_availability", {
   id: serial("id").primaryKey(),
   mooringId: integer("mooring_id").references(() => moorings.id, { onDelete: 'cascade' }).notNull(),
-  startDate: date("start_date").notNull(),
-  endDate: date("end_date").notNull(),
-  status: varchar("status", { length: 20 }).default("available"),
-  priceOverride: numeric("price_override"),
+  date: timestamp("date").notNull(),
+  available: boolean("available").default(true),
+  price: numeric("price"),
+  blockReason: text("block_reason"),
+  notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -253,11 +254,12 @@ export const insertBoatAvailabilitySchema = createInsertSchema(boatAvailability,
 }).omit({ id: true, createdAt: true });
 
 export const insertMooringAvailabilitySchema = createInsertSchema(mooringAvailability, {
-  startDate: z.coerce.date(),
-  endDate: z.coerce.date(),
+  date: z.coerce.date(),
   mooringId: z.number(),
-  status: z.enum(["available", "blocked", "booked"]).default("available"),
-  priceOverride: z.coerce.number().optional(),
+  available: z.boolean().default(true),
+  price: z.coerce.number().optional(),
+  blockReason: z.string().optional(),
+  notes: z.string().optional(),
 }).omit({ id: true, createdAt: true });
 
 export const insertExperienceAvailabilitySchema = createInsertSchema(experienceAvailability, {

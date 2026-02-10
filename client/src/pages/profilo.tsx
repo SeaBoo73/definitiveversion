@@ -163,15 +163,17 @@ export default function ProfiloPage() {
     .filter((b: any) => b.status === 'completed')
     .reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) : 0;
 
-  const { data: customerBookings = [] } = useQuery<any[]>({
+  const { data: customerBookingsData } = useQuery<{ bookings: any[] }>({
     queryKey: ["/api/bookings"],
     enabled: !!user,
   });
+  const customerBookings = customerBookingsData?.bookings || [];
 
-  const { data: customerFavorites = [] } = useQuery<any[]>({
+  const { data: customerFavoritesData } = useQuery<any[]>({
     queryKey: ["/api/favorites"],
     enabled: !!user,
   });
+  const customerFavorites = Array.isArray(customerFavoritesData) ? customerFavoritesData : [];
 
   const upcomingBookings = customerBookings.filter((b: any) => {
     const startDate = new Date(b.startDate);

@@ -531,34 +531,6 @@ export default function ProfiloPage() {
           </CardContent>
         </Card>
 
-        {/* Assistenza - IA e Aiuto */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Assistenza e Supporto</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-1">
-            {assistanceItems.map((item, index) => {
-              const Icon = item.icon;
-              const content = (
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <Icon className={`h-5 w-5 mr-3 ${item.color}`} />
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">{item.title}</div>
-                    <div className="text-sm text-gray-500">{item.subtitle}</div>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              );
-              
-              return (
-                <Link key={index} href={item.href}>
-                  <a>{content}</a>
-                </Link>
-              );
-            })}
-          </CardContent>
-        </Card>
-
         {/* Logout */}
         <Card className="mb-6">
           <CardContent className="pt-6">

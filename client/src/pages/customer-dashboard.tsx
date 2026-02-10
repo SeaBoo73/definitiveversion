@@ -430,6 +430,26 @@ export default function CustomerDashboard() {
     deleteAccountMutation.mutate();
   };
 
+  const generateReceiptFromBooking = useMutation({
+    mutationFn: async (bookingId: number) => {
+      const response = await apiRequest('POST', `/api/invoices/generate-receipt/${bookingId}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Ricevuta generata",
+        description: "La ricevuta è stata generata. Vai al tab Ricevute per scaricarla.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Errore",
+        description: "Impossibile generare la ricevuta",
+        variant: "destructive",
+      });
+    },
+  });
+
   // TODO: Fetch user's favorites (table not yet created)
   const favorites: any[] = [];
   const favoritesLoading = false;
@@ -694,6 +714,18 @@ export default function CustomerDashboard() {
                         
                         <div className="flex space-x-2">
                           <ChatButton bookingId={booking.id} />
+                          {(booking.status === "confirmed" || booking.status === "completed") && (
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => generateReceiptFromBooking.mutate(booking.id)}
+                              disabled={generateReceiptFromBooking.isPending}
+                              data-testid={`button-receipt-${booking.id}`}
+                            >
+                              <Download className="h-4 w-4 mr-1" />
+                              <span className="hidden sm:inline">Ricevuta</span>
+                            </Button>
+                          )}
                           {booking.status === "completed" && (
                             <Button 
                               size="sm" 

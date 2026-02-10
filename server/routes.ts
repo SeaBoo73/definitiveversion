@@ -161,6 +161,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
+        phone: user.phone || undefined,
         role: user.role || "customer",
         userType: user.role === "owner" ? "owner" : "customer",
         businessName: user.businessName || undefined
@@ -203,6 +204,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: user.email,
         firstName: user.firstName || undefined,
         lastName: user.lastName || undefined,
+        phone: user.phone || undefined,
         role: user.role || "customer",
         userType: user.role === "owner" ? "owner" : "customer",
         businessName: user.businessName || undefined
@@ -647,6 +649,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ...req.session.user!,
         firstName: updatedUser.firstName || undefined,
         lastName: updatedUser.lastName || undefined,
+        phone: updatedUser.phone || undefined,
         profileImage: updatedUser.profileImage || undefined
       };
 

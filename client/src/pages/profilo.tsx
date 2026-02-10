@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useOwnerMode } from "@/hooks/use-owner-mode";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 
@@ -150,6 +151,7 @@ export default function ProfiloPage() {
   };
 
   const isOwner = user?.role === "owner";
+  const { isOwnerMode } = useOwnerMode();
 
   const { data: bookingsData } = useQuery<{ bookings: any[] }>({
     queryKey: ["/api/owner/bookings"],
@@ -446,8 +448,8 @@ export default function ProfiloPage() {
         </Card>
 
 
-        {/* Guadagni Totali - Solo Owner */}
-        {isOwner && (
+        {/* Guadagni Totali - Solo Owner in modalità SeaHost */}
+        {isOwner && isOwnerMode && (
           <Link href="/guadagni">
             <a>
               <Card className="mb-6 cursor-pointer transition-all hover:shadow-md border-emerald-200 bg-gradient-to-r from-emerald-50 to-green-50">

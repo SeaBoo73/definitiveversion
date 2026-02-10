@@ -422,7 +422,6 @@ export default function OrmeggioPage() {
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-4 md:mb-0">
               <h3 className="text-xl font-bold text-gray-900">Hai un posto barca libero?</h3>
-              <p className="text-gray-600">Affittalo e guadagna fino a €1.500+ al mese</p>
             </div>
             {isOwner ? (
               <Button className="bg-green-600 hover:bg-green-700 font-bold" asChild>

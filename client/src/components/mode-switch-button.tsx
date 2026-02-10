@@ -6,9 +6,11 @@ import { useOwnerMode } from "@/hooks/use-owner-mode";
 export function ModeSwitchButton() {
   const { user } = useAuth();
   const { isOwnerMode, enterOwnerMode, exitOwnerMode } = useOwnerMode();
-  const [, navigate] = useLocation();
+  const [location, navigate] = useLocation();
 
   if (!user || user.role !== 'owner') return null;
+
+  if (location !== '/profilo') return null;
 
   if (isOwnerMode) {
     return (

@@ -320,6 +320,7 @@ export default function OwnerDashboard() {
   const moorings = mooringsData?.moorings || [];
 
   // Mooring form state
+  const [mooringImages, setMooringImages] = useState<string[]>([]);
   const [mooringFormData, setMooringFormData] = useState({
     name: "",
     port: "",
@@ -366,6 +367,7 @@ export default function OwnerDashboard() {
         restaurant: false,
       },
     });
+    setMooringImages([]);
     setMooringPortSearch("");
   };
 
@@ -706,6 +708,7 @@ export default function OwnerDashboard() {
 
   const openEditMooringModal = (mooring: Mooring) => {
     setEditingMooring(mooring);
+    setMooringImages(mooring.images || []);
     setMooringFormData({
       name: mooring.name,
       port: mooring.port,
@@ -768,6 +771,7 @@ export default function OwnerDashboard() {
       pricePerWeek: mooringFormData.pricePerWeek ? parseFloat(mooringFormData.pricePerWeek) : null,
       pricePerMonth: mooringFormData.pricePerMonth ? parseFloat(mooringFormData.pricePerMonth) : null,
       services: mooringFormData.services,
+      images: mooringImages,
     };
 
     if (editingMooring) {
@@ -2434,6 +2438,129 @@ export default function OwnerDashboard() {
                       </div>
                     </div>
 
+                    {/* Sezione Foto Ormeggio */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                          <Camera className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Foto Ormeggio</h3>
+                          <p className="text-sm text-gray-600">Carica le foto del tuo ormeggio (max 10 foto)</p>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {mooringImages.map((imageUrl, index) => (
+                            <div key={index} className="relative group">
+                              <img 
+                                src={imageUrl} 
+                                alt={`Foto ${index + 1}`}
+                                className="w-full h-24 object-cover rounded-lg border-2 border-blue-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setMooringImages(prev => prev.filter((_, i) => i !== index));
+                                }}
+                                className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                ×
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="flex flex-col items-center justify-center border-2 border-dashed border-blue-300 rounded-lg p-6 hover:border-blue-400 transition-colors">
+                          <Camera className="h-10 w-10 text-blue-400 mb-2" />
+                          <p className="text-sm text-gray-600 text-center mb-3">
+                            Carica le foto del tuo ormeggio dal dispositivo
+                          </p>
+                          <input 
+                            type="file"
+                            accept="image/jpeg,image/jpg,image/png,image/webp"
+                            multiple
+                            id="mooringImageUpload"
+                            className="hidden"
+                            onChange={(e) => {
+                              const files = e.target.files;
+                              if (!files) return;
+                              
+                              const remainingSlots = 10 - mooringImages.length;
+                              
+                              if (remainingSlots <= 0) {
+                                toast({
+                                  title: "Limite raggiunto",
+                                  description: "Puoi caricare massimo 10 foto",
+                                  variant: "destructive",
+                                });
+                                return;
+                              }
+                              
+                              const filesToProcess = Array.from(files).slice(0, remainingSlots);
+                              
+                              const compressImage = (file: File): Promise<string> => {
+                                return new Promise((resolve, reject) => {
+                                  const reader = new FileReader();
+                                  reader.onload = (event) => {
+                                    const img = new Image();
+                                    img.onload = () => {
+                                      const canvas = document.createElement('canvas');
+                                      const maxWidth = 1200;
+                                      const maxHeight = 900;
+                                      let width = img.width;
+                                      let height = img.height;
+                                      
+                                      if (width > maxWidth) {
+                                        height = (height * maxWidth) / width;
+                                        width = maxWidth;
+                                      }
+                                      if (height > maxHeight) {
+                                        width = (width * maxHeight) / height;
+                                        height = maxHeight;
+                                      }
+                                      
+                                      canvas.width = width;
+                                      canvas.height = height;
+                                      const ctx = canvas.getContext('2d');
+                                      ctx?.drawImage(img, 0, 0, width, height);
+                                      const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                                      resolve(compressed);
+                                    };
+                                    img.onerror = reject;
+                                    img.src = event.target?.result as string;
+                                  };
+                                  reader.onerror = reject;
+                                  reader.readAsDataURL(file);
+                                });
+                              };
+                              
+                              Promise.all(filesToProcess.map(compressImage)).then((compressedImages) => {
+                                setMooringImages(prev => [...prev, ...compressedImages]);
+                                toast({
+                                  title: "Foto caricata",
+                                  description: `${compressedImages.length} foto aggiunta/e`,
+                                });
+                              });
+                              
+                              e.target.value = '';
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="border-blue-400 text-blue-600 hover:bg-blue-100"
+                            onClick={() => document.getElementById('mooringImageUpload')?.click()}
+                          >
+                            <Camera className="h-4 w-4 mr-2" />
+                            Scegli foto dal dispositivo
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+
                     {/* Buttons */}
                     <div className="flex justify-end gap-4 pt-6 border-t">
                       <Button
@@ -2472,8 +2599,23 @@ export default function OwnerDashboard() {
               <p className="text-center text-gray-500 py-8">Nessun ormeggio aggiunto. Clicca "Aggiungi ormeggio" per iniziare.</p>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {moorings.map((mooring) => (
-                  <Card key={mooring.id} className="hover:shadow-lg transition-shadow" data-testid={`card-mooring-${mooring.id}`}>
+                {moorings.map((mooring) => {
+                  const mImages = mooring.images && mooring.images.length > 0 ? mooring.images : [];
+                  return (
+                  <Card key={mooring.id} className="hover:shadow-lg transition-shadow overflow-hidden" data-testid={`card-mooring-${mooring.id}`}>
+                    {mImages.length > 0 && (
+                      <ImageCarousel
+                        images={mImages}
+                        name={mooring.name}
+                        className="h-40"
+                        overlay={
+                          <Badge className="absolute top-2 right-2 bg-blue-100 text-blue-800">
+                            <Anchor className="h-3 w-3 mr-1" />
+                            Ormeggio
+                          </Badge>
+                        }
+                      />
+                    )}
                     <CardContent className="p-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
@@ -2481,10 +2623,12 @@ export default function OwnerDashboard() {
                           <p className="text-sm text-gray-600">{mooring.port}</p>
                           {mooring.location && <p className="text-xs text-gray-500">{mooring.location}</p>}
                         </div>
-                        <Badge className="bg-blue-100 text-blue-800">
-                          <Anchor className="h-3 w-3 mr-1" />
-                          Ormeggio
-                        </Badge>
+                        {mImages.length === 0 && (
+                          <Badge className="bg-blue-100 text-blue-800">
+                            <Anchor className="h-3 w-3 mr-1" />
+                            Ormeggio
+                          </Badge>
+                        )}
                       </div>
 
                       <div className="space-y-2 text-sm text-gray-600 mb-4">
@@ -2551,7 +2695,8 @@ export default function OwnerDashboard() {
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                  );
+                })}
               </div>
             )}
           </TabsContent>

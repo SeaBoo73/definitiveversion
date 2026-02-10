@@ -49,6 +49,7 @@ export default function EsperienzaDettaglio() {
   const { toast } = useToast();
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>();
+  const [numParticipants, setNumParticipants] = useState(1);
 
   const contactOwnerMutation = useMutation({
     mutationFn: async (info: { id: number; name: string; hostId: number }) => {
@@ -248,6 +249,42 @@ export default function EsperienzaDettaglio() {
                   <div className="text-gray-600">per persona</div>
                 </div>
 
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">Partecipanti</div>
+                      <div className="text-xs text-gray-500">Max {experience.maxParticipants}</div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 w-8 p-0 rounded-full"
+                        onClick={() => setNumParticipants(Math.max(1, numParticipants - 1))}
+                        disabled={numParticipants <= 1}
+                      >
+                        -
+                      </Button>
+                      <span className="text-lg font-bold w-6 text-center">{numParticipants}</span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 w-8 p-0 rounded-full"
+                        onClick={() => setNumParticipants(Math.min(experience.maxParticipants, numParticipants + 1))}
+                        disabled={numParticipants >= experience.maxParticipants}
+                      >
+                        +
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-green-50 rounded-lg text-center">
+                    <div className="text-xs text-gray-500">Totale</div>
+                    <div className="text-xl font-bold text-green-700">€{(pricePerPerson * numParticipants).toFixed(2)}</div>
+                    <div className="text-xs text-gray-500">{numParticipants} {numParticipants === 1 ? 'persona' : 'persone'} × €{pricePerPerson.toFixed(2)}</div>
+                  </div>
+                </div>
+
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Durata</span>
@@ -302,6 +339,14 @@ export default function EsperienzaDettaglio() {
                           <span className="text-gray-600">Prezzo/persona</span>
                           <span className="font-medium">€{pricePerPerson.toFixed(2)}</span>
                         </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-600">Partecipanti</span>
+                          <span className="font-medium">{numParticipants}</span>
+                        </div>
+                        <div className="flex justify-between text-sm font-bold border-t pt-2">
+                          <span className="text-gray-900">Totale</span>
+                          <span className="text-green-700">€{(pricePerPerson * numParticipants).toFixed(2)}</span>
+                        </div>
                         {!isDateBlocked(selectedDate) ? (
                           <>
                             <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
@@ -309,7 +354,7 @@ export default function EsperienzaDettaglio() {
                             </Badge>
                             <Button
                               className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
-                              onClick={() => navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}`)}
+                              onClick={() => navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}&participants=${numParticipants}`)}
                             >
                               Prenota ora
                             </Button>

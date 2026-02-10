@@ -180,7 +180,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
             <span>Prenota {boat.name}</span>
@@ -190,7 +190,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <div className="space-y-6 overflow-y-auto flex-1 pr-1">
           {/* Progress Steps */}
           <div className="flex items-center justify-center space-x-4">
             <div className={`flex items-center ${step === "dates" ? "text-ocean-blue" : "text-gray-400"}`}>
@@ -406,25 +406,25 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
               </CardContent>
             </Card>
 
-            {/* Action Buttons */}
-            <div className="flex space-x-3">
-              {step !== "dates" && (
-                <Button variant="outline" onClick={goBack} className="flex-1">
-                  Indietro
-                </Button>
-              )}
-              <Button 
-                type="submit" 
-                className="flex-1 bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:transform-none disabled:hover:scale-100"
-                disabled={createBookingMutation.isPending}
-                data-testid="button-continue-booking"
-              >
-                {step === "dates" && "Continua"}
-                {step === "details" && !user && "Accedi per continuare"}
-                {step === "details" && user && (createBookingMutation.isPending ? "Creazione..." : "Procedi al pagamento")}
-              </Button>
-            </div>
           </form>
+        </div>
+
+        <div className="flex space-x-3 pt-3 border-t shrink-0">
+          {step !== "dates" && (
+            <Button variant="outline" onClick={goBack} className="flex-1">
+              Indietro
+            </Button>
+          )}
+          <Button 
+            onClick={form.handleSubmit(onSubmit)}
+            className="flex-1 bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:transform-none disabled:hover:scale-100"
+            disabled={createBookingMutation.isPending}
+            data-testid="button-continue-booking"
+          >
+            {step === "dates" && "Continua"}
+            {step === "details" && !user && "Accedi per continuare"}
+            {step === "details" && user && (createBookingMutation.isPending ? "Creazione..." : "Procedi al pagamento")}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

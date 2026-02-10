@@ -599,7 +599,7 @@ export default function CustomerDashboard() {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -619,30 +619,6 @@ export default function CustomerDashboard() {
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Prossime prenotazioni</p>
                   <p className="text-2xl font-bold text-gray-900">{upcomingBookings.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Heart className="h-8 w-8 text-red-500" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Preferiti</p>
-                  <p className="text-2xl font-bold text-gray-900">{favorites.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <TrendingUp className="h-8 w-8 text-coral" />
-                <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Spesa totale</p>
-                  <p className="text-2xl font-bold text-gray-900">€{totalSpent.toFixed(2)}</p>
                 </div>
               </div>
             </CardContent>

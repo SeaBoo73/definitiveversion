@@ -624,7 +624,7 @@ export default function CustomerDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:shadow-md transition-all md:col-span-2" onClick={() => setLocation('/messaggi')}>
+          <Card className="cursor-pointer hover:shadow-md transition-all md:col-span-2" onClick={() => setLocation('/messaging')}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <MessageSquare className="h-8 w-8 text-purple-500" />

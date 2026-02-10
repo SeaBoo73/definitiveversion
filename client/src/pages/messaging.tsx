@@ -45,11 +45,11 @@ export default function MessagingPage() {
       <div className="mb-6">
         <Button
           variant="ghost"
-          onClick={() => setLocation("/")}
+          onClick={() => setLocation("/profilo")}
           className="text-gray-600 hover:text-gray-900"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Torna alla home
+          Torna al profilo
         </Button>
       </div>
       
@@ -60,9 +60,9 @@ export default function MessagingPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[700px]">
+      <div className="grid grid-cols-1 gap-6">
         {/* Lista Conversazioni */}
-        <div className="lg:col-span-1">
+        <div>
           <ConversationList
             onSelectConversation={setSelectedConversationId}
             currentUserId={user.id}
@@ -71,28 +71,15 @@ export default function MessagingPage() {
         </div>
 
         {/* Interfaccia Chat */}
-        <div className="lg:col-span-2">
-          {selectedConversationId ? (
+        {selectedConversationId && (
+          <div>
             <ChatInterface
               conversationId={selectedConversationId}
               currentUserId={user.id}
               onClose={() => setSelectedConversationId(null)}
             />
-          ) : (
-            <Card className="h-full">
-              <CardContent className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <Users className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-xl font-semibold mb-2">I tuoi messaggi</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto">
-                    Seleziona una conversazione per visualizzare i messaggi.
-                    Le conversazioni vengono create automaticamente quando effettui una prenotazione o invii una richiesta a un noleggiatore.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

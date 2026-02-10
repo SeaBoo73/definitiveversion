@@ -69,104 +69,62 @@ export function BoatCard({ boat }: BoatCardProps) {
 
   return (
     <Link href={`/boats/${boat.id}`} className="block">
-      <Card className="overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer">
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer">
         <div className="relative">
           <ImageCarousel
             images={sanitizeImages(boat.images || [])}
             alt={boat.name}
             fallbackImage={FALLBACK_IMAGE}
-            className="h-48"
+            className="h-32"
             initialIndex={boat.coverImage || 0}
           />
-          <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${getBadgeColor()} z-20`}>
+          <div className={`absolute top-2 left-2 px-1.5 py-0.5 rounded-full text-[10px] font-semibold ${getBadgeColor()} z-20`}>
             {getTypeLabel()}
           </div>
           {user && (
             <Button
               size="sm"
               variant="ghost"
-              className="absolute top-3 right-3 w-8 h-8 p-0 bg-white rounded-full hover:scale-110 transition-transform z-20"
+              className="absolute top-2 right-2 w-7 h-7 p-0 bg-white rounded-full hover:scale-110 transition-transform z-20"
               onClick={handleFavoriteClick}
             >
               <Heart 
-                className={`h-4 w-4 ${isFav ? "fill-red-500 text-red-500" : "text-gray-600"}`} 
+                className={`h-3.5 w-3.5 ${isFav ? "fill-red-500 text-red-500" : "text-gray-600"}`} 
               />
             </Button>
           )}
         </div>
         
-        <CardContent className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="font-semibold text-gray-900 truncate">{boat.name}</h3>
-            <div className="flex items-center ml-2">
-              <Star className="h-4 w-4 text-yellow-400 fill-current" />
-              <span className="text-sm text-gray-600 ml-1">4.8</span>
+        <CardContent className="p-3">
+          <div className="flex justify-between items-start mb-1">
+            <h3 className="font-semibold text-sm text-gray-900 truncate">{boat.name}</h3>
+            <div className="flex items-center ml-1">
+              <Star className="h-3 w-3 text-yellow-400 fill-current" />
+              <span className="text-xs text-gray-600 ml-0.5">4.8</span>
             </div>
           </div>
           
-          <div className="flex items-center text-gray-600 text-sm mb-2">
-            <MapPin className="h-4 w-4 mr-1" />
+          <div className="flex items-center text-gray-600 text-xs mb-1">
+            <MapPin className="h-3 w-3 mr-0.5" />
             <span className="truncate">{boat.port}</span>
           </div>
           
-          <div className="flex items-center text-gray-600 text-sm mb-3">
-            <Users className="h-4 w-4 mr-1" />
-            <span>Fino a {boat.maxPersons} persone</span>
+          <div className="flex items-center text-gray-600 text-xs mb-2">
+            <Users className="h-3 w-3 mr-0.5" />
+            <span>{boat.maxPersons} pers.</span>
             {boat.length && (
               <>
-                <span className="mx-2">•</span>
+                <span className="mx-1">•</span>
                 <span>{boat.length}m</span>
               </>
             )}
           </div>
-
-          {/* Orari per barche senza patente e charter */}
-          {(boat.type === "barche-senza-patente" || boat.type === "charter" || boat.type === "gommone") && (
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-2 mb-3">
-              <div className="flex items-center text-blue-800 text-xs mb-1">
-                <Clock className="h-3 w-3 mr-1" />
-                <span className="font-semibold">Orari di utilizzo</span>
-              </div>
-              <div className="text-blue-700 text-xs">
-                <div>Ritiro: {boat.pickupTime || "09:00"} - Riconsegna: {boat.returnTime || "18:00"}</div>
-                {boat.dailyReturnRequired && (
-                  <div className="flex items-center mt-1">
-                    <AlertCircle className="h-3 w-3 mr-1" />
-                    <span>Rientro serale obbligatorio ogni giorno</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
           
           <div className="flex justify-between items-center">
             <div>
-              <span className="font-bold text-gray-900">€{boat.pricePerDay}</span>
-              <span className="text-gray-600 text-sm"> al giorno</span>
+              <span className="font-bold text-sm text-gray-900">€{boat.pricePerDay}</span>
+              <span className="text-gray-600 text-xs">/giorno</span>
             </div>
-            <Badge variant="outline" className="text-xs">
-              Disponibile
-            </Badge>
-          </div>
-          
-          <div className="mt-4 space-y-2">
-            <Button 
-              className="w-full bg-ocean-blue hover:bg-blue-600" 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                // If user is logged in, proceed to booking
-                if (user) {
-                  window.location.href = `/boats/${boat.id}`;
-                } else {
-                  // Redirect to login with redirect parameter
-                  window.location.href = `/auth?redirect=/boats/${boat.id}`;
-                }
-              }}
-              data-testid="button-prenota-now"
-            >
-              Prenota ora
-            </Button>
           </div>
         </CardContent>
       </Card>

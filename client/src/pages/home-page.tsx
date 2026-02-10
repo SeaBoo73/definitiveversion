@@ -299,7 +299,7 @@ export default function HomePage() {
                 <p className="text-gray-500 text-lg mt-4">Caricamento barche...</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
                 {filteredBoats.map((boat) => (
                   <BoatCard key={boat.id} boat={boat} />
                 ))}

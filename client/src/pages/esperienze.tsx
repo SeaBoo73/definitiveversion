@@ -218,21 +218,22 @@ export function EsperienzePage() {
                   <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
                 </div>
               ) : filteredExperiences.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {filteredExperiences.map((exp) => (
-                    <Card key={exp.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                    <Card key={exp.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <Link href={`/esperienza/${exp.id}`} className="block">
                       <div className="relative">
                         <ImageCarousel
                           images={exp.images || []}
                           alt={exp.name}
-                          className="h-48"
+                          className="h-32"
                           fallback={
-                            <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-orange-100 flex items-center justify-center">
-                              <Sunset className="h-12 w-12 text-orange-400" />
+                            <div className="w-full h-32 bg-gradient-to-br from-blue-100 to-orange-100 flex items-center justify-center">
+                              <Sunset className="h-10 w-10 text-orange-400" />
                             </div>
                           }
                         />
-                        <Badge className="absolute top-3 left-3 bg-blue-600 text-white z-20">
+                        <Badge className="absolute top-2 left-2 bg-blue-600 text-white text-[10px] z-20">
                           {categoryLabels[exp.category] || exp.category}
                         </Badge>
                         {user && (
@@ -242,47 +243,30 @@ export function EsperienzePage() {
                               e.stopPropagation();
                               toggleFavorite('experience', exp.id);
                             }}
-                            className="absolute top-3 right-3 w-8 h-8 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-20"
+                            className="absolute top-2 right-2 w-7 h-7 bg-white/80 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-transform z-20"
                           >
-                            <Heart className={`h-4 w-4 ${isFavorite('experience', exp.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+                            <Heart className={`h-3.5 w-3.5 ${isFavorite('experience', exp.id) ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
                           </button>
                         )}
                       </div>
-                      <CardContent className="p-5">
-                        <h4 className="font-bold text-lg text-gray-900 mb-2">{exp.name}</h4>
-                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{exp.description}</p>
-                        <div className="flex items-center gap-4 mb-3 text-sm text-gray-600">
-                          <div className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            <span>{exp.location}</span>
+                      <CardContent className="p-3">
+                        <h4 className="font-semibold text-sm text-gray-900 truncate mb-1">{exp.name}</h4>
+                        <div className="flex items-center gap-2 text-xs text-gray-600 mb-1">
+                          <div className="flex items-center gap-0.5">
+                            <MapPin className="h-3 w-3" />
+                            <span className="truncate">{exp.location}</span>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{exp.duration}h</span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Users className="h-4 w-4" />
-                            <span>Max {exp.maxParticipants}</span>
-                          </div>
+                          <span>•</span>
+                          <span>{exp.duration}h</span>
                         </div>
-                        {exp.includes && exp.includes.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mb-3">
-                            {exp.includes.slice(0, 3).map((item, i) => (
-                              <Badge key={i} variant="secondary" className="text-xs">{item}</Badge>
-                            ))}
-                          </div>
-                        )}
                         <div className="flex items-center justify-between">
-                          <div className="text-xl font-bold text-green-600">
-                            €{exp.pricePerPerson}<span className="text-sm font-normal text-gray-500">/persona</span>
+                          <div>
+                            <span className="font-bold text-sm text-green-600">€{exp.pricePerPerson}</span>
+                            <span className="text-xs text-gray-500">/pers.</span>
                           </div>
-                          <Button className="bg-coral hover:bg-orange-600" asChild>
-                            <Link href={`/esperienza/${exp.id}`}>
-                              Prenota
-                            </Link>
-                          </Button>
                         </div>
                       </CardContent>
+                      </Link>
                     </Card>
                   ))}
                 </div>

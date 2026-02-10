@@ -419,147 +419,73 @@ export default function OrmeggioPage() {
               <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
             </div>
           ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {sortedSpots.map((spot) => {
               const svc = (spot.services as any) || {};
               return (
-              <Card key={spot.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+              <Card key={spot.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <Link href={`/ormeggio/${spot.id}`} className="block">
                 <div className="relative">
                   <ImageCarousel
                     images={spot.images || []}
                     alt={spot.name}
-                    className="h-48"
+                    className="h-32"
                     fallback={
-                      <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
-                        <Anchor className="h-12 w-12 text-blue-400" />
+                      <div className="w-full h-32 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
+                        <Anchor className="h-10 w-10 text-blue-400" />
                       </div>
                     }
                   />
                   {spot.featured && (
-                    <Badge className="absolute top-3 left-3 bg-yellow-500 text-white z-20">
+                    <Badge className="absolute top-2 left-2 bg-yellow-500 text-white text-[10px] z-20">
                       In Evidenza
                     </Badge>
                   )}
-                  <div className="absolute top-3 right-3 flex gap-2 z-20">
+                  <div className="absolute top-2 right-2 flex gap-1 z-20">
                     <Button 
                       size="sm" 
                       variant="ghost" 
-                      className="bg-white/80 hover:bg-white p-2"
+                      className="bg-white/80 hover:bg-white p-1 h-7 w-7"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
                         handleToggleFavorite(String(spot.id), spot.name);
                       }}
-                      data-testid={`button-favorite-${spot.id}`}
                     >
-                      <Heart className={`h-4 w-4 ${isFavorite(String(spot.id)) ? 'fill-red-500 text-red-500' : ''}`} />
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      variant="ghost" 
-                      className="bg-white/80 hover:bg-white p-2"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleShare(spot);
-                      }}
-                      data-testid={`button-share-${spot.id}`}
-                    >
-                      <Share2 className="h-4 w-4" />
+                      <Heart className={`h-3.5 w-3.5 ${isFavorite(String(spot.id)) ? 'fill-red-500 text-red-500' : ''}`} />
                     </Button>
                   </div>
                 </div>
 
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-3">
+                <CardContent className="p-3">
+                  <h3 className="font-semibold text-sm text-gray-900 truncate mb-1">{spot.name}</h3>
+                  <div className="flex items-center gap-1 text-xs text-gray-600 mb-1">
+                    <MapPin className="h-3 w-3" />
+                    <span className="truncate">{spot.port}</span>
+                  </div>
+
+                  <div className="flex items-center text-xs text-gray-500 mb-2">
+                    <span>Max {spot.maxLength}m</span>
+                    <span className="mx-1">•</span>
+                    <span>{spot.type}</span>
+                  </div>
+
+                  <div className="flex gap-1 mb-2">
+                    {svc.security && <Shield className="h-3.5 w-3.5 text-green-500" />}
+                    {svc.fuel && <Fuel className="h-3.5 w-3.5 text-orange-500" />}
+                    {svc.water && <Droplet className="h-3.5 w-3.5 text-blue-500" />}
+                    {svc.electricity && <Zap className="h-3.5 w-3.5 text-yellow-500" />}
+                    {svc.wifi && <Wifi className="h-3.5 w-3.5 text-purple-500" />}
+                  </div>
+
+                  <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-bold text-lg text-gray-900 mb-1">{spot.name}</h3>
-                      <div className="flex items-center gap-1 text-sm text-gray-600">
-                        <MapPin className="h-4 w-4" />
-                        <span>{spot.port} - {spot.location}</span>
-                      </div>
-                    </div>
-                    {spot.rating && (
-                      <div className="flex items-center gap-1">
-                        <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                        <span className="font-medium">{spot.rating}</span>
-                        {spot.reviewCount && <span className="text-sm text-gray-500">({spot.reviewCount})</span>}
-                      </div>
-                    )}
-                  </div>
-
-                  {spot.description && (
-                    <p className="text-sm text-gray-700 mb-4 line-clamp-2">
-                      {spot.description}
-                    </p>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-3 mb-4 p-3 bg-gray-50 rounded-lg">
-                    <div className="text-sm">
-                      <span className="text-gray-600">Max lunghezza:</span>
-                      <span className="font-medium ml-1">{spot.maxLength}m</span>
-                    </div>
-                    {spot.maxBeam && (
-                      <div className="text-sm">
-                        <span className="text-gray-600">Larghezza:</span>
-                        <span className="font-medium ml-1">{spot.maxBeam}m</span>
-                      </div>
-                    )}
-                    {spot.depth && (
-                      <div className="text-sm">
-                        <span className="text-gray-600">Profondità:</span>
-                        <span className="font-medium ml-1">{spot.depth}m</span>
-                      </div>
-                    )}
-                    <div className="text-sm">
-                      <span className="text-gray-600">Tipo:</span>
-                      <span className="font-medium ml-1">{spot.type}</span>
+                      <span className="font-bold text-sm text-green-600">€{spot.pricePerDay}</span>
+                      <span className="text-xs text-gray-600">/giorno</span>
                     </div>
                   </div>
-
-                  <div className="flex gap-2 mb-4">
-                    {svc.security && <Shield className="h-5 w-5 text-green-500" />}
-                    {svc.fuel && <Fuel className="h-5 w-5 text-orange-500" />}
-                    {svc.water && <Droplet className="h-5 w-5 text-blue-500" />}
-                    {svc.electricity && <Zap className="h-5 w-5 text-yellow-500" />}
-                    {svc.wifi && <Wifi className="h-5 w-5 text-purple-500" />}
-                    {svc.parking && <Car className="h-5 w-5 text-gray-500" />}
-                  </div>
-
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <div className="text-2xl font-bold text-green-600">€{spot.pricePerDay}</div>
-                      <div className="text-sm text-gray-600">al giorno</div>
-                    </div>
-                    <div className="text-right text-sm text-gray-600">
-                      {spot.pricePerWeek && <div>Settimanale: €{spot.pricePerWeek}</div>}
-                      {spot.pricePerMonth && <div>Mensile: €{spot.pricePerMonth}</div>}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
-                      <Link href={`/ormeggio/${spot.id}`}>
-                        Prenota Ormeggio
-                      </Link>
-                    </Button>
-                    <Button variant="outline" size="sm" className="w-full" asChild>
-                      <Link href={`/ormeggio/${spot.id}#disponibilita`}>
-                        <Calendar className="h-4 w-4 mr-1" />
-                        Verifica Disponibilità
-                      </Link>
-                    </Button>
-                  </div>
-
-                  {spot.contactName && (
-                    <div className="mt-4 pt-4 border-t text-sm text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4" />
-                        <span>Proprietario: {spot.contactName}</span>
-                      </div>
-                    </div>
-                  )}
                 </CardContent>
+                </Link>
               </Card>
               );
             })}

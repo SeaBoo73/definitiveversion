@@ -2388,30 +2388,6 @@ export default function OwnerDashboard() {
                 </DialogContent>
               </Dialog>
 
-            <Card className="bg-blue-50 border-blue-200">
-              <CardContent className="p-8 text-center">
-                <Anchor className="h-16 w-16 text-blue-400 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Gestisci i tuoi posti barca</h3>
-                <p className="text-gray-600 mb-4">
-                  Metti a disposizione i tuoi ormeggi per altre barche. Inizia ad aggiungere i tuoi posti barca disponibili.
-                </p>
-                <div className="bg-white rounded-lg p-4 text-left max-w-md mx-auto space-y-2">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm text-gray-700">Specifica porto e posizione</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Ruler className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm text-gray-700">Indica lunghezza massima barca</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Euro className="h-4 w-4 text-blue-600" />
-                    <span className="text-sm text-gray-700">Imposta tariffa giornaliera</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
             {mooringsLoading ? (
               <div className="text-center py-8">
                 <div className="animate-spin h-8 w-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>

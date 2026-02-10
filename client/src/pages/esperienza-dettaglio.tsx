@@ -4,8 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Link, useRoute } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { ImageCarousel } from "@/components/image-carousel";
+import { useLocation } from "wouter";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import { 
   ArrowLeft,
   Clock,
@@ -16,6 +19,7 @@ import {
   Heart,
   CheckCircle2,
   Mail,
+  MessageCircle,
   Loader2
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
@@ -37,6 +41,26 @@ export default function EsperienzaDettaglio() {
   const id = params?.id || "";
   const { user } = useAuth();
   const { isFavorite, toggleFavorite } = useFavorites();
+  const [, navigate] = useLocation();
+  const { toast } = useToast();
+
+  const contactOwnerMutation = useMutation({
+    mutationFn: async (info: { id: number; name: string; hostId: number }) => {
+      const response = await apiRequest('POST', '/api/conversations/inquiry', {
+        referenceType: 'experience',
+        referenceId: info.id,
+        referenceName: info.name,
+        ownerId: info.hostId,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      navigate('/messaging');
+    },
+    onError: () => {
+      toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+    },
+  });
 
   const { data: experience, isLoading, error } = useQuery<Experience>({
     queryKey: ['/api/experiences', id],
@@ -195,6 +219,26 @@ export default function EsperienzaDettaglio() {
                     <Calendar className="h-5 w-5 mr-2" />
                     Prenota ora
                   </Link>
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    if (!user) {
+                      toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+                      return;
+                    }
+                    contactOwnerMutation.mutate({
+                      id: numericId,
+                      name: experience.name,
+                      hostId: experience.hostId,
+                    });
+                  }}
+                  disabled={contactOwnerMutation.isPending}
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Chiedi informazioni"}
                 </Button>
                 
                 <div className="space-y-2 pt-4 border-t">

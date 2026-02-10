@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import { useMooringFavorites } from '@/hooks/use-favorites';
 import { ImageCarousel } from '@/components/image-carousel';
 import { format } from 'date-fns';
 import { it } from 'date-fns/locale';
+import { apiRequest } from '@/lib/queryClient';
 import { 
   Anchor, 
   MapPin, 
@@ -28,9 +29,11 @@ import {
   CheckCircle,
   Heart,
   Share2,
+  MessageCircle,
   Loader2
 } from 'lucide-react';
-import { Link, useRoute } from 'wouter';
+import { Link, useRoute, useLocation } from 'wouter';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function OrmeggioBookingPage() {
   const [match, params] = useRoute('/ormeggio/:id');
@@ -39,6 +42,26 @@ export default function OrmeggioBookingPage() {
   const [checkOut, setCheckOut] = useState<Date>();
   const { toast } = useToast();
   const { toggleFavorite, isFavorite } = useMooringFavorites();
+  const [, navigate] = useLocation();
+  const { user } = useAuth();
+
+  const contactOwnerMutation = useMutation({
+    mutationFn: async (info: { id: number; name: string; managerId: number }) => {
+      const response = await apiRequest('POST', '/api/conversations/inquiry', {
+        referenceType: 'mooring',
+        referenceId: info.id,
+        referenceName: info.name,
+        ownerId: info.managerId,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      navigate('/messaging');
+    },
+    onError: () => {
+      toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+    },
+  });
 
   const { data: mooring, isLoading, error } = useQuery<any>({
     queryKey: ['/api/moorings', mooringId],
@@ -317,6 +340,26 @@ export default function OrmeggioBookingPage() {
                 }}>
                   <CalendarIcon className="h-4 w-4 mr-2" />
                   Verifica Disponibilità
+                </Button>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    if (!user) {
+                      toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+                      return;
+                    }
+                    contactOwnerMutation.mutate({
+                      id: mooring.id,
+                      name: mooring.name,
+                      managerId: mooring.managerId,
+                    });
+                  }}
+                  disabled={contactOwnerMutation.isPending}
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Chiedi informazioni"}
                 </Button>
 
                 {mooring.contactName && (

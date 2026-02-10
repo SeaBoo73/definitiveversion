@@ -303,6 +303,13 @@ export default function ProfiloPage() {
 
   const settingsItems = [
     {
+      icon: Receipt,
+      title: "Le mie prenotazioni",
+      subtitle: "Prenotazioni, ricevute e storico viaggi",
+      href: "/customer-dashboard",
+      color: "text-ocean-blue"
+    },
+    {
       icon: Heart,
       title: "Lista dei preferiti",
       subtitle: "Barche, ormeggi ed esperienze salvate",
@@ -315,13 +322,6 @@ export default function ProfiloPage() {
       subtitle: "Recensioni lasciate e ricevute",
       href: "/mie-recensioni",
       color: "text-yellow-500"
-    },
-    {
-      icon: Receipt,
-      title: "Le mie prenotazioni",
-      subtitle: "Prenotazioni, ricevute e storico viaggi",
-      href: "/customer-dashboard",
-      color: "text-ocean-blue"
     },
     {
       icon: User,

@@ -163,6 +163,25 @@ export default function ProfiloPage() {
     .filter((b: any) => b.status === 'completed')
     .reduce((sum: number, b: any) => sum + (b.totalPrice * 0.85), 0) : 0;
 
+  const { data: customerBookings = [] } = useQuery<any[]>({
+    queryKey: ["/api/bookings"],
+    enabled: !!user,
+  });
+
+  const { data: customerFavorites = [] } = useQuery<any[]>({
+    queryKey: ["/api/favorites"],
+    enabled: !!user,
+  });
+
+  const upcomingBookings = customerBookings.filter((b: any) => {
+    const startDate = new Date(b.startDate);
+    return startDate >= new Date() && b.status !== 'cancelled';
+  });
+
+  const totalSpent = customerBookings
+    .filter((b: any) => b.status === 'completed')
+    .reduce((sum: number, b: any) => sum + (b.totalPrice || 0), 0);
+
   const { data: userReviews = [] } = useQuery<any[]>({
     queryKey: ['/api/reviews/user', user?.id],
     queryFn: async () => {
@@ -488,6 +507,56 @@ export default function ProfiloPage() {
               </Card>
             </a>
           </Link>
+        )}
+
+        {/* Statistiche cliente - solo in modalità viaggio */}
+        {(!isOwner || !isOwnerMode) && (
+          <div className="grid grid-cols-2 gap-3 mb-6">
+            <Card className="cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/customer-dashboard')}>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Ship className="h-7 w-7 text-ocean-blue" />
+                  <div>
+                    <p className="text-xs text-gray-500">Prenotazioni</p>
+                    <p className="text-xl font-bold text-gray-900">{customerBookings.length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/customer-dashboard')}>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Calendar className="h-7 w-7 text-seafoam" />
+                  <div>
+                    <p className="text-xs text-gray-500">In arrivo</p>
+                    <p className="text-xl font-bold text-gray-900">{upcomingBookings.length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="cursor-pointer hover:shadow-md transition-all" onClick={() => navigate('/preferiti')}>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Heart className="h-7 w-7 text-red-500" />
+                  <div>
+                    <p className="text-xs text-gray-500">Preferiti</p>
+                    <p className="text-xl font-bold text-gray-900">{customerFavorites.length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3">
+                  <Euro className="h-7 w-7 text-emerald-500" />
+                  <div>
+                    <p className="text-xs text-gray-500">Spesa totale</p>
+                    <p className="text-xl font-bold text-gray-900">€{totalSpent.toFixed(0)}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         )}
 
         {/* Voci principali */}

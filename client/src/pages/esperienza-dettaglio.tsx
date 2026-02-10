@@ -19,6 +19,7 @@ import {
   Euro,
   Calendar,
   Heart,
+  CheckCircle2,
   Shield,
   MessageCircle,
   Loader2

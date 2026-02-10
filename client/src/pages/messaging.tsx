@@ -53,7 +53,7 @@ export default function MessagingPage() {
         </Button>
       </div>
       
-      <div className="mb-6">
+      <div className="mb-6 pb-40">
         <h1 className="text-3xl font-bold mb-2">Sistema di Messaggistica</h1>
         <p className="text-muted-foreground">
           Comunica in tempo reale con proprietari di barche e altri utenti

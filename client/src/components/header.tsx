@@ -7,8 +7,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ServicesNavButton } from "./services-nav-button";
 import { useMooringFavorites } from "@/hooks/use-favorites";
 import { Link, useLocation } from "wouter";
-import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship, Heart, MapPin, Trash2 } from "lucide-react";
+import { Anchor, Menu, User, Bot, X, Sunset, Sparkles, Ship, Heart, MapPin, Trash2, Home, CalendarDays, LayoutDashboard, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import { useOwnerMode } from "@/hooks/use-owner-mode";
 import seabooLogo from "@assets/WhatsApp Image 2025-08-19 at 12.38.33_1759682721865.jpeg";
 
 const MOORING_NAMES: Record<string, { title: string; port: string; price: number }> = {
@@ -25,6 +26,8 @@ export function Header() {
   const [location, setLocation] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { favorites, toggleFavorite } = useMooringFavorites();
+  const { isOwnerMode } = useOwnerMode();
+  const showOwnerNav = isOwnerMode && user?.role === 'owner';
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -57,82 +60,142 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center">
-            <div className="flex items-center space-x-1">
-              <Link 
-                href="/" 
-                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/" 
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                <Ship className="h-4 w-4" />
-                Esplora
-              </Link>
-              <Link 
-                href="/ormeggio" 
-                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/ormeggio" 
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                <Anchor className="h-4 w-4" />
-                Ormeggio
-              </Link>
-              <Link 
-                href="/esperienze" 
-                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/esperienze" || location === "/charter"
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                <Sparkles className="h-4 w-4" />
-                Esperienze
-              </Link>
-              <Link 
-                href="/ia" 
-                className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/ia" 
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                <Bot className="h-4 w-4" />
-                IA
-              </Link>
-              <ServicesNavButton />
-              <Link 
-                href="/aiuto" 
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
-                  location === "/aiuto" 
-                    ? "text-blue-600 border-b-2 border-blue-600" 
-                    : "text-gray-500 hover:text-gray-900"
-                }`}
-              >
-                Aiuto
-              </Link>
-              {user?.role === "owner" && (
+            {showOwnerNav ? (
+              <div className="flex items-center space-x-1">
+                <Link 
+                  href="/owner-home" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/owner-home" 
+                      ? "text-coral border-b-2 border-coral" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <Home className="h-4 w-4" />
+                  Home
+                </Link>
+                <Link 
+                  href="/owner-calendar" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/owner-calendar" 
+                      ? "text-coral border-b-2 border-coral" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <CalendarDays className="h-4 w-4" />
+                  Calendario
+                </Link>
                 <Link 
                   href="/owner-dashboard" 
-                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
                     location === "/owner-dashboard" 
+                      ? "text-coral border-b-2 border-coral" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <LayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </Link>
+                <Link 
+                  href="/owner-messages" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/owner-messages" 
+                      ? "text-coral border-b-2 border-coral" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Messaggi
+                </Link>
+                <Link 
+                  href="/profilo" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/profilo" 
+                      ? "text-coral border-b-2 border-coral" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <User className="h-4 w-4" />
+                  Profilo
+                </Link>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-1">
+                <Link 
+                  href="/" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/" 
                       ? "text-blue-600 border-b-2 border-blue-600" 
                       : "text-gray-500 hover:text-gray-900"
                   }`}
                 >
-                  Dashboard Sea Host
+                  <Ship className="h-4 w-4" />
+                  Esplora
                 </Link>
-              )}
-              {user?.role === "customer" && (
-                <Button variant="ghost" asChild className="px-2 py-1 text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100">
-                  <Link href="/diventa-noleggiatore">
-                    Diventa noleggiatore
+                <Link 
+                  href="/ormeggio" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/ormeggio" 
+                      ? "text-blue-600 border-b-2 border-blue-600" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <Anchor className="h-4 w-4" />
+                  Ormeggio
+                </Link>
+                <Link 
+                  href="/esperienze" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/esperienze" || location === "/charter"
+                      ? "text-blue-600 border-b-2 border-blue-600" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Esperienze
+                </Link>
+                <Link 
+                  href="/ia" 
+                  className={`flex items-center gap-1 px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/ia" 
+                      ? "text-blue-600 border-b-2 border-blue-600" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  <Bot className="h-4 w-4" />
+                  IA
+                </Link>
+                <ServicesNavButton />
+                <Link 
+                  href="/aiuto" 
+                  className={`px-3 py-2 text-sm font-medium transition-colors ${
+                    location === "/aiuto" 
+                      ? "text-blue-600 border-b-2 border-blue-600" 
+                      : "text-gray-500 hover:text-gray-900"
+                  }`}
+                >
+                  Aiuto
+                </Link>
+                {user?.role === "owner" && (
+                  <Link 
+                    href="/owner-dashboard" 
+                    className={`px-3 py-2 text-sm font-medium transition-colors ${
+                      location === "/owner-dashboard" 
+                        ? "text-blue-600 border-b-2 border-blue-600" 
+                        : "text-gray-500 hover:text-gray-900"
+                    }`}
+                  >
+                    Dashboard Sea Host
                   </Link>
-                </Button>
-              )}
-            </div>
+                )}
+                {user?.role === "customer" && (
+                  <Button variant="ghost" asChild className="px-2 py-1 text-orange-600 hover:text-orange-800 bg-orange-50 hover:bg-orange-100">
+                    <Link href="/diventa-noleggiatore">
+                      Diventa noleggiatore
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            )}
           </nav>
 
           {/* Right Side - Auth & Notifications */}

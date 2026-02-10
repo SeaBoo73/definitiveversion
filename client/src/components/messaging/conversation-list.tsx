@@ -126,25 +126,6 @@ export function ConversationList({
               </Badge>
             )}
           </CardTitle>
-          <Dialog open={showNewChat} onOpenChange={setShowNewChat}>
-            <DialogTrigger asChild>
-              <Button size="sm">
-                <Plus className="w-4 h-4 mr-1" />
-                Nuova Chat
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Nuova Conversazione</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <Input placeholder="Cerca utenti..." />
-                <div className="text-sm text-muted-foreground">
-                  Funzionalità in sviluppo
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
         </div>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -163,7 +144,7 @@ export function ConversationList({
             <div className="p-6 text-center text-muted-foreground">
               <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p>Nessuna conversazione trovata</p>
-              <p className="text-sm">Inizia una nuova chat per comunicare</p>
+              <p className="text-sm">I messaggi saranno collegati alle tue prenotazioni e richieste</p>
             </div>
           ) : (
             <div className="space-y-1 p-2">

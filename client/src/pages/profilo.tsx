@@ -317,6 +317,13 @@ export default function ProfiloPage() {
       color: "text-yellow-500"
     },
     {
+      icon: Receipt,
+      title: "Le mie prenotazioni",
+      subtitle: "Prenotazioni, ricevute e storico viaggi",
+      href: "/customer-dashboard",
+      color: "text-ocean-blue"
+    },
+    {
       icon: User,
       title: "Informazioni personali",
       subtitle: "Nome, email, telefono",

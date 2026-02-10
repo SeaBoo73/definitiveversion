@@ -184,12 +184,10 @@ export function BoatDetail() {
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900">
+              <Button variant="ghost" size="sm" onClick={() => window.history.back()} className="text-gray-600 hover:text-gray-900">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Indietro
               </Button>
-            </Link>
             <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" onClick={shareBoat}>
                 <Share2 className="h-4 w-4 mr-2" />

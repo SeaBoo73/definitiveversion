@@ -142,11 +142,9 @@ export default function EsperienzaDettaglio() {
       
       <div className="bg-white border-b px-4 py-3">
         <div className="max-w-4xl mx-auto">
-          <Button variant="ghost" asChild className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
-            <Link href="/esperienze">
+          <Button variant="ghost" onClick={() => window.history.back()} className="text-blue-600 hover:text-blue-800 hover:bg-blue-50">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Torna alle esperienze
-            </Link>
+              Torna indietro
           </Button>
         </div>
       </div>

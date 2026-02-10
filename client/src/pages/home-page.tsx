@@ -164,7 +164,7 @@ export default function HomePage() {
                       <PortSelector
                         value={selectedPort}
                         onChange={setSelectedPort}
-                        placeholder="Cerca tra 48 porti italiani..."
+                        placeholder="Cerca tra 48 porti di Lazio e Campania..."
                       />
                     </div>
                     

@@ -111,7 +111,7 @@ export function EsperienzePage() {
                   <PortSelector
                     value={porto}
                     onChange={setPorto}
-                    placeholder="Tutti i porti"
+                    placeholder="Cerca tra 48 porti di Lazio e Campania..."
                   />
                 </div>
 

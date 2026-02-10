@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Send, MessageSquare, Ship, Anchor, Compass, X } from 'lucide-react';
+import { Send, MessageSquare, Ship, Anchor, Compass, X, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatDistanceToNow } from 'date-fns';
 import { it } from 'date-fns/locale';
 import { apiRequest } from '@/lib/queryClient';
@@ -41,6 +42,7 @@ interface ChatInterfaceProps {
 
 export function ChatInterface({ conversationId, currentUserId, onClose }: ChatInterfaceProps) {
   const [newMessage, setNewMessage] = useState('');
+  const [sendError, setSendError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const queryClient = useQueryClient();
 
@@ -74,7 +76,11 @@ export function ChatInterface({ conversationId, currentUserId, onClose }: ChatIn
     },
     onSuccess: () => {
       setNewMessage('');
+      setSendError(null);
       queryClient.invalidateQueries({ queryKey: ['/api/conversations', conversationId, 'messages'] });
+    },
+    onError: (error: any) => {
+      setSendError(error?.message || "Errore nell'invio del messaggio");
     },
   });
 
@@ -202,11 +208,17 @@ export function ChatInterface({ conversationId, currentUserId, onClose }: ChatIn
         </ScrollArea>
 
         <div className="p-4 border-t">
+          {sendError && (
+            <Alert variant="destructive" className="mb-3">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription className="text-sm">{sendError}</AlertDescription>
+            </Alert>
+          )}
           <div className="flex space-x-2">
             <div className="flex-1">
               <Input
                 value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
+                onChange={(e) => { setNewMessage(e.target.value); setSendError(null); }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();

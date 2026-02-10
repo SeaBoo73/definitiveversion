@@ -319,7 +319,7 @@ export default function OrmeggioPage() {
               <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
               <Input
                 ref={inputRef}
-                placeholder="Dove vuoi ormeggiare?"
+                placeholder="Cerca tra 48 porti di Lazio e Campania..."
                 value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
                 onFocus={() => {

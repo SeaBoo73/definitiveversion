@@ -1,32 +1,24 @@
-import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useToast } from '@/hooks/use-toast';
 import { useMooringFavorites } from '@/hooks/use-favorites';
 import { ImageCarousel } from '@/components/image-carousel';
-import { format } from 'date-fns';
-import { it } from 'date-fns/locale';
 import { apiRequest } from '@/lib/queryClient';
 import { 
   Anchor, 
   MapPin, 
   Star, 
-  Euro, 
   Shield, 
-  Calendar as CalendarIcon,
   Wifi,
   Car,
   Fuel,
   Zap,
   Droplet,
   ArrowLeft,
-  CheckCircle,
   Heart,
   Share2,
   MessageCircle,
@@ -38,8 +30,6 @@ import { useAuth } from '@/hooks/use-auth';
 export default function OrmeggioBookingPage() {
   const [match, params] = useRoute('/ormeggio/:id');
   const mooringId = params?.id || '';
-  const [checkIn, setCheckIn] = useState<Date>();
-  const [checkOut, setCheckOut] = useState<Date>();
   const { toast } = useToast();
   const { toggleFavorite, isFavorite } = useMooringFavorites();
   const [, navigate] = useLocation();
@@ -135,10 +125,6 @@ export default function OrmeggioBookingPage() {
   }
 
   const svc = (mooring.services as any) || {};
-  const nights = checkIn && checkOut
-    ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
-    : 0;
-  const total = nights * parseFloat(mooring.pricePerDay || '0');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -247,96 +233,54 @@ export default function OrmeggioBookingPage() {
               </CardContent>
             </Card>
 
-            <Card id="disponibilita">
-              <CardContent className="p-5">
-                <h3 className="font-semibold text-lg mb-4 flex items-center">
-                  <CalendarIcon className="h-5 w-5 mr-2 text-blue-600" />
-                  Verifica Disponibilità
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white rounded-lg p-3 border">
-                    <Calendar
-                      mode="range"
-                      selected={{ from: checkIn, to: checkOut }}
-                      onSelect={(range) => {
-                        setCheckIn(range?.from);
-                        setCheckOut(range?.to);
-                      }}
-                      numberOfMonths={1}
-                      locale={it}
-                      disabled={(date) => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        return date < today;
-                      }}
-                    />
-                  </div>
-
-                  <div className="bg-white rounded-lg p-4 border">
-                    <h4 className="font-semibold text-gray-900 mb-4">Riepilogo</h4>
-                    {checkIn && checkOut && nights > 0 ? (
-                      <div className="space-y-3">
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Arrivo</span>
-                          <span className="font-medium">{format(checkIn, "dd MMM yyyy", { locale: it })}</span>
-                        </div>
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Partenza</span>
-                          <span className="font-medium">{format(checkOut, "dd MMM yyyy", { locale: it })}</span>
-                        </div>
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Notti</span>
-                          <span className="font-medium">{nights}</span>
-                        </div>
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Prezzo/notte</span>
-                          <span className="font-medium">{mooring.pricePerDay}</span>
-                        </div>
-                        <div className="flex justify-between text-lg font-bold">
-                          <span>Totale</span>
-                          <span className="text-blue-600">{total.toFixed(2)}</span>
-                        </div>
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700 mt-3" asChild>
-                          <Link href={`/checkout?type=mooring&id=${mooring.id}&checkIn=${checkIn.toISOString()}&checkOut=${checkOut.toISOString()}`}>
-                            <CheckCircle className="h-4 w-4 mr-2" />
-                            Prenota
-                          </Link>
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="text-center py-8 text-gray-500">
-                        <CalendarIcon className="h-10 w-10 mx-auto mb-3 text-gray-300" />
-                        <p className="text-sm">Seleziona le date per vedere il prezzo</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           <div className="lg:col-span-1">
-            <Card className="sticky top-6">
-              <CardContent className="p-5">
-                <div className="text-center mb-4">
-                  <div className="text-3xl font-bold text-green-600">{mooring.pricePerDay}</div>
+            <Card className="sticky top-32">
+              <CardContent className="p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold">Prenota ora</h3>
+                  <Badge variant="outline" className="text-green-600 border-green-600">Disponibile</Badge>
+                </div>
+
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-gray-900 mb-1">€{mooring.pricePerDay}</div>
                   <div className="text-gray-600">al giorno</div>
                 </div>
-                {mooring.pricePerWeek && (
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600">Settimanale</span>
-                    <span className="font-medium">{mooring.pricePerWeek}</span>
+
+                {(mooring.pricePerWeek || mooring.pricePerMonth) && (
+                  <div className="space-y-2 text-sm">
+                    {mooring.pricePerWeek && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Settimanale</span>
+                        <span className="font-medium">€{mooring.pricePerWeek}</span>
+                      </div>
+                    )}
+                    {mooring.pricePerMonth && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Mensile</span>
+                        <span className="font-medium">€{mooring.pricePerMonth}</span>
+                      </div>
+                    )}
                   </div>
                 )}
-                {mooring.pricePerMonth && (
-                  <div className="flex justify-between text-sm mb-4">
-                    <span className="text-gray-600">Mensile</span>
-                    <span className="font-medium">{mooring.pricePerMonth}</span>
-                  </div>
-                )}
+
+                <Button
+                  className="w-full bg-ocean-blue hover:bg-blue-600 h-12 text-lg font-semibold"
+                  onClick={() => {
+                    if (!user) {
+                      toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
+                      return;
+                    }
+                    navigate(`/checkout?type=mooring&id=${mooring.id}`);
+                  }}
+                >
+                  Prenota ora
+                </Button>
+
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full h-12"
                   onClick={() => {
                     if (!user) {
                       toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
@@ -351,11 +295,16 @@ export default function OrmeggioBookingPage() {
                   disabled={contactOwnerMutation.isPending}
                 >
                   <MessageCircle className="h-4 w-4 mr-2" />
-                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Chiedi informazioni"}
+                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Contatta il proprietario"}
                 </Button>
 
+                <div className="text-center text-sm text-gray-500 space-y-1 pt-2">
+                  <p>Prenotazione sicura con Stripe</p>
+                  <p>Cancellazione gratuita fino a 24h prima</p>
+                </div>
+
                 {mooring.contactName && (
-                  <div className="mt-4 pt-4 border-t text-sm text-gray-600">
+                  <div className="pt-4 border-t text-sm text-gray-600">
                     <div className="font-medium text-gray-900 mb-1">Proprietario</div>
                     <div>{mooring.contactName}</div>
                   </div>

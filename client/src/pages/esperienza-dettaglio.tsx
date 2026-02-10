@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,14 +6,9 @@ import { Footer } from "@/components/footer";
 import { Link, useRoute } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { ImageCarousel } from "@/components/image-carousel";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useLocation } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
-import { it } from "date-fns/locale";
 import { 
   ArrowLeft,
   Clock,
@@ -24,11 +18,8 @@ import {
   Calendar,
   Heart,
   CheckCircle2,
-  Mail,
   MessageCircle,
-  Loader2,
-  Minus,
-  Plus
+  Loader2
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { useFavorites } from "@/hooks/use-favorites";
@@ -51,8 +42,6 @@ export default function EsperienzaDettaglio() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [participants, setParticipants] = useState(1);
 
   const contactOwnerMutation = useMutation({
     mutationFn: async (info: { id: number; name: string; hostId: number }) => {
@@ -111,18 +100,13 @@ export default function EsperienzaDettaglio() {
 
   const numericId = parseInt(id);
   const pricePerPerson = parseFloat(String(experience.pricePerPerson) || '0');
-  const total = pricePerPerson * participants;
 
   const handleBooking = () => {
     if (!user) {
       toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
       return;
     }
-    if (!selectedDate) {
-      toast({ title: "Seleziona una data", description: "Scegli la data dell'esperienza", variant: "destructive" });
-      return;
-    }
-    navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}&participants=${participants}`);
+    navigate(`/checkout?type=experience&id=${experience.id}`);
   };
 
   return (
@@ -229,106 +213,42 @@ export default function EsperienzaDettaglio() {
               </Card>
             )}
 
-            <Card>
-              <CardContent className="p-5">
-                <h3 className="font-semibold text-lg mb-4 flex items-center">
-                  <Calendar className="h-5 w-5 mr-2 text-blue-600" />
-                  Scegli data e partecipanti
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white rounded-lg p-3 border">
-                    <CalendarComponent
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      locale={it}
-                      disabled={(date) => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        return date < today;
-                      }}
-                    />
-                  </div>
-
-                  <div className="bg-white rounded-lg p-4 border">
-                    <h4 className="font-semibold text-gray-900 mb-4">Riepilogo prenotazione</h4>
-
-                    <div className="mb-4">
-                      <label className="text-sm text-gray-600 mb-2 block">Partecipanti</label>
-                      <div className="flex items-center gap-3">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => setParticipants(Math.max(1, participants - 1))}
-                          disabled={participants <= 1}
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        <span className="font-bold text-lg w-8 text-center">{participants}</span>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => setParticipants(Math.min(experience.maxParticipants, participants + 1))}
-                          disabled={participants >= experience.maxParticipants}
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-
-                    {selectedDate ? (
-                      <div className="space-y-3">
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Data</span>
-                          <span className="font-medium">{format(selectedDate, "dd MMM yyyy", { locale: it })}</span>
-                        </div>
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Durata</span>
-                          <span className="font-medium">{experience.duration} ore</span>
-                        </div>
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Prezzo/persona</span>
-                          <span className="font-medium">{pricePerPerson.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between pb-2 border-b">
-                          <span className="text-gray-600">Partecipanti</span>
-                          <span className="font-medium">{participants}</span>
-                        </div>
-                        <div className="flex justify-between text-lg font-bold">
-                          <span>Totale</span>
-                          <span className="text-green-600">{total.toFixed(2)}</span>
-                        </div>
-                        <Button
-                          className="w-full bg-coral hover:bg-orange-600 text-white mt-3"
-                          onClick={handleBooking}
-                        >
-                          <CheckCircle2 className="h-4 w-4 mr-2" />
-                          Prenota
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="text-center py-6 text-gray-500">
-                        <Calendar className="h-10 w-10 mx-auto mb-3 text-gray-300" />
-                        <p className="text-sm">Seleziona una data per vedere il riepilogo</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           <div className="lg:col-span-1">
-            <Card className="sticky top-6">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-center">
-                  {pricePerPerson.toFixed(2)} <span className="text-base font-normal text-gray-600">/ persona</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <Card className="sticky top-32">
+              <CardContent className="p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold">Prenota ora</h3>
+                  <Badge variant="outline" className="text-green-600 border-green-600">Disponibile</Badge>
+                </div>
+
+                <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-2xl font-bold text-gray-900 mb-1">€{pricePerPerson.toFixed(2)}</div>
+                  <div className="text-gray-600">per persona</div>
+                </div>
+
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Durata</span>
+                    <span className="font-medium">{experience.duration} ore</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Max partecipanti</span>
+                    <span className="font-medium">{experience.maxParticipants}</span>
+                  </div>
+                </div>
+
+                <Button
+                  className="w-full bg-ocean-blue hover:bg-blue-600 h-12 text-lg font-semibold"
+                  onClick={handleBooking}
+                >
+                  Prenota ora
+                </Button>
+
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full h-12"
                   onClick={() => {
                     if (!user) {
                       toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
@@ -343,18 +263,12 @@ export default function EsperienzaDettaglio() {
                   disabled={contactOwnerMutation.isPending}
                 >
                   <MessageCircle className="h-4 w-4 mr-2" />
-                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Chiedi informazioni"}
+                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Contatta il proprietario"}
                 </Button>
-                
-                <div className="space-y-2 pt-4 border-t">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Mail className="h-4 w-4" />
-                    <span>Conferma immediata via email</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <CheckCircle2 className="h-4 w-4" />
-                    <span>Cancellazione gratuita fino a 24h prima</span>
-                  </div>
+
+                <div className="text-center text-sm text-gray-500 space-y-1 pt-2">
+                  <p>Prenotazione sicura con Stripe</p>
+                  <p>Cancellazione gratuita fino a 24h prima</p>
                 </div>
               </CardContent>
             </Card>

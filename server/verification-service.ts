@@ -131,18 +131,20 @@ export class VerificationService {
         verificationCodeType: 'phone',
       }).where(eq(users.id, userId));
 
-      if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
-        const twilio = await import('twilio');
-        const client = twilio.default(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+      // Twilio via Replit connector integration
+      try {
+        const { getTwilioClient, getTwilioFromPhoneNumber } = await import('./twilio-connector');
+        const client = await getTwilioClient();
+        const fromNumber = await getTwilioFromPhoneNumber();
         await client.messages.create({
           body: `SeaBoo - Il tuo codice di verifica è: ${code}. Scade tra 15 minuti.`,
-          from: process.env.TWILIO_PHONE_NUMBER,
+          from: fromNumber,
           to: phone,
         });
         console.log(`[VERIFICATION] SMS OTP inviato a ${phone}`);
         return true;
-      } else {
-        console.log(`[VERIFICATION] Twilio non configurato. Codice telefono per user ${userId}: ${code}`);
+      } catch (twilioError) {
+        console.log(`[VERIFICATION] Twilio non disponibile, fallback email. Errore: ${twilioError}`);
         if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
           const [user] = await db.select().from(users).where(eq(users.id, userId));
           if (user?.email) {
@@ -166,7 +168,7 @@ export class VerificationService {
                     </div>
                     <p style="color: #94a3b8; font-size: 13px;">Il codice scade tra 15 minuti.</p>
                     <p style="color: #f59e0b; font-size: 12px; margin-top: 10px;">
-                      (Codice inviato via email perché il servizio SMS non è ancora configurato)
+                      (Codice inviato via email perché il servizio SMS non è al momento disponibile)
                     </p>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useRoute } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useRoute, useLocation } from "wouter";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,7 +25,8 @@ import {
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  MessageCircle
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -42,12 +44,31 @@ const getValidImages = (images: string[] | undefined): string[] => {
 
 export function BoatDetail() {
   const [match, params] = useRoute("/boats/:id");
+  const [, navigate] = useLocation();
   const { user } = useAuth();
   const { toast } = useToast();
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [showFullscreenGallery, setShowFullscreenGallery] = useState(false);
+
+  const contactOwnerMutation = useMutation({
+    mutationFn: async (boatInfo: { id: number; name: string; hostId: number }) => {
+      const response = await apiRequest('POST', '/api/conversations/inquiry', {
+        referenceType: 'boat',
+        referenceId: boatInfo.id,
+        referenceName: boatInfo.name,
+        ownerId: boatInfo.hostId,
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      navigate('/messaging');
+    },
+    onError: () => {
+      toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+    },
+  });
 
   const { data: boat, isLoading, error } = useQuery({
     queryKey: ["/api/boats", params?.id],
@@ -158,7 +179,7 @@ export function BoatDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-40">
       {/* Header */}
       <div className="bg-white border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -390,6 +411,28 @@ export function BoatDetail() {
                   data-testid="button-prenota-detail"
                 >
                   {user ? "Prenota ora" : "Accedi per prenotare"}
+                </Button>
+
+                <Button 
+                  variant="outline" 
+                  className="w-full h-12"
+                  onClick={() => {
+                    if (!user) {
+                      toast({ title: "Accedi", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
+                      return;
+                    }
+                    if (boatData) {
+                      contactOwnerMutation.mutate({ 
+                        id: boatData.id, 
+                        name: boatData.name, 
+                        hostId: boatData.hostId 
+                      });
+                    }
+                  }}
+                  disabled={contactOwnerMutation.isPending}
+                >
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  {contactOwnerMutation.isPending ? "Apertura chat..." : "Contatta il proprietario"}
                 </Button>
 
                 <div className="text-center text-sm text-gray-600">

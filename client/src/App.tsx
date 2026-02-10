@@ -184,7 +184,7 @@ function Router() {
       <Route path="/categories" component={CategoriesPage} />
       <Route path="/search" component={SearchResults} />
       <Route path="/esperienze" component={EsperienzePage} />
-      <Route path="/esperienza/:tipo" component={EsperienzaDettaglio} />
+      <Route path="/esperienza/:id" component={EsperienzaDettaglio} />
       <Route path="/prenota-esperienza/:tipo" component={PrenotaEsperienza} />
       <Route path="/checkout-esperienza" component={CheckoutEsperienza} />
       <Route path="/payment-success-esperienza" component={PaymentSuccessEsperienza} />

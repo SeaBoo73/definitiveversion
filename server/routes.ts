@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { db } from "./db";
+import { db, pool } from "./db";
 import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema, insertBoatAvailabilitySchema, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import session from "express-session";
@@ -1497,6 +1497,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(availability);
     } catch (error: any) {
       console.error("Get boat availability error:", error);
+      res.status(500).json({ error: "Errore nel recupero della disponibilità" });
+    }
+  });
+
+  // Get availability for a specific mooring (public)
+  app.get('/api/moorings/:id/availability', async (req, res) => {
+    try {
+      const mooringId = parseInt(req.params.id);
+      const { rows } = await pool.query(
+        `SELECT id, mooring_id as "mooringId", date, available, price, block_reason as "blockReason", notes 
+         FROM mooring_availability WHERE mooring_id = $1`,
+        [mooringId]
+      );
+      const result = rows.map((r: any) => ({
+        ...r,
+        startDate: r.date ? new Date(r.date).toISOString().split('T')[0] : null,
+        endDate: r.date ? new Date(r.date).toISOString().split('T')[0] : null,
+        status: r.available === false ? 'blocked' : 'available',
+      }));
+      res.json(result);
+    } catch (error: any) {
+      console.error("Get mooring availability error:", error);
+      res.status(500).json({ error: "Errore nel recupero della disponibilità" });
+    }
+  });
+
+  // Get availability for a specific experience (public)
+  app.get('/api/experiences/:id/availability', async (req, res) => {
+    try {
+      const experienceId = parseInt(req.params.id);
+      const availability = await storage.getExperienceAvailability(experienceId);
+      res.json(availability);
+    } catch (error: any) {
+      console.error("Get experience availability error:", error);
       res.status(500).json({ error: "Errore nel recupero della disponibilità" });
     }
   });

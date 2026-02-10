@@ -62,6 +62,41 @@ export default function OrmeggioBookingPage() {
     },
   });
 
+  const { data: availability } = useQuery<any[]>({
+    queryKey: ['/api/moorings', mooringId, 'availability'],
+    queryFn: async () => {
+      const res = await fetch(`/api/moorings/${mooringId}/availability`);
+      if (!res.ok) return [];
+      return res.json();
+    },
+    enabled: !!mooringId,
+  });
+
+  const blockedDates = new Set<string>();
+  if (availability) {
+    availability.forEach((a: any) => {
+      if (a.status === 'blocked' || a.status === 'booked') {
+        const start = new Date(a.startDate);
+        const end = new Date(a.endDate);
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          blockedDates.add(d.toISOString().split('T')[0]);
+        }
+      }
+    });
+  }
+
+  const isDateBlocked = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return blockedDates.has(dateStr);
+  };
+
+  const isRangeAvailable = (from: Date, to: Date) => {
+    for (let d = new Date(from); d < to; d.setDate(d.getDate() + 1)) {
+      if (isDateBlocked(new Date(d))) return false;
+    }
+    return true;
+  };
+
   const { data: mooring, isLoading, error } = useQuery<any>({
     queryKey: ['/api/moorings', mooringId],
     queryFn: async () => {
@@ -301,7 +336,13 @@ export default function OrmeggioBookingPage() {
                       disabled={(date) => {
                         const today = new Date();
                         today.setHours(0, 0, 0, 0);
-                        return date < today;
+                        return date < today || isDateBlocked(date);
+                      }}
+                      modifiers={{
+                        blocked: (date) => isDateBlocked(date),
+                      }}
+                      modifiersClassNames={{
+                        blocked: 'line-through text-red-300 opacity-50',
                       }}
                     />
                     {checkIn && checkOut && nights > 0 && (
@@ -318,17 +359,25 @@ export default function OrmeggioBookingPage() {
                           <span className="text-gray-600">{nights} notti × €{mooring.pricePerDay}</span>
                           <span className="font-bold text-green-600">€{total.toFixed(2)}</span>
                         </div>
-                        <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
-                          <CheckCircle className="h-3 w-3 mr-1" /> Date disponibili
-                        </Badge>
-                        <Button
-                          className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
-                          asChild
-                        >
-                          <Link href={`/checkout?type=mooring&id=${mooring.id}&checkIn=${checkIn.toISOString()}&checkOut=${checkOut.toISOString()}`}>
-                            Prenota ora
-                          </Link>
-                        </Button>
+                        {isRangeAvailable(checkIn, checkOut) ? (
+                          <>
+                            <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
+                              <CheckCircle className="h-3 w-3 mr-1" /> Date disponibili
+                            </Badge>
+                            <Button
+                              className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
+                              asChild
+                            >
+                              <Link href={`/checkout?type=mooring&id=${mooring.id}&checkIn=${checkIn.toISOString()}&checkOut=${checkOut.toISOString()}`}>
+                                Prenota ora
+                              </Link>
+                            </Button>
+                          </>
+                        ) : (
+                          <Badge className="w-full justify-center bg-red-100 text-red-700 border-red-300 py-1">
+                            Date non disponibili
+                          </Badge>
+                        )}
                       </div>
                     )}
                   </div>

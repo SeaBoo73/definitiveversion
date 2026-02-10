@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { insertBookingSchema, Boat } from "@shared/schema";
@@ -55,6 +55,40 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
   const queryClient = useQueryClient();
   const [, setLocation] = useLocation();
   const [step, setStep] = useState<"dates" | "details" | "payment">("dates");
+
+  const { data: availability } = useQuery<any[]>({
+    queryKey: ['/api/boats', boat.id, 'availability'],
+    queryFn: async () => {
+      const res = await fetch(`/api/boats/${boat.id}/availability`);
+      if (!res.ok) return [];
+      return res.json();
+    },
+  });
+
+  const blockedDates = new Set<string>();
+  if (availability) {
+    availability.forEach((a: any) => {
+      if (a.status === 'blocked' || a.status === 'booked') {
+        const start = new Date(a.startDate);
+        const end = new Date(a.endDate);
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          blockedDates.add(d.toISOString().split('T')[0]);
+        }
+      }
+    });
+  }
+
+  const isDateBlocked = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return blockedDates.has(dateStr);
+  };
+
+  const isRangeAvailable = (from: Date, to: Date) => {
+    for (let d = new Date(from); d < to; d.setDate(d.getDate() + 1)) {
+      if (isDateBlocked(new Date(d))) return false;
+    }
+    return true;
+  };
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingFormSchema),
@@ -113,6 +147,14 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
 
   const onSubmit = (data: BookingFormData) => {
     if (step === "dates") {
+      if (!isRangeAvailable(data.startDate, data.endDate)) {
+        toast({
+          title: "Date non disponibili",
+          description: "Alcune date selezionate non sono disponibili. Scegli date diverse.",
+          variant: "destructive",
+        });
+        return;
+      }
       setStep("details");
     } else if (step === "details") {
       if (!user) {
@@ -199,7 +241,13 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                             mode="single"
                             selected={startDate}
                             onSelect={(date) => form.setValue("startDate", date!)}
-                            disabled={(date) => date < new Date()}
+                            disabled={(date) => date < new Date() || isDateBlocked(date)}
+                            modifiers={{
+                              blocked: (date) => isDateBlocked(date),
+                            }}
+                            modifiersClassNames={{
+                              blocked: 'line-through text-red-300 opacity-50',
+                            }}
                             initialFocus
                           />
                         </PopoverContent>
@@ -224,7 +272,13 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                             mode="single"
                             selected={endDate}
                             onSelect={(date) => form.setValue("endDate", date!)}
-                            disabled={(date) => date <= startDate}
+                            disabled={(date) => date <= startDate || isDateBlocked(date)}
+                            modifiers={{
+                              blocked: (date) => isDateBlocked(date),
+                            }}
+                            modifiersClassNames={{
+                              blocked: 'line-through text-red-300 opacity-50',
+                            }}
                             initialFocus
                           />
                         </PopoverContent>

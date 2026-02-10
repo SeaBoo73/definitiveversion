@@ -68,6 +68,34 @@ export default function EsperienzaDettaglio() {
     },
   });
 
+  const { data: availability } = useQuery<any[]>({
+    queryKey: ['/api/experiences', id, 'availability'],
+    queryFn: async () => {
+      const res = await fetch(`/api/experiences/${id}/availability`);
+      if (!res.ok) return [];
+      return res.json();
+    },
+    enabled: !!id,
+  });
+
+  const blockedDates = new Set<string>();
+  if (availability) {
+    availability.forEach((a: any) => {
+      if (a.status === 'blocked' || a.status === 'booked') {
+        const start = new Date(a.startDate);
+        const end = new Date(a.endDate);
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+          blockedDates.add(d.toISOString().split('T')[0]);
+        }
+      }
+    });
+  }
+
+  const isDateBlocked = (date: Date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    return blockedDates.has(dateStr);
+  };
+
   const { data: experience, isLoading, error } = useQuery<Experience>({
     queryKey: ['/api/experiences', id],
     queryFn: async () => {
@@ -257,7 +285,13 @@ export default function EsperienzaDettaglio() {
                       disabled={(date) => {
                         const today = new Date();
                         today.setHours(0, 0, 0, 0);
-                        return date < today;
+                        return date < today || isDateBlocked(date);
+                      }}
+                      modifiers={{
+                        blocked: (date) => isDateBlocked(date),
+                      }}
+                      modifiersClassNames={{
+                        blocked: 'line-through text-red-300 opacity-50',
                       }}
                     />
                     {selectedDate && (
@@ -270,15 +304,23 @@ export default function EsperienzaDettaglio() {
                           <span className="text-gray-600">Prezzo/persona</span>
                           <span className="font-medium">€{pricePerPerson.toFixed(2)}</span>
                         </div>
-                        <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
-                          <CheckCircle2 className="h-3 w-3 mr-1" /> Data disponibile
-                        </Badge>
-                        <Button
-                          className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
-                          onClick={() => navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}`)}
-                        >
-                          Prenota ora
-                        </Button>
+                        {!isDateBlocked(selectedDate) ? (
+                          <>
+                            <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
+                              <CheckCircle2 className="h-3 w-3 mr-1" /> Data disponibile
+                            </Badge>
+                            <Button
+                              className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
+                              onClick={() => navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}`)}
+                            >
+                              Prenota ora
+                            </Button>
+                          </>
+                        ) : (
+                          <Badge className="w-full justify-center bg-red-100 text-red-700 border-red-300 py-1">
+                            Data non disponibile
+                          </Badge>
+                        )}
                       </div>
                     )}
                   </div>

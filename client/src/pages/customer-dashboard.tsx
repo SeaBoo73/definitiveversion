@@ -626,306 +626,103 @@ export default function CustomerDashboard() {
 
         </div>
 
-        <Tabs defaultValue={initialTab} className="space-y-6">
-          <TabsList className="flex overflow-x-auto">
-            <TabsTrigger value="bookings">Prenotazioni</TabsTrigger>
-            <TabsTrigger value="receipts">Ricevute</TabsTrigger>
-            <TabsTrigger value="favorites">Preferiti</TabsTrigger>
-            <TabsTrigger value="reviews">Recensioni</TabsTrigger>
-            <TabsTrigger value="profile">Profilo</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="bookings" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Le mie prenotazioni</h2>
-            
-            {bookingsLoading ? (
-              <div className="space-y-4">
-                {[...Array(3)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <CardContent className="p-6">
-                      <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/2 mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/3"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : bookings.length > 0 ? (
-              <div className="space-y-4">
-                {bookings.map((booking) => (
-                  <Card key={booking.id}>
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-4 mb-2">
-                            <h3 className="text-lg font-semibold">Prenotazione #{booking.id}</h3>
-                            {getBookingStatusBadge(booking.status || 'pending', booking.endDate)}
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                            <div>
-                              <p className="text-gray-600">Date</p>
-                              <p className="font-medium">
-                                {format(new Date(booking.startDate), "dd MMM", { locale: it })} - {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })}
-                              </p>
-                            </div>
-                            <div>
-                              <p className="text-gray-600">Totale pagato</p>
-                              <p className="font-medium">€{booking.totalPrice}</p>
-                            </div>
-                            <div>
-                              <p className="text-gray-600">Creata il</p>
-                              <p className="font-medium">
-                                {booking.createdAt && format(new Date(booking.createdAt), "dd MMM yyyy", { locale: it })}
-                              </p>
-                            </div>
-                          </div>
-
-                          {booking.specialRequests && (
-                            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                              <p className="text-sm text-gray-700"><strong>Note:</strong> {booking.specialRequests}</p>
-                            </div>
-                          )}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-gray-900">Le mie prenotazioni</h2>
+          
+          {bookingsLoading ? (
+            <div className="space-y-4">
+              {[...Array(3)].map((_, i) => (
+                <Card key={i} className="animate-pulse">
+                  <CardContent className="p-6">
+                    <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2 mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/3"></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : bookings.length > 0 ? (
+            <div className="space-y-4">
+              {bookings.map((booking) => (
+                <Card key={booking.id}>
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-4 mb-2">
+                          <h3 className="text-lg font-semibold">Prenotazione #{booking.id}</h3>
+                          {getBookingStatusBadge(booking.status || 'pending', booking.endDate)}
                         </div>
                         
-                        <div className="flex space-x-2">
-                          <ChatButton bookingId={booking.id} />
-                          {(booking.status === "confirmed" || booking.status === "completed") && (
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => generateReceiptFromBooking.mutate(booking.id)}
-                              disabled={generateReceiptFromBooking.isPending}
-                              data-testid={`button-receipt-${booking.id}`}
-                            >
-                              <Download className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">Ricevuta</span>
-                            </Button>
-                          )}
-                          {booking.status === "completed" && (
-                            <Button 
-                              size="sm" 
-                              variant="outline"
-                              onClick={() => setReviewBookingId(booking.id)}
-                              data-testid={`button-review-booking-${booking.id}`}
-                            >
-                              <Star className="h-4 w-4 mr-1" />
-                              <span className="hidden sm:inline">Recensione</span>
-                            </Button>
-                          )}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                          <div>
+                            <p className="text-gray-600">Date</p>
+                            <p className="font-medium">
+                              {format(new Date(booking.startDate), "dd MMM", { locale: it })} - {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-gray-600">Totale pagato</p>
+                            <p className="font-medium">€{booking.totalPrice}</p>
+                          </div>
+                          <div>
+                            <p className="text-gray-600">Creata il</p>
+                            <p className="font-medium">
+                              {booking.createdAt && format(new Date(booking.createdAt), "dd MMM yyyy", { locale: it })}
+                            </p>
+                          </div>
                         </div>
+
+                        {booking.specialRequests && (
+                          <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                            <p className="text-sm text-gray-700"><strong>Note:</strong> {booking.specialRequests}</p>
+                          </div>
+                        )}
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <Ship className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Nessuna prenotazione</h3>
-                  <p className="text-gray-600 mb-4">Non hai ancora effettuato nessuna prenotazione</p>
-                  <Button className="bg-ocean-blue hover:bg-blue-600">
-                    Esplora imbarcazioni
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          <TabsContent value="receipts" className="space-y-6">
-            <ReceiptsSection bookings={bookings} />
-          </TabsContent>
-
-          <TabsContent value="favorites" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Imbarcazioni preferite</h2>
-            
-            {favoritesLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="animate-pulse">
-                    <div className="h-48 bg-gray-200"></div>
-                    <CardContent className="p-4">
-                      <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-3/4 mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : favoriteBoats.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {favoriteBoats.map((boat) => (
-                  <Card key={boat.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="relative">
-                      <img
-                        src={boat.images?.[boat.coverImage || 0] || boat.images?.[0] || "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=400&h=250"}
-                        alt={boat.name}
-                        className="w-full h-48 object-cover"
-                      />
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="absolute top-3 right-3 w-8 h-8 p-0 bg-white rounded-full"
-                      >
-                        <Heart className="h-4 w-4 fill-red-500 text-red-500" />
-                      </Button>
+                      
+                      <div className="flex space-x-2">
+                        <ChatButton bookingId={booking.id} />
+                        {(booking.status === "confirmed" || booking.status === "completed") && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => generateReceiptFromBooking.mutate(booking.id)}
+                            disabled={generateReceiptFromBooking.isPending}
+                            data-testid={`button-receipt-${booking.id}`}
+                          >
+                            <Download className="h-4 w-4 mr-1" />
+                            <span className="hidden sm:inline">Ricevuta</span>
+                          </Button>
+                        )}
+                        {booking.status === "completed" && (
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => setReviewBookingId(booking.id)}
+                            data-testid={`button-review-booking-${booking.id}`}
+                          >
+                            <Star className="h-4 w-4 mr-1" />
+                            <span className="hidden sm:inline">Recensione</span>
+                          </Button>
+                        )}
+                      </div>
                     </div>
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-semibold text-gray-900">{boat.name}</h3>
-                        <div className="flex items-center">
-                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                          <span className="text-sm text-gray-600 ml-1">4.8</span>
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-1 text-sm text-gray-600 mb-3">
-                        <div className="flex items-center">
-                          <MapPin className="h-4 w-4 mr-1" />
-                          {boat.location}
-                        </div>
-                        <div className="flex items-center">
-                          <Users className="h-4 w-4 mr-1" />
-                          Fino a {boat.capacity} persone
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <span className="font-bold text-gray-900">€{boat.pricePerDay}</span>
-                          <span className="text-gray-600 text-sm"> al giorno</span>
-                        </div>
-                        <Button size="sm" className="bg-ocean-blue hover:bg-blue-600">
-                          Prenota
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <Card>
-                <CardContent className="p-8 text-center">
-                  <Heart className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Nessun preferito</h3>
-                  <p className="text-gray-600 mb-4">Aggiungi imbarcazioni ai tuoi preferiti per trovarle facilmente</p>
-                  <Button className="bg-ocean-blue hover:bg-blue-600">
-                    Esplora imbarcazioni
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-          </TabsContent>
-
-          <TabsContent value="reviews" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Le mie recensioni</h2>
-            
-            <MyReviewsSection />
-          </TabsContent>
-
-          <TabsContent value="profile" className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-900">Il mio profilo</h2>
-            
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
             <Card>
-              <CardHeader>
-                <CardTitle>Informazioni personali</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center space-x-3">
-                    <User className="h-5 w-5 text-gray-400" />
-                    <div>
-                      <p className="text-sm text-gray-600">Nome completo</p>
-                      <p className="font-medium">
-                        {user.firstName && user.lastName 
-                          ? `${user.firstName} ${user.lastName}` 
-                          : user.username}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <Mail className="h-5 w-5 text-gray-400" />
-                    <div>
-                      <p className="text-sm text-gray-600">Email</p>
-                      <p className="font-medium">{user.email}</p>
-                    </div>
-                  </div>
-                  
-                  {user.phone && (
-                    <div className="flex items-center space-x-3">
-                      <Phone className="h-5 w-5 text-gray-400" />
-                      <div>
-                        <p className="text-sm text-gray-600">Telefono</p>
-                        <p className="font-medium">{user.phone}</p>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="h-5 w-5 text-gray-400" />
-                    <div>
-                      <p className="text-sm text-gray-600">Account verificato</p>
-                      <p className="font-medium">{user.verified ? "Sì" : "No"}</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="pt-4 space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => setLocation('/profilo')}
-                  >
-                    Modifica profilo
-                  </Button>
-                  
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="destructive"
-                        className="w-full"
-                        data-testid="button-delete-account"
-                      >
-                        Elimina account
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Sei assolutamente sicuro?</AlertDialogTitle>
-                        <AlertDialogDescription className="space-y-2">
-                          <p>
-                            Questa azione non può essere annullata. Eliminerà permanentemente il tuo
-                            account e rimuoverà tutti i tuoi dati dai nostri server.
-                          </p>
-                          <p className="font-semibold text-red-600">
-                            Tutte le tue prenotazioni e dati personali
-                            verranno eliminati definitivamente.
-                          </p>
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel data-testid="button-cancel-delete">
-                          Annulla
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={handleDeleteAccount}
-                          className="bg-red-600 hover:bg-red-700"
-                          data-testid="button-confirm-delete"
-                          disabled={deleteAccountMutation.isPending}
-                        >
-                          {deleteAccountMutation.isPending ? "Eliminazione..." : "Sì, elimina il mio account"}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
+              <CardContent className="p-8 text-center">
+                <Ship className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Nessuna prenotazione</h3>
+                <p className="text-gray-600 mb-4">Non hai ancora effettuato nessuna prenotazione</p>
+                <Button className="bg-ocean-blue hover:bg-blue-600" onClick={() => setLocation('/')}>
+                  Esplora imbarcazioni
+                </Button>
               </CardContent>
             </Card>
-          </TabsContent>
-
-        </Tabs>
+          )}
+        </div>
       </div>
 
       <Dialog open={reviewBookingId !== null} onOpenChange={(open) => !open && setReviewBookingId(null)}>

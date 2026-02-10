@@ -4,15 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import { Calendar as CalendarComponent } from "@/components/ui/calendar";
 import { Link, useRoute } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { ImageCarousel } from "@/components/image-carousel";
 import { useLocation } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
-import { it } from "date-fns/locale";
+import { ExperienceBookingModal } from "@/components/experience-booking-modal";
 import { 
   ArrowLeft,
   Clock,
@@ -21,7 +19,6 @@ import {
   Euro,
   Calendar,
   Heart,
-  CheckCircle2,
   Shield,
   MessageCircle,
   Loader2
@@ -47,9 +44,7 @@ export default function EsperienzaDettaglio() {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date>();
-  const [numParticipants, setNumParticipants] = useState(1);
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   const contactOwnerMutation = useMutation({
     mutationFn: async (info: { id: number; name: string; hostId: number }) => {
@@ -68,34 +63,6 @@ export default function EsperienzaDettaglio() {
       toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
     },
   });
-
-  const { data: availability } = useQuery<any[]>({
-    queryKey: ['/api/experiences', id, 'availability'],
-    queryFn: async () => {
-      const res = await fetch(`/api/experiences/${id}/availability`);
-      if (!res.ok) return [];
-      return res.json();
-    },
-    enabled: !!id,
-  });
-
-  const blockedDates = new Set<string>();
-  if (availability) {
-    availability.forEach((a: any) => {
-      if (a.status === 'blocked' || a.status === 'booked') {
-        const start = new Date(a.startDate);
-        const end = new Date(a.endDate);
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          blockedDates.add(d.toISOString().split('T')[0]);
-        }
-      }
-    });
-  }
-
-  const isDateBlocked = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0];
-    return blockedDates.has(dateStr);
-  };
 
   const { data: experience, isLoading, error } = useQuery<Experience>({
     queryKey: ['/api/experiences', id],
@@ -249,43 +216,11 @@ export default function EsperienzaDettaglio() {
                   <div className="text-gray-600">per persona</div>
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">Partecipanti</div>
-                      <div className="text-xs text-gray-500">Max {experience.maxParticipants}</div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 w-8 p-0 rounded-full"
-                        onClick={() => setNumParticipants(Math.max(1, numParticipants - 1))}
-                        disabled={numParticipants <= 1}
-                      >
-                        -
-                      </Button>
-                      <span className="text-lg font-bold w-6 text-center">{numParticipants}</span>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-8 w-8 p-0 rounded-full"
-                        onClick={() => setNumParticipants(Math.min(experience.maxParticipants, numParticipants + 1))}
-                        disabled={numParticipants >= experience.maxParticipants}
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-green-50 rounded-lg text-center">
-                    <div className="text-xs text-gray-500">Totale</div>
-                    <div className="text-xl font-bold text-green-700">€{(pricePerPerson * numParticipants).toFixed(2)}</div>
-                    <div className="text-xs text-gray-500">{numParticipants} {numParticipants === 1 ? 'persona' : 'persone'} × €{pricePerPerson.toFixed(2)}</div>
-                  </div>
-                </div>
-
                 <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Prezzo/persona</span>
+                    <span className="font-medium text-green-700">€{pricePerPerson.toFixed(2)}</span>
+                  </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Durata</span>
                     <span className="font-medium">{experience.duration} ore</span>
@@ -297,76 +232,24 @@ export default function EsperienzaDettaglio() {
                 </div>
 
                 <Button
-                  className="w-full bg-ocean-blue hover:bg-blue-600 h-12 text-lg font-semibold"
+                  className="w-full bg-coral hover:bg-orange-600 h-12 text-lg font-semibold"
                   onClick={() => {
                     if (!user) {
                       toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
                       return;
                     }
-                    setShowCalendar(!showCalendar);
+                    setShowBookingModal(true);
                   }}
                 >
                   <Calendar className="h-5 w-5 mr-2" />
-                  Verifica Disponibilità
+                  Prenota ora
                 </Button>
 
-                {showCalendar && (
-                  <div className="border rounded-lg p-3 space-y-3">
-                    <CalendarComponent
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={setSelectedDate}
-                      locale={it}
-                      disabled={(date) => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        return date < today || isDateBlocked(date);
-                      }}
-                      modifiers={{
-                        blocked: (date) => isDateBlocked(date),
-                      }}
-                      modifiersClassNames={{
-                        blocked: 'line-through text-red-300 opacity-50',
-                      }}
-                    />
-                    {selectedDate && (
-                      <div className="space-y-2 pt-3 border-t">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Data</span>
-                          <span className="font-medium">{format(selectedDate, "dd MMM yyyy", { locale: it })}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Prezzo/persona</span>
-                          <span className="font-medium">€{pricePerPerson.toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Partecipanti</span>
-                          <span className="font-medium">{numParticipants}</span>
-                        </div>
-                        <div className="flex justify-between text-sm font-bold border-t pt-2">
-                          <span className="text-gray-900">Totale</span>
-                          <span className="text-green-700">€{(pricePerPerson * numParticipants).toFixed(2)}</span>
-                        </div>
-                        {!isDateBlocked(selectedDate) ? (
-                          <>
-                            <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
-                              <CheckCircle2 className="h-3 w-3 mr-1" /> Data disponibile
-                            </Badge>
-                            <Button
-                              className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
-                              onClick={() => navigate(`/checkout?type=experience&id=${experience.id}&date=${selectedDate.toISOString()}&participants=${numParticipants}`)}
-                            >
-                              Prenota ora
-                            </Button>
-                          </>
-                        ) : (
-                          <Badge className="w-full justify-center bg-red-100 text-red-700 border-red-300 py-1">
-                            Data non disponibile
-                          </Badge>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                {showBookingModal && experience && (
+                  <ExperienceBookingModal
+                    experience={experience}
+                    onClose={() => setShowBookingModal(false)}
+                  />
                 )}
 
                 <Button

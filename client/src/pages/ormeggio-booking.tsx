@@ -5,13 +5,11 @@ import { Footer } from '@/components/footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { useMooringFavorites } from '@/hooks/use-favorites';
 import { ImageCarousel } from '@/components/image-carousel';
 import { apiRequest } from '@/lib/queryClient';
-import { format } from 'date-fns';
-import { it } from 'date-fns/locale';
+import { MooringBookingModal } from '@/components/mooring-booking-modal';
 import { 
   Anchor, 
   MapPin, 
@@ -24,7 +22,6 @@ import {
   Zap,
   Droplet,
   ArrowLeft,
-  CheckCircle,
   Heart,
   Share2,
   MessageCircle,
@@ -37,9 +34,7 @@ export default function OrmeggioBookingPage() {
   const [match, params] = useRoute('/ormeggio/:id');
   const mooringId = params?.id || '';
   const { toast } = useToast();
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [checkIn, setCheckIn] = useState<Date>();
-  const [checkOut, setCheckOut] = useState<Date>();
+  const [showBookingModal, setShowBookingModal] = useState(false);
   const { toggleFavorite, isFavorite } = useMooringFavorites();
   const [, navigate] = useLocation();
   const { user } = useAuth();
@@ -61,41 +56,6 @@ export default function OrmeggioBookingPage() {
       toast({ title: "Errore", description: "Devi accedere per contattare il proprietario", variant: "destructive" });
     },
   });
-
-  const { data: availability } = useQuery<any[]>({
-    queryKey: ['/api/moorings', mooringId, 'availability'],
-    queryFn: async () => {
-      const res = await fetch(`/api/moorings/${mooringId}/availability`);
-      if (!res.ok) return [];
-      return res.json();
-    },
-    enabled: !!mooringId,
-  });
-
-  const blockedDates = new Set<string>();
-  if (availability) {
-    availability.forEach((a: any) => {
-      if (a.status === 'blocked' || a.status === 'booked') {
-        const start = new Date(a.startDate);
-        const end = new Date(a.endDate);
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-          blockedDates.add(d.toISOString().split('T')[0]);
-        }
-      }
-    });
-  }
-
-  const isDateBlocked = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0];
-    return blockedDates.has(dateStr);
-  };
-
-  const isRangeAvailable = (from: Date, to: Date) => {
-    for (let d = new Date(from); d < to; d.setDate(d.getDate() + 1)) {
-      if (isDateBlocked(new Date(d))) return false;
-    }
-    return true;
-  };
 
   const { data: mooring, isLoading, error } = useQuery<any>({
     queryKey: ['/api/moorings', mooringId],
@@ -169,10 +129,6 @@ export default function OrmeggioBookingPage() {
   }
 
   const svc = (mooring.services as any) || {};
-  const nights = checkIn && checkOut
-    ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
-    : 0;
-  const total = nights * parseFloat(mooring.pricePerDay || '0');
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -307,78 +263,24 @@ export default function OrmeggioBookingPage() {
                 )}
 
                 <Button
-                  className="w-full bg-ocean-blue hover:bg-blue-600 h-12 text-lg font-semibold"
+                  className="w-full bg-coral hover:bg-orange-600 h-12 text-lg font-semibold"
                   onClick={() => {
                     if (!user) {
                       toast({ title: "Accedi", description: "Devi accedere per prenotare", variant: "destructive" });
                       return;
                     }
-                    setShowCalendar(!showCalendar);
+                    setShowBookingModal(true);
                   }}
                 >
                   <CalendarIcon className="h-5 w-5 mr-2" />
-                  Verifica Disponibilità
+                  Prenota ora
                 </Button>
 
-                {showCalendar && (
-                  <div className="border rounded-lg p-3 space-y-3">
-                    <Calendar
-                      mode="range"
-                      selected={{ from: checkIn, to: checkOut }}
-                      onSelect={(range) => {
-                        setCheckIn(range?.from);
-                        setCheckOut(range?.to);
-                      }}
-                      numberOfMonths={1}
-                      locale={it}
-                      disabled={(date) => {
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        return date < today || isDateBlocked(date);
-                      }}
-                      modifiers={{
-                        blocked: (date) => isDateBlocked(date),
-                      }}
-                      modifiersClassNames={{
-                        blocked: 'line-through text-red-300 opacity-50',
-                      }}
-                    />
-                    {checkIn && checkOut && nights > 0 && (
-                      <div className="space-y-2 pt-3 border-t">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Arrivo</span>
-                          <span className="font-medium">{format(checkIn, "dd MMM yyyy", { locale: it })}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">Partenza</span>
-                          <span className="font-medium">{format(checkOut, "dd MMM yyyy", { locale: it })}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-600">{nights} notti × €{mooring.pricePerDay}</span>
-                          <span className="font-bold text-green-600">€{total.toFixed(2)}</span>
-                        </div>
-                        {isRangeAvailable(checkIn, checkOut) ? (
-                          <>
-                            <Badge className="w-full justify-center bg-green-100 text-green-700 border-green-300 py-1">
-                              <CheckCircle className="h-3 w-3 mr-1" /> Date disponibili
-                            </Badge>
-                            <Button
-                              className="w-full bg-green-600 hover:bg-green-700 h-10 font-semibold"
-                              asChild
-                            >
-                              <Link href={`/checkout?type=mooring&id=${mooring.id}&checkIn=${checkIn.toISOString()}&checkOut=${checkOut.toISOString()}`}>
-                                Prenota ora
-                              </Link>
-                            </Button>
-                          </>
-                        ) : (
-                          <Badge className="w-full justify-center bg-red-100 text-red-700 border-red-300 py-1">
-                            Date non disponibili
-                          </Badge>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                {showBookingModal && mooring && (
+                  <MooringBookingModal
+                    mooring={mooring}
+                    onClose={() => setShowBookingModal(false)}
+                  />
                 )}
 
                 <Button

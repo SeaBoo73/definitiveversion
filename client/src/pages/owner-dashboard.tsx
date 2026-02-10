@@ -92,6 +92,67 @@ import {
   Receipt
 } from "lucide-react";
 
+function ExperienceImageCarousel({ images, name, price }: { images: string[]; name: string; price: string | number | null }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  const goTo = (idx: number) => {
+    if (idx < 0) setCurrentIndex(images.length - 1);
+    else if (idx >= images.length) setCurrentIndex(0);
+    else setCurrentIndex(idx);
+  };
+
+  return (
+    <div
+      className="relative h-48 w-full group"
+      onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const diff = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(diff) > 40) {
+          goTo(diff > 0 ? currentIndex - 1 : currentIndex + 1);
+        }
+        touchStartX.current = null;
+      }}
+    >
+      <img
+        src={images[currentIndex]}
+        alt={`${name} - ${currentIndex + 1}`}
+        className="w-full h-full object-cover transition-opacity duration-300"
+      />
+      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
+        <span className="text-sm font-bold text-coral">{price}</span>
+        <span className="text-xs text-gray-500">/persona</span>
+      </div>
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={(e) => { e.stopPropagation(); goTo(currentIndex - 1); }}
+            className="absolute left-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <ChevronLeft className="h-4 w-4 text-gray-700" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); goTo(currentIndex + 1); }}
+            className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <ChevronRight className="h-4 w-4 text-gray-700" />
+          </button>
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
+                className={`w-1.5 h-1.5 rounded-full transition-all ${i === currentIndex ? "bg-white w-3" : "bg-white/60"}`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({
   pricePerDay: z.string().min(1, "Prezzo richiesto"),
   maxPersons: z.string().min(1, "Numero massimo persone richiesto"),
@@ -2985,28 +3046,11 @@ export default function OwnerDashboard() {
                     sport: "Sport Acquatici",
                     romantic: "Esperienza Romantica",
                   };
-                  const coverImage = experience.images && experience.images.length > 0 ? experience.images[0] : null;
+                  const images = experience.images && experience.images.length > 0 ? experience.images : [];
                   return (
                     <Card key={experience.id} className="hover:shadow-lg transition-shadow overflow-hidden" data-testid={`card-experience-${experience.id}`}>
-                      {/* Immagine di copertina */}
-                      {coverImage ? (
-                        <div className="relative h-48 w-full">
-                          <img 
-                            src={coverImage} 
-                            alt={experience.name}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full">
-                            <span className="text-sm font-bold text-coral">{experience.pricePerPerson}</span>
-                            <span className="text-xs text-gray-500">/persona</span>
-                          </div>
-                          {experience.images && experience.images.length > 1 && (
-                            <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                              <Camera className="h-3 w-3" />
-                              {experience.images.length}
-                            </div>
-                          )}
-                        </div>
+                      {images.length > 0 ? (
+                        <ExperienceImageCarousel images={images} name={experience.name} price={experience.pricePerPerson} />
                       ) : (
                         <div className="h-32 bg-gradient-to-br from-coral/20 to-orange-100 flex items-center justify-center">
                           <Sparkles className="h-12 w-12 text-coral/40" />
@@ -3021,7 +3065,7 @@ export default function OwnerDashboard() {
                               {categoryLabels[experience.category] || experience.category}
                             </Badge>
                           </div>
-                          {!coverImage && (
+                          {images.length === 0 && (
                             <div className="text-right">
                               <p className="text-xl font-bold text-coral">{experience.pricePerPerson}</p>
                               <p className="text-xs text-gray-500">per persona</p>

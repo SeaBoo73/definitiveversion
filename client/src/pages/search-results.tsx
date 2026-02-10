@@ -255,11 +255,11 @@ export function SearchResults() {
                 </Button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
                 {filteredBoats.map((boat: Boat) => (
                   <Card 
                     key={boat.id} 
-                    className="overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
+                    className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
                     onClick={() => setLocation(`/boats/${boat.id}`)}
                   >
                     <div className="aspect-[4/3] bg-gray-200 relative">
@@ -272,68 +272,43 @@ export function SearchResults() {
                         }}
                       />
                       {boat.images && boat.images.length > 1 && (
-                        <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded">
+                        <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded">
                           {boat.images.length} foto
                         </div>
                       )}
                     </div>
                     
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 truncate">
-                          {boat.name}
-                        </h3>
-                        <div className="flex items-center ml-2">
-                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                          <span className="text-sm text-gray-600 ml-1">4.8</span>
+                    <CardContent className="p-2">
+                      <h3 className="text-sm font-semibold text-gray-900 truncate">
+                        {boat.name}
+                      </h3>
+                      
+                      <div className="flex items-center text-xs text-gray-600 mt-0.5">
+                        <MapPin className="h-3 w-3 mr-0.5 flex-shrink-0" />
+                        <span className="truncate">{boat.location}</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
+                        <span className="flex items-center">
+                          <Users className="h-3 w-3 mr-0.5" />
+                          {boat.capacity}
+                        </span>
+                        <span>{getBoatTypeName(boat.type)}</span>
+                      </div>
+                      
+                      <div className="flex items-center justify-between mt-1">
+                        <div>
+                          <span className="text-sm font-bold text-gray-900">
+                            €{boat.pricePerDay ? parseFloat(boat.pricePerDay.toString()).toFixed(0) : "0"}
+                          </span>
+                          <span className="text-xs text-gray-500">/gg</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                          <span className="text-xs text-gray-600 ml-0.5">4.8</span>
                         </div>
                       </div>
-                      
-                      <div className="flex items-center text-sm text-gray-600 mb-2">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {boat.location}
-                      </div>
-                      
-                      <div className="flex items-center text-sm text-gray-600 mb-3">
-                        <Users className="h-4 w-4 mr-1" />
-                        Fino a {boat.capacity} ospiti
-                      </div>
-                      
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        <Badge variant="outline" className="text-xs">
-                          {getBoatTypeName(boat.type)}
-                        </Badge>
-                        {boat.skipperRequired && (
-                          <Badge variant="outline" className="text-xs">Skipper</Badge>
-                        )}
-                        {!boat.licenseRequired && (
-                          <Badge variant="outline" className="text-xs">Senza patente</Badge>
-                        )}
-                      </div>
-                      
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        {boat.description || "Imbarcazione perfetta per una giornata di relax in mare."}
-                      </p>
                     </CardContent>
-                    
-                    <CardFooter className="p-4 pt-0 flex items-center justify-between">
-                      <div>
-                        <span className="text-2xl font-bold text-gray-900">
-                          €{boat.pricePerDay ? parseFloat(boat.pricePerDay.toString()).toFixed(0) : "0"}
-                        </span>
-                        <span className="text-sm text-gray-600">/giorno</span>
-                      </div>
-                      
-                      <Button
-                        className="bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98]"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setLocation(`/boats/${boat.id}`);
-                        }}
-                      >
-                        Vedi dettagli
-                      </Button>
-                    </CardFooter>
                   </Card>
                 ))}
               </div>

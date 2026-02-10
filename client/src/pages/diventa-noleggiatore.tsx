@@ -132,12 +132,31 @@ export default function DiventaNoleggiatorePage() {
               <Ship className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Diventa Noleggiatore SeaBoo
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Trasforma la tua imbarcazione in una fonte di reddito. Unisciti alla community di noleggiatori SeaBoo.
-          </p>
+          {isAlreadyOwner ? (
+            <>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Sei già un SeaHost, complimenti!
+              </h1>
+              <p className="text-gray-600 text-lg mb-6">
+                Fai già parte della community di SeaHost SeaBoo. Gestisci le tue imbarcazioni dalla dashboard.
+              </p>
+              <Button
+                onClick={() => setLocation("/owner-home")}
+                className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-8 py-3 rounded-full shadow-lg"
+              >
+                Vai alla Dashboard SeaHost
+              </Button>
+            </>
+          ) : (
+            <>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Diventa Noleggiatore SeaBoo
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Trasforma la tua imbarcazione in una fonte di reddito. Unisciti alla community di noleggiatori SeaBoo.
+              </p>
+            </>
+          )}
         </div>
 
         {/* Benefits Section */}

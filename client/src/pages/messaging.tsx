@@ -83,60 +83,17 @@ export default function MessagingPage() {
               <CardContent className="flex items-center justify-center h-full">
                 <div className="text-center">
                   <Users className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-                  <h3 className="text-xl font-semibold mb-2">Seleziona una Chat</h3>
+                  <h3 className="text-xl font-semibold mb-2">I tuoi messaggi</h3>
                   <p className="text-muted-foreground max-w-md mx-auto">
-                    Scegli una conversazione dalla lista a sinistra per iniziare a chattare, 
-                    oppure crea una nuova conversazione.
+                    Seleziona una conversazione per visualizzare i messaggi.
+                    Le conversazioni vengono create automaticamente quando effettui una prenotazione o invii una richiesta a un noleggiatore.
                   </p>
-                  <div className="mt-6 space-y-2 text-sm text-muted-foreground">
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span>Chat in tempo reale con WebSocket</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      <span>Supporto allegati e reazioni</span>
-                    </div>
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                      <span>Notifiche push automatiche</span>
-                    </div>
-                  </div>
                 </div>
               </CardContent>
             </Card>
           )}
         </div>
       </div>
-
-      {/* Statistiche Chat (solo per admin/proprietari) */}
-      {(user.role === 'owner' || user.role === 'admin') && (
-        <div className="mt-6">
-          <Card>
-            <CardContent className="p-6">
-              <h3 className="font-semibold mb-4">Statistiche Messaggistica</h3>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">12</div>
-                  <div className="text-sm text-muted-foreground">Conversazioni Attive</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">5</div>
-                  <div className="text-sm text-muted-foreground">Messaggi Oggi</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">98%</div>
-                  <div className="text-sm text-muted-foreground">Tasso Risposta</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">2.5min</div>
-                  <div className="text-sm text-muted-foreground">Tempo Medio Risposta</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
     </div>
   );
 }

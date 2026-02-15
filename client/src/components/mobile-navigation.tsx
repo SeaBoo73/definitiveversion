@@ -112,7 +112,7 @@ export function MobileNavigation() {
   return (
     <>
       <ModeSwitchButton />
-      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t ${showOwnerNav ? 'border-orange-200' : 'border-gray-200'} z-[100] md:hidden`} style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t ${showOwnerNav ? 'border-orange-200' : 'border-gray-200'} z-[100] md:hidden`} style={{ paddingBottom: 'max(env(safe-area-inset-bottom, 0px), 8px)' }}>
       <div className="flex items-center justify-around py-2 px-2">
         {navItems.map((item) => {
           const Icon = item.icon;

@@ -21,6 +21,7 @@ import { apiRequest, getApiUrl } from "@/lib/queryClient";
 const loginSchema = z.object({
   email: z.string().email("Email non valida"),
   password: z.string().min(1, "Password richiesta"),
+  rememberMe: z.boolean().optional(),
 });
 
 const forgotPasswordSchema = z.object({
@@ -79,12 +80,20 @@ export default function AuthPage() {
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const getSavedLoginData = () => {
+    try {
+      const saved = localStorage.getItem("seaboo_saved_login");
+      if (saved) {
+        const { email, password } = JSON.parse(saved);
+        return { email: email || "", password: password || "", rememberMe: true };
+      }
+    } catch {}
+    return { email: "", password: "", rememberMe: false };
+  };
+
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: getSavedLoginData(),
   });
 
   // Extract pre-filled data from URL parameters for registration
@@ -124,7 +133,12 @@ export default function AuthPage() {
   }
 
   const onLogin = (data: LoginData) => {
-    loginMutation.mutate(data);
+    if (data.rememberMe) {
+      localStorage.setItem("seaboo_saved_login", JSON.stringify({ email: data.email, password: data.password }));
+    } else {
+      localStorage.removeItem("seaboo_saved_login");
+    }
+    loginMutation.mutate({ email: data.email, password: data.password });
   };
 
   const handleForgotPassword = async () => {
@@ -561,7 +575,17 @@ export default function AuthPage() {
                       )}
                     </div>
 
-                    <div className="text-right">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="rememberMe"
+                          checked={loginForm.watch("rememberMe")}
+                          onCheckedChange={(checked) => loginForm.setValue("rememberMe", !!checked)}
+                        />
+                        <Label htmlFor="rememberMe" className="text-sm text-gray-600 cursor-pointer">
+                          Ricordami
+                        </Label>
+                      </div>
                       <button
                         type="button"
                         onClick={() => setShowForgotPassword(true)}

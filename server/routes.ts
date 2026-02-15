@@ -349,7 +349,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.warn('Mobile auth: pollId missing or not found:', pollId);
         }
         
-        // Show simple "go back to app" page
+        // Show "go back to app" page with deep link auto-redirect
         res.send(`
           <!DOCTYPE html>
           <html>
@@ -374,14 +374,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
               .checkmark { font-size: 64px; margin-bottom: 20px; }
               h1 { font-size: 24px; margin-bottom: 10px; }
               p { font-size: 16px; opacity: 0.9; margin-bottom: 20px; }
+              .btn {
+                display: inline-block;
+                background: white;
+                color: #0066cc;
+                padding: 14px 32px;
+                border-radius: 12px;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 16px;
+                margin-top: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+              }
+              .btn:active { transform: scale(0.97); }
+              .subtitle { font-size: 14px; opacity: 0.7; margin-top: 16px; }
             </style>
           </head>
           <body>
             <div class="container">
               <div class="checkmark">&#10004;</div>
               <h1>Login completato!</h1>
-              <p>Torna all'app SeaBoo.<br>Il login verr&agrave; completato automaticamente.</p>
+              <p>Puoi tornare all'app SeaBoo.</p>
+              <a href="seaboo://auth-success" class="btn" id="openApp">Apri SeaBoo</a>
+              <p class="subtitle">Se l'app non si apre automaticamente, tocca il pulsante qui sopra.</p>
             </div>
+            <script>
+              setTimeout(function() {
+                window.location.href = 'seaboo://auth-success';
+              }, 1500);
+            </script>
           </body>
           </html>
         `);

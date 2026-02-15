@@ -310,10 +310,9 @@ export default function AuthPage() {
   }, [isPollingAuth, checkPollResult, toast]);
 
   const handleGoogleSignIn = async () => {
-    const isCapacitor = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
-    const isAndroid = isCapacitor && (window as any).Capacitor?.getPlatform?.() === 'android';
+    const isCapacitorApp = typeof window !== 'undefined' && (window as any).Capacitor !== undefined;
 
-    if (isAndroid) {
+    if (isCapacitorApp) {
       try {
         const pollStartUrl = getApiUrl('/api/auth/mobile-poll-start');
         console.log('Starting mobile poll at:', pollStartUrl);
@@ -332,6 +331,7 @@ export default function AuthPage() {
 
         const googleAuthUrl = getApiUrl(`/api/auth/google?mobile=android&pollId=${pollId}`);
         console.log('Opening Google auth URL:', googleAuthUrl);
+        
         window.open(googleAuthUrl, '_system');
 
       } catch (error) {

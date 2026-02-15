@@ -19,6 +19,9 @@ const config: CapacitorConfig = {
   plugins: {
     CapacitorHttp: {
       enabled: true
+    },
+    App: {
+      url: 'seaboo'
     }
   }
 };

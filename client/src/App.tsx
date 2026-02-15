@@ -13,6 +13,7 @@ import { MinimalApp } from "./minimal-app";
 import { ErrorBoundary } from "./error-boundary";
 import { CleanApp } from "./clean-app";
 import { MobileNavigation } from "@/components/mobile-navigation";
+import { CookieConsent } from "@/components/cookie-consent";
 import "./hide-overlay";
 
 // Exchange mobile auth token for session
@@ -312,6 +313,7 @@ function App() {
             <Toaster />
             <Router />
             <MobileNavigation />
+            <CookieConsent />
           </OwnerModeProvider>
         </AuthProvider>
       </QueryClientProvider>

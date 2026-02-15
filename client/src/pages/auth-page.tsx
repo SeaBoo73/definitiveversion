@@ -936,10 +936,15 @@ export default function AuthPage() {
                           <Link href="/condizioni-servizio" className="text-ocean-blue hover:underline font-medium" target="_blank">
                             Termini e Condizioni d'uso
                           </Link>
-                          {" "}e confermo di aver letto la{" "}
+                          {" "}e confermo di aver letto e compreso la{" "}
                           <Link href="/privacy-policy" className="text-ocean-blue hover:underline font-medium" target="_blank">
                             Privacy Policy
                           </Link>
+                          {" "}e la{" "}
+                          <Link href="/cookie-policy" className="text-ocean-blue hover:underline font-medium" target="_blank">
+                            Cookie Policy
+                          </Link>
+                          {" "}ai sensi del GDPR (Reg. UE 2016/679)
                         </label>
                       </div>
                       {registerForm.formState.errors.acceptTerms && (

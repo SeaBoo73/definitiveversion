@@ -91,7 +91,7 @@ export default function PaymentSuccess() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="bg-coral hover:bg-orange-600 text-white">
-              <Link href="/dashboard">Vai alle mie prenotazioni</Link>
+              <Link href="/customer-dashboard">Vai alle mie prenotazioni</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="border-coral text-coral hover:bg-coral hover:text-white">
               <Link href="/">Torna alla homepage</Link>

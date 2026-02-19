@@ -1,25 +1,31 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { ConversationList } from '@/components/messaging/conversation-list';
 import { ChatInterface } from '@/components/messaging/chat-interface';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MessageSquare, Users, ArrowLeft } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { useAuth } from '@/hooks/use-auth';
 
 export default function MessagingPage() {
   const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null);
   const [location, setLocation] = useLocation();
+  const { user, isLoading } = useAuth();
 
-  // Query per ottenere l'utente corrente
-  const { data: user } = useQuery({
-    queryKey: ['user'],
-    queryFn: async () => {
-      const response = await fetch('/api/user');
-      if (!response.ok) throw new Error('Non autorizzato');
-      return response.json();
-    },
-  });
+  if (isLoading) {
+    return (
+      <div className="container mx-auto p-6">
+        <Card>
+          <CardContent className="flex items-center justify-center h-96">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-ocean-blue mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Caricamento...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!user) {
     return (

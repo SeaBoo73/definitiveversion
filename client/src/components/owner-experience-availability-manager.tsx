@@ -285,6 +285,14 @@ export function OwnerExperienceAvailabilityManager({ experienceId }: OwnerExperi
               <div className="w-4 h-4 bg-blue-500 border border-blue-600 rounded"></div>
               <span>Selezionato</span>
             </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] font-semibold text-green-700">€</span>
+              <span>Prezzo base</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] font-semibold text-orange-600">€</span>
+              <span>Prezzo personalizzato</span>
+            </div>
           </div>
 
           {selStart && !selEnd && !showDialog && (
@@ -309,7 +317,9 @@ export function OwnerExperienceAvailabilityManager({ experienceId }: OwnerExperi
 
               {monthDays.map(date => {
                 const avail = getAvailabilityForDate(date);
-                const displayPrice = avail?.status === 'available' ? (avail.priceOverride || experience?.pricePerPerson) : null;
+                const isPast = isBefore(date, new Date()) && !isSameDay(date, new Date());
+                const basePrice = experience?.pricePerPerson;
+                const dayPriceValue = avail?.priceOverride || basePrice;
                 
                 return (
                   <div
@@ -331,9 +341,9 @@ export function OwnerExperienceAvailabilityManager({ experienceId }: OwnerExperi
                         {avail.status === 'booked' && 'Pren.'}
                       </div>
                     )}
-                    {displayPrice && !isInSelection(date) && (
-                      <div className="text-[10px] text-green-700 font-medium">
-                        €{Number(displayPrice).toFixed(0)}
+                    {dayPriceValue && !isInSelection(date) && !isPast && (
+                      <div className={`text-[10px] font-semibold ${avail?.priceOverride ? 'text-orange-600' : 'text-green-700'}`}>
+                        €{Number(dayPriceValue).toFixed(0)}
                       </div>
                     )}
                   </div>

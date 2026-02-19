@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/header";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { 
   CalendarDays, 
   Ship, 
@@ -11,12 +12,18 @@ import {
   MapPin,
   Calendar,
   MessageSquare,
-  ChevronRight
+  ChevronRight,
+  Check,
+  X
 } from "lucide-react";
 import { Link } from "wouter";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function OwnerHome() {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: bookingsData } = useQuery<{ bookings: any[] }>({
     queryKey: ["/api/owner/bookings"],
@@ -24,6 +31,29 @@ export default function OwnerHome() {
 
   const { data: boatsData } = useQuery<{ boats: any[] }>({
     queryKey: ["/api/owner/boats"],
+  });
+
+  const updateBookingStatus = useMutation({
+    mutationFn: async ({ id, status }: { id: number; status: string }) => {
+      const res = await apiRequest('PATCH', `/api/owner/bookings/${id}/status`, { status });
+      return res.json();
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/bookings"] });
+      toast({
+        title: variables.status === 'confirmed' ? "Prenotazione confermata" : "Prenotazione rifiutata",
+        description: variables.status === 'confirmed' 
+          ? "Il cliente riceverà la conferma della prenotazione."
+          : "La prenotazione è stata rifiutata.",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Errore",
+        description: "Impossibile aggiornare la prenotazione. Riprova.",
+        variant: "destructive",
+      });
+    },
   });
 
   const bookings = bookingsData?.bookings || [];
@@ -111,14 +141,37 @@ export default function OwnerHome() {
                 <h3 className="font-semibold text-gray-900">Da confermare ({pendingBookings.length})</h3>
               </div>
               {pendingBookings.map((booking: any) => (
-                <div key={booking.id} className="flex items-center justify-between py-2 border-b border-orange-100 last:border-0">
-                  <div>
-                    <p className="font-medium text-sm">{booking.boatName || getBoatName(booking.boatId)}</p>
-                    <p className="text-xs text-gray-500">
-                      {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
-                    </p>
+                <div key={booking.id} className="py-3 border-b border-orange-100 last:border-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <div>
+                      <p className="font-medium text-sm">{booking.boatName || getBoatName(booking.boatId)}</p>
+                      <p className="text-xs text-gray-500">
+                        {new Date(booking.startDate).toLocaleDateString('it-IT')} - {new Date(booking.endDate).toLocaleDateString('it-IT')}
+                      </p>
+                    </div>
+                    <span className="text-sm font-semibold text-coral">€{booking.totalPrice}</span>
                   </div>
-                  <span className="text-sm font-semibold text-coral">€{booking.totalPrice}</span>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white text-xs"
+                      disabled={updateBookingStatus.isPending}
+                      onClick={() => updateBookingStatus.mutate({ id: booking.id, status: 'confirmed' })}
+                    >
+                      <Check className="h-3.5 w-3.5 mr-1" />
+                      Conferma
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 border-red-300 text-red-600 hover:bg-red-50 text-xs"
+                      disabled={updateBookingStatus.isPending}
+                      onClick={() => updateBookingStatus.mutate({ id: booking.id, status: 'rejected' })}
+                    >
+                      <X className="h-3.5 w-3.5 mr-1" />
+                      Rifiuta
+                    </Button>
+                  </div>
                 </div>
               ))}
             </CardContent>

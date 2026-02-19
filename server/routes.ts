@@ -2004,6 +2004,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Owner confirm/reject booking
+  app.patch('/api/owner/bookings/:id/status', requireAuth, requireOwner, async (req: any, res) => {
+    try {
+      const bookingId = parseInt(req.params.id);
+      const { status } = req.body;
+
+      if (!['confirmed', 'rejected'].includes(status)) {
+        return res.status(400).json({ error: "Stato non valido. Usa 'confirmed' o 'rejected'" });
+      }
+
+      const ownerBookings = await storage.getBookingsByOwner(req.session.user.id);
+      const booking = ownerBookings.find((b: any) => b.id === bookingId);
+
+      if (!booking) {
+        return res.status(404).json({ error: "Prenotazione non trovata" });
+      }
+
+      if (booking.status !== 'pending') {
+        return res.status(400).json({ error: "Solo le prenotazioni in attesa possono essere confermate o rifiutate" });
+      }
+
+      const updated = await storage.updateBooking(bookingId, { status });
+      console.log(`Booking ${bookingId} ${status} by owner ${req.session.user.id}`);
+      res.json({ booking: updated });
+    } catch (error) {
+      console.error("Update booking status error:", error);
+      res.status(500).json({ error: "Errore nell'aggiornamento della prenotazione" });
+    }
+  });
+
   // ========== MOORINGS API ==========
 
   // Get all moorings (public)

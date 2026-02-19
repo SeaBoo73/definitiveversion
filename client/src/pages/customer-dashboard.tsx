@@ -369,10 +369,11 @@ export default function CustomerDashboard() {
   }, [location, setLocation]);
 
   // Fetch user's bookings
-  const { data: bookings = [], isLoading: bookingsLoading } = useQuery<Booking[]>({
-    queryKey: ["/api/bookings", { customerId: user?.id }],
+  const { data: bookingsData, isLoading: bookingsLoading } = useQuery<{ bookings: Booking[] }>({
+    queryKey: ["/api/bookings"],
     enabled: !!user,
   });
+  const bookings = bookingsData?.bookings || [];
 
   // Check for bookings starting within 24 hours and show reminder
   useEffect(() => {

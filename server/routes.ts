@@ -3092,6 +3092,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ===========================================
+  // TEST EMAIL ENDPOINT (temporary)
+  // ===========================================
+  app.post("/api/test-email", async (req, res) => {
+    try {
+      const result = await EmailService.sendBookingNotification({
+        bookingCode: "TEST-EMAIL-001",
+        customerName: "Test Utente",
+        customerEmail: "test@seaboo.it",
+        boatName: "Test Barca",
+        boatType: "yacht",
+        location: "Napoli",
+        startDate: new Date().toISOString(),
+        endDate: new Date().toISOString(),
+        totalPrice: "100.00",
+        status: "pending",
+      });
+      res.json({ success: result, message: result ? "Email inviata con successo!" : "Email non inviata - controlla le credenziali" });
+    } catch (error: any) {
+      res.status(500).json({ success: false, error: error.message });
+    }
+  });
+
+  // ===========================================
   // CONVERSATIONS & MESSAGES ENDPOINTS
   // ===========================================
 

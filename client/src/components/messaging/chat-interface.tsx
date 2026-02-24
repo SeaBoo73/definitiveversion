@@ -10,7 +10,7 @@ import { Send, MessageSquare, Ship, Anchor, Compass, X, AlertTriangle } from 'lu
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatDistanceToNow } from 'date-fns';
 import { it } from 'date-fns/locale';
-import { apiRequest } from '@/lib/queryClient';
+import { apiRequest, getApiUrl } from '@/lib/queryClient';
 
 interface MessageData {
   id: number;
@@ -49,7 +49,7 @@ export function ChatInterface({ conversationId, currentUserId, onClose }: ChatIn
   const { data: messages, isLoading } = useQuery<MessageData[]>({
     queryKey: ['/api/conversations', conversationId, 'messages'],
     queryFn: async () => {
-      const response = await fetch(`/api/conversations/${conversationId}/messages`, { credentials: 'include' });
+      const response = await fetch(getApiUrl(`/api/conversations/${conversationId}/messages`), { credentials: 'include' });
       if (!response.ok) throw new Error('Errore nel caricamento messaggi');
       return response.json();
     },
@@ -59,7 +59,7 @@ export function ChatInterface({ conversationId, currentUserId, onClose }: ChatIn
   const { data: conversation } = useQuery<ConversationData>({
     queryKey: ['/api/conversation-detail', conversationId],
     queryFn: async () => {
-      const convos = await fetch('/api/user/conversations', { credentials: 'include' });
+      const convos = await fetch(getApiUrl('/api/user/conversations'), { credentials: 'include' });
       const list = await convos.json();
       return list.find((c: ConversationData) => c.id === conversationId);
     },

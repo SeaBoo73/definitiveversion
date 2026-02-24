@@ -72,7 +72,7 @@ export default function MessagingPage() {
           <ConversationList
             onSelectConversation={setSelectedConversationId}
             currentUserId={user.id}
-            selectedConversationId={selectedConversationId}
+            selectedConversationId={selectedConversationId ?? undefined}
           />
         </div>
 

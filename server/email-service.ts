@@ -36,7 +36,7 @@ interface MooringBookingEmailData {
 }
 
 export class EmailService {
-  private static readonly NOTIFICATION_EMAIL = "app.seaboo.italia@gmail.com";
+  private static readonly NOTIFICATION_EMAIL = "app.seago.italia@gmail.com";
   
   private static createTransporter() {
     return nodemailer.createTransport({

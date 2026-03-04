@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/header";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Ship, Anchor, Compass, ArrowLeft, User, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ChatInterface } from "@/components/messaging/chat-interface";
@@ -36,22 +35,44 @@ export default function OwnerMessages() {
     refetchInterval: 15000,
   });
 
-  const getReferenceIcon = (type?: string | null) => {
-    switch (type) {
-      case 'boat': return <Ship className="h-5 w-5 text-ocean-blue" />;
-      case 'mooring': return <Anchor className="h-5 w-5 text-ocean-blue" />;
-      case 'experience': return <Compass className="h-5 w-5 text-ocean-blue" />;
-      default: return <MessageCircle className="h-5 w-5 text-ocean-blue" />;
-    }
+  const typeConfig: Record<string, { label: string; icon: JSX.Element; avatarBg: string; iconColor: string; badgeBg: string; badgeText: string; hoverBg: string }> = {
+    boat: {
+      label: 'Imbarcazione',
+      icon: <Ship className="h-5 w-5 text-blue-600" />,
+      avatarBg: 'bg-blue-100',
+      iconColor: 'text-blue-600',
+      badgeBg: 'bg-blue-100',
+      badgeText: 'text-blue-700',
+      hoverBg: 'hover:bg-blue-50',
+    },
+    mooring: {
+      label: 'Ormeggio',
+      icon: <Anchor className="h-5 w-5 text-teal-600" />,
+      avatarBg: 'bg-teal-100',
+      iconColor: 'text-teal-600',
+      badgeBg: 'bg-teal-100',
+      badgeText: 'text-teal-700',
+      hoverBg: 'hover:bg-teal-50',
+    },
+    experience: {
+      label: 'Esperienza',
+      icon: <Compass className="h-5 w-5 text-orange-500" />,
+      avatarBg: 'bg-orange-100',
+      iconColor: 'text-orange-500',
+      badgeBg: 'bg-orange-100',
+      badgeText: 'text-orange-700',
+      hoverBg: 'hover:bg-orange-50',
+    },
   };
 
-  const getReferenceLabel = (type?: string | null) => {
-    switch (type) {
-      case 'boat': return 'Imbarcazione';
-      case 'mooring': return 'Ormeggio';
-      case 'experience': return 'Esperienza';
-      default: return 'Messaggio';
-    }
+  const defaultConfig = {
+    label: 'Messaggio',
+    icon: <MessageCircle className="h-5 w-5 text-gray-500" />,
+    avatarBg: 'bg-gray-100',
+    iconColor: 'text-gray-500',
+    badgeBg: 'bg-gray-100',
+    badgeText: 'text-gray-600',
+    hoverBg: 'hover:bg-gray-50',
   };
 
   const getBookingStatusLabel = (status?: string | null) => {
@@ -170,16 +191,18 @@ export default function OwnerMessages() {
           </Card>
         ) : (
           <div className="space-y-2">
-            {conversations.map((conv) => (
+            {conversations.map((conv) => {
+              const cfg = (conv.referenceType && typeConfig[conv.referenceType]) || defaultConfig;
+              return (
               <Card
                 key={conv.id}
-                className="cursor-pointer hover:shadow-md transition-shadow"
+                className={`cursor-pointer transition-all border ${cfg.hoverBg} hover:shadow-sm`}
                 onClick={() => setSelectedConversationId(conv.id)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                      {getReferenceIcon(conv.referenceType)}
+                    <div className={`w-10 h-10 ${cfg.avatarBg} rounded-full flex items-center justify-center flex-shrink-0 mt-1`}>
+                      {cfg.icon}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex justify-between items-start">
@@ -188,7 +211,7 @@ export default function OwnerMessages() {
                             {conv.customerName || conv.customerEmail || `Cliente #${conv.customerId}`}
                           </p>
                           <p className="text-sm text-gray-600 truncate">
-                            {conv.referenceName || (conv.bookingId ? `Prenotazione #${conv.bookingId}` : 'Conversazione')}
+                            {conv.referenceName || (conv.bookingId ? `SB-${conv.bookingId}` : 'Conversazione')}
                           </p>
                         </div>
                         <span className="text-xs text-gray-400 flex-shrink-0 ml-2">
@@ -196,13 +219,13 @@ export default function OwnerMessages() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-2 flex-wrap">
-                        <Badge variant="secondary" className="text-xs">
-                          {getReferenceLabel(conv.referenceType)}
-                        </Badge>
+                        <span className={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full ${cfg.badgeBg} ${cfg.badgeText}`}>
+                          {cfg.label}
+                        </span>
                         {conv.bookingId && (
-                          <Badge variant="outline" className="text-xs">
-                            Prenotazione #{conv.bookingId}
-                          </Badge>
+                          <span className="text-xs text-gray-500 font-medium">
+                            SB-{conv.bookingId}
+                          </span>
                         )}
                         {conv.bookingStartDate && conv.bookingEndDate && (
                           <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -222,7 +245,8 @@ export default function OwnerMessages() {
                   </div>
                 </CardContent>
               </Card>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

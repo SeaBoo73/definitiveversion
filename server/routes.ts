@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { db } from "./db";
+import { db, pool } from "./db";
 import { insertUserSchema, insertOwnerSchema, insertUserOnlySchema, loginSchema, insertBoatSchema, insertBookingSchema, insertBoatAvailabilitySchema, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import session from "express-session";
@@ -3102,8 +3102,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
     try {
       const userId = parseInt(req.session.user.id);
-      const convos = await storage.getUserConversations(userId);
-      res.json(convos);
+      const result = await pool.query(`
+        SELECT 
+          c.id, c.booking_id AS "bookingId", c.customer_id AS "customerId",
+          c.owner_id AS "ownerId", c.reference_type AS "referenceType",
+          c.reference_id AS "referenceId", c.reference_name AS "referenceName",
+          c.created_at AS "createdAt", c.last_message_at AS "lastMessageAt",
+          COALESCE(NULLIF(TRIM(u.first_name || ' ' || COALESCE(u.last_name, '')), ''), u.username, u.email) AS "customerName",
+          u.email AS "customerEmail",
+          b.start_date AS "bookingStartDate",
+          b.end_date AS "bookingEndDate",
+          b.status AS "bookingStatus"
+        FROM conversations c
+        LEFT JOIN users u ON u.id = c.customer_id
+        LEFT JOIN bookings b ON b.id = c.booking_id
+        WHERE c.customer_id = $1 OR c.owner_id = $1
+        ORDER BY c.last_message_at DESC
+      `, [userId]);
+      res.json(result.rows);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

@@ -389,6 +389,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
             </Button>
           )}
           <Button 
+            type="button"
             onClick={form.handleSubmit(onSubmit)}
             className="flex-1 bg-coral hover:bg-orange-600 active:bg-orange-700 transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02] active:scale-[0.98] disabled:transform-none disabled:hover:scale-100"
             disabled={createBookingMutation.isPending}

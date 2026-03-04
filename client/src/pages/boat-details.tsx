@@ -388,14 +388,10 @@ export default function BoatDetails() {
                     <span>€{boat.pricePerDay} x 1 giorno</span>
                     <span>€{boat.pricePerDay}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Commissione SeaBoo</span>
-                    <span>€{(Number(boat.pricePerDay) * 0.15).toFixed(2)}</span>
-                  </div>
                   <Separator />
                   <div className="flex justify-between font-semibold">
                     <span>Totale</span>
-                    <span>€{(Number(boat.pricePerDay) * 1.15).toFixed(2)}</span>
+                    <span>€{Number(boat.pricePerDay).toFixed(2)}</span>
                   </div>
                 </div>
               </CardContent>

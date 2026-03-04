@@ -265,10 +265,6 @@ export function ExperienceBookingModal({ experience, onClose }: ExperienceBookin
                   <span>€{pricePerPerson.toFixed(2)} x {numParticipants} {numParticipants === 1 ? "persona" : "persone"}</span>
                   <span>€{basePrice.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span>Commissione SeaBoo (15%)</span>
-                  <span>€{platformFee.toFixed(2)}</span>
-                </div>
                 <Separator />
                 <div className="flex justify-between font-semibold text-lg">
                   <span>Totale</span>

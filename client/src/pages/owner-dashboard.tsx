@@ -2116,22 +2116,20 @@ export default function OwnerDashboard() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-2">
-                      <Button size="sm" variant="outline" onClick={() => openEditModal(boat)} title="Modifica">
-                        <Edit className="h-4 w-4" />
+                    <div className="flex space-x-2">
+                      <Button size="sm" variant="outline" className="text-blue-600 hover:bg-blue-50" onClick={() => openEditModal(boat)}>
+                        <Pencil className="h-4 w-4 mr-1" />
+                        Modifica
                       </Button>
                       <Link href={`/boats/${boat.id}/availability`}>
-                        <Button size="sm" variant="outline" className="w-full" title="Gestione disponibilità">
-                          <CalendarDays className="h-4 w-4" />
+                        <Button size="sm" variant="outline" className="text-green-600 hover:bg-green-50 w-full">
+                          <CalendarDays className="h-4 w-4 mr-1" />
+                          Calendario
                         </Button>
                       </Link>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            title="Elimina"
-                          >
+                          <Button size="sm" variant="outline" className="text-red-600 hover:bg-red-50">
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </AlertDialogTrigger>
@@ -3323,19 +3321,21 @@ export default function OwnerDashboard() {
                             }}
                             data-testid={`button-editExperience-${experience.id}`}
                           >
-                            <Pencil className="h-4 w-4" />
+                            <Pencil className="h-4 w-4 mr-1" />
+                          Modifica
                           </Button>
                           <Button 
                             size="sm" 
                             variant="outline" 
-                            className="text-coral hover:bg-coral/10"
+                            className="text-green-600 hover:bg-green-50"
                             onClick={() => {
                               setSelectedExperienceForCalendar(experience);
                               setShowExperienceCalendarModal(true);
                             }}
                             data-testid={`button-calendarExperience-${experience.id}`}
                           >
-                            <CalendarIcon className="h-4 w-4" />
+                            <CalendarIcon className="h-4 w-4 mr-1" />
+                            Calendario
                           </Button>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>

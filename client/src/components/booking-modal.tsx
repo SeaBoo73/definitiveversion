@@ -101,7 +101,10 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
   const endDate = form.watch("endDate");
   const skipperRequested = form.watch("skipperRequested");
 
-  const days = startDate && endDate ? differenceInDays(endDate, startDate) : 1;
+  const days = startDate && endDate ? differenceInDays(
+    new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()),
+    new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
+  ) : 1;
   const basePrice = Number(boat.pricePerDay) * days;
   const skipperPrice = skipperRequested ? 50 * days : 0; // €50/day for skipper
   const platformFee = Math.round((basePrice + skipperPrice) * 0.15); // 15% commission

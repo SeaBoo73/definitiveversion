@@ -95,7 +95,10 @@ export function MooringBookingModal({ mooring, onClose }: MooringBookingModalPro
   const startDate = form.watch("startDate");
   const endDate = form.watch("endDate");
 
-  const days = startDate && endDate ? differenceInDays(endDate, startDate) : 1;
+  const days = startDate && endDate ? differenceInDays(
+    new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()),
+    new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())
+  ) : 1;
   const basePrice = Number(mooring.pricePerDay) * days;
   const platformFee = Math.round(basePrice * 0.15);
   const totalPrice = basePrice + platformFee;

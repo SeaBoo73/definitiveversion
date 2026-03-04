@@ -383,6 +383,7 @@ export default function OwnerDashboard() {
       motorization: "",
       licenseRequired: false,
       skipperRequired: false,
+      skipperOffered: false,
       location: "",
       latitude: "",
       longitude: "",
@@ -1561,6 +1562,43 @@ export default function OwnerDashboard() {
                             <p className="text-sm text-red-500">{form.formState.errors.pricePerDay.message}</p>
                           )}
                         </div>
+                      </div>
+                    </div>
+
+                    {/* Sezione Skipper */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-lg">⚓</span>
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">Opzioni Skipper</h3>
+                          <p className="text-sm text-gray-600">Indica se e come è disponibile uno skipper</p>
+                        </div>
+                      </div>
+                      <div className="space-y-3">
+                        <label className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200 cursor-pointer hover:bg-blue-50">
+                          <input
+                            type="checkbox"
+                            className="mt-1 w-4 h-4 text-blue-600 rounded"
+                            {...form.register("skipperOffered")}
+                          />
+                          <div>
+                            <span className="font-medium text-gray-900">Skipper disponibile su richiesta</span>
+                            <p className="text-sm text-gray-500">Il cliente può richiedere uno skipper opzionale (+€50/giorno)</p>
+                          </div>
+                        </label>
+                        <label className="flex items-start gap-3 p-3 bg-white rounded-lg border border-blue-200 cursor-pointer hover:bg-blue-50">
+                          <input
+                            type="checkbox"
+                            className="mt-1 w-4 h-4 text-blue-600 rounded"
+                            {...form.register("skipperRequired")}
+                          />
+                          <div>
+                            <span className="font-medium text-gray-900">Skipper obbligatorio</span>
+                            <p className="text-sm text-gray-500">L'imbarcazione richiede sempre uno skipper professionale</p>
+                          </div>
+                        </label>
                       </div>
                     </div>
 

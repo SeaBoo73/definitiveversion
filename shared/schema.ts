@@ -96,6 +96,7 @@ export const boats = pgTable("boats", {
   motorization: text("motorization"),
   licenseRequired: boolean("license_required"),
   skipperRequired: boolean("skipper_required"),
+  skipperOffered: boolean("skipper_offered").default(false),
   location: text("port").notNull(),
   latitude: numeric("latitude"),
   longitude: numeric("longitude"),

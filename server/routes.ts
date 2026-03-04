@@ -1397,6 +1397,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         fuelConsumption: req.body.fuelConsumption === '' ? null : req.body.fuelConsumption,
         latitude: req.body.latitude === '' ? null : req.body.latitude,
         longitude: req.body.longitude === '' ? null : req.body.longitude,
+        // Booleans from multipart form come as "on" or undefined
+        skipperRequired: req.body.skipperRequired === 'on' || req.body.skipperRequired === 'true' || req.body.skipperRequired === true,
+        skipperOffered: req.body.skipperOffered === 'on' || req.body.skipperOffered === 'true' || req.body.skipperOffered === true,
+        licenseRequired: req.body.licenseRequired === 'on' || req.body.licenseRequired === 'true' || req.body.licenseRequired === true,
       };
       
       const boatData = insertBoatSchema.parse({

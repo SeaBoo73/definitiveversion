@@ -306,7 +306,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                         Questa imbarcazione richiede uno skipper professionale (€50/giorno)
                       </p>
                     </div>
-                  ) : (
+                  ) : boat.skipperOffered ? (
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id="skipperRequested"
@@ -317,7 +317,7 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                         Richiedi skipper professionale (+€50/giorno)
                       </Label>
                     </div>
-                  )}
+                  ) : null}
 
                   {/* Notes */}
                   <div className="space-y-2">

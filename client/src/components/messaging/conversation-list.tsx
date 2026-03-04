@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Search, MessageSquare, Ship, Anchor, Compass } from 'lucide-react';
@@ -27,10 +25,60 @@ interface ConversationListProps {
   selectedConversationId?: number;
 }
 
-export function ConversationList({ 
-  onSelectConversation, 
-  currentUserId, 
-  selectedConversationId 
+const typeConfig: Record<string, { label: string; icon: JSX.Element; avatarBg: string; avatarText: string; badgeBg: string; badgeText: string; selectedBg: string; hoverBg: string }> = {
+  boat: {
+    label: 'Imbarcazione',
+    icon: <Ship className="w-4 h-4" />,
+    avatarBg: 'bg-blue-100',
+    avatarText: 'text-blue-600',
+    badgeBg: 'bg-blue-100',
+    badgeText: 'text-blue-700',
+    selectedBg: 'bg-blue-50',
+    hoverBg: 'hover:bg-blue-50/60',
+  },
+  mooring: {
+    label: 'Ormeggio',
+    icon: <Anchor className="w-4 h-4" />,
+    avatarBg: 'bg-teal-100',
+    avatarText: 'text-teal-600',
+    badgeBg: 'bg-teal-100',
+    badgeText: 'text-teal-700',
+    selectedBg: 'bg-teal-50',
+    hoverBg: 'hover:bg-teal-50/60',
+  },
+  experience: {
+    label: 'Esperienza',
+    icon: <Compass className="w-4 h-4" />,
+    avatarBg: 'bg-orange-100',
+    avatarText: 'text-orange-600',
+    badgeBg: 'bg-orange-100',
+    badgeText: 'text-orange-700',
+    selectedBg: 'bg-orange-50',
+    hoverBg: 'hover:bg-orange-50/60',
+  },
+};
+
+const defaultConfig = {
+  label: 'Messaggio',
+  icon: <MessageSquare className="w-4 h-4" />,
+  avatarBg: 'bg-gray-100',
+  avatarText: 'text-gray-600',
+  badgeBg: 'bg-gray-100',
+  badgeText: 'text-gray-700',
+  selectedBg: 'bg-gray-50',
+  hoverBg: 'hover:bg-gray-50',
+};
+
+const getConversationTitle = (conv: ConversationData) => {
+  if (conv.referenceName) return conv.referenceName;
+  if (conv.bookingId) return `Prenotazione #${conv.bookingId}`;
+  return 'Conversazione';
+};
+
+export function ConversationList({
+  onSelectConversation,
+  currentUserId,
+  selectedConversationId,
 }: ConversationListProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -39,34 +87,12 @@ export function ConversationList({
     refetchInterval: 5000,
   });
 
-  const filteredConversations = conversations?.filter((conv) =>
-    conv.referenceName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (conv.bookingId && `#${conv.bookingId}`.includes(searchTerm))
-  ) || [];
-
-  const getReferenceIcon = (type?: string | null) => {
-    switch (type) {
-      case 'boat': return <Ship className="w-4 h-4" />;
-      case 'mooring': return <Anchor className="w-4 h-4" />;
-      case 'experience': return <Compass className="w-4 h-4" />;
-      default: return <MessageSquare className="w-4 h-4" />;
-    }
-  };
-
-  const getReferenceLabel = (type?: string | null) => {
-    switch (type) {
-      case 'boat': return 'Imbarcazione';
-      case 'mooring': return 'Ormeggio';
-      case 'experience': return 'Esperienza';
-      default: return 'Messaggio';
-    }
-  };
-
-  const getConversationTitle = (conv: ConversationData) => {
-    if (conv.referenceName) return conv.referenceName;
-    if (conv.bookingId) return `Prenotazione #${conv.bookingId}`;
-    return 'Conversazione';
-  };
+  const filteredConversations =
+    conversations?.filter(
+      (conv) =>
+        conv.referenceName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (conv.bookingId && `#${conv.bookingId}`.includes(searchTerm))
+    ) || [];
 
   if (isLoading) {
     return (
@@ -108,48 +134,53 @@ export function ConversationList({
             </div>
           ) : (
             <div className="space-y-1 p-2">
-              {filteredConversations.map((conversation) => (
-                <div
-                  key={conversation.id}
-                  onClick={() => onSelectConversation(conversation.id)}
-                  className={`p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 ${
-                    selectedConversationId === conversation.id ? 'bg-muted' : ''
-                  }`}
-                >
-                  <div className="flex items-start space-x-3">
-                    <Avatar>
-                      <AvatarFallback>
-                        {getReferenceIcon(conversation.referenceType)}
-                      </AvatarFallback>
-                    </Avatar>
-
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between">
-                        <h4 className="font-medium text-sm truncate">
-                          {getConversationTitle(conversation)}
-                        </h4>
-                        <span className="text-xs text-muted-foreground">
-                          {formatDistanceToNow(new Date(conversation.lastMessageAt), { 
-                            addSuffix: true, 
-                            locale: it 
-                          })}
-                        </span>
+              {filteredConversations.map((conversation) => {
+                const cfg = typeConfig[conversation.referenceType || ''] || defaultConfig;
+                const isSelected = selectedConversationId === conversation.id;
+                return (
+                  <div
+                    key={conversation.id}
+                    onClick={() => onSelectConversation(conversation.id)}
+                    className={`p-3 rounded-xl cursor-pointer transition-colors border ${cfg.hoverBg} ${
+                      isSelected
+                        ? `${cfg.selectedBg} border-current/20`
+                        : 'border-transparent'
+                    }`}
+                  >
+                    <div className="flex items-start space-x-3">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${cfg.avatarBg} ${cfg.avatarText}`}>
+                        {cfg.icon}
                       </div>
 
-                      <div className="flex items-center space-x-2 mt-1">
-                        <Badge variant="secondary" className="text-xs">
-                          {getReferenceLabel(conversation.referenceType)}
-                        </Badge>
-                        {conversation.bookingId && (
-                          <Badge variant="outline" className="text-xs">
-                            Prenotazione #{conversation.bookingId}
-                          </Badge>
-                        )}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
+                          <h4 className="font-semibold text-sm truncate">
+                            {getConversationTitle(conversation)}
+                          </h4>
+                          <span className="text-xs text-muted-foreground ml-2 flex-shrink-0">
+                            {formatDistanceToNow(new Date(conversation.lastMessageAt), {
+                              addSuffix: true,
+                              locale: it,
+                            })}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center space-x-2">
+                          <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${cfg.badgeBg} ${cfg.badgeText}`}>
+                            {cfg.icon}
+                            {cfg.label}
+                          </span>
+                          {conversation.bookingId && (
+                            <span className="text-xs text-muted-foreground">
+                              Prenotazione #{conversation.bookingId}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </ScrollArea>

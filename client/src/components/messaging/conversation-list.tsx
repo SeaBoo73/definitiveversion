@@ -3,8 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Search, MessageSquare, Ship, Anchor, Compass } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { Search, MessageSquare, Ship, Anchor, Compass, CalendarDays } from 'lucide-react';
+import { formatDistanceToNow, format } from 'date-fns';
 import { it } from 'date-fns/locale';
 
 interface ConversationData {
@@ -17,6 +17,9 @@ interface ConversationData {
   referenceName?: string | null;
   createdAt: string;
   lastMessageAt: string;
+  bookingStartDate?: string | null;
+  bookingEndDate?: string | null;
+  bookingStatus?: string | null;
 }
 
 interface ConversationListProps {
@@ -165,14 +168,15 @@ export function ConversationList({
                           </span>
                         </div>
 
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center flex-wrap gap-2">
                           <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full ${cfg.badgeBg} ${cfg.badgeText}`}>
                             {cfg.icon}
                             {cfg.label}
                           </span>
-                          {conversation.bookingId && (
-                            <span className="text-xs text-muted-foreground">
-                              Prenotazione #{conversation.bookingId}
+                          {conversation.bookingStartDate && conversation.bookingEndDate && (
+                            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                              <CalendarDays className="w-3 h-3" />
+                              {format(new Date(conversation.bookingStartDate), "dd MMM", { locale: it })} → {format(new Date(conversation.bookingEndDate), "dd MMM yyyy", { locale: it })}
                             </span>
                           )}
                         </div>

@@ -36,7 +36,7 @@ export function ConversationList({
 
   const { data: conversations, isLoading } = useQuery<ConversationData[]>({
     queryKey: ['/api/user/conversations'],
-    refetchInterval: 30000,
+    refetchInterval: 5000,
   });
 
   const filteredConversations = conversations?.filter((conv) =>

@@ -53,7 +53,7 @@ export function ChatInterface({ conversationId, currentUserId, onClose }: ChatIn
       if (!response.ok) throw new Error('Errore nel caricamento messaggi');
       return response.json();
     },
-    refetchInterval: 10000,
+    refetchInterval: 2000,
   });
 
   const { data: conversation } = useQuery<ConversationData>({

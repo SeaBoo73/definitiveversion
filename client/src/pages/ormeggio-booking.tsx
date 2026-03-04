@@ -308,7 +308,6 @@ export default function OrmeggioBookingPage() {
                     <Shield className="h-4 w-4 mr-1" />
                     Prenotazione sicura con Stripe
                   </div>
-                  <p>Cancellazione gratuita fino a 24h prima</p>
                 </div>
 
                 {mooring.contactName && (

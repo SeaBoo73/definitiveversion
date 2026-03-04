@@ -1956,29 +1956,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      if (customerUser?.email) {
-        const emailData = {
-          customerName: `${customerUser.firstName || ''} ${customerUser.lastName || ''}`.trim() || customerUser.username,
-          customerEmail: customerUser.email,
-          ownerName,
-          ownerEmail,
-          startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
-          endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
-          boatType: itemType,
-          boatName: itemName,
-          totalPrice: Number(booking.totalPrice),
-          paymentMethod: 'Stripe',
-          bookingCode,
-        };
-
-        EmailService.sendCustomerConfirmationEmail(emailData).catch(err =>
-          console.error("Email conferma cliente fallita:", err)
-        );
-        EmailService.sendBookingNotification(emailData).catch(err =>
-          console.error("Email notifica piattaforma fallita:", err)
-        );
-      }
-
       res.json(booking);
     } catch (error: any) {
       console.error("Create booking error:", error);
@@ -2872,18 +2849,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         if (bookingId) {
           try {
+            const bid = parseInt(bookingId);
             if (bookingType === 'mooring') {
-              await storage.updateMooringBooking(parseInt(bookingId), {
+              await storage.updateMooringBooking(bid, {
                 status: 'confirmed',
                 stripePaymentIntentId: paymentIntent.id,
               });
               console.log(`Mooring booking ${bookingId} confirmed`);
             } else {
-              await storage.updateBooking(parseInt(bookingId), {
+              const updatedBooking = await storage.updateBooking(bid, {
                 status: 'confirmed',
                 stripePaymentIntentId: paymentIntent.id,
               });
               console.log(`Boat booking ${bookingId} confirmed`);
+
+              // Send confirmation emails only after successful payment
+              try {
+                const booking = await storage.getBooking(bid);
+                if (booking) {
+                  const customerUser = await storage.getUser(booking.customerId);
+                  let ownerName = 'Proprietario SeaBoo';
+                  let ownerEmail = '';
+                  let itemName = 'Prenotazione';
+                  let itemType = 'Imbarcazione';
+                  if (booking.boatId) {
+                    const boat = await storage.getBoat(booking.boatId);
+                    if (boat) {
+                      itemName = boat.name;
+                      const owner = await storage.getUser(boat.hostId);
+                      if (owner) {
+                        ownerName = `${owner.firstName || ''} ${owner.lastName || ''}`.trim() || owner.username;
+                        ownerEmail = owner.email;
+                      }
+                    }
+                  }
+                  if (customerUser?.email) {
+                    const bookingCode = `SB-${bid.toString(36).toUpperCase()}-${bid}`;
+                    const emailData = {
+                      customerName: `${customerUser.firstName || ''} ${customerUser.lastName || ''}`.trim() || customerUser.username,
+                      customerEmail: customerUser.email,
+                      ownerName,
+                      ownerEmail,
+                      startDate: new Date(booking.startDate).toLocaleDateString('it-IT'),
+                      endDate: new Date(booking.endDate).toLocaleDateString('it-IT'),
+                      boatType: itemType,
+                      boatName: itemName,
+                      totalPrice: Number(booking.totalPrice),
+                      paymentMethod: 'Stripe',
+                      bookingCode,
+                    };
+                    EmailService.sendCustomerConfirmationEmail(emailData).catch(err =>
+                      console.error("Email conferma cliente fallita:", err)
+                    );
+                    EmailService.sendBookingNotification(emailData).catch(err =>
+                      console.error("Email notifica piattaforma fallita:", err)
+                    );
+                  }
+                }
+              } catch (emailErr) {
+                console.error(`Error sending confirmation emails for booking ${bookingId}:`, emailErr);
+              }
             }
           } catch (err) {
             console.error(`Error updating booking ${bookingId} status:`, err);

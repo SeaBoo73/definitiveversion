@@ -436,7 +436,6 @@ export function BoatDetail() {
                     <Shield className="h-4 w-4 mr-1" />
                     Prenotazione sicura con Stripe
                   </div>
-                  <div className="mt-1">Cancellazione gratuita fino a 24h prima</div>
                 </div>
 
               </CardContent>

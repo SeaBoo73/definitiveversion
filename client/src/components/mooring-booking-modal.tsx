@@ -321,10 +321,16 @@ export function MooringBookingModal({ mooring, onClose }: MooringBookingModalPro
                     <span>€{mooring.pricePerDay} x {days} {days === 1 ? "giorno" : "giorni"}</span>
                     <span>€{basePrice.toFixed(2)}</span>
                   </div>
+                  {step === "details" && (
+                    <div className="flex justify-between text-gray-500">
+                      <span>Commissione SeaBoo (15%)</span>
+                      <span>€{platformFee.toFixed(2)}</span>
+                    </div>
+                  )}
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">
                     <span>Totale</span>
-                    <span>€{totalPrice.toFixed(2)}</span>
+                    <span>€{(step === "details" ? totalPrice : basePrice).toFixed(2)}</span>
                   </div>
                 </div>
               </CardContent>

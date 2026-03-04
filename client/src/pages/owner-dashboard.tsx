@@ -823,7 +823,7 @@ export default function OwnerDashboard() {
       depositRequired: data.depositRequired || false,
       depositAmount: data.depositAmount || "",
       experienceRequired: data.experienceRequired || false,
-      creditCardRequired: data.creditCardRequired || false,
+      creditCardRequired: data.depositRequired || false,
       securityBriefing: data.securityBriefing || false,
       notes: data.docNotes || "",
     };
@@ -1795,18 +1795,12 @@ export default function OwnerDashboard() {
                               </div>
                             )}
 
-                            <div className="h-px bg-gray-100" />
-
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className="font-medium text-gray-900 text-sm">Carta di credito intestata al conducente</p>
-                                <p className="text-xs text-gray-500">Necessaria per pagamento e garanzie</p>
-                              </div>
-                              <Switch
-                                checked={!!form.watch("creditCardRequired")}
-                                onCheckedChange={(v) => form.setValue("creditCardRequired", v)}
-                              />
-                            </div>
+                            {form.watch("depositRequired") && (
+                              <p className="text-xs text-gray-500 flex items-center gap-1.5">
+                                <span>🔒</span>
+                                Il deposito sarà bloccato su carta di credito intestata al conducente
+                              </p>
+                            )}
                           </div>
 
                           {/* BLOCCO 3: Sicurezza */}

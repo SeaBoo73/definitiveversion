@@ -1929,7 +1929,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         relatedId: booking.id,
       });
 
-      const bookingCode = `SB-${Date.now().toString(36).toUpperCase()}-${booking.id}`;
+      const bookingCode = `SB-${booking.id}`;
       let ownerName = 'Proprietario SeaBoo';
       let ownerEmail = '';
       let itemName = 'Prenotazione';
@@ -2908,7 +2908,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     }
                   }
                   if (customerUser?.email) {
-                    const bookingCode = `SB-${bid.toString(36).toUpperCase()}-${bid}`;
+                    const bookingCode = `SB-${bid}`;
                     const emailData = {
                       customerName: `${customerUser.firstName || ''} ${customerUser.lastName || ''}`.trim() || customerUser.username,
                       customerEmail: customerUser.email,

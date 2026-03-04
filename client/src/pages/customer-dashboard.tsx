@@ -279,7 +279,7 @@ function ReceiptsSection({ bookings }: { bookings: Booking[] }) {
                   <div key={booking.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div>
                       <p className="font-medium">{(booking as any).boatName || `Prenotazione #${booking.id}`}</p>
-                      <p className="text-xs text-gray-400">#{booking.id}</p>
+                      <p className="text-xs text-gray-400">SB-{booking.id}</p>
                       <p className="text-sm text-gray-600">
                         {format(new Date(booking.startDate), "dd MMM", { locale: it })} - {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })} • €{booking.totalPrice}
                       </p>
@@ -656,7 +656,7 @@ export default function CustomerDashboard() {
                           </h3>
                           {getBookingStatusBadge(booking.status || 'pending', booking.endDate)}
                         </div>
-                        <p className="text-xs text-gray-400 -mt-1 mb-2">Prenotazione #{booking.id}</p>
+                        <p className="text-xs text-gray-400 -mt-1 mb-2">Codice: SB-{booking.id}</p>
                         
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                           <div>

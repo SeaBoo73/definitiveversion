@@ -1987,7 +1987,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/owner/bookings', requireAuth, requireOwner, async (req: any, res) => {
     try {
       const bookings = await storage.getBookingsByOwner(req.session.user.id);
-      res.json({ bookings });
+      const enriched = await Promise.all(bookings.map(async (b) => {
+        let boatName: string | null = null;
+        let customerName: string | null = null;
+        let customerEmail: string | null = null;
+        if (b.boatId) {
+          const boat = await storage.getBoat(b.boatId);
+          if (boat) boatName = boat.name;
+        }
+        const customer = await storage.getUser(b.customerId);
+        if (customer) {
+          customerName = `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || customer.username;
+          customerEmail = customer.email;
+        }
+        return { ...b, boatName, customerName, customerEmail };
+      }));
+      res.json({ bookings: enriched });
     } catch (error) {
       console.error("Get owner bookings error:", error);
       res.status(500).json({ error: "Errore nel recupero delle prenotazioni" });

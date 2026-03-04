@@ -89,7 +89,10 @@ import {
   ChevronRight,
   EyeOff,
   Download,
-  Receipt
+  Receipt,
+  ClipboardList,
+  Check,
+  X
 } from "lucide-react";
 
 function ImageCarousel({ images, name, overlay, className = "h-48" }: { images: string[]; name: string; overlay?: React.ReactNode; className?: string }) {
@@ -645,6 +648,23 @@ export default function OwnerDashboard() {
         description: error.message || "Errore nell'eliminazione dell'esperienza",
         variant: "destructive",
       });
+    },
+  });
+
+  const updateBookingStatusMutation = useMutation({
+    mutationFn: async ({ id, status }: { id: number; status: 'confirmed' | 'rejected' }) => {
+      const res = await apiRequest("PATCH", `/api/owner/bookings/${id}/status`, { status });
+      return res.json();
+    },
+    onSuccess: (_, { status }) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/owner/bookings"] });
+      toast({
+        title: status === 'confirmed' ? "Prenotazione confermata" : "Prenotazione rifiutata",
+        description: status === 'confirmed' ? "Il cliente sarà notificato della conferma." : "Il cliente sarà notificato del rifiuto.",
+      });
+    },
+    onError: (error: any) => {
+      toast({ title: "Errore", description: error.message || "Errore nell'aggiornamento dello stato", variant: "destructive" });
     },
   });
 
@@ -1211,6 +1231,11 @@ export default function OwnerDashboard() {
               </Button>
             </div>
           )}
+          {activeTab === 'bookings' && (
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-gray-900">Gestione prenotazioni</h2>
+            </div>
+          )}
           <div className="flex flex-col gap-3">
             <Card 
               className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'boats' ? 'ring-2 ring-ocean-blue' : ''}`}
@@ -1253,6 +1278,26 @@ export default function OwnerDashboard() {
                 <div>
                   <p className="text-gray-600 text-sm">Esperienze</p>
                   <p className="text-2xl font-bold">{experiencesData?.length || 0}</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card
+              className={`cursor-pointer transition-all hover:shadow-md ${activeTab === 'bookings' ? 'ring-2 ring-purple-500' : ''}`}
+              onClick={() => setActiveTab('bookings')}
+            >
+              <CardContent className="flex items-center gap-4 p-4">
+                <div className="p-3 bg-purple-100 rounded-lg">
+                  <ClipboardList className="h-6 w-6 text-purple-600" />
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm">Prenotazioni</p>
+                  <p className="text-2xl font-bold">{bookings?.length || 0}</p>
+                  {bookings?.filter((b: any) => b.status === 'pending').length > 0 && (
+                    <p className="text-xs text-amber-600 font-medium">
+                      {bookings.filter((b: any) => b.status === 'pending').length} in attesa
+                    </p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -3367,6 +3412,109 @@ export default function OwnerDashboard() {
                   );
                 })}
               </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="bookings" className="space-y-4">
+            {!bookings || bookings.length === 0 ? (
+              <Card>
+                <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+                  <ClipboardList className="h-12 w-12 text-gray-300 mb-4" />
+                  <p className="text-gray-500 font-medium">Nessuna prenotazione ricevuta</p>
+                  <p className="text-sm text-gray-400 mt-1">Le prenotazioni dei clienti appariranno qui</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <>
+                {/* Pending bookings first */}
+                {['pending', 'confirmed', 'completed', 'rejected', 'cancelled'].map(statusGroup => {
+                  const grouped = bookings.filter((b: any) => b.status === statusGroup);
+                  if (grouped.length === 0) return null;
+                  const groupLabels: Record<string, string> = {
+                    pending: 'In attesa di conferma',
+                    confirmed: 'Confermate',
+                    completed: 'Completate',
+                    rejected: 'Rifiutate',
+                    cancelled: 'Annullate',
+                  };
+                  const groupColors: Record<string, string> = {
+                    pending: 'text-amber-700 bg-amber-50 border-amber-200',
+                    confirmed: 'text-green-700 bg-green-50 border-green-200',
+                    completed: 'text-blue-700 bg-blue-50 border-blue-200',
+                    rejected: 'text-red-700 bg-red-50 border-red-200',
+                    cancelled: 'text-gray-700 bg-gray-50 border-gray-200',
+                  };
+                  return (
+                    <div key={statusGroup}>
+                      <h3 className={`text-sm font-semibold px-3 py-1 rounded-full inline-block mb-3 border ${groupColors[statusGroup]}`}>
+                        {groupLabels[statusGroup]} ({grouped.length})
+                      </h3>
+                      <div className="space-y-3">
+                        {grouped.map((booking: any) => (
+                          <Card key={booking.id} className={`border-l-4 ${statusGroup === 'pending' ? 'border-l-amber-400' : statusGroup === 'confirmed' ? 'border-l-green-400' : statusGroup === 'rejected' ? 'border-l-red-400' : 'border-l-gray-300'}`}>
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-start gap-4">
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <Ship className="h-4 w-4 text-gray-400 flex-shrink-0" />
+                                    <span className="font-semibold text-gray-900 truncate">{booking.boatName || `Barca #${booking.boatId}`}</span>
+                                    <span className="text-xs text-gray-400">#{booking.id}</span>
+                                  </div>
+                                  <div className="flex items-center gap-1 text-sm text-gray-600 mb-2">
+                                    <Users className="h-3 w-3" />
+                                    <span>{booking.customerName || `Cliente #${booking.customerId}`}</span>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                                    <div>
+                                      <span className="text-gray-500">Date: </span>
+                                      <span className="font-medium">
+                                        {format(new Date(booking.startDate), "dd MMM", { locale: it })} → {format(new Date(booking.endDate), "dd MMM yyyy", { locale: it })}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-500">Totale: </span>
+                                      <span className="font-medium text-green-700">€{Number(booking.totalPrice).toFixed(0)}</span>
+                                    </div>
+                                    {booking.notes && (
+                                      <div className="col-span-2 mt-1">
+                                        <span className="text-gray-500">Note: </span>
+                                        <span className="text-gray-700">{booking.notes}</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                                {statusGroup === 'pending' && (
+                                  <div className="flex flex-col gap-2 flex-shrink-0">
+                                    <Button
+                                      size="sm"
+                                      className="bg-green-600 hover:bg-green-700 text-white"
+                                      onClick={() => updateBookingStatusMutation.mutate({ id: booking.id, status: 'confirmed' })}
+                                      disabled={updateBookingStatusMutation.isPending}
+                                    >
+                                      <Check className="h-4 w-4 mr-1" />
+                                      Conferma
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      className="border-red-300 text-red-600 hover:bg-red-50"
+                                      onClick={() => updateBookingStatusMutation.mutate({ id: booking.id, status: 'rejected' })}
+                                      disabled={updateBookingStatusMutation.isPending}
+                                    >
+                                      <X className="h-4 w-4 mr-1" />
+                                      Rifiuta
+                                    </Button>
+                                  </div>
+                                )}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
             )}
           </TabsContent>
 

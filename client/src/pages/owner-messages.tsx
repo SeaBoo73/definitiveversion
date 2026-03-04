@@ -66,6 +66,7 @@ export default function OwnerMessages() {
             conversationId={selectedConversationId} 
             currentUserId={user.id}
             onClose={() => setSelectedConversationId(null)}
+            isOwner={true}
           />
         </div>
       </div>

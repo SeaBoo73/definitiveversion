@@ -38,9 +38,10 @@ interface ChatInterfaceProps {
   conversationId: number;
   currentUserId: number;
   onClose?: () => void;
+  isOwner?: boolean;
 }
 
-export function ChatInterface({ conversationId, currentUserId, onClose }: ChatInterfaceProps) {
+export function ChatInterface({ conversationId, currentUserId, onClose, isOwner }: ChatInterfaceProps) {
   const [newMessage, setNewMessage] = useState('');
   const [sendError, setSendError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -167,8 +168,12 @@ export function ChatInterface({ conversationId, currentUserId, onClose }: ChatIn
             {(!messages || messages.length === 0) && (
               <div className="text-center text-muted-foreground py-8">
                 <MessageSquare className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                <p>Inizia la conversazione!</p>
-                <p className="text-sm">Scrivi un messaggio per contattare il proprietario</p>
+                <p>Nessun messaggio ancora</p>
+                <p className="text-sm">
+                  {isOwner
+                    ? 'Attendi il messaggio del cliente o scrivi per primo'
+                    : 'Scrivi un messaggio per contattare il proprietario'}
+                </p>
               </div>
             )}
             {messages?.map((message) => (

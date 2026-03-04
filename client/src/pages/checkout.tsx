@@ -26,6 +26,7 @@ interface BookingInfo {
   endDate?: string;
   date?: string;
   participants?: number;
+  deposit?: number;
 }
 
 function parseCheckoutParams(): BookingInfo {
@@ -39,7 +40,9 @@ function parseCheckoutParams(): BookingInfo {
   const date = params.get('date') || undefined;
   const participants = params.get('participants') ? parseInt(params.get('participants')!) : undefined;
 
-  return { type, name, amount, bookingId, startDate, endDate, date, participants };
+  const deposit = params.get('deposit') ? parseFloat(params.get('deposit')!) : undefined;
+
+  return { type, name, amount, bookingId, startDate, endDate, date, participants, deposit };
 }
 
 interface CheckoutFormProps {
@@ -174,9 +177,18 @@ const CheckoutForm = ({ clientSecret, amount, bookingInfo }: CheckoutFormProps) 
         </div>
         <Separator />
         <div className="flex justify-between items-center font-bold text-lg">
-          <span>Totale</span>
-          <span className="text-ocean-blue">{amount.toFixed(2)}</span>
+          <span>Totale da pagare</span>
+          <span className="text-ocean-blue">€{amount.toFixed(2)}</span>
         </div>
+        {bookingInfo.deposit && bookingInfo.deposit > 0 && (
+          <div className="mt-2 p-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+            <div className="flex justify-between text-sm font-medium text-amber-800">
+              <span>Deposito cauzionale</span>
+              <span>€{bookingInfo.deposit.toFixed(2)}</span>
+            </div>
+            <p className="text-xs text-amber-600 mt-0.5">Bloccato su carta ma non addebitato. Restituito al rientro senza danni.</p>
+          </div>
+        )}
       </div>
 
       {!isNativePayLoading && (isApplePayAvailable || isGooglePayAvailable) && (

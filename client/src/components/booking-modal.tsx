@@ -110,6 +110,15 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
   const platformFee = Math.round((basePrice + skipperPrice) * 0.15); // 15% commission
   const totalPrice = basePrice + skipperPrice + platformFee;
 
+  // Parse deposit from boat's documentsRequired JSON
+  let depositRequired = false;
+  let depositAmount = 0;
+  try {
+    const docSettings = JSON.parse(boat.documentsRequired || '{}');
+    depositRequired = !!docSettings.depositRequired;
+    depositAmount = Number(docSettings.depositAmount) || 0;
+  } catch {}
+
   const createBookingMutation = useMutation({
     mutationFn: async (data: BookingFormData) => {
       if (!user?.id) {
@@ -134,7 +143,8 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
         title: "Prenotazione creata",
         description: "Ora procedi con il pagamento",
       });
-      setLocation(`/checkout?type=boat&bookingId=${booking.id}&amount=${totalPrice}&name=${encodeURIComponent(boat.name)}&startDate=${form.getValues("startDate").toISOString()}&endDate=${form.getValues("endDate").toISOString()}`);
+      const depositParam = depositRequired && depositAmount > 0 ? `&deposit=${depositAmount}` : '';
+      setLocation(`/checkout?type=boat&bookingId=${booking.id}&amount=${totalPrice}&name=${encodeURIComponent(boat.name)}&startDate=${form.getValues("startDate").toISOString()}&endDate=${form.getValues("endDate").toISOString()}${depositParam}`);
     },
     onError: (error) => {
       toast({
@@ -372,9 +382,18 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                   )}
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">
-                    <span>Totale</span>
+                    <span>Totale da pagare</span>
                     <span>€{(step === "details" ? totalPrice : basePrice + skipperPrice).toFixed(2)}</span>
                   </div>
+                  {depositRequired && depositAmount > 0 && (
+                    <div className="mt-2 p-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div className="flex justify-between text-sm font-medium text-amber-800">
+                        <span>Deposito cauzionale</span>
+                        <span>€{depositAmount.toFixed(2)}</span>
+                      </div>
+                      <p className="text-xs text-amber-600 mt-0.5">Bloccato su carta ma non addebitato. Restituito al rientro senza danni.</p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

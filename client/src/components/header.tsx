@@ -25,6 +25,7 @@ export function Header() {
   const { user, logoutMutation } = useAuth();
   const [location, setLocation] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [tapFlash, setTapFlash] = useState(false);
   const { favorites, toggleFavorite } = useMooringFavorites();
   const { isOwnerMode } = useOwnerMode();
   const showOwnerNav = isOwnerMode && user?.role === 'owner';
@@ -33,15 +34,29 @@ export function Header() {
     logoutMutation.mutate();
   };
 
+  const scrollPageToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    const main = document.querySelector('main');
+    if (main) main.scrollTo({ top: 0, behavior: 'smooth' });
+    const overflows = document.querySelectorAll('.overflow-y-auto, .overflow-y-scroll');
+    overflows.forEach(el => {
+      if (el instanceof HTMLElement) el.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  };
+
   const handleScrollToTop = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('a, button, [role="button"]')) return;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTapFlash(true);
+    setTimeout(() => setTapFlash(false), 300);
+    scrollPageToTop();
   };
 
   return (
     <header 
-      className="bg-white shadow-sm sticky top-0 z-50 pt-[max(env(safe-area-inset-top),24px)]"
+      className={`bg-white shadow-sm sticky top-0 z-50 pt-[max(env(safe-area-inset-top),24px)] transition-colors duration-150 ${tapFlash ? 'bg-blue-50' : 'bg-white'}`}
       onClick={handleScrollToTop}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

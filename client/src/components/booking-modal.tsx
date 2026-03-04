@@ -337,7 +337,6 @@ export function BookingModal({ boat, onClose }: BookingModalProps) {
                         <p className="font-medium mb-1">Informazioni importanti:</p>
                         <ul className="space-y-1 text-xs">
                           <li>• Il carburante è sempre escluso dal prezzo</li>
-                          <li>• Cancellazione gratuita fino a 24 ore prima</li>
                           <li>• Documento di identità richiesto al ritiro</li>
                           {boat.licenseRequired && <li>• Patente nautica obbligatoria</li>}
                         </ul>

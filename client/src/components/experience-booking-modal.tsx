@@ -239,7 +239,6 @@ export function ExperienceBookingModal({ experience, onClose }: ExperienceBookin
                     <div className="text-sm text-gray-700">
                       <p className="font-medium mb-1">Informazioni importanti:</p>
                       <ul className="space-y-1 text-xs">
-                        <li>• Cancellazione gratuita fino a 24 ore prima</li>
                         <li>• Documento di identità richiesto</li>
                         <li>• Durata esperienza: {experience.duration} ore</li>
                         <li>• Pagamento sicuro con Stripe</li>

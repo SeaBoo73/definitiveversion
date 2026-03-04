@@ -98,10 +98,12 @@ export function BoatCard({ boat }: BoatCardProps) {
         <CardContent className="p-3">
           <div className="flex justify-between items-start mb-1">
             <h3 className="font-semibold text-sm text-gray-900 truncate">{boat.name}</h3>
-            <div className="flex items-center ml-1">
-              <Star className="h-3 w-3 text-yellow-400 fill-current" />
-              <span className="text-xs text-gray-600 ml-0.5">4.8</span>
-            </div>
+            {boat.reviewCount && boat.reviewCount > 0 ? (
+              <div className="flex items-center ml-1">
+                <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                <span className="text-xs text-gray-600 ml-0.5">{boat.rating ? Number(boat.rating).toFixed(1) : "—"}</span>
+              </div>
+            ) : null}
           </div>
           
           <div className="flex items-center text-gray-600 text-xs mb-1">

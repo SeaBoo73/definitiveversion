@@ -296,10 +296,15 @@ export function BoatDetail() {
                     <div className="flex items-center mt-2 text-gray-600">
                       <MapPin className="h-4 w-4 mr-1" />
                       <span>{boatData.port}</span>
-                      <div className="flex items-center ml-4">
-                        <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                        <span>4.8 (127 recensioni)</span>
-                      </div>
+                      {reviews && (reviews as any[]).length > 0 && (
+                        <div className="flex items-center ml-4">
+                          <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
+                          <span>
+                            {((reviews as any[]).reduce((sum: number, r: any) => sum + (r.rating || 0), 0) / (reviews as any[]).length).toFixed(1)}
+                            {" "}({(reviews as any[]).length} {(reviews as any[]).length === 1 ? "recensione" : "recensioni"})
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="text-right">

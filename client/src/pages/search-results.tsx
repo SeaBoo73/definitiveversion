@@ -303,10 +303,12 @@ export function SearchResults() {
                           </span>
                           <span className="text-xs text-gray-500">/gg</span>
                         </div>
-                        <div className="flex items-center">
-                          <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                          <span className="text-xs text-gray-600 ml-0.5">4.8</span>
-                        </div>
+                        {boat.reviewCount && boat.reviewCount > 0 ? (
+                          <div className="flex items-center">
+                            <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                            <span className="text-xs text-gray-600 ml-0.5">{boat.rating ? Number(boat.rating).toFixed(1) : "—"}</span>
+                          </div>
+                        ) : null}
                       </div>
                     </CardContent>
                   </Card>

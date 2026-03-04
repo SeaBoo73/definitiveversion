@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useQuery } from "@tanstack/react-query";
@@ -148,24 +147,21 @@ export function ExperienceBookingModal({ experience, onClose }: ExperienceBookin
                 <CardTitle>Seleziona la data</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <Calendar
-                  mode="single"
-                  selected={selectedDate}
-                  onSelect={setSelectedDate}
-                  locale={it}
-                  disabled={(date) => {
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    return date < today || isDateBlocked(date);
-                  }}
-                  modifiers={{
-                    blocked: (date) => isDateBlocked(date),
-                  }}
-                  modifiersClassNames={{
-                    blocked: 'line-through text-red-300 opacity-50',
-                  }}
-                  className="rounded-md border mx-auto"
-                />
+                <div className="space-y-2">
+                  <Label>Data dell'esperienza</Label>
+                  <input
+                    type="date"
+                    className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background"
+                    value={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''}
+                    min={format(new Date(), 'yyyy-MM-dd')}
+                    onChange={(e) => {
+                      if (!e.target.value) return;
+                      const d = new Date(e.target.value + 'T00:00:00');
+                      if (isDateBlocked(d)) return;
+                      setSelectedDate(d);
+                    }}
+                  />
+                </div>
 
                 {selectedDate && (
                   <div className="bg-blue-50 p-4 rounded-lg text-center">

@@ -4,8 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
@@ -17,7 +15,6 @@ import { z } from "zod";
 import { format, differenceInDays, addDays } from "date-fns";
 import { it } from "date-fns/locale";
 import {
-  Calendar as CalendarIcon,
   Shield,
   AlertCircle,
   X
@@ -218,62 +215,36 @@ export function MooringBookingModal({ mooring, onClose }: MooringBookingModalPro
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label>Check-in</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start text-left font-normal"
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {startDate ? format(startDate, "PPP", { locale: it }) : "Seleziona data"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                          <Calendar
-                            mode="single"
-                            selected={startDate}
-                            onSelect={(date) => form.setValue("startDate", date!)}
-                            disabled={(date) => date < new Date() || isDateBlocked(date)}
-                            modifiers={{
-                              blocked: (date) => isDateBlocked(date),
-                            }}
-                            modifiersClassNames={{
-                              blocked: 'line-through text-red-300 opacity-50',
-                            }}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <input
+                        type="date"
+                        className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background"
+                        value={startDate ? format(startDate, 'yyyy-MM-dd') : ''}
+                        min={format(new Date(), 'yyyy-MM-dd')}
+                        onChange={(e) => {
+                          if (!e.target.value) return;
+                          const d = new Date(e.target.value + 'T00:00:00');
+                          if (isDateBlocked(d)) return;
+                          form.setValue("startDate", d);
+                          if (endDate && d >= endDate) {
+                            form.setValue("endDate", addDays(d, 1));
+                          }
+                        }}
+                      />
                     </div>
-
                     <div className="space-y-2">
                       <Label>Check-out</Label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-start text-left font-normal"
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {endDate ? format(endDate, "PPP", { locale: it }) : "Seleziona data"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0">
-                          <Calendar
-                            mode="single"
-                            selected={endDate}
-                            onSelect={(date) => form.setValue("endDate", date!)}
-                            disabled={(date) => date <= startDate || isDateBlocked(date)}
-                            modifiers={{
-                              blocked: (date) => isDateBlocked(date),
-                            }}
-                            modifiersClassNames={{
-                              blocked: 'line-through text-red-300 opacity-50',
-                            }}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
+                      <input
+                        type="date"
+                        className="w-full border border-input rounded-md px-3 py-2 text-sm bg-background"
+                        value={endDate ? format(endDate, 'yyyy-MM-dd') : ''}
+                        min={startDate ? format(addDays(startDate, 1), 'yyyy-MM-dd') : format(addDays(new Date(), 1), 'yyyy-MM-dd')}
+                        onChange={(e) => {
+                          if (!e.target.value) return;
+                          const d = new Date(e.target.value + 'T00:00:00');
+                          if (isDateBlocked(d)) return;
+                          form.setValue("endDate", d);
+                        }}
+                      />
                     </div>
                   </div>
 

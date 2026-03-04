@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { ReviewForm } from "@/components/review-form";
 import {
@@ -165,6 +166,12 @@ const boatFormSchema = insertBoatSchema.omit({ hostId: true }).extend({
   cancellationPolicy: z.enum(["flexible", "moderate", "strict", "super_strict"]).optional().default("moderate"),
   refundMethod: z.enum(["credit_card", "bank_transfer", "paypal", "seaboo_credit"]).optional().default("credit_card"),
   coverImage: z.number().optional().default(0),
+  depositRequired: z.boolean().optional().default(false),
+  depositAmount: z.string().optional().default(""),
+  experienceRequired: z.boolean().optional().default(false),
+  creditCardRequired: z.boolean().optional().default(false),
+  securityBriefing: z.boolean().optional().default(false),
+  docNotes: z.string().optional().default(""),
 });
 
 type BoatFormData = z.infer<typeof boatFormSchema>;
@@ -398,6 +405,12 @@ export default function OwnerDashboard() {
       active: true,
       cancellationPolicy: "moderate",
       refundMethod: "credit_card",
+      depositRequired: false,
+      depositAmount: "",
+      experienceRequired: false,
+      creditCardRequired: false,
+      securityBriefing: false,
+      docNotes: "",
     },
   });
 
@@ -805,9 +818,20 @@ export default function OwnerDashboard() {
   const onSubmit = (data: BoatFormData) => {
     console.log("Form validation passed! Submitting data:", data);
     console.log("Form errors (should be empty):", form.formState.errors);
+
+    const docSettings = {
+      depositRequired: data.depositRequired || false,
+      depositAmount: data.depositAmount || "",
+      experienceRequired: data.experienceRequired || false,
+      creditCardRequired: data.creditCardRequired || false,
+      securityBriefing: data.securityBriefing || false,
+      notes: data.docNotes || "",
+    };
     
+    const { depositRequired, depositAmount, experienceRequired, creditCardRequired, securityBriefing, docNotes, ...rest } = data;
+
     const processedData = {
-      ...data,
+      ...rest,
       hostId: Number(user?.id) || 0,
       pricePerDay: data.pricePerDay,
       maxPersons: parseInt(data.maxPersons),
@@ -816,6 +840,7 @@ export default function OwnerDashboard() {
       cancellationPolicy: data.cancellationPolicy,
       refundMethod: data.refundMethod,
       coverImage: data.coverImage || 0,
+      documentsRequired: JSON.stringify(docSettings),
     };
     
     if (editingBoat) {
@@ -1067,6 +1092,8 @@ export default function OwnerDashboard() {
 
   const openEditModal = (boat: Boat) => {
     setEditingBoat(boat);
+    let docSettings: any = {};
+    try { docSettings = JSON.parse(boat.documentsRequired || '{}'); } catch {}
     form.reset({
       ...boat,
       pricePerDay: boat.pricePerDay.toString(),
@@ -1076,6 +1103,12 @@ export default function OwnerDashboard() {
       cancellationPolicy: boat.cancellationPolicy || "moderate",
       refundMethod: boat.refundMethod || "credit_card",
       coverImage: boat.coverImage || 0,
+      depositRequired: docSettings.depositRequired || false,
+      depositAmount: docSettings.depositAmount || "",
+      experienceRequired: docSettings.experienceRequired || false,
+      creditCardRequired: docSettings.creditCardRequired || false,
+      securityBriefing: docSettings.securityBriefing || false,
+      docNotes: docSettings.notes || "",
     });
     setShowAddBoatModal(true);
   };
@@ -1677,107 +1710,130 @@ export default function OwnerDashboard() {
                         <div className="space-y-3">
                           <Label className="flex items-center gap-2 text-lg font-medium">
                             <FileText className="h-5 w-5 text-orange-600" />
-                            Documenti richiesti
+                            Requisiti per il noleggio
                           </Label>
-                          <div className="bg-white rounded-lg border border-orange-200 p-4 space-y-3">
-                            <p className="text-sm text-gray-600 mb-4">Seleziona i documenti necessari per il noleggio:</p>
-                            
-                            <div className="grid grid-cols-1 gap-3">
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">📄 Documento di identità valido</span>
-                                  <p className="text-sm text-gray-500">Carta d'identità o passaporto in corso di validità</p>
-                                </div>
-                              </label>
 
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">⚓ Patente nautica</span>
-                                  <p className="text-sm text-gray-500">Obbligatoria per motori oltre 40 HP</p>
-                                </div>
-                              </label>
+                          {/* BLOCCO 1: Requisiti conducente */}
+                          <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-orange-600">Requisiti conducente</p>
 
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">🛡️ Deposito cauzionale</span>
-                                  <p className="text-sm text-gray-500">Garanzia per eventuali danni (trattenuta su carta di credito)</p>
-                                </div>
-                              </label>
-
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">🌊 Esperienza di navigazione</span>
-                                  <p className="text-sm text-gray-500">Dichiarazione o certificato di esperienza marina</p>
-                                </div>
-                              </label>
-
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">💳 Carta di credito intestata</span>
-                                  <p className="text-sm text-gray-500">Per il pagamento e le garanzie</p>
-                                </div>
-                              </label>
-
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">📋 Briefing di sicurezza</span>
-                                  <p className="text-sm text-gray-500">Partecipazione obbligatoria al briefing pre-partenza</p>
-                                </div>
-                              </label>
-
-                              <label className="flex items-center space-x-3 p-3 rounded-lg hover:bg-orange-50 cursor-pointer border">
-                                <input 
-                                  type="checkbox" 
-                                  className="w-4 h-4 text-orange-600 border-orange-300 rounded focus:ring-orange-500"
-                                />
-                                <div className="flex-1">
-                                  <span className="font-medium text-gray-900">🎓 Età minima 18 anni</span>
-                                  <p className="text-sm text-gray-500">Maggiore età per il conduttore dell'imbarcazione</p>
-                                </div>
-                              </label>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">Documento di identità valido</p>
+                                <p className="text-xs text-gray-500">Carta d'identità o passaporto — sempre obbligatorio</p>
+                              </div>
+                              <Switch checked={true} disabled className="opacity-50" />
                             </div>
 
-                            <div className="mt-4 p-3 bg-orange-50 rounded-lg">
-                              <p className="text-sm text-orange-800">
-                                <strong>💡 Suggerimento:</strong> Seleziona solo i documenti realmente necessari per la tua imbarcazione. 
-                                Requisiti eccessivi potrebbero scoraggiare i clienti.
-                              </p>
+                            <div className="h-px bg-gray-100" />
+
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1 pr-4">
+                                <div className="flex items-center gap-2">
+                                  <p className="font-medium text-gray-900 text-sm">Patente nautica</p>
+                                  {form.watch("licenseRequired") && (
+                                    <span className="text-[10px] bg-blue-100 text-blue-700 font-semibold px-2 py-0.5 rounded-full">Obbligatoria</span>
+                                  )}
+                                </div>
+                                <p className="text-xs text-gray-500">Richiesta per motori oltre 40 HP</p>
+                              </div>
+                              <Switch
+                                checked={!!form.watch("licenseRequired")}
+                                onCheckedChange={(v) => form.setValue("licenseRequired", v)}
+                              />
+                            </div>
+
+                            <div className="h-px bg-gray-100" />
+
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">Esperienza di navigazione</p>
+                                <p className="text-xs text-gray-500">Dichiarazione o certificato di esperienza marina</p>
+                              </div>
+                              <Switch
+                                checked={!!form.watch("experienceRequired")}
+                                onCheckedChange={(v) => form.setValue("experienceRequired", v)}
+                              />
+                            </div>
+
+                            <div className="h-px bg-gray-100" />
+
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">Età minima 18 anni</p>
+                                <p className="text-xs text-gray-500">Maggiore età per il conduttore — sempre obbligatoria per legge</p>
+                              </div>
+                              <Switch checked={true} disabled className="opacity-50" />
                             </div>
                           </div>
-                          
+
+                          {/* BLOCCO 2: Garanzie economiche */}
+                          <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-orange-600">Garanzie economiche</p>
+
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">Deposito cauzionale</p>
+                                <p className="text-xs text-gray-500">Trattenuta su carta di credito per eventuali danni</p>
+                              </div>
+                              <Switch
+                                checked={!!form.watch("depositRequired")}
+                                onCheckedChange={(v) => form.setValue("depositRequired", v)}
+                              />
+                            </div>
+
+                            {form.watch("depositRequired") && (
+                              <div className="flex items-center gap-3 pl-1">
+                                <Label className="text-xs text-gray-600 whitespace-nowrap">Importo (€)</Label>
+                                <Input
+                                  type="number"
+                                  min="0"
+                                  placeholder="es. 500"
+                                  className="h-8 text-sm border-orange-200 focus:border-orange-500 w-32"
+                                  {...form.register("depositAmount")}
+                                />
+                              </div>
+                            )}
+
+                            <div className="h-px bg-gray-100" />
+
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">Carta di credito intestata al conducente</p>
+                                <p className="text-xs text-gray-500">Necessaria per pagamento e garanzie</p>
+                              </div>
+                              <Switch
+                                checked={!!form.watch("creditCardRequired")}
+                                onCheckedChange={(v) => form.setValue("creditCardRequired", v)}
+                              />
+                            </div>
+                          </div>
+
+                          {/* BLOCCO 3: Sicurezza */}
+                          <div className="bg-white rounded-xl border border-orange-200 p-4 space-y-4">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-orange-600">Sicurezza</p>
+
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">Briefing di sicurezza obbligatorio</p>
+                                <p className="text-xs text-gray-500">Il cliente deve partecipare al briefing pre-partenza</p>
+                              </div>
+                              <Switch
+                                checked={!!form.watch("securityBriefing")}
+                                onCheckedChange={(v) => form.setValue("securityBriefing", v)}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Note aggiuntive */}
                           <div className="space-y-2">
-                            <Label htmlFor="documentsRequired" className="text-sm font-medium text-gray-700">
-                              Note aggiuntive sui documenti (opzionale)
+                            <Label className="text-sm font-medium text-gray-700">
+                              Note aggiuntive (opzionale)
                             </Label>
-                            <Textarea 
-                              id="documentsRequired" 
-                              placeholder="es. Note specifiche, documenti particolari, condizioni speciali..."
+                            <Textarea
+                              placeholder="es. Condizioni particolari, documenti speciali richiesti..."
                               rows={2}
-                              {...form.register("documentsRequired")} 
+                              {...form.register("docNotes")}
                               className="border-orange-200 focus:border-orange-500"
                             />
                           </div>

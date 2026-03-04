@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient as qc } from "@/lib/queryClient";
@@ -32,9 +32,9 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selStart, setSelStart] = useState<Date | null>(null);
   const [selEnd, setSelEnd] = useState<Date | null>(null);
-  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
   const [showDialog, setShowDialog] = useState(false);
   const [dayPrice, setDayPrice] = useState<string>('');
+  const [endDateStr, setEndDateStr] = useState<string>('');
   
   const { toast } = useToast();
 
@@ -132,16 +132,8 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   const isInSelection = (date: Date): boolean => {
     if (!selStart) return false;
-    if (selEnd) {
-      return !isBefore(date, selStart) && !isAfter(date, selEnd);
-    }
-    return isSameDay(date, selStart);
-  };
-
-  const isInHoverRange = (date: Date): boolean => {
-    if (!selStart || selEnd || !hoveredDate) return false;
-    if (isBefore(hoveredDate, selStart)) return false;
-    return !isBefore(date, selStart) && !isAfter(date, hoveredDate);
+    const end = selEnd || selStart;
+    return !isBefore(date, selStart) && !isAfter(date, end);
   };
 
   const getDayClass = (date: Date): string => {
@@ -155,10 +147,6 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
     if (isInSelection(date)) {
       return base + "bg-blue-500 text-white border-blue-600 ";
     }
-
-    if (isInHoverRange(date)) {
-      return base + "bg-blue-200 border-blue-400 ";
-    }
     
     if (avail) {
       if (avail.status === 'booked') return base + "bg-purple-100 text-purple-800 border-purple-300 ";
@@ -171,36 +159,23 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   const handleDateClick = (date: Date) => {
     if (isBefore(date, new Date()) && !isSameDay(date, new Date())) return;
-
-    if (!selStart) {
-      setSelStart(date);
-      setSelEnd(null);
-    } else if (!selEnd) {
-      if (isSameDay(date, selStart)) {
-        setDayPrice('');
-        const avail = getAvailabilityForDate(date);
-        if (avail?.priceOverride) setDayPrice(String(avail.priceOverride));
-        setShowDialog(true);
-      } else if (isBefore(date, selStart)) {
-        setSelStart(date);
-      } else {
-        setSelEnd(date);
-        setDayPrice('');
-        setShowDialog(true);
-      }
-    } else {
-      setSelStart(date);
-      setSelEnd(null);
-    }
+    const avail = getAvailabilityForDate(date);
+    setSelStart(date);
+    setSelEnd(null);
+    setDayPrice(avail?.priceOverride ? String(avail.priceOverride) : '');
+    setEndDateStr(format(date, 'yyyy-MM-dd'));
+    setShowDialog(true);
   };
 
   const handleSetStatus = (status: string) => {
     if (!selStart) return;
-    const end = selEnd || selStart;
+    const endDate = endDateStr ? new Date(endDateStr + 'T12:00:00') : selStart;
+    const effectiveEnd = isAfter(endDate, selStart) ? endDate : selStart;
+    setSelEnd(effectiveEnd);
     const priceVal = dayPrice ? parseFloat(dayPrice) : undefined;
     setRangeStatusMutation.mutate({
       startDate: selStart.toISOString().split('T')[0],
-      endDate: end.toISOString().split('T')[0],
+      endDate: effectiveEnd.toISOString().split('T')[0],
       status,
       priceOverride: priceVal && !isNaN(priceVal) ? priceVal : undefined
     });
@@ -208,36 +183,26 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
   const handleClear = () => {
     if (!selStart) return;
-    const end = selEnd || selStart;
+    const endDate = endDateStr ? new Date(endDateStr + 'T12:00:00') : selStart;
+    const effectiveEnd = isAfter(endDate, selStart) ? endDate : selStart;
+    setSelEnd(effectiveEnd);
     clearRangeMutation.mutate({
       startDate: selStart.toISOString().split('T')[0],
-      endDate: end.toISOString().split('T')[0]
+      endDate: effectiveEnd.toISOString().split('T')[0]
     });
   };
 
   const isPending = setRangeStatusMutation.isPending || clearRangeMutation.isPending;
 
-  const selectedDayCount = selStart && selEnd
-    ? Math.ceil((selEnd.getTime() - selStart.getTime()) / (1000 * 60 * 60 * 24)) + 1
-    : selStart ? 1 : 0;
-
   const firstDayOfWeek = monthStart.getDay();
   const emptyDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-
-  const dialogTitle = () => {
-    if (!selStart) return '';
-    if (!selEnd || isSameDay(selStart, selEnd)) {
-      return format(selStart, 'd MMMM yyyy', { locale: it });
-    }
-    return `${format(selStart, 'd MMM', { locale: it })} - ${format(selEnd, 'd MMM yyyy', { locale: it })}`;
-  };
 
   return (
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-bold">Gestione Disponibilità</h2>
         <p className="text-gray-600">
-          {boat?.name} - Tocca un giorno o seleziona un intervallo
+          {boat?.name} — Tocca un giorno per gestirlo
         </p>
       </div>
 
@@ -247,11 +212,6 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
             <CardTitle className="flex items-center space-x-2">
               <Calendar className="w-5 h-5" />
               <span>Calendario</span>
-              {selStart && !showDialog && (
-                <Badge variant="secondary" className="text-xs">
-                  {selectedDayCount === 1 ? '1 giorno' : `${selectedDayCount} giorni`}
-                </Badge>
-              )}
             </CardTitle>
             <div className="flex items-center space-x-2">
               <Button variant="outline" size="sm" onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}>
@@ -325,12 +285,6 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
                     key={date.toISOString()}
                     className={getDayClass(date)}
                     onClick={() => handleDateClick(date)}
-                    onMouseEnter={() => {
-                      if (selStart && !selEnd && !isBefore(date, selStart)) {
-                        setHoveredDate(date);
-                      }
-                    }}
-                    onMouseLeave={() => setHoveredDate(null)}
                   >
                     <div className="text-sm font-semibold">{format(date, 'd')}</div>
                     {avail && !isInSelection(date) && (
@@ -350,14 +304,6 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
               })}
             </div>
           )}
-
-          {(selStart || selEnd) && !showDialog && (
-            <div className="mt-3 flex justify-end">
-              <Button variant="ghost" size="sm" onClick={() => { setSelStart(null); setSelEnd(null); }}>
-                Annulla selezione
-              </Button>
-            </div>
-          )}
         </CardContent>
       </Card>
 
@@ -367,12 +313,29 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
       }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>{dialogTitle()}</DialogTitle>
+            <DialogTitle>
+              {selStart ? format(selStart, 'd MMMM yyyy', { locale: it }) : ''}
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            {selectedDayCount > 1 && (
-              <p className="text-sm text-gray-500">{selectedDayCount} giorni selezionati</p>
-            )}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-gray-600">Data inizio</label>
+                <div className="border border-gray-200 rounded-md px-3 py-2 text-sm bg-gray-50 text-gray-700">
+                  {selStart ? format(selStart, 'dd/MM/yyyy') : '—'}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-medium text-gray-600">Data fine</label>
+                <input
+                  type="date"
+                  value={endDateStr}
+                  min={selStart ? format(selStart, 'yyyy-MM-dd') : ''}
+                  onChange={(e) => setEndDateStr(e.target.value)}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
 
             <div className="space-y-1">
               <label className="text-sm font-medium">Prezzo giornaliero (€)</label>
@@ -392,7 +355,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
               <div className="flex flex-col gap-2">
                 <Button
                   variant="outline"
-                  className="w-full justify-start"
+                  className="w-full justify-start border-green-200 hover:bg-green-50"
                   onClick={() => handleSetStatus('available')}
                   disabled={isPending}
                 >
@@ -401,7 +364,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
                 </Button>
                 <Button
                   variant="outline"
-                  className="w-full justify-start"
+                  className="w-full justify-start border-red-200 hover:bg-red-50"
                   onClick={() => handleSetStatus('blocked')}
                   disabled={isPending}
                 >
@@ -413,7 +376,7 @@ export function OwnerAvailabilityManager({ boatId }: OwnerAvailabilityManagerPro
 
             <Button
               variant="ghost"
-              className="w-full text-gray-500"
+              className="w-full text-gray-500 text-sm"
               onClick={handleClear}
               disabled={isPending}
             >

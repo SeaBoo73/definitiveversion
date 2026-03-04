@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 interface BookingEmailData {
   customerName: string;
@@ -35,52 +35,65 @@ interface MooringBookingEmailData {
   notes?: string;
 }
 
+// Resend integration - credentials fetched from Replit Connectors
+async function getResendClient() {
+  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
+  const xReplitToken = process.env.REPL_IDENTITY
+    ? 'repl ' + process.env.REPL_IDENTITY
+    : process.env.WEB_REPL_RENEWAL
+    ? 'depl ' + process.env.WEB_REPL_RENEWAL
+    : null;
+
+  if (!xReplitToken || !hostname) {
+    throw new Error('Replit connector token not available');
+  }
+
+  const connectionSettings = await fetch(
+    'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=resend',
+    {
+      headers: {
+        'Accept': 'application/json',
+        'X-Replit-Token': xReplitToken
+      }
+    }
+  ).then(res => res.json()).then((data: any) => data.items?.[0]);
+
+  if (!connectionSettings || !connectionSettings.settings.api_key) {
+    throw new Error('Resend not connected');
+  }
+
+  return {
+    client: new Resend(connectionSettings.settings.api_key),
+    fromEmail: connectionSettings.settings.from_email || 'SeaBoo <onboarding@resend.dev>'
+  };
+}
+
 export class EmailService {
   private static readonly NOTIFICATION_EMAIL = "app.seago.italia@gmail.com";
-  
-  private static createTransporter() {
-    return nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: (process.env.GMAIL_USER || '').trim(),
-        pass: (process.env.GMAIL_APP_PASSWORD || '').replace(/\s/g, '').trim()
-      }
-    });
-  }
 
   static async sendBookingNotification(data: BookingEmailData): Promise<boolean> {
     try {
       const emailContent = this.formatBookingEmail(data);
-      
+
       console.log("=== INVIO EMAIL NOTIFICATION ===");
       console.log(`To: ${this.NOTIFICATION_EMAIL}`);
       console.log(`Subject: Nuova Prenotazione SeaBoo - ${data.bookingCode}`);
-      console.log(emailContent);
       console.log("===============================");
 
-      // Try to send real email if Gmail credentials are available
-      if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-        const transporter = this.createTransporter();
-        
-        const mailOptions = {
-          from: process.env.GMAIL_USER,
-          to: this.NOTIFICATION_EMAIL,
-          subject: `🚤 Nuova Prenotazione SeaBoo - ${data.bookingCode}`,
-          text: emailContent,
-          html: this.formatBookingEmailHTML(data)
-        };
+      const { client, fromEmail } = await getResendClient();
 
-        const result = await transporter.sendMail(mailOptions);
-        console.log("✅ EMAIL INVIATA CON SUCCESSO:", result.messageId);
-        
-        await this.saveEmailBackup(data, emailContent);
-        return true;
-      } else {
-        console.log("⚠️ Credenziali Gmail non configurate, salvo solo log");
-        await this.saveEmailBackup(data, emailContent);
-        return false;
-      }
-      
+      const result = await client.emails.send({
+        from: fromEmail || 'SeaBoo <onboarding@resend.dev>',
+        to: this.NOTIFICATION_EMAIL,
+        subject: `🚤 Nuova Prenotazione SeaBoo - ${data.bookingCode}`,
+        text: emailContent,
+        html: this.formatBookingEmailHTML(data)
+      });
+
+      console.log("✅ EMAIL INVIATA CON SUCCESSO via Resend:", result.data?.id);
+      await this.saveEmailBackup(data, emailContent);
+      return true;
+
     } catch (error) {
       console.error("❌ Errore invio email:", error);
       await this.saveEmailBackup(data, this.formatBookingEmail(data));
@@ -91,39 +104,48 @@ export class EmailService {
   static async sendMooringBookingNotification(data: MooringBookingEmailData): Promise<boolean> {
     try {
       const emailContent = this.formatMooringBookingEmail(data);
-      
+
       console.log("=== INVIO EMAIL NOTIFICATION ORMEGGIO ===");
       console.log(`To: ${this.NOTIFICATION_EMAIL}`);
       console.log(`Subject: Nuova Prenotazione Ormeggio SeaBoo - ${data.bookingCode}`);
-      console.log(emailContent);
       console.log("=========================================");
 
-      // Try to send real email if Gmail credentials are available
-      if (process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD) {
-        const transporter = this.createTransporter();
-        
-        const mailOptions = {
-          from: process.env.GMAIL_USER,
-          to: this.NOTIFICATION_EMAIL,
-          subject: `⚓ Nuova Prenotazione Ormeggio SeaBoo - ${data.bookingCode}`,
-          text: emailContent,
-          html: this.formatMooringBookingEmailHTML(data)
-        };
+      const { client, fromEmail } = await getResendClient();
 
-        const result = await transporter.sendMail(mailOptions);
-        console.log("✅ EMAIL ORMEGGIO INVIATA CON SUCCESSO:", result.messageId);
-        
-        await this.saveMooringEmailBackup(data, emailContent);
-        return true;
-      } else {
-        console.log("⚠️ Credenziali Gmail non configurate, salvo solo log ormeggio");
-        await this.saveMooringEmailBackup(data, emailContent);
-        return false;
-      }
-      
+      const result = await client.emails.send({
+        from: fromEmail || 'SeaBoo <onboarding@resend.dev>',
+        to: this.NOTIFICATION_EMAIL,
+        subject: `⚓ Nuova Prenotazione Ormeggio SeaBoo - ${data.bookingCode}`,
+        text: emailContent,
+        html: this.formatMooringBookingEmailHTML(data)
+      });
+
+      console.log("✅ EMAIL ORMEGGIO INVIATA CON SUCCESSO via Resend:", result.data?.id);
+      await this.saveMooringEmailBackup(data, emailContent);
+      return true;
+
     } catch (error) {
       console.error("❌ Errore invio email ormeggio:", error);
       await this.saveMooringEmailBackup(data, this.formatMooringBookingEmail(data));
+      return false;
+    }
+  }
+
+  static async sendCustomerConfirmationEmail(data: BookingEmailData): Promise<boolean> {
+    try {
+      const { client, fromEmail } = await getResendClient();
+
+      const result = await client.emails.send({
+        from: fromEmail || 'SeaBoo <onboarding@resend.dev>',
+        to: data.customerEmail,
+        subject: `Conferma Prenotazione SeaBoo - ${data.bookingCode}`,
+        html: this.formatCustomerConfirmationHTML(data)
+      });
+
+      console.log("✅ EMAIL CONFERMA CLIENTE INVIATA via Resend:", result.data?.id);
+      return true;
+    } catch (error) {
+      console.error("❌ Errore invio email conferma cliente:", error);
       return false;
     }
   }
@@ -140,7 +162,6 @@ export class EmailService {
         data,
         status: 'logged'
       };
-
       fs.default.appendFileSync('booking-notifications.log', JSON.stringify(emailLog) + '\n');
     } catch (error) {
       console.error("Errore salvataggio backup:", error);
@@ -245,13 +266,7 @@ SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
 • Nome: ${data.managerName}
 • Email: ${data.managerEmail}
 
-${data.specialRequests ? `🔧 RICHIESTE SPECIALI:
-${data.specialRequests}
-
-` : ''}${data.notes ? `📝 NOTE:
-${data.notes}
-
-` : ''}💳 PAGAMENTO COMPLETATO CON SUCCESSO
+${data.specialRequests ? `🔧 RICHIESTE SPECIALI:\n${data.specialRequests}\n\n` : ''}${data.notes ? `📝 NOTE:\n${data.notes}\n\n` : ''}💳 PAGAMENTO COMPLETATO CON SUCCESSO
 Prenotazione ormeggio confermata e attiva nel sistema.
 
 ---
@@ -329,30 +344,6 @@ SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
     `;
   }
 
-  static async sendCustomerConfirmationEmail(data: BookingEmailData): Promise<boolean> {
-    try {
-      if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
-        console.log("⚠️ Credenziali Gmail non configurate, impossibile inviare conferma al cliente");
-        return false;
-      }
-
-      const transporter = this.createTransporter();
-      const mailOptions = {
-        from: `"SeaBoo" <${process.env.GMAIL_USER}>`,
-        to: data.customerEmail,
-        subject: `Conferma Prenotazione SeaBoo - ${data.bookingCode}`,
-        html: this.formatCustomerConfirmationHTML(data)
-      };
-
-      const result = await transporter.sendMail(mailOptions);
-      console.log("✅ EMAIL CONFERMA CLIENTE INVIATA:", result.messageId);
-      return true;
-    } catch (error) {
-      console.error("❌ Errore invio email conferma cliente:", error);
-      return false;
-    }
-  }
-
   private static formatCustomerConfirmationHTML(data: BookingEmailData): string {
     return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
@@ -417,7 +408,6 @@ SeaBoo Platform - ${new Date().toLocaleString('it-IT')}
         totalPrice: data.totalPrice,
         content
       };
-      
       const logEntry = `${timestamp} - MOORING BOOKING NOTIFICATION: ${JSON.stringify(emailLog)}\n`;
       await fs.promises.appendFile('booking-notifications.log', logEntry);
     } catch (error) {

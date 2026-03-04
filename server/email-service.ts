@@ -35,36 +35,15 @@ interface MooringBookingEmailData {
   notes?: string;
 }
 
-// Resend integration - credentials fetched from Replit Connectors
+// Resend client using RESEND_API_KEY secret
 async function getResendClient() {
-  const hostname = process.env.REPLIT_CONNECTORS_HOSTNAME;
-  const xReplitToken = process.env.REPL_IDENTITY
-    ? 'repl ' + process.env.REPL_IDENTITY
-    : process.env.WEB_REPL_RENEWAL
-    ? 'depl ' + process.env.WEB_REPL_RENEWAL
-    : null;
-
-  if (!xReplitToken || !hostname) {
-    throw new Error('Replit connector token not available');
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error('RESEND_API_KEY non configurata');
   }
-
-  const connectionSettings = await fetch(
-    'https://' + hostname + '/api/v2/connection?include_secrets=true&connector_names=resend',
-    {
-      headers: {
-        'Accept': 'application/json',
-        'X-Replit-Token': xReplitToken
-      }
-    }
-  ).then(res => res.json()).then((data: any) => data.items?.[0]);
-
-  if (!connectionSettings || !connectionSettings.settings.api_key) {
-    throw new Error('Resend not connected');
-  }
-
   return {
-    client: new Resend(connectionSettings.settings.api_key),
-    fromEmail: connectionSettings.settings.from_email || 'SeaBoo <onboarding@resend.dev>'
+    client: new Resend(apiKey),
+    fromEmail: 'SeaBoo <onboarding@resend.dev>'
   };
 }
 

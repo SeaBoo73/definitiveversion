@@ -84,7 +84,7 @@ Version control: Sistema di backup automatico attivato per preservare ogni modif
 ## External Dependencies
 
 - **Stripe**: Payment processing and financial transactions.
-- **SendGrid**: Email delivery service.
+- **Resend**: Email delivery service (sostituisce Gmail SMTP).
 - **Neon**: Serverless PostgreSQL hosting.
 - **Google Maps**: Interactive maps for boat locations and port information.
 - **Open-Meteo**: Marine weather data and forecasting services.

@@ -439,18 +439,6 @@ export function BoatDetail() {
                   <div className="mt-1">Cancellazione gratuita fino a 24h prima</div>
                 </div>
 
-                <Separator />
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Commissione SeaBoo (15%)</span>
-                    <span>Inclusa nel prezzo</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Supporto dedicato</span>
-                    <span>Incluso</span>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>

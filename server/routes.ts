@@ -1967,7 +1967,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/bookings', requireAuth, async (req: any, res) => {
     try {
       const bookings = await storage.getBookingsByCustomer(req.session.user.id);
-      res.json({ bookings });
+      const enriched = await Promise.all(bookings.map(async (b) => {
+        let boatName: string | null = null;
+        let boatType: string | null = null;
+        if (b.boatId) {
+          const boat = await storage.getBoat(b.boatId);
+          if (boat) { boatName = boat.name; boatType = boat.type; }
+        }
+        return { ...b, boatName, boatType };
+      }));
+      res.json({ bookings: enriched });
     } catch (error) {
       console.error("Get customer bookings error:", error);
       res.status(500).json({ error: "Errore nel recupero delle prenotazioni" });
